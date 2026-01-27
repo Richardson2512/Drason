@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id                   String   @id @default(uuid())
+  email                String
+  persona              String
+  lead_score           Int
+  source               String   @default("clay")
+  status               String   // held, active, paused, completed (using String for easy SQLite support, enums supported too but keep simple)
+  health_state         String   // healthy, warning, paused
+  assigned_campaign_id String?
+  created_at           DateTime @default(now())
+
+  @@index([status])
+  @@index([email])
+}
+
+model Campaign {
+  id          String    @id // from Smartlead
+  name        String
+  channel     String    @default("email")
+  status      String    // active, paused
+  last_updated DateTime @default(now())
+  mailboxes   Mailbox[]
+}
+
+model Mailbox {
+  id                     String     @id // from Smartlead
+  email                  String
+  domain_id              String
+  status                 String     // active, paused, warning
+  hard_bounce_count      Int        @default(0) // Lifetime
+  delivery_failure_count Int        @default(0) // Lifetime
+
+  // Window-based monitoring
+  window_sent_count      Int        @default(0)
+  window_bounce_count    Int        @default(0)
+  window_start_at        DateTime   @default(now())
+
+  last_activity_at       DateTime   @default(now())
+
+  domain    Domain     @relation(fields: [domain_id], references: [id])
+  campaigns Campaign[] // Many-to-many with campaigns
+
+  @@index([domain_id])
+}
+
+model Domain {
+  id                         String    @id @default(uuid())
+  domain                     String    @unique
+  status                     String    // healthy, warning, paused
+  warning_count              Int       @default(0) // How many times it entered warning state
+  aggregated_bounce_rate_trend Float     @default(0.0)
+  paused_reason              String?
+  mailboxes                  Mailbox[]
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  entity    String   // lead, mailbox, campaign, domain
+  entity_id String?
+  trigger   String
+  action    String
+  details   String?
+  timestamp DateTime @default(now())
+}
+
+model RoutingRule {
+  id                 String   @id @default(uuid())
+  persona            String
+  min_score          Int      @default(0)
+  target_campaign_id String
+  priority           Int      @default(0) // Higher value = higher priority
+  created_at         DateTime @default(now())
+}
+
+model SystemSetting {
+  key   String @id
+  value String
+}
