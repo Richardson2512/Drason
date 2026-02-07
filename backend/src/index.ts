@@ -26,9 +26,11 @@ app.use('/api/dashboard', dashboardRoutes);
 
 // New Ingestion logic
 app.post('/api/ingest', ingestionController.ingestLead);
+app.post('/api/ingest/clay', ingestionController.ingestClayWebhook);
 
 // Monitoring
 app.post('/api/monitor/event', monitoringController.triggerEvent);
+app.post('/api/monitor/smartlead-webhook', monitoringController.handleSmartleadWebhook);
 
 // Settings
 import settingsRoutes from './routes/settings';

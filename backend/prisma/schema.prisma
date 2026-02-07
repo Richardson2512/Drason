@@ -9,7 +9,7 @@ datasource db {
 
 model Lead {
   id                   String   @id @default(uuid())
-  email                String
+  email                String   @unique
   persona              String
   lead_score           Int
   source               String   @default("clay")
@@ -19,7 +19,7 @@ model Lead {
   created_at           DateTime @default(now())
 
   @@index([status])
-  @@index([email])
+  // @@index([email]) - Unique implies index usually, but explicit index is fine too? Prisma removes explicit index if @unique is present usually. Let's just use @unique.
 }
 
 model Campaign {

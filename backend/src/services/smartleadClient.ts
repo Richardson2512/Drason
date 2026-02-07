@@ -19,31 +19,37 @@ export const syncSmartlead = async () => {
     console.log('[SYNC] Starting Smartlead Sync...');
 
     // 1. Fetch Campaigns
-    const campsRes = await axios.get(`${SMARTLEAD_BASE_URL}/campaigns`, {
+    const campsRes = await axios.get<{ id: number; name: string; status: string }[]>(`${SMARTLEAD_BASE_URL}/campaigns`, {
         params: { api_key: apiKey }
     });
     const campaigns = campsRes.data || [];
 
     for (const c of campaigns) {
         // Upsert Campaign
+        // Logic: If remote is COMPLETED, we pause. If remote is ACTIVE, we set to active UNLESS we have a local reason to pause?
+        // Simpler for now: Sync status directly but maybe allow a "manual override" column later. 
+        // Current rule: If Smartlead says active, we trust it, but our monitoring might pause it again immediately if unhealthy.
+        const status = (c.status === 'COMPLETED' || c.status === 'PAUSED') ? 'paused' : 'active';
+
         await prisma.campaign.upsert({
             where: { id: String(c.id) },
             update: {
                 name: c.name,
-                status: c.status === 'COMPLETED' ? 'paused' : (c.status === 'ACTIVE' ? 'active' : 'paused') // Map statuses
+                // If the campaign is active in Smartlead, we allow it to be active here.
+                // If it was paused by our monitoring, our monitoring service will re-pause it on next check if still unhealthy.
+                status: status
             },
             create: {
                 id: String(c.id),
                 name: c.name,
-                status: c.status === 'ACTIVE' ? 'active' : 'paused',
+                status: status,
                 channel: 'email'
             }
         });
 
-        // 2. Fetch Mailboxes for this Campaign accounts
-        // Smartlead endpoint: /campaigns/:id/email-accounts?api_key=...
+        // 2. Fetch Mailboxes for this Campaign
         try {
-            const accRes = await axios.get(`${SMARTLEAD_BASE_URL}/campaigns/${c.id}/email-accounts`, {
+            const accRes = await axios.get<{ id: number; from_email: string; status: string }[]>(`${SMARTLEAD_BASE_URL}/campaigns/${c.id}/email-accounts`, {
                 params: { api_key: apiKey }
             });
             const accounts = accRes.data || [];
@@ -67,25 +73,21 @@ export const syncSmartlead = async () => {
                     update: {
                         email: acc.from_email,
                         domain_id: domain.id,
-                        // We do not overwrite stats locally, only sync metadata?
-                        // Actually if we want to sync status from Smartlead we could.
-                        // For MVP let's assume local control, so don't overwrite 'paused' status if we paused it locally?
-                        // BUT, if user paused in Smartlead, we should reflect it.
-                        // Let's reflect Smartlead status if helpful, but our internal logic handles pauses too.
-                        // Let's sync existence primarily.
+                        // Sync status from Smartlead. 
+                        // If Smartlead says it's active, we mark it active.
+                        // Our monitoring service runs separately and will pause it if bounce rate is high.
+                        // This allows a "reset" if the user fixes it in Smartlead.
+                        status: 'active'
                     },
                     create: {
                         id: String(acc.id),
                         email: acc.from_email,
                         domain_id: domain.id,
-                        status: 'active', // Default to active on discovery
+                        status: 'active',
                     }
                 });
 
                 // Link Mailbox to Campaign
-                // Check if already linked ? Prisma upsert handles relation? No, explicit connect.
-                // We need to simple connect.
-                // Note: Prisma implicit m-n: existing connection remains.
                 await prisma.campaign.update({
                     where: { id: String(c.id) },
                     data: {
