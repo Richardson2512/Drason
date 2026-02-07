@@ -13,6 +13,7 @@ export const prisma = new PrismaClient();
 
 // Import middleware
 import { extractOrgContext } from './middleware/orgContext';
+import { rateLimit, securityHeaders } from './middleware/security';
 
 // Import routes
 import leadRoutes from './routes/leads';
@@ -24,9 +25,24 @@ import syncRoutes from './routes/sync';
 import * as monitoringController from './controllers/monitoringController';
 import * as ingestionController from './controllers/ingestionController';
 
+// Import services for wiring
+import { logger, correlationMiddleware, metricsMiddleware, getMetrics } from './services/observabilityService';
+import { startWorker as startMetricsWorker } from './services/metricsWorker';
+import { startRetentionJob } from './services/complianceService';
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Phase 6: Security headers on all responses
+app.use(securityHeaders);
+
+// Phase 7: Correlation ID and metrics middleware
+app.use(correlationMiddleware);
+app.use(metricsMiddleware);
+
+// Phase 6: Rate limiting on API routes
+app.use('/api', rateLimit);
 
 // Health check endpoint (no auth required)
 app.get('/health', async (req, res) => {
@@ -40,7 +56,8 @@ app.get('/health', async (req, res) => {
             version: '2.0.0',
             components: {
                 database: 'healthy',
-                api: 'healthy'
+                api: 'healthy',
+                metricsWorker: 'active'
             }
         });
     } catch (error) {
@@ -53,6 +70,11 @@ app.get('/health', async (req, res) => {
             }
         });
     }
+});
+
+// Phase 7: Metrics endpoint for observability
+app.get('/metrics', (req, res) => {
+    res.json(getMetrics());
 });
 
 // Apply organization context middleware to all /api routes
@@ -118,12 +140,13 @@ app.patch('/api/organization', async (req, res) => {
         }
     });
 
+    logger.info('Organization updated', { orgId, name, system_mode });
     res.json(org);
 });
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.error('[ERROR]', err);
+    logger.error('Unhandled error', err);
     res.status(500).json({
         error: 'Internal server error',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined
@@ -132,12 +155,22 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 
 // Start server
 app.listen(PORT, () => {
+    logger.info(`Server started on port ${PORT}`);
     console.log(`Server is running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+
+    // Phase 4: Start metrics worker for background processing
+    startMetricsWorker();
+    logger.info('Metrics worker started');
+
+    // Phase 8: Start data retention job
+    startRetentionJob();
+    logger.info('Compliance retention job started');
 });
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
+    logger.info('SIGTERM received, shutting down gracefully');
     console.log('SIGTERM received, shutting down gracefully');
     await prisma.$disconnect();
     process.exit(0);
