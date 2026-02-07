@@ -1,85 +1,391 @@
+// Drason Production Schema
+// PostgreSQL with Multi-Tenancy Support
+// Based on Infrastructure Architecture Audit Report
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Lead {
-  id                   String   @id @default(uuid())
-  email                String   @unique
-  persona              String
-  lead_score           Int
-  source               String   @default("clay")
-  status               String   // held, active, paused, completed (using String for easy SQLite support, enums supported too but keep simple)
-  health_state         String   // healthy, warning, paused
-  assigned_campaign_id String?
-  created_at           DateTime @default(now())
+// ============================================================================
+// MULTI-TENANCY FOUNDATION (Section 3 of Audit)
+// ============================================================================
 
+model Organization {
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
+
+  // System mode per org (Section 10)
+  system_mode String @default("observe") // observe, suggest, enforce
+
+  // Metadata
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  users            User[]
+  apiKeys          ApiKey[]
+  leads            Lead[]
+  campaigns        Campaign[]
+  domains          Domain[]
+  mailboxes        Mailbox[]
+  routingRules     RoutingRule[]
+  auditLogs        AuditLog[]
+  rawEvents        RawEvent[]
+  systemSettings   OrganizationSetting[]
+  stateTransitions StateTransition[]
+
+  @@index([slug])
+}
+
+model User {
+  id            String  @id @default(uuid())
+  email         String  @unique
+  password_hash String
+  name          String?
+  role          String  @default("viewer") // admin, operator, viewer (Section 14.4)
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  last_login_at DateTime?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  @@index([organization_id])
+  @@index([email])
+}
+
+model ApiKey {
+  id         String   @id @default(uuid())
+  key_hash   String   @unique // Store hashed key, never plaintext
+  key_prefix String // First 8 chars for identification (e.g., "drason_")
+  name       String // User-friendly name for the key
+  scopes     String[] // Array of scopes (Section 14.1)
+
+  // Multi-tenancy  
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  last_used_at DateTime?
+  expires_at   DateTime?
+  created_at   DateTime  @default(now())
+  revoked_at   DateTime?
+
+  @@index([organization_id])
+  @@index([key_hash])
+}
+
+// ============================================================================
+// CORE ENTITIES WITH MULTI-TENANCY
+// ============================================================================
+
+model Lead {
+  id         String @id @default(uuid())
+  email      String
+  persona    String
+  lead_score Int
+  source     String @default("clay")
+
+  // State machine (Section 8.3)
+  status       String @default("held") // held, active, paused, completed
+  health_state String @default("healthy") // healthy, warning
+
+  // Routing
+  assigned_campaign_id String?
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Soft delete for GDPR (Section 17)
+  deleted_at DateTime?
+
+  @@unique([organization_id, email]) // One lead per email per org (Section 6.2)
+  @@index([organization_id, status])
+  @@index([organization_id, assigned_campaign_id])
   @@index([status])
-  // @@index([email]) - Unique implies index usually, but explicit index is fine too? Prisma removes explicit index if @unique is present usually. Let's just use @unique.
 }
 
 model Campaign {
-  id          String    @id // from Smartlead
-  name        String
-  channel     String    @default("email")
-  status      String    // active, paused
-  last_updated DateTime @default(now())
-  mailboxes   Mailbox[]
+  id      String @id // ID from Smartlead
+  name    String
+  channel String @default("email")
+  status  String @default("active") // active, paused, completed
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  last_synced_at DateTime @default(now())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  // Relations
+  mailboxes Mailbox[]
+
+  @@index([organization_id, status])
+  @@index([organization_id])
 }
 
 model Mailbox {
-  id                     String     @id // from Smartlead
-  email                  String
-  domain_id              String
-  status                 String     // active, paused, warning
-  hard_bounce_count      Int        @default(0) // Lifetime
-  delivery_failure_count Int        @default(0) // Lifetime
+  id    String @id // ID from Smartlead
+  email String
 
-  // Window-based monitoring
-  window_sent_count      Int        @default(0)
-  window_bounce_count    Int        @default(0)
-  window_start_at        DateTime   @default(now())
+  // State machine with recovery support (Section 8.1)
+  status String @default("healthy") // healthy, warning, paused, recovering
 
-  last_activity_at       DateTime   @default(now())
+  // Lifetime metrics
+  hard_bounce_count      Int @default(0)
+  delivery_failure_count Int @default(0)
+  total_sent_count       Int @default(0)
 
-  domain    Domain     @relation(fields: [domain_id], references: [id])
-  campaigns Campaign[] // Many-to-many with campaigns
+  // Current window metrics (Section 7.2 - simplified, detailed in MailboxMetrics)
+  window_sent_count   Int      @default(0)
+  window_bounce_count Int      @default(0)
+  window_start_at     DateTime @default(now())
 
+  // Cooldown and recovery (Section 11)
+  last_pause_at      DateTime?
+  cooldown_until     DateTime?
+  consecutive_pauses Int       @default(0)
+
+  // Activity tracking
+  last_activity_at DateTime @default(now())
+
+  // Relations
+  domain_id String
+  domain    Domain          @relation(fields: [domain_id], references: [id])
+  campaigns Campaign[]
+  metrics   MailboxMetrics?
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([organization_id, status])
+  @@index([organization_id, domain_id])
   @@index([domain_id])
 }
 
 model Domain {
-  id                         String    @id @default(uuid())
-  domain                     String    @unique
-  status                     String    // healthy, warning, paused
-  warning_count              Int       @default(0) // How many times it entered warning state
-  aggregated_bounce_rate_trend Float     @default(0.0)
-  paused_reason              String?
-  mailboxes                  Mailbox[]
-}
+  id     String @id @default(uuid())
+  domain String
 
-model AuditLog {
-  id        String   @id @default(uuid())
-  entity    String   // lead, mailbox, campaign, domain
-  entity_id String?
-  trigger   String
-  action    String
-  details   String?
-  timestamp DateTime @default(now())
+  // State machine (Section 8.2)
+  status                       String  @default("healthy") // healthy, warning, paused, recovering
+  warning_count                Int     @default(0)
+  aggregated_bounce_rate_trend Float   @default(0.0)
+  paused_reason                String?
+
+  // Cooldown and recovery (Section 11)
+  last_pause_at      DateTime?
+  cooldown_until     DateTime?
+  consecutive_pauses Int       @default(0)
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  mailboxes Mailbox[]
+
+  @@unique([organization_id, domain])
+  @@index([organization_id, status])
+  @@index([organization_id])
 }
 
 model RoutingRule {
-  id                 String   @id @default(uuid())
+  id                 String @id @default(uuid())
   persona            String
-  min_score          Int      @default(0)
+  min_score          Int    @default(0)
   target_campaign_id String
-  priority           Int      @default(0) // Higher value = higher priority
-  created_at         DateTime @default(now())
+  priority           Int    @default(0) // Higher = evaluated first
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata  
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([organization_id, priority])
+  @@index([organization_id])
 }
+
+// ============================================================================
+// EVENT SOURCING (Section 5 of Audit)
+// ============================================================================
+
+model RawEvent {
+  id          String  @id @default(uuid())
+  event_type  String // from EventType enum
+  entity_type String // lead, mailbox, campaign, domain
+  entity_id   String?
+
+  // Full event payload stored as JSON
+  payload Json
+
+  // Idempotency (Section 6.1)
+  idempotency_key String? @unique
+
+  // Processing status
+  processed     Boolean   @default(false)
+  processed_at  DateTime?
+  error_message String?
+  retry_count   Int       @default(0)
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  created_at DateTime @default(now())
+
+  @@index([organization_id, event_type])
+  @@index([organization_id, entity_type, entity_id])
+  @@index([processed, created_at])
+  @@index([idempotency_key])
+}
+
+// ============================================================================
+// STATE TRACKING (Section 8 of Audit)
+// ============================================================================
+
+model StateTransition {
+  id           String @id @default(uuid())
+  entity_type  String // mailbox, domain, lead
+  entity_id    String
+  from_state   String
+  to_state     String
+  reason       String
+  triggered_by String // system, manual, webhook, threshold_breach
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  created_at DateTime @default(now())
+
+  @@index([organization_id, entity_type, entity_id])
+  @@index([entity_type, entity_id, created_at])
+}
+
+// ============================================================================
+// MONITORING METRICS (Section 7 of Audit)
+// ============================================================================
+
+model MailboxMetrics {
+  id         String @id @default(uuid())
+  mailbox_id String @unique
+
+  // 1-hour rolling window
+  window_1h_sent    Int      @default(0)
+  window_1h_bounce  Int      @default(0)
+  window_1h_failure Int      @default(0)
+  window_1h_start   DateTime @default(now())
+
+  // 24-hour rolling window
+  window_24h_sent    Int      @default(0)
+  window_24h_bounce  Int      @default(0)
+  window_24h_failure Int      @default(0)
+  window_24h_start   DateTime @default(now())
+
+  // 7-day rolling window
+  window_7d_sent    Int      @default(0)
+  window_7d_bounce  Int      @default(0)
+  window_7d_failure Int      @default(0)
+  window_7d_start   DateTime @default(now())
+
+  // Risk index (Section 12)
+  risk_score Float @default(0) // 0-100
+  velocity   Float @default(0) // Rate of change
+
+  // Metadata
+  updated_at DateTime @updatedAt
+
+  // Relations
+  mailbox Mailbox @relation(fields: [mailbox_id], references: [id], onDelete: Cascade)
+
+  @@index([mailbox_id])
+}
+
+// ============================================================================
+// AUDIT LOGGING (Section 12 of Audit - Mandatory)
+// ============================================================================
+
+model AuditLog {
+  id        String  @id @default(uuid())
+  entity    String // lead, mailbox, campaign, domain, routing_rule, user
+  entity_id String?
+  trigger   String // What initiated the action
+  action    String // What action was taken
+  details   String? // Human-readable explanation
+
+  // Request context for tracing
+  correlation_id String?
+  user_id        String?
+  ip_address     String?
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata - immutable
+  timestamp DateTime @default(now())
+
+  @@index([organization_id, entity, entity_id])
+  @@index([organization_id, timestamp])
+  @@index([correlation_id])
+}
+
+// ============================================================================
+// ORGANIZATION SETTINGS (Replacing SystemSetting for multi-tenancy)
+// ============================================================================
+
+model OrganizationSetting {
+  id        String  @id @default(uuid())
+  key       String
+  value     String
+  is_secret Boolean @default(false) // For API keys, encrypted values
+
+  // Multi-tenancy
+  organization_id String
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  // Metadata
+  updated_at DateTime @updatedAt
+
+  @@unique([organization_id, key])
+  @@index([organization_id])
+}
+
+// ============================================================================
+// LEGACY SUPPORT - Global System Settings (for backwards compatibility)
+// ============================================================================
 
 model SystemSetting {
   key   String @id

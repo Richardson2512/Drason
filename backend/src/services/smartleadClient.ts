@@ -1,132 +1,193 @@
-import { prisma } from '../index';
+/**
+ * Smartlead API Client
+ * 
+ * Handles integration with Smartlead API for campaign and mailbox sync.
+ * API key is now organization-scoped for multi-tenancy.
+ * 
+ * Section 13 of Audit: API Rate Limits & External Constraints
+ */
+
 import axios from 'axios';
+import { prisma } from '../index';
+import { Request } from 'express';
+import { getOrgId } from '../middleware/orgContext';
+import * as auditLogService from './auditLogService';
+import * as eventService from './eventService';
+import { EventType } from '../types';
 
-const SMARTLEAD_BASE_URL = 'https://server.smartlead.email/api/v1';
+const SMARTLEAD_API_BASE = 'https://server.smartlead.ai/api/v1';
 
-async function getApiKey(): Promise<string | null> {
-    const setting = await prisma.systemSetting.findUnique({
-        where: { key: 'SMARTLEAD_API_KEY' }
+/**
+ * Get Smartlead API key for an organization.
+ */
+async function getApiKey(organizationId: string): Promise<string | null> {
+    const setting = await prisma.organizationSetting.findUnique({
+        where: {
+            organization_id_key: {
+                organization_id: organizationId,
+                key: 'SMARTLEAD_API_KEY'
+            }
+        }
     });
     return setting?.value || null;
 }
 
-export const syncSmartlead = async () => {
-    const apiKey = await getApiKey();
+/**
+ * Sync campaigns and mailboxes from Smartlead.
+ */
+export const syncSmartlead = async (organizationId: string): Promise<{
+    campaigns: number;
+    mailboxes: number;
+}> => {
+    const apiKey = await getApiKey(organizationId);
     if (!apiKey) {
-        throw new Error('Smartlead API Key not found. Please configure it in Settings.');
+        throw new Error('Smartlead API key not configured');
     }
 
-    console.log('[SYNC] Starting Smartlead Sync...');
-
-    // 1. Fetch Campaigns
-    const campsRes = await axios.get<{ id: number; name: string; status: string }[]>(`${SMARTLEAD_BASE_URL}/campaigns`, {
-        params: { api_key: apiKey }
+    // Store sync event
+    await eventService.storeEvent({
+        organizationId,
+        eventType: EventType.SMARTLEAD_SYNC,
+        entityType: 'system',
+        payload: { action: 'sync_started' }
     });
-    const campaigns = campsRes.data || [];
 
-    for (const c of campaigns) {
-        // Upsert Campaign
-        // Logic: If remote is COMPLETED, we pause. If remote is ACTIVE, we set to active UNLESS we have a local reason to pause?
-        // Simpler for now: Sync status directly but maybe allow a "manual override" column later. 
-        // Current rule: If Smartlead says active, we trust it, but our monitoring might pause it again immediately if unhealthy.
-        const status = (c.status === 'COMPLETED' || c.status === 'PAUSED') ? 'paused' : 'active';
-
-        await prisma.campaign.upsert({
-            where: { id: String(c.id) },
-            update: {
-                name: c.name,
-                // If the campaign is active in Smartlead, we allow it to be active here.
-                // If it was paused by our monitoring, our monitoring service will re-pause it on next check if still unhealthy.
-                status: status
-            },
-            create: {
-                id: String(c.id),
-                name: c.name,
-                status: status,
-                channel: 'email'
-            }
-        });
-
-        // 2. Fetch Mailboxes for this Campaign
-        try {
-            const accRes = await axios.get<{ id: number; from_email: string; status: string }[]>(`${SMARTLEAD_BASE_URL}/campaigns/${c.id}/email-accounts`, {
-                params: { api_key: apiKey }
-            });
-            const accounts = accRes.data || [];
-
-            for (const acc of accounts) {
-                // Upsert Domain (Infer from email)
-                const domainName = acc.from_email.split('@')[1];
-                let domain = await prisma.domain.findUnique({ where: { domain: domainName } });
-                if (!domain) {
-                    domain = await prisma.domain.create({
-                        data: {
-                            domain: domainName,
-                            status: 'healthy'
-                        }
-                    });
-                }
-
-                // Upsert Mailbox
-                await prisma.mailbox.upsert({
-                    where: { id: String(acc.id) },
-                    update: {
-                        email: acc.from_email,
-                        domain_id: domain.id,
-                        // Sync status from Smartlead. 
-                        // If Smartlead says it's active, we mark it active.
-                        // Our monitoring service runs separately and will pause it if bounce rate is high.
-                        // This allows a "reset" if the user fixes it in Smartlead.
-                        status: 'active'
-                    },
-                    create: {
-                        id: String(acc.id),
-                        email: acc.from_email,
-                        domain_id: domain.id,
-                        status: 'active',
-                    }
-                });
-
-                // Link Mailbox to Campaign
-                await prisma.campaign.update({
-                    where: { id: String(c.id) },
-                    data: {
-                        mailboxes: {
-                            connect: { id: String(acc.id) }
-                        }
-                    }
-                });
-            }
-
-        } catch (e) {
-            console.error(`Failed to sync accounts for campaign ${c.id}`, e);
-        }
-    }
-
-    console.log('[SYNC] Complete.');
-    return { campaigns_synced: campaigns.length };
-};
-
-export const addLeadToCampaign = async (campaignId: string, lead: any) => {
-    const apiKey = await getApiKey();
-    if (!apiKey) return false;
+    let campaignCount = 0;
+    let mailboxCount = 0;
 
     try {
-        await axios.post(`${SMARTLEAD_BASE_URL}/campaigns/${campaignId}/leads`, {
-            api_key: apiKey,
-            lead_list: [
-                {
-                    email: lead.email,
-                    custom_fields: {
-                        persona: lead.persona,
-                        score: lead.lead_score
-                    }
+        // Fetch campaigns
+        const campaignsRes = await axios.get(`${SMARTLEAD_API_BASE}/campaigns?api_key=${apiKey}`);
+        const campaigns = campaignsRes.data || [];
+
+        for (const campaign of campaigns) {
+            await prisma.campaign.upsert({
+                where: { id: campaign.id.toString() },
+                update: {
+                    name: campaign.name,
+                    status: campaign.status || 'active',
+                    last_synced_at: new Date()
+                },
+                create: {
+                    id: campaign.id.toString(),
+                    name: campaign.name,
+                    status: campaign.status || 'active',
+                    organization_id: organizationId
                 }
-            ]
+            });
+            campaignCount++;
+        }
+
+        // Fetch email accounts (mailboxes)
+        const mailboxesRes = await axios.get(`${SMARTLEAD_API_BASE}/email-accounts?api_key=${apiKey}`);
+        const mailboxes = mailboxesRes.data || [];
+
+        for (const mailbox of mailboxes) {
+            // Extract domain from email
+            const email = mailbox.from_email || mailbox.email || '';
+            const domainName = email.split('@')[1] || 'unknown.com';
+
+            // Ensure domain exists
+            let domain = await prisma.domain.findFirst({
+                where: {
+                    organization_id: organizationId,
+                    domain: domainName
+                }
+            });
+
+            if (!domain) {
+                domain = await prisma.domain.create({
+                    data: {
+                        domain: domainName,
+                        status: 'healthy',
+                        organization_id: organizationId
+                    }
+                });
+            }
+
+            // Upsert mailbox
+            await prisma.mailbox.upsert({
+                where: { id: mailbox.id.toString() },
+                update: {
+                    email,
+                    status: mailbox.status === 'ACTIVE' ? 'healthy' : 'paused'
+                },
+                create: {
+                    id: mailbox.id.toString(),
+                    email,
+                    status: mailbox.status === 'ACTIVE' ? 'healthy' : 'paused',
+                    domain_id: domain.id,
+                    organization_id: organizationId
+                }
+            });
+            mailboxCount++;
+        }
+
+        await auditLogService.logAction({
+            organizationId,
+            entity: 'system',
+            trigger: 'manual_sync',
+            action: 'smartlead_synced',
+            details: `Synced ${campaignCount} campaigns, ${mailboxCount} mailboxes`
         });
+
+        return { campaigns: campaignCount, mailboxes: mailboxCount };
+
+    } catch (error: any) {
+        await auditLogService.logAction({
+            organizationId,
+            entity: 'system',
+            trigger: 'manual_sync',
+            action: 'smartlead_sync_failed',
+            details: error.message
+        });
+        throw error;
+    }
+};
+
+/**
+ * Push a lead to a Smartlead campaign.
+ */
+export const pushLeadToCampaign = async (
+    organizationId: string,
+    campaignId: string,
+    lead: {
+        email: string;
+        first_name?: string;
+        last_name?: string;
+        company?: string;
+    }
+): Promise<boolean> => {
+    const apiKey = await getApiKey(organizationId);
+    if (!apiKey) {
+        throw new Error('Smartlead API key not configured');
+    }
+
+    try {
+        await axios.post(
+            `${SMARTLEAD_API_BASE}/campaigns/${campaignId}/leads?api_key=${apiKey}`,
+            { lead_list: [lead] }
+        );
+
+        await auditLogService.logAction({
+            organizationId,
+            entity: 'lead',
+            entityId: lead.email,
+            trigger: 'execution',
+            action: 'pushed_to_smartlead',
+            details: `Pushed to campaign ${campaignId}`
+        });
+
         return true;
-    } catch (e) {
-        console.error('Failed to push lead to Smartlead', e);
+    } catch (error: any) {
+        await auditLogService.logAction({
+            organizationId,
+            entity: 'lead',
+            entityId: lead.email,
+            trigger: 'execution',
+            action: 'push_failed',
+            details: error.message
+        });
         return false;
     }
-}
+};

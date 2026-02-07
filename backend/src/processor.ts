@@ -1,50 +1,92 @@
+/**
+ * Lead Processor
+ * 
+ * Background job that processes held leads.
+ * Checks execution gate and pushes leads to campaigns.
+ * 
+ * Note: In production, this would be a proper worker using Redis/Bull queues.
+ */
+
 import { prisma } from './index';
-import { canExecuteLead } from './services/executionGateService';
+import * as executionGateService from './services/executionGateService';
 import * as smartleadClient from './services/smartleadClient';
 import * as auditLogService from './services/auditLogService';
 
 const processHeldLeads = async () => {
     console.log('[PROCESSOR] Scanning for HELD leads...');
 
-    // 1. Find HELD leads that have an assigned campaign
-    const leads = await prisma.lead.findMany({
+    // Get all organizations with leads to process
+    const orgsWithLeads = await prisma.lead.groupBy({
+        by: ['organization_id'],
         where: {
             status: 'held',
             assigned_campaign_id: { not: null },
             health_state: 'healthy',
-        },
-        take: 50, // Batch size
+            deleted_at: null
+        }
     });
 
-    console.log(`[PROCESSOR] Found ${leads.length} leads to process.`);
+    for (const org of orgsWithLeads) {
+        const orgId = org.organization_id;
 
-    for (const lead of leads) {
-        if (!lead.assigned_campaign_id) continue;
+        // Find HELD leads for this organization
+        const leads = await prisma.lead.findMany({
+            where: {
+                organization_id: orgId,
+                status: 'held',
+                assigned_campaign_id: { not: null },
+                health_state: 'healthy',
+                deleted_at: null
+            },
+            take: 50, // Batch size per org
+        });
 
-        const canExecute = await executionGateService.canExecuteLead(lead.assigned_campaign_id, lead.id);
+        console.log(`[PROCESSOR] Org ${orgId}: Found ${leads.length} leads to process.`);
 
-        if (canExecute) {
-            // Transition to ACTIVE
-            await prisma.lead.update({
-                where: { id: lead.id },
-                data: { status: 'active' },
-            });
-            await auditLogService.logAction('lead', lead.id, 'processor_gate', 'activated', 'Passed execution gate');
-            console.log(`[PROCESSOR] Lead ${lead.id} ACTIVATED.`);
+        for (const lead of leads) {
+            if (!lead.assigned_campaign_id) continue;
 
-            // Push to Smartlead
-            console.log(`[PROCESSOR] Pushing Lead ${lead.id} to Smartlead Campaign ${lead.assigned_campaign_id}...`);
-            const pushed = await smartleadClient.addLeadToCampaign(lead.assigned_campaign_id!, lead);
+            const gateResult = await executionGateService.canExecuteLead(
+                orgId,
+                lead.assigned_campaign_id,
+                lead.id
+            );
 
-            if (pushed) {
-                console.log(`[PROCESSOR] Lead ${lead.id} successfully pushed.`);
+            if (gateResult.allowed) {
+                // Transition to ACTIVE
+                await prisma.lead.update({
+                    where: { id: lead.id },
+                    data: { status: 'active' },
+                });
+
+                await auditLogService.logAction({
+                    organizationId: orgId,
+                    entity: 'lead',
+                    entityId: lead.id,
+                    trigger: 'processor_gate',
+                    action: 'activated',
+                    details: `Passed execution gate. Risk: ${gateResult.riskScore.toFixed(1)}`
+                });
+                console.log(`[PROCESSOR] Lead ${lead.id} ACTIVATED.`);
+
+                // Push to Smartlead
+                console.log(`[PROCESSOR] Pushing Lead ${lead.id} to Smartlead Campaign ${lead.assigned_campaign_id}...`);
+                const pushed = await smartleadClient.pushLeadToCampaign(
+                    orgId,
+                    lead.assigned_campaign_id,
+                    { email: lead.email }
+                );
+
+                if (pushed) {
+                    console.log(`[PROCESSOR] Lead ${lead.id} successfully pushed.`);
+                } else {
+                    console.log(`[PROCESSOR] Failed to push Lead ${lead.id} (Check API Key).`);
+                }
+
             } else {
-                console.log(`[PROCESSOR] Failed to push Lead ${lead.id} (Check API Key).`);
+                // Remain HELD, log was already created by gate service
+                console.log(`[PROCESSOR] Lead ${lead.id} BLOCKED: ${gateResult.reason}`);
             }
-
-        } else {
-            // Remain HELD, log was already created by gate service
-            console.log(`[PROCESSOR] Lead ${lead.id} BLOCKED.`);
         }
     }
 };

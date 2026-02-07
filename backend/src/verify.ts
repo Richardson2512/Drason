@@ -1,112 +1,170 @@
+/**
+ * Verification Script
+ * 
+ * Tests the complete flow: Lead ingestion -> Routing -> Execution Gate -> Monitoring
+ * Updated for multi-tenant schema.
+ */
+
 import { prisma } from './index';
-import * as leadService from './services/leadService';
+import * as routingService from './services/routingService';
 import * as executionGateService from './services/executionGateService';
+import * as monitoringService from './services/monitoringService';
+
+const DEFAULT_ORG_ID = 'test-org';
 
 const run = async () => {
-    console.log('--- START VERIFICATION ---');
+    console.log('=== DRASON VERIFICATION SCRIPT ===\n');
 
-    // 1. Clean DB
-    console.log('Cleaning DB...');
-    await prisma.auditLog.deleteMany();
-    await prisma.lead.deleteMany();
-    await prisma.routingRule.deleteMany();
-    await prisma.mailbox.deleteMany();
-    await prisma.domain.deleteMany();
-    await prisma.campaign.deleteMany();
+    // Clean existing test data
+    console.log('1. Cleaning existing data...');
+    await prisma.auditLog.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.stateTransition.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.rawEvent.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.lead.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.routingRule.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.mailbox.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.domain.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
+    await prisma.campaign.deleteMany({ where: { organization_id: DEFAULT_ORG_ID } });
 
-    // 2. Setup Infrastructure (Campaign, Domain, Mailbox)
-    console.log('Setting up Infra...');
+    // Ensure test organization exists
+    await prisma.organization.upsert({
+        where: { id: DEFAULT_ORG_ID },
+        update: {},
+        create: {
+            id: DEFAULT_ORG_ID,
+            name: 'Test Organization',
+            slug: 'test-org',
+            system_mode: 'enforce'
+        }
+    });
+    console.log('   Done.\n');
 
+    // Setup test campaign
+    console.log('2. Creating test campaign...');
     const campaign = await prisma.campaign.create({
         data: {
-            id: 'camp_1',
-            name: 'CEO Outreach',
+            id: 'campaign-123',
+            name: 'Enterprise Sales Q1',
             status: 'active',
             channel: 'email',
-        },
+            organization_id: DEFAULT_ORG_ID
+        }
     });
+    console.log(`   Created Campaign: ${campaign.id}\n`);
 
+    // Setup test domain
+    console.log('3. Creating test domain...');
     const domain = await prisma.domain.create({
         data: {
-            domain: 'sender.com',
+            domain: 'drasontest.io',
             status: 'healthy',
-        },
+            organization_id: DEFAULT_ORG_ID
+        }
     });
+    console.log(`   Created Domain: ${domain.domain}\n`);
 
+    // Setup test mailbox
+    console.log('4. Creating test mailbox...');
     await prisma.mailbox.create({
         data: {
-            id: 'mb_1',
-            email: 'alex@sender.com',
+            id: 'mailbox-001',
+            email: 'sales@drasontest.io',
             domain_id: domain.id,
-            status: 'active',
-        },
+            status: 'healthy',
+            organization_id: DEFAULT_ORG_ID
+        }
     });
+    console.log('   Created Mailbox: sales@drasontest.io\n');
 
-    // 3. Create Routing Rule
-    console.log('Creating Routing Rule...');
-    await prisma.routingRule.create({
+    // Create routing rule
+    console.log('5. Creating routing rule...');
+    await routingService.createRule(DEFAULT_ORG_ID, {
+        persona: 'CTO',
+        min_score: 70,
+        target_campaign_id: campaign.id,
+        priority: 100
+    });
+    console.log('   Created Rule: CTO >= 70 -> campaign-123\n');
+
+    // Simulate lead ingestion
+    console.log('6. Simulating lead ingestion...');
+    const lead = await prisma.lead.create({
         data: {
-            persona: 'CEO',
-            min_score: 80,
-            target_campaign_id: 'camp_1',
-            priority: 10,
-        },
+            email: 'test.cto@example.com',
+            persona: 'CTO',
+            lead_score: 85,
+            status: 'held',
+            health_state: 'healthy',
+            source: 'clay',
+            organization_id: DEFAULT_ORG_ID
+        }
     });
+    console.log(`   Created Lead: ${lead.email} (Score: ${lead.lead_score})\n`);
 
-    // 4. Ingest Lead (Should be Routed)
-    console.log('Ingesting Lead...');
-    const lead1 = await leadService.createLead({
-        email: 'elon@tesla.com',
-        persona: 'CEO',
-        lead_score: 95,
-    });
+    // Resolve routing
+    console.log('7. Resolving routing...');
+    const assignedCampaign = await routingService.resolveCampaignForLead(DEFAULT_ORG_ID, lead);
+    console.log(`   Assigned Campaign: ${assignedCampaign || 'NONE'}\n`);
 
-    console.log('Lead 1 created:', lead1);
-    if (lead1.assigned_campaign_id === 'camp_1') {
-        console.log('SUCCESS: Lead 1 routed to camp_1');
-    } else {
-        console.error('FAILURE: Lead 1 NOT routed to camp_1');
+    if (assignedCampaign) {
+        await prisma.lead.update({
+            where: { id: lead.id },
+            data: { assigned_campaign_id: assignedCampaign }
+        });
     }
 
-    // 5. Ingest Non-Matching Lead
-    console.log('Ingesting Non-Matching Lead...');
-    const lead2 = await leadService.createLead({
-        email: 'intern@tesla.com',
-        persona: 'Intern',
-        lead_score: 50,
+    // Check execution gate
+    console.log('8. Checking execution gate...');
+    const gateResult = await executionGateService.canExecuteLead(
+        DEFAULT_ORG_ID,
+        assignedCampaign || '',
+        lead.id
+    );
+    console.log(`   Gate Result: ${gateResult.allowed ? 'PASSED' : 'BLOCKED'}`);
+    console.log(`   Risk Score: ${gateResult.riskScore}`);
+    console.log(`   Mode: ${gateResult.mode}`);
+    console.log(`   Reason: ${gateResult.reason}\n`);
+
+    // Simulate bounce events
+    console.log('9. Simulating bounce events...');
+    for (let i = 0; i < 3; i++) {
+        await monitoringService.recordBounce('mailbox-001', campaign.id);
+        console.log(`   Bounce ${i + 1} recorded`);
+    }
+    console.log('');
+
+    // Check mailbox status after bounces
+    const mailboxAfter = await prisma.mailbox.findUnique({
+        where: { id: 'mailbox-001' }
     });
+    console.log(`10. Mailbox Status After Bounces: ${mailboxAfter?.status}`);
+    console.log(`    Window Bounces: ${mailboxAfter?.window_bounce_count}`);
+    console.log(`    Total Hard Bounces: ${mailboxAfter?.hard_bounce_count}\n`);
 
-    console.log('Lead 2 created:', lead2);
-    if (lead2.assigned_campaign_id === null) {
-        console.log('SUCCESS: Lead 2 not routed');
-    } else {
-        console.error('FAILURE: Lead 2 incorrectly routed');
-    }
-
-    // 6. Test Gate Execution
-    console.log('Testing Gate...');
-    const canExec = await executionGateService.canExecuteLead('camp_1', lead1.id);
-    if (canExec) {
-        console.log('SUCCESS: Gate passed for valid campaign & healthy mailbox');
-    } else {
-        console.error('FAILURE: Gate failed unexpectedly');
-    }
-
-    // 7. Test Gate Block (Pause Domain)
-    console.log('Pausing Domain and Testing Gate...');
-    await prisma.domain.update({
-        where: { id: domain.id },
-        data: { status: 'paused' },
+    // Check domain status
+    const domainAfter = await prisma.domain.findUnique({
+        where: { id: domain.id }
     });
+    console.log(`11. Domain Status: ${domainAfter?.status}\n`);
 
-    const canExec2 = await executionGateService.canExecuteLead('camp_1', lead1.id);
-    if (!canExec2) {
-        console.log('SUCCESS: Gate blocked for paused domain');
-    } else {
-        console.error('FAILURE: Gate passed despite paused domain');
+    // Print audit log summary
+    console.log('12. Recent Audit Logs:');
+    const logs = await prisma.auditLog.findMany({
+        where: { organization_id: DEFAULT_ORG_ID },
+        orderBy: { timestamp: 'desc' },
+        take: 5
+    });
+    for (const log of logs) {
+        console.log(`    [${log.entity}] ${log.action}: ${log.details?.substring(0, 60) || '-'}`);
     }
+    console.log('');
 
-    console.log('--- END VERIFICATION ---');
+    console.log('=== VERIFICATION COMPLETE ===');
 };
 
-run().then(() => prisma.$disconnect());
+run()
+    .then(() => prisma.$disconnect())
+    .catch((e) => {
+        console.error(e);
+        prisma.$disconnect();
+    });

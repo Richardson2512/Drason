@@ -12,4 +12,9 @@ router.get('/audit-logs', dashboardController.getAuditLogs);
 router.get('/routing-rules', dashboardController.getRoutingRules);
 router.post('/routing-rules', dashboardController.createRoutingRule);
 
+// New endpoints for Phase 1
+router.get('/state-transitions', dashboardController.getStateTransitions);
+router.get('/events', dashboardController.getRawEvents);
+
 export default router;
+

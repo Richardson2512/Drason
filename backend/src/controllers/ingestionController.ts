@@ -1,8 +1,24 @@
+/**
+ * Ingestion Controller
+ * 
+ * Handles lead ingestion from direct API calls and Clay webhooks.
+ * All leads are created with organization context for multi-tenancy.
+ * 
+ * Section 6 of Audit: Lead Ingestion Flow
+ */
+
 import { Request, Response } from 'express';
 import { prisma } from '../index';
 import * as routingService from '../services/routingService';
 import * as auditLogService from '../services/auditLogService';
+import * as eventService from '../services/eventService';
+import { getOrgId } from '../middleware/orgContext';
+import { EventType, LeadState } from '../types';
 
+/**
+ * Direct API lead ingestion.
+ * POST /api/ingest
+ */
 export const ingestLead = async (req: Request, res: Response) => {
     const { email, persona, lead_score, source } = req.body;
 
@@ -10,27 +26,57 @@ export const ingestLead = async (req: Request, res: Response) => {
         return res.status(400).json({ error: 'Missing required fields: email, persona, lead_score' });
     }
 
-    console.log(`[INGEST] Received lead: ${email} (${persona}, ${lead_score})`);
+    // Get organization context
+    let organizationId: string;
+    try {
+        organizationId = getOrgId(req);
+    } catch (error) {
+        return res.status(401).json({ error: 'Organization context required' });
+    }
+
+    console.log(`[INGEST] Org: ${organizationId} | Lead: ${email} (${persona}, ${lead_score})`);
 
     try {
-        // 1. Create initial lead object (in memory or basic DB object) for routing context
-        // We'll insert it into DB *after* we know the campaign, or update it immediately.
-        // Let's create it first to have an ID.
-        const createdLead = await prisma.lead.create({
-            data: {
+        // Generate idempotency key for event storage
+        const idempotencyKey = `${organizationId}:lead:${email}`;
+
+        // Store raw event first (Section 5.1 - store before processing)
+        await eventService.storeEvent({
+            organizationId,
+            eventType: EventType.LEAD_INGESTED,
+            entityType: 'lead',
+            payload: { email, persona, lead_score, source: source || 'api' },
+            idempotencyKey
+        });
+
+        // Create the lead with organization scope
+        const createdLead = await prisma.lead.upsert({
+            where: {
+                organization_id_email: {
+                    organization_id: organizationId,
+                    email
+                }
+            },
+            update: {
+                persona,
+                lead_score,
+                source: source || 'api'
+            },
+            create: {
                 email,
                 persona,
                 lead_score,
                 source: source || 'api',
-                status: 'held', // Start as held, waiting for processor/gate
-                health_state: 'healthy'
+                status: LeadState.HELD,
+                health_state: 'healthy',
+                organization_id: organizationId
             }
         });
 
-        // 2. Resolve Route
-        const campaignId = await routingService.resolveCampaignForLead(createdLead);
+        // Resolve routing with org context
+        const campaignId = await routingService.resolveCampaignForLead(organizationId, createdLead);
 
-        // 3. Update Lead with Campaign (if found)
+        // Update lead with assigned campaign
         if (campaignId) {
             await prisma.lead.update({
                 where: { id: createdLead.id },
@@ -38,22 +84,24 @@ export const ingestLead = async (req: Request, res: Response) => {
             });
             console.log(`[INGEST] Assigned lead ${createdLead.id} to campaign ${campaignId}`);
 
-            await auditLogService.logAction(
-                'lead',
-                createdLead.id,
-                'ingestion',
-                'assigned',
-                `Routed to campaign ${campaignId} based on rules.`
-            );
+            await auditLogService.logAction({
+                organizationId,
+                entity: 'lead',
+                entityId: createdLead.id,
+                trigger: 'ingestion',
+                action: 'assigned',
+                details: `Routed to campaign ${campaignId} based on rules.`
+            });
         } else {
             console.log(`[INGEST] No campaign matched for lead ${createdLead.id}`);
-            await auditLogService.logAction(
-                'lead',
-                createdLead.id,
-                'ingestion',
-                'unassigned',
-                `No routing rule matched. Lead remains in holding pool.`
-            );
+            await auditLogService.logAction({
+                organizationId,
+                entity: 'lead',
+                entityId: createdLead.id,
+                trigger: 'ingestion',
+                action: 'unassigned',
+                details: `No routing rule matched. Lead remains in holding pool.`
+            });
         }
 
         res.json({
@@ -68,20 +116,29 @@ export const ingestLead = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Clay webhook lead ingestion.
+ * POST /api/ingest/clay
+ * 
+ * Handles flexible Clay payload format with case-insensitive field lookup.
+ */
 export const ingestClayWebhook = async (req: Request, res: Response) => {
-    // Clay sends the row data as the body.
-    // We expect keys like 'Email', 'email', 'Persona', 'Job Title', 'Lead Score', etc.
-    // We will normalize keys to lowercase to be flexible.
-
     console.log('[INGEST CLAY] Received payload:', JSON.stringify(req.body).substring(0, 200));
 
     const payload = req.body;
+
+    // Get organization context
+    let organizationId: string;
+    try {
+        organizationId = getOrgId(req);
+    } catch (error) {
+        return res.status(401).json({ error: 'Organization context required' });
+    }
 
     // Helper to find value case-insensitively
     const findVal = (keys: string[]): any => {
         for (const k of keys) {
             if (payload[k] !== undefined) return payload[k];
-            // try lowercase
             const lowerKey = Object.keys(payload).find(pk => pk.toLowerCase() === k.toLowerCase());
             if (lowerKey) return payload[lowerKey];
         }
@@ -89,9 +146,7 @@ export const ingestClayWebhook = async (req: Request, res: Response) => {
     };
 
     const email = findVal(['email', 'e-mail', 'work email']);
-    // Fallback persona to 'General' if not found
     const persona = findVal(['persona', 'job title', 'title', 'role']) || 'General';
-    // Fallback score to 50 if not found
     const lead_score = parseInt(findVal(['lead score', 'score', 'lead_score']) || '50', 10);
 
     if (!email) {
@@ -100,14 +155,27 @@ export const ingestClayWebhook = async (req: Request, res: Response) => {
     }
 
     try {
-        // Reuse logic? ideally extract service method. 
-        // For MVP, just copy critical path or refactor. Refactoring is better.
-        // Let's refactor ingestLead to use a service method, but for now I'll just call the logic directly to avoid breaking existing ingestLead.
+        // Generate idempotency key
+        const externalId = findVal(['id', 'external_id', 'row_id']) || email;
+        const idempotencyKey = `${organizationId}:clay:${externalId}`;
 
-        // 1. Create/Upsert Lead
-        // We use upsert here because Clay might re-push or we might have seen them.
+        // Store raw event first
+        await eventService.storeEvent({
+            organizationId,
+            eventType: EventType.LEAD_INGESTED,
+            entityType: 'lead',
+            payload,
+            idempotencyKey
+        });
+
+        // Create/update lead with organization scope
         const createdLead = await prisma.lead.upsert({
-            where: { email },
+            where: {
+                organization_id_email: {
+                    organization_id: organizationId,
+                    email
+                }
+            },
             update: {
                 persona,
                 lead_score,
@@ -118,25 +186,39 @@ export const ingestClayWebhook = async (req: Request, res: Response) => {
                 persona,
                 lead_score,
                 source: 'clay',
-                status: 'held',
-                health_state: 'healthy'
+                status: LeadState.HELD,
+                health_state: 'healthy',
+                organization_id: organizationId
             }
         });
 
-        // 2. Resolve Route
-        const campaignId = await routingService.resolveCampaignForLead(createdLead);
+        // Resolve routing
+        const campaignId = await routingService.resolveCampaignForLead(organizationId, createdLead);
 
-        // 3. Update Lead
         if (campaignId) {
             await prisma.lead.update({
                 where: { id: createdLead.id },
                 data: { assigned_campaign_id: campaignId }
             });
             console.log(`[INGEST CLAY] Assigned lead ${createdLead.id} to campaign ${campaignId}`);
-            await auditLogService.logAction('lead', createdLead.id, 'ingestion', 'assigned', `Routed to campaign ${campaignId} via Clay webhook.`);
+            await auditLogService.logAction({
+                organizationId,
+                entity: 'lead',
+                entityId: createdLead.id,
+                trigger: 'ingestion',
+                action: 'assigned',
+                details: `Routed to campaign ${campaignId} via Clay webhook.`
+            });
         } else {
             console.log(`[INGEST CLAY] No campaign matched for lead ${createdLead.id}`);
-            await auditLogService.logAction('lead', createdLead.id, 'ingestion', 'unassigned', `No routing rule matched for Clay lead.`);
+            await auditLogService.logAction({
+                organizationId,
+                entity: 'lead',
+                entityId: createdLead.id,
+                trigger: 'ingestion',
+                action: 'unassigned',
+                details: `No routing rule matched for Clay lead.`
+            });
         }
 
         res.json({ message: 'Clay lead processed', leadId: createdLead.id, success: true });
