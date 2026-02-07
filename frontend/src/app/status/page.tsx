@@ -70,7 +70,7 @@ export default function StatusPage() {
     );
 
     return (
-        <div style={{ height: 'calc(100vh - 4rem)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ minHeight: '100%', paddingBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexShrink: 0 }}>
                 <h1 style={{ fontSize: '1.5rem', fontWeight: '600' }}>System Status</h1>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -132,9 +132,9 @@ export default function StatusPage() {
             </div>
 
             {/* Tab Content */}
-            <div className="card" style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '1rem' }}>
+            <div className="card" style={{ minHeight: '400px', padding: '1rem' }}>
                 {activeTab === 'health' && (
-                    <div>
+                    <div style={{ overflow: 'auto' }}>
                         <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem' }}>Component Health Details</h2>
                         <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
                             <div style={{ background: '#0a0a0a', padding: '1rem', borderRadius: '8px', border: '1px solid #262626' }}>

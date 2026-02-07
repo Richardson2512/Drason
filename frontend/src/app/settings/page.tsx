@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 export default function Settings() {
     const [apiKey, setApiKey] = useState('');
     const [webhookUrl, setWebhookUrl] = useState('');
+    const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
 
@@ -27,8 +28,9 @@ export default function Settings() {
                 if (data?.system_mode) setSystemMode(data.system_mode);
             });
 
-        // Determine Webhook URL (client-side)
+        // Determine Webhook URLs (client-side only to avoid hydration mismatch)
         setWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/ingest/clay`);
+        setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
     }, []);
 
     const handleSave = async (e: React.FormEvent) => {
@@ -209,7 +211,7 @@ export default function Settings() {
                         </p>
                         <div style={{ background: '#0a0a0a', padding: '1rem', borderRadius: '4px', border: '1px solid #262626', wordBreak: 'break-all' }}>
                             <code style={{ color: '#3b82f6', fontSize: '0.875rem' }}>
-                                {`${typeof window !== 'undefined' ? window.location.protocol + '//' + window.location.hostname : ''}:3001/api/monitor/smartlead-webhook`}
+                                {smartleadWebhookUrl || 'Loading...'}
                             </code>
                         </div>
                     </div>

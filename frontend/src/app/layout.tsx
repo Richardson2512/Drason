@@ -47,7 +47,6 @@ export default function RootLayout({
                 System
               </div>
               <Link href="/configuration" className="nav-link">Routing Config</Link>
-              <Link href="/status" className="nav-link">System Status</Link>
               <Link href="/audit" className="nav-link">Audit Log</Link>
               <Link href="/settings" className="nav-link">Settings</Link>
             </nav>
@@ -61,7 +60,7 @@ export default function RootLayout({
           <main style={{
             flex: 1,
             padding: '2rem',
-            overflow: 'hidden', // Prevent global scroll
+            overflowY: 'auto', // Enable vertical scrolling
             borderLeft: '1px solid transparent'
           }}>
             <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', height: '100%' }}>

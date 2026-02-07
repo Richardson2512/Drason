@@ -7,11 +7,7 @@ export default function Overview() {
   const [leads, setLeads] = useState<any[]>([]);
   const [domains, setDomains] = useState<any[]>([]);
   const [mailboxes, setMailboxes] = useState<any[]>([]);
-
-  // Tabs State
-  const [leadTab, setLeadTab] = useState('held');
-  const [mailboxTab, setMailboxTab] = useState('all');
-  const [domainTab, setDomainTab] = useState('all');
+  const [campaigns, setCampaigns] = useState<any[]>([]);
 
   // Chart Data State
   const [campaignData, setCampaignData] = useState<any[]>([]);
@@ -22,12 +18,14 @@ export default function Overview() {
       fetch('/api/dashboard/stats').then(res => res.json()),
       fetch('/api/dashboard/leads').then(res => res.json()),
       fetch('/api/dashboard/domains').then(res => res.json()),
-      fetch('/api/dashboard/mailboxes').then(res => res.json())
-    ]).then(([statsData, leadsData, domainsData, mailboxesData]) => {
+      fetch('/api/dashboard/mailboxes').then(res => res.json()),
+      fetch('/api/dashboard/campaigns').then(res => res.json()).catch(() => [])
+    ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
       setStats(statsData);
       setLeads(leadsData);
       setDomains(domainsData);
       setMailboxes(mailboxesData);
+      setCampaigns(campaignsData);
 
       // Process Campaigns Distribution
       const cmap: Record<string, number> = {};
@@ -41,17 +39,7 @@ export default function Overview() {
 
   if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
 
-  // Filter Logic
-  const filteredLeads = leadTab === 'all' ? leads : leads.filter(l => l.status === leadTab);
-
-  const filteredMailboxes = mailboxTab === 'all'
-    ? mailboxes
-    : mailboxes.filter(m => m.status === mailboxTab || (mailboxTab === 'warning' && m.status === 'warning'));
-
-  const filteredDomains = domainTab === 'all'
-    ? domains
-    : domains.filter(d => d.status === domainTab);
-
+  // Domain alerts
   const pausedDomains = domains.filter(d => d.status === 'paused');
   const warningDomains = domains.filter(d => d.status === 'warning');
 
@@ -76,39 +64,11 @@ export default function Overview() {
     { name: 'Paused', value: domains.filter(d => d.status === 'paused').length, color: COLORS.paused },
   ];
 
-  // Helper for Status Badge
-  const StatusBadge = ({ status }: { status: string }) => {
-    let color = 'gray';
-    if (status === 'active' || status === 'healthy') color = 'success';
-    if (status === 'paused') color = 'danger';
-    if (status === 'warning' || status === 'held') color = 'warning';
-
-    return (
-      <span className={`badge badge-${color}`}>
-        {status.toUpperCase()}
-      </span>
-    );
-  };
-
-  // Helper for Tab Button
-  const TabButton = ({ label, value, current, set }: any) => (
-    <button
-      onClick={() => set(value)}
-      style={{
-        padding: '0.25rem 0.75rem',
-        borderRadius: '4px',
-        background: current === value ? '#0a0a0a' : 'transparent',
-        color: current === value ? '#fff' : '#a3a3a3',
-        border: 'none',
-        cursor: 'pointer',
-        fontSize: '0.875rem',
-        fontWeight: 500,
-        textTransform: 'capitalize'
-      }}
-    >
-      {label}
-    </button>
-  );
+  const mailboxChartData = [
+    { name: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length, color: COLORS.healthy },
+    { name: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length, color: COLORS.warning },
+    { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
+  ];
 
   return (
     <div className="grid" style={{ height: '100%', overflowY: 'auto', paddingRight: '0.5rem' }}>
@@ -191,137 +151,45 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* 3. Campaign Distribution */}
-        <div className="card" style={{ marginBottom: '2rem' }}>
-          <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Leads per Campaign</h2>
-          <div style={{ height: '200px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={campaignData}>
-                <XAxis dataKey="name" stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
-                <BarTooltip cursor={{ fill: '#262626' }} contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
-                <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {/* 4. Leads Monitoring */}
+        {/* Mailbox and Campaign Charts */}
+        <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '2rem' }}>
           <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.125rem' }}>Leads Monitoring</h2>
-              <div style={{ display: 'flex', background: '#262626', padding: '0.25rem', borderRadius: '6px' }}>
-                {['held', 'active', 'paused', 'all'].map(t => (
-                  <TabButton key={t} label={t} value={t} current={leadTab} set={setLeadTab} />
-                ))}
-              </div>
+            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Mailbox Health</h2>
+            <div style={{ height: '200px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={mailboxChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {mailboxChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Persona</th>
-                  <th>Score</th>
-                  <th>Status</th>
-                  <th>Campaign</th>
-                  <th>Health</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredLeads.map((lead) => (
-                  <tr key={lead.id}>
-                    <td>{lead.email}</td>
-                    <td>{lead.persona}</td>
-                    <td>{lead.lead_score}</td>
-                    <td><StatusBadge status={lead.status} /></td>
-                    <td style={{ color: '#a3a3a3' }}>{lead.assigned_campaign_id || '-'}</td>
-                    <td>{lead.health_state}</td>
-                  </tr>
-                ))}
-                {filteredLeads.length === 0 && (
-                  <tr><td colSpan={6} style={{ textAlign: 'center', padding: '2rem', color: '#525252' }}>No {leadTab} leads.</td></tr>
-                )}
-              </tbody>
-            </table>
           </div>
 
-          {/* 5. Mailboxes Monitoring */}
           <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.125rem' }}>Mailboxes Monitoring</h2>
-              <div style={{ display: 'flex', background: '#262626', padding: '0.25rem', borderRadius: '6px' }}>
-                {['all', 'active', 'paused', 'warning'].map(t => (
-                  <TabButton key={t} label={t} value={t} current={mailboxTab} set={setMailboxTab} />
-                ))}
-              </div>
+            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Campaigns ({campaigns.length} total)</h2>
+            <div style={{ height: '200px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={campaignData}>
+                  <XAxis dataKey="name" stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
+                  <BarTooltip cursor={{ fill: '#262626' }} contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
+                  <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Domain</th>
-                  <th>Status</th>
-                  <th>History (Bounces / Failures / Sent)</th>
-                  <th>Last Activity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredMailboxes.map((mb) => (
-                  <tr key={mb.id}>
-                    <td>{mb.email}</td>
-                    <td style={{ color: '#a3a3a3' }}>{mb.domain?.domain}</td>
-                    <td><StatusBadge status={mb.status} /></td>
-                    <td>
-                      <span style={{ color: '#ef4444' }}>{mb.hard_bounce_count}</span>{' / '}
-                      <span style={{ color: '#eab308' }}>{mb.delivery_failure_count}</span>{' / '}
-                      <span style={{ color: '#a3a3a3' }}>{mb.window_sent_count} (Win)</span>
-                    </td>
-                    <td style={{ color: '#525252', fontSize: '0.8rem' }}>{new Date(mb.last_activity_at).toLocaleString()}</td>
-                  </tr>
-                ))}
-                {filteredMailboxes.length === 0 && (
-                  <tr><td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#525252' }}>No {mailboxTab} mailboxes.</td></tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* 6. Domains Monitoring */}
-          <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.125rem' }}>Domains Monitoring</h2>
-              <div style={{ display: 'flex', background: '#262626', padding: '0.25rem', borderRadius: '6px' }}>
-                {['all', 'healthy', 'paused', 'warning'].map(t => (
-                  <TabButton key={t} label={t} value={t} current={domainTab} set={setDomainTab} />
-                ))}
-              </div>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Domain</th>
-                  <th>ID</th>
-                  <th>Status</th>
-                  <th>Bounce Trend</th>
-                  <th>Alerts</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDomains.map((d) => (
-                  <tr key={d.id}>
-                    <td style={{ fontWeight: 500 }}>{d.domain}</td>
-                    <td style={{ color: '#525252', fontSize: '0.8rem' }}>{d.id}</td>
-                    <td><StatusBadge status={d.status} /></td>
-                    <td>{d.aggregated_bounce_rate_trend.toFixed(2)}%</td>
-                    <td style={{ color: '#ef4444' }}>{d.paused_reason || '-'}</td>
-                  </tr>
-                ))}
-                {filteredDomains.length === 0 && (
-                  <tr><td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#525252' }}>No {domainTab} domains.</td></tr>
-                )}
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
