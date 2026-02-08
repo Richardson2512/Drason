@@ -98,14 +98,42 @@ export default function LandingPage() {
 
                     <div className="flex animate-scroll whitespace-nowrap gap-24 items-center">
                         {[
-                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
-                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
-                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
-                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker"
+                            { name: "InsightSnap", logo: "/image/brands/insightsnap.png" },
+                            { name: "VanishDrop" },
+                            { name: "Certinal" },
+                            { name: "Rihario" },
+                            { name: "SyllabusTracker" },
+                            { name: "InsightSnap", logo: "/image/brands/insightsnap.png" },
+                            { name: "VanishDrop" },
+                            { name: "Certinal" },
+                            { name: "Rihario" },
+                            { name: "SyllabusTracker" },
+                            { name: "InsightSnap", logo: "/image/brands/insightsnap.png" },
+                            { name: "VanishDrop" },
+                            { name: "Certinal" },
+                            { name: "Rihario" },
+                            { name: "SyllabusTracker" }
                         ].map((brand, i) => (
-                            <span key={i} className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
-                                {brand}
-                            </span>
+                            <div key={i} className="flex items-center gap-3">
+                                {brand.logo ? (
+                                    <div className="flex items-center gap-3">
+                                        <Image
+                                            src={brand.logo}
+                                            alt={`${brand.name} Logo`}
+                                            width={32}
+                                            height={32}
+                                            className="opacity-40 grayscale brightness-75 contrast-125"
+                                        />
+                                        <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
+                                            {brand.name}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
+                                        {brand.name}
+                                    </span>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </div>
