@@ -85,23 +85,28 @@ export default function LandingPage() {
                         </Link>
                     </div>
 
-                    {/* ================= BRANDS TRUST LOOP ================= */}
-                    <div className="mt-20 overflow-hidden relative">
-                        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F5F8FF] to-transparent z-10"></div>
-                        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F5F8FF] to-transparent z-10"></div>
+                </div>
 
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">Trusted by high-volume outbound teams</p>
+                {/* ================= BRANDS TRUST LOOP ================= */}
+                <div className="mt-24 overflow-hidden relative w-full pt-10 pb-10 border-y border-gray-100/50 bg-white/30 backdrop-blur-[2px]">
+                    <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-[#F5F8FF] to-transparent z-10"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-[#F5F8FF] to-transparent z-10"></div>
 
-                        <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
-                            {[
-                                "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
-                                "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker"
-                            ].map((brand, i) => (
-                                <span key={i} className="text-2xl font-bold text-gray-300 hover:text-gray-400 transition-colors cursor-default">
-                                    {brand}
-                                </span>
-                            ))}
-                        </div>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-80">
+                        Trusted by high-volume outbound teams
+                    </p>
+
+                    <div className="flex animate-scroll whitespace-nowrap gap-24 items-center">
+                        {[
+                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
+                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
+                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
+                            "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker"
+                        ].map((brand, i) => (
+                            <span key={i} className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
+                                {brand}
+                            </span>
+                        ))}
                     </div>
                 </div>
             </section>
