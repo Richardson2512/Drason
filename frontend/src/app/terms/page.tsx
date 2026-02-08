@@ -18,6 +18,7 @@ export default function TermsPage() {
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
                         <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
                     </nav>
                     <div className="flex gap-4 items-center">
                         <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>

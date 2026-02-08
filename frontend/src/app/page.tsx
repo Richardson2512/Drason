@@ -158,14 +158,14 @@ export default function LandingPage() {
                         <div className="bg-white rounded-[2.25rem] p-10 h-full">
                             <div className="flex justify-between items-start mb-8">
                                 <div>
-                                    <h3 className="text-2xl font-bold text-gray-900">Growth Plan</h3>
-                                    <p className="text-gray-500 mt-1">Perfect for scaling teams</p>
+                                    <h3 className="text-2xl font-bold text-gray-900">Starter Plan</h3>
+                                    <p className="text-gray-500 mt-1">Perfect for founder-led teams</p>
                                 </div>
-                                <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Most Popular</div>
+                                <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Start Today</div>
                             </div>
 
                             <div className="flex items-baseline gap-1 mb-10">
-                                <span className="text-6xl font-bold text-gray-900">$199</span>
+                                <span className="text-6xl font-bold text-gray-900">$49</span>
                                 <span className="text-xl text-gray-500 font-medium">/mo</span>
                             </div>
 
