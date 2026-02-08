@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #F5F8FF;
+  --text: #1E1E2F;
+  --muted: #6B7280;
+  --card: #FFFFFF;
+  --border: #E4EAF8;
+}
+
+/* Dark theme for authenticated dashboard */
+.dark-theme {
+  --bg: #0a0a0a;
+  --text: #ededed;
+  --muted: #a3a3a3;
+  --card: #171717;
+  --card-bg: #171717;
+  --card-border: #262626;
+  --border: #262626;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Light theme for authenticated dashboard */
+/* Light theme for authenticated dashboard (Premium SaaS Look) */
+.light-theme {
+  --bg: #F5F8FF;
+  /* Matches landing page */
+  --text: #1E1E2F;
+  --muted: #6B7280;
+  --card: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --card-border: #E4EAF8;
+  --border: #E4EAF8;
+  --accent-gradient: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.premium-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  /* rounded-3xl */
+  padding: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* shadow-xl */
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* shadow-2xl */
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.premium-btn {
+  background: #000000;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.premium-btn:hover {
+  background: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.premium-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #FFFFFF;
+  color: var(--text);
+  transition: all 0.2s;
+  outline: none;
+}
+
+.premium-input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  font-size: 1.125rem;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hero-blur {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.blur-blob {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  filter: blur(180px);
+  opacity: 0.6;
+}
+
+.blur-purple {
+  background: radial-gradient(circle, #9403FD, transparent 70%);
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.blur-blue {
+  background: radial-gradient(circle, #00ADFE, transparent 70%);
+  bottom: -200px;
+  left: 20%;
+}
+
+.blur-pink {
+  background: radial-gradient(circle, #FF12DC, transparent 70%);
+  top: -100px;
+  right: 10%;
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.soft-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: transform 0.2s ease;
+}
+
+.soft-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Auth Page Background Blobs */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(30px, -30px);
+  }
+}
+
+.auth-blob {
+  position: absolute;
+  filter: blur(120px);
+  border-radius: 50%;
+  opacity: 0.15;
+  /* Reduced from 0.6 to significantly lower to show white bg */
+  z-index: 0;
+}
+
+.auth-blob-purple {
+  background: linear-gradient(90deg, #9403FD 0%, #00ADFE 100%);
+  width: 50vw;
+  height: 50vw;
+  top: -20%;
+  left: -20%;
+  animation: float 15s ease-in-out infinite;
+}
+
+.auth-blob-orange {
+  background: linear-gradient(270deg, #FF12DC 0%, #FFB912 100%);
+  width: 50vw;
+  height: 50vw;
+  bottom: -20%;
+  right: -20%;
+  animation: float 20s ease-in-out reverse infinite;
+}
+
+/* Utility to hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
