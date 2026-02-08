@@ -84,6 +84,25 @@ export default function LandingPage() {
                             Book a Demo
                         </Link>
                     </div>
+
+                    {/* ================= BRANDS TRUST LOOP ================= */}
+                    <div className="mt-20 overflow-hidden relative">
+                        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F5F8FF] to-transparent z-10"></div>
+                        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F5F8FF] to-transparent z-10"></div>
+
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">Trusted by high-volume outbound teams</p>
+
+                        <div className="flex animate-scroll whitespace-nowrap gap-16 items-center">
+                            {[
+                                "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker",
+                                "InsightSnap", "VanishDrop", "Certinal", "Rihario", "SyllabusTracker"
+                            ].map((brand, i) => (
+                                <span key={i} className="text-2xl font-bold text-gray-300 hover:text-gray-400 transition-colors cursor-default">
+                                    {brand}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
