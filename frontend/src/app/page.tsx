@@ -1,198 +1,265 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, Tooltip as BarTooltip } from 'recharts';
 
-export default function Overview() {
-  const [stats, setStats] = useState<any>(null);
-  const [leads, setLeads] = useState<any[]>([]);
-  const [domains, setDomains] = useState<any[]>([]);
-  const [mailboxes, setMailboxes] = useState<any[]>([]);
-  const [campaigns, setCampaigns] = useState<any[]>([]);
+import { useState } from 'react';
+import Link from 'next/link';
 
-  // Chart Data State
-  const [campaignData, setCampaignData] = useState<any[]>([]);
+export default function LandingPage() {
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  useEffect(() => {
-    // Parallel Fetching
-    Promise.all([
-      fetch('/api/dashboard/stats').then(res => res.json()),
-      fetch('/api/dashboard/leads').then(res => res.json()),
-      fetch('/api/dashboard/domains').then(res => res.json()),
-      fetch('/api/dashboard/mailboxes').then(res => res.json()),
-      fetch('/api/dashboard/campaigns').then(res => res.json()).catch(() => [])
-    ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
-      setStats(statsData);
-      setLeads(leadsData);
-      setDomains(domainsData);
-      setMailboxes(mailboxesData);
-      setCampaigns(campaignsData);
+    const features = [
+        {
+            title: "Real-Time Monitoring",
+            desc: "Webhooks integrate directly with Smartlead & Clay to track every bounce, block, and delivery event as it happens."
+        },
+        {
+            title: "Smart Execution Gate",
+            desc: "Prevent sends from damaged domains. Our execution gate checks domain health before every single email."
+        },
+        {
+            title: "Auto-Healing",
+            desc: "Automatically pause burnt mailboxes and reroute traffic to healthy ones without lifting a finger."
+        },
+        {
+            title: "Multi-Inbox Support",
+            desc: "Scale your outreach with support for unlimited mailboxes and domains under one roof."
+        },
+        {
+            title: "Analytics Dashboard",
+            desc: "Visualize your infrastructure health with real-time charts and actionable insights."
+        }
+    ];
 
-      // Process Campaigns Distribution
-      const cmap: Record<string, number> = {};
-      leadsData.forEach((l: any) => {
-        const cid = l.assigned_campaign_id || 'Unassigned';
-        cmap[cid] = (cmap[cid] || 0) + 1;
-      });
-      setCampaignData(Object.keys(cmap).map(k => ({ name: k, count: cmap[k] })));
-    });
-  }, []);
+    return (
+        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans">
 
-  if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
-
-  // Domain alerts
-  const pausedDomains = domains.filter(d => d.status === 'paused');
-  const warningDomains = domains.filter(d => d.status === 'warning');
-
-  // Color Constants
-  const COLORS = {
-    active: '#22c55e',
-    paused: '#ef4444',
-    held: '#eab308',
-    healthy: '#22c55e',
-    warning: '#eab308'
-  };
-
-  const leadChartData = [
-    { name: 'Active', value: stats.activeCount, color: COLORS.active },
-    { name: 'Held', value: stats.heldCount, color: COLORS.held },
-    { name: 'Paused', value: stats.pausedCount, color: COLORS.paused },
-  ];
-
-  const domainChartData = [
-    { name: 'Healthy', value: domains.filter(d => d.status === 'healthy').length, color: COLORS.healthy },
-    { name: 'Warning', value: domains.filter(d => d.status === 'warning').length, color: COLORS.warning },
-    { name: 'Paused', value: domains.filter(d => d.status === 'paused').length, color: COLORS.paused },
-  ];
-
-  const mailboxChartData = [
-    { name: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length, color: COLORS.healthy },
-    { name: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length, color: COLORS.warning },
-    { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
-  ];
-
-  return (
-    <div className="grid" style={{ height: '100%', overflowY: 'auto', paddingRight: '0.5rem' }}>
-      <div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>System Overview</h1>
-
-        {/* 1. Critical Alerts Section */}
-        {(pausedDomains.length > 0 || warningDomains.length > 0) && (
-          <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1rem', color: '#ef4444', marginBottom: '0.5rem', fontWeight: '600' }}>Critical Attention Needed</h2>
-            <div className="grid grid-cols-2">
-              {pausedDomains.map(d => (
-                <div key={d.id} className="card" style={{ borderLeft: '4px solid #ef4444' }}>
-                  <div style={{ fontWeight: 'bold', color: '#ef4444' }}>DOMAIN PAUSED</div>
-                  <div style={{ fontSize: '1.125rem' }}>{d.domain}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#a3a3a3' }}>Reason: {d.paused_reason || 'Unknown'}</div>
+            {/* ================= NAVBAR ================= */}
+            <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
+                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
+                    <div className="font-bold text-xl tracking-tight">Drason</div>
+                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
+                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
+                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
+                    </nav>
+                    <div className="flex gap-4 items-center">
+                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
+                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
+                            Get Started
+                        </Link>
+                    </div>
                 </div>
-              ))}
-              {warningDomains.map(d => (
-                <div key={d.id} className="card" style={{ borderLeft: '4px solid #eab308' }}>
-                  <div style={{ fontWeight: 'bold', color: '#eab308' }}>DOMAIN WARNING</div>
-                  <div style={{ fontSize: '1.125rem' }}>{d.domain}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#a3a3a3' }}>High bounce rate detected</div>
+            </header>
+
+            {/* ================= HERO ================= */}
+            <section className="relative pt-48 pb-36 text-center">
+                <div className="hero-blur pointer-events-none">
+                    <div className="blur-blob blur-purple opacity-40"></div>
+                    <div className="blur-blob blur-blue opacity-40"></div>
+                    <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* 2. Visual Analytics (Charts) */}
-        <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '2rem' }}>
-          <div className="card">
-            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Lead Status Distribution</h2>
-            <div style={{ height: '200px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={leadChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {leadChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+                <div className="relative z-10 max-w-5xl mx-auto px-6">
+                    <h1 className="text-6xl md:text-7xl font-bold leading-tight tracking-tight text-gray-900 mb-6">
+                        Infrastructure Protection for <br />
+                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Modern Outbound Teams
+                        </span>
+                    </h1>
 
-          <div className="card">
-            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Domain Health</h2>
-            <div style={{ height: '200px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={domainChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {domainChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+                        Stop burning domains. Drason sits between your enrichment and email layers to monitor health, block distinct risks, and auto-heal your infrastructure.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <Link href="/signup" className="px-8 py-4 bg-black text-white rounded-2xl text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            Start Your Trial
+                        </Link>
+                        <Link href="/book-demo" className="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
+                            Book a Demo
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ================= FEATURES GRID ================= */}
+            <section className="py-24 px-6 bg-white/50 backdrop-blur-sm">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Total Infrastructure Control</h2>
+                        <p className="text-gray-500 max-w-2xl mx-auto">Everything you need to keep your domains healthy and your emails landing in the primary inbox.</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {features.map((item, i) => (
+                            <div key={i} className="soft-card bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 group">
+                                <div className="w-12 h-12 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                    <div className="w-6 h-6 bg-blue-600 rounded-lg opacity-20 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                                <h3 className="font-bold text-xl mb-3 text-gray-900">{item.title}</h3>
+                                <p className="text-gray-500 text-sm leading-relaxed">
+                                    {item.desc}
+                                </p>
+                            </div>
+                        ))}
+
+                        <div className="rounded-3xl flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-2xl relative overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                            <div className="relative z-10 text-center">
+                                <span className="text-5xl mb-4 block">🛡️</span>
+                                <h3 className="font-bold text-2xl mb-2">Enterprise Ready</h3>
+                                <p className="text-blue-100 text-sm">Custom solutions for high-volume teams.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            {/* ================= PRICING ================= */}
+            <section className="py-12 px-6">
+                <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-end">
+
+                    <div>
+                        <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">Simple Pricing</div>
+                        <h2 className="text-5xl font-bold mb-6 text-gray-900">Protect your revenue.</h2>
+                        <p className="text-gray-500 mb-8 text-lg leading-relaxed">
+                            Don't let a $10 domain burn cost you a $50k deal. Drason pays for itself by saving your infrastructure from irreversible damage.
+                        </p>
+
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl">
+                            <h3 className="text-2xl font-bold mb-6">What's included in every plan:</h3>
+                            <ul className="space-y-4 text-gray-600 mb-8">
+                                <li className="flex items-center gap-3">
+                                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
+                                    <span>Instant Clay & Smartlead Integration</span>
+                                </li>
+                                <li className="flex items-center gap-3">
+                                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
+                                    <span>Real-time Bounce Monitoring</span>
+                                </li>
+                                <li className="flex items-center gap-3">
+                                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
+                                    <span>Automated Mailbox Pausing</span>
+                                </li>
+                            </ul>
+                            <Link href="/pricing" className="block w-full py-4 bg-gray-900 text-white text-center rounded-xl font-semibold hover:bg-black transition-colors">
+                                View Detailed Pricing
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-1 shadow-2xl transition-transform duration-500">
+                        <div className="bg-white rounded-[2.25rem] p-10 h-full">
+                            <div className="flex justify-between items-start mb-8">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-900">Growth Plan</h3>
+                                    <p className="text-gray-500 mt-1">Perfect for scaling teams</p>
+                                </div>
+                                <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Most Popular</div>
+                            </div>
+
+                            <div className="flex items-baseline gap-1 mb-10">
+                                <span className="text-6xl font-bold text-gray-900">$49</span>
+                                <span className="text-xl text-gray-500 font-medium">/mo</span>
+                            </div>
+
+                            <button className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:shadow-xl hover:bg-blue-700 transition-all">
+                                Start Free Trial
+                            </button>
+                            <p className="text-center text-gray-400 text-xs mt-4">No credit card required for 14-day trial</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* ================= FAQ ================= */}
+            <section className="py-24 px-6 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <h2 className="text-4xl font-bold text-center mb-16">Common Questions</h2>
+
+                    <div className="space-y-4">
+                        {[
+                            { q: "How does Drason integrate with my stack?", a: "Drason uses webhooks to connect directly with your sending tools (Smartlead, Instantly) and your data sources (Clay, tables). Set up takes less than 5 minutes." },
+                            { q: "Does Drason replace Smartlead or Clay?", a: "No. Drason sits *between* them as a protection layer. We monitor the signals they generate and act on them to protect your domains." },
+                            { q: "Can I use Drason with multiple domains?", a: "Yes! Drason is built for multi-domain infrastructure. You can track and protect unlimited domains under a single organization." },
+                        ].map((faq, index) => (
+                            <div key={index} className="border border-gray-100 rounded-2xl p-6 bg-gray-50 hover:bg-white hover:shadow-md transition-all cursor-pointer"
+                                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                            >
+                                <div className="flex justify-between items-center">
+                                    <h4 className="font-semibold text-lg text-gray-900">{faq.q}</h4>
+                                    <span className="text-2xl text-blue-500 font-light">{openIndex === index ? "−" : "+"}</span>
+                                </div>
+                                {openIndex === index && (
+                                    <p className="text-gray-600 mt-4 leading-relaxed">{faq.a}</p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ================= CTA ================= */}
+            <section className="py-32 px-6 text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gray-900 z-0"></div>
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 z-0"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-500/20 blur-[120px] rounded-full z-0"></div>
+
+                <div className="relative z-10 container max-w-3xl mx-auto">
+                    <h2 className="text-5xl md:text-6xl font-bold mb-8 text-white tracking-tight">
+                        Stop Burning Domains.
+                    </h2>
+                    <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                        Join modern outbound teams who trust Drason to keep their infrastructure healthy and their deliverability high.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link
+                            href="/signup"
+                            className="px-10 py-4 bg-white text-gray-900 rounded-2xl font-bold shadow-xl hover:bg-gray-100 transition-colors"
+                        >
+                            Get Started Free
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ================= FOOTER ================= */}
+            <footer className="bg-gray-900 text-gray-400 py-20 px-6 border-t border-gray-800">
+                <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-12 mb-12">
+                    <div className="col-span-1 md:col-span-2">
+                        <div className="font-bold text-2xl text-white mb-6">Drason</div>
+                        <p className="max-w-xs text-sm leading-relaxed">
+                            The infrastructure protection layer for modern outbound teams. Monitor, detect, and auto-heal your email, domains, and mailboxes.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 className="font-bold text-white mb-6">Product</h4>
+                        <ul className="space-y-4 text-sm">
+                            <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                            <li><Link href="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
+                            <li><Link href="/login" className="hover:text-white transition-colors">Log In</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="font-bold text-white mb-6">Legal</h4>
+                        <ul className="space-y-4 text-sm">
+                            <li><Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="#" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="text-center text-sm border-t border-gray-800 pt-8">
+                    &copy; {new Date().getFullYear()} Drason Inc. All rights reserved.
+                </div>
+            </footer>
+
         </div>
+    );
 
-        {/* Mailbox and Campaign Charts */}
-        <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '2rem' }}>
-          <div className="card">
-            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Mailbox Health</h2>
-            <div style={{ height: '200px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={mailboxChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {mailboxChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="card">
-            <h2 style={{ marginBottom: '1rem', fontSize: '1rem' }}>Campaigns ({campaigns.length} total)</h2>
-            <div style={{ height: '200px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={campaignData}>
-                  <XAxis dataKey="name" stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#525252" fontSize={12} tickLine={false} axisLine={false} />
-                  <BarTooltip cursor={{ fill: '#262626' }} contentStyle={{ background: '#171717', border: 'none', borderRadius: '8px' }} />
-                  <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }

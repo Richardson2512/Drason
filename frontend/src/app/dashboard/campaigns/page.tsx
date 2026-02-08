@@ -1,24 +1,38 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
+
 export default function CampaignsPage() {
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
     const [leads, setLeads] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         // Fetch campaigns and leads
         Promise.all([
             fetch('/api/dashboard/campaigns').then(res => res.json()),
             fetch('/api/dashboard/leads').then(res => res.json())
         ]).then(([campsData, leadsData]) => {
-            setCampaigns(campsData);
-            setLeads(leadsData);
+            setCampaigns(campsData || []);
+            setLeads(leadsData || []);
             if (campsData && campsData.length > 0) {
                 setSelectedCampaign(campsData[0]);
             }
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
+
+    if (loading) {
+        return <div className="flex items-center justify-center h-full text-gray-500">Loading Campaigns...</div>;
+    }
+
+    if (!campaigns || campaigns.length === 0) {
+        return <CampaignsEmptyState />;
+    }
 
     // Derived data for selected campaign
     const campaignLeads = selectedCampaign

@@ -1,18 +1,32 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
+
 export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<any[]>([]);
     const [selectedMailbox, setSelectedMailbox] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         fetch('/api/dashboard/mailboxes').then(res => res.json()).then(data => {
-            setMailboxes(data);
+            setMailboxes(data || []);
             if (data && data.length > 0) {
                 setSelectedMailbox(data[0]);
             }
+        }).finally(() => {
+            setLoading(false);
         });
     }, []);
+
+    if (loading) {
+        return <div className="flex items-center justify-center h-full text-gray-500">Loading Mailboxes...</div>;
+    }
+
+    if (!mailboxes || mailboxes.length === 0) {
+        return <MailboxesEmptyState />;
+    }
 
     return (
         <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>

@@ -139,6 +139,112 @@ export default function Settings() {
                 )}
             </div>
 
+            {/* Organization Info Section */}
+            <div className="card" style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1rem' }}>Organization Information</h2>
+                <p style={{ color: '#a3a3a3', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+                    Use your Organization ID for webhook authentication with Clay and Smartlead.
+                </p>
+
+                {org && (
+                    <div style={{ display: 'grid', gap: '1rem' }}>
+                        {/* Organization ID with Copy Button */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#a3a3a3', fontWeight: 500 }}>
+                                Organization ID
+                            </label>
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                <div style={{
+                                    flex: 1,
+                                    background: '#0a0a0a',
+                                    padding: '0.75rem',
+                                    borderRadius: '6px',
+                                    border: '1px solid #262626',
+                                    fontFamily: 'monospace',
+                                    fontSize: '0.875rem',
+                                    color: '#22c55e'
+                                }}>
+                                    {org.id}
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(org.id);
+                                        setMsg('Organization ID copied to clipboard!');
+                                        setTimeout(() => setMsg(''), 3000);
+                                    }}
+                                    style={{
+                                        padding: '0.75rem 1rem',
+                                        background: '#262626',
+                                        color: '#fff',
+                                        border: '1px solid #404040',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer',
+                                        fontSize: '0.875rem',
+                                        fontWeight: 500,
+                                        transition: 'background 0.2s'
+                                    }}
+                                    onMouseOver={(e) => e.currentTarget.style.background = '#333'}
+                                    onMouseOut={(e) => e.currentTarget.style.background = '#262626'}
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Organization Name */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#a3a3a3', fontWeight: 500 }}>
+                                Organization Name
+                            </label>
+                            <div style={{
+                                background: '#0a0a0a',
+                                padding: '0.75rem',
+                                borderRadius: '6px',
+                                border: '1px solid #262626',
+                                fontSize: '0.875rem',
+                                color: '#ededed'
+                            }}>
+                                {org.name}
+                            </div>
+                        </div>
+
+                        {/* Organization Slug */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: '#a3a3a3', fontWeight: 500 }}>
+                                Organization Slug
+                            </label>
+                            <div style={{
+                                background: '#0a0a0a',
+                                padding: '0.75rem',
+                                borderRadius: '6px',
+                                border: '1px solid #262626',
+                                fontSize: '0.875rem',
+                                color: '#ededed'
+                            }}>
+                                {org.slug}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div style={{
+                    marginTop: '1rem',
+                    padding: '0.75rem',
+                    background: '#1e3a8a20',
+                    border: '1px solid #1e3a8a',
+                    borderRadius: '6px'
+                }}>
+                    <p style={{ fontSize: '0.875rem', color: '#93c5fd', margin: 0 }}>
+                        💡 <strong>Tip:</strong> Add this Organization ID as the <code style={{
+                            background: '#1e40af30',
+                            padding: '0.125rem 0.375rem',
+                            borderRadius: '3px',
+                            fontFamily: 'monospace'
+                        }}>x-organization-id</code> header in your Clay and Smartlead webhook configurations.
+                    </p>
+                </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-8">
                 {/* Smartlead */}
                 <div className="card">
