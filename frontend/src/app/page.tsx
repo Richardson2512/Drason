@@ -97,43 +97,42 @@ export default function LandingPage() {
                     </p>
 
                     <div className="flex animate-scroll whitespace-nowrap gap-24 items-center">
-                        {[
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal" },
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal" },
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal" }
+                        {name: "InsightSnap", logo: "/InsightSnap.png" },
+                        {name: "VanishDrop", logo: "/VanishDrop.png" },
+                        {name: "Rihario", logo: "/Rihario.png" },
+                        {name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                        {name: "Certinal", logo: "/certinal.png" },
+                        {name: "InsightSnap", logo: "/InsightSnap.png" },
+                        {name: "VanishDrop", logo: "/VanishDrop.png" },
+                        {name: "Rihario", logo: "/Rihario.png" },
+                        {name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                        {name: "Certinal", logo: "/certinal.png" },
+                        {name: "InsightSnap", logo: "/InsightSnap.png" },
+                        {name: "VanishDrop", logo: "/VanishDrop.png" },
+                        {name: "Rihario", logo: "/Rihario.png" },
+                        {name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                        {name: "Certinal", logo: "/certinal.png" }
                         ].map((brand, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                {brand.logo ? (
-                                    <div className="flex items-center gap-3">
-                                        <Image
-                                            src={brand.logo}
-                                            alt={`${brand.name} Logo`}
-                                            width={32}
-                                            height={32}
-                                            className="opacity-40 grayscale brightness-75 contrast-125 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
-                                        />
-                                        <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
-                                            {brand.name}
-                                        </span>
-                                    </div>
-                                ) : (
+                        <div key={i} className="flex items-center gap-3">
+                            {brand.logo ? (
+                                <div className="flex items-center gap-3">
+                                    <Image
+                                        src={brand.logo}
+                                        alt={`${brand.name} Logo`}
+                                        width={32}
+                                        height={32}
+                                        className="opacity-40 grayscale brightness-75 contrast-125 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+                                    />
                                     <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
                                         {brand.name}
                                     </span>
-                                )}
-                            </div>
+                                </div>
+                            ) : (
+                                <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
+                                    {brand.name}
+                                </span>
+                            )}
+                        </div>
                         ))}
                     </div>
                 </div>
