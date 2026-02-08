@@ -20,6 +20,7 @@ import leadRoutes from './routes/leads';
 import dashboardRoutes from './routes/dashboard';
 import settingsRoutes from './routes/settings';
 import syncRoutes from './routes/sync';
+import authRoutes from './routes/auth';
 
 // Import controllers
 import * as monitoringController from './controllers/monitoringController';
@@ -85,6 +86,7 @@ app.use('/api/leads', leadRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/sync', syncRoutes);
+app.use('/api/auth', authRoutes); // Auth routes
 
 // Ingestion endpoints
 app.post('/api/ingest', ingestionController.ingestLead);

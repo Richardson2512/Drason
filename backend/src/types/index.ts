@@ -177,6 +177,17 @@ export enum TriggerType {
     COOLDOWN_COMPLETE = 'cooldown_complete'
 }
 
+/**
+ * Failure classification for execution gate.
+ * Different failure types get different responses.
+ */
+export enum FailureType {
+    HEALTH_ISSUE = 'health_issue',     // Block - bounce threshold breached
+    INFRA_ISSUE = 'infra_issue',       // Retry - API timeout, network error
+    SYNC_ISSUE = 'sync_issue',         // Defer - missing campaign/mailbox sync
+    SOFT_WARNING = 'soft_warning'      // Allow with log - velocity warning
+}
+
 // ============================================================================
 // INTERFACES
 // ============================================================================
@@ -197,17 +208,28 @@ export interface GateResult {
         belowCapacity: boolean;
         riskAcceptable: boolean;
     };
+    // Failure classification (new)
+    failureType?: FailureType;         // Type of failure for response logic
+    retryable?: boolean;               // Can this be retried?
+    deferrable?: boolean;              // Can this be deferred?
 }
 
 /**
  * Risk score calculation components.
  */
 export interface RiskComponents {
-    bounceRatio: number;
-    failureRatio: number;
-    velocity: number;
-    escalationFactor: number;
-    totalScore: number;  // 0-100
+    // Hard signals (bounce-based) - CAN trigger pause
+    bounceRatio: number;         // 0-100, from bounce/sent ratio
+    failureRatio: number;        // 0-100, from delivery failures
+    hardScore: number;           // Combined bounce + failure (0-100)
+
+    // Soft signals (behavior-based) - LOG only, don't pause
+    velocity: number;            // 0-100, send rate acceleration
+    escalationFactor: number;    // 0-100, from consecutive pauses
+    softScore: number;           // Combined velocity + escalation (0-100)
+
+    // Combined for display
+    totalScore: number;          // 0-100, weighted combination
 }
 
 /**
@@ -247,25 +269,56 @@ export interface OrgContext {
 // ============================================================================
 
 export const MONITORING_THRESHOLDS = {
-    // Mailbox-level thresholds
-    MAILBOX_BOUNCE_THRESHOLD: 5,        // Bounces before pause
-    MAILBOX_WINDOW_SIZE: 100,           // Sends before window reset
+    // =========================================================================
+    // Mailbox-level thresholds (Tiered: Warning → Pause)
+    // =========================================================================
 
-    // Domain-level thresholds  
-    DOMAIN_WARNING_THRESHOLD: 2,        // Unhealthy mailboxes before domain pause
+    // WARNING threshold: Early warning before damage
+    MAILBOX_WARNING_BOUNCES: 3,       // 3 bounces → WARNING
+    MAILBOX_WARNING_WINDOW: 60,       // within 60 sends (5% rate)
 
-    // Risk score thresholds
-    RISK_SCORE_WARNING: 50,             // Enter warning state
-    RISK_SCORE_CRITICAL: 75,            // Trigger pause
+    // PAUSE threshold: Hard stop
+    MAILBOX_PAUSE_BOUNCES: 5,         // 5 bounces → PAUSE
+    MAILBOX_PAUSE_WINDOW: 100,        // within 100 sends (5% rate)
 
+    // =========================================================================
+    // Domain-level thresholds (Ratio-based for scale)
+    // =========================================================================
+    DOMAIN_WARNING_RATIO: 0.3,        // 30% unhealthy → warning
+    DOMAIN_PAUSE_RATIO: 0.5,          // 50% unhealthy → pause
+    DOMAIN_MINIMUM_MAILBOXES: 3,      // Below this, use absolute (2 unhealthy = pause)
+
+    // =========================================================================
+    // Risk score thresholds (Separated: Hard vs Soft signals)
+    // =========================================================================
+    // Hard signals (bounce/failure-based) - these BLOCK execution
+    HARD_RISK_WARNING: 40,            // Enter warning state
+    HARD_RISK_CRITICAL: 60,           // Trigger pause (lower since it's pure bounce)
+
+    // Soft signals (velocity/history-based) - these LOG only
+    SOFT_RISK_WARNING: 50,            // Log warning
+    SOFT_RISK_HIGH: 75,               // Log high alert, don't block
+
+    // Combined (for UI display)
+    RISK_SCORE_WARNING: 50,           // Enter warning state
+    RISK_SCORE_CRITICAL: 75,          // Display critical
+
+    // =========================================================================
     // Cooldown periods (milliseconds)
-    COOLDOWN_MINIMUM_MS: 3600000,       // 1 hour minimum cooldown
-    COOLDOWN_MULTIPLIER: 2,             // Exponential backoff multiplier
+    // =========================================================================
+    COOLDOWN_MINIMUM_MS: 3600000,     // 1 hour minimum cooldown
+    COOLDOWN_MULTIPLIER: 2,           // Exponential backoff multiplier
+    COOLDOWN_MAX_MS: 57600000,        // 16 hours maximum
 
-    // Rolling windows (milliseconds)
+    // =========================================================================
+    // Rolling windows (milliseconds) - for event-based queries
+    // =========================================================================
     WINDOW_1H_MS: 3600000,
     WINDOW_24H_MS: 86400000,
-    WINDOW_7D_MS: 604800000
+    WINDOW_7D_MS: 604800000,
+
+    // Rolling window for bounce calculations (event count, not time)
+    ROLLING_WINDOW_SIZE: 100          // Last 100 sends for bounce rate
 } as const;
 
 /**

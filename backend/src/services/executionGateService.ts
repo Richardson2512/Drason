@@ -17,10 +17,15 @@ import * as auditLogService from './auditLogService';
 import {
     SystemMode,
     GateResult,
+    FailureType,
     MONITORING_THRESHOLDS
 } from '../types';
 
-const { RISK_SCORE_CRITICAL } = MONITORING_THRESHOLDS;
+const {
+    HARD_RISK_CRITICAL,     // Hard signals block (bounce-based)
+    SOFT_RISK_HIGH,         // Soft signals just log (velocity-based)
+    RISK_SCORE_CRITICAL     // For display/logging
+} = MONITORING_THRESHOLDS;
 
 /**
  * Check if a lead can be executed (pushed to campaign).
@@ -68,7 +73,11 @@ export const canExecuteLead = async (
             riskScore: 0,
             recommendations: ['Verify campaign exists in Smartlead and sync'],
             mode: systemMode,
-            checks
+            checks,
+            // FAILURE CLASSIFICATION: Sync issue - campaign not synced
+            failureType: FailureType.SYNC_ISSUE,
+            retryable: false,
+            deferrable: true  // Can queue and retry after sync
         };
     }
 
@@ -88,7 +97,11 @@ export const canExecuteLead = async (
             riskScore: 0,
             recommendations,
             mode: systemMode,
-            checks
+            checks,
+            // FAILURE CLASSIFICATION: Sync/config issue
+            failureType: FailureType.SYNC_ISSUE,
+            retryable: false,
+            deferrable: true
         };
     }
     checks.campaignActive = true;
@@ -140,26 +153,66 @@ export const canExecuteLead = async (
             riskScore: 100,
             recommendations,
             mode: systemMode,
-            checks
+            checks,
+            // FAILURE CLASSIFICATION: Health issue - mailboxes degraded
+            failureType: totalMailboxes === 0 ? FailureType.SYNC_ISSUE : FailureType.HEALTH_ISSUE,
+            retryable: false,
+            deferrable: totalMailboxes === 0  // Deferrable if just needs sync
         };
     }
     checks.mailboxAvailable = true;
     checks.domainHealthy = true;
 
-    // 3. Calculate aggregate risk score
-    let totalRiskScore = 0;
+    // =========================================================================
+    // 3. SEPARATED RISK SCORING (Production-Hardened)
+    // Hard signals (bounce/failure) → CAN block execution
+    // Soft signals (velocity/history) → Log only, never block
+    // =========================================================================
+
+    let totalHardScore = 0;
+    let totalSoftScore = 0;
+    let mailboxesWithMetrics = 0;
+
     for (const mailbox of healthyMailboxes) {
         if (mailbox.metrics) {
-            totalRiskScore += mailbox.metrics.risk_score;
+            mailboxesWithMetrics++;
+
+            // HARD SCORE: Bounce + failure ratios from 24h window (these CAN trigger blocking)
+            const sent24h = mailbox.metrics.window_24h_sent || 1; // Avoid division by 0
+            const bounce24h = mailbox.metrics.window_24h_bounce || 0;
+            const failure24h = mailbox.metrics.window_24h_failure || 0;
+
+            const bounceRate24h = (bounce24h / sent24h) * 100;    // 0-100%
+            const failureRate24h = (failure24h / sent24h) * 100;  // 0-100%
+
+            // Hard score: weighted bounce (70%) + failure (30%)
+            const hardScore = (bounceRate24h * 0.7) + (failureRate24h * 0.3);
+            totalHardScore += Math.min(hardScore * 10, 100); // Scale to 0-100
+
+            // SOFT SCORE: Velocity + escalation history (these ONLY log)
+            const velocityComponent = (mailbox.metrics.velocity || 0) * 20; // Scale velocity
+            const domainWarnings = mailbox.domain?.warning_count || 0;
+            const escalationComponent = domainWarnings * 10;
+
+            const softScore = velocityComponent + escalationComponent;
+            totalSoftScore += Math.min(softScore, 100);
         }
     }
-    const avgRiskScore = healthyMailboxes.length > 0
-        ? totalRiskScore / healthyMailboxes.length
-        : 0;
 
-    if (avgRiskScore >= RISK_SCORE_CRITICAL) {
+    const avgHardScore = mailboxesWithMetrics > 0 ? totalHardScore / mailboxesWithMetrics : 0;
+    const avgSoftScore = mailboxesWithMetrics > 0 ? totalSoftScore / mailboxesWithMetrics : 0;
+    const avgRiskScore = (avgHardScore * 0.7) + (avgSoftScore * 0.3); // Combined for display
+
+    // ONLY hard score blocks execution (bounce-based)
+    if (avgHardScore >= HARD_RISK_CRITICAL) {
         checks.riskAcceptable = false;
-        recommendations.push(`Risk score (${avgRiskScore.toFixed(1)}) exceeds threshold. Wait for cooldown.`);
+        recommendations.push(`⛔ Hard risk score (${avgHardScore.toFixed(1)}) exceeds ${HARD_RISK_CRITICAL}. Bounce rate too high.`);
+    }
+
+    // Soft score just logs (velocity-based) - NEVER blocks
+    if (avgSoftScore >= SOFT_RISK_HIGH) {
+        console.log(`[GATE] ⚠️ High velocity detected: soft score ${avgSoftScore.toFixed(1)} (not blocking)`);
+        recommendations.push(`⚠️ High velocity (${avgSoftScore.toFixed(1)}) detected but not blocking.`);
     }
 
     // 4. Determine if allowed based on mode and checks
