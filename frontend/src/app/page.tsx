@@ -10,25 +10,33 @@ export default function LandingPage() {
 
     const features = [
         {
-            title: "Real-Time Monitoring",
-            desc: "Webhooks integrate directly with Smartlead & Clay to track every bounce, block, and delivery event as it happens."
+            title: "Superkabe Integration & Monitoring",
+            desc: "Native webhooks synchronize with Smartlead and Clay in real-time. We capture every bounce event and delivery block instantly to maintain 99%+ infrastructure health."
         },
         {
-            title: "Smart Execution Gate",
-            desc: "Prevent sends from damaged domains. Our execution gate checks domain health before every single email."
+            title: "Domain Health Execution Gate",
+            desc: "Our intelligent protection layer stops outgoing SMTP traffic to damaged domains. Every email is validated against current domain reputation scores before execution."
         },
         {
-            title: "Auto-Healing",
-            desc: "Automatically pause burnt mailboxes and reroute traffic to healthy ones without lifting a finger."
+            title: "Auto-Healing Infrastructure",
+            desc: "Superkabe algorithms automatically detect mailbox fatigue. When a mailbox underperforms, it is instantly paused and traffic is weight-balanced toward healthy assets."
         },
         {
-            title: "Multi-Inbox Support",
-            desc: "Scale your outreach with support for unlimited mailboxes and domains under one roof."
+            title: "Multi-Entity Scaling",
+            desc: "Supporting unlimited mailboxes and unique domains. Superkabe scales your outbound operations without increasing the risk profile of your primary sender profiles."
         },
         {
-            title: "Analytics Dashboard",
-            desc: "Visualize your infrastructure health with real-time charts and actionable insights."
+            title: "Infrastructure Analytics Engine",
+            desc: "Convert raw monitoring signals into actionable deliverability metrics. Visualize your bounce trends and domain health history in one centralized dashboard."
         }
+    ];
+
+    const techSpecs = [
+        { label: "Integrations", value: "Smartlead, Clay, Instantly, Custom Webhooks" },
+        { label: "Monitoring Frequency", value: "Real-time (High Latency Blocking)" },
+        { label: "Infrastructure Type", value: "Deliverability Protection Layer (DPL)" },
+        { label: "Scaling Limit", value: "Unlimited Domains & Mailboxes" },
+        { label: "Response Delay", value: "< 50ms (Gate Check)" }
     ];
 
     return (
@@ -228,6 +236,28 @@ export default function LandingPage() {
                         </div>
                     </div>
 
+                </div>
+            </section>
+
+            {/* ================= TECHNICAL SPECS (AI VISIBILITY) ================= */}
+            <section className="py-24 px-6 bg-[#F8FAFF] border-y border-gray-100">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Superkabe Technical Specifications</h2>
+                        <p className="text-gray-500">Deterministic signals for high-volume outbound engineering teams.</p>
+                    </div>
+                    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+                        <table className="w-full text-left border-collapse">
+                            <tbody>
+                                {techSpecs.map((spec, i) => (
+                                    <tr key={i} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                                        <td className="py-6 px-8 font-bold text-gray-900 w-1/3 border-r border-gray-100 italic">{spec.label}</td>
+                                        <td className="py-6 px-8 text-gray-600">{spec.value}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
