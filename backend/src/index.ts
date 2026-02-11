@@ -21,6 +21,8 @@ import dashboardRoutes from './routes/dashboard';
 import settingsRoutes from './routes/settings';
 import syncRoutes from './routes/sync';
 import authRoutes from './routes/auth';
+import assessmentRoutes from './routes/assessment';
+import healingRoutes from './routes/healing';
 
 // Import controllers
 import * as monitoringController from './controllers/monitoringController';
@@ -87,6 +89,8 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/auth', authRoutes); // Auth routes
+app.use('/api/assessment', assessmentRoutes); // Infrastructure assessment routes
+app.use('/api/healing', healingRoutes);        // Graduated healing system routes
 
 // Ingestion endpoints
 app.post('/api/ingest', ingestionController.ingestLead);

@@ -60,7 +60,10 @@ export async function checkCampaignHealth(
                 select: {
                     id: true,
                     status: true,
-                    window_bounce_count: true
+                    window_bounce_count: true,
+                    domain: {
+                        select: { status: true }
+                    }
                 }
             }
         }
@@ -83,6 +86,22 @@ export async function checkCampaignHealth(
         if (bounceRate >= BOUNCE_RATE_PAUSE) {
             status = 'paused';
         } else if (bounceRate >= BOUNCE_RATE_WARNING) {
+            status = 'warning';
+        }
+    }
+
+    // ── INVARIANT: Campaign can NEVER be healthier than its infrastructure ──
+    // Check worst domain and mailbox states. Campaign status ceiling is
+    // capped at the worst infrastructure state.
+    if (campaign.mailboxes.length > 0) {
+        const hasAnyPausedDomain = campaign.mailboxes.some(m => m.domain.status === 'paused');
+        const hasAnyPausedMailbox = campaign.mailboxes.some(m => m.status === 'paused');
+        const hasAnyWarningDomain = campaign.mailboxes.some(m => m.domain.status === 'warning');
+        const hasAnyWarningMailbox = campaign.mailboxes.some(m => m.status === 'warning');
+
+        if ((hasAnyPausedDomain || hasAnyPausedMailbox) && status !== 'paused') {
+            status = 'paused';
+        } else if ((hasAnyWarningDomain || hasAnyWarningMailbox) && status === 'active') {
             status = 'warning';
         }
     }

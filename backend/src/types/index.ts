@@ -60,6 +60,141 @@ export enum EventType {
 }
 
 // ============================================================================
+// BOUNCE FAILURE TAXONOMY (Section 4.1 of Implementation Plan)
+// ============================================================================
+
+/**
+ * Cause-based bounce classification. Every bounce is classified by WHY
+ * it failed, not just that it failed. Each type drives different diagnosis
+ * and healing behaviors.
+ */
+export enum BounceFailureType {
+    HARD_INVALID = 'hard_invalid',             // User unknown — permanent, immediate
+    HARD_DOMAIN = 'hard_domain',               // Domain doesn't exist — permanent
+    PROVIDER_SPAM_REJECTION = 'provider_spam_rejection', // Reputation damage — slow recovery
+    PROVIDER_THROTTLE = 'provider_throttle',   // Rate limiting — self-resolving (hours)
+    TEMPORARY_NETWORK = 'temporary_network',   // Network failure — self-resolving (minutes)
+    AUTH_FAILURE = 'auth_failure',             // SPF/DKIM/DMARC config error — needs fix
+    UNKNOWN = 'unknown'                        // Unclassifiable — treated as warning
+}
+
+/**
+ * Severity and recovery metadata for each failure type.
+ */
+export const FAILURE_TYPE_CONFIG: Record<BounceFailureType, {
+    severity: 'critical' | 'high' | 'medium' | 'low';
+    recoveryExpectation: 'none' | 'slow' | 'self_resolving' | 'requires_fix';
+    escalationSpeed: 'immediate' | 'fast' | 'slow' | 'none';
+    degradesHealth: boolean;  // Whether this type should degrade entity health
+}> = {
+    [BounceFailureType.HARD_INVALID]: { severity: 'high', recoveryExpectation: 'none', escalationSpeed: 'immediate', degradesHealth: true },
+    [BounceFailureType.HARD_DOMAIN]: { severity: 'high', recoveryExpectation: 'none', escalationSpeed: 'immediate', degradesHealth: true },
+    [BounceFailureType.PROVIDER_SPAM_REJECTION]: { severity: 'critical', recoveryExpectation: 'slow', escalationSpeed: 'fast', degradesHealth: true },
+    [BounceFailureType.PROVIDER_THROTTLE]: { severity: 'medium', recoveryExpectation: 'self_resolving', escalationSpeed: 'slow', degradesHealth: false },
+    [BounceFailureType.TEMPORARY_NETWORK]: { severity: 'low', recoveryExpectation: 'self_resolving', escalationSpeed: 'none', degradesHealth: false },
+    [BounceFailureType.AUTH_FAILURE]: { severity: 'critical', recoveryExpectation: 'requires_fix', escalationSpeed: 'fast', degradesHealth: true },
+    [BounceFailureType.UNKNOWN]: { severity: 'medium', recoveryExpectation: 'slow', escalationSpeed: 'slow', degradesHealth: true },
+};
+
+// ============================================================================
+// RECOVERY PHASES (Section 5.2 of Implementation Plan)
+// ============================================================================
+
+/**
+ * 5-phase graduated recovery. No binary paused→healthy jumps.
+ * paused → quarantine → restricted_send → warm_recovery → healthy
+ */
+export enum RecoveryPhase {
+    HEALTHY = 'healthy',
+    WARNING = 'warning',
+    PAUSED = 'paused',
+    QUARANTINE = 'quarantine',        // Cooldown expired, no sending
+    RESTRICTED_SEND = 'restricted_send', // Very low volume, safest leads
+    WARM_RECOVERY = 'warm_recovery',  // Controlled ramp-up
+}
+
+/**
+ * Graduation criteria for each phase transition.
+ */
+export const GRADUATION_CRITERIA = {
+    paused_to_quarantine: {
+        firstOffenseCooldownMs: 86400000,    // 24 hours
+        repeatCooldownMs: 259200000,         // 72 hours
+        thirdPlusCooldownMs: 604800000,      // 7 days
+    },
+    quarantine_to_restricted: {
+        requiresDnsPass: true,               // DNS/blacklist re-check must pass
+        requiresRootCauseResolved: true,
+    },
+    restricted_to_warm: {
+        firstOffenseCleanSends: 15,          // 15 clean sends with 0 hard bounces
+        repeatCleanSends: 25,
+    },
+    warm_to_healthy: {
+        minSends: 50,                        // 50 sends minimum
+        minDays: 3,                          // Over at least 3 days
+        maxBounceRate: 0.02,                 // Below 2% bounce rate
+    },
+    rehabMultipliers: {
+        sendMultiplier: 2.0,                 // Rehab entities need 2× clean sends
+        timeMultiplier: 1.5,                 // Rehab entities need 1.5× time
+    }
+} as const;
+
+// ============================================================================
+// TREND STATES (Section 4.2 of Implementation Plan)
+// ============================================================================
+
+/**
+ * Behavioral trajectory classification.
+ * Deterministic rules over rolling windows.
+ */
+export enum TrendState {
+    STABLE = 'stable',           // Last 3 windows within ±1%
+    DEGRADING = 'degrading',     // 2 consecutive worsening windows
+    ACCELERATING = 'accelerating', // Degrading + rate of change increasing
+    OSCILLATING = 'oscillating', // Alternating improve/decline across 4+ windows
+    RECOVERING = 'recovering',   // 2 consecutive improving windows
+}
+
+// ============================================================================
+// DATA QUALITY (Section 4.5 of Implementation Plan)
+// ============================================================================
+
+/**
+ * Data quality tag for diagnosis findings.
+ * Replaces confidence buckets — simpler, more actionable.
+ */
+export enum DataQuality {
+    SUFFICIENT = 'sufficient_data',     // ≥50 sends, ≥2 windows
+    LIMITED = 'limited_data',           // 20-49 sends or 1 window
+    INSUFFICIENT = 'insufficient_data', // <20 sends, no state change allowed
+}
+
+// ============================================================================
+// EMAIL PROVIDER (Section 4.2 of Implementation Plan)
+// ============================================================================
+
+/**
+ * Receiving email provider classification.
+ * Used for provider-specific bounce tracking and restrictions.
+ */
+export enum EmailProvider {
+    GMAIL = 'gmail',
+    MICROSOFT = 'microsoft',
+    YAHOO = 'yahoo',
+    OTHER = 'other',
+}
+
+/**
+ * Healing origin — distinguishes inherited damage from operational damage.
+ */
+export enum HealingOrigin {
+    REHAB = 'rehab',       // Inherited from brownfield onboarding
+    RECOVERY = 'recovery', // Caused during Drason operation
+}
+
+// ============================================================================
 // ENTITY STATES (Section 8 of Audit - State Machine Architecture)
 // ============================================================================
 
@@ -74,7 +209,10 @@ export enum MailboxState {
     HEALTHY = 'healthy',
     WARNING = 'warning',
     PAUSED = 'paused',
-    RECOVERING = 'recovering'
+    QUARANTINE = 'quarantine',
+    RESTRICTED_SEND = 'restricted_send',
+    WARM_RECOVERY = 'warm_recovery',
+    RECOVERING = 'recovering'       // Legacy — kept for backward compat
 }
 
 /**
@@ -84,7 +222,10 @@ export enum DomainState {
     HEALTHY = 'healthy',
     WARNING = 'warning',
     PAUSED = 'paused',
-    RECOVERING = 'recovering'
+    QUARANTINE = 'quarantine',
+    RESTRICTED_SEND = 'restricted_send',
+    WARM_RECOVERY = 'warm_recovery',
+    RECOVERING = 'recovering'       // Legacy — kept for backward compat
 }
 
 /**
@@ -330,14 +471,20 @@ export const STATE_TRANSITIONS = {
     mailbox: {
         healthy: ['warning', 'paused'],
         warning: ['healthy', 'paused'],
-        paused: ['recovering'],
-        recovering: ['healthy', 'warning']
+        paused: ['quarantine', 'recovering'],                    // quarantine is the new primary path
+        quarantine: ['restricted_send', 'paused'],               // can regress to paused on relapse
+        restricted_send: ['warm_recovery', 'paused', 'quarantine'], // relapse → paused or quarantine
+        warm_recovery: ['healthy', 'quarantine', 'paused'],      // relapse → quarantine
+        recovering: ['healthy', 'warning', 'quarantine']         // legacy path, also can enter new phases
     },
     domain: {
         healthy: ['warning', 'paused'],
         warning: ['healthy', 'paused'],
-        paused: ['recovering'],
-        recovering: ['healthy', 'warning']
+        paused: ['quarantine', 'recovering'],
+        quarantine: ['restricted_send', 'paused'],
+        restricted_send: ['warm_recovery', 'paused', 'quarantine'],
+        warm_recovery: ['healthy', 'quarantine', 'paused'],
+        recovering: ['healthy', 'warning', 'quarantine']
     },
     lead: {
         held: ['active', 'paused'],

@@ -8,24 +8,27 @@ datasource db {
 }
 
 model Organization {
-  id               String                @id @default(uuid())
-  name             String
-  slug             String                @unique
-  system_mode      String                @default("observe")
-  created_at       DateTime              @default(now())
-  updated_at       DateTime              @updatedAt
-  apiKeys          ApiKey[]
-  auditLogs        AuditLog[]
-  campaigns        Campaign[]
-  domains          Domain[]
-  leads            Lead[]
-  mailboxes        Mailbox[]
-  systemSettings   OrganizationSetting[]
-  rawEvents        RawEvent[]
-  routingRules     RoutingRule[]
-  stateTransitions StateTransition[]
-  users            User[]
-  notifications    Notification[]
+  id                    String                  @id @default(uuid())
+  name                  String
+  slug                  String                  @unique
+  system_mode           String                  @default("observe")
+  assessment_completed  Boolean                 @default(false)
+  transition_acknowledged Boolean                @default(false)  // Phase 0→1: operator must acknowledge low-score assessments
+  created_at            DateTime                @default(now())
+  updated_at            DateTime                @updatedAt
+  apiKeys               ApiKey[]
+  auditLogs             AuditLog[]
+  campaigns             Campaign[]
+  domains               Domain[]
+  leads                 Lead[]
+  mailboxes             Mailbox[]
+  systemSettings        OrganizationSetting[]
+  rawEvents             RawEvent[]
+  routingRules          RoutingRule[]
+  stateTransitions      StateTransition[]
+  users                 User[]
+  notifications         Notification[]
+  infraReports          InfrastructureReport[]
 
   @@index([slug])
 }
@@ -114,6 +117,14 @@ model Mailbox {
   id                     String          @id
   email                  String
   status                 String          @default("healthy")
+  recovery_phase         String          @default("healthy")       // RecoveryPhase: healthy|paused|quarantine|restricted_send|warm_recovery
+  healing_origin         String?                                   // HealingOrigin: rehab|recovery
+  phase_entered_at       DateTime?                                 // When the entity entered its current recovery phase
+  clean_sends_since_phase Int            @default(0)               // Clean sends (0 hard bounces) since entering current phase
+  resilience_score       Int             @default(50)              // 0-100, drives healing speed multipliers
+  relapse_count          Int             @default(0)               // Total relapses for escalating penalties
+  trend_state            String          @default("stable")        // TrendState: stable|degrading|accelerating|oscillating|recovering
+  provider_restrictions  Json?                                     // Per-provider restrictions: { gmail: { restricted: true, bounce_rate: 0.15 } }
   hard_bounce_count      Int             @default(0)
   delivery_failure_count Int             @default(0)
   total_sent_count       Int             @default(0)
@@ -124,6 +135,8 @@ model Mailbox {
   cooldown_until         DateTime?
   consecutive_pauses     Int             @default(0)
   last_activity_at       DateTime        @default(now())
+  initial_bounce_rate    Float?                              // Historical bounce rate at import from Smartlead
+  initial_assessment_at  DateTime?                           // When initial assessment was performed
   domain_id              String
   organization_id        String
   created_at             DateTime        @default(now())
@@ -136,18 +149,33 @@ model Mailbox {
   @@index([organization_id, status])
   @@index([organization_id, domain_id])
   @@index([domain_id])
+  @@index([recovery_phase])
 }
 
 model Domain {
   id                           String       @id @default(uuid())
   domain                       String
   status                       String       @default("healthy")
+  recovery_phase               String       @default("healthy")       // RecoveryPhase
+  healing_origin               String?                                // HealingOrigin: rehab|recovery
+  phase_entered_at             DateTime?                               // When entered current recovery phase
+  clean_sends_since_phase      Int          @default(0)               // Clean sends since entering current phase
+  resilience_score             Int          @default(50)              // 0-100, drives healing speed multipliers
+  relapse_count                Int          @default(0)               // Total relapses
+  trend_state                  String       @default("stable")        // TrendState
+  provider_restrictions        Json?                                   // Per-provider restriction state
   warning_count                Int          @default(0)
   aggregated_bounce_rate_trend Float        @default(0.0)
   paused_reason                String?
   last_pause_at                DateTime?
   cooldown_until               DateTime?
   consecutive_pauses           Int          @default(0)
+  spf_valid                    Boolean?                        // SPF record check result
+  dkim_valid                   Boolean?                        // DKIM record check result
+  dmarc_policy                 String?                         // DMARC policy: 'none' | 'quarantine' | 'reject'
+  blacklist_results            Json?                           // { spamhaus: 'CONFIRMED'|'NOT_LISTED'|'UNREACHABLE', ... }
+  dns_checked_at               DateTime?                       // When DNS was last checked
+  initial_assessment_score     Float?                          // REPORT-ONLY. Never use in execution gate logic.
   organization_id              String
   created_at                   DateTime     @default(now())
   updated_at                   DateTime     @updatedAt
@@ -157,6 +185,7 @@ model Domain {
   @@unique([organization_id, domain])
   @@index([organization_id, status])
   @@index([organization_id])
+  @@index([recovery_phase])
 }
 
 model RoutingRule {
@@ -286,4 +315,19 @@ model Notification {
 model SystemSetting {
   key   String @id
   value String
+}
+
+model InfrastructureReport {
+  id                 String       @id @default(uuid())
+  organization_id    String
+  report_type        String       // 'onboarding' | 'manual_reassessment'
+  assessment_version String       @default("1.0")
+  overall_score      Float        // 0-100, REPORT-ONLY — never reference in execution logic
+  summary            Json         // { domains, mailboxes, campaigns, totals }
+  findings           Json         // [{ severity, entity, entity_id, message, remediation }]
+  recommendations    Json         // [{ priority, action, details }]
+  created_at         DateTime     @default(now())
+  organization       Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  @@index([organization_id, created_at])
 }

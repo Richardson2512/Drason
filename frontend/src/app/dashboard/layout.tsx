@@ -132,6 +132,10 @@ export default function DashboardLayout({
                         <span style={{ fontSize: '1.2rem', minWidth: '24px', textAlign: 'center' }}>🌐</span>
                         {!isCollapsed && <span>Domains</span>}
                     </Link>
+                    <Link href="/dashboard/infrastructure" className="nav-link" title={isCollapsed ? "Infra Health" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                        <span style={{ fontSize: '1.2rem', minWidth: '24px', textAlign: 'center' }}>🛡️</span>
+                        {!isCollapsed && <span>Infra Health</span>}
+                    </Link>
 
                     {!isCollapsed && (
                         <div style={{ paddingLeft: '1rem', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '0.7rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', whiteSpace: 'nowrap' }}>

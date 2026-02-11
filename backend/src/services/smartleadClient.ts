@@ -13,7 +13,9 @@ import { Request } from 'express';
 import { getOrgId } from '../middleware/orgContext';
 import * as auditLogService from './auditLogService';
 import * as eventService from './eventService';
+import * as assessmentService from './infrastructureAssessmentService';
 import { EventType } from '../types';
+import { logger } from './observabilityService';
 
 const SMARTLEAD_API_BASE = 'https://server.smartlead.ai/api/v1';
 
@@ -130,6 +132,26 @@ export const syncSmartlead = async (organizationId: string): Promise<{
             action: 'smartlead_synced',
             details: `Synced ${campaignCount} campaigns, ${mailboxCount} mailboxes`
         });
+
+        // ── STRICT ORDER: Sync complete → Trigger Infrastructure Assessment ──
+        // Assessment runs inline (not async) to maintain the strict ordering guarantee.
+        // The execution gate remains locked until assessment completes.
+        try {
+            logger.info('Triggering infrastructure assessment after Smartlead sync', { organizationId });
+            await assessmentService.assessInfrastructure(organizationId, 'onboarding');
+            logger.info('Infrastructure assessment completed after sync', { organizationId });
+        } catch (assessError: any) {
+            // Assessment failure does NOT fail the sync — sync data is already persisted.
+            // But the gate stays locked — manual re-assessment required.
+            logger.error(`Post-sync assessment failed for org ${organizationId}: ${assessError.message}`);
+            await auditLogService.logAction({
+                organizationId,
+                entity: 'system',
+                trigger: 'infrastructure_assessment',
+                action: 'post_sync_assessment_failed',
+                details: assessError.message
+            });
+        }
 
         return { campaigns: campaignCount, mailboxes: mailboxCount };
 

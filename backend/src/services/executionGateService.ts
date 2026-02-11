@@ -14,10 +14,12 @@
 
 import { prisma } from '../index';
 import * as auditLogService from './auditLogService';
+import * as healingService from './healingService';
 import {
     SystemMode,
     GateResult,
     FailureType,
+    RecoveryPhase,
     MONITORING_THRESHOLDS
 } from '../types';
 
@@ -36,12 +38,54 @@ export const canExecuteLead = async (
     campaignId: string,
     leadId: string
 ): Promise<GateResult> => {
-    // Get organization to check system mode
+    // Get organization to check system mode and assessment status
     const org = await prisma.organization.findUnique({
         where: { id: organizationId }
     });
 
     const systemMode = (org?.system_mode as SystemMode) || SystemMode.OBSERVE;
+
+    // ── INVARIANT: No execution before infrastructure assessment completes ──
+    if (!org?.assessment_completed) {
+        return {
+            allowed: false,
+            reason: 'Infrastructure assessment in progress — gate locked until assessment completes',
+            riskScore: 100,
+            mode: systemMode,
+            failureType: FailureType.SYNC_ISSUE,
+            checks: {
+                campaignActive: false,
+                domainHealthy: false,
+                mailboxAvailable: false,
+                belowCapacity: false,
+                riskAcceptable: false
+            },
+            recommendations: ['Wait for infrastructure assessment to complete before executing leads']
+        };
+    }
+
+    // ── TRANSITION GATE: Phase 0 → Phase 1 check ──
+    const transitionResult = await healingService.checkTransitionGate(organizationId);
+    if (!transitionResult.canTransition) {
+        return {
+            allowed: false,
+            reason: transitionResult.message,
+            riskScore: 100,
+            mode: systemMode,
+            failureType: FailureType.HEALTH_ISSUE,
+            checks: {
+                campaignActive: false,
+                domainHealthy: false,
+                mailboxAvailable: false,
+                belowCapacity: false,
+                riskAcceptable: false
+            },
+            recommendations: transitionResult.requiresAcknowledgment
+                ? [`Acknowledge infrastructure risks (score: ${transitionResult.overallScore}/100) to proceed`]
+                : ['Resolve infrastructure issues before executing leads']
+        };
+    }
+
     const recommendations: string[] = [];
 
     // Initialize check results
