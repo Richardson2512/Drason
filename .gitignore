@@ -3,3 +3,12 @@ node_modules
 .DS_Store
 dist
 .next
+
+# Backend is deployed separately via Railway
+backend/
+
+# Root-level docs (not needed for frontend deployment)
+*.rtf
+*.md
+!frontend/**/*.md
+!README.md
