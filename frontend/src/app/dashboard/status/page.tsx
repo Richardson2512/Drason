@@ -19,7 +19,7 @@ export default function StatusPage() {
         setLoading(true);
         try {
             const [healthRes, transitionsRes, eventsRes] = await Promise.all([
-                fetch('/health').then(r => r.json()).catch(() => null),
+                fetch('/api/health').then(r => r.json()).catch(() => null),
                 fetch('/api/dashboard/state-transitions?limit=50').then(r => r.json()).catch(() => []),
                 fetch('/api/dashboard/events?limit=50').then(r => r.json()).catch(() => [])
             ]);
