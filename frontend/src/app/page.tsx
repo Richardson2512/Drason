@@ -110,7 +110,7 @@ export default function LandingPage() {
             </header>
 
             {/* ================= HERO ================= */}
-            <section className="relative pt-48 pb-36 text-center">
+            <section className="relative pt-48 pb-32 text-center">
                 <div className="hero-blur pointer-events-none">
                     <div className="blur-blob blur-purple opacity-40"></div>
                     <div className="blur-blob blur-blue opacity-40"></div>
@@ -125,55 +125,86 @@ export default function LandingPage() {
                         </span>
                     </h1>
 
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4 leading-relaxed">
-                        Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block distinct risks, and auto-heal your infrastructure.
+                    <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-6 leading-relaxed">
+                        Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block risks, and auto-heal your infrastructure.
                     </p>
 
-                    {/* Explicit definition for AI entity anchoring */}
-                    <p className="text-sm text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed">
-                        Superkabe is an email deliverability and sender reputation protection platform. It monitors domain health, enforces DNS authentication compliance (SPF, DKIM, DMARC), gates outbound email traffic based on real-time bounce data, and automates infrastructure recovery for outbound email operators.
+                    <p className="text-sm text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed tracking-wide">
+                        Email deliverability · Sender reputation · DNS authentication · Domain health monitoring · Bounce protection
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link href="/signup" className="px-8 py-4 bg-black text-white rounded-2xl text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                             Start Your Trial
                         </Link>
-                        <Link href="/book-demo" className="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
+                        <Link href="/signup" className="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
                             Book a Demo
                         </Link>
                     </div>
-
                 </div>
+            </section>
 
-                {/* ================= BRANDS TRUST LOOP ================= */}
-                <div className="mt-24 overflow-hidden relative w-full pt-10 pb-10 border-y border-gray-100/50 bg-white/30 backdrop-blur-[2px]">
-                    <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-[#F5F8FF] to-transparent z-10"></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-[#F5F8FF] to-transparent z-10"></div>
+            {/* ================= WHAT IS SUPERKABE (AEO AUTHORITY) ================= */}
+            <section className="py-20 px-6 bg-[#F0F4FF]">
+                <div className="max-w-4xl mx-auto">
+                    <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-10 md:p-14 border border-gray-100 shadow-xl shadow-blue-500/5">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight text-center">
+                            What is Superkabe?
+                        </h2>
+                        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10 text-center">
+                            Superkabe is an <strong className="text-gray-900">email deliverability</strong> and <strong className="text-gray-900">sender reputation</strong> protection platform. It monitors <strong className="text-gray-900">domain health</strong>, maintains <strong className="text-gray-900">mailbox health</strong> by auto-pausing fatigued senders, tracks <strong className="text-gray-900">lead health</strong> to prevent toxic contacts from damaging your infrastructure, and safeguards <strong className="text-gray-900">campaign health</strong> with real-time bounce gating. Superkabe enforces <strong className="text-gray-900">DNS authentication</strong> compliance (SPF, DKIM, DMARC), gates <strong className="text-gray-900">outbound email</strong> traffic based on live bounce data, and automates infrastructure recovery for outbound email operators.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-3 mb-10">
+                            {[
+                                { label: 'Real-time Monitoring', bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
+                                { label: 'Bounce Protection', bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
+                                { label: 'Auto-healing', bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
+                                { label: 'Mailbox Health', bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700' },
+                                { label: 'Lead Health', bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700' },
+                                { label: 'Campaign Health', bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700' },
+                                { label: 'Multi-domain', bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700' },
+                            ].map((tag) => (
+                                <span key={tag.label} className={`px-5 py-2.5 ${tag.bg} border ${tag.border} rounded-full text-sm font-semibold ${tag.text}`}>
+                                    {tag.label}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="text-center">
+                            <Link href="/docs" className="inline-flex items-center gap-2 px-8 py-3.5 bg-gray-900 text-white rounded-2xl font-semibold hover:bg-black transition-colors shadow-lg shadow-gray-900/10">
+                                Learn More
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </Link>
+                        </div>
+                    </div>
 
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-12 opacity-80">
-                        Trusted by high-volume outbound teams
-                    </p>
+                    {/* ================= TRUSTED PLATFORMS ================= */}
+                    <div className="mt-16 overflow-hidden relative w-full pt-8 pb-8">
+                        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-[#F0F4FF] to-transparent z-10"></div>
+                        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-[#F0F4FF] to-transparent z-10"></div>
 
-                    <div className="flex animate-scroll whitespace-nowrap gap-24 items-center">
-                        {[
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal", logo: "/certinal.png" },
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal", logo: "/certinal.png" },
-                            { name: "InsightSnap", logo: "/InsightSnap.png" },
-                            { name: "VanishDrop", logo: "/VanishDrop.png" },
-                            { name: "Rihario", logo: "/Rihario.png" },
-                            { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
-                            { name: "Certinal", logo: "/certinal.png" }
-                        ].map((brand, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                {brand.logo ? (
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-10 opacity-80 text-center">
+                            Trusted by high-volume outbound teams
+                        </p>
+
+                        <div className="flex animate-scroll whitespace-nowrap gap-24 items-center">
+                            {[
+                                { name: "InsightSnap", logo: "/InsightSnap.png" },
+                                { name: "VanishDrop", logo: "/VanishDrop.png" },
+                                { name: "Rihario", logo: "/Rihario.png" },
+                                { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                                { name: "Certinal", logo: "/certinal.png" },
+                                { name: "InsightSnap", logo: "/InsightSnap.png" },
+                                { name: "VanishDrop", logo: "/VanishDrop.png" },
+                                { name: "Rihario", logo: "/Rihario.png" },
+                                { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                                { name: "Certinal", logo: "/certinal.png" },
+                                { name: "InsightSnap", logo: "/InsightSnap.png" },
+                                { name: "VanishDrop", logo: "/VanishDrop.png" },
+                                { name: "Rihario", logo: "/Rihario.png" },
+                                { name: "SyllabusTracker", logo: "/SyllabusTracker.png" },
+                                { name: "Certinal", logo: "/certinal.png" }
+                            ].map((brand, i) => (
+                                <div key={i} className="flex items-center gap-3">
                                     <div className="flex items-center gap-3">
                                         <Image
                                             src={brand.logo}
@@ -186,13 +217,9 @@ export default function LandingPage() {
                                             {brand.name}
                                         </span>
                                     </div>
-                                ) : (
-                                    <span className="text-2xl md:text-3xl font-extrabold text-gray-400/60 hover:text-gray-900 transition-all duration-300 cursor-default tracking-tight">
-                                        {brand.name}
-                                    </span>
-                                )}
-                            </div>
-                        ))}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
