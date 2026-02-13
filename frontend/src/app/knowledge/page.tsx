@@ -1,0 +1,120 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import Footer from '@/components/Footer';
+import { ArrowRight, Shield, Activity, Mail, Globe, Zap } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Knowledge Hub – Superkabe',
+    description: 'Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.',
+};
+
+const articles = [
+    {
+        slug: 'bounce-rate-deliverability',
+        title: 'How Bounce Rate Affects Email Deliverability',
+        description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
+        icon: Activity,
+        readTime: '8 min read',
+    },
+    {
+        slug: 'spf-dkim-dmarc-explained',
+        title: 'SPF, DKIM, and DMARC Explained',
+        description: 'A technical breakdown of email authentication protocols, how they protect your sender identity, and why misconfiguration leads to inbox placement failure.',
+        icon: Shield,
+        readTime: '10 min read',
+    },
+    {
+        slug: 'domain-warming-methodology',
+        title: 'Domain Warming Methodology',
+        description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
+        icon: Globe,
+        readTime: '9 min read',
+    },
+    {
+        slug: 'email-reputation-lifecycle',
+        title: 'The Email Reputation Lifecycle',
+        description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+        icon: Mail,
+        readTime: '11 min read',
+    },
+];
+
+export default function KnowledgeHubPage() {
+    return (
+        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+
+            {/* ================= NAVBAR ================= */}
+            <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
+                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
+                    <Link href="/" className="flex items-center gap-2">
+                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
+                    </Link>
+                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
+                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
+                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
+                    </nav>
+                    <div className="flex gap-4 items-center">
+                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
+                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
+                            Get Started
+                        </Link>
+                    </div>
+                </div>
+            </header>
+
+            {/* Hero */}
+            <section className="relative pt-48 pb-16 text-center">
+                <div className="hero-blur pointer-events-none">
+                    <div className="blur-blob blur-purple opacity-30"></div>
+                    <div className="blur-blob blur-blue opacity-30"></div>
+                </div>
+                <div className="relative z-10 max-w-4xl mx-auto px-6">
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
+                        <Zap size={14} className="inline mr-1.5" />
+                        Knowledge Hub
+                    </div>
+                    <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
+                        Email Infrastructure Intelligence
+                    </h1>
+                    <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                        Deep technical guides on deliverability, authentication, domain health, and reputation management for outbound email operators.
+                    </p>
+                </div>
+            </section>
+
+            {/* Articles Grid */}
+            <section className="relative z-10 pb-24 px-6">
+                <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                    {articles.map((article) => {
+                        const Icon = article.icon;
+                        return (
+                            <Link
+                                key={article.slug}
+                                href={`/knowledge/${article.slug}`}
+                                className="block bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 group"
+                            >
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <Icon size={20} className="text-blue-600" />
+                                    </div>
+                                    <span className="text-xs text-gray-400 font-medium">{article.readTime}</span>
+                                </div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h2>
+                                <p className="text-gray-500 text-sm leading-relaxed mb-4">{article.description}</p>
+                                <span className="text-blue-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                                    Read Article <ArrowRight size={14} />
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </section>
+
+            <Footer />
+        </div>
+    );
+}

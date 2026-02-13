@@ -3,6 +3,7 @@ import './globals.css';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://superkabe.com'),
   title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
   description:
     'Production-hardened monitoring and protection layer for multi-domain, multi-mailbox outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
@@ -39,7 +40,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jsonLd = {
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Superkabe',
+    url: 'https://superkabe.com',
+    logo: 'https://superkabe.com/image/logo-v2.png',
+    description: 'Email infrastructure protection and sender reputation recovery platform for modern outbound teams.',
+    sameAs: [
+      'https://twitter.com/superkabe',
+      'https://www.linkedin.com/company/superkabe',
+    ],
+  };
+
+  const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Superkabe',
@@ -50,7 +64,7 @@ export default function RootLayout({
       price: '49.00',
       priceCurrency: 'USD',
     },
-    description: 'Infrastructure protection for modern outbound teams. Monitoring, auto-healing, and deliverability protection.',
+    description: 'Email infrastructure protection and sender reputation recovery platform. Monitor bounce rates, enforce lead gating, and automate recovery.',
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
@@ -62,9 +76,14 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <Script
-          id="json-ld"
+          id="org-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
+        <Script
+          id="software-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
         />
       </head>
       <body>

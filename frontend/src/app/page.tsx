@@ -39,8 +39,53 @@ export default function LandingPage() {
         { label: "Response Delay", value: "< 50ms (Gate Check)" }
     ];
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How does Superkabe integrate with my stack?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Superkabe uses webhooks to connect directly with your sending tools (Smartlead, Instantly) and your data sources (Clay, tables). Set up takes less than 5 minutes."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Does Superkabe replace Smartlead or Clay?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. Superkabe sits between them as a protection layer. We monitor the signals they generate and act on them to protect your domains."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I use Superkabe with multiple domains?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Superkabe is built for multi-domain infrastructure. You can track and protect unlimited domains under a single organization."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does Superkabe protect sender reputation?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Superkabe monitors bounce rates, DNS health, and mailbox resilience scores to prevent infrastructure degradation before reputation damage becomes irreversible."
+                }
+            }
+        ]
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans">
+
+            {/* FAQPage Schema for AI Overviews */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
 
             {/* ================= NAVBAR ================= */}
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
@@ -80,8 +125,13 @@ export default function LandingPage() {
                         </span>
                     </h1>
 
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4 leading-relaxed">
                         Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block distinct risks, and auto-heal your infrastructure.
+                    </p>
+
+                    {/* Explicit definition for AI entity anchoring */}
+                    <p className="text-sm text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed">
+                        Superkabe is an email infrastructure protection and deliverability recovery platform designed for outbound email operators.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

@@ -1,0 +1,170 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import Footer from '@/components/Footer';
+import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'SPF, DKIM, and DMARC Explained – Superkabe Knowledge Hub',
+    description: 'Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.',
+};
+
+export default function SpfDkimDmarcArticle() {
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is SPF in email authentication?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "SPF (Sender Policy Framework) is a DNS-based authentication mechanism that specifies which mail servers are authorized to send email on behalf of a domain. It works by publishing a TXT record in DNS that lists authorized IP addresses. Receiving servers check this record to verify the sender."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is DKIM and how does it work?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "DKIM (DomainKeys Identified Mail) adds a cryptographic signature to each outgoing email header. The receiving server uses the public key published in the sender's DNS to verify that the email was not altered in transit and was authorized by the domain owner."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What happens if DMARC is not configured?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Without DMARC, there is no policy telling receiving servers what to do when SPF or DKIM fails. This means spoofed emails using your domain may be delivered to recipients, damaging your domain reputation. ISPs increasingly require DMARC for inbox placement, especially Google and Yahoo which mandate it as of 2024."
+                }
+            }
+        ]
+    };
+
+    return (
+        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+            <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
+                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
+                    <Link href="/" className="flex items-center gap-2">
+                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
+                    </Link>
+                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
+                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
+                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
+                    </nav>
+                    <div className="flex gap-4 items-center">
+                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
+                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">Get Started</Link>
+                    </div>
+                </div>
+            </header>
+
+            <article className="relative z-10 pt-40 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <Link href="/knowledge" className="inline-flex items-center gap-2 text-blue-600 text-sm font-medium mb-8 hover:gap-3 transition-all">
+                        <ArrowLeft size={14} /> Back to Knowledge Hub
+                    </Link>
+
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+                        SPF, DKIM, and DMARC Explained
+                    </h1>
+                    <p className="text-gray-400 text-sm mb-12">10 min read · Updated February 2026</p>
+
+                    <div className="prose prose-lg max-w-none">
+                        <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                            SPF, DKIM, and DMARC are the three email authentication protocols that verify sender identity and prevent domain spoofing. Together, they form the trust layer that ISPs use to decide whether an email should reach the inbox, be routed to spam, or be rejected entirely. For outbound email operators running multiple domains, correct configuration of all three protocols is non-negotiable.
+                        </p>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">SPF (Sender Policy Framework)</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            SPF is a DNS-based authentication mechanism that specifies which mail servers are authorized to send email on behalf of a domain. When an email arrives at a receiving server, the server looks up the sending domain&apos;s SPF record (a DNS TXT record) and checks whether the originating IP address is listed as an authorized sender.
+                        </p>
+
+                        <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
+                            <p className="text-gray-500 mb-2"># Example SPF record for superkabe.com</p>
+                            <p>v=spf1 include:_spf.google.com include:sendgrid.net -all</p>
+                        </div>
+
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            The <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">-all</code> at the end is critical. It tells receiving servers to reject emails from any IP not explicitly listed. Using <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">~all</code> (soft fail) instead of <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">-all</code> (hard fail) is a common misconfiguration that weakens SPF protection.
+                        </p>
+
+                        <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
+                            <h3 className="font-bold text-gray-900 mb-3">Common SPF Pitfalls</h3>
+                            <ul className="space-y-2 text-gray-600 text-sm">
+                                <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> Exceeding the 10 DNS lookup limit (causes SPF to fail silently)</li>
+                                <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> Using ~all instead of -all (allows spoofed emails through)</li>
+                                <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> Forgetting to include third-party senders (Smartlead, Instantly)</li>
+                                <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> Not updating SPF when switching email providers</li>
+                            </ul>
+                        </div>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">DKIM (DomainKeys Identified Mail)</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            DKIM adds a cryptographic signature to every outgoing email. The sending server signs the email headers and body with a private key, and the receiving server uses the corresponding public key (published as a DNS TXT record) to verify the signature. If the signature validates, the receiving server knows two things: the email was authorized by the domain owner, and it was not modified in transit.
+                        </p>
+
+                        <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
+                            <p className="text-gray-500 mb-2"># Example DKIM DNS record</p>
+                            <p>selector1._domainkey.superkabe.com IN TXT &quot;v=DKIM1; k=rsa; p=MIGfMA0GCS...&quot;</p>
+                        </div>
+
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            DKIM is particularly important for outbound email because it provides per-message authentication. Unlike SPF which only validates the sending IP, DKIM proves that each individual email was authorized. This makes it significantly harder for attackers to spoof your domain.
+                        </p>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">DMARC (Domain-based Message Authentication, Reporting, and Conformance)</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            DMARC ties SPF and DKIM together with a policy declaration. It tells receiving servers what to do when an email fails authentication checks: allow it through (p=none), quarantine it to spam (p=quarantine), or reject it entirely (p=reject).
+                        </p>
+
+                        <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
+                            <p className="text-gray-500 mb-2"># Recommended DMARC record</p>
+                            <p>_dmarc.superkabe.com IN TXT &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc@superkabe.com; pct=100&quot;</p>
+                        </div>
+
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            The <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">rua</code> tag specifies where aggregate reports should be sent. These reports contain data about who is sending email using your domain, including unauthorized senders. For multi-domain outbound operations, these reports are essential for detecting infrastructure compromise.
+                        </p>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">The Authentication Decision Flow</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            When an email arrives at a receiving server, the authentication check follows this sequence:
+                        </p>
+                        <ol className="space-y-3 text-gray-600 mb-8 list-decimal pl-5">
+                            <li>Check SPF: Is the sending IP authorized by the domain&apos;s SPF record?</li>
+                            <li>Check DKIM: Does the cryptographic signature validate against the domain&apos;s public key?</li>
+                            <li>Check DMARC alignment: Does the From header domain align with either the SPF or DKIM domain?</li>
+                            <li>Apply DMARC policy: If checks fail, apply the domain&apos;s published DMARC policy (none/quarantine/reject).</li>
+                        </ol>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why This Matters for Outbound Teams</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            As of February 2024, Google and Yahoo require bulk senders to have all three protocols properly configured. Domains without DMARC will have emails throttled or rejected by these providers. For outbound teams running 3–10 domains, this means each domain must have its own SPF, DKIM, and DMARC records independently configured.
+                        </p>
+                        <p className="text-gray-600 leading-relaxed mb-8">
+                            Superkabe monitors DNS authentication health across all your sending domains. When SPF records approach the 10-lookup limit, DKIM keys are missing, or DMARC policies are too permissive, Superkabe flags these issues before they cause deliverability failures.
+                        </p>
+
+                        <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                            <div className="relative z-10">
+                                <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
+                                <p className="text-blue-100 leading-relaxed">
+                                    SPF authorizes your sending servers. DKIM proves each email is genuine. DMARC enforces what happens when either fails. All three must be configured correctly on every sending domain. Missing any one creates a gap that ISPs will penalize.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <Footer />
+        </div>
+    );
+}
