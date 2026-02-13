@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
         pathname === '/login' ||
         pathname === '/signup' ||
         pathname === '/pricing' ||
-        pathname === '/blog' ||
+        pathname.startsWith('/blog') ||
         pathname === '/privacy' ||
         pathname === '/terms' ||
         pathname.startsWith('/docs');
