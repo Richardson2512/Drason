@@ -108,7 +108,7 @@ function TableOfContents() {
     if (headings.length === 0) return null;
 
     return (
-        <aside className="hidden xl:block fixed top-32 right-8 w-52 h-[calc(100vh-10rem)] overflow-y-auto z-30 scrollbar-hide">
+        <aside className="hidden xl:block fixed top-32 right-8 w-52 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
             <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-4 shadow-lg shadow-gray-200/30">
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <List size={14} className="text-gray-400" />
