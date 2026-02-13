@@ -16,9 +16,18 @@ export default function ClayIntegrationPage() {
                 </p>
                 <ol className="space-y-2 text-gray-600">
                     <li>✅ Flow into Superkabe for campaign routing</li>
+                    <li>✅ <strong>Pass through the Lead Health Gate</strong> (blocking disposable/spam domains)</li>
                     <li>✅ Match to the correct Smartlead campaign based on ICP</li>
                     <li>✅ Be protected by real-time monitoring thresholds</li>
                 </ol>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-12">
+                <h3 className="text-lg font-bold text-amber-700 mb-2">⚠️ Automatic Quality Filtering</h3>
+                <p className="text-gray-600">
+                    Superkabe automatically blocks leads with <strong>disposable domains</strong> (e.g., mailinator.com) or <strong>role-based emails</strong> (e.g., admin@).
+                    These leads will be marked as <code className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">BLOCKED</code> and will NOT be routed to Smartlead.
+                </p>
             </div>
 
             {/* Prerequisites */}

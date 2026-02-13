@@ -8,6 +8,11 @@ import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen } fro
 
 const blogArticles = [
     {
+        title: 'New: Infrastructure Assessment',
+        href: '/blog/introducing-infrastructure-assessment',
+        icon: Activity,
+    },
+    {
         title: 'Complete Deliverability Guide',
         href: '/blog/email-deliverability-guide',
         icon: BookOpen,

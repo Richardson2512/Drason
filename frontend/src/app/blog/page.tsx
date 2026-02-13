@@ -11,6 +11,14 @@ export const metadata: Metadata = {
 
 const articles = [
     {
+        slug: 'introducing-infrastructure-assessment',
+        title: 'Introducing Infrastructure Assessment: The Pre-Flight Check for Cold Email',
+        description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
+        icon: Activity,
+        readTime: '3 min read',
+        tag: 'New Feature',
+    },
+    {
         slug: 'email-deliverability-guide',
         title: 'The Complete Email Deliverability Guide for Outbound Teams',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',

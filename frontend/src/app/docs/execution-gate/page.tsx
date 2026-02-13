@@ -10,8 +10,27 @@ export default function ExecutionGatePage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What is the Execution Gate?</h2>
             <p className="text-gray-600 mb-6">
-                Before a lead is sent to Smartlead, it passes through our <strong>execution gate</strong>.
-                The gate performs safety checks to ensure the infrastructure can handle the lead without causing damage.
+                Before a lead is sent to Smartlead, it passes through our **two-stage protection system**.
+                The gate performs safety checks to ensure both lead quality and infrastructure health.
+            </p>
+
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Stage 1: Ingestion Gate (Lead Quality)</h2>
+            <p className="text-gray-600 mb-6">
+                Happens immediately when a lead is received (via API or Clay webhook).
+                If a lead fails here, it is <strong>never stored as a valid lead</strong>.
+            </p>
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+                <h3 className="text-lg font-bold text-red-700 mb-3">⛔ Immediate Blocks</h3>
+                <ul className="space-y-2 text-gray-700 text-sm">
+                    <li>• <strong>Disposable Domains:</strong> (e.g., mailinator.com, tempmail.org)</li>
+                    <li>• <strong>Role-Based Emails:</strong> (e.g., admin@, support@, info@)</li>
+                    <li>• <strong>Suspicious TLDs:</strong> (e.g., .xyz, .tk)</li>
+                </ul>
+            </div>
+
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Stage 2: Execution Gate (Infrastructure)</h2>
+            <p className="text-gray-600 mb-6">
+                Happens asynchronously before sending. Ensures your sending infrastructure is healthy.
             </p>
 
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
@@ -117,7 +136,12 @@ export default function ExecutionGatePage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Example Gate Flow</h2>
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
                 <pre className="text-sm text-gray-700 overflow-x-auto">
-                    {`Lead arrives → Execute Gate Checks
+                    {`Lead arrives (API/Clay) → Ingestion Gate (Stage 1)
+1. Is disposable domain? → NO
+2. Is role-based email? → NO
+Result: ✅ SAVED (Status: HELD)
+
+Lead scheduled for sending → Execution Gate (Stage 2)
 
 1. Campaign exists? → YES
 2. Campaign active? → YES

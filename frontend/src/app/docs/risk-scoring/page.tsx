@@ -8,7 +8,43 @@ export default function RiskScoringPage() {
                 Separated hard and soft signals ensure bounce-based issues trigger blocks while velocity spikes only log warnings
             </p>
 
-            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">The Problem with Combined Risk Scores</h2>
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">1. Lead Health Scoring (Pre-Send)</h2>
+            <p className="text-gray-600 mb-6">
+                Before a lead even enters the system, it is classified based on intrinsic quality signals.
+                This prevents "trash" data from ever reaching your campaigns.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
+                    <h3 className="text-xl font-bold text-green-700 mb-2">GREEN</h3>
+                    <p className="text-sm text-gray-600 mb-2"><strong>Score: 80-100</strong></p>
+                    <p className="text-sm text-gray-600">
+                        Professional business email. Valid domain. No risk signals.
+                    </p>
+                    <div className="mt-3 inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">Active</div>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+                    <h3 className="text-xl font-bold text-amber-700 mb-2">YELLOW</h3>
+                    <p className="text-sm text-gray-600 mb-2"><strong>Score: 50-79</strong></p>
+                    <p className="text-sm text-gray-600">
+                        Acceptable but risky. Catch-all domain or unknown provider.
+                    </p>
+                    <div className="mt-3 inline-block px-2 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded">Held for Review</div>
+                </div>
+
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+                    <h3 className="text-xl font-bold text-red-700 mb-2">RED</h3>
+                    <p className="text-sm text-gray-600 mb-2"><strong>Score: 0-49</strong></p>
+                    <p className="text-sm text-gray-600">
+                        Disposable domain, role-based (admin@), or blacklisted.
+                    </p>
+                    <div className="mt-3 inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">Immediate Block</div>
+                </div>
+            </div>
+
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Mailbox Risk Scoring (Hard vs Soft)</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-700">The Problem with Combined Risk Scores</h2>
             <p className="text-gray-600 mb-6">
                 Traditional systems combine all risk signals into a single score. This causes <strong>false positives</strong>:
             </p>
