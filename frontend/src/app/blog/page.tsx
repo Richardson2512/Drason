@@ -1,21 +1,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
-import { ArrowRight, Shield, Activity, Mail, Globe, Zap } from 'lucide-react';
+import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Knowledge Hub – Superkabe',
+    title: 'Blog – Superkabe',
     description: 'Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.',
 };
 
 const articles = [
+    {
+        slug: 'email-deliverability-guide',
+        title: 'The Complete Email Deliverability Guide for Outbound Teams',
+        description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
+        icon: BookOpen,
+        readTime: '20 min read',
+        tag: 'Complete Guide',
+    },
     {
         slug: 'bounce-rate-deliverability',
         title: 'How Bounce Rate Affects Email Deliverability',
         description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
         icon: Activity,
         readTime: '8 min read',
+        tag: 'Technical',
     },
     {
         slug: 'spf-dkim-dmarc-explained',
@@ -23,6 +32,7 @@ const articles = [
         description: 'A technical breakdown of email authentication protocols, how they protect your sender identity, and why misconfiguration leads to inbox placement failure.',
         icon: Shield,
         readTime: '10 min read',
+        tag: 'DNS',
     },
     {
         slug: 'domain-warming-methodology',
@@ -30,6 +40,7 @@ const articles = [
         description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
         icon: Globe,
         readTime: '9 min read',
+        tag: 'Strategy',
     },
     {
         slug: 'email-reputation-lifecycle',
@@ -37,10 +48,11 @@ const articles = [
         description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
         icon: Mail,
         readTime: '11 min read',
+        tag: 'Deep Dive',
     },
 ];
 
-export default function KnowledgeHubPage() {
+export default function BlogPage() {
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
@@ -55,7 +67,7 @@ export default function KnowledgeHubPage() {
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
                         <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
+                        <Link href="/blog" className="text-black font-semibold transition-colors">Blog</Link>
                     </nav>
                     <div className="flex gap-4 items-center">
                         <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
@@ -75,7 +87,7 @@ export default function KnowledgeHubPage() {
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
                     <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
                         <Zap size={14} className="inline mr-1.5" />
-                        Knowledge Hub
+                        Superkabe Blog
                     </div>
                     <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
                         Email Infrastructure Intelligence
@@ -94,7 +106,7 @@ export default function KnowledgeHubPage() {
                         return (
                             <Link
                                 key={article.slug}
-                                href={`/knowledge/${article.slug}`}
+                                href={`/blog/${article.slug}`}
                                 className="block bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 group"
                             >
                                 <div className="flex items-center gap-3 mb-4">
@@ -102,6 +114,7 @@ export default function KnowledgeHubPage() {
                                         <Icon size={20} className="text-blue-600" />
                                     </div>
                                     <span className="text-xs text-gray-400 font-medium">{article.readTime}</span>
+                                    <span className="ml-auto px-2.5 py-1 bg-gray-50 text-gray-500 text-xs font-medium rounded-full">{article.tag}</span>
                                 </div>
                                 <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h2>
                                 <p className="text-gray-500 text-sm leading-relaxed mb-4">{article.description}</p>

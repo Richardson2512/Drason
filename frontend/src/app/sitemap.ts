@@ -84,9 +84,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ─── Documentation (auto-discovered) ──────────
         ...discoverRoutes('docs', '/docs', 'weekly', 0.8),
 
-        // ─── Knowledge Hub (auto-discovered) ──────────
-        ...discoverRoutes('knowledge', '/knowledge', 'weekly', 0.8),
-
         // ─── Blog (auto-discovered) ───────────────────
         ...discoverRoutes('blog', '/blog', 'weekly', 0.7),
     ];
