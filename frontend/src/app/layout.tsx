@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   description:
     'Production-hardened monitoring and protection layer for multi-domain, multi-mailbox outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
   icons: {
-    icon: '/image/favicon-v2.png',
+    icon: '/image/favicon-32.png',
+    apple: '/image/apple-touch-icon.png',
   },
   openGraph: {
     title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
