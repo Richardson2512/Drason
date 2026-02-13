@@ -10,6 +10,30 @@ export const metadata: Metadata = {
 };
 
 export default function DomainWarmingArticle() {
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Domain Warming Methodology",
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "datePublished": "2026-02-13",
+        "dateModified": "2026-02-13",
+        "mainEntityOfPage": "https://superkabe.com/knowledge/domain-warming-methodology"
+    };
+
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Warm a New Email Domain for Cold Outbound",
+        "step": [
+            { "@type": "HowToStep", "name": "Configure DNS authentication", "text": "Set up SPF, DKIM, and DMARC records for the new domain before sending any emails." },
+            { "@type": "HowToStep", "name": "Start at low volume", "text": "Send 5-10 emails per mailbox per day in week 1. Target engaged recipients who are likely to open and reply." },
+            { "@type": "HowToStep", "name": "Gradually increase volume", "text": "Increase to 15-20 in week 2, 25-35 in week 3, and 40-50 by week 4-6. Monitor bounce rates at each stage." },
+            { "@type": "HowToStep", "name": "Monitor engagement signals", "text": "Track open rates, reply rates, and bounce rates. If bounce rate exceeds 3%, pause and investigate before continuing." },
+            { "@type": "HowToStep", "name": "Reach full capacity", "text": "After 6-8 weeks with stable metrics, the domain is fully warmed and can sustain full cold outbound volume." }
+        ]
+    };
+
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -19,7 +43,7 @@ export default function DomainWarmingArticle() {
                 "name": "How long does it take to warm a new email domain?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Domain warming typically takes 2-4 weeks for basic sending capability and 6-8 weeks for full cold outbound capacity. The timeline depends on the warming methodology, engagement rates, and the specific ISPs being targeted. Rushing the process by exceeding daily volume limits is the most common cause of domain burning."
+                    "text": "2-4 weeks for basic capability, 6-8 weeks for full cold outbound capacity. Rushing by exceeding daily limits is the most common cause of domain burning."
                 }
             },
             {
@@ -27,7 +51,7 @@ export default function DomainWarmingArticle() {
                 "name": "What is the recommended daily email volume during domain warming?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Start with 5-10 emails per day in week 1, increasing to 15-20 in week 2, 25-35 in week 3, and reaching full capacity of 40-50 per day by week 4-6. These volumes are per mailbox. Each mailbox on a domain should follow its own ramp schedule independently."
+                    "text": "Start at 5-10 per mailbox in week 1, increase to 15-20 (week 2), 25-35 (week 3), and 40-50 by weeks 4-6. Each mailbox follows its own ramp independently."
                 }
             },
             {
@@ -35,7 +59,7 @@ export default function DomainWarmingArticle() {
                 "name": "Can you warm multiple mailboxes on the same domain simultaneously?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes, but with caution. Each mailbox contributes to the domain's aggregate reputation. If you warm 5 mailboxes simultaneously at 10 emails each, the domain is sending 50 emails per day total. ISPs evaluate reputation at both the mailbox and domain level, so the combined volume must stay within safe warming thresholds."
+                    "text": "Yes, but combined volume must stay within safe thresholds. Five mailboxes at 10 emails each means 50 total from the domain. ISPs evaluate at both mailbox and domain level."
                 }
             }
         ]
@@ -43,6 +67,8 @@ export default function DomainWarmingArticle() {
 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
@@ -203,6 +229,30 @@ export default function DomainWarmingArticle() {
                     </div>
                 </div>
             </article>
+
+            {/* Internal Link Mesh */}
+            <section className="relative z-10 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
+                    <div className="grid md:grid-cols-3 gap-4">
+                        <Link href="/knowledge/email-reputation-lifecycle" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Email Reputation Lifecycle</h3>
+                            <p className="text-gray-500 text-xs">How reputation is built and damaged</p>
+                        </Link>
+                        <Link href="/knowledge/bounce-rate-deliverability" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Bounce Rate & Deliverability</h3>
+                            <p className="text-gray-500 text-xs">How bounces destroy sender reputation</p>
+                        </Link>
+                        <Link href="/knowledge/spf-dkim-dmarc-explained" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">SPF, DKIM, and DMARC</h3>
+                            <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
+                        </Link>
+                    </div>
+                    <div className="mt-6">
+                        <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    </div>
+                </div>
+            </section>
 
             <Footer />
         </div>

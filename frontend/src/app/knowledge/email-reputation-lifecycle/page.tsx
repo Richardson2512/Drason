@@ -10,6 +10,17 @@ export const metadata: Metadata = {
 };
 
 export default function EmailReputationArticle() {
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Email Reputation Lifecycle",
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "datePublished": "2026-02-13",
+        "dateModified": "2026-02-13",
+        "mainEntityOfPage": "https://superkabe.com/knowledge/email-reputation-lifecycle"
+    };
+
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -19,7 +30,7 @@ export default function EmailReputationArticle() {
                 "name": "How do ISPs calculate email sender reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "ISPs calculate sender reputation using a weighted combination of signals: bounce rate (highest weight), spam complaint rate, engagement metrics (opens, replies), sending volume consistency, authentication status (SPF/DKIM/DMARC), and spam trap hits. Each ISP maintains its own proprietary scoring model, but these core signals are universal."
+                    "text": "ISPs use weighted signals: bounce rate (highest weight), spam complaints, engagement metrics (opens, replies), volume consistency, authentication status, and spam trap hits. Each ISP has its own scoring model."
                 }
             },
             {
@@ -27,7 +38,7 @@ export default function EmailReputationArticle() {
                 "name": "Can a damaged email domain reputation be recovered?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Recovery is possible if the damage is moderate (bounce rates were 5-10% for a short period). Recovery requires stopping all sending, fixing the root cause, then slowly re-warming the domain over 2-8 weeks. However, if the domain has been blacklisted by multiple ISPs or hit spam traps, recovery may be impractical and purchasing a new domain is often more cost-effective."
+                    "text": "Recovery is possible for moderate damage. Stop sending, fix the root cause, wait 48-72 hours, then re-warm at 50% speed over 2-8 weeks. Severe blacklisting or spam trap hits often make recovery impractical."
                 }
             },
             {
@@ -35,7 +46,7 @@ export default function EmailReputationArticle() {
                 "name": "What is the difference between domain reputation and IP reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Domain reputation is tied to the sending domain name (e.g., superkabe.com) while IP reputation is tied to the server's IP address. Modern ISPs weight domain reputation more heavily than IP reputation. Changing IPs does not reset your domain reputation. For outbound teams using shared sending infrastructure like Smartlead, domain reputation is the primary factor."
+                    "text": "Domain reputation is tied to the sending domain name; IP reputation is tied to the server IP. Modern ISPs weight domain reputation more heavily. Changing IPs does not reset domain reputation."
                 }
             }
         ]
@@ -43,6 +54,7 @@ export default function EmailReputationArticle() {
 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
@@ -197,6 +209,30 @@ export default function EmailReputationArticle() {
                     </div>
                 </div>
             </article>
+
+            {/* Internal Link Mesh */}
+            <section className="relative z-10 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
+                    <div className="grid md:grid-cols-3 gap-4">
+                        <Link href="/knowledge/bounce-rate-deliverability" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Bounce Rate & Deliverability</h3>
+                            <p className="text-gray-500 text-xs">How bounces destroy sender reputation</p>
+                        </Link>
+                        <Link href="/knowledge/domain-warming-methodology" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Domain Warming Methodology</h3>
+                            <p className="text-gray-500 text-xs">Building sender reputation on new domains</p>
+                        </Link>
+                        <Link href="/knowledge/spf-dkim-dmarc-explained" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">SPF, DKIM, and DMARC</h3>
+                            <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
+                        </Link>
+                    </div>
+                    <div className="mt-6">
+                        <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    </div>
+                </div>
+            </section>
 
             <Footer />
         </div>

@@ -43,10 +43,21 @@ export default function RootLayout({
   const orgSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://superkabe.com/#organization',
     name: 'Superkabe',
     url: 'https://superkabe.com',
     logo: 'https://superkabe.com/image/logo-v2.png',
     description: 'Email infrastructure protection and sender reputation recovery platform for modern outbound teams.',
+    foundingDate: '2024',
+    founder: {
+      '@type': 'Person',
+      name: 'Richardson',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'support@superkabe.com',
+    },
     sameAs: [
       'https://twitter.com/superkabe',
       'https://www.linkedin.com/company/superkabe',
@@ -56,9 +67,13 @@ export default function RootLayout({
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
+    '@id': 'https://superkabe.com/#software',
     name: 'Superkabe',
     operatingSystem: 'Web',
     applicationCategory: 'BusinessApplication',
+    isPartOf: {
+      '@id': 'https://superkabe.com/#organization',
+    },
     offers: {
       '@type': 'Offer',
       price: '49.00',

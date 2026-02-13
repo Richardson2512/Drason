@@ -48,7 +48,7 @@ export default function LandingPage() {
                 "name": "How does Superkabe integrate with my stack?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Superkabe uses webhooks to connect directly with your sending tools (Smartlead, Instantly) and your data sources (Clay, tables). Set up takes less than 5 minutes."
+                    "text": "Superkabe connects via webhooks to sending tools like Smartlead and Instantly, and data sources like Clay. Setup takes under 5 minutes with no code changes required."
                 }
             },
             {
@@ -56,7 +56,7 @@ export default function LandingPage() {
                 "name": "Does Superkabe replace Smartlead or Clay?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "No. Superkabe sits between them as a protection layer. We monitor the signals they generate and act on them to protect your domains."
+                    "text": "No. Superkabe is a protection layer that sits between them. It monitors signals from your sending and enrichment tools to protect your domain health and sender reputation."
                 }
             },
             {
@@ -64,7 +64,7 @@ export default function LandingPage() {
                 "name": "Can I use Superkabe with multiple domains?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes! Superkabe is built for multi-domain infrastructure. You can track and protect unlimited domains under a single organization."
+                    "text": "Yes. Superkabe supports multi-domain infrastructure with unlimited domains and mailboxes per organization, each monitored independently for bounce rates and DNS authentication health."
                 }
             },
             {
@@ -72,7 +72,7 @@ export default function LandingPage() {
                 "name": "How does Superkabe protect sender reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Superkabe monitors bounce rates, DNS health, and mailbox resilience scores to prevent infrastructure degradation before reputation damage becomes irreversible."
+                    "text": "Superkabe monitors bounce rates, DNS health, and mailbox resilience in real-time. When thresholds are breached, it auto-pauses affected mailboxes and gates domain traffic to prevent irreversible reputation damage."
                 }
             }
         ]
@@ -131,7 +131,7 @@ export default function LandingPage() {
 
                     {/* Explicit definition for AI entity anchoring */}
                     <p className="text-sm text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed">
-                        Superkabe is an email infrastructure protection and deliverability recovery platform designed for outbound email operators.
+                        Superkabe is an email deliverability and sender reputation protection platform. It monitors domain health, enforces DNS authentication compliance (SPF, DKIM, DMARC), gates outbound email traffic based on real-time bounce data, and automates infrastructure recovery for outbound email operators.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

@@ -10,6 +10,29 @@ export const metadata: Metadata = {
 };
 
 export default function SpfDkimDmarcArticle() {
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "SPF, DKIM, and DMARC Explained",
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "datePublished": "2026-02-13",
+        "dateModified": "2026-02-13",
+        "mainEntityOfPage": "https://superkabe.com/knowledge/spf-dkim-dmarc-explained"
+    };
+
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Set Up SPF, DKIM, and DMARC for Email Authentication",
+        "step": [
+            { "@type": "HowToStep", "name": "Configure SPF", "text": "Publish a DNS TXT record listing all authorized sending IPs. Use -all (hard fail) to reject unauthorized senders." },
+            { "@type": "HowToStep", "name": "Configure DKIM", "text": "Generate a public/private key pair. Publish the public key as a DNS TXT record. Configure your mail server to sign outgoing emails with the private key." },
+            { "@type": "HowToStep", "name": "Configure DMARC", "text": "Publish a DMARC DNS record with policy p=quarantine or p=reject. Set rua to receive aggregate authentication reports." },
+            { "@type": "HowToStep", "name": "Verify alignment", "text": "Ensure the From header domain aligns with both SPF and DKIM domains. Send test emails and verify via authentication headers." }
+        ]
+    };
+
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -19,7 +42,7 @@ export default function SpfDkimDmarcArticle() {
                 "name": "What is SPF in email authentication?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "SPF (Sender Policy Framework) is a DNS-based authentication mechanism that specifies which mail servers are authorized to send email on behalf of a domain. It works by publishing a TXT record in DNS that lists authorized IP addresses. Receiving servers check this record to verify the sender."
+                    "text": "SPF is a DNS TXT record that lists which mail servers can send email for your domain. Receiving servers check this record to verify the sender is authorized."
                 }
             },
             {
@@ -27,7 +50,7 @@ export default function SpfDkimDmarcArticle() {
                 "name": "What is DKIM and how does it work?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "DKIM (DomainKeys Identified Mail) adds a cryptographic signature to each outgoing email header. The receiving server uses the public key published in the sender's DNS to verify that the email was not altered in transit and was authorized by the domain owner."
+                    "text": "DKIM adds a cryptographic signature to each email using a private key. Receiving servers verify the signature against a public key in DNS to confirm the email is authentic and unaltered."
                 }
             },
             {
@@ -35,7 +58,7 @@ export default function SpfDkimDmarcArticle() {
                 "name": "What happens if DMARC is not configured?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Without DMARC, there is no policy telling receiving servers what to do when SPF or DKIM fails. This means spoofed emails using your domain may be delivered to recipients, damaging your domain reputation. ISPs increasingly require DMARC for inbox placement, especially Google and Yahoo which mandate it as of 2024."
+                    "text": "Without DMARC, ISPs have no policy for failed authentication checks. Spoofed emails using your domain may reach recipients. Google and Yahoo mandate DMARC for all bulk senders since 2024."
                 }
             }
         ]
@@ -43,6 +66,8 @@ export default function SpfDkimDmarcArticle() {
 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
@@ -163,6 +188,30 @@ export default function SpfDkimDmarcArticle() {
                     </div>
                 </div>
             </article>
+
+            {/* Internal Link Mesh */}
+            <section className="relative z-10 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
+                    <div className="grid md:grid-cols-3 gap-4">
+                        <Link href="/knowledge/bounce-rate-deliverability" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Bounce Rate & Deliverability</h3>
+                            <p className="text-gray-500 text-xs">How bounces destroy sender reputation</p>
+                        </Link>
+                        <Link href="/knowledge/domain-warming-methodology" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Domain Warming Methodology</h3>
+                            <p className="text-gray-500 text-xs">Building sender reputation on new domains</p>
+                        </Link>
+                        <Link href="/knowledge/email-reputation-lifecycle" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Email Reputation Lifecycle</h3>
+                            <p className="text-gray-500 text-xs">How reputation is built and damaged</p>
+                        </Link>
+                    </div>
+                    <div className="mt-6">
+                        <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    </div>
+                </div>
+            </section>
 
             <Footer />
         </div>

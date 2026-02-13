@@ -10,6 +10,17 @@ export const metadata: Metadata = {
 };
 
 export default function BounceRateArticle() {
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How Bounce Rate Affects Email Deliverability",
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "datePublished": "2026-02-13",
+        "dateModified": "2026-02-13",
+        "mainEntityOfPage": "https://superkabe.com/knowledge/bounce-rate-deliverability"
+    };
+
     const faqSchema = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -19,7 +30,7 @@ export default function BounceRateArticle() {
                 "name": "What is an acceptable email bounce rate?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Industry standard considers anything below 2% acceptable. For cold outbound, keeping bounce rates under 3% per domain per rolling 7-day window is critical. Above 5%, most ESPs begin throttling or suspending the sending domain."
+                    "text": "Below 2% is acceptable. For cold outbound, keep under 3% per domain per rolling 7-day window. Above 5%, most ESPs throttle or suspend."
                 }
             },
             {
@@ -27,7 +38,7 @@ export default function BounceRateArticle() {
                 "name": "What is the difference between a hard bounce and a soft bounce?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "A hard bounce is a permanent delivery failure caused by invalid addresses, non-existent domains, or blocked senders. A soft bounce is a temporary failure caused by full mailboxes, server downtime, or rate limiting. Hard bounces directly damage sender reputation; soft bounces only impact reputation if they persist."
+                    "text": "Hard bounces are permanent failures (invalid addresses, blocked senders). Soft bounces are temporary (full mailboxes, downtime). Hard bounces directly damage sender reputation; soft bounces only impact if persistent."
                 }
             },
             {
@@ -35,7 +46,7 @@ export default function BounceRateArticle() {
                 "name": "How does bounce rate affect domain reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "ISPs like Google and Microsoft track bounce rates per sending domain. A sustained bounce rate above 5% triggers reputation scoring downgrades, causing subsequent emails to be routed to spam or rejected entirely. Domain reputation damage compounds over time and recovery can take 2-8 weeks."
+                    "text": "ISPs track bounce rates per domain. Sustained rates above 5% trigger reputation downgrades, routing emails to spam or rejecting entirely. Damage compounds and recovery takes 2-8 weeks."
                 }
             }
         ]
@@ -43,6 +54,7 @@ export default function BounceRateArticle() {
 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
@@ -195,6 +207,30 @@ export default function BounceRateArticle() {
                     </div>
                 </div>
             </article>
+
+            {/* Internal Link Mesh */}
+            <section className="relative z-10 pb-24 px-6">
+                <div className="max-w-3xl mx-auto">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
+                    <div className="grid md:grid-cols-3 gap-4">
+                        <Link href="/knowledge/email-reputation-lifecycle" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">The Email Reputation Lifecycle</h3>
+                            <p className="text-gray-500 text-xs">How reputation is built, damaged, and recovered</p>
+                        </Link>
+                        <Link href="/knowledge/domain-warming-methodology" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">Domain Warming Methodology</h3>
+                            <p className="text-gray-500 text-xs">Building sender reputation on new domains</p>
+                        </Link>
+                        <Link href="/knowledge/spf-dkim-dmarc-explained" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                            <h3 className="font-bold text-gray-900 text-sm mb-2">SPF, DKIM, and DMARC</h3>
+                            <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
+                        </Link>
+                    </div>
+                    <div className="mt-6">
+                        <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    </div>
+                </div>
+            </section>
 
             <Footer />
         </div>
