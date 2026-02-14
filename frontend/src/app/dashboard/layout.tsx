@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
@@ -102,16 +102,28 @@ export default function DashboardLayout({
                     justifyContent: isCollapsed ? 'center' : 'flex-start',
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
-                    height: '40px'
+                    minHeight: '40px',
+                    padding: '0.25rem 0'
                 }}>
-                    <div style={{ flexShrink: 0 }}>
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
+                    <div style={{ flexShrink: 0, width: '32px', height: '32px' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} style={{ display: 'block' }} onError={(e) => {
+                            // Fallback: show a branded icon if image fails to load
+                            const target = e.currentTarget;
+                            target.style.display = 'none';
+                            if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                        }} />
+                        <div style={{ display: 'none', width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem', fontWeight: '900' }}>S</div>
                     </div>
                     <span style={{
                         opacity: isCollapsed ? 0 : 1,
                         width: isCollapsed ? 0 : 'auto',
                         transition: 'opacity 0.2s',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
                     }}>
                         Superkabe
                     </span>
