@@ -244,11 +244,11 @@ export default function DashboardLayout({
 
             <main className="scrollbar-hide" style={{
                 flex: 1,
-                padding: '0.5rem 1rem 5rem 1.5rem',
+                padding: '0.5rem 1rem 0 1.5rem',
                 overflowY: 'auto',
                 zIndex: 10
             }}>
-                <div className="container" style={{ height: '100%' }}>
+                <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem' }}>
                     {children}
                 </div>
             </main>
