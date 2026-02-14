@@ -392,21 +392,23 @@ export default function LandingPage() {
                     <h2 className="text-4xl font-bold text-center mb-16">Common Questions</h2>
 
                     <div className="space-y-4">
-                        {[
-                            { q: "How does Superkabe integrate with my stack?", a: "Superkabe uses webhooks to connect directly with your sending tools (Smartlead, Instantly) and your data sources (Clay, tables). Set up takes less than 5 minutes." },
-                            { q: "Does Superkabe replace Smartlead or Clay?", a: "No. Superkabe sits *between* them as a protection layer. We monitor the signals they generate and act on them to protect your domains." },
-                            { q: "Can I use Superkabe with multiple domains?", a: "Yes! Superkabe is built for multi-domain infrastructure. You can track and protect unlimited domains under a single organization." },
-                        ].map((faq, index) => (
+                        {faqSchema.mainEntity.map((faq, index) => (
                             <div key={index} className="border border-gray-100 rounded-2xl p-6 bg-gray-50 hover:bg-white hover:shadow-md transition-all cursor-pointer"
                                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                             >
                                 <div className="flex justify-between items-center">
-                                    <h4 className="font-semibold text-lg text-gray-900">{faq.q}</h4>
-                                    <span className="text-2xl text-blue-500 font-light">{openIndex === index ? "−" : "+"}</span>
+                                    <h4 className="font-semibold text-lg text-gray-900 pr-8">{faq.name}</h4>
+                                    <span className="text-2xl text-blue-500 font-light flex-shrink-0">
+                                        {openIndex === index ? "−" : "+"}
+                                    </span>
                                 </div>
-                                {openIndex === index && (
-                                    <p className="text-gray-600 mt-4 leading-relaxed">{faq.a}</p>
-                                )}
+                                <div className={`grid transition-all duration-300 ease-in-out ${openIndex === index ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'}`}>
+                                    <div className="overflow-hidden">
+                                        <p className="text-gray-600 leading-relaxed">
+                                            {faq.acceptedAnswer.text}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
