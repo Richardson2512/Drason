@@ -47,21 +47,22 @@ export default function DashboardLayout({
             </div>
 
 
-            {/* Sidebar Wrapper — button lives here so it's not clipped by aside overflow */}
+            {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
             <div style={{
                 position: 'relative',
                 flexShrink: 0,
                 width: isCollapsed ? '90px' : '260px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                margin: '0.5rem',
                 zIndex: 20
             }}>
-                {/* Toggle Button — outside aside so it floats above */}
+                {/* Toggle Button — positioned on wrapper edge, outside aside */}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
                     style={{
                         position: 'absolute',
-                        right: '-2px',
-                        top: '52px',
+                        right: '-14px',
+                        top: '48px',
                         background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
                         border: '2px solid #fff',
                         borderRadius: '50%',
@@ -74,7 +75,7 @@ export default function DashboardLayout({
                         boxShadow: '0 2px 8px rgba(99, 102, 241, 0.4)',
                         color: '#fff',
                         zIndex: 40,
-                        transition: 'transform 0.2s'
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
                     className="hover:scale-110"
                 >
@@ -92,7 +93,6 @@ export default function DashboardLayout({
                     flexDirection: 'column',
                     gap: '1rem',
                     overflowY: 'auto',
-                    margin: '0.5rem',
                     borderRadius: '24px',
                     boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.05)',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
