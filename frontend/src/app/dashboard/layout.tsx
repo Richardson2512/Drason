@@ -262,10 +262,16 @@ export default function DashboardLayout({
           text-decoration: none;
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 12px;
           font-size: 0.95rem;
           font-weight: 500;
           border: 1px solid transparent;
+        }
+        .nav-link span:first-child {
+          min-width: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .nav-link:hover {
           background: #FFFFFF;
