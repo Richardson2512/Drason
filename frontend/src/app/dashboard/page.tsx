@@ -14,14 +14,16 @@ export default function Overview() {
   // Chart Data State
   const [campaignData, setCampaignData] = useState<any[]>([]);
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    // Parallel Fetching
+    // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
     Promise.all([
-      apiClient<any>('/api/dashboard/stats'),
-      apiClient<any>('/api/dashboard/leads'),
-      apiClient<any>('/api/dashboard/domains'),
-      apiClient<any>('/api/dashboard/mailboxes'),
-      apiClient<any>('/api/dashboard/campaigns').catch(() => ({ campaigns: [] }))
+      apiClient<any>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 }; }),
+      apiClient<any>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { leads: [], meta: {} }; }),
+      apiClient<any>('/api/dashboard/domains').catch((e) => { console.error('Domains fetch failed:', e); return { domains: [], meta: {} }; }),
+      apiClient<any>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { mailboxes: [], meta: {} }; }),
+      apiClient<any>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { campaigns: [], meta: {} }; })
     ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
       setStats(statsData); // statsData is { active: ..., ... }
       setLeads(leadsData.leads || []); // leadsData is { leads: [], meta: ... }
@@ -36,9 +38,15 @@ export default function Overview() {
         cmap[cid] = (cmap[cid] || 0) + 1;
       });
       setCampaignData(Object.keys(cmap).map(k => ({ name: k, count: cmap[k] })));
+    }).catch((e) => {
+      console.error('Dashboard load error:', e);
+      setError(e.message || 'Failed to load dashboard');
+      // Still set stats to empty so we don't stay stuck on loading forever
+      setStats({ active: 0, held: 0, paused: 0 });
     });
   }, []);
 
+  if (error) return <div style={{ padding: '2rem', color: '#EF4444' }}>Error: {error}</div>;
   if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
 
   // Domain alerts
