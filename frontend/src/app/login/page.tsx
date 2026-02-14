@@ -9,7 +9,7 @@ import { apiClient, startTokenRefresh } from '@/lib/api';
 
 export default function LoginPage() {
     const router = useRouter();
-    const [email, setEmail] = useState('example@gmail.com');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
@@ -119,8 +119,7 @@ export default function LoginPage() {
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
-                                placeholder="example@gmail.com"
+                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
                                 required
                             />
                         </div>
