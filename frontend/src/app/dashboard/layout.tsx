@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
+import { logout as serverLogout, apiClient } from '@/lib/api';
 
 export default function DashboardLayout({
     children,
@@ -13,11 +14,28 @@ export default function DashboardLayout({
 }) {
     const router = useRouter();
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [userName, setUserName] = useState<string>('');
+    const [userEmail, setUserEmail] = useState<string>('');
 
-    const handleLogout = () => {
-        // Clear token cookie
-        document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
-        router.push('/');
+    useEffect(() => {
+        // Try to get user info from the organization endpoint
+        apiClient<any>('/api/organization').then((data) => {
+            if (data?.name) setUserName(data.name);
+        }).catch(() => { });
+
+        // Get user name from cookie-based JWT (decoded on client for display only)
+        try {
+            const cookies = document.cookie.split(';').reduce((acc: any, c) => {
+                const [k, v] = c.trim().split('=');
+                acc[k] = v;
+                return acc;
+            }, {});
+            // Note: httpOnly cookies won't be readable here, so we use a fallback
+        } catch { }
+    }, []);
+
+    const handleLogout = async () => {
+        await serverLogout();
     };
 
     return (
@@ -165,10 +183,14 @@ export default function DashboardLayout({
                 <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {!isCollapsed && (
                         <div style={{ padding: '1rem', background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)', borderRadius: '16px', border: '1px solid #DBEAFE', transition: 'all 0.3s' }}>
-                            <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', marginBottom: '0.25rem' }}>Pro Plan</div>
-                            <div style={{ fontSize: '0.75rem', color: '#60A5FA' }}>Using 45% of monthly quota</div>
-                            <div style={{ height: '4px', width: '100%', background: '#DBEAFE', borderRadius: '2px', marginTop: '0.5rem' }}>
-                                <div style={{ height: '100%', width: '45%', background: '#2563EB', borderRadius: '2px' }}></div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <User size={16} color="#fff" />
+                                </div>
+                                <div style={{ overflow: 'hidden' }}>
+                                    <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName || 'My Account'}</div>
+                                    <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail || 'Manage settings'}</div>
+                                </div>
                             </div>
                         </div>
                     )}
