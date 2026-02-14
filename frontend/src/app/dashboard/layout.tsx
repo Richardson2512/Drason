@@ -244,7 +244,7 @@ export default function DashboardLayout({
 
             <main className="scrollbar-hide" style={{
                 flex: 1,
-                padding: '0.5rem 1rem 1rem 1.5rem',
+                padding: '0.5rem 1rem 3rem 1.5rem',
                 overflowY: 'auto',
                 zIndex: 10
             }}>
