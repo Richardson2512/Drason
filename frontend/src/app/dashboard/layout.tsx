@@ -51,7 +51,7 @@ export default function DashboardLayout({
             <div style={{
                 position: 'relative',
                 flexShrink: 0,
-                width: isCollapsed ? '90px' : '260px',
+                width: isCollapsed ? '70px' : '210px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 margin: '0.5rem',
                 zIndex: 20
@@ -244,7 +244,7 @@ export default function DashboardLayout({
 
             <main className="scrollbar-hide" style={{
                 flex: 1,
-                padding: '0.5rem 1rem 3rem 1.5rem',
+                padding: '0.5rem 1rem 5rem 1.5rem',
                 overflowY: 'auto',
                 zIndex: 10
             }}>
