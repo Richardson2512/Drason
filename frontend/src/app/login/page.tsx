@@ -120,6 +120,7 @@ export default function LoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
+                                placeholder="Email ID"
                                 required
                             />
                         </div>
