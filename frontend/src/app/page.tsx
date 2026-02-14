@@ -45,14 +45,6 @@ export default function LandingPage() {
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "What is Superkabe?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Superkabe is an email infrastructure protection and sender reputation management platform designed for outbound email teams. It monitors DNS health, bounce rates, mailbox resilience, and lead quality in real-time to prevent domain damage and enforce structured recovery workflows when thresholds are breached."
-                }
-            },
-            {
-                "@type": "Question",
                 "name": "How does Superkabe protect sender reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
