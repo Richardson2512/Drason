@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
+import { apiClient } from '@/lib/api';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -57,18 +58,10 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/auth/login', {
+            const data = await apiClient<any>('/api/auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || 'Login failed');
-            }
-
-            const data = await res.json();
 
             // Set cookie for middleware
             document.cookie = `token=${data.token}; path=/; max-age=86400; SameSite=Lax`;

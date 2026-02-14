@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
 
 export default function Settings() {
@@ -16,24 +18,17 @@ export default function Settings() {
 
     useEffect(() => {
         // Fetch current settings
-        fetch('/api/settings')
-            .then(res => res.json())
+        apiClient<any>('/api/settings')
             .then(data => {
                 if (data.SMARTLEAD_API_KEY) setApiKey(data.SMARTLEAD_API_KEY);
-            });
+            })
+            .catch(() => { }); // Silent fail for settings
 
         // Fetch organization info (Phase 5)
-        fetch('/api/organization')
-            .then(res => res.json())
+        apiClient<any>('/api/organization')
             .then(data => {
-                if (data.error) {
-                    console.error('Org Fetch Error:', data);
-                    setOrg(null); // Keep loading or show error state
-                    setMsg(`Error: ${data.message || data.error}`);
-                } else {
-                    setOrg(data);
-                    if (data?.system_mode) setSystemMode(data.system_mode);
-                }
+                setOrg(data);
+                if (data?.system_mode) setSystemMode(data.system_mode);
             })
             .catch(err => {
                 console.error('Fetch failed:', err);
@@ -49,14 +44,13 @@ export default function Settings() {
         e.preventDefault();
         setLoading(true);
         try {
-            await fetch('/api/settings', {
+            await apiClient('/api/settings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ SMARTLEAD_API_KEY: apiKey })
             });
             setMsg('Settings saved successfully.');
-        } catch (err) {
-            setMsg('Error saving settings.');
+        } catch (err: any) {
+            setMsg(err.message || 'Error saving settings.');
         } finally {
             setLoading(false);
         }
@@ -65,19 +59,14 @@ export default function Settings() {
     const handleSystemModeChange = async (mode: string) => {
         setLoading(true);
         try {
-            const res = await fetch('/api/organization', {
+            await apiClient('/api/organization', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ system_mode: mode })
             });
-            if (res.ok) {
-                setSystemMode(mode);
-                setMsg(`System mode changed to ${mode.toUpperCase()}`);
-            } else {
-                setMsg('Failed to update system mode');
-            }
-        } catch (err) {
-            setMsg('Error updating system mode.');
+            setSystemMode(mode);
+            setMsg(`System mode changed to ${mode.toUpperCase()}`);
+        } catch (err: any) {
+            setMsg(err.message || 'Error updating system mode.');
         } finally {
             setLoading(false);
         }
@@ -267,10 +256,9 @@ export default function Settings() {
                             onClick={async () => {
                                 setLoading(true);
                                 try {
-                                    const res = await fetch('/api/sync', { method: 'POST' });
-                                    const data = await res.json();
-                                    setMsg(data.success ? `Synced ${data.result.campaigns_synced} campaigns.` : 'Failed: ' + data.error);
-                                } catch (e) { setMsg('Sync error.'); }
+                                    const data = await apiClient<any>('/api/sync', { method: 'POST' });
+                                    setMsg(`Synced ${data.result?.campaigns_synced || 0} campaigns.`);
+                                } catch (e: any) { setMsg('Sync error: ' + e.message); }
                                 setLoading(false);
                             }}
                             disabled={loading}
