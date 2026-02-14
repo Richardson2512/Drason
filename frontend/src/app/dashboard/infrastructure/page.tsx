@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
+import { apiClient } from '@/lib/api';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface Finding {
@@ -77,20 +79,22 @@ export default function InfrastructureHealthPage() {
     const fetchReport = useCallback(() => {
         setLoading(true);
         setError(null);
-        fetch('/api/assessment/report')
-            .then(res => {
-                if (res.status === 404) return null;
-                if (!res.ok) throw new Error('Failed to fetch report');
-                return res.json();
-            })
+        apiClient<any>('/api/assessment/report')
             .then(data => {
-                if (data?.report) {
-                    setReport(data.report);
+                if (data) {
+                    setReport(data);
                 } else {
                     setReport(null);
                 }
             })
-            .catch(err => setError(err.message))
+            .catch(err => {
+                // If 404, it means no report exists yet, which is not a crash-worthy error
+                if (err.message && err.message.includes('404')) {
+                    setReport(null);
+                } else {
+                    setError(err.message || 'Failed to fetch report');
+                }
+            })
             .finally(() => setLoading(false));
     }, []);
 
@@ -103,9 +107,8 @@ export default function InfrastructureHealthPage() {
     const fetchTransitionGate = async () => {
         setGateLoading(true);
         try {
-            const res = await fetch('/api/healing/transition-gate');
-            if (res.ok) {
-                const data = await res.json();
+            const data = await apiClient<any>('/api/healing/transition-gate');
+            if (data) {
                 setGateData(data);
             }
         } catch (err) {
@@ -118,9 +121,8 @@ export default function InfrastructureHealthPage() {
     const fetchRecoveryStatus = async () => {
         setRecoveryLoading(true);
         try {
-            const res = await fetch('/api/healing/recovery-status');
-            if (res.ok) {
-                const data = await res.json();
+            const data = await apiClient<any>('/api/healing/recovery-status');
+            if (data) {
                 setRecoveryData(data);
             }
         } catch (err) {
@@ -134,14 +136,9 @@ export default function InfrastructureHealthPage() {
         setAcknowledging(true);
         setAckResult(null);
         try {
-            const res = await fetch('/api/healing/acknowledge-transition', { method: 'POST' });
-            const data = await res.json();
-            if (data.success) {
-                setAckResult('Transition acknowledged. System will operate with current infrastructure.');
-                fetchTransitionGate();
-            } else {
-                setAckResult(data.error || 'Failed to acknowledge transition.');
-            }
+            await apiClient('/api/healing/acknowledge-transition', { method: 'POST' });
+            setAckResult('Transition acknowledged. System will operate with current infrastructure.');
+            fetchTransitionGate();
         } catch (err: any) {
             setAckResult(`Error: ${err.message}`);
         } finally {
@@ -153,16 +150,11 @@ export default function InfrastructureHealthPage() {
         setReassessing(true);
         setReassessResult(null);
         try {
-            const res = await fetch('/api/assessment/run', { method: 'POST' });
-            const data = await res.json();
-            if (data.success) {
-                setReassessResult('Assessment completed successfully! Refreshing report...');
-                setTimeout(fetchReport, 1000);
-            } else {
-                setReassessResult(`Assessment failed: ${data.message || 'Unknown error'}`);
-            }
+            await apiClient('/api/assessment/run', { method: 'POST' });
+            setReassessResult('Assessment completed successfully! Refreshing report...');
+            setTimeout(fetchReport, 1000);
         } catch (err: any) {
-            setReassessResult(`Error: ${err.message}`);
+            setReassessResult(`Assessment failed: ${err.message || 'Unknown error'}`);
         } finally {
             setReassessing(false);
         }
@@ -178,9 +170,8 @@ export default function InfrastructureHealthPage() {
 
         setDnsLoading(domainId);
         try {
-            const res = await fetch(`/api/assessment/domain/${domainId}/dns`);
-            const data = await res.json();
-            if (data.success) {
+            const data = await apiClient<any>(`/api/assessment/domain/${domainId}/dns`);
+            if (data) {
                 setDnsDetails(prev => ({ ...prev, [domainId]: data }));
             }
         } catch (err) {

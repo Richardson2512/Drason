@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { apiClient, startTokenRefresh } from '@/lib/api';
 
 export default function SignupPage() {
     const router = useRouter();
@@ -57,21 +58,14 @@ export default function SignupPage() {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/auth/register', {
+            const data = await apiClient<any>('/api/auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password, organizationName: orgName }),
             });
 
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || 'Registration failed');
-            }
-
-            const data = await res.json();
-
-            // Set cookie for middleware
-            document.cookie = `token=${data.token}; path=/; max-age=86400; SameSite=Lax`;
+            // Server sets httpOnly cookie automatically via Set-Cookie header.
+            // Start periodic token refresh to keep session alive.
+            startTokenRefresh();
 
             router.push('/dashboard');
         } catch (err: any) {

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { apiClient } from '@/lib/api';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, Tooltip as BarTooltip } from 'recharts';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 
@@ -16,21 +17,21 @@ export default function Overview() {
   useEffect(() => {
     // Parallel Fetching
     Promise.all([
-      fetch('/api/dashboard/stats').then(res => res.json()),
-      fetch('/api/dashboard/leads').then(res => res.json()),
-      fetch('/api/dashboard/domains').then(res => res.json()),
-      fetch('/api/dashboard/mailboxes').then(res => res.json()),
-      fetch('/api/dashboard/campaigns').then(res => res.json()).catch(() => [])
+      apiClient<any>('/api/dashboard/stats'),
+      apiClient<any>('/api/dashboard/leads'),
+      apiClient<any>('/api/dashboard/domains'),
+      apiClient<any>('/api/dashboard/mailboxes'),
+      apiClient<any>('/api/dashboard/campaigns').catch(() => ({ campaigns: [] }))
     ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
-      setStats(statsData);
-      setLeads(leadsData);
-      setDomains(domainsData);
-      setMailboxes(mailboxesData);
-      setCampaigns(campaignsData);
+      setStats(statsData); // statsData is { active: ..., ... }
+      setLeads(leadsData.leads || []); // leadsData is { leads: [], meta: ... }
+      setDomains(domainsData.domains || []); // domainsData is { domains: [], meta: ... }
+      setMailboxes(mailboxesData.mailboxes || []); // mailboxesData is { mailboxes: [], meta: ... }
+      setCampaigns(campaignsData.campaigns || []); // campaignsData is { campaigns: [], meta: ... }
 
       // Process Campaigns Distribution
       const cmap: Record<string, number> = {};
-      leadsData.forEach((l: any) => {
+      (leadsData.leads || []).forEach((l: any) => {
         const cid = l.assigned_campaign_id || 'Unassigned';
         cmap[cid] = (cmap[cid] || 0) + 1;
       });
@@ -54,9 +55,9 @@ export default function Overview() {
   };
 
   const leadChartData = [
-    { name: 'Active', value: stats.activeCount, color: COLORS.active },
-    { name: 'Held', value: stats.heldCount, color: COLORS.held },
-    { name: 'Paused', value: stats.pausedCount, color: COLORS.paused },
+    { name: 'Active', value: stats.active, color: COLORS.active },
+    { name: 'Held', value: stats.held, color: COLORS.held },
+    { name: 'Paused', value: stats.paused, color: COLORS.paused },
   ];
 
   const domainChartData = [
@@ -71,7 +72,7 @@ export default function Overview() {
     { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
   ];
 
-  const hasData = (stats.activeCount + stats.heldCount + stats.pausedCount) > 0 || campaigns.length > 0 || mailboxes.length > 0;
+  const hasData = (stats.active + stats.held + stats.paused) > 0 || campaigns.length > 0 || mailboxes.length > 0;
 
   if (!hasData) {
     return <OverviewEmptyState stats={stats} />;
@@ -125,7 +126,7 @@ export default function Overview() {
               <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Active vs. Paused leads</p>
             </div>
             <div style={{ background: '#F3F4F6', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '600', color: '#374151' }}>
-              Total: {stats.activeCount + stats.heldCount + stats.pausedCount}
+              Total: {stats.active + stats.held + stats.paused}
             </div>
           </div>
           <div style={{ height: '240px' }}>

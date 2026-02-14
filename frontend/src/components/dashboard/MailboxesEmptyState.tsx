@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Settings, RefreshCw } from 'lucide-react';
+import { apiClient } from '@/lib/api';
 
 export default function MailboxesEmptyState() {
     const [loading, setLoading] = useState(false);
@@ -10,16 +11,11 @@ export default function MailboxesEmptyState() {
         setLoading(true);
         setMsg('');
         try {
-            const res = await fetch('/api/sync', { method: 'POST' });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setMsg(`Success! Synced ${data.result.mailboxes} mailboxes. Refreshing...`);
-                setTimeout(() => window.location.reload(), 1500);
-            } else {
-                setMsg(`Error: ${data.error || 'Failed to sync'}`);
-            }
-        } catch (error) {
-            setMsg('Failed to connect to server');
+            const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
+            setMsg(`Success! Synced ${data.mailboxes} mailboxes. Refreshing...`);
+            setTimeout(() => window.location.reload(), 1500);
+        } catch (error: any) {
+            setMsg(`Error: ${error.message || 'Failed to sync'}`);
         } finally {
             setLoading(false);
         }

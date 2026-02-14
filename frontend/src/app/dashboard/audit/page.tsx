@@ -1,12 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { apiClient } from '@/lib/api';
 
 export default function Audit() {
     const [logs, setLogs] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState('all');
 
     useEffect(() => {
-        fetch('/api/dashboard/audit-logs').then(res => res.json()).then(setLogs);
+        apiClient<any>('/api/dashboard/audit-logs')
+            .then(data => setLogs(Array.isArray(data) ? data : []))
+            .catch(() => setLogs([]));
     }, []);
 
     const filteredLogs = activeTab === 'all' ? logs : logs.filter(log => log.entity === activeTab);

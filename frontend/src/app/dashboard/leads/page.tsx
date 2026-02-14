@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
+import { apiClient } from '@/lib/api';
 
 export default function LeadsPage() {
     const [leads, setLeads] = useState<any[]>([]);
@@ -13,31 +14,34 @@ export default function LeadsPage() {
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
 
-    const fetchLeads = useCallback(() => {
+    const fetchLeads = useCallback(async () => {
         const query = new URLSearchParams({
             page: meta.page.toString(),
             limit: meta.limit.toString(),
             status: leadTab
         });
 
-        fetch(`/api/dashboard/leads?${query}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.data) {
-                    setLeads(data.data);
-                    setMeta(data.meta);
-                    // Select first lead if none selected and leads exist
-                    if (data.data.length > 0 && !selectedLead) {
-                        setSelectedLead(data.data[0]);
-                    }
-                } else {
-                    // Fallback for old API response (should not happen after restart)
-                    if (Array.isArray(data)) {
-                        setLeads(data);
-                    }
+        try {
+            const data = await apiClient<any>(`/api/dashboard/leads?${query}`);
+            if (data?.data) {
+                setLeads(data.data);
+                setMeta(data.meta);
+                // Select first lead if none selected and leads exist
+                if (data.data.length > 0 && !selectedLead) {
+                    setSelectedLead(data.data[0]);
                 }
-            })
-            .catch(err => console.error('Failed to fetch leads:', err));
+            } else {
+                // Fallback for old API response (should not happen after restart)
+                if (Array.isArray(data)) {
+                    setLeads(data);
+                } else {
+                    setLeads([]);
+                }
+            }
+        } catch (err) {
+            console.error('Failed to fetch leads:', err);
+            setLeads([]);
+        }
     }, [meta.page, meta.limit, leadTab, selectedLead]);
 
     useEffect(() => {
@@ -47,10 +51,12 @@ export default function LeadsPage() {
     // Fetch logs when a lead is selected
     useEffect(() => {
         if (selectedLead) {
-            fetch(`/api/dashboard/audit-logs?entity=lead&entity_id=${selectedLead.id}`)
-                .then(res => res.json())
+            apiClient<any[]>(`/api/dashboard/audit-logs?entity=lead&entity_id=${selectedLead.id}`)
                 .then(setAuditLogs)
-                .catch(err => console.error('Failed to fetch logs:', err));
+                .catch(err => {
+                    console.error('Failed to fetch logs:', err);
+                    setAuditLogs([]);
+                });
         } else {
             setAuditLogs([]);
         }

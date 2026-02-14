@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { apiClient } from '@/lib/api';
 
 export default function Configuration() {
     const [rules, setRules] = useState<any[]>([]);
@@ -11,7 +12,9 @@ export default function Configuration() {
     });
 
     const fetchRules = () => {
-        fetch('/api/dashboard/routing-rules').then(res => res.json()).then(setRules);
+        apiClient<any>('/api/dashboard/routing-rules')
+            .then(data => setRules(Array.isArray(data) ? data : []))
+            .catch(() => setRules([]));
     };
 
     useEffect(() => {
@@ -20,7 +23,7 @@ export default function Configuration() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await fetch('/api/dashboard/routing-rules', {
+        await apiClient<any>('/api/dashboard/routing-rules', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),

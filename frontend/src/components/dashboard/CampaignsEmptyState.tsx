@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Rocket, Import, Loader2 } from 'lucide-react';
+import { apiClient } from '@/lib/api';
 
 export default function CampaignsEmptyState() {
     const [loading, setLoading] = useState(false);
@@ -9,16 +10,11 @@ export default function CampaignsEmptyState() {
         setLoading(true);
         setMsg('');
         try {
-            const res = await fetch('/api/sync', { method: 'POST' });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setMsg(`Success! Synced ${data.result.campaigns_synced} campaigns. Refreshing...`);
-                setTimeout(() => window.location.reload(), 1500);
-            } else {
-                setMsg(`Error: ${data.error || 'Failed to sync'}`);
-            }
-        } catch (error) {
-            setMsg('Failed to connect to server');
+            const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
+            setMsg(`Success! Synced ${data.campaigns_synced} campaigns. Refreshing...`);
+            setTimeout(() => window.location.reload(), 1500);
+        } catch (error: any) {
+            setMsg(`Error: ${error.message || 'Failed to sync'}`);
         } finally {
             setLoading(false);
         }

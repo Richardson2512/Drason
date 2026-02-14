@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
+import { apiClient } from '@/lib/api';
 
 export default function CampaignsPage() {
     const [campaigns, setCampaigns] = useState<any[]>([]);
@@ -13,24 +14,26 @@ export default function CampaignsPage() {
 
     const [selectedCampaignIds, setSelectedCampaignIds] = useState<Set<string>>(new Set());
 
-    const fetchCampaigns = useCallback(() => {
+    const fetchCampaigns = useCallback(async () => {
         setLoading(true);
-        fetch(`/api/dashboard/campaigns?page=${meta.page}&limit=${meta.limit}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.data) {
-                    setCampaigns(data.data);
-                    setMeta(data.meta);
-                    if (data.data.length > 0 && !selectedCampaign) {
-                        setSelectedCampaign(data.data[0]);
-                    }
-                } else {
-                    setCampaigns(data || []);
+        try {
+            const data = await apiClient<any>(`/api/dashboard/campaigns?page=${meta.page}&limit=${meta.limit}`);
+            if (data?.data) {
+                setCampaigns(data.data);
+                setMeta(data.meta);
+                if (data.data.length > 0 && !selectedCampaign) {
+                    setSelectedCampaign(data.data[0]);
                 }
-            })
-            .catch(err => console.error('Failed to fetch campaigns:', err))
-            .finally(() => setLoading(false));
-    }, [meta.page, meta.limit]);
+            } else {
+                setCampaigns(Array.isArray(data) ? data : []);
+            }
+        } catch (err) {
+            console.error('Failed to fetch campaigns:', err);
+            setCampaigns([]);
+        } finally {
+            setLoading(false);
+        }
+    }, [meta.page, meta.limit, selectedCampaign]);
 
     useEffect(() => {
         fetchCampaigns();
@@ -38,10 +41,12 @@ export default function CampaignsPage() {
 
     useEffect(() => {
         if (selectedCampaign) {
-            fetch(`/api/dashboard/stats?campaignId=${selectedCampaign.id}`)
-                .then(res => res.json())
+            apiClient<any>(`/api/dashboard/stats?campaignId=${selectedCampaign.id}`)
                 .then(setStats)
-                .catch(err => console.error('Failed to fetch stats:', err));
+                .catch(err => {
+                    console.error('Failed to fetch stats:', err);
+                    setStats(null);
+                });
         } else {
             setStats(null);
         }

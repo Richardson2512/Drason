@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
+import { apiClient } from '@/lib/api';
 
 export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<any[]>([]);
@@ -13,24 +14,26 @@ export default function MailboxesPage() {
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedMailboxIds, setSelectedMailboxIds] = useState<Set<string>>(new Set());
 
-    const fetchMailboxes = useCallback(() => {
+    const fetchMailboxes = useCallback(async () => {
         setLoading(true);
-        fetch(`/api/dashboard/mailboxes?page=${meta.page}&limit=${meta.limit}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.data) {
-                    setMailboxes(data.data);
-                    setMeta(data.meta);
-                    if (data.data.length > 0 && !selectedMailbox) {
-                        setSelectedMailbox(data.data[0]);
-                    }
-                } else {
-                    setMailboxes(data || []);
+        try {
+            const data = await apiClient<any>(`/api/dashboard/mailboxes?page=${meta.page}&limit=${meta.limit}`);
+            if (data?.data) {
+                setMailboxes(data.data);
+                setMeta(data.meta);
+                if (data.data.length > 0 && !selectedMailbox) {
+                    setSelectedMailbox(data.data[0]);
                 }
-            })
-            .catch(err => console.error('Failed to fetch mailboxes:', err))
-            .finally(() => setLoading(false));
-    }, [meta.page, meta.limit]);
+            } else {
+                setMailboxes(Array.isArray(data) ? data : []);
+            }
+        } catch (err) {
+            console.error('Failed to fetch mailboxes:', err);
+            setMailboxes([]);
+        } finally {
+            setLoading(false);
+        }
+    }, [meta.page, meta.limit, selectedMailbox]);
 
     useEffect(() => {
         fetchMailboxes();

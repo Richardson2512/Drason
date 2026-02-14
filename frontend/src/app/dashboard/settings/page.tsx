@@ -20,7 +20,12 @@ export default function Settings() {
         // Fetch current settings
         apiClient<any>('/api/settings')
             .then(data => {
-                if (data.SMARTLEAD_API_KEY) setApiKey(data.SMARTLEAD_API_KEY);
+                if (data) {
+                    // Check if data is array (new format)
+                    const settingsData = Array.isArray(data) ? data : [];
+                    const keySetting = settingsData.find((s: any) => s.key === 'SMARTLEAD_API_KEY');
+                    if (keySetting) setApiKey(keySetting.value);
+                }
             })
             .catch(() => { }); // Silent fail for settings
 
@@ -256,8 +261,8 @@ export default function Settings() {
                             onClick={async () => {
                                 setLoading(true);
                                 try {
-                                    const data = await apiClient<any>('/api/sync', { method: 'POST' });
-                                    setMsg(`Synced ${data.result?.campaigns_synced || 0} campaigns.`);
+                                    const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
+                                    setMsg(`Synced ${data.campaigns_synced || 0} campaigns.`);
                                 } catch (e: any) { setMsg('Sync error: ' + e.message); }
                                 setLoading(false);
                             }}

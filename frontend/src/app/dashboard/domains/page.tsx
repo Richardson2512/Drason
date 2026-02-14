@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
+import { apiClient } from '@/lib/api';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<any[]>([]);
@@ -12,22 +13,23 @@ export default function DomainsPage() {
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedDomainIds, setSelectedDomainIds] = useState<Set<string>>(new Set());
 
-    const fetchDomains = useCallback(() => {
-        fetch(`/api/dashboard/domains?page=${meta.page}&limit=${meta.limit}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.data) {
-                    setDomains(data.data);
-                    setMeta(data.meta);
-                    if (data.data.length > 0 && !selectedDomain) {
-                        setSelectedDomain(data.data[0]);
-                    }
-                } else {
-                    setDomains(data || []);
+    const fetchDomains = useCallback(async () => {
+        try {
+            const data = await apiClient<any>(`/api/dashboard/domains?page=${meta.page}&limit=${meta.limit}`);
+            if (data?.data) {
+                setDomains(data.data);
+                setMeta(data.meta);
+                if (data.data.length > 0 && !selectedDomain) {
+                    setSelectedDomain(data.data[0]);
                 }
-            })
-            .catch(err => console.error('Failed to fetch domains:', err));
-    }, [meta.page, meta.limit]); // selectedDomain removed
+            } else {
+                setDomains([]);
+            }
+        } catch (err) {
+            console.error('Failed to fetch domains:', err);
+            setDomains([]);
+        }
+    }, [meta.page, meta.limit, selectedDomain]);
 
     useEffect(() => {
         fetchDomains();
@@ -35,10 +37,12 @@ export default function DomainsPage() {
 
     useEffect(() => {
         if (selectedDomain) {
-            fetch(`/api/dashboard/audit-logs?entity=domain&entity_id=${selectedDomain.id}`)
-                .then(res => res.json())
+            apiClient<any[]>(`/api/dashboard/audit-logs?entity=domain&entity_id=${selectedDomain.id}`)
                 .then(setAuditLogs)
-                .catch(err => console.error('Failed to fetch logs:', err));
+                .catch(err => {
+                    console.error('Failed to fetch logs:', err);
+                    setAuditLogs([]);
+                });
         } else {
             setAuditLogs([]);
         }

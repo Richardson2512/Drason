@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { apiClient } from '@/lib/api';
+
 export default function StatusPage() {
     const [health, setHealth] = useState<any>(null);
     const [stateTransitions, setStateTransitions] = useState<any[]>([]);
@@ -18,14 +20,22 @@ export default function StatusPage() {
     const fetchAll = async () => {
         setLoading(true);
         try {
+            // Note: /api/health returns a direct object, not wrapped in { data: ... }
+            // So we use apiClient but expect the direct response, OR we use fetch.
+            // Let's use apiClient for consistency, but we need to know the type.
+            // Actually, apiClient returns `data.data` if `data.success` is true.
+            // /health returns { status: 'ok', ... } directly.
+            // So apiClient will return the full object as `data.success` is undefined.
+
             const [healthRes, transitionsRes, eventsRes] = await Promise.all([
-                fetch('/api/health').then(r => r.json()).catch(() => null),
-                fetch('/api/dashboard/state-transitions?limit=50').then(r => r.json()).catch(() => []),
-                fetch('/api/dashboard/events?limit=50').then(r => r.json()).catch(() => [])
+                apiClient<any>('/api/health').catch(() => null),
+                apiClient<any>('/api/dashboard/state-transitions?limit=50').catch(() => []),
+                apiClient<any>('/api/dashboard/events?limit=50').catch(() => [])
             ]);
+
             setHealth(healthRes);
-            setStateTransitions(transitionsRes || []);
-            setRawEvents(eventsRes || []);
+            setStateTransitions(Array.isArray(transitionsRes) ? transitionsRes : []);
+            setRawEvents(Array.isArray(eventsRes) ? eventsRes : []);
         } catch (e) {
             console.error('Status fetch error:', e);
         }

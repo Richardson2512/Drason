@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
-import { apiClient } from '@/lib/api';
+import { apiClient, startTokenRefresh } from '@/lib/api';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -63,8 +63,9 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password }),
             });
 
-            // Set cookie for middleware
-            document.cookie = `token=${data.token}; path=/; max-age=86400; SameSite=Lax`;
+            // Server sets httpOnly cookie automatically via Set-Cookie header.
+            // Start periodic token refresh to keep session alive.
+            startTokenRefresh();
 
             // Successful login
             router.push('/dashboard');

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { apiClient } from '@/lib/api';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 
@@ -17,12 +18,13 @@ export default function NotificationsPage() {
             filter
         });
 
-        fetch(`/api/dashboard/notifications?${query}`)
-            .then(res => res.json())
+        apiClient<any>(`/api/dashboard/notifications?${query}`)
             .then(data => {
-                if (data.data) {
+                if (data?.data) {
                     setNotifications(data.data);
-                    setMeta(data.meta);
+                    if (data.meta) setMeta(data.meta);
+                } else if (Array.isArray(data)) {
+                    setNotifications(data);
                 } else {
                     setNotifications([]);
                 }
@@ -38,7 +40,7 @@ export default function NotificationsPage() {
     const markAsRead = async (id: string, e: React.MouseEvent) => {
         e.stopPropagation();
         try {
-            await fetch(`/api/dashboard/notifications/${id}/read`, { method: 'POST' });
+            await apiClient<any>(`/api/dashboard/notifications/${id}/read`, { method: 'POST' });
             // Optimistic update
             setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
         } catch (error) {
@@ -48,7 +50,7 @@ export default function NotificationsPage() {
 
     const markAllAsRead = async () => {
         try {
-            await fetch('/api/dashboard/notifications/read-all', { method: 'POST' });
+            await apiClient<any>('/api/dashboard/notifications/read-all', { method: 'POST' });
             fetchNotifications();
         } catch (error) {
             console.error('Failed to mark all as read:', error);
