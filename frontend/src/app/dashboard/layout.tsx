@@ -88,7 +88,7 @@ export default function DashboardLayout({
                     background: 'rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(12px)',
                     borderRight: '1px solid var(--border)',
-                    padding: '1.25rem 0.75rem',
+                    padding: '1.5rem 1rem',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1rem',
@@ -137,7 +137,7 @@ export default function DashboardLayout({
                         </span>
                     </div>
 
-                    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         <Link href="/dashboard" className="nav-link" title={isCollapsed ? "Overview" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📊</span>
                             {!isCollapsed && <span>Overview</span>}
@@ -262,7 +262,7 @@ export default function DashboardLayout({
           text-decoration: none;
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 20px;
           font-size: 0.95rem;
           font-weight: 500;
           border: 1px solid transparent;
