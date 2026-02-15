@@ -128,7 +128,15 @@ export default function DomainsPage() {
                             />
                             <div style={{ flex: 1 }}>
                                 <div style={{ fontWeight: 600, marginBottom: '0.25rem', color: '#1E293B', fontSize: '0.9rem' }}>{d.domain}</div>
-                                <div style={{ fontSize: '0.7rem', fontWeight: 600, color: d.status === 'active' ? '#166534' : '#991B1B', background: d.status === 'active' ? '#DCFCE7' : '#FEE2E2', padding: '2px 8px', borderRadius: '999px', display: 'inline-block' }}>{d.status.toUpperCase()}</div>
+                                <div style={{
+                                    fontSize: '0.7rem',
+                                    fontWeight: 600,
+                                    color: d.status === 'healthy' ? '#166534' : (d.status === 'warning' ? '#B45309' : '#991B1B'),
+                                    background: d.status === 'healthy' ? '#DCFCE7' : (d.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
+                                    padding: '2px 8px',
+                                    borderRadius: '999px',
+                                    display: 'inline-block'
+                                }}>{d.status.toUpperCase()}</div>
                             </div>
                         </div>
                     ))}
@@ -229,8 +237,8 @@ export default function DomainsPage() {
                                             <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#1E293B', fontWeight: 500 }}>{mb.email}</td>
                                             <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
                                                 <span style={{
-                                                    color: mb.status === 'active' ? '#166534' : '#991B1B',
-                                                    background: mb.status === 'active' ? '#DCFCE7' : '#FEE2E2',
+                                                    color: mb.status === 'healthy' ? '#166534' : (mb.status === 'warning' ? '#B45309' : '#991B1B'),
+                                                    background: mb.status === 'healthy' ? '#DCFCE7' : (mb.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
                                                     padding: '0.25rem 0.75rem',
                                                     borderRadius: '999px',
                                                     fontSize: '0.75rem',

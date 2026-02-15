@@ -163,8 +163,8 @@ export default function CampaignsPage() {
                                     display: 'inline-block',
                                     padding: '0.25rem 0.75rem',
                                     borderRadius: '999px',
-                                    background: c.status === 'active' ? '#DCFCE7' : '#FEE2E2',
-                                    color: c.status === 'active' ? '#166534' : '#991B1B',
+                                    background: c.status === 'active' ? '#DCFCE7' : (c.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
+                                    color: c.status === 'active' ? '#166534' : (c.status === 'warning' ? '#B45309' : '#991B1B'),
                                     fontWeight: 600
                                 }}>
                                     {c.status.toUpperCase()}
