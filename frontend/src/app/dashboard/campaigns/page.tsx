@@ -283,8 +283,8 @@ export default function CampaignsPage() {
                                             </td>
                                             <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
                                                 <span style={{
-                                                    color: mb.status === 'active' ? '#166534' : '#991B1B',
-                                                    background: mb.status === 'active' ? '#DCFCE7' : '#FEE2E2',
+                                                    color: (mb.status === 'active' || mb.status === 'healthy') ? '#166534' : (mb.status === 'warning' ? '#B45309' : '#991B1B'),
+                                                    background: (mb.status === 'active' || mb.status === 'healthy') ? '#DCFCE7' : (mb.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
                                                     padding: '0.25rem 0.75rem',
                                                     borderRadius: '999px',
                                                     fontSize: '0.75rem',
