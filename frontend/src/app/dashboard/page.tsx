@@ -25,15 +25,15 @@ export default function Overview() {
       apiClient<any>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { mailboxes: [], meta: {} }; }),
       apiClient<any>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { campaigns: [], meta: {} }; })
     ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
-      setStats(statsData); // statsData is { active: ..., ... }
-      setLeads(leadsData.leads || []); // leadsData is { leads: [], meta: ... }
-      setDomains(domainsData.domains || []); // domainsData is { domains: [], meta: ... }
-      setMailboxes(mailboxesData.mailboxes || []); // mailboxesData is { mailboxes: [], meta: ... }
-      setCampaigns(campaignsData.campaigns || []); // campaignsData is { campaigns: [], meta: ... }
+      setStats(statsData); // statsData is { active: ..., ... } (unwrapped by apiClient)
+      setLeads(leadsData?.data || []);      // { data: [], meta: {} }
+      setDomains(domainsData?.data || []);    // { data: [], meta: {} }
+      setMailboxes(mailboxesData?.data || []); // { data: [], meta: {} }
+      setCampaigns(campaignsData?.data || []); // { data: [], meta: {} }
 
       // Process Campaigns Distribution
       const cmap: Record<string, number> = {};
-      (leadsData.leads || []).forEach((l: any) => {
+      (leadsData?.data || []).forEach((l: any) => {
         const cid = l.assigned_campaign_id || 'Unassigned';
         cmap[cid] = (cmap[cid] || 0) + 1;
       });
