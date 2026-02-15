@@ -163,8 +163,8 @@ export default function MailboxesPage() {
                                     borderRadius: '999px',
                                     fontSize: '0.875rem',
                                     fontWeight: '600',
-                                    background: selectedMailbox.domain?.status === 'healthy' ? '#DCFCE7' : '#FEE2E2',
-                                    color: selectedMailbox.domain?.status === 'healthy' ? '#166534' : '#991B1B'
+                                    background: (selectedMailbox.domain?.status === 'healthy' || selectedMailbox.domain?.status === 'active') ? '#DCFCE7' : (selectedMailbox.domain?.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
+                                    color: (selectedMailbox.domain?.status === 'healthy' || selectedMailbox.domain?.status === 'active') ? '#166534' : (selectedMailbox.domain?.status === 'warning' ? '#B45309' : '#991B1B')
                                 }}>
                                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
                                     {selectedMailbox.domain?.status.toUpperCase()}
