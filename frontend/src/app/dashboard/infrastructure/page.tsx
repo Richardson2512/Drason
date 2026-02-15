@@ -14,22 +14,31 @@ interface Finding {
     details: string;
     entity?: string;
     entityId?: string;
+    message?: string;
+    remediation?: string;
 }
 
 interface Recommendation {
     priority: number;
     action: string;
     reason: string;
+    details?: string;
     entity?: string;
     entityId?: string;
+}
+
+interface SummaryData {
+    domains: { total: number; healthy: number; warning: number; paused: number };
+    mailboxes: { total: number; healthy: number; warning: number; paused: number };
+    campaigns: { total: number; active: number; warning: number; paused: number };
 }
 
 interface InfraReport {
     id: string;
     report_type: string;
-    assessment_version: number;
+    assessment_version: string;
     overall_score: number;
-    summary: string;
+    summary: SummaryData;
     findings: Finding[];
     recommendations: Recommendation[];
     created_at: string;
@@ -511,7 +520,12 @@ export default function InfrastructureHealthPage() {
                         📋 Assessment Summary
                     </h2>
                     <p style={{ color: '#374151', lineHeight: '1.7', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-                        {report.summary}
+                        Assessed <strong>{report.summary.domains?.total || 0}</strong> domain(s),{' '}
+                        <strong>{report.summary.mailboxes?.total || 0}</strong> mailbox(es), and{' '}
+                        <strong>{report.summary.campaigns?.total || 0}</strong> campaign(s).
+                        {report.summary.domains?.paused > 0 && ` ${report.summary.domains.paused} domain(s) paused.`}
+                        {report.summary.mailboxes?.paused > 0 && ` ${report.summary.mailboxes.paused} mailbox(es) paused.`}
+                        {report.summary.campaigns?.paused > 0 && ` ${report.summary.campaigns.paused} campaign(s) paused.`}
                     </p>
 
                     {/* Quick Stats */}
