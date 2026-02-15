@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
+import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 
 export default function DashboardLayout({
     children,
@@ -17,6 +18,7 @@ export default function DashboardLayout({
     const [userName, setUserName] = useState<string>('');
     const [userEmail, setUserEmail] = useState<string>('');
     const [unreadCount, setUnreadCount] = useState<number>(0);
+    const [helpPanelOpen, setHelpPanelOpen] = useState(false);
 
     useEffect(() => {
         // Try to get user info from the organization endpoint
@@ -357,6 +359,10 @@ export default function DashboardLayout({
                     {children}
                 </div>
             </main>
+
+            {/* Help Panel */}
+            <HelpPanel isOpen={helpPanelOpen} onClose={() => setHelpPanelOpen(false)} />
+            <HelpPanelTrigger onClick={() => setHelpPanelOpen(true)} />
 
             <style jsx>{`
         .nav-link {

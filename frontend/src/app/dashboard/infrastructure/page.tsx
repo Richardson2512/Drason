@@ -3,6 +3,8 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
+import { HelpLink } from '@/components/HelpLink';
+import { Tooltip } from '@/components/Tooltip';
 
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
 const FindingsChart = dynamic(() => import('./Charts').then(mod => ({ default: mod.FindingsChart })), { ssr: false });
@@ -334,6 +336,7 @@ export default function InfrastructureHealthPage() {
                 <div>
                     <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <span>Infrastructure Health</span>
+                        <HelpLink href="/docs/help/infrastructure-score-explained" size="sm" />
                     </h1>
                     <p className="page-subtitle">
                         Assessment report from {new Date(report.created_at).toLocaleDateString(undefined, { dateStyle: 'long' })} at {new Date(report.created_at).toLocaleTimeString(undefined, { timeStyle: 'short' })}
@@ -538,6 +541,50 @@ export default function InfrastructureHealthPage() {
                     )}
                 </div>
             )}
+            {/* Info Banner: Score vs Status Explanation */}
+            <div className="premium-card" style={{
+                background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
+                border: '1px solid #BFDBFE',
+                padding: '1rem 1.5rem',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '1rem'
+            }}>
+                <div style={{
+                    flexShrink: 0,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '12px',
+                    background: '#3B82F6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem'
+                }}>
+                    💡
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1E40AF', marginBottom: '0.5rem' }}>
+                        Understanding Your Health Scores
+                    </h3>
+                    <p style={{ fontSize: '0.8rem', color: '#1E3A8A', lineHeight: 1.6, marginBottom: '0.5rem' }}>
+                        <Tooltip content="Infrastructure score measures DNS health (SPF/DKIM/DMARC) and blacklist status. It's a one-time snapshot taken at sync.">
+                            <strong style={{ borderBottom: '2px dotted #3B82F6', cursor: 'help' }}>Infrastructure Score</strong>
+                        </Tooltip>
+                        {' '}is different from{' '}
+                        <Tooltip content="Entity status shows real-time operational health based on bounce rates. Updates continuously during sending.">
+                            <strong style={{ borderBottom: '2px dotted #3B82F6', cursor: 'help' }}>Entity Status</strong>
+                        </Tooltip>
+                        . Your entities can show "healthy" even with a low infrastructure score because they measure different things.
+                    </p>
+                    <HelpLink
+                        href="/docs/help/infrastructure-score-explained"
+                        label="Learn why this matters →"
+                        size="sm"
+                    />
+                </div>
+            </div>
+
             {/* Score Row: Gauge + Entity Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* Overall Score with Explainer */}
