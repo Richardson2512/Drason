@@ -16,6 +16,7 @@ export default function DashboardLayout({
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [userName, setUserName] = useState<string>('');
     const [userEmail, setUserEmail] = useState<string>('');
+    const [unreadCount, setUnreadCount] = useState<number>(0);
 
     useEffect(() => {
         // Try to get user info from the organization endpoint
@@ -32,6 +33,18 @@ export default function DashboardLayout({
             }, {});
             // Note: httpOnly cookies won't be readable here, so we use a fallback
         } catch { }
+
+        // Fetch unread notification count
+        const fetchUnreadCount = () => {
+            apiClient<any>('/api/dashboard/notifications/unread-count')
+                .then(data => {
+                    if (data?.data?.count !== undefined) setUnreadCount(data.data.count);
+                })
+                .catch(() => { });
+        };
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30s
+        return () => clearInterval(interval);
     }, []);
 
     const handleLogout = async () => {
@@ -142,8 +155,32 @@ export default function DashboardLayout({
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📊</span>
                             {!isCollapsed && <span>Overview</span>}
                         </Link>
-                        <Link href="/dashboard/notifications" className="nav-link" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🔔</span>
+                        <Link href="/dashboard/notifications" className="nav-link" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', position: 'relative' }}>
+                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center', position: 'relative' }}>
+                                🔔
+                                {unreadCount > 0 && (
+                                    <span style={{
+                                        position: 'absolute',
+                                        top: '-4px',
+                                        right: '-6px',
+                                        background: '#EF4444',
+                                        color: '#FFFFFF',
+                                        fontSize: '0.6rem',
+                                        fontWeight: 700,
+                                        minWidth: '16px',
+                                        height: '16px',
+                                        borderRadius: '999px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '0 4px',
+                                        lineHeight: 1,
+                                        boxShadow: '0 1px 3px rgba(239,68,68,0.4)'
+                                    }}>
+                                        {unreadCount > 99 ? '99+' : unreadCount}
+                                    </span>
+                                )}
+                            </span>
                             {!isCollapsed && <span>Notifications</span>}
                         </Link>
 
