@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
 import { apiClient } from '@/lib/api';
 
 export default function CampaignsPage() {
+    const router = useRouter();
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
     const [stats, setStats] = useState<any>(null);
@@ -84,6 +86,20 @@ export default function CampaignsPage() {
 
     const handleLimitChange = (newLimit: number) => {
         setMeta(prev => ({ ...prev, limit: newLimit, page: 1 }));
+    };
+
+    const navigateToLeads = (status?: string) => {
+        if (!selectedCampaign) return;
+
+        const params = new URLSearchParams({
+            campaignId: selectedCampaign.id
+        });
+
+        if (status && status !== 'all') {
+            params.append('status', status);
+        }
+
+        router.push(`/dashboard/leads?${params.toString()}`);
     };
 
     if (loading && campaigns.length === 0) {
@@ -173,19 +189,70 @@ export default function CampaignsPage() {
                             <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Campaign Performance Details</div>
                         </div>
 
-                        {/* Top Stats - SPECIFIC TO CAMPAIGN */}
+                        {/* Top Stats - SPECIFIC TO CAMPAIGN (Clickable) */}
                         <div className="grid grid-cols-3 gap-6" style={{ marginBottom: '2.5rem' }}>
-                            <div className="premium-card">
+                            <div
+                                className="premium-card hover:shadow-lg"
+                                onClick={() => navigateToLeads()}
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    border: '1px solid transparent'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.borderColor = '#BFDBFE';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.borderColor = 'transparent';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
+                            >
                                 <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Total Leads</div>
                                 <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#111827' }}>{stats ? stats.total : '-'}</div>
+                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view all leads →</div>
                             </div>
-                            <div className="premium-card">
+                            <div
+                                className="premium-card hover:shadow-lg"
+                                onClick={() => navigateToLeads('active')}
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    border: '1px solid transparent'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.borderColor = '#BBF7D0';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.borderColor = 'transparent';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
+                            >
                                 <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Active Execution</div>
                                 <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#16A34A' }}>{stats ? stats.active : '-'}</div>
+                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view active leads →</div>
                             </div>
-                            <div className="premium-card">
+                            <div
+                                className="premium-card hover:shadow-lg"
+                                onClick={() => navigateToLeads('paused')}
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    border: '1px solid transparent'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.borderColor = '#FECACA';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.borderColor = 'transparent';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                }}
+                            >
                                 <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Paused</div>
                                 <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#EF4444' }}>{stats ? stats.paused : '-'}</div>
+                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view paused leads →</div>
                             </div>
                         </div>
 

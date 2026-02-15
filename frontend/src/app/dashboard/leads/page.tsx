@@ -1,25 +1,49 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import { apiClient } from '@/lib/api';
 
 export default function LeadsPage() {
+    const searchParams = useSearchParams();
     const [leads, setLeads] = useState<any[]>([]);
     const [selectedLead, setSelectedLead] = useState<any>(null);
     const [auditLogs, setAuditLogs] = useState<any[]>([]);
     const [leadTab, setLeadTab] = useState('all');
+    const [campaigns, setCampaigns] = useState<any[]>([]);
+    const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string>('all');
 
     // Pagination & Selection State
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
 
+    // Read URL parameters on mount
+    useEffect(() => {
+        const campaignId = searchParams.get('campaignId');
+        const status = searchParams.get('status');
+
+        if (campaignId) {
+            setSelectedCampaignFilter(campaignId);
+        }
+        if (status) {
+            setLeadTab(status);
+        }
+    }, [searchParams]);
+
     const fetchLeads = useCallback(async () => {
-        const query = new URLSearchParams({
+        const queryParams: any = {
             page: meta.page.toString(),
             limit: meta.limit.toString(),
             status: leadTab
-        });
+        };
+
+        // Add campaign filter if not 'all'
+        if (selectedCampaignFilter !== 'all') {
+            queryParams.campaignId = selectedCampaignFilter;
+        }
+
+        const query = new URLSearchParams(queryParams);
 
         try {
             const data = await apiClient<any>(`/api/dashboard/leads?${query}`);
@@ -42,11 +66,25 @@ export default function LeadsPage() {
             console.error('Failed to fetch leads:', err);
             setLeads([]);
         }
-    }, [meta.page, meta.limit, leadTab, selectedLead]);
+    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, selectedLead]);
 
     useEffect(() => {
         fetchLeads();
     }, [fetchLeads]);
+
+    // Fetch all campaigns for the filter dropdown
+    useEffect(() => {
+        apiClient<any>('/api/dashboard/campaigns?limit=1000')
+            .then(data => {
+                if (data?.data) {
+                    setCampaigns(data.data);
+                }
+            })
+            .catch(err => {
+                console.error('Failed to fetch campaigns:', err);
+                setCampaigns([]);
+            });
+    }, []);
 
     // Fetch logs when a lead is selected
     useEffect(() => {
@@ -104,6 +142,12 @@ export default function LeadsPage() {
         setSelectedLead(null);
     };
 
+    const handleCampaignFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCampaignFilter(e.target.value);
+        setMeta(prev => ({ ...prev, page: 1 })); // Reset to page 1 on filter change
+        setSelectedLead(null);
+    };
+
     // Deterministic Status Explanation Logic (Based on PRD System States)
     const getSystemNotice = (lead: any) => {
         if (lead.status === 'paused') {
@@ -152,30 +196,62 @@ export default function LeadsPage() {
         <div style={{ display: 'flex', height: '100%', gap: '1rem' }}>
             {/* Left: Lead List */}
             <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Leads</h2>
-                    <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
-                        {['all', 'held', 'active', 'paused'].map(t => (
-                            <button
-                                key={t}
-                                onClick={() => handleTabChange(t)}
-                                style={{
-                                    padding: '0.375rem 0.75rem',
-                                    borderRadius: '8px',
-                                    background: leadTab === t ? '#FFFFFF' : 'transparent',
-                                    color: leadTab === t ? '#111827' : '#6B7280',
-                                    boxShadow: leadTab === t ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
-                                    textTransform: 'capitalize',
-                                    transition: 'all 0.2s'
-                                }}
-                            >
-                                {t}
-                            </button>
-                        ))}
+                <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Leads</h2>
+                        <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
+                            {['all', 'held', 'active', 'paused'].map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => handleTabChange(t)}
+                                    style={{
+                                        padding: '0.375rem 0.75rem',
+                                        borderRadius: '8px',
+                                        background: leadTab === t ? '#FFFFFF' : 'transparent',
+                                        color: leadTab === t ? '#111827' : '#6B7280',
+                                        boxShadow: leadTab === t ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        textTransform: 'capitalize',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {t}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Campaign Filter Dropdown */}
+                    <div>
+                        <label htmlFor="campaign-filter" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Filter by Campaign
+                        </label>
+                        <select
+                            id="campaign-filter"
+                            value={selectedCampaignFilter}
+                            onChange={handleCampaignFilterChange}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 1rem',
+                                borderRadius: '12px',
+                                border: '1px solid #E5E7EB',
+                                background: '#FFFFFF',
+                                color: '#111827',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                outline: 'none',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            <option value="all">All Campaigns</option>
+                            {campaigns.map(c => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
@@ -308,7 +384,14 @@ export default function LeadsPage() {
                                         <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Execution Context</h3>
                                         <div style={{ marginBottom: '1rem' }}>
                                             <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>Assigned Campaign</div>
-                                            <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#2563EB' }}>{selectedLead.assigned_campaign_id || 'Unassigned'}</div>
+                                            <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#2563EB' }}>
+                                                {selectedLead.campaign?.name || 'Unassigned'}
+                                            </div>
+                                            {selectedLead.campaign && (
+                                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', fontFamily: 'monospace', marginTop: '0.25rem' }}>
+                                                    ID: {selectedLead.campaign.id}
+                                                </div>
+                                            )}
                                         </div>
                                         <div>
                                             <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>Internal Health</div>
