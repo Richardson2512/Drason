@@ -65,6 +65,7 @@ export default function InfrastructureHealthPage() {
     const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
     const [dnsDetails, setDnsDetails] = useState<Record<string, any>>({});
     const [dnsLoading, setDnsLoading] = useState<string | null>(null);
+    const [mounted, setMounted] = useState(false);
 
     // ── Transition Gate State ──
     const [gateData, setGateData] = useState<any>(null);
@@ -99,6 +100,7 @@ export default function InfrastructureHealthPage() {
     }, []);
 
     useEffect(() => {
+        setMounted(true);
         fetchReport();
         fetchTransitionGate();
         fetchRecoveryStatus();
@@ -477,24 +479,26 @@ export default function InfrastructureHealthPage() {
                 {/* Overall Score */}
                 <div className="premium-card" style={{ textAlign: 'center', position: 'relative' }}>
                     <div style={{ height: '200px', position: 'relative' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={[
-                                        { value: report.overall_score },
-                                        { value: 100 - report.overall_score }
-                                    ]}
-                                    cx="50%" cy="50%"
-                                    innerRadius={65} outerRadius={85}
-                                    startAngle={90} endAngle={-270}
-                                    paddingAngle={0} dataKey="value"
-                                    cornerRadius={8} strokeWidth={0}
-                                >
-                                    <Cell fill={scoreColor} />
-                                    <Cell fill="#F3F4F6" />
-                                </Pie>
-                            </PieChart>
-                        </ResponsiveContainer>
+                        {mounted && (
+                            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                                <PieChart>
+                                    <Pie
+                                        data={[
+                                            { value: report.overall_score },
+                                            { value: 100 - report.overall_score }
+                                        ]}
+                                        cx="50%" cy="50%"
+                                        innerRadius={65} outerRadius={85}
+                                        startAngle={90} endAngle={-270}
+                                        paddingAngle={0} dataKey="value"
+                                        cornerRadius={8} strokeWidth={0}
+                                    >
+                                        <Cell fill={scoreColor} />
+                                        <Cell fill="#F3F4F6" />
+                                    </Pie>
+                                </PieChart>
+                            </ResponsiveContainer>
+                        )}
                         <div style={{
                             position: 'absolute', top: '50%', left: '50%',
                             transform: 'translate(-50%, -50%)', textAlign: 'center'
@@ -583,25 +587,27 @@ export default function InfrastructureHealthPage() {
                             Findings Breakdown
                         </h2>
                         <div style={{ height: '200px' }}>
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={findingsChartData}
-                                        cx="50%" cy="50%"
-                                        innerRadius={55} outerRadius={75}
-                                        paddingAngle={5} dataKey="value"
-                                        cornerRadius={6} strokeWidth={0}
-                                    >
-                                        {findingsChartData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                        itemStyle={{ fontWeight: 600 }}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
+                            {mounted && (
+                                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                                    <PieChart>
+                                        <Pie
+                                            data={findingsChartData}
+                                            cx="50%" cy="50%"
+                                            innerRadius={55} outerRadius={75}
+                                            paddingAngle={5} dataKey="value"
+                                            cornerRadius={6} strokeWidth={0}
+                                        >
+                                            {findingsChartData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                            itemStyle={{ fontWeight: 600 }}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            )}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                             {findingsChartData.map(d => (
