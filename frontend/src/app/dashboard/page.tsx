@@ -10,6 +10,7 @@ export default function Overview() {
   const [domains, setDomains] = useState<any[]>([]);
   const [mailboxes, setMailboxes] = useState<any[]>([]);
   const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [userName, setUserName] = useState<string>('');
 
   // Chart Data State
   const [campaignData, setCampaignData] = useState<any[]>([]);
@@ -17,6 +18,11 @@ export default function Overview() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fetch user info
+    apiClient<any>('/api/organization').then((data) => {
+      if (data?.name) setUserName(data.name);
+    }).catch(() => { });
+
     // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
     Promise.all([
       apiClient<any>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 }; }),
@@ -88,6 +94,30 @@ export default function Overview() {
 
   return (
     <div className="grid gap-6">
+      {/* Welcome Section */}
+      <div style={{
+        padding: '1.5rem 2rem',
+        background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)',
+        borderRadius: '16px',
+        border: '1px solid #DBEAFE',
+        marginBottom: '1rem'
+      }}>
+        <h2 style={{
+          fontSize: '1.5rem',
+          fontWeight: '700',
+          background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          marginBottom: '0.5rem'
+        }}>
+          Welcome back, {userName || 'User'}! 👋
+        </h2>
+        <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+          Here's your system overview and health status.
+        </p>
+      </div>
+
       <div className="page-header">
         <h1 className="page-title">System Overview</h1>
         <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
