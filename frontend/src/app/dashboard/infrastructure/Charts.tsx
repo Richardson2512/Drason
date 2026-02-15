@@ -1,5 +1,5 @@
 'use client';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Area, AreaChart } from 'recharts';
 
 interface ScoreGaugeProps {
     score: number;
@@ -53,6 +53,68 @@ export function FindingsChart({ data }: FindingsChartProps) {
                     itemStyle={{ fontWeight: 600 }}
                 />
             </PieChart>
+        </ResponsiveContainer>
+    );
+}
+
+interface ScoreHistoryProps {
+    data: Array<{ date: string; score: number }>;
+}
+
+export function ScoreHistory({ data }: ScoreHistoryProps) {
+    if (!data || data.length === 0) return null;
+
+    const getColor = (score: number) => {
+        if (score >= 80) return '#16A34A';
+        if (score >= 60) return '#F59E0B';
+        return '#EF4444';
+    };
+
+    const latestColor = getColor(data[data.length - 1]?.score || 0);
+
+    return (
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            <AreaChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                    <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={latestColor} stopOpacity={0.2} />
+                        <stop offset="95%" stopColor={latestColor} stopOpacity={0} />
+                    </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                    tickLine={false}
+                    axisLine={{ stroke: '#E5E7EB' }}
+                />
+                <YAxis
+                    domain={[0, 100]}
+                    tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                    tickLine={false}
+                    axisLine={false}
+                />
+                <Tooltip
+                    contentStyle={{
+                        background: '#fff',
+                        border: 'none',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+                        fontSize: '0.8rem',
+                    }}
+                    formatter={(value: any) => [`${value}/100`, 'Score']}
+                    labelFormatter={(label: any) => `Assessment: ${label}`}
+                />
+                <Area
+                    type="monotone"
+                    dataKey="score"
+                    stroke={latestColor}
+                    strokeWidth={2.5}
+                    fill="url(#scoreGradient)"
+                    dot={{ r: 4, fill: latestColor, strokeWidth: 2, stroke: '#fff' }}
+                    activeDot={{ r: 6, fill: latestColor, strokeWidth: 2, stroke: '#fff' }}
+                />
+            </AreaChart>
         </ResponsiveContainer>
     );
 }

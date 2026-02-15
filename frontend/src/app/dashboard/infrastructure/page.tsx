@@ -6,6 +6,7 @@ import { apiClient } from '@/lib/api';
 
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
 const FindingsChart = dynamic(() => import('./Charts').then(mod => ({ default: mod.FindingsChart })), { ssr: false });
+const ScoreHistory = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreHistory })), { ssr: false });
 
 interface Finding {
     category: string;
@@ -14,6 +15,7 @@ interface Finding {
     details: string;
     entity?: string;
     entityId?: string;
+    entityName?: string;
     message?: string;
     remediation?: string;
 }
@@ -23,6 +25,7 @@ interface Recommendation {
     action: string;
     reason: string;
     details?: string;
+    link?: string;
     entity?: string;
     entityId?: string;
 }
@@ -88,6 +91,12 @@ export default function InfrastructureHealthPage() {
     const [recoveryData, setRecoveryData] = useState<any>(null);
     const [recoveryLoading, setRecoveryLoading] = useState(false);
 
+    // ── Score History ──
+    const [scoreHistory, setScoreHistory] = useState<Array<{ date: string; score: number }>>([]);
+
+    // ── Expanded Finding (for collapsible remediation) ──
+    const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
+
     const fetchReport = useCallback(() => {
         setLoading(true);
         setError(null);
@@ -114,7 +123,24 @@ export default function InfrastructureHealthPage() {
         fetchReport();
         fetchTransitionGate();
         fetchRecoveryStatus();
+        fetchScoreHistory();
     }, [fetchReport]);
+
+    const fetchScoreHistory = async () => {
+        try {
+            const data = await apiClient<any[]>('/api/assessment/reports');
+            if (data && Array.isArray(data)) {
+                setScoreHistory(
+                    data.reverse().map((r: any) => ({
+                        date: new Date(r.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+                        score: r.overall_score ?? 0,
+                    }))
+                );
+            }
+        } catch (err) {
+            console.error('Failed to fetch score history:', err);
+        }
+    };
 
     const fetchTransitionGate = async () => {
         setGateLoading(true);
@@ -220,7 +246,7 @@ export default function InfrastructureHealthPage() {
 
     if (!report) {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80%', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80%', gap: '2rem' }}>
                 <div style={{
                     width: '120px', height: '120px', borderRadius: '50%',
                     background: 'linear-gradient(135deg, #EFF6FF, #F5F3FF)',
@@ -232,15 +258,42 @@ export default function InfrastructureHealthPage() {
                 <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.025em' }}>
                     No Infrastructure Assessment Yet
                 </h2>
-                <p style={{ color: '#6B7280', fontSize: '1.1rem', maxWidth: '500px', textAlign: 'center', lineHeight: '1.6' }}>
-                    Run a Smartlead sync to trigger the initial assessment, or trigger a manual assessment below.
+                <p style={{ color: '#6B7280', fontSize: '1rem', maxWidth: '600px', textAlign: 'center', lineHeight: '1.6' }}>
+                    Run your first assessment to get a complete health report. Here&apos;s what we&apos;ll check:
                 </p>
+
+                {/* 3-step guide */}
+                <div style={{ display: 'flex', gap: '1.5rem', maxWidth: '750px', width: '100%' }}>
+                    {[
+                        { icon: '🔍', title: 'Scan', desc: 'Check your domains for SPF, DKIM, DMARC records and blacklist status' },
+                        { icon: '📊', title: 'Analyze', desc: 'Review mailbox bounce rates and campaign send performance metrics' },
+                        { icon: '📋', title: 'Report', desc: 'Get a scored report with specific findings and remediation steps' },
+                    ].map((step, i) => (
+                        <div key={step.title} style={{
+                            flex: 1, padding: '1.5rem', borderRadius: '20px',
+                            background: '#fff', border: '1px solid #E5E7EB',
+                            textAlign: 'center', position: 'relative',
+                            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
+                        }}>
+                            <div style={{
+                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)',
+                                width: '24px', height: '24px', borderRadius: '50%',
+                                background: '#2563EB', color: '#fff', fontSize: '0.75rem',
+                                fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            }}>{i + 1}</div>
+                            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{step.icon}</div>
+                            <div style={{ fontWeight: 800, color: '#111827', marginBottom: '0.35rem' }}>{step.title}</div>
+                            <div style={{ color: '#6B7280', fontSize: '0.825rem', lineHeight: 1.5 }}>{step.desc}</div>
+                        </div>
+                    ))}
+                </div>
+
                 <button onClick={handleReassess} className="premium-btn" disabled={reassessing}
-                    style={{ marginTop: '0.5rem', padding: '1rem 2rem', fontSize: '1rem', background: '#2563EB', borderRadius: '16px' }}>
+                    style={{ padding: '1rem 2rem', fontSize: '1rem', background: '#2563EB', borderRadius: '16px' }}>
                     {reassessing ? 'Running Assessment...' : '🔍 Run Infrastructure Assessment'}
                 </button>
                 {reassessResult && (
-                    <div className="premium-card" style={{ marginTop: '1rem', padding: '1rem 1.5rem', maxWidth: '500px', textAlign: 'center' }}>
+                    <div className="premium-card" style={{ padding: '1rem 1.5rem', maxWidth: '500px', textAlign: 'center' }}>
                         {reassessResult}
                     </div>
                 )}
@@ -485,10 +538,11 @@ export default function InfrastructureHealthPage() {
                     )}
                 </div>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Overall Score */}
+            {/* Score Row: Gauge + Entity Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {/* Overall Score with Explainer */}
                 <div className="premium-card" style={{ textAlign: 'center', position: 'relative' }}>
-                    <div style={{ height: '200px', position: 'relative' }}>
+                    <div style={{ height: '180px', position: 'relative' }}>
                         <ScoreGauge score={report.overall_score} scoreColor={scoreColor} />
                         <div style={{
                             position: 'absolute', top: '50%', left: '50%',
@@ -502,77 +556,92 @@ export default function InfrastructureHealthPage() {
                             </div>
                         </div>
                     </div>
-                    <div style={{ marginTop: '0.5rem' }}>
-                        <span style={{
-                            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                            background: `${scoreColor}15`, color: scoreColor,
-                            padding: '0.4rem 1rem', borderRadius: '999px',
-                            fontSize: '0.875rem', fontWeight: 700
-                        }}>
-                            {getScoreEmoji(report.overall_score)} {getScoreLabel(report.overall_score)}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Summary */}
-                <div className="premium-card" style={{ gridColumn: 'span 2' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        📋 Assessment Summary
-                    </h2>
-                    <p style={{ color: '#374151', lineHeight: '1.7', fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-                        Assessed <strong>{report.summary.domains?.total || 0}</strong> domain(s),{' '}
-                        <strong>{report.summary.mailboxes?.total || 0}</strong> mailbox(es), and{' '}
-                        <strong>{report.summary.campaigns?.total || 0}</strong> campaign(s).
-                        {report.summary.domains?.paused > 0 && ` ${report.summary.domains.paused} domain(s) paused.`}
-                        {report.summary.mailboxes?.paused > 0 && ` ${report.summary.mailboxes.paused} mailbox(es) paused.`}
-                        {report.summary.campaigns?.paused > 0 && ` ${report.summary.campaigns.paused} campaign(s) paused.`}
+                    <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                        background: `${scoreColor}15`, color: scoreColor,
+                        padding: '0.4rem 1rem', borderRadius: '999px',
+                        fontSize: '0.875rem', fontWeight: 700
+                    }}>
+                        {getScoreEmoji(report.overall_score)} {getScoreLabel(report.overall_score)}
+                    </span>
+                    {/* Score Explainer */}
+                    <p style={{ color: '#6B7280', fontSize: '0.75rem', marginTop: '0.75rem', lineHeight: 1.5 }}>
+                        {(() => {
+                            const issues: string[] = [];
+                            if (report.summary.domains?.warning > 0) issues.push(`${report.summary.domains.warning} domain warning(s)`);
+                            if (report.summary.domains?.paused > 0) issues.push(`${report.summary.domains.paused} paused domain(s)`);
+                            if (report.summary.mailboxes?.warning > 0) issues.push(`${report.summary.mailboxes.warning} mailbox warning(s)`);
+                            if (report.summary.mailboxes?.paused > 0) issues.push(`${report.summary.mailboxes.paused} paused mailbox(es)`);
+                            if (report.summary.campaigns?.warning > 0) issues.push(`${report.summary.campaigns.warning} campaign warning(s)`);
+                            if (report.summary.campaigns?.paused > 0) issues.push(`${report.summary.campaigns.paused} paused campaign(s)`);
+                            return issues.length > 0
+                                ? `Score reflects ${issues.join(', ')}.`
+                                : 'All entities are healthy!';
+                        })()}
                     </p>
-
-                    {/* Quick Stats */}
-                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                        {criticalCount > 0 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                background: '#FEF2F2', padding: '0.5rem 1rem', borderRadius: '12px',
-                                border: '1px solid #FECACA'
-                            }}>
-                                <span style={{ color: '#EF4444', fontWeight: 800, fontSize: '1.25rem' }}>{criticalCount}</span>
-                                <span style={{ color: '#991B1B', fontSize: '0.8rem', fontWeight: 600 }}>Critical</span>
-                            </div>
-                        )}
-                        {warningCount > 0 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                background: '#FFFBEB', padding: '0.5rem 1rem', borderRadius: '12px',
-                                border: '1px solid #FDE68A'
-                            }}>
-                                <span style={{ color: '#F59E0B', fontWeight: 800, fontSize: '1.25rem' }}>{warningCount}</span>
-                                <span style={{ color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>Warnings</span>
-                            </div>
-                        )}
-                        {infoCount > 0 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                background: '#EFF6FF', padding: '0.5rem 1rem', borderRadius: '12px',
-                                border: '1px solid #BFDBFE'
-                            }}>
-                                <span style={{ color: '#3B82F6', fontWeight: 800, fontSize: '1.25rem' }}>{infoCount}</span>
-                                <span style={{ color: '#1E40AF', fontSize: '0.8rem', fontWeight: 600 }}>Informational</span>
-                            </div>
-                        )}
-                        {findings.length === 0 && (
-                            <div style={{
-                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                background: '#F0FDF4', padding: '0.5rem 1rem', borderRadius: '12px',
-                                border: '1px solid #BBF7D0'
-                            }}>
-                                <span style={{ color: '#16A34A', fontWeight: 800, fontSize: '1.25rem' }}>✓</span>
-                                <span style={{ color: '#166534', fontSize: '0.8rem', fontWeight: 600 }}>No Issues Found</span>
-                            </div>
-                        )}
+                    <div style={{ color: '#9CA3AF', fontSize: '0.65rem', marginTop: '0.35rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+                        ℹ️ Score = healthy entities ÷ total entities × 100
                     </div>
                 </div>
+
+                {/* Entity Status Cards */}
+                {[
+                    { icon: '🌐', label: 'Domains', data: report.summary.domains, states: ['healthy', 'warning', 'paused'] },
+                    { icon: '📬', label: 'Mailboxes', data: report.summary.mailboxes, states: ['healthy', 'warning', 'paused'] },
+                    { icon: '📣', label: 'Campaigns', data: report.summary.campaigns, states: ['active', 'warning', 'paused'] },
+                ].map(card => {
+                    const total = card.data?.total || 0;
+                    const slot1 = card.data?.[card.states[0] as keyof typeof card.data] || 0;
+                    const slot2 = card.data?.[card.states[1] as keyof typeof card.data] || 0;
+                    const slot3 = card.data?.[card.states[2] as keyof typeof card.data] || 0;
+                    return (
+                        <div key={card.label} className="premium-card" style={{ position: 'relative' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                                <span style={{ fontSize: '1.25rem' }}>{card.icon}</span>
+                                <span style={{ fontWeight: 700, color: '#111827', fontSize: '1rem' }}>{card.label}</span>
+                                <span style={{ marginLeft: 'auto', fontWeight: 800, color: '#111827', fontSize: '1.5rem' }}>{total}</span>
+                            </div>
+                            {/* Stacked Status Bar */}
+                            <div style={{ height: '8px', borderRadius: '4px', background: '#F3F4F6', overflow: 'hidden', display: 'flex' }}>
+                                {total > 0 && (
+                                    <>
+                                        <div style={{ width: `${(slot1 / total) * 100}%`, background: '#16A34A', transition: 'width 0.6s ease' }} />
+                                        <div style={{ width: `${(slot2 / total) * 100}%`, background: '#F59E0B', transition: 'width 0.6s ease' }} />
+                                        <div style={{ width: `${(slot3 / total) * 100}%`, background: '#EF4444', transition: 'width 0.6s ease' }} />
+                                    </>
+                                )}
+                            </div>
+                            {/* Legend */}
+                            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem', fontSize: '0.75rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#16A34A' }} />
+                                    <span style={{ color: '#6B7280' }}>{card.states[0].charAt(0).toUpperCase() + card.states[0].slice(1)}: <strong>{slot1}</strong></span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F59E0B' }} />
+                                    <span style={{ color: '#6B7280' }}>Warning: <strong>{slot2}</strong></span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#EF4444' }} />
+                                    <span style={{ color: '#6B7280' }}>Paused: <strong>{slot3}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
+
+            {/* Score History */}
+            {scoreHistory.length > 1 && (
+                <div className="premium-card">
+                    <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        📈 Score History
+                    </h2>
+                    <div style={{ height: '200px' }}>
+                        <ScoreHistory data={scoreHistory} />
+                    </div>
+                </div>
+            )}
 
             {/* Findings Distribution + Findings List */}
             {findings.length > 0 && (
@@ -600,81 +669,118 @@ export default function InfrastructureHealthPage() {
                         <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>
                             All Findings
                         </h2>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '400px', overflowY: 'auto' }} className="scrollbar-hide">
-                            {Object.entries(findingsByCategory).map(([category, catFindings]) => (
-                                <div key={category}>
-                                    <div style={{
-                                        fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
-                                        textTransform: 'uppercase', letterSpacing: '0.1em',
-                                        marginBottom: '0.5rem', paddingLeft: '0.25rem'
-                                    }}>
-                                        {category.replace(/_/g, ' ')}
-                                    </div>
-                                    {catFindings.map((finding, idx) => {
-                                        const sev = SEVERITY_CONFIG[finding.severity] || SEVERITY_CONFIG.info;
-                                        return (
-                                            <div key={`${category}-${idx}`} style={{
-                                                padding: '0.875rem 1rem',
-                                                borderRadius: '12px',
-                                                background: sev.bg,
-                                                border: `1px solid ${sev.border}`,
-                                                borderLeft: `4px solid ${sev.accent}`,
-                                                marginBottom: '0.5rem',
-                                                transition: 'transform 0.15s',
-                                                cursor: finding.entityId ? 'pointer' : 'default'
-                                            }}
-                                                onClick={() => finding.entityId && fetchDNSDetails(finding.entityId)}
-                                            >
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                        <span>{sev.icon}</span>
-                                                        <span style={{ fontWeight: 700, color: sev.text, fontSize: '0.9rem' }}>
-                                                            {finding.title}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '500px', overflowY: 'auto' }} className="scrollbar-hide">
+                            {Object.entries(findingsByCategory).map(([category, catFindings]) => {
+                                const CATEGORY_LABELS: Record<string, string> = {
+                                    domain_dns: '🌐 Domain DNS',
+                                    mailbox_health: '📬 Mailbox Health',
+                                    campaign_health: '📣 Campaign Health',
+                                };
+                                return (
+                                    <div key={category}>
+                                        <div style={{
+                                            fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
+                                            textTransform: 'uppercase', letterSpacing: '0.1em',
+                                            marginBottom: '0.5rem', paddingLeft: '0.25rem'
+                                        }}>
+                                            {CATEGORY_LABELS[category] || category.replace(/_/g, ' ')}
+                                        </div>
+                                        {catFindings.map((finding, idx) => {
+                                            const sev = SEVERITY_CONFIG[finding.severity] || SEVERITY_CONFIG.info;
+                                            const findingKey = `${category}-${idx}`;
+                                            const isExpanded = expandedFinding === findingKey;
+                                            return (
+                                                <div key={findingKey} style={{
+                                                    padding: '0.875rem 1rem',
+                                                    borderRadius: '12px',
+                                                    background: sev.bg,
+                                                    border: `1px solid ${sev.border}`,
+                                                    borderLeft: `4px solid ${sev.accent}`,
+                                                    marginBottom: '0.5rem',
+                                                    transition: 'all 0.2s',
+                                                }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                            <span>{sev.icon}</span>
+                                                            <span style={{ fontWeight: 700, color: sev.text, fontSize: '0.9rem' }}>
+                                                                {finding.title}
+                                                            </span>
+                                                        </div>
+                                                        <span style={{
+                                                            fontSize: '0.65rem', fontWeight: 700, color: sev.text,
+                                                            background: `${sev.accent}15`, padding: '0.2rem 0.6rem',
+                                                            borderRadius: '999px', textTransform: 'uppercase'
+                                                        }}>
+                                                            {sev.label}
                                                         </span>
                                                     </div>
-                                                    <span style={{
-                                                        fontSize: '0.65rem', fontWeight: 700, color: sev.text,
-                                                        background: `${sev.accent}15`, padding: '0.2rem 0.6rem',
-                                                        borderRadius: '999px', textTransform: 'uppercase'
-                                                    }}>
-                                                        {sev.label}
-                                                    </span>
-                                                </div>
-                                                <div style={{ color: sev.text, fontSize: '0.825rem', marginTop: '0.35rem', opacity: 0.85, lineHeight: 1.5 }}>
-                                                    {finding.details}
-                                                </div>
-                                                {finding.entity && (
-                                                    <div style={{ fontSize: '0.75rem', color: sev.text, opacity: 0.65, marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                                        <span style={{ fontWeight: 600 }}>{finding.entity}:</span> {finding.entityId}
-                                                        {finding.category === 'domain_dns' && (
-                                                            <span style={{ fontSize: '0.7rem', marginLeft: 'auto' }}>
-                                                                {expandedDomain === finding.entityId ? '▲ Hide DNS' : '▼ View DNS'}
-                                                            </span>
-                                                        )}
+                                                    <div style={{ color: sev.text, fontSize: '0.825rem', marginTop: '0.35rem', opacity: 0.85, lineHeight: 1.5 }}>
+                                                        {finding.details}
                                                     </div>
-                                                )}
+                                                    {/* Entity Name (human-readable) */}
+                                                    {finding.entity && (
+                                                        <div style={{ fontSize: '0.75rem', color: sev.text, opacity: 0.7, marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                                            <span style={{ fontWeight: 600 }}>{finding.entity}:</span>
+                                                            <span>{finding.entityName || finding.entityId}</span>
+                                                            {finding.category === 'domain_dns' && (
+                                                                <span
+                                                                    style={{ fontSize: '0.7rem', marginLeft: 'auto', cursor: 'pointer', textDecoration: 'underline' }}
+                                                                    onClick={(e) => { e.stopPropagation(); finding.entityId && fetchDNSDetails(finding.entityId); }}
+                                                                >
+                                                                    {expandedDomain === finding.entityId ? '▲ Hide DNS' : '▼ View DNS'}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
 
-                                                {/* Expandable DNS Details */}
-                                                {expandedDomain === finding.entityId && finding.category === 'domain_dns' && (
-                                                    <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: `1px solid ${sev.border}` }}>
-                                                        {dnsLoading === finding.entityId ? (
-                                                            <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
-                                                                Checking DNS records...
-                                                            </div>
-                                                        ) : dnsDetails[finding.entityId!] ? (
-                                                            <DNSDetailPanel dns={dnsDetails[finding.entityId!].dns} domain={dnsDetails[finding.entityId!].domain} />
-                                                        ) : (
-                                                            <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
-                                                                Click to load DNS details
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            ))}
+                                                    {/* Collapsible Remediation */}
+                                                    {finding.remediation && (
+                                                        <div style={{ marginTop: '0.5rem' }}>
+                                                            <button
+                                                                onClick={(e) => { e.stopPropagation(); setExpandedFinding(isExpanded ? null : findingKey); }}
+                                                                style={{
+                                                                    background: 'none', border: 'none', cursor: 'pointer',
+                                                                    fontSize: '0.75rem', fontWeight: 700, color: sev.accent,
+                                                                    padding: '0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem',
+                                                                }}
+                                                            >
+                                                                🔧 {isExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
+                                                            </button>
+                                                            {isExpanded && (
+                                                                <div style={{
+                                                                    marginTop: '0.35rem', padding: '0.6rem 0.75rem',
+                                                                    borderRadius: '8px', background: `${sev.accent}08`,
+                                                                    border: `1px dashed ${sev.border}`,
+                                                                    fontSize: '0.8rem', color: sev.text, lineHeight: 1.6,
+                                                                }}>
+                                                                    {finding.remediation}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    {/* Expandable DNS Details */}
+                                                    {expandedDomain === finding.entityId && finding.category === 'domain_dns' && (
+                                                        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: `1px solid ${sev.border}` }}>
+                                                            {dnsLoading === finding.entityId ? (
+                                                                <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
+                                                                    Checking DNS records...
+                                                                </div>
+                                                            ) : dnsDetails[finding.entityId!] ? (
+                                                                <DNSDetailPanel dns={dnsDetails[finding.entityId!].dns} domain={dnsDetails[finding.entityId!].domain} />
+                                                            ) : (
+                                                                <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
+                                                                    Click to load DNS details
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -711,12 +817,22 @@ export default function InfrastructureHealthPage() {
                                     <div style={{ color: '#64748B', fontSize: '0.825rem', lineHeight: 1.5 }}>
                                         {rec.reason}
                                     </div>
-                                    {rec.entity && (
-                                        <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.35rem' }}>
-                                            Affects: <span style={{ fontWeight: 600 }}>{rec.entity}</span> {rec.entityId && `(${rec.entityId})`}
-                                        </div>
-                                    )}
                                 </div>
+                                {rec.link && (
+                                    <Link
+                                        href={rec.link}
+                                        style={{
+                                            padding: '0.4rem 1rem', borderRadius: '10px',
+                                            background: '#2563EB', color: '#fff',
+                                            fontSize: '0.75rem', fontWeight: 700,
+                                            textDecoration: 'none', whiteSpace: 'nowrap',
+                                            display: 'flex', alignItems: 'center', gap: '0.25rem',
+                                            flexShrink: 0, alignSelf: 'center',
+                                        }}
+                                    >
+                                        View →
+                                    </Link>
+                                )}
                             </div>
                         ))}
                     </div>
