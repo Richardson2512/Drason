@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import { apiClient } from '@/lib/api';
 
-export default function LeadsPage() {
+function LeadsPageContent() {
     const searchParams = useSearchParams();
     const [leads, setLeads] = useState<any[]>([]);
     const [selectedLead, setSelectedLead] = useState<any>(null);
@@ -455,5 +455,13 @@ export default function LeadsPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function LeadsPage() {
+    return (
+        <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#6B7280' }}>Loading leads...</div>}>
+            <LeadsPageContent />
+        </Suspense>
     );
 }
