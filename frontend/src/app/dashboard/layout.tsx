@@ -281,11 +281,79 @@ export default function DashboardLayout({
 
             <main className="scrollbar-hide" style={{
                 flex: 1,
-                padding: '0.5rem 1rem 0 1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
                 overflowY: 'auto',
                 zIndex: 10
             }}>
-                <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem' }}>
+                {/* Top Header Bar with Notification Bell */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '1rem 2rem',
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(12px)',
+                    borderBottom: '1px solid #E5E7EB',
+                    flexShrink: 0,
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 30
+                }}>
+                    <div style={{
+                        fontSize: '0.875rem',
+                        color: '#6B7280',
+                        fontWeight: 500
+                    }}>
+                        Welcome back, {userName || 'User'}
+                    </div>
+
+                    {/* Notification Bell - Top Right */}
+                    <Link href="/dashboard/notifications" style={{ textDecoration: 'none' }}>
+                        <button style={{
+                            position: 'relative',
+                            background: unreadCount > 0 ? 'linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%)' : '#FFFFFF',
+                            border: unreadCount > 0 ? '2px solid #FEE2E2' : '1px solid #E5E7EB',
+                            borderRadius: '12px',
+                            padding: '0.75rem 1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.75rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            boxShadow: unreadCount > 0 ? '0 2px 8px rgba(239, 68, 68, 0.15)' : '0 1px 3px rgba(0,0,0,0.1)'
+                        }}
+                        className="hover:scale-105"
+                        title="View notifications"
+                        >
+                            <span style={{ fontSize: '1.25rem' }}>🔔</span>
+                            {unreadCount > 0 && (
+                                <>
+                                    <span style={{
+                                        fontSize: '0.875rem',
+                                        fontWeight: 700,
+                                        color: '#DC2626'
+                                    }}>
+                                        {unreadCount}
+                                    </span>
+                                    <span style={{
+                                        position: 'absolute',
+                                        top: '-4px',
+                                        right: '-4px',
+                                        width: '12px',
+                                        height: '12px',
+                                        borderRadius: '50%',
+                                        background: '#EF4444',
+                                        border: '2px solid #FFFFFF',
+                                        animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                                    }} />
+                                </>
+                            )}
+                        </button>
+                    </Link>
+                </div>
+
+                <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem', padding: '0.5rem 1rem 0 1.5rem' }}>
                     {children}
                 </div>
             </main>
@@ -315,6 +383,14 @@ export default function DashboardLayout({
           color: #111827;
           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
           transform: translateX(4px);
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
         }
       `}</style>
         </div>

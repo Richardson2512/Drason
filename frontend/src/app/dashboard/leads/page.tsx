@@ -299,7 +299,20 @@ function LeadsPageContent() {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                         <span>Score:</span>
-                                        <span style={{ fontWeight: 600, color: l.lead_score > 70 ? '#16A34A' : '#F59E0B' }}>{l.lead_score}</span>
+                                        <span style={{
+                                            fontWeight: 700,
+                                            padding: '2px 8px',
+                                            borderRadius: '6px',
+                                            fontSize: '0.7rem',
+                                            background: l.lead_score >= 80 ? '#DCFCE7' :
+                                                       l.lead_score >= 60 ? '#FEF3C7' :
+                                                       l.lead_score >= 40 ? '#FED7AA' : '#FEE2E2',
+                                            color: l.lead_score >= 80 ? '#166534' :
+                                                  l.lead_score >= 60 ? '#92400E' :
+                                                  l.lead_score >= 40 ? '#C2410C' : '#991B1B'
+                                        }}>
+                                            {l.lead_score}/100
+                                        </span>
                                     </div>
                                     <div style={{
                                         fontSize: '0.7rem',
@@ -372,8 +385,33 @@ function LeadsPageContent() {
                                             <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1E293B' }}>{selectedLead.persona}</div>
                                         </div>
                                         <div style={{ marginBottom: '1rem' }}>
-                                            <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>Lead Score</div>
-                                            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1E293B' }}>{selectedLead.lead_score} <span style={{ fontSize: '0.875rem', color: '#9CA3AF', fontWeight: '400' }}>/ 100</span></div>
+                                            <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>
+                                                Engagement Score
+                                                <span style={{ fontSize: '0.75rem', color: '#9CA3AF', marginLeft: '0.5rem' }}>
+                                                    {selectedLead.lead_score >= 80 ? '🌟 Top Performer' :
+                                                     selectedLead.lead_score >= 60 ? '✅ Engaged' :
+                                                     selectedLead.lead_score >= 40 ? '😐 Moderate' : '⚠️ Low Activity'}
+                                                </span>
+                                            </div>
+                                            <div style={{
+                                                fontSize: '1.5rem',
+                                                fontWeight: '700',
+                                                color: selectedLead.lead_score >= 80 ? '#16A34A' :
+                                                      selectedLead.lead_score >= 60 ? '#D97706' :
+                                                      selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
+                                            }}>
+                                                {selectedLead.lead_score} <span style={{ fontSize: '0.875rem', color: '#9CA3AF', fontWeight: '400' }}>/ 100</span>
+                                            </div>
+                                            <div style={{
+                                                fontSize: '0.75rem',
+                                                color: '#64748B',
+                                                marginTop: '0.5rem',
+                                                fontStyle: 'italic'
+                                            }}>
+                                                {selectedLead.source === 'smartlead'
+                                                    ? 'Based on opens, clicks, replies & bounces'
+                                                    : 'Initial score (will update after engagement)'}
+                                            </div>
                                         </div>
                                         <div>
                                             <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>Source</div>
