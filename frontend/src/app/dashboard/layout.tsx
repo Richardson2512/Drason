@@ -22,6 +22,8 @@ export default function DashboardLayout({
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [subscription, setSubscription] = useState<any>(null);
     const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
+    const [systemMode, setSystemMode] = useState<string>('');
+    const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
 
     useEffect(() => {
         // Fetch current user info including role
@@ -35,9 +37,10 @@ export default function DashboardLayout({
             })
             .catch(() => { });
 
-        // Try to get org info as fallback
+        // Fetch organization info including system_mode
         apiClient<any>('/api/organization').then((data) => {
             if (data?.name && !userName) setUserName(data.name);
+            if (data?.system_mode) setSystemMode(data.system_mode);
         }).catch(() => { });
 
         // Get user name from cookie-based JWT (decoded on client for display only)
@@ -324,6 +327,74 @@ export default function DashboardLayout({
                 overflowY: 'auto',
                 zIndex: 10
             }}>
+                {/* Observe Mode Warning Banner */}
+                {systemMode === 'observe' && !observeBannerDismissed && (
+                    <div style={{
+                        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
+                        borderBottom: '3px solid #F59E0B',
+                        padding: '1rem 1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '1rem',
+                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 30
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                            <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+                            <div>
+                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 700, marginBottom: '0.25rem' }}>
+                                    Observe Mode Active - Limited Protection
+                                </p>
+                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#78350F', lineHeight: '1.4' }}>
+                                    Infrastructure pausing is active, but the execution gate allows new leads through even with issues.{' '}
+                                    <Link href="/dashboard/settings" style={{
+                                        color: '#78350F',
+                                        textDecoration: 'underline',
+                                        fontWeight: 700,
+                                        transition: 'color 0.2s'
+                                    }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = '#451A03'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = '#78350F'}
+                                    >
+                                        Switch to Enforce Mode for full protection →
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setObserveBannerDismissed(true)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#92400E',
+                                cursor: 'pointer',
+                                fontSize: '1.25rem',
+                                padding: '0.25rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '4px',
+                                transition: 'all 0.2s',
+                                width: '28px',
+                                height: '28px',
+                                flexShrink: 0
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = '#FDE047';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                            }}
+                            title="Dismiss (session only)"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                )}
+
                 {/* Trial Countdown Banner */}
                 {subscription?.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
                     <div style={{

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
-import BillingSection from './BillingSection';
 
 export default function Settings() {
     const [apiKey, setApiKey] = useState('');
@@ -46,13 +45,21 @@ export default function Settings() {
         apiClient<any>('/api/settings/clay-webhook-url')
             .then(data => {
                 if (data?.success && data.data) {
-                    setWebhookUrl(data.data.webhookUrl);
+                    setWebhookUrl(data.data.webhookUrl || '');
                     setWebhookSecret(data.data.webhookSecret || '');
+                    console.log('[SETTINGS] Webhook config fetched:', {
+                        webhookUrl: data.data.webhookUrl,
+                        hasSecret: !!data.data.webhookSecret
+                    });
                 }
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error('[SETTINGS] Failed to fetch webhook config:', error);
                 // Fallback to constructing URL client-side
-                setWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/ingest/clay`);
+                const protocol = window.location.protocol;
+                const hostname = window.location.hostname;
+                const port = hostname === 'localhost' ? ':3001' : '';
+                setWebhookUrl(`${protocol}//${hostname}${port}/api/ingest/clay`);
             });
 
         // Determine Smartlead webhook URL (client-side only to avoid hydration mismatch)
@@ -91,21 +98,37 @@ export default function Settings() {
         }
     };
 
-    const modeDescriptions: Record<string, { title: string; desc: string; color: string }> = {
+    const modeDescriptions: Record<string, {
+        title: string;
+        desc: string;
+        color: string;
+        pausingBehavior: string;
+        gateBehavior: string;
+        gateIcon: string;
+    }> = {
         observe: {
             title: 'Observe Mode',
-            desc: 'Monitor only. No automatic actions taken. All events logged for analysis.',
-            color: '#3b82f6'
+            desc: '⚠️ Least protective. Infrastructure pauses automatically, but new leads still allowed through gate.',
+            color: '#3b82f6',
+            pausingBehavior: '✅ Auto-pauses unhealthy domains/mailboxes immediately',
+            gateBehavior: '⚠️ Allows new leads through even with issues (logs warnings only)',
+            gateIcon: '⚠️'
         },
         suggest: {
             title: 'Suggest Mode',
-            desc: 'System suggests actions but requires manual approval before execution.',
-            color: '#eab308'
+            desc: '⚡ Balanced protection. Infrastructure pauses automatically + shows recommendations.',
+            color: '#eab308',
+            pausingBehavior: '✅ Auto-pauses unhealthy domains/mailboxes immediately',
+            gateBehavior: '⚠️ Allows new leads through but shows caution warnings',
+            gateIcon: '⚡'
         },
         enforce: {
             title: 'Enforce Mode',
-            desc: 'Full automation. System automatically pauses mailboxes and holds leads based on thresholds.',
-            color: '#22c55e'
+            desc: '🛡️ Full protection. Infrastructure pauses automatically + blocks risky leads at gate.',
+            color: '#22c55e',
+            pausingBehavior: '✅ Auto-pauses unhealthy domains/mailboxes immediately',
+            gateBehavior: '✅ Blocks new leads when infrastructure unhealthy (recommended)',
+            gateIcon: '🛡️'
         }
     };
 
@@ -115,9 +138,6 @@ export default function Settings() {
                 <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>Settings & Configuration</h1>
                 <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Manage integrations, system modes, and credentials</div>
             </div>
-
-            {/* Billing & Subscription Section */}
-            <BillingSection />
 
             {/* System Mode Control - Phase 5 */}
             <div className="premium-card" style={{ marginBottom: '2.5rem', borderLeft: `6px solid ${modeDescriptions[systemMode]?.color || '#E2E8F0'}` }}>
@@ -134,6 +154,32 @@ export default function Settings() {
                             <div style={{ fontSize: '1.125rem', fontWeight: 800, color: modeDescriptions[systemMode]?.color }}>{systemMode.toUpperCase()}</div>
                         </div>
                     )}
+                </div>
+
+                {/* Explanation Banner */}
+                <div style={{
+                    padding: '1.25rem',
+                    background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+                    border: '2px solid #3B82F6',
+                    borderRadius: '12px',
+                    marginBottom: '1.5rem'
+                }}>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
+                        <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>💡</span>
+                        <div>
+                            <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#1E40AF', marginBottom: '0.5rem' }}>
+                                How System Modes Work
+                            </h3>
+                            <p style={{ fontSize: '0.8rem', color: '#1E40AF', lineHeight: '1.6', margin: 0 }}>
+                                <strong>All modes automatically pause unhealthy infrastructure to protect your reputation.</strong> The difference between modes is how the <strong>execution gate</strong> handles new leads:
+                            </p>
+                            <ul style={{ fontSize: '0.75rem', color: '#1E40AF', lineHeight: '1.6', margin: '0.5rem 0 0 0', paddingLeft: '1.25rem' }}>
+                                <li><strong>Observe:</strong> Logs warnings but allows leads through</li>
+                                <li><strong>Suggest:</strong> Shows recommendations but allows leads through</li>
+                                <li><strong>Enforce:</strong> Blocks leads when infrastructure unhealthy (recommended)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -159,9 +205,36 @@ export default function Settings() {
                                     <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: modeDescriptions[mode].color }}></div>
                                 )}
                             </div>
-                            <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6' }}>
+                            <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6', marginBottom: '1rem' }}>
                                 {modeDescriptions[mode].desc}
                             </p>
+
+                            {/* Detailed Behavior Breakdown */}
+                            <div style={{
+                                padding: '1rem',
+                                background: '#F8FAFC',
+                                borderRadius: '10px',
+                                border: '1px solid #F1F5F9',
+                                fontSize: '0.75rem',
+                                lineHeight: '1.6'
+                            }}>
+                                <div style={{ marginBottom: '0.75rem' }}>
+                                    <div style={{ fontWeight: 700, color: '#334155', marginBottom: '0.25rem' }}>
+                                        🔧 Infrastructure Pausing:
+                                    </div>
+                                    <div style={{ color: '#10B981', fontSize: '0.7rem' }}>
+                                        {modeDescriptions[mode].pausingBehavior}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style={{ fontWeight: 700, color: '#334155', marginBottom: '0.25rem' }}>
+                                        {modeDescriptions[mode].gateIcon} Execution Gate:
+                                    </div>
+                                    <div style={{ color: mode === 'enforce' ? '#10B981' : '#F59E0B', fontSize: '0.7rem' }}>
+                                        {modeDescriptions[mode].gateBehavior}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -193,7 +266,10 @@ export default function Settings() {
                         </div>
 
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Organization ID</label>
+                            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                                Organization ID
+                                <span style={{ fontSize: '0.65rem', fontWeight: 500, color: '#94A3B8', textTransform: 'none', marginLeft: '0.5rem' }}>(UUID format)</span>
+                            </label>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                 <code style={{ flex: 1, padding: '0.75rem', background: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#334155', fontFamily: 'monospace', fontSize: '0.875rem' }}>{org.id}</code>
                                 <CopyButton text={org.id} label="Copy" />
@@ -405,24 +481,35 @@ export default function Settings() {
                     <div style={{ padding: '1.5rem', background: '#F0F9FF', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '1rem' }}>
                         <div className="flex justify-between items-center mb-2">
                             <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0369A1', textTransform: 'uppercase' }}>Webhook URL</h3>
-                            <CopyButton text={webhookUrl} label="Copy" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
+                            {webhookUrl && <CopyButton text={webhookUrl} label="Copy" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />}
                         </div>
                         <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '8px', border: '1px solid #BAE6FD', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#0284C7' }}>
-                            {webhookUrl}
+                            {webhookUrl || 'Loading...'}
                         </div>
+                        {!webhookUrl && (
+                            <p style={{ fontSize: '0.7rem', color: '#0369A1', marginTop: '0.5rem', margin: 0, fontStyle: 'italic' }}>
+                                💡 Refresh the page if this doesn't load
+                            </p>
+                        )}
                     </div>
 
                     <div style={{ padding: '1.5rem', background: '#FEF2F2', borderRadius: '16px', border: '1px solid #FECACA', marginBottom: '1rem' }}>
                         <div className="flex justify-between items-center mb-2">
                             <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#991B1B', textTransform: 'uppercase' }}>Webhook Secret</h3>
-                            <CopyButton text={webhookSecret} label="Copy Secret" className="text-xs text-red-600 font-semibold hover:text-red-800 transition-colors bg-transparent border-0 p-0" />
+                            {webhookSecret && <CopyButton text={webhookSecret} label="Copy Secret" className="text-xs text-red-600 font-semibold hover:text-red-800 transition-colors bg-transparent border-0 p-0" />}
                         </div>
                         <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '8px', border: '1px solid #FECACA', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.75rem', color: '#DC2626' }}>
-                            {webhookSecret || 'Loading...'}
+                            {webhookSecret || 'Generating...'}
                         </div>
-                        <p style={{ fontSize: '0.75rem', color: '#991B1B', marginTop: '0.75rem', margin: 0, lineHeight: '1.4' }}>
-                            ⚠️ Keep this secret safe! Use it to generate HMAC-SHA256 signatures.
-                        </p>
+                        {webhookSecret ? (
+                            <p style={{ fontSize: '0.75rem', color: '#991B1B', marginTop: '0.75rem', margin: 0, lineHeight: '1.4' }}>
+                                ⚠️ Keep this secret safe! Use it to generate HMAC-SHA256 signatures.
+                            </p>
+                        ) : (
+                            <p style={{ fontSize: '0.7rem', color: '#991B1B', marginTop: '0.5rem', margin: 0, fontStyle: 'italic' }}>
+                                💡 Secret auto-generated on first load. Refresh if this doesn't appear.
+                            </p>
+                        )}
                     </div>
 
                     <div style={{ padding: '1rem 1.25rem', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
