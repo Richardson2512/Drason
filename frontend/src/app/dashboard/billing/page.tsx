@@ -225,7 +225,28 @@ function BillingContent() {
                         <span style={{ fontSize: '1.5rem' }}>⏰</span>
                         <div>
                             <p style={{ color: '#92400E', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
-                                Your trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Upgrade now to continue using Superkabe.
+                                Your free trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Add payment details below to continue with the {tierInfo.name} plan ({tierInfo.price}/mo).
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Expired Trial Warning */}
+                {data?.subscription.status === 'expired' && (
+                    <div style={{
+                        padding: '1rem 1.5rem',
+                        background: '#FEE2E2',
+                        borderRadius: '12px',
+                        border: '1px solid #FCA5A5',
+                        marginBottom: '1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem'
+                    }}>
+                        <span style={{ fontSize: '1.5rem' }}>⛔</span>
+                        <div>
+                            <p style={{ color: '#991B1B', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
+                                Your trial has expired. Subscribe to a plan below to restore access to your account.
                             </p>
                         </div>
                     </div>
@@ -257,11 +278,43 @@ function BillingContent() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <div>
                             <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>Current Plan</div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: tierInfo.color }}>{tierInfo.name}</div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: tierInfo.color }}>
+                                {tierInfo.name}
+                                {data?.subscription.status === 'trialing' && currentTier !== 'trial' && (
+                                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#10B981', marginLeft: '0.5rem' }}>
+                                        (Free Trial)
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                        <div style={{ fontSize: '2rem', fontWeight: 800, color: '#111827' }}>{tierInfo.price}<span style={{ fontSize: '1rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
+                        <div>
+                            {data?.subscription.status === 'trialing' ? (
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{ fontSize: '2rem', fontWeight: 800, color: '#10B981' }}>$0</div>
+                                    <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                                        Then {tierInfo.price}/mo
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={{ fontSize: '2rem', fontWeight: 800, color: '#111827' }}>
+                                    {tierInfo.price}<span style={{ fontSize: '1rem', color: '#64748B', fontWeight: 400 }}>/mo</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    {data?.subscription.nextBillingDate && (
+                    {data?.subscription.status === 'trialing' && daysRemaining !== null && (
+                        <div style={{
+                            fontSize: '0.875rem',
+                            color: '#10B981',
+                            background: '#D1FAE5',
+                            padding: '0.75rem',
+                            borderRadius: '8px',
+                            fontWeight: 600
+                        }}>
+                            ✓ {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining in your free trial
+                        </div>
+                    )}
+                    {data?.subscription.nextBillingDate && data?.subscription.status !== 'trialing' && (
                         <div style={{ fontSize: '0.875rem', color: '#64748B' }}>
                             Next billing date: <strong>{new Date(data.subscription.nextBillingDate).toLocaleDateString()}</strong>
                         </div>
@@ -317,54 +370,80 @@ function BillingContent() {
                 </div>
 
                 {/* Upgrade Options */}
-                {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && (
+                {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && data?.subscription.status !== 'active' && (
                     <>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1rem', color: '#1E293B' }}>Upgrade Your Plan</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1rem', color: '#1E293B' }}>
+                            {data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : 'Choose a Plan'}
+                        </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginBottom: '2rem' }}>
                             {Object.entries(TIER_INFO)
-                                .filter(([key]) => !['trial', 'enterprise'].includes(key) && key !== currentTier)
-                                .map(([key, info]) => (
-                                    <div
-                                        key={key}
-                                        style={{
-                                            padding: '1.5rem',
-                                            borderRadius: '16px',
-                                            border: `1px solid #E2E8F0`,
-                                            background: '#FFFFFF'
-                                        }}
-                                    >
-                                        <div style={{ marginBottom: '1rem' }}>
-                                            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: info.color, marginBottom: '0.25rem' }}>{info.name}</div>
-                                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827' }}>{info.price}<span style={{ fontSize: '0.875rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
-                                        </div>
-                                        <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6' }}>
-                                            <div>✓ {info.limits.leads.toLocaleString()} leads</div>
-                                            <div>✓ {info.limits.domains} domains</div>
-                                            <div>✓ {info.limits.mailboxes} mailboxes</div>
-                                        </div>
-                                        <button
-                                            onClick={() => handleUpgrade(key)}
-                                            disabled={actionLoading}
+                                .filter(([key]) => !['trial', 'enterprise'].includes(key))
+                                .map(([key, info]) => {
+                                    const isCurrentTier = key === currentTier;
+                                    const buttonText = data?.subscription.status === 'trialing'
+                                        ? (isCurrentTier ? `Continue with ${info.name}` : `Switch to ${info.name}`)
+                                        : `Subscribe to ${info.name}`;
+
+                                    return (
+                                        <div
+                                            key={key}
                                             style={{
-                                                width: '100%',
-                                                padding: '0.75rem',
-                                                background: info.color,
-                                                color: '#FFFFFF',
-                                                border: 'none',
-                                                borderRadius: '8px',
-                                                fontSize: '0.875rem',
-                                                fontWeight: 700,
-                                                cursor: actionLoading ? 'not-allowed' : 'pointer',
-                                                opacity: actionLoading ? 0.6 : 1,
-                                                transition: 'all 0.2s'
+                                                padding: '1.5rem',
+                                                borderRadius: '16px',
+                                                border: isCurrentTier ? `2px solid ${info.color}` : `1px solid #E2E8F0`,
+                                                background: isCurrentTier ? `${info.color}10` : '#FFFFFF',
+                                                position: 'relative'
                                             }}
-                                            onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.transform = 'scale(1.02)')}
-                                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                                         >
-                                            {actionLoading ? 'Processing...' : `Upgrade to ${info.name}`}
-                                        </button>
-                                    </div>
-                                ))}
+                                            {isCurrentTier && data?.subscription.status === 'trialing' && (
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    top: '-10px',
+                                                    left: '50%',
+                                                    transform: 'translateX(-50%)',
+                                                    background: info.color,
+                                                    color: '#FFFFFF',
+                                                    padding: '0.25rem 1rem',
+                                                    borderRadius: '9999px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 700
+                                                }}>
+                                                    CURRENT TRIAL
+                                                </div>
+                                            )}
+                                            <div style={{ marginBottom: '1rem', marginTop: isCurrentTier && data?.subscription.status === 'trialing' ? '0.5rem' : '0' }}>
+                                                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: info.color, marginBottom: '0.25rem' }}>{info.name}</div>
+                                                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827' }}>{info.price}<span style={{ fontSize: '0.875rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
+                                            </div>
+                                            <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6' }}>
+                                                <div>✓ {info.limits.leads.toLocaleString()} leads</div>
+                                                <div>✓ {info.limits.domains} domains</div>
+                                                <div>✓ {info.limits.mailboxes} mailboxes</div>
+                                            </div>
+                                            <button
+                                                onClick={() => handleUpgrade(key)}
+                                                disabled={actionLoading}
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '0.75rem',
+                                                    background: info.color,
+                                                    color: '#FFFFFF',
+                                                    border: 'none',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.875rem',
+                                                    fontWeight: 700,
+                                                    cursor: actionLoading ? 'not-allowed' : 'pointer',
+                                                    opacity: actionLoading ? 0.6 : 1,
+                                                    transition: 'all 0.2s'
+                                                }}
+                                                onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.transform = 'scale(1.02)')}
+                                                onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                                            >
+                                                {actionLoading ? 'Processing...' : buttonText}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
                         </div>
                     </>
                 )}
