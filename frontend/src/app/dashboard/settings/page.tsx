@@ -272,6 +272,67 @@ export default function Settings() {
                         >
                             Trigger Manual Sync
                         </button>
+
+                        {/* 24/7 Monitoring Info */}
+                        <div style={{
+                            marginTop: '1.5rem',
+                            padding: '1rem',
+                            background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                            border: '2px solid #10B981',
+                            borderRadius: '10px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                <div style={{
+                                    width: '32px',
+                                    height: '32px',
+                                    borderRadius: '8px',
+                                    background: '#10B981',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '1rem',
+                                    flexShrink: 0
+                                }}>
+                                    ⚡
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
+                                        <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#065F46', margin: 0 }}>
+                                            24/7 Auto-Sync Active
+                                        </h4>
+                                        <span style={{
+                                            padding: '0.125rem 0.5rem',
+                                            background: '#10B981',
+                                            color: 'white',
+                                            borderRadius: '999px',
+                                            fontSize: '0.5rem',
+                                            fontWeight: 700,
+                                            letterSpacing: '0.05em'
+                                        }}>
+                                            LIVE
+                                        </span>
+                                    </div>
+                                    <p style={{ fontSize: '0.75rem', color: '#047857', margin: 0, lineHeight: 1.6 }}>
+                                        Your Smartlead data syncs automatically every <strong>20 minutes</strong>.
+                                        Manual sync is available for immediate updates after changes.
+                                    </p>
+                                    <a
+                                        href="/docs/help/24-7-monitoring"
+                                        target="_blank"
+                                        style={{
+                                            fontSize: '0.6875rem',
+                                            color: '#059669',
+                                            fontWeight: 700,
+                                            textDecoration: 'underline',
+                                            marginTop: '0.5rem',
+                                            display: 'inline-block'
+                                        }}
+                                    >
+                                        Learn about 24/7 monitoring →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

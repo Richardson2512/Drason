@@ -387,6 +387,69 @@ export default function InfrastructureHealthPage() {
                 </div>
             )}
 
+            {/* 24/7 Monitoring Banner */}
+            <div className="premium-card" style={{
+                background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                border: '2px solid #10B981',
+                padding: '1.5rem',
+                borderRadius: '16px',
+                position: 'relative',
+                overflow: 'hidden'
+            }}>
+                <div style={{ position: 'absolute', top: '-10px', right: '-10px', fontSize: '4rem', opacity: 0.1 }}>🔄</div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', position: 'relative', zIndex: 1 }}>
+                    <div style={{
+                        width: '48px', height: '48px', borderRadius: '12px',
+                        background: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '1.5rem', flexShrink: 0
+                    }}>
+                        ⚡
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#065F46', margin: 0 }}>
+                                24/7 Automated Monitoring Active
+                            </h3>
+                            <span style={{
+                                padding: '0.25rem 0.75rem', background: '#10B981', color: 'white',
+                                borderRadius: '999px', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.05em'
+                            }}>
+                                LIVE
+                            </span>
+                        </div>
+                        <p style={{ fontSize: '0.875rem', color: '#047857', marginBottom: '1rem', lineHeight: 1.6 }}>
+                            Your infrastructure is being automatically synced every <strong>20 minutes</strong> from Smartlead.
+                            Health assessments run automatically, and campaigns/mailboxes are paused instantly when thresholds are crossed.
+                            No manual monitoring needed - the system protects your reputation 24/7, even while you sleep.
+                        </p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
+                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Auto-sync every 20min</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
+                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Real-time health detection</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
+                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Instant auto-pause protection</span>
+                            </div>
+                            <Link
+                                href="/docs/help/24-7-monitoring"
+                                target="_blank"
+                                style={{
+                                    fontSize: '0.75rem', color: '#059669', fontWeight: 700,
+                                    textDecoration: 'underline', marginLeft: 'auto'
+                                }}
+                            >
+                                Learn how it works →
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Score + Summary Row */}
 
             {/* ── TRANSITION GATE BANNER ── */}

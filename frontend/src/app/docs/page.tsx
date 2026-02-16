@@ -49,6 +49,12 @@ export default function DocsPage() {
                     description="System modes, thresholds, and enforcement mechanisms"
                 />
                 <DocCard
+                    href="/docs/help/24-7-monitoring"
+                    icon={<Zap className="text-green-600" size={24} />}
+                    title="24/7 Monitoring"
+                    description="Automated background syncing and real-time protection running 24/7"
+                />
+                <DocCard
                     href="/docs/monitoring"
                     icon={<Activity className="text-blue-600" size={24} />}
                     title="Monitoring System"

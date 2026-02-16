@@ -14,6 +14,12 @@ interface HelpArticle {
 
 const helpArticles: HelpArticle[] = [
     {
+        title: '24/7 Infrastructure Monitoring',
+        href: '/docs/help/24-7-monitoring',
+        description: 'How automated background syncing protects your infrastructure 24/7',
+        tags: ['monitoring', 'automation', 'smartlead', 'sync', 'real-time', '24/7']
+    },
+    {
         title: 'Understanding Infrastructure Score',
         href: '/docs/help/infrastructure-score-explained',
         description: 'Learn the difference between infrastructure score and entity status',
@@ -77,13 +83,13 @@ const helpArticles: HelpArticle[] = [
 
 // Context-aware help based on current page
 const contextualHelp: Record<string, string[]> = {
-    '/dashboard/infrastructure': ['infrastructure-score-explained', 'dns-setup', 'auto-healing'],
-    '/dashboard/campaigns': ['campaign-paused', 'status-colors', 'auto-healing'],
+    '/dashboard/infrastructure': ['24-7-monitoring', 'infrastructure-score-explained', 'auto-healing', 'dns-setup'],
+    '/dashboard/campaigns': ['24-7-monitoring', 'campaign-paused', 'status-colors', 'auto-healing'],
     '/dashboard/leads': ['lead-scoring', 'status-colors'],
-    '/dashboard/domains': ['dns-setup', 'status-colors', 'monitoring'],
-    '/dashboard/mailboxes': ['status-colors', 'monitoring', 'auto-healing'],
+    '/dashboard/domains': ['24-7-monitoring', 'dns-setup', 'status-colors', 'monitoring'],
+    '/dashboard/mailboxes': ['24-7-monitoring', 'status-colors', 'monitoring', 'auto-healing'],
     '/dashboard/notifications': ['notifications', 'status-colors'],
-    '/dashboard/settings': ['smartlead-integration', 'dns-setup'],
+    '/dashboard/settings': ['24-7-monitoring', 'smartlead-integration', 'dns-setup'],
 };
 
 interface HelpPanelProps {

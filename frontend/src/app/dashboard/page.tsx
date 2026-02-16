@@ -123,6 +123,66 @@ export default function Overview() {
         <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
       </div>
 
+      {/* 24/7 Monitoring Status */}
+      <div className="premium-card" style={{
+        background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
+        border: '2px solid #22C55E',
+        padding: '1rem 1.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        borderRadius: '12px'
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '10px',
+          background: '#22C55E',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '1.25rem',
+          flexShrink: 0
+        }}>
+          ⚡
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+            <span style={{ fontWeight: 800, color: '#166534', fontSize: '0.9rem' }}>
+              24/7 Monitoring Active
+            </span>
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              background: '#22C55E',
+              color: 'white',
+              borderRadius: '999px',
+              fontSize: '0.625rem',
+              fontWeight: 700,
+              letterSpacing: '0.05em'
+            }}>
+              LIVE
+            </span>
+          </div>
+          <p style={{ fontSize: '0.75rem', color: '#15803D', margin: 0, lineHeight: 1.5 }}>
+            Auto-syncing from Smartlead every 20 minutes • Real-time health detection • Instant protection
+          </p>
+        </div>
+        <a
+          href="/docs/help/24-7-monitoring"
+          target="_blank"
+          style={{
+            fontSize: '0.75rem',
+            color: '#16A34A',
+            fontWeight: 700,
+            textDecoration: 'underline',
+            whiteSpace: 'nowrap',
+            flexShrink: 0
+          }}
+        >
+          Learn more →
+        </a>
+      </div>
+
       {/* 1. Critical Alerts Section */}
       {(pausedDomains.length > 0 || warningDomains.length > 0) && (
         <div style={{ marginBottom: '2rem' }}>
