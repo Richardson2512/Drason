@@ -19,6 +19,8 @@ export default function DashboardLayout({
     const [userEmail, setUserEmail] = useState<string>('');
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
+    const [subscription, setSubscription] = useState<any>(null);
+    const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
 
     useEffect(() => {
         // Try to get user info from the organization endpoint
@@ -46,6 +48,21 @@ export default function DashboardLayout({
         };
         fetchUnreadCount();
         const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30s
+
+        // Fetch subscription status for trial banner
+        apiClient<any>('/api/billing/subscription')
+            .then(data => {
+                setSubscription(data.subscription);
+                if (data.subscription?.status === 'trialing' && data.subscription?.trialEndsAt) {
+                    const endDate = new Date(data.subscription.trialEndsAt);
+                    const now = new Date();
+                    const diff = endDate.getTime() - now.getTime();
+                    const days = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+                    setDaysRemaining(days);
+                }
+            })
+            .catch(() => { }); // Silent fail
+
         return () => clearInterval(interval);
     }, []);
 
@@ -288,6 +305,40 @@ export default function DashboardLayout({
                 overflowY: 'auto',
                 zIndex: 10
             }}>
+                {/* Trial Countdown Banner */}
+                {subscription?.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
+                    <div style={{
+                        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE047 100%)',
+                        borderBottom: '2px solid #FACC15',
+                        padding: '0.875rem 1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '1rem',
+                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 30
+                    }}>
+                        <span style={{ fontSize: '1.25rem' }}>⏰</span>
+                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 600, textAlign: 'center' }}>
+                            Your trial ends in <strong style={{ fontSize: '1rem', color: '#78350F' }}>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>.
+                            <Link href="/dashboard/settings" style={{
+                                marginLeft: '0.75rem',
+                                color: '#78350F',
+                                textDecoration: 'underline',
+                                fontWeight: 700,
+                                transition: 'color 0.2s'
+                            }}
+                                onMouseEnter={(e) => e.currentTarget.style.color = '#451A03'}
+                                onMouseLeave={(e) => e.currentTarget.style.color = '#78350F'}
+                            >
+                                Upgrade now →
+                            </Link>
+                        </p>
+                    </div>
+                )}
+
                 <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem', padding: '0.5rem 1rem 0 1.5rem' }}>
                     {children}
                 </div>
