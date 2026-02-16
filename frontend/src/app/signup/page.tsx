@@ -70,30 +70,22 @@ function SignupContent() {
         try {
             const data = await apiClient<any>('/api/auth/register', {
                 method: 'POST',
-                body: JSON.stringify({ name, email, password, organizationName: orgName }),
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                    organizationName: orgName,
+                    tier: selectedPlan // Pass selected tier to backend for tier-specific trial
+                }),
             });
 
             // Server sets httpOnly cookie automatically via Set-Cookie header.
             // Start periodic token refresh to keep session alive.
             startTokenRefresh();
 
-            // If user selected a plan, redirect to checkout
-            if (selectedPlan) {
-                // Create checkout session and redirect to Polar
-                try {
-                    const checkoutResult = await apiClient<{ checkoutUrl: string }>('/api/billing/create-checkout', {
-                        method: 'POST',
-                        body: JSON.stringify({ tier: selectedPlan })
-                    });
-                    window.location.href = checkoutResult.checkoutUrl;
-                } catch (checkoutErr: any) {
-                    console.error('Failed to create checkout:', checkoutErr);
-                    // Fallback to dashboard if checkout fails
-                    router.push('/dashboard');
-                }
-            } else {
-                router.push('/dashboard');
-            }
+            // Redirect to dashboard - user gets immediate trial access
+            // No payment required for 14-day trial
+            router.push('/dashboard');
         } catch (err: any) {
             setError(err.message);
         } finally {
