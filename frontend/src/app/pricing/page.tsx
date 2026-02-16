@@ -1,8 +1,23 @@
+'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 
 export default function PricingPage() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        // Check if user is logged in by checking for auth token cookie
+        const cookies = document.cookie.split(';').reduce((acc: any, c) => {
+            const [k, v] = c.trim().split('=');
+            acc[k] = v;
+            return acc;
+        }, {});
+        setIsLoggedIn(!!cookies.token);
+    }, []);
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
 
@@ -58,6 +73,7 @@ export default function PricingPage() {
                     {/* Starter */}
                     <PricingCard
                         tier="Starter"
+                        tierKey="starter"
                         description="For founder-led teams running structured outbound infra."
                         price="$49"
                         period="/ month"
@@ -76,11 +92,14 @@ export default function PricingPage() {
                             "Audit log & infra visibility"
                         ]}
                         bestFor="Teams sending ~5k–10k leads/month across 2–3 domains"
+                        isLoggedIn={isLoggedIn}
+                        router={router}
                     />
 
                     {/* Growth */}
                     <PricingCard
                         tier="Growth"
+                        tierKey="growth"
                         description="For scaling outbound operations with serious infrastructure exposure."
                         price="$199"
                         period="/ month"
@@ -98,11 +117,14 @@ export default function PricingPage() {
                         ]}
                         bestFor="B2B SaaS teams relying heavily on outbound revenue"
                         featured
+                        isLoggedIn={isLoggedIn}
+                        router={router}
                     />
 
                     {/* Scale */}
                     <PricingCard
                         tier="Scale"
+                        tierKey="scale"
                         description="For agencies and aggressive outbound engines managing large domain fleets."
                         price="$349"
                         period="/ month"
@@ -119,11 +141,14 @@ export default function PricingPage() {
                             "Slack support"
                         ]}
                         bestFor="Multi-domain outbound teams and boutique agencies"
+                        isLoggedIn={isLoggedIn}
+                        router={router}
                     />
 
                     {/* Enterprise */}
                     <PricingCard
                         tier="Enterprise"
+                        tierKey="enterprise"
                         description="For high-volume outbound operators requiring governance controls and SLA guarantees."
                         price="Custom"
                         period=""
@@ -137,6 +162,8 @@ export default function PricingPage() {
                             "Compliance-ready audit exports"
                         ]}
                         ctaText="Contact sales"
+                        isLoggedIn={isLoggedIn}
+                        router={router}
                     />
                 </div>
             </div>
@@ -250,6 +277,7 @@ export default function PricingPage() {
 
 interface PricingCardProps {
     tier: string;
+    tierKey: string;
     description: string;
     price: string;
     period: string;
@@ -257,9 +285,27 @@ interface PricingCardProps {
     bestFor?: string;
     ctaText?: string;
     featured?: boolean;
+    isLoggedIn: boolean;
+    router: any;
 }
 
-function PricingCard({ tier, description, price, period, features, bestFor, ctaText = "Get started", featured = false }: PricingCardProps) {
+function PricingCard({ tier, tierKey, description, price, period, features, bestFor, ctaText = "Get started", featured = false, isLoggedIn, router }: PricingCardProps) {
+    const handleCTAClick = () => {
+        if (tierKey === 'enterprise') {
+            // For enterprise, always go to contact/sales page
+            window.location.href = 'mailto:sales@superkabe.com?subject=Enterprise Plan Inquiry';
+            return;
+        }
+
+        if (isLoggedIn) {
+            // Logged in: go to settings with upgrade parameter
+            router.push(`/dashboard/settings?upgrade=${tierKey}`);
+        } else {
+            // Not logged in: go to signup with plan parameter
+            router.push(`/signup?plan=${tierKey}`);
+        }
+    };
+
     return (
         <div className={`relative bg-white rounded-3xl p-6 md:p-8 border ${featured ? 'border-blue-500 shadow-2xl shadow-blue-500/10 lg:scale-105 z-10 mt-6 lg:mt-0' : 'border-gray-100 shadow-lg shadow-gray-200/50'} hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 flex flex-col h-full`}>
             {featured && (
@@ -296,7 +342,10 @@ function PricingCard({ tier, description, price, period, features, bestFor, ctaT
                 </div>
             )}
 
-            <button className={`w-full py-4 rounded-xl font-bold transition-all duration-200 shadow-lg ${featured ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200' : 'bg-gray-900 hover:bg-black text-white shadow-gray-200'}`}>
+            <button
+                onClick={handleCTAClick}
+                className={`w-full py-4 rounded-xl font-bold transition-all duration-200 shadow-lg ${featured ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200' : 'bg-gray-900 hover:bg-black text-white shadow-gray-200'}`}
+            >
                 {ctaText}
             </button>
         </div>
