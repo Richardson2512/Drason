@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 
-export default function SignupPage() {
+function SignupContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [name, setName] = useState('');
@@ -298,5 +298,24 @@ export default function SignupPage() {
             </div>
 
         </div>
+    );
+}
+
+export default function SignupPage() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#F5F8FF',
+                color: '#9CA3AF'
+            }}>
+                Loading...
+            </div>
+        }>
+            <SignupContent />
+        </Suspense>
     );
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 
@@ -68,7 +68,7 @@ const TIER_INFO: Record<string, TierInfo> = {
     }
 };
 
-export default function BillingPage() {
+function BillingContent() {
     const searchParams = useSearchParams();
     const [data, setData] = useState<SubscriptionData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -396,5 +396,17 @@ export default function BillingPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function BillingPage() {
+    return (
+        <Suspense fallback={
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
+                Loading billing information...
+            </div>
+        }>
+            <BillingContent />
+        </Suspense>
     );
 }
