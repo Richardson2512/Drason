@@ -60,6 +60,12 @@ export default function PricingPage() {
                     <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
                         Superkabe is a control layer for modern outbound teams running multi-domain, multi-mailbox email infrastructure.
                     </p>
+                    <div className="mt-6 md:mt-8 inline-flex items-center gap-2 px-6 py-3 bg-green-50 border-2 border-green-200 rounded-full">
+                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-green-700 font-bold text-lg">14-day free trial · No credit card required</span>
+                    </div>
                     <div className="mt-6 md:mt-8 space-y-2">
                         <p className="text-lg md:text-xl font-semibold text-gray-900">We don't optimize volume.</p>
                         <p className="text-lg md:text-xl font-semibold text-blue-600">We prevent irreversible damage.</p>
@@ -92,6 +98,7 @@ export default function PricingPage() {
                             "Audit log & infra visibility"
                         ]}
                         bestFor="Teams sending ~5k–10k leads/month across 2–3 domains"
+                        ctaText="Start free trial"
                         isLoggedIn={isLoggedIn}
                         router={router}
                     />
@@ -116,6 +123,7 @@ export default function PricingPage() {
                             "Priority support"
                         ]}
                         bestFor="B2B SaaS teams relying heavily on outbound revenue"
+                        ctaText="Start free trial"
                         featured
                         isLoggedIn={isLoggedIn}
                         router={router}
@@ -141,6 +149,7 @@ export default function PricingPage() {
                             "Slack support"
                         ]}
                         bestFor="Multi-domain outbound teams and boutique agencies"
+                        ctaText="Start free trial"
                         isLoggedIn={isLoggedIn}
                         router={router}
                     />
@@ -318,10 +327,27 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
                 <p className="text-gray-500 text-sm leading-relaxed min-h-[40px]">{description}</p>
             </div>
 
-            <div className="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+            {tierKey !== 'enterprise' && (
+                <div className="mb-4 flex items-center justify-center">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full text-green-700 text-sm font-semibold">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        14-day free trial
+                    </span>
+                </div>
+            )}
+
+            <div className="mb-2 p-4 bg-gray-50 rounded-xl border border-gray-100">
                 <span className="text-4xl font-bold text-gray-900">{price}</span>
                 <span className="text-gray-500 ml-1 font-medium">{period}</span>
             </div>
+
+            {tierKey !== 'enterprise' && (
+                <p className="text-center text-xs text-gray-500 mb-6">
+                    No credit card required
+                </p>
+            )}
 
             <ul className="space-y-4 mb-8 flex-1">
                 {features.map((feature, idx) => (
