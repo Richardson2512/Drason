@@ -9,6 +9,7 @@ import BillingSection from './BillingSection';
 export default function Settings() {
     const [apiKey, setApiKey] = useState('');
     const [webhookUrl, setWebhookUrl] = useState('');
+    const [webhookSecret, setWebhookSecret] = useState('');
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
@@ -41,8 +42,20 @@ export default function Settings() {
                 setMsg('Failed to fetch organization details');
             });
 
-        // Determine Webhook URLs (client-side only to avoid hydration mismatch)
-        setWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/ingest/clay`);
+        // Fetch Clay webhook configuration with secret
+        apiClient<any>('/api/settings/clay-webhook-url')
+            .then(data => {
+                if (data?.success && data.data) {
+                    setWebhookUrl(data.data.webhookUrl);
+                    setWebhookSecret(data.data.webhookSecret || '');
+                }
+            })
+            .catch(() => {
+                // Fallback to constructing URL client-side
+                setWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/ingest/clay`);
+            });
+
+        // Determine Smartlead webhook URL (client-side only to avoid hydration mismatch)
         setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
     }, []);
 
@@ -374,17 +387,55 @@ export default function Settings() {
                         </a>
                     </div>
 
-                    <div style={{ padding: '1.5rem', background: '#F0F9FF', borderRadius: '16px', border: '1px solid #BAE6FD' }}>
-                        <div className="flex justify-between items-center mb-2">
-                            <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0369A1', textTransform: 'uppercase' }}>Ingestion Webhook</h3>
-                            <CopyButton text={webhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
+                    {/* Security Warning */}
+                    <div style={{ padding: '1rem 1.25rem', background: '#FEF3C7', borderRadius: '12px', border: '1px solid #FDE047', marginBottom: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+                            <span style={{ fontSize: '1.25rem' }}>🔐</span>
+                            <div>
+                                <p style={{ fontSize: '0.875rem', color: '#92400E', margin: 0, fontWeight: 600, marginBottom: '0.25rem' }}>
+                                    Webhook Security Required
+                                </p>
+                                <p style={{ fontSize: '0.8rem', color: '#78350F', margin: 0, lineHeight: '1.4' }}>
+                                    Clay must send HMAC signature to prevent unauthorized access. Configure below.
+                                </p>
+                            </div>
                         </div>
-                        <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '8px', border: '1px solid #BAE6FD', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#0284C7', marginBottom: '1rem' }}>
+                    </div>
+
+                    <div style={{ padding: '1.5rem', background: '#F0F9FF', borderRadius: '16px', border: '1px solid #BAE6FD', marginBottom: '1rem' }}>
+                        <div className="flex justify-between items-center mb-2">
+                            <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0369A1', textTransform: 'uppercase' }}>Webhook URL</h3>
+                            <CopyButton text={webhookUrl} label="Copy" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
+                        </div>
+                        <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '8px', border: '1px solid #BAE6FD', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#0284C7' }}>
                             {webhookUrl}
                         </div>
-                        <p style={{ fontSize: '0.875rem', color: '#0C4A6E', lineHeight: '1.5' }}>
-                            Use `HTTP API` column in Clay. Method: POST. Body: JSON.
+                    </div>
+
+                    <div style={{ padding: '1.5rem', background: '#FEF2F2', borderRadius: '16px', border: '1px solid #FECACA', marginBottom: '1rem' }}>
+                        <div className="flex justify-between items-center mb-2">
+                            <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#991B1B', textTransform: 'uppercase' }}>Webhook Secret</h3>
+                            <CopyButton text={webhookSecret} label="Copy Secret" className="text-xs text-red-600 font-semibold hover:text-red-800 transition-colors bg-transparent border-0 p-0" />
+                        </div>
+                        <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '8px', border: '1px solid #FECACA', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.75rem', color: '#DC2626' }}>
+                            {webhookSecret || 'Loading...'}
+                        </div>
+                        <p style={{ fontSize: '0.75rem', color: '#991B1B', marginTop: '0.75rem', margin: 0, lineHeight: '1.4' }}>
+                            ⚠️ Keep this secret safe! Use it to generate HMAC-SHA256 signatures.
                         </p>
+                    </div>
+
+                    <div style={{ padding: '1rem 1.25rem', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                        <p style={{ fontSize: '0.875rem', color: '#0C4A6E', lineHeight: '1.6', marginBottom: '0.75rem' }}>
+                            <strong>Configure in Clay:</strong>
+                        </p>
+                        <ul style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.6', margin: 0, paddingLeft: '1.25rem' }}>
+                            <li>Use <code style={{ background: '#E2E8F0', padding: '0.125rem 0.375rem', borderRadius: '4px', fontFamily: 'monospace' }}>HTTP API</code> column</li>
+                            <li>Method: <strong>POST</strong></li>
+                            <li>Add header: <code style={{ background: '#E2E8F0', padding: '0.125rem 0.375rem', borderRadius: '4px', fontFamily: 'monospace' }}>X-Organization-ID: {org?.id}</code></li>
+                            <li>Add header: <code style={{ background: '#E2E8F0', padding: '0.125rem 0.375rem', borderRadius: '4px', fontFamily: 'monospace' }}>X-Clay-Signature: {"<HMAC-SHA256>"}</code></li>
+                            <li>Generate signature using webhook secret above</li>
+                        </ul>
                     </div>
                 </div>
             </div>

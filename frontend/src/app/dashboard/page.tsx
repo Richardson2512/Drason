@@ -11,6 +11,7 @@ export default function Overview() {
   const [mailboxes, setMailboxes] = useState<any[]>([]);
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [userName, setUserName] = useState<string>('');
+  const [subscription, setSubscription] = useState<any>(null);
 
   // Chart Data State
   const [campaignData, setCampaignData] = useState<any[]>([]);
@@ -21,6 +22,13 @@ export default function Overview() {
     // Fetch user info
     apiClient<any>('/api/organization').then((data) => {
       if (data?.name) setUserName(data.name);
+    }).catch(() => { });
+
+    // Fetch subscription data
+    apiClient<any>('/api/billing/subscription').then((data) => {
+      if (data?.success && data.data) {
+        setSubscription(data.data);
+      }
     }).catch(() => { });
 
     // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
@@ -54,6 +62,19 @@ export default function Overview() {
 
   if (error) return <div style={{ padding: '2rem', color: '#EF4444' }}>Error: {error}</div>;
   if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
+
+  // Calculate trial days remaining
+  const calculateDaysRemaining = () => {
+    if (!subscription?.trial_ends_at) return null;
+    const now = new Date();
+    const trialEnd = new Date(subscription.trial_ends_at);
+    const diffTime = trialEnd.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  const daysRemaining = calculateDaysRemaining();
+  const isTrialing = subscription?.subscription_status === 'trialing';
 
   // Domain alerts
   const pausedDomains = domains.filter(d => d.status === 'paused');
@@ -118,9 +139,50 @@ export default function Overview() {
         </p>
       </div>
 
-      <div className="page-header">
-        <h1 className="page-title">System Overview</h1>
-        <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <h1 className="page-title">System Overview</h1>
+          <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
+        </div>
+
+        {/* Trial Countdown */}
+        {isTrialing && daysRemaining !== null && (
+          <div style={{
+            padding: '1rem 1.5rem',
+            background: daysRemaining <= 3 ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)' : 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%)',
+            border: `2px solid ${daysRemaining <= 3 ? '#F59E0B' : '#3B82F6'}`,
+            borderRadius: '12px',
+            minWidth: '200px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: daysRemaining <= 3 ? '#92400E' : '#1E40AF',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '0.25rem'
+            }}>
+              Trial Period
+            </div>
+            <div style={{
+              fontSize: '1.75rem',
+              fontWeight: 800,
+              color: daysRemaining <= 3 ? '#B45309' : '#1D4ED8',
+              lineHeight: 1.2,
+              marginBottom: '0.25rem'
+            }}>
+              {daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'}
+            </div>
+            <div style={{
+              fontSize: '0.7rem',
+              color: daysRemaining <= 3 ? '#78350F' : '#1E40AF',
+              fontWeight: 600
+            }}>
+              {daysRemaining <= 3 ? '⚠️ Ending Soon' : 'Remaining'}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 24/7 Monitoring Status */}

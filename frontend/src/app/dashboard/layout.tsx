@@ -17,15 +17,27 @@ export default function DashboardLayout({
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [userName, setUserName] = useState<string>('');
     const [userEmail, setUserEmail] = useState<string>('');
+    const [userRole, setUserRole] = useState<string>('');
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [subscription, setSubscription] = useState<any>(null);
     const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
 
     useEffect(() => {
-        // Try to get user info from the organization endpoint
+        // Fetch current user info including role
+        apiClient<any>('/api/user/me')
+            .then(data => {
+                if (data?.success && data.data) {
+                    setUserName(data.data.name || data.data.email);
+                    setUserEmail(data.data.email);
+                    setUserRole(data.data.role);
+                }
+            })
+            .catch(() => { });
+
+        // Try to get org info as fallback
         apiClient<any>('/api/organization').then((data) => {
-            if (data?.name) setUserName(data.name);
+            if (data?.name && !userName) setUserName(data.name);
         }).catch(() => { });
 
         // Get user name from cookie-based JWT (decoded on client for display only)
@@ -246,10 +258,13 @@ export default function DashboardLayout({
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📜</span>
                             {!isCollapsed && <span>Audit Log</span>}
                         </Link>
-                        <Link href="/dashboard/status" className="nav-link" title={isCollapsed ? "System Status" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🟢</span>
-                            {!isCollapsed && <span>System Status</span>}
-                        </Link>
+                        {/* System Status - ADMIN ONLY */}
+                        {userRole === 'admin' && (
+                            <Link href="/dashboard/status" className="nav-link" title={isCollapsed ? "System Status" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                                <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🟢</span>
+                                {!isCollapsed && <span>System Status</span>}
+                            </Link>
+                        )}
                         <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>💳</span>
                             {!isCollapsed && <span>Billing</span>}
