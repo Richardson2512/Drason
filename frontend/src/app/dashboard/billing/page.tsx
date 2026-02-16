@@ -75,19 +75,6 @@ export default function BillingPage() {
     const [error, setError] = useState('');
     const [actionLoading, setActionLoading] = useState(false);
 
-    useEffect(() => {
-        fetchSubscription();
-
-        // Check for upgrade parameter and auto-trigger checkout
-        const upgradeTier = searchParams.get('upgrade');
-        if (upgradeTier && ['starter', 'growth', 'scale'].includes(upgradeTier)) {
-            // Small delay to let subscription data load first
-            setTimeout(() => {
-                handleUpgrade(upgradeTier);
-            }, 500);
-        }
-    }, []);
-
     const fetchSubscription = async () => {
         try {
             const result = await apiClient<SubscriptionData>('/api/billing/subscription');
@@ -142,6 +129,21 @@ export default function BillingPage() {
         if (limit === Infinity) return 0;
         return Math.min(100, (current / limit) * 100);
     };
+
+    // Initialize data and handle upgrade parameter
+    useEffect(() => {
+        fetchSubscription();
+
+        // Check for upgrade parameter and auto-trigger checkout
+        const upgradeTier = searchParams.get('upgrade');
+        if (upgradeTier && ['starter', 'growth', 'scale'].includes(upgradeTier)) {
+            // Small delay to let subscription data load first
+            setTimeout(() => {
+                handleUpgrade(upgradeTier);
+            }, 500);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, { bg: string; text: string; label: string }> = {
