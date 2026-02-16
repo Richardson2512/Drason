@@ -250,6 +250,10 @@ export default function DashboardLayout({
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🟢</span>
                             {!isCollapsed && <span>System Status</span>}
                         </Link>
+                        <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>💳</span>
+                            {!isCollapsed && <span>Billing</span>}
+                        </Link>
                         <Link href="/dashboard/settings" className="nav-link" title={isCollapsed ? "Settings" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🔧</span>
                             {!isCollapsed && <span>Settings</span>}

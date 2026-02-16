@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
-import BillingSection from './BillingSection';
 
 export default function Settings() {
     const [apiKey, setApiKey] = useState('');
@@ -102,9 +101,6 @@ export default function Settings() {
                 <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>Settings & Configuration</h1>
                 <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Manage integrations, system modes, and credentials</div>
             </div>
-
-            {/* Billing Section */}
-            <BillingSection />
 
             {/* System Mode Control - Phase 5 */}
             <div className="premium-card" style={{ marginBottom: '2.5rem', borderLeft: `6px solid ${modeDescriptions[systemMode]?.color || '#E2E8F0'}` }}>

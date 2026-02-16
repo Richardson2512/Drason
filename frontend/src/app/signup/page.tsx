@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 
 export default function SignupPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,6 +16,15 @@ export default function SignupPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
+    // Capture plan parameter from URL
+    useEffect(() => {
+        const plan = searchParams.get('plan');
+        if (plan && ['starter', 'growth', 'scale'].includes(plan)) {
+            setSelectedPlan(plan);
+        }
+    }, [searchParams]);
 
     const slides = [
         {
@@ -67,7 +77,23 @@ export default function SignupPage() {
             // Start periodic token refresh to keep session alive.
             startTokenRefresh();
 
-            router.push('/dashboard');
+            // If user selected a plan, redirect to checkout
+            if (selectedPlan) {
+                // Create checkout session and redirect to Polar
+                try {
+                    const checkoutResult = await apiClient<{ checkoutUrl: string }>('/api/billing/create-checkout', {
+                        method: 'POST',
+                        body: JSON.stringify({ tier: selectedPlan })
+                    });
+                    window.location.href = checkoutResult.checkoutUrl;
+                } catch (checkoutErr: any) {
+                    console.error('Failed to create checkout:', checkoutErr);
+                    // Fallback to dashboard if checkout fails
+                    router.push('/dashboard');
+                }
+            } else {
+                router.push('/dashboard');
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -99,6 +125,14 @@ export default function SignupPage() {
                         <p className="text-[#718096] text-sm">
                             Create your Superkabe account
                         </p>
+                        {selectedPlan && (
+                            <div className="mt-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-xl">
+                                <p className="text-blue-700 text-sm font-semibold">
+                                    Selected: {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan
+                                </p>
+                                <p className="text-blue-600 text-xs mt-1">14-day free trial • No credit card required</p>
+                            </div>
+                        )}
                     </div>
 
                     {error && <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm text-center border border-red-100 mb-6">{error}</div>}

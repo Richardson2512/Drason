@@ -298,8 +298,8 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
         }
 
         if (isLoggedIn) {
-            // Logged in: go to settings with upgrade parameter
-            router.push(`/dashboard/settings?upgrade=${tierKey}`);
+            // Logged in: go to billing page with upgrade parameter
+            router.push(`/dashboard/billing?upgrade=${tierKey}`);
         } else {
             // Not logged in: go to signup with plan parameter
             router.push(`/signup?plan=${tierKey}`);

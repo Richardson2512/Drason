@@ -1,12 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        // Check if user is logged in by checking for auth token cookie
+        const cookies = document.cookie.split(';').reduce((acc: any, c) => {
+            const [k, v] = c.trim().split('=');
+            acc[k] = v;
+            return acc;
+        }, {});
+        setIsLoggedIn(!!cookies.token);
+    }, []);
 
     const features = [
         {
@@ -349,7 +362,16 @@ export default function LandingPage() {
                                 <span className="text-xl text-gray-500 font-medium">/mo</span>
                             </div>
 
-                            <button className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:shadow-xl hover:bg-blue-700 transition-all">
+                            <button
+                                onClick={() => {
+                                    if (isLoggedIn) {
+                                        router.push('/dashboard/billing?upgrade=starter');
+                                    } else {
+                                        router.push('/signup?plan=starter');
+                                    }
+                                }}
+                                className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:shadow-xl hover:bg-blue-700 transition-all"
+                            >
                                 Start Free Trial
                             </button>
                             <p className="text-center text-gray-400 text-xs mt-4">No credit card required for 14-day trial</p>
