@@ -188,7 +188,7 @@ function LeadsPageContent() {
         setScoreRefreshResult(null);
 
         try {
-            const result = await apiClient('/api/leads/scoring/sync', {
+            const result = await apiClient<any>('/api/leads/scoring/sync', {
                 method: 'POST',
                 timeout: 60000 // 1 minute timeout for scoring
             });

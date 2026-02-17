@@ -41,6 +41,15 @@ export function getScoreLabel(score: number): string {
 }
 
 /**
+ * Get emoji indicator for score
+ */
+export function getScoreEmoji(score: number): string {
+    if (score >= 80) return '✅';
+    if (score >= 60) return '⚠️';
+    return '🚨';
+}
+
+/**
  * Get severity color for findings
  */
 export function getSeverityColor(severity: 'critical' | 'high' | 'medium' | 'low'): string {
