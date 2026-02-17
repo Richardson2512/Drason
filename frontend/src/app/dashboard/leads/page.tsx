@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import { apiClient } from '@/lib/api';
+import { getStatusColors } from '@/lib/statusColors';
 
 function LeadsPageContent() {
     const searchParams = useSearchParams();
@@ -163,20 +164,11 @@ function LeadsPageContent() {
     };
 
     const StatusBadge = ({ status }: { status: string }) => {
-        const styles = {
-            active: { bg: '#DCFCE7', color: '#166534', label: 'Active' },
-            paused: { bg: '#FEE2E2', color: '#991B1B', label: 'Paused' },
-            held: { bg: '#FEF3C7', color: '#92400E', label: 'Held' },
-            blocked: { bg: '#FEE2E2', color: '#991B1B', label: 'Blocked' },
-            completed: { bg: '#E0E7FF', color: '#3730A3', label: 'Completed' },
-        };
-
-        const style = styles[status as keyof typeof styles] || { bg: '#F3F4F6', color: '#374151', label: status };
+        const colors = getStatusColors(status);
 
         return (
             <span style={{
-                background: style.bg,
-                color: style.color,
+                ...colors,
                 padding: '0.25rem 0.75rem',
                 borderRadius: '9999px',
                 fontSize: '0.8rem',
@@ -187,7 +179,7 @@ function LeadsPageContent() {
                 alignItems: 'center',
                 boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}>
-                {style.label}
+                {status}
             </span>
         );
     };
@@ -317,12 +309,11 @@ function LeadsPageContent() {
                                     <div style={{
                                         fontSize: '0.7rem',
                                         fontWeight: 700,
-                                        color: l.status === 'active' ? '#166534' : (l.status === 'paused' || l.status === 'blocked' ? '#991B1B' : (l.status === 'held' ? '#92400E' : '#374151')),
-                                        background: l.status === 'active' ? '#DCFCE7' : (l.status === 'paused' || l.status === 'blocked' ? '#FEE2E2' : (l.status === 'held' ? '#FEF3C7' : '#F3F4F6')),
                                         padding: '2px 8px',
                                         borderRadius: '999px',
                                         textTransform: 'uppercase',
-                                        letterSpacing: '0.05em'
+                                        letterSpacing: '0.05em',
+                                        ...getStatusColors(l.status)
                                     }}>
                                         {l.status}
                                     </div>
@@ -458,21 +449,32 @@ function LeadsPageContent() {
                                             {auditLogs.map((log, index) => {
                                                 // Get icon and color based on action
                                                 const getEventStyle = (action: string) => {
+                                                    // Email activities
+                                                    if (action.includes('email_sent') || action === 'email_sent') {
+                                                        return { icon: '📧', bg: '#EFF6FF', border: '#BFDBFE', color: '#1E40AF' };
+                                                    }
+                                                    if (action.includes('email_opened') || action.includes('opened')) {
+                                                        return { icon: '👁️', bg: '#F0F9FF', border: '#BAE6FD', color: '#0369A1' };
+                                                    }
+                                                    if (action.includes('email_clicked') || action.includes('clicked')) {
+                                                        return { icon: '🔗', bg: '#F0FDFA', border: '#99F6E4', color: '#0F766E' };
+                                                    }
+                                                    if (action.includes('email_replied') || action.includes('replied')) {
+                                                        return { icon: '💬', bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' };
+                                                    }
+                                                    // Negative events
                                                     if (action.includes('bounced') || action.includes('pause') || action.includes('block')) {
                                                         return { icon: '❌', bg: '#FEF2F2', border: '#FCA5A5', color: '#991B1B' };
                                                     }
-                                                    if (action.includes('opened') || action.includes('click')) {
-                                                        return { icon: '👁️', bg: '#F0F9FF', border: '#BAE6FD', color: '#0369A1' };
-                                                    }
-                                                    if (action.includes('replied')) {
-                                                        return { icon: '💬', bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' };
-                                                    }
+                                                    // Lead routing
                                                     if (action.includes('route') || action.includes('assign')) {
                                                         return { icon: '🎯', bg: '#FAF5FF', border: '#E9D5FF', color: '#7C3AED' };
                                                     }
+                                                    // Lead creation
                                                     if (action.includes('created') || action.includes('ingest')) {
                                                         return { icon: '✨', bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' };
                                                     }
+                                                    // Default
                                                     return { icon: '📋', bg: '#F8FAFC', border: '#E2E8F0', color: '#475569' };
                                                 };
 

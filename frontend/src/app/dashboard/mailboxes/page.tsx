@@ -5,6 +5,7 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
+import { getStatusColors } from '@/lib/statusColors';
 
 export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<any[]>([]);
@@ -262,8 +263,7 @@ export default function MailboxesPage() {
                                     borderRadius: '999px',
                                     fontSize: '0.875rem',
                                     fontWeight: '600',
-                                    background: (selectedMailbox.domain?.status === 'healthy' || selectedMailbox.domain?.status === 'active') ? '#DCFCE7' : (selectedMailbox.domain?.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
-                                    color: (selectedMailbox.domain?.status === 'healthy' || selectedMailbox.domain?.status === 'active') ? '#166534' : (selectedMailbox.domain?.status === 'warning' ? '#B45309' : '#991B1B')
+                                    ...getStatusColors(selectedMailbox.domain?.status || 'unknown')
                                 }}>
                                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
                                     {selectedMailbox.domain?.status.toUpperCase()}

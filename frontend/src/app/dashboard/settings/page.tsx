@@ -4,8 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
+import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
+import { useRouter } from 'next/navigation';
 
 export default function Settings() {
+    const router = useRouter();
     const [apiKey, setApiKey] = useState('');
     const [webhookUrl, setWebhookUrl] = useState('');
     const [webhookSecret, setWebhookSecret] = useState('');
@@ -16,6 +19,10 @@ export default function Settings() {
     // Phase 5: System Mode
     const [org, setOrg] = useState<any>(null);
     const [systemMode, setSystemMode] = useState('observe');
+
+    // Health Enforcement Modal
+    const [showHealthModal, setShowHealthModal] = useState(false);
+    const [healthCheckData, setHealthCheckData] = useState<any>(null);
 
     useEffect(() => {
         // Fetch current settings
@@ -368,6 +375,12 @@ export default function Settings() {
                                 try {
                                     const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
                                     setMsg(`Synced ${data.campaigns_synced || 0} campaigns.`);
+
+                                    // Check for critical health issues
+                                    if (data.health_check?.has_critical_issues) {
+                                        setHealthCheckData(data.health_check);
+                                        setShowHealthModal(true);
+                                    }
                                 } catch (e: any) { setMsg('Sync error: ' + e.message); }
                                 setLoading(false);
                             }}
@@ -538,6 +551,34 @@ export default function Settings() {
                     </div>
                 </div>
             </div>
+
+            {/* Health Enforcement Modal */}
+            {healthCheckData && (
+                <HealthEnforcementModal
+                    isOpen={showHealthModal}
+                    onClose={() => setShowHealthModal(false)}
+                    criticalCount={healthCheckData.critical_count || 0}
+                    findings={healthCheckData.findings || []}
+                    overallScore={healthCheckData.overall_score}
+                    onPauseCampaigns={async () => {
+                        try {
+                            setLoading(true);
+                            setShowHealthModal(false);
+                            // TODO: Implement pause campaigns API call
+                            await apiClient('/api/campaigns/pause-all', { method: 'POST' });
+                            setMsg('All campaigns paused successfully.');
+                        } catch (e: any) {
+                            setMsg('Failed to pause campaigns: ' + e.message);
+                        } finally {
+                            setLoading(false);
+                        }
+                    }}
+                    onViewDetails={() => {
+                        setShowHealthModal(false);
+                        router.push('/dashboard/infrastructure');
+                    }}
+                />
+            )}
         </div>
     );
 }
