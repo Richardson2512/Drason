@@ -3,6 +3,8 @@ import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
+import { ScoreBar } from '@/components/ui/ScoreBar';
+import { StatBadge } from '@/components/ui/StatBadge';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
 
@@ -18,6 +20,14 @@ function LeadsPageContent() {
     // Pagination & Selection State
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
+
+    // Score breakdown state
+    const [scoreBreakdown, setScoreBreakdown] = useState<any>(null);
+    const [scoreLoading, setScoreLoading] = useState(false);
+
+    // Manual score refresh state
+    const [scoringInProgress, setScoringInProgress] = useState(false);
+    const [scoreRefreshResult, setScoreRefreshResult] = useState<any>(null);
 
     // Read URL parameters on mount
     useEffect(() => {
@@ -149,6 +159,72 @@ function LeadsPageContent() {
         setSelectedLead(null);
     };
 
+    // Fetch score breakdown for selected lead
+    const fetchScoreBreakdown = useCallback(async (leadId: string) => {
+        setScoreLoading(true);
+        try {
+            const result = await apiClient<any>(`/api/leads/${leadId}/score-breakdown`);
+            setScoreBreakdown(result.data);
+        } catch (error) {
+            console.error('Failed to fetch score breakdown:', error);
+            setScoreBreakdown(null);
+        } finally {
+            setScoreLoading(false);
+        }
+    }, []);
+
+    // Auto-load score breakdown when lead is selected
+    useEffect(() => {
+        if (selectedLead?.id) {
+            fetchScoreBreakdown(selectedLead.id);
+        } else {
+            setScoreBreakdown(null);
+        }
+    }, [selectedLead?.id, fetchScoreBreakdown]);
+
+    // Manual refresh all lead scores
+    const handleRefreshScores = async () => {
+        setScoringInProgress(true);
+        setScoreRefreshResult(null);
+
+        try {
+            const result = await apiClient('/api/leads/scoring/sync', {
+                method: 'POST',
+                timeout: 60000 // 1 minute timeout for scoring
+            });
+
+            setScoreRefreshResult(result.data);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => setScoreRefreshResult(null), 5000);
+
+            // Refresh leads to show updated scores
+            await fetchLeads();
+        } catch (error: any) {
+            console.error('Failed to refresh scores:', error);
+            setScoreRefreshResult({ error: 'Failed to refresh scores' });
+        } finally {
+            setScoringInProgress(false);
+        }
+    };
+
+    // Format relative time helper
+    const formatRelativeTime = (dateString: string | null) => {
+        if (!dateString) return 'Never';
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
+        if (diffDays < 7) return `${diffDays}d ago`;
+        return date.toLocaleDateString();
+    };
+
     // Deterministic Status Explanation Logic (Based on PRD System States)
     const getSystemNotice = (lead: any) => {
         if (lead.status === 'paused') {
@@ -189,8 +265,41 @@ function LeadsPageContent() {
             {/* Left: Lead List */}
             <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
                 <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Leads</h2>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', gap: '1rem' }}>
+                        <div style={{ flex: 1 }}>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Leads</h2>
+                            <button
+                                onClick={handleRefreshScores}
+                                disabled={scoringInProgress}
+                                style={{
+                                    padding: '0.5rem 0.875rem',
+                                    background: scoringInProgress ? '#E5E7EB' : '#3B82F6',
+                                    color: 'white',
+                                    borderRadius: '8px',
+                                    border: 'none',
+                                    cursor: scoringInProgress ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    transition: 'all 0.2s',
+                                    opacity: scoringInProgress ? 0.7 : 1
+                                }}
+                                className={scoringInProgress ? '' : 'hover:bg-blue-600'}
+                            >
+                                {scoringInProgress ? (
+                                    <>
+                                        <span className="animate-spin">⏳</span>
+                                        Scoring...
+                                    </>
+                                ) : (
+                                    <>
+                                        🎯 Refresh Scores
+                                    </>
+                                )}
+                            </button>
+                        </div>
                         <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
                             {['all', 'held', 'active', 'paused'].map(t => (
                                 <button
@@ -215,6 +324,36 @@ function LeadsPageContent() {
                             ))}
                         </div>
                     </div>
+
+                    {/* Score Refresh Result Banner */}
+                    {scoreRefreshResult && !scoreRefreshResult.error && (
+                        <div style={{
+                            background: '#F0FDF4',
+                            border: '1px solid #BBF7D0',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '8px',
+                            marginBottom: '1rem',
+                            fontSize: '0.875rem',
+                            color: '#166534',
+                            fontWeight: 500
+                        }}>
+                            ✅ Updated {scoreRefreshResult.updated} lead scores
+                        </div>
+                    )}
+                    {scoreRefreshResult && scoreRefreshResult.error && (
+                        <div style={{
+                            background: '#FEF2F2',
+                            border: '1px solid #FECACA',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '8px',
+                            marginBottom: '1rem',
+                            fontSize: '0.875rem',
+                            color: '#991B1B',
+                            fontWeight: 500
+                        }}>
+                            ❌ {scoreRefreshResult.error}
+                        </div>
+                    )}
 
                     {/* Campaign Filter Dropdown */}
                     <div>
@@ -375,7 +514,7 @@ function LeadsPageContent() {
                                             <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>Persona</div>
                                             <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1E293B' }}>{selectedLead.persona}</div>
                                         </div>
-                                        <div style={{ marginBottom: '1rem' }}>
+                                        <div>
                                             <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '0.25rem' }}>
                                                 Engagement Score
                                                 <span style={{ fontSize: '0.75rem', color: '#9CA3AF', marginLeft: '0.5rem' }}>
@@ -441,6 +580,98 @@ function LeadsPageContent() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Score Breakdown Section */}
+                                {selectedLead.source === 'smartlead' && (
+                                    <div className="premium-card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)', border: '2px solid #E2E8F0' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                                            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                📊 Score Breakdown
+                                            </h3>
+                                            <div style={{
+                                                fontSize: '2rem',
+                                                fontWeight: 800,
+                                                color: selectedLead.lead_score >= 80 ? '#16A34A' :
+                                                      selectedLead.lead_score >= 60 ? '#D97706' :
+                                                      selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
+                                            }}>
+                                                {selectedLead.lead_score || 0}
+                                            </div>
+                                        </div>
+
+                                        {scoreLoading ? (
+                                            <div style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF' }}>
+                                                <div className="animate-spin" style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>⏳</div>
+                                                Loading breakdown...
+                                            </div>
+                                        ) : scoreBreakdown ? (
+                                            <>
+                                                {/* Visual breakdown bars */}
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                                                    <ScoreBar
+                                                        label="Engagement"
+                                                        value={scoreBreakdown.breakdown?.engagement || 0}
+                                                        max={50}
+                                                        color="#3B82F6"
+                                                    />
+                                                    <ScoreBar
+                                                        label="Recency"
+                                                        value={scoreBreakdown.breakdown?.recency || 0}
+                                                        max={30}
+                                                        color="#8B5CF6"
+                                                    />
+                                                    <ScoreBar
+                                                        label="Frequency"
+                                                        value={scoreBreakdown.breakdown?.frequency || 0}
+                                                        max={20}
+                                                        color="#EC4899"
+                                                    />
+                                                </div>
+
+                                                {/* Engagement factors */}
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                                                    <StatBadge
+                                                        icon="👁️"
+                                                        label="Opens"
+                                                        value={scoreBreakdown.factors?.totalOpens || 0}
+                                                    />
+                                                    <StatBadge
+                                                        icon="🖱️"
+                                                        label="Clicks"
+                                                        value={scoreBreakdown.factors?.totalClicks || 0}
+                                                    />
+                                                    <StatBadge
+                                                        icon="💬"
+                                                        label="Replies"
+                                                        value={scoreBreakdown.factors?.totalReplies || 0}
+                                                    />
+                                                    <StatBadge
+                                                        icon="🕐"
+                                                        label="Last Active"
+                                                        value={formatRelativeTime(scoreBreakdown.factors?.lastEngagement)}
+                                                    />
+                                                </div>
+
+                                                <div style={{
+                                                    marginTop: '1.5rem',
+                                                    padding: '0.75rem 1rem',
+                                                    background: 'white',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.75rem',
+                                                    color: '#64748B',
+                                                    fontStyle: 'italic',
+                                                    border: '1px solid #E2E8F0'
+                                                }}>
+                                                    💡 Score is calculated from Smartlead engagement data. Higher engagement and recent activity increase the score.
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF' }}>
+                                                No engagement data available yet. Score will update after first interaction.
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
                                 <div className="premium-card">
                                     <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Activity Timeline</h2>
