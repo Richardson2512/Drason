@@ -39,25 +39,25 @@ const TIER_INFO: Record<string, TierInfo> = {
     trial: {
         name: 'Free Trial',
         price: '$0',
-        limits: { leads: 10000, domains: 3, mailboxes: 15 },
+        limits: { leads: 10000, domains: 20, mailboxes: 75 },
         color: '#6B7280'
     },
     starter: {
         name: 'Starter',
         price: '$49',
-        limits: { leads: 10000, domains: 3, mailboxes: 15 },
+        limits: { leads: 10000, domains: 20, mailboxes: 75 },
         color: '#3b82f6'
     },
     growth: {
         name: 'Growth',
         price: '$199',
-        limits: { leads: 50000, domains: 15, mailboxes: 75 },
+        limits: { leads: 50000, domains: 75, mailboxes: 350 },
         color: '#8b5cf6'
     },
     scale: {
         name: 'Scale',
         price: '$349',
-        limits: { leads: 100000, domains: 30, mailboxes: 200 },
+        limits: { leads: 100000, domains: 150, mailboxes: 700 },
         color: '#22c55e'
     },
     enterprise: {

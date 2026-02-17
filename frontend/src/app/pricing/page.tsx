@@ -85,8 +85,8 @@ export default function PricingPage() {
                         period="/ month"
                         features={[
                             "Up to 10,000 active leads",
-                            "Up to 3 domains",
-                            "Up to 15 mailboxes",
+                            "Up to 20 domains",
+                            "Up to 75 mailboxes",
                             "Clay integration",
                             "Smartlead integration",
                             "ICP → Campaign routing",
@@ -97,7 +97,7 @@ export default function PricingPage() {
                             "Observe + Suggest modes",
                             "Audit log & infra visibility"
                         ]}
-                        bestFor="Teams sending ~5k–10k leads/month across 2–3 domains"
+                        bestFor="Teams sending ~5k–10k leads/month across multiple domains"
                         ctaText="Start free trial"
                         isLoggedIn={isLoggedIn}
                         router={router}
@@ -112,8 +112,8 @@ export default function PricingPage() {
                         period="/ month"
                         features={[
                             "Up to 50,000 active leads",
-                            "Up to 15 domains",
-                            "Up to 75 mailboxes",
+                            "Up to 75 domains",
+                            "Up to 350 mailboxes",
                             "Everything in Starter",
                             "Ratio-based domain protection",
                             "Domain-level pause logic",
@@ -122,7 +122,7 @@ export default function PricingPage() {
                             "Failure classification (hard vs soft)",
                             "Priority support"
                         ]}
-                        bestFor="B2B SaaS teams relying heavily on outbound revenue"
+                        bestFor="B2B SaaS teams running aggressive outbound operations"
                         ctaText="Start free trial"
                         featured
                         isLoggedIn={isLoggedIn}
@@ -138,8 +138,8 @@ export default function PricingPage() {
                         period="/ month"
                         features={[
                             "Up to 100,000 active leads",
-                            "Up to 30 domains",
-                            "Up to 200 mailboxes",
+                            "Up to 150 domains",
+                            "Up to 700 mailboxes",
                             "Everything in Growth",
                             "Advanced risk calibration",
                             "Custom threshold tuning",
@@ -148,7 +148,7 @@ export default function PricingPage() {
                             "Dedicated onboarding session",
                             "Slack support"
                         ]}
-                        bestFor="Multi-domain outbound teams and boutique agencies"
+                        bestFor="Agencies and high-volume outbound operations"
                         ctaText="Start free trial"
                         isLoggedIn={isLoggedIn}
                         router={router}
