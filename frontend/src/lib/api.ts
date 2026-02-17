@@ -11,28 +11,55 @@ export interface ApiResponse<T = any> {
  * Pass a custom `timeout` in options to override for slow operations.
  */
 const DEFAULT_TIMEOUT = 15_000;
+const DEFAULT_RETRIES = 2; // Retry failed requests up to 2 times
+
+/**
+ * Sleep for a specified number of milliseconds
+ */
+function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Check if an error is retryable (network errors, timeouts, 5xx errors)
+ */
+function isRetryableError(error: any, statusCode?: number): boolean {
+    // Retry on network errors or timeouts
+    if (error.name === 'AbortError' || error.message?.includes('network') || error.message?.includes('timeout')) {
+        return true;
+    }
+    // Retry on 5xx server errors
+    if (statusCode && statusCode >= 500 && statusCode < 600) {
+        return true;
+    }
+    // Don't retry 4xx client errors (auth, validation, etc.)
+    return false;
+}
 
 export async function apiClient<T>(
     endpoint: string,
-    options: RequestInit & { timeout?: number } = {}
+    options: RequestInit & { timeout?: number; retries?: number } = {}
 ): Promise<T> {
-    const { timeout = DEFAULT_TIMEOUT, ...fetchOptions } = options;
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
+    const { timeout = DEFAULT_TIMEOUT, retries = DEFAULT_RETRIES, ...fetchOptions } = options;
 
-    try {
-        const response = await fetch(endpoint, {
-            ...fetchOptions,
-            signal: controller.signal,
-            credentials: 'include', // CRITICAL: Send httpOnly cookies
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                ...fetchOptions.headers,
-            },
-        });
+    // Retry loop with exponential backoff
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
 
-        clearTimeout(id);
+        try {
+            const response = await fetch(endpoint, {
+                ...fetchOptions,
+                signal: controller.signal,
+                credentials: 'include', // CRITICAL: Send httpOnly cookies
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    ...fetchOptions.headers,
+                },
+            });
+
+            clearTimeout(id);
 
         let data: any = null;
         const contentType = response.headers.get('content-type');
@@ -62,19 +89,35 @@ export async function apiClient<T>(
             throw new Error(errorMessage);
         }
 
-        // Return data.data if it exists (standardized), otherwise data (legacy)
-        return (data?.success && data?.data) ? data.data : data;
+            // Return data.data if it exists (standardized), otherwise data (legacy)
+            return (data?.success && data?.data) ? data.data : data;
 
-    } catch (error: any) {
-        clearTimeout(id);
+        } catch (error: any) {
+            clearTimeout(id);
 
-        // Auto-toast for non-GET requests (mutations)
-        if (fetchOptions.method && fetchOptions.method !== 'GET') {
-            toast.error(error.message || 'An unexpected error occurred');
+            // Check if we should retry
+            const statusCode = error.response?.status;
+            const shouldRetry = isRetryableError(error, statusCode) && attempt < retries;
+
+            if (shouldRetry) {
+                // Exponential backoff: wait 1s, 2s, 4s, etc.
+                const backoffMs = Math.pow(2, attempt) * 1000;
+                await sleep(backoffMs);
+                continue; // Retry the request
+            }
+
+            // Final attempt failed or non-retryable error
+            // Auto-toast for non-GET requests (mutations)
+            if (fetchOptions.method && fetchOptions.method !== 'GET') {
+                toast.error(error.message || 'An unexpected error occurred');
+            }
+
+            throw error;
         }
-
-        throw error;
     }
+
+    // Should never reach here due to throw in catch, but TypeScript needs it
+    throw new Error('Request failed after all retries');
 }
 
 // ============================================================================
