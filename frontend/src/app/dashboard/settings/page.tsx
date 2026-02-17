@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
 import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
+import SyncProgressModal from '@/components/modals/SyncProgressModal';
 import { useRouter } from 'next/navigation';
 
 export default function Settings() {
@@ -23,6 +24,10 @@ export default function Settings() {
     // Health Enforcement Modal
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [healthCheckData, setHealthCheckData] = useState<any>(null);
+
+    // Sync Progress Modal
+    const [showSyncModal, setShowSyncModal] = useState(false);
+    const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch current settings
@@ -371,18 +376,21 @@ export default function Settings() {
                         </div>
                         <button
                             onClick={async () => {
-                                setLoading(true);
-                                try {
-                                    const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
-                                    setMsg(`Synced ${data.campaigns_synced || 0} campaigns.`);
+                                // Generate unique session ID for this sync
+                                const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+                                setSyncSessionId(sessionId);
+                                setShowSyncModal(true);
 
-                                    // Check for critical health issues
-                                    if (data.health_check?.has_critical_issues) {
-                                        setHealthCheckData(data.health_check);
-                                        setShowHealthModal(true);
-                                    }
-                                } catch (e: any) { setMsg('Sync error: ' + e.message); }
-                                setLoading(false);
+                                // Trigger sync with session ID
+                                try {
+                                    await apiClient<any>(`/api/sync?session=${sessionId}`, {
+                                        method: 'POST',
+                                        timeout: 180_000
+                                    });
+                                } catch (e: any) {
+                                    // Error will be shown in modal via SSE
+                                    console.error('Sync error:', e);
+                                }
                             }}
                             disabled={loading}
                             className="premium-btn"
@@ -551,6 +559,33 @@ export default function Settings() {
                     </div>
                 </div>
             </div>
+
+            {/* Sync Progress Modal */}
+            <SyncProgressModal
+                isOpen={showSyncModal}
+                sessionId={syncSessionId}
+                onClose={() => {
+                    setShowSyncModal(false);
+                    setSyncSessionId(null);
+                    // Optionally refresh the page to show updated data
+                    window.location.reload();
+                }}
+                onPauseCampaigns={async () => {
+                    try {
+                        setLoading(true);
+                        const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
+                        setMsg(result.message || 'All campaigns paused successfully.');
+                    } catch (e: any) {
+                        setMsg('Failed to pause campaigns: ' + e.message);
+                    } finally {
+                        setLoading(false);
+                    }
+                }}
+                onViewHealthReport={() => {
+                    setShowSyncModal(false);
+                    router.push('/dashboard/infrastructure');
+                }}
+            />
 
             {/* Health Enforcement Modal */}
             {healthCheckData && (
