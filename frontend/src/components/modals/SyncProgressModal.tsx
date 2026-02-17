@@ -71,8 +71,8 @@ export default function SyncProgressModal({
         setError(null);
         setIsComplete(false);
 
-        // Connect to SSE endpoint
-        const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_URL}/api/sync-progress/${sessionId}`);
+        // Connect to SSE endpoint (use relative URL like apiClient does)
+        const eventSource = new EventSource(`/api/sync-progress/${sessionId}`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
