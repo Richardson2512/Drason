@@ -258,7 +258,7 @@ export default function APIIntegrationPage() {
                 <pre className="text-sm text-blue-600 overflow-x-auto">
                     {`curl -X POST https://api.superkabe.com/api/ingest/clay \\
   -H "Content-Type: application/json" \\
-  -H "x-organization-id: org_YOUR_ORG_ID" \\
+  -H "x-organization-id: YOUR_ORG_ID" \\
   -d '{
     "email": "test@example.com",
     "persona": "VP Sales",
@@ -274,7 +274,7 @@ export default function APIIntegrationPage() {
                 <pre className="text-sm text-blue-600 overflow-x-auto">
                     {`curl -X POST https://api.superkabe.com/api/monitor/smartlead-webhook \\
   -H "Content-Type: application/json" \\
-  -H "x-organization-id: org_YOUR_ORG_ID" \\
+  -H "x-organization-id: YOUR_ORG_ID" \\
   -d '{
     "event": "email_bounce",
     "mailbox_id": "mailbox_test_123",

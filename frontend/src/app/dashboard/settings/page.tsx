@@ -44,13 +44,25 @@ export default function Settings() {
         // Fetch Clay webhook configuration with secret
         apiClient<any>('/api/settings/clay-webhook-url')
             .then(data => {
-                if (data?.success && data.data) {
-                    setWebhookUrl(data.data.webhookUrl || '');
-                    setWebhookSecret(data.data.webhookSecret || '');
+                console.log('[SETTINGS] Raw webhook response:', data);
+
+                // Handle both nested and direct response formats
+                const webhookData = data?.data || data;
+
+                if (webhookData?.webhookUrl) {
+                    setWebhookUrl(webhookData.webhookUrl);
+                    setWebhookSecret(webhookData.webhookSecret || '');
                     console.log('[SETTINGS] Webhook config fetched:', {
-                        webhookUrl: data.data.webhookUrl,
-                        hasSecret: !!data.data.webhookSecret
+                        webhookUrl: webhookData.webhookUrl,
+                        hasSecret: !!webhookData.webhookSecret
                     });
+                } else {
+                    console.warn('[SETTINGS] No webhook URL in response, using fallback');
+                    // Fallback to constructing URL client-side
+                    const protocol = window.location.protocol;
+                    const hostname = window.location.hostname;
+                    const backendUrl = process.env.NEXT_PUBLIC_API_URL || `${protocol}//${hostname}`;
+                    setWebhookUrl(`${backendUrl}/api/ingest/clay`);
                 }
             })
             .catch((error) => {
@@ -58,8 +70,8 @@ export default function Settings() {
                 // Fallback to constructing URL client-side
                 const protocol = window.location.protocol;
                 const hostname = window.location.hostname;
-                const port = hostname === 'localhost' ? ':3001' : '';
-                setWebhookUrl(`${protocol}//${hostname}${port}/api/ingest/clay`);
+                const backendUrl = process.env.NEXT_PUBLIC_API_URL || `${protocol}//${hostname}`;
+                setWebhookUrl(`${backendUrl}/api/ingest/clay`);
             });
 
         // Determine Smartlead webhook URL (client-side only to avoid hydration mismatch)

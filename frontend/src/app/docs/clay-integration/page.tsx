@@ -50,7 +50,7 @@ export default function ClayIntegrationPage() {
                 <ol className="space-y-3 text-gray-600">
                     <li><strong>1.</strong> Log in to Superkabe dashboard</li>
                     <li><strong>2.</strong> Navigate to <strong>Settings → API Keys</strong></li>
-                    <li><strong>3.</strong> Copy your <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">Organization ID</code> (starts with <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">org_</code>)</li>
+                    <li><strong>3.</strong> Copy your <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">Organization ID</code> (UUID format)</li>
                 </ol>
             </div>
 

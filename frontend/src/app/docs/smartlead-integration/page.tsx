@@ -82,7 +82,8 @@ export default function SmartleadIntegrationPage() {
                     <div>
                         <p className="text-sm font-semibold text-gray-700 mb-2">Your Organization ID:</p>
                         <p className="text-gray-500 text-sm">Found in <strong>Superkabe → Settings → API Keys</strong></p>
-                        <code className="text-blue-600 bg-blue-50 px-3 py-2 rounded-lg text-sm inline-block mt-1">org_YOUR_ORGANIZATION_ID</code>
+                        <code className="text-blue-600 bg-blue-50 px-3 py-2 rounded-lg text-sm inline-block mt-1">YOUR_ORGANIZATION_ID</code>
+                        <p className="text-gray-400 text-xs mt-1">UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +124,8 @@ export default function SmartleadIntegrationPage() {
                                 </div>
                                 <div>
                                     <p className="text-gray-700 mb-1">Header Value:</p>
-                                    <code className="text-blue-600 bg-blue-50 px-2 py-1 rounded">org_YOUR_ORG_ID</code>
+                                    <code className="text-blue-600 bg-blue-50 px-2 py-1 rounded">YOUR_ORG_ID</code>
+                                    <p className="text-gray-400 text-xs mt-1">(UUID format)</p>
                                 </div>
                             </div>
                         </div>
