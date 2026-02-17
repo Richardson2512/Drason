@@ -12,7 +12,7 @@ export default function MailboxesEmptyState() {
         setMsg('');
         try {
             const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
-            setMsg(`Success! Synced ${data.mailboxes} mailboxes. Refreshing...`);
+            setMsg(`Success! Synced ${data.mailboxes_synced} mailboxes. Refreshing...`);
             setTimeout(() => window.location.reload(), 1500);
         } catch (error: any) {
             setMsg(`Error: ${error.message || 'Failed to sync'}`);

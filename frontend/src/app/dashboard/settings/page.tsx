@@ -564,9 +564,8 @@ export default function Settings() {
                         try {
                             setLoading(true);
                             setShowHealthModal(false);
-                            // TODO: Implement pause campaigns API call
-                            await apiClient('/api/campaigns/pause-all', { method: 'POST' });
-                            setMsg('All campaigns paused successfully.');
+                            const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
+                            setMsg(result.message || 'All campaigns paused successfully.');
                         } catch (e: any) {
                             setMsg('Failed to pause campaigns: ' + e.message);
                         } finally {
