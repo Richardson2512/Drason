@@ -296,6 +296,8 @@ function LeadsPageContent() {
                             onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
                         />
                     </div>
+
+                    <div style={{ flexShrink: 0 }}>
                         <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
                             {['all', 'held', 'active', 'paused'].map(t => (
                                 <button
