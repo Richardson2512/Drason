@@ -29,6 +29,12 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
 
+    // Admin Tools State
+    const [mailboxes, setMailboxes] = useState<any[]>([]);
+    const [testMailboxId, setTestMailboxId] = useState<string>('');
+    const [testingEvent, setTestingEvent] = useState(false);
+    const [testEventResult, setTestEventResult] = useState<{type: 'success' | 'error', message: string} | null>(null);
+
     useEffect(() => {
         // Fetch current settings
         apiClient<any>('/api/settings')
@@ -79,6 +85,20 @@ export default function Settings() {
 
         // Determine Smartlead webhook URL (client-side only to avoid hydration mismatch)
         setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
+
+        // Fetch mailboxes for admin event testing
+        apiClient<any>('/api/dashboard/mailboxes?limit=1000')
+            .then(data => {
+                if (data?.data) {
+                    setMailboxes(data.data);
+                    if (data.data.length > 0) {
+                        setTestMailboxId(data.data[0].id); // Pre-select first mailbox
+                    }
+                }
+            })
+            .catch(() => {
+                // Silent fail - admin tools are optional
+            });
     }, []);
 
     const handleSave = async (e: React.FormEvent) => {
@@ -110,6 +130,42 @@ export default function Settings() {
             setMsg(err.message || 'Error updating system mode.');
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Handle test event simulation
+    const handleSimulateEvent = async (eventType: 'bounce' | 'sent') => {
+        if (!testMailboxId) {
+            setTestEventResult({ type: 'error', message: 'Please select a mailbox first' });
+            return;
+        }
+
+        setTestingEvent(true);
+        setTestEventResult(null);
+
+        try {
+            await apiClient('/api/monitor/event', {
+                method: 'POST',
+                body: JSON.stringify({
+                    eventType,
+                    mailboxId: testMailboxId
+                })
+            });
+
+            setTestEventResult({
+                type: 'success',
+                message: `✅ ${eventType === 'bounce' ? 'Bounce' : 'Send'} event simulated successfully for mailbox`
+            });
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => setTestEventResult(null), 5000);
+        } catch (error: any) {
+            setTestEventResult({
+                type: 'error',
+                message: `Failed to simulate ${eventType} event: ${error.message || 'Unknown error'}`
+            });
+        } finally {
+            setTestingEvent(false);
         }
     };
 
@@ -547,6 +603,165 @@ export default function Settings() {
                             <li>Add header: <code style={{ background: '#E2E8F0', padding: '0.125rem 0.375rem', borderRadius: '4px', fontFamily: 'monospace' }}>X-Clay-Signature: {"<HMAC-SHA256>"}</code></li>
                             <li>Generate signature using webhook secret above</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            {/* Admin Tools Section */}
+            <div className="premium-card" style={{ marginBottom: '2.5rem', borderLeft: '6px solid #F59E0B' }}>
+                <div style={{ marginBottom: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>
+                        🛠️ Admin Tools
+                    </h2>
+                    <p style={{ color: '#64748B', fontSize: '1rem', maxWidth: '700px', lineHeight: '1.5' }}>
+                        Testing and debugging utilities for development and troubleshooting. Simulate events to test health monitoring without real email traffic.
+                    </p>
+                </div>
+
+                {/* Event Simulation */}
+                <div style={{
+                    padding: '1.5rem',
+                    background: '#FFFBEB',
+                    borderRadius: '12px',
+                    border: '1px solid #FDE047',
+                    marginBottom: '1.5rem'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem', marginBottom: '1rem' }}>
+                        <span style={{ fontSize: '1.25rem' }}>🧪</span>
+                        <div>
+                            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#92400E', margin: 0, marginBottom: '0.25rem' }}>
+                                Event Simulation
+                            </h3>
+                            <p style={{ fontSize: '0.875rem', color: '#78350F', margin: 0, lineHeight: '1.4' }}>
+                                Test bounce rate monitoring and health enforcement without sending actual emails.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Mailbox Selector */}
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label htmlFor="test-mailbox" style={{
+                            display: 'block',
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                            color: '#92400E',
+                            marginBottom: '0.5rem'
+                        }}>
+                            Select Mailbox
+                        </label>
+                        <select
+                            id="test-mailbox"
+                            value={testMailboxId}
+                            onChange={(e) => setTestMailboxId(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '0.75rem 1rem',
+                                borderRadius: '8px',
+                                border: '1px solid #FDE047',
+                                background: '#FFFFFF',
+                                color: '#111827',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {mailboxes.length === 0 ? (
+                                <option>No mailboxes available</option>
+                            ) : (
+                                mailboxes.map(mb => (
+                                    <option key={mb.id} value={mb.id}>
+                                        {mb.email} - {mb.status}
+                                    </option>
+                                ))
+                            )}
+                        </select>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <button
+                            onClick={() => handleSimulateEvent('bounce')}
+                            disabled={testingEvent || mailboxes.length === 0}
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: testingEvent ? '#E5E7EB' : '#EF4444',
+                                color: 'white',
+                                borderRadius: '8px',
+                                border: 'none',
+                                cursor: testingEvent || mailboxes.length === 0 ? 'not-allowed' : 'pointer',
+                                fontSize: '0.875rem',
+                                fontWeight: 600,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                                transition: 'all 0.2s',
+                                opacity: testingEvent ? 0.7 : 1
+                            }}
+                        >
+                            🚨 Simulate Bounce
+                        </button>
+                        <button
+                            onClick={() => handleSimulateEvent('sent')}
+                            disabled={testingEvent || mailboxes.length === 0}
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: testingEvent ? '#E5E7EB' : '#10B981',
+                                color: 'white',
+                                borderRadius: '8px',
+                                border: 'none',
+                                cursor: testingEvent || mailboxes.length === 0 ? 'not-allowed' : 'pointer',
+                                fontSize: '0.875rem',
+                                fontWeight: 600,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                                transition: 'all 0.2s',
+                                opacity: testingEvent ? 0.7 : 1
+                            }}
+                        >
+                            ✅ Simulate Send
+                        </button>
+                    </div>
+
+                    {/* Result Message */}
+                    {testEventResult && (
+                        <div style={{
+                            marginTop: '1rem',
+                            padding: '0.75rem 1rem',
+                            background: testEventResult.type === 'success' ? '#F0FDF4' : '#FEF2F2',
+                            border: `1px solid ${testEventResult.type === 'success' ? '#BBF7D0' : '#FECACA'}`,
+                            borderRadius: '8px',
+                            color: testEventResult.type === 'success' ? '#166534' : '#991B1B',
+                            fontSize: '0.875rem',
+                            fontWeight: 500
+                        }}>
+                            {testEventResult.message}
+                        </div>
+                    )}
+                </div>
+
+                {/* Info Box */}
+                <div style={{
+                    padding: '1rem 1.25rem',
+                    background: '#F1F5F9',
+                    borderRadius: '12px',
+                    border: '1px solid #CBD5E1'
+                }}>
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                        <span style={{ fontSize: '1.125rem' }}>💡</span>
+                        <div>
+                            <p style={{ fontSize: '0.875rem', color: '#475569', margin: 0, lineHeight: '1.6' }}>
+                                <strong>Use Cases:</strong>
+                            </p>
+                            <ul style={{ fontSize: '0.8rem', color: '#64748B', lineHeight: '1.5', margin: 0, marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+                                <li>Test bounce rate thresholds without sending real emails</li>
+                                <li>Verify health monitoring triggers correctly</li>
+                                <li>Debug infrastructure health system behavior</li>
+                                <li>Trigger mailbox pause/warning states manually</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
