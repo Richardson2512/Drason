@@ -29,6 +29,9 @@ function LeadsPageContent() {
     const [scoringInProgress, setScoringInProgress] = useState(false);
     const [scoreRefreshResult, setScoreRefreshResult] = useState<any>(null);
 
+    // Search state
+    const [searchQuery, setSearchQuery] = useState('');
+
     // Read URL parameters on mount
     useEffect(() => {
         const campaignId = searchParams.get('campaignId');
@@ -54,6 +57,11 @@ function LeadsPageContent() {
             queryParams.campaignId = selectedCampaignFilter;
         }
 
+        // Add search query if present
+        if (searchQuery.trim()) {
+            queryParams.search = searchQuery.trim();
+        }
+
         const query = new URLSearchParams(queryParams);
 
         try {
@@ -77,7 +85,7 @@ function LeadsPageContent() {
             console.error('Failed to fetch leads:', err);
             setLeads([]);
         }
-    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, selectedLead]);
+    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, selectedLead]);
 
     useEffect(() => {
         fetchLeads();
@@ -265,41 +273,29 @@ function LeadsPageContent() {
             {/* Left: Lead List */}
             <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
                 <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', gap: '1rem' }}>
-                        <div style={{ flex: 1 }}>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Leads</h2>
-                            <button
-                                onClick={handleRefreshScores}
-                                disabled={scoringInProgress}
-                                style={{
-                                    padding: '0.5rem 0.875rem',
-                                    background: scoringInProgress ? '#E5E7EB' : '#3B82F6',
-                                    color: 'white',
-                                    borderRadius: '8px',
-                                    border: 'none',
-                                    cursor: scoringInProgress ? 'not-allowed' : 'pointer',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    transition: 'all 0.2s',
-                                    opacity: scoringInProgress ? 0.7 : 1
-                                }}
-                                className={scoringInProgress ? '' : 'hover:bg-blue-600'}
-                            >
-                                {scoringInProgress ? (
-                                    <>
-                                        <span className="animate-spin">⏳</span>
-                                        Scoring...
-                                    </>
-                                ) : (
-                                    <>
-                                        🎯 Refresh Scores
-                                    </>
-                                )}
-                            </button>
-                        </div>
+                    <div style={{ marginBottom: '1rem' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Leads</h2>
+
+                        {/* Search Input */}
+                        <input
+                            type="text"
+                            placeholder="🔍 Search leads by email..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 1rem',
+                                border: '2px solid #E5E7EB',
+                                borderRadius: '12px',
+                                fontSize: '0.875rem',
+                                outline: 'none',
+                                transition: 'all 0.2s',
+                                marginBottom: '0.75rem'
+                            }}
+                            onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
+                            onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
+                        />
+                    </div>
                         <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
                             {['all', 'held', 'active', 'paused'].map(t => (
                                 <button
@@ -588,14 +584,48 @@ function LeadsPageContent() {
                                             <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                                 📊 Score Breakdown
                                             </h3>
-                                            <div style={{
-                                                fontSize: '2rem',
-                                                fontWeight: 800,
-                                                color: selectedLead.lead_score >= 80 ? '#16A34A' :
-                                                      selectedLead.lead_score >= 60 ? '#D97706' :
-                                                      selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
-                                            }}>
-                                                {selectedLead.lead_score || 0}
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                <button
+                                                    onClick={handleRefreshScores}
+                                                    disabled={scoringInProgress}
+                                                    style={{
+                                                        padding: '0.375rem 0.75rem',
+                                                        background: scoringInProgress ? '#E5E7EB' : '#3B82F6',
+                                                        color: 'white',
+                                                        borderRadius: '8px',
+                                                        border: 'none',
+                                                        cursor: scoringInProgress ? 'not-allowed' : 'pointer',
+                                                        fontSize: '0.7rem',
+                                                        fontWeight: 600,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.375rem',
+                                                        transition: 'all 0.2s',
+                                                        opacity: scoringInProgress ? 0.7 : 1,
+                                                        whiteSpace: 'nowrap'
+                                                    }}
+                                                    className={scoringInProgress ? '' : 'hover:bg-blue-600'}
+                                                >
+                                                    {scoringInProgress ? (
+                                                        <>
+                                                            <span className="animate-spin">⏳</span>
+                                                            Scoring...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            🎯 Refresh
+                                                        </>
+                                                    )}
+                                                </button>
+                                                <div style={{
+                                                    fontSize: '2rem',
+                                                    fontWeight: 800,
+                                                    color: selectedLead.lead_score >= 80 ? '#16A34A' :
+                                                          selectedLead.lead_score >= 60 ? '#D97706' :
+                                                          selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
+                                                }}>
+                                                    {selectedLead.lead_score || 0}
+                                                </div>
                                             </div>
                                         </div>
 
