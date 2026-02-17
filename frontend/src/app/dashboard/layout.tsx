@@ -24,13 +24,17 @@ export default function DashboardLayout({
     const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
+    const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
 
     useEffect(() => {
         // Fetch current user info including role
         apiClient<any>('/api/user/me')
             .then(data => {
                 if (data?.success && data.data) {
-                    setUserName(data.data.name || data.data.email);
+                    // Extract first name from full name, or use email if no name
+                    const fullName = data.data.name || data.data.email;
+                    const firstName = fullName.split(' ')[0];
+                    setUserName(firstName);
                     setUserEmail(data.data.email);
                     setUserRole(data.data.role);
                 }
@@ -39,7 +43,6 @@ export default function DashboardLayout({
 
         // Fetch organization info including system_mode
         apiClient<any>('/api/organization').then((data) => {
-            if (data?.name && !userName) setUserName(data.name);
             if (data?.system_mode) setSystemMode(data.system_mode);
         }).catch(() => { });
 
@@ -287,7 +290,7 @@ export default function DashboardLayout({
                                     </div>
                                     <div style={{ overflow: 'hidden' }}>
                                         <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName || 'My Account'}</div>
-                                        <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail || 'Manage settings'}</div>
+                                        <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>
                                     </div>
                                 </div>
                             </div>
@@ -395,26 +398,31 @@ export default function DashboardLayout({
                     </div>
                 )}
 
-                {/* Trial Countdown Banner */}
-                {subscription?.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
+                {/* Trial Countdown Floating Popup */}
+                {subscription?.status === 'trialing' && daysRemaining !== null && !trialBannerDismissed && (
                     <div style={{
+                        position: 'fixed',
+                        top: '1rem',
+                        right: '1rem',
                         background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE047 100%)',
-                        borderBottom: '2px solid #FACC15',
-                        padding: '0.875rem 1.5rem',
+                        border: '2px solid #FACC15',
+                        borderRadius: '16px',
+                        padding: '1rem 1.25rem',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
                         gap: '1rem',
-                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 30
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+                        zIndex: 50,
+                        maxWidth: '400px',
+                        animation: 'slideIn 0.3s ease-out'
                     }}>
-                        <span style={{ fontSize: '1.25rem' }}>⏰</span>
-                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 600, textAlign: 'center' }}>
-                            Your trial ends in <strong style={{ fontSize: '1rem', color: '#78350F' }}>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>.
-                            <Link href="/dashboard/settings" style={{
-                                marginLeft: '0.75rem',
+                        <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>⏰</span>
+                        <div style={{ flex: 1 }}>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>
+                                Trial ends in <strong style={{ fontSize: '1rem', color: '#78350F' }}>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>
+                            </p>
+                            <Link href="/dashboard/billing" style={{
+                                fontSize: '0.8rem',
                                 color: '#78350F',
                                 textDecoration: 'underline',
                                 fontWeight: 700,
@@ -425,7 +433,35 @@ export default function DashboardLayout({
                             >
                                 Upgrade now →
                             </Link>
-                        </p>
+                        </div>
+                        <button
+                            onClick={() => setTrialBannerDismissed(true)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#92400E',
+                                cursor: 'pointer',
+                                fontSize: '1.25rem',
+                                padding: '0.25rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '50%',
+                                transition: 'all 0.2s',
+                                width: '28px',
+                                height: '28px',
+                                flexShrink: 0
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = '#FDE047';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                            }}
+                            title="Dismiss"
+                        >
+                            ✕
+                        </button>
                     </div>
                 )}
 
@@ -470,6 +506,16 @@ export default function DashboardLayout({
           }
           50% {
             opacity: 0.5;
+          }
+        }
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
           }
         }
       `}</style>

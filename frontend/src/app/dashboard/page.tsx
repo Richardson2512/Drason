@@ -319,6 +319,9 @@ export default function Overview() {
               <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Domain Health</h2>
               <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Infrastructure reputation</p>
             </div>
+            <div style={{ background: '#F0FDF4', color: '#16A34A', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700' }}>
+              {domains.length} Total
+            </div>
           </div>
           <div style={{ height: '240px' }}>
             <ResponsiveContainer width="100%" height="100%">
@@ -352,6 +355,9 @@ export default function Overview() {
             <div>
               <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Mailbox Health</h2>
               <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Sending capacity status</p>
+            </div>
+            <div style={{ background: '#EFF6FF', color: '#2563EB', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700' }}>
+              {mailboxes.length} Total
             </div>
           </div>
           <div style={{ height: '240px' }}>

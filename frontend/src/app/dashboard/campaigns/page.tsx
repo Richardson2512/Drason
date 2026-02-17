@@ -16,10 +16,27 @@ export default function CampaignsPage() {
 
     const [selectedCampaignIds, setSelectedCampaignIds] = useState<Set<string>>(new Set());
 
+    // Filter states
+    const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
+
     const fetchCampaigns = useCallback(async () => {
         setLoading(true);
         try {
-            const data = await apiClient<any>(`/api/dashboard/campaigns?page=${meta.page}&limit=${meta.limit}`);
+            const params = new URLSearchParams({
+                page: meta.page.toString(),
+                limit: meta.limit.toString()
+            });
+
+            if (statusFilter !== 'all') {
+                params.append('status', statusFilter);
+            }
+
+            if (searchQuery.trim()) {
+                params.append('search', searchQuery.trim());
+            }
+
+            const data = await apiClient<any>(`/api/dashboard/campaigns?${params}`);
             if (data?.data) {
                 setCampaigns(data.data);
                 setMeta(data.meta);
@@ -35,7 +52,7 @@ export default function CampaignsPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedCampaign]);
+    }, [meta.page, meta.limit, statusFilter, searchQuery, selectedCampaign]);
 
     useEffect(() => {
         fetchCampaigns();
@@ -114,8 +131,49 @@ export default function CampaignsPage() {
         <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
             {/* Left: Campaign List */}
             <div className="premium-card" style={{ width: '400px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Campaigns</h2>
+                <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Campaigns</h2>
+
+                    {/* Search Input */}
+                    <input
+                        type="text"
+                        placeholder="🔍 Search campaigns..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            border: '2px solid #E5E7EB',
+                            borderRadius: '12px',
+                            fontSize: '0.875rem',
+                            outline: 'none',
+                            transition: 'all 0.2s',
+                            marginBottom: '0.75rem'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
+                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
+                    />
+
+                    {/* Status Filter */}
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            border: '2px solid #E5E7EB',
+                            borderRadius: '12px',
+                            fontSize: '0.875rem',
+                            outline: 'none',
+                            cursor: 'pointer',
+                            background: 'white'
+                        }}
+                    >
+                        <option value="all">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="paused">Paused</option>
+                        <option value="completed">Completed</option>
+                    </select>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
