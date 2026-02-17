@@ -99,6 +99,9 @@ export default function InfrastructureHealthPage() {
     // ── Expanded Finding (for collapsible remediation) ──
     const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
 
+    // ── Expanded DNS Domain (for consolidated DNS findings) ──
+    const [expandedDNSDomain, setExpandedDNSDomain] = useState<string | null>(null);
+
     const fetchReport = useCallback(() => {
         setLoading(true);
         setError(null);
@@ -323,6 +326,16 @@ export default function InfrastructureHealthPage() {
         acc[cat].push(f);
         return acc;
     }, {});
+
+    // Group DNS findings by domain for consolidated display
+    const dnsFindingsByDomain = findings
+        .filter(f => f.category === 'domain_dns' && f.entityId)
+        .reduce<Record<string, Finding[]>>((acc, f) => {
+            const domainId = f.entityId!;
+            if (!acc[domainId]) acc[domainId] = [];
+            acc[domainId].push(f);
+            return acc;
+        }, {});
 
     // Extract unique domain findings for DNS drill-down
     const domainFindings = findings.filter(f => f.category === 'domain_dns' && f.entityId);
@@ -786,6 +799,139 @@ export default function InfrastructureHealthPage() {
                                     mailbox_health: '📬 Mailbox Health',
                                     campaign_health: '📣 Campaign Health',
                                 };
+
+                                // Special handling for DNS findings - consolidate by domain
+                                if (category === 'domain_dns') {
+                                    return (
+                                        <div key={category}>
+                                            <div style={{
+                                                fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
+                                                textTransform: 'uppercase', letterSpacing: '0.1em',
+                                                marginBottom: '0.5rem', paddingLeft: '0.25rem'
+                                            }}>
+                                                {CATEGORY_LABELS[category]}
+                                            </div>
+                                            {Object.entries(dnsFindingsByDomain).map(([domainId, domainFindings]) => {
+                                                const firstFinding = domainFindings[0];
+                                                const domainName = firstFinding.entityName || domainId;
+                                                const isExpanded = expandedDNSDomain === domainId;
+                                                const highestSeverity = domainFindings.some(f => f.severity === 'critical') ? 'critical'
+                                                    : domainFindings.some(f => f.severity === 'warning') ? 'warning'
+                                                        : 'info';
+                                                const sev = SEVERITY_CONFIG[highestSeverity];
+
+                                                return (
+                                                    <div key={domainId} style={{
+                                                        padding: '0.875rem 1rem',
+                                                        borderRadius: '12px',
+                                                        background: sev.bg,
+                                                        border: `1px solid ${sev.border}`,
+                                                        borderLeft: `4px solid ${sev.accent}`,
+                                                        marginBottom: '0.5rem',
+                                                        transition: 'all 0.2s',
+                                                    }}>
+                                                        <div
+                                                            onClick={() => setExpandedDNSDomain(isExpanded ? null : domainId)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        >
+                                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                    <span>{sev.icon}</span>
+                                                                    <span style={{ fontWeight: 700, color: sev.text, fontSize: '0.9rem' }}>
+                                                                        DNS Configuration Issues: {domainName}
+                                                                    </span>
+                                                                </div>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                                    <span style={{
+                                                                        fontSize: '0.75rem', fontWeight: 700, color: sev.text,
+                                                                        background: `${sev.accent}15`, padding: '0.3rem 0.7rem',
+                                                                        borderRadius: '999px'
+                                                                    }}>
+                                                                        {domainFindings.length} {domainFindings.length === 1 ? 'issue' : 'issues'}
+                                                                    </span>
+                                                                    <span style={{ fontSize: '0.875rem', color: sev.text }}>
+                                                                        {isExpanded ? '▲' : '▼'}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div style={{ color: sev.text, fontSize: '0.825rem', marginTop: '0.35rem', opacity: 0.85 }}>
+                                                                {isExpanded ? 'Click to collapse' : 'Click to view details'}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Expanded DNS Findings */}
+                                                        {isExpanded && (
+                                                            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px solid ${sev.border}` }}>
+                                                                {domainFindings.map((finding, idx) => {
+                                                                    const findingSev = SEVERITY_CONFIG[finding.severity];
+                                                                    const findingKey = `${domainId}-${idx}`;
+                                                                    const isFindingExpanded = expandedFinding === findingKey;
+
+                                                                    return (
+                                                                        <div key={findingKey} style={{
+                                                                            padding: '0.75rem',
+                                                                            marginBottom: idx < domainFindings.length - 1 ? '0.75rem' : 0,
+                                                                            borderRadius: '8px',
+                                                                            background: 'rgba(255, 255, 255, 0.5)',
+                                                                            border: `1px solid ${findingSev.border}`,
+                                                                        }}>
+                                                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                                                    <span style={{ fontSize: '0.9rem' }}>{findingSev.icon}</span>
+                                                                                    <span style={{ fontWeight: 600, color: findingSev.text, fontSize: '0.875rem' }}>
+                                                                                        {finding.title.replace(`: ${domainName}`, '')}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <span style={{
+                                                                                    fontSize: '0.65rem', fontWeight: 700, color: findingSev.text,
+                                                                                    background: `${findingSev.accent}15`, padding: '0.2rem 0.6rem',
+                                                                                    borderRadius: '999px', textTransform: 'uppercase'
+                                                                                }}>
+                                                                                    {findingSev.label}
+                                                                                </span>
+                                                                            </div>
+                                                                            <div style={{ color: findingSev.text, fontSize: '0.8rem', opacity: 0.85, lineHeight: 1.5 }}>
+                                                                                {finding.details}
+                                                                            </div>
+
+                                                                            {/* Remediation */}
+                                                                            {finding.remediation && (
+                                                                                <div style={{ marginTop: '0.5rem' }}>
+                                                                                    <button
+                                                                                        onClick={(e) => { e.stopPropagation(); setExpandedFinding(isFindingExpanded ? null : findingKey); }}
+                                                                                        style={{
+                                                                                            background: 'none', border: 'none', cursor: 'pointer',
+                                                                                            fontSize: '0.75rem', fontWeight: 700, color: findingSev.accent,
+                                                                                            padding: '0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem',
+                                                                                        }}
+                                                                                    >
+                                                                                        🔧 {isFindingExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
+                                                                                    </button>
+                                                                                    {isFindingExpanded && (
+                                                                                        <div style={{
+                                                                                            marginTop: '0.35rem', padding: '0.6rem 0.75rem',
+                                                                                            borderRadius: '8px', background: `${findingSev.accent}08`,
+                                                                                            border: `1px dashed ${findingSev.border}`,
+                                                                                            fontSize: '0.8rem', color: findingSev.text, lineHeight: 1.6,
+                                                                                        }}>
+                                                                                            {finding.remediation}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                }
+
+                                // Regular rendering for non-DNS findings
                                 return (
                                     <div key={category}>
                                         <div style={{
