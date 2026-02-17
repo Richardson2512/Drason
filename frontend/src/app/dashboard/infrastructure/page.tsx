@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
 import { HelpLink } from '@/components/HelpLink';
 import { Tooltip } from '@/components/Tooltip';
+import { getScoreColor, getScoreLabel, getScoreEmoji } from '@/lib/statusHelpers';
 
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
 const FindingsChart = dynamic(() => import('./Charts').then(mod => ({ default: mod.FindingsChart })), { ssr: false });
@@ -54,24 +55,6 @@ const SEVERITY_CONFIG = {
     warning: { bg: '#FFFBEB', border: '#FDE68A', text: '#92400E', accent: '#F59E0B', icon: '🟡', label: 'Warning' },
     info: { bg: '#EFF6FF', border: '#BFDBFE', text: '#1E40AF', accent: '#3B82F6', icon: '🔵', label: 'Info' },
 };
-
-function getScoreColor(score: number): string {
-    if (score >= 80) return '#16A34A';
-    if (score >= 60) return '#F59E0B';
-    return '#EF4444';
-}
-
-function getScoreLabel(score: number): string {
-    if (score >= 80) return 'Healthy';
-    if (score >= 60) return 'Needs Attention';
-    return 'Critical';
-}
-
-function getScoreEmoji(score: number): string {
-    if (score >= 80) return '✅';
-    if (score >= 60) return '⚠️';
-    return '🚨';
-}
 
 export default function InfrastructureHealthPage() {
     const [report, setReport] = useState<InfraReport | null>(null);

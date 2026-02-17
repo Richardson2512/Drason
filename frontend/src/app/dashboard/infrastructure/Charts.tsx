@@ -1,5 +1,6 @@
 'use client';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Area, AreaChart } from 'recharts';
+import { getScoreColor } from '@/lib/statusHelpers';
 
 interface ScoreGaugeProps {
     score: number;
@@ -64,13 +65,7 @@ interface ScoreHistoryProps {
 export function ScoreHistory({ data }: ScoreHistoryProps) {
     if (!data || data.length === 0) return null;
 
-    const getColor = (score: number) => {
-        if (score >= 80) return '#16A34A';
-        if (score >= 60) return '#F59E0B';
-        return '#EF4444';
-    };
-
-    const latestColor = getColor(data[data.length - 1]?.score || 0);
+    const latestColor = getScoreColor(data[data.length - 1]?.score || 0);
 
     return (
         <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>

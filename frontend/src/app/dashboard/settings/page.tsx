@@ -48,28 +48,20 @@ export default function Settings() {
                 setOrg(data);
                 if (data?.system_mode) setSystemMode(data.system_mode);
             })
-            .catch(err => {
-                console.error('Fetch failed:', err);
+            .catch(() => {
                 setMsg('Failed to fetch organization details');
             });
 
         // Fetch Clay webhook configuration with secret
         apiClient<any>('/api/settings/clay-webhook-url')
             .then(data => {
-                console.log('[SETTINGS] Raw webhook response:', data);
-
                 // Handle both nested and direct response formats
                 const webhookData = data?.data || data;
 
                 if (webhookData?.webhookUrl) {
                     setWebhookUrl(webhookData.webhookUrl);
                     setWebhookSecret(webhookData.webhookSecret || '');
-                    console.log('[SETTINGS] Webhook config fetched:', {
-                        webhookUrl: webhookData.webhookUrl,
-                        hasSecret: !!webhookData.webhookSecret
-                    });
                 } else {
-                    console.warn('[SETTINGS] No webhook URL in response, using fallback');
                     // Fallback to constructing URL client-side
                     const protocol = window.location.protocol;
                     const hostname = window.location.hostname;
@@ -77,8 +69,7 @@ export default function Settings() {
                     setWebhookUrl(`${backendUrl}/api/ingest/clay`);
                 }
             })
-            .catch((error) => {
-                console.error('[SETTINGS] Failed to fetch webhook config:', error);
+            .catch(() => {
                 // Fallback to constructing URL client-side
                 const protocol = window.location.protocol;
                 const hostname = window.location.hostname;
