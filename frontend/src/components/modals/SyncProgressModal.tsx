@@ -101,6 +101,7 @@ export default function SyncProgressModal({
 
         eventSource.onerror = () => {
             setError('Connection lost. Please refresh to see latest status.');
+            setIsComplete(true);
             eventSource.close();
         };
 
@@ -148,21 +149,26 @@ export default function SyncProgressModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
                     <h2 className="text-2xl font-bold text-gray-900">
                         {isComplete ? 'Sync Complete' : 'Syncing Smartlead Data'}
                     </h2>
-                    {isComplete && (
-                        <button
-                            onClick={onClose}
-                            className="text-gray-400 hover:text-gray-600 transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
-                    )}
+                    <button
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        title="Close"
+                    >
+                        <X size={24} />
+                    </button>
                 </div>
 
                 {/* Content */}
