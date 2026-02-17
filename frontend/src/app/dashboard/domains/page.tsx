@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
+import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 
 export default function DomainsPage() {
@@ -281,7 +282,7 @@ export default function DomainsPage() {
                             )}
                         </div>
 
-                        <div className="premium-card">
+                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
                             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Child Mailboxes</h2>
                             <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
                                 <thead>
@@ -318,6 +319,9 @@ export default function DomainsPage() {
                                 </tbody>
                             </table>
                         </div>
+
+                        {/* Infrastructure Health Issues */}
+                        <FindingsCard entityType="domain" entityId={selectedDomain.id} />
                     </div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>

@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
+import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 
 export default function MailboxesPage() {
@@ -287,7 +288,7 @@ export default function MailboxesPage() {
                             </div>
                         </div>
 
-                        <div className="premium-card">
+                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
                             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Active Campaigns</h2>
                             {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 ? (
                                 <div style={{ display: 'grid', gap: '0.5rem' }}>
@@ -312,6 +313,9 @@ export default function MailboxesPage() {
                                 </div>
                             )}
                         </div>
+
+                        {/* Infrastructure Health Issues */}
+                        <FindingsCard entityType="mailbox" entityId={selectedMailbox.id} />
                     </div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
