@@ -454,31 +454,118 @@ function LeadsPageContent() {
                                 <div className="premium-card">
                                     <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Activity Timeline</h2>
                                     {auditLogs.length > 0 ? (
-                                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: '700', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: '700', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Trigger</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: '700', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action Taken</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: '700', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Details</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {auditLogs.map(log => (
-                                                    <tr key={log.id} style={{ transition: 'background 0.2s' }} className="hover:bg-gray-50">
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569', whiteSpace: 'nowrap' }}>
-                                                            {new Date(log.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
-                                                        </td>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.9rem', fontWeight: '500', color: '#1E293B' }}>{log.trigger}</td>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600, color: '#2563EB' }}>{log.action}</td>
-                                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#64748B' }}>{log.details}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                            {auditLogs.map((log, index) => {
+                                                // Get icon and color based on action
+                                                const getEventStyle = (action: string) => {
+                                                    if (action.includes('bounced') || action.includes('pause') || action.includes('block')) {
+                                                        return { icon: '❌', bg: '#FEF2F2', border: '#FCA5A5', color: '#991B1B' };
+                                                    }
+                                                    if (action.includes('opened') || action.includes('click')) {
+                                                        return { icon: '👁️', bg: '#F0F9FF', border: '#BAE6FD', color: '#0369A1' };
+                                                    }
+                                                    if (action.includes('replied')) {
+                                                        return { icon: '💬', bg: '#F0FDF4', border: '#BBF7D0', color: '#166534' };
+                                                    }
+                                                    if (action.includes('route') || action.includes('assign')) {
+                                                        return { icon: '🎯', bg: '#FAF5FF', border: '#E9D5FF', color: '#7C3AED' };
+                                                    }
+                                                    if (action.includes('created') || action.includes('ingest')) {
+                                                        return { icon: '✨', bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' };
+                                                    }
+                                                    return { icon: '📋', bg: '#F8FAFC', border: '#E2E8F0', color: '#475569' };
+                                                };
+
+                                                const style = getEventStyle(log.action);
+                                                const isFirst = index === 0;
+
+                                                return (
+                                                    <div
+                                                        key={log.id}
+                                                        style={{
+                                                            background: style.bg,
+                                                            border: `1px solid ${style.border}`,
+                                                            borderRadius: '12px',
+                                                            padding: '1rem',
+                                                            position: 'relative',
+                                                            transition: 'all 0.2s'
+                                                        }}
+                                                        className="hover:shadow-md"
+                                                    >
+                                                        <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
+                                                            <div style={{
+                                                                fontSize: '1.5rem',
+                                                                flexShrink: 0,
+                                                                width: '40px',
+                                                                height: '40px',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                background: '#FFFFFF',
+                                                                borderRadius: '8px',
+                                                                border: `2px solid ${style.border}`
+                                                            }}>
+                                                                {style.icon}
+                                                            </div>
+                                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
+                                                                    <div>
+                                                                        <div style={{ fontWeight: 700, color: style.color, fontSize: '0.95rem', marginBottom: '0.25rem' }}>
+                                                                            {log.action}
+                                                                        </div>
+                                                                        <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 500 }}>
+                                                                            {log.trigger}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style={{ fontSize: '0.75rem', color: '#94A3B8', whiteSpace: 'nowrap', marginLeft: '1rem' }}>
+                                                                        {new Date(log.timestamp).toLocaleString(undefined, {
+                                                                            month: 'short',
+                                                                            day: 'numeric',
+                                                                            hour: '2-digit',
+                                                                            minute: '2-digit'
+                                                                        })}
+                                                                    </div>
+                                                                </div>
+                                                                {log.details && (
+                                                                    <div style={{
+                                                                        fontSize: '0.875rem',
+                                                                        color: '#475569',
+                                                                        padding: '0.5rem 0.75rem',
+                                                                        background: '#FFFFFF',
+                                                                        borderRadius: '6px',
+                                                                        border: '1px solid #E2E8F0',
+                                                                        lineHeight: '1.5'
+                                                                    }}>
+                                                                        {log.details}
+                                                                    </div>
+                                                                )}
+                                                                {isFirst && (
+                                                                    <div style={{
+                                                                        display: 'inline-flex',
+                                                                        alignItems: 'center',
+                                                                        gap: '0.25rem',
+                                                                        fontSize: '0.7rem',
+                                                                        fontWeight: 600,
+                                                                        color: '#059669',
+                                                                        background: '#D1FAE5',
+                                                                        padding: '0.25rem 0.5rem',
+                                                                        borderRadius: '4px',
+                                                                        marginTop: '0.5rem'
+                                                                    }}>
+                                                                        <span>●</span> Latest Activity
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     ) : (
                                         <div style={{ padding: '3rem', textAlign: 'center', color: '#9CA3AF', background: '#F8FAFC', borderRadius: '12px', border: '1px dashed #E2E8F0' }}>
-                                            No activity recorded for this lead yet.
+                                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📭</div>
+                                            <div style={{ fontSize: '1rem', fontWeight: 500, marginBottom: '0.5rem' }}>No activity yet</div>
+                                            <div style={{ fontSize: '0.875rem' }}>Events will appear here once the lead is processed</div>
                                         </div>
                                     )}
                                 </div>

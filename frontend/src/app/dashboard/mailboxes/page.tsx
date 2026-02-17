@@ -10,6 +10,12 @@ export default function MailboxesPage() {
     const [selectedMailbox, setSelectedMailbox] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
+    // Filters
+    const [campaigns, setCampaigns] = useState<any[]>([]);
+    const [selectedCampaign, setSelectedCampaign] = useState<string>('all');
+    const [selectedStatus, setSelectedStatus] = useState<string>('all');
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
     // Pagination & Selection
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedMailboxIds, setSelectedMailboxIds] = useState<Set<string>>(new Set());
@@ -17,7 +23,17 @@ export default function MailboxesPage() {
     const fetchMailboxes = useCallback(async () => {
         setLoading(true);
         try {
-            const data = await apiClient<any>(`/api/dashboard/mailboxes?page=${meta.page}&limit=${meta.limit}`);
+            const params = new URLSearchParams({
+                page: meta.page.toString(),
+                limit: meta.limit.toString()
+            });
+
+            // Add filters
+            if (selectedCampaign !== 'all') params.append('campaignId', selectedCampaign);
+            if (selectedStatus !== 'all') params.append('status', selectedStatus);
+            if (searchQuery.trim()) params.append('search', searchQuery.trim());
+
+            const data = await apiClient<any>(`/api/dashboard/mailboxes?${params}`);
             if (data?.data) {
                 setMailboxes(data.data);
                 setMeta(data.meta);
@@ -33,11 +49,22 @@ export default function MailboxesPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedMailbox]);
+    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, selectedMailbox]);
 
     useEffect(() => {
         fetchMailboxes();
     }, [fetchMailboxes]);
+
+    // Fetch campaigns for filter dropdown
+    useEffect(() => {
+        apiClient<any>('/api/dashboard/campaigns?limit=1000')
+            .then(data => {
+                if (data?.data) {
+                    setCampaigns(data.data);
+                }
+            })
+            .catch(err => console.error('Failed to fetch campaigns:', err));
+    }, []);
 
     // Selection Logic
     const toggleMailboxSelection = (e: React.MouseEvent, id: string) => {
@@ -84,8 +111,79 @@ export default function MailboxesPage() {
     return (
         <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
             {/* Left: List */}
-            <div className="premium-card" style={{ width: '400px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem', flexShrink: 0, color: '#111827' }}>Mailboxes</h2>
+            <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', flexShrink: 0, color: '#111827' }}>Mailboxes</h2>
+
+                {/* Filters */}
+                <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {/* Search */}
+                    <input
+                        type="text"
+                        placeholder="Search by email..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setMeta(prev => ({ ...prev, page: 1 }));
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            fontSize: '0.875rem',
+                            outline: 'none'
+                        }}
+                    />
+
+                    {/* Status Filter */}
+                    <select
+                        value={selectedStatus}
+                        onChange={(e) => {
+                            setSelectedStatus(e.target.value);
+                            setMeta(prev => ({ ...prev, page: 1 }));
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
+                        <option value="all">All Status</option>
+                        <option value="healthy">Healthy</option>
+                        <option value="warning">Warning</option>
+                        <option value="paused">Paused</option>
+                    </select>
+
+                    {/* Campaign Filter */}
+                    <select
+                        value={selectedCampaign}
+                        onChange={(e) => {
+                            setSelectedCampaign(e.target.value);
+                            setMeta(prev => ({ ...prev, page: 1 }));
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
+                        <option value="all">All Campaigns</option>
+                        {campaigns.map(c => (
+                            <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                    </select>
+                </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
                     <input

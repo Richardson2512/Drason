@@ -9,13 +9,26 @@ export default function DomainsPage() {
     const [selectedDomain, setSelectedDomain] = useState<any>(null);
     const [auditLogs, setAuditLogs] = useState<any[]>([]);
 
+    // Filters
+    const [selectedStatus, setSelectedStatus] = useState<string>('all');
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
     // Pagination & Selection
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedDomainIds, setSelectedDomainIds] = useState<Set<string>>(new Set());
 
     const fetchDomains = useCallback(async () => {
         try {
-            const data = await apiClient<any>(`/api/dashboard/domains?page=${meta.page}&limit=${meta.limit}`);
+            const params = new URLSearchParams({
+                page: meta.page.toString(),
+                limit: meta.limit.toString()
+            });
+
+            // Add filters
+            if (selectedStatus !== 'all') params.append('status', selectedStatus);
+            if (searchQuery.trim()) params.append('search', searchQuery.trim());
+
+            const data = await apiClient<any>(`/api/dashboard/domains?${params}`);
             if (data?.data) {
                 setDomains(data.data);
                 setMeta(data.meta);
@@ -29,7 +42,7 @@ export default function DomainsPage() {
             console.error('Failed to fetch domains:', err);
             setDomains([]);
         }
-    }, [meta.page, meta.limit, selectedDomain]);
+    }, [meta.page, meta.limit, selectedStatus, searchQuery, selectedDomain]);
 
     useEffect(() => {
         fetchDomains();
@@ -85,8 +98,55 @@ export default function DomainsPage() {
     return (
         <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
             {/* Left: List */}
-            <div className="premium-card" style={{ width: '400px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem', flexShrink: 0, color: '#111827' }}>Domains</h2>
+            <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', flexShrink: 0, color: '#111827' }}>Domains</h2>
+
+                {/* Filters */}
+                <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {/* Search */}
+                    <input
+                        type="text"
+                        placeholder="Search by domain name..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setMeta(prev => ({ ...prev, page: 1 }));
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            fontSize: '0.875rem',
+                            outline: 'none'
+                        }}
+                    />
+
+                    {/* Status Filter */}
+                    <select
+                        value={selectedStatus}
+                        onChange={(e) => {
+                            setSelectedStatus(e.target.value);
+                            setMeta(prev => ({ ...prev, page: 1 }));
+                        }}
+                        style={{
+                            width: '100%',
+                            padding: '0.625rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            outline: 'none'
+                        }}
+                    >
+                        <option value="all">All Status</option>
+                        <option value="healthy">Healthy</option>
+                        <option value="warning">Warning</option>
+                        <option value="paused">Paused</option>
+                    </select>
+                </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
                     <input
