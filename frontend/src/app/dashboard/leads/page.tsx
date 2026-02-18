@@ -273,31 +273,10 @@ function LeadsPageContent() {
             {/* Left: Lead List */}
             <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
                 <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <div style={{ marginBottom: '1rem' }}>
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Leads</h2>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>Leads</h2>
 
-                        {/* Search Input */}
-                        <input
-                            type="text"
-                            placeholder="🔍 Search leads by email..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: '0.625rem 1rem',
-                                border: '2px solid #E5E7EB',
-                                borderRadius: '12px',
-                                fontSize: '0.875rem',
-                                outline: 'none',
-                                transition: 'all 0.2s',
-                                marginBottom: '0.75rem'
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
-                            onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                        />
-                    </div>
-
-                    <div style={{ flexShrink: 0 }}>
+                    {/* Status Filter Tabs */}
+                    <div style={{ flexShrink: 0, marginBottom: '1rem' }}>
                         <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
                             {['all', 'held', 'active', 'paused'].map(t => (
                                 <button
@@ -321,6 +300,27 @@ function LeadsPageContent() {
                                 </button>
                             ))}
                         </div>
+                    </div>
+
+                    {/* Search Input */}
+                    <div style={{ marginBottom: '1rem' }}>
+                        <input
+                            type="text"
+                            placeholder="🔍 Search leads by email..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 1rem',
+                                border: '2px solid #E5E7EB',
+                                borderRadius: '12px',
+                                fontSize: '0.875rem',
+                                outline: 'none',
+                                transition: 'all 0.2s'
+                            }}
+                            onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
+                            onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
+                        />
                     </div>
 
                     {/* Score Refresh Result Banner */}
