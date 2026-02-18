@@ -210,7 +210,7 @@ export default function DomainWarmingArticle() {
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
-                            <span><strong>Using unverified lead lists:</strong> Warming with leads that have not been email-verified. Bounce rates above 5% during warming are catastrophic.</span>
+                            <span><strong>Using unverified lead lists:</strong> Warming with leads that have not been email-verified. Bounce rates above 3% during warming are catastrophic and will auto-pause your mailbox.</span>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
@@ -224,7 +224,7 @@ export default function DomainWarmingArticle() {
 
                     <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe Protects Warming Domains</h2>
                     <p className="text-gray-600 leading-relaxed mb-8">
-                        Superkabe recognizes warming-phase domains and applies stricter monitoring thresholds. During the warming period, bounce rate warnings trigger at 2 bounces (instead of the standard 3), and domain-level gates activate at 20% bounce ratio (instead of 30%). This tighter protection prevents a single batch of bad leads from destroying a domain before its reputation is established.
+                        Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
                     </p>
 
                     <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">

@@ -113,11 +113,11 @@ export default function AutoHealingPage() {
                                 <ul className="text-sm text-gray-600 space-y-1">
                                     <li>• Max 25 sends per day</li>
                                     <li>• Must achieve 50-100 clean sends</li>
-                                    <li>• Must maintain bounce rate &lt;5%</li>
+                                    <li>• Must maintain bounce rate &lt;2% (strict during recovery)</li>
                                     <li>• Must stay in phase for 3-7 days minimum</li>
                                 </ul>
                             </div>
-                            <p className="text-sm text-gray-500"><strong>Graduation criteria:</strong> 50-100 clean sends + 3-7 days + bounce rate &lt;5%</p>
+                            <p className="text-sm text-gray-500"><strong>Graduation criteria:</strong> 50-100 clean sends + 3-7 days + bounce rate &lt;2% (industry standard)</p>
                         </div>
                     </div>
                 </div>

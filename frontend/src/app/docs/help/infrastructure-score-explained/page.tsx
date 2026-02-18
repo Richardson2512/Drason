@@ -85,7 +85,7 @@ export default function InfrastructureScoreExplainedPage() {
                         <div className="flex-1">
                             <h3 className="font-bold text-gray-900 mb-1">Drives Perfectly (Entity Status: Healthy)</h3>
                             <p className="text-gray-600 text-sm">
-                                Your emails are being delivered successfully. Bounce rate is low (&lt;5%). Everything works.
+                                Your emails are being delivered successfully. Bounce rate is low (&lt;2%). Everything works.
                             </p>
                         </div>
                     </div>
@@ -155,15 +155,15 @@ export default function InfrastructureScoreExplainedPage() {
                             </thead>
                             <tbody className="divide-y divide-green-100">
                                 <tr>
-                                    <td className="py-2 text-gray-600">Less than 5%</td>
+                                    <td className="py-2 text-gray-600">Less than 2%</td>
                                     <td className="py-2"><span className="px-3 py-1 bg-green-200 text-green-800 rounded-full font-bold text-xs">HEALTHY</span></td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 text-gray-600">5% - 10%</td>
+                                    <td className="py-2 text-gray-600">2% - 3%</td>
                                     <td className="py-2"><span className="px-3 py-1 bg-amber-200 text-amber-800 rounded-full font-bold text-xs">WARNING</span></td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2 text-gray-600">Over 10%</td>
+                                    <td className="py-2 text-gray-600">3% or higher (after 60 sends)</td>
                                     <td className="py-2"><span className="px-3 py-1 bg-red-200 text-red-800 rounded-full font-bold text-xs">PAUSED</span></td>
                                 </tr>
                             </tbody>

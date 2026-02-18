@@ -93,12 +93,15 @@ export default function MonitoringPage() {
                             <div className="bg-red-50 rounded-lg p-4 border border-red-100">
                                 <p className="text-sm text-gray-700 mb-2"><strong>Automatic pause triggers:</strong></p>
                                 <ul className="text-sm text-gray-600 space-y-1 mb-0">
-                                    <li>🔴 Bounce rate &gt;10% (24-hour window)</li>
+                                    <li>🔴 Bounce rate ≥3% (after 60 sends) - Industry-aligned protection</li>
                                     <li>🔴 Domain appears on major blacklist</li>
                                     <li>🔴 SPF/DKIM authentication failures</li>
                                     <li>🔴 Mailbox complaint rate &gt;0.1%</li>
                                     <li>🔴 Sudden volume spike (2x normal)</li>
                                 </ul>
+                                <p className="text-xs text-gray-500 mt-2 italic">
+                                    ⚠️ Early warning at 2% bounce rate | Minimum 60 sends required for auto-pause
+                                </p>
                             </div>
                             <p className="text-sm font-semibold text-red-700 mt-3">
                                 ⚡ Pausing happens INSTANTLY - outreach stops within seconds to protect your reputation
