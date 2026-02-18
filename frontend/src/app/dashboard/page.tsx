@@ -20,8 +20,9 @@ export default function Overview() {
 
   useEffect(() => {
     // Fetch user info
-    apiClient<any>('/api/organization').then((data) => {
-      if (data?.name) setUserName(data.name);
+    apiClient<any>('/api/organization').then((response) => {
+      const org = response.data || response; // Handle wrapped response
+      if (org?.name) setUserName(org.name);
     }).catch(() => { });
 
     // Fetch subscription data

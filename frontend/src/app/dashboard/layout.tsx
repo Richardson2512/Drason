@@ -42,8 +42,9 @@ export default function DashboardLayout({
             .catch(() => { });
 
         // Fetch organization info including system_mode
-        apiClient<any>('/api/organization').then((data) => {
-            if (data?.system_mode) setSystemMode(data.system_mode);
+        apiClient<any>('/api/organization').then((response) => {
+            const org = response.data || response; // Handle wrapped response
+            if (org?.system_mode) setSystemMode(org.system_mode);
         }).catch(() => { });
 
         // Get user name from cookie-based JWT (decoded on client for display only)

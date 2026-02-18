@@ -45,9 +45,10 @@ export default function Settings() {
 
         // Fetch organization info (Phase 5)
         apiClient<any>('/api/organization')
-            .then(data => {
-                setOrg(data);
-                if (data?.system_mode) setSystemMode(data.system_mode);
+            .then(response => {
+                const org = response.data || response; // Handle wrapped response
+                setOrg(org);
+                if (org?.system_mode) setSystemMode(org.system_mode);
             })
             .catch(() => {
                 setMsg('Failed to fetch organization details');
