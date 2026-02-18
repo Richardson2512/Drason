@@ -1226,9 +1226,9 @@ function RecoveryEntityRow({
     const nextPhaseInfo = getNextPhaseInfo();
 
     // Cooldown countdown (for PAUSED phase)
-    const [cooldownRemaining, setCooldownRemaining] = React.useState<string | null>(null);
+    const [cooldownRemaining, setCooldownRemaining] = useState<string | null>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (phase === 'paused' && cooldownUntil) {
             const updateCooldown = () => {
                 const now = Date.now();
