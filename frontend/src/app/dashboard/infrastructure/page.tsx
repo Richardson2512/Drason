@@ -558,17 +558,26 @@ export default function InfrastructureHealthPage() {
                                 Mailboxes
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {recoveryData.mailboxes.map((mb: any) => (
-                                    <RecoveryEntityRow
-                                        key={mb.id}
-                                        label={mb.email}
-                                        phase={mb.recovery_phase}
-                                        resilience={mb.resilience_score}
-                                        volumeLimit={mb.volumeLimit}
-                                        phaseEnteredAt={mb.phase_entered_at}
-                                        cleanSends={mb.clean_sends_since_phase}
-                                    />
-                                ))}
+                                {recoveryData.mailboxes.map((mb: any) => {
+                                    const bounceRate = mb.total_sent_count > 0
+                                        ? mb.hard_bounce_count / mb.total_sent_count
+                                        : undefined;
+                                    return (
+                                        <RecoveryEntityRow
+                                            key={mb.id}
+                                            label={mb.email}
+                                            phase={mb.recovery_phase}
+                                            resilience={mb.resilience_score}
+                                            volumeLimit={mb.volumeLimit}
+                                            phaseEnteredAt={mb.phase_entered_at}
+                                            cleanSends={mb.clean_sends_since_phase}
+                                            cooldownUntil={mb.cooldown_until}
+                                            bounceRate={bounceRate}
+                                            relapseCount={mb.relapse_count}
+                                            consecutivePauses={mb.consecutive_pauses}
+                                        />
+                                    );
+                                })}
                             </div>
                         </div>
                     )}
@@ -593,6 +602,9 @@ export default function InfrastructureHealthPage() {
                                         volumeLimit={d.volumeLimit}
                                         phaseEnteredAt={d.phase_entered_at}
                                         cleanSends={d.clean_sends_since_phase}
+                                        cooldownUntil={d.cooldown_until}
+                                        relapseCount={d.relapse_count}
+                                        consecutivePauses={d.consecutive_pauses}
                                     />
                                 ))}
                             </div>
@@ -1150,6 +1162,7 @@ const PHASE_CONFIG: Record<string, { label: string; color: string; bg: string; b
 
 function RecoveryEntityRow({
     label, phase, resilience, volumeLimit, phaseEnteredAt, cleanSends,
+    cooldownUntil, bounceRate, relapseCount, consecutivePauses,
 }: {
     label: string;
     phase: string;
@@ -1157,86 +1170,223 @@ function RecoveryEntityRow({
     volumeLimit?: number;
     phaseEnteredAt?: string;
     cleanSends?: number;
+    cooldownUntil?: string;
+    bounceRate?: number;
+    relapseCount?: number;
+    consecutivePauses?: number;
 }) {
     const cfg = PHASE_CONFIG[phase] || PHASE_CONFIG.paused;
     const timeInPhase = phaseEnteredAt
         ? formatDuration(Date.now() - new Date(phaseEnteredAt).getTime())
         : null;
 
+    // Calculate graduation requirements based on phase
+    const getGraduationInfo = () => {
+        if (cleanSends === undefined) return null;
+
+        switch (phase) {
+            case 'paused':
+                return null; // Show cooldown timer instead
+            case 'quarantine':
+                return { label: 'Status', value: 'DNS Check Needed' };
+            case 'restricted_send':
+                const needed = (consecutivePauses || 0) > 1 ? 25 : 15;
+                return { label: 'Progress', value: `${cleanSends}/${needed}`, isProgress: true };
+            case 'warm_recovery':
+                return { label: 'Progress', value: `${cleanSends}/50`, isProgress: true };
+            default:
+                return null;
+        }
+    };
+
+    // Get next phase preview
+    const getNextPhaseInfo = () => {
+        switch (phase) {
+            case 'paused':
+                return cooldownRemaining === 'Ready' ? 'Next: Quarantine' : null;
+            case 'quarantine':
+                return 'Next: Restricted Send (DNS check required)';
+            case 'restricted_send':
+                const needed = (consecutivePauses || 0) > 1 ? 25 : 15;
+                const remaining = needed - (cleanSends || 0);
+                return remaining > 0
+                    ? `Next: Warm Recovery (need ${remaining} more clean sends)`
+                    : 'Next: Warm Recovery';
+            case 'warm_recovery':
+                const warmRemaining = 50 - (cleanSends || 0);
+                return warmRemaining > 0
+                    ? `Next: Healthy (need ${warmRemaining} more sends, 3+ days, <2% bounce)`
+                    : 'Next: Healthy (3+ days required, <2% bounce)';
+            default:
+                return null;
+        }
+    };
+
+    const graduationInfo = getGraduationInfo();
+    const nextPhaseInfo = getNextPhaseInfo();
+
+    // Cooldown countdown (for PAUSED phase)
+    const [cooldownRemaining, setCooldownRemaining] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        if (phase === 'paused' && cooldownUntil) {
+            const updateCooldown = () => {
+                const now = Date.now();
+                const until = new Date(cooldownUntil).getTime();
+                const diff = until - now;
+
+                if (diff <= 0) {
+                    setCooldownRemaining('Ready');
+                } else {
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    setCooldownRemaining(`${hours}h ${minutes}m`);
+                }
+            };
+
+            updateCooldown();
+            const interval = setInterval(updateCooldown, 60000); // Update every minute
+            return () => clearInterval(interval);
+        }
+    }, [phase, cooldownUntil]);
+
     return (
         <div style={{
             padding: '0.875rem 1.25rem', borderRadius: '14px',
             background: cfg.bg, border: `1px solid ${cfg.border}`,
-            display: 'flex', alignItems: 'center', gap: '1rem',
             transition: 'all 0.2s',
         }}>
-            {/* Phase badge */}
-            <div style={{
-                padding: '0.25rem 0.7rem', borderRadius: '999px',
-                background: `${cfg.color}12`, border: `1px solid ${cfg.color}30`,
-                color: cfg.color, fontSize: '0.7rem', fontWeight: 700,
-                textTransform: 'uppercase', letterSpacing: '0.05em',
-                whiteSpace: 'nowrap',
-            }}>
-                {cfg.label}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                {/* Phase badge */}
+                <div style={{
+                    padding: '0.25rem 0.7rem', borderRadius: '999px',
+                    background: `${cfg.color}12`, border: `1px solid ${cfg.color}30`,
+                    color: cfg.color, fontSize: '0.7rem', fontWeight: 700,
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                    whiteSpace: 'nowrap',
+                }}>
+                    {cfg.label}
+                </div>
+
+                {/* Entity name */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                        fontWeight: 700, color: '#1E293B', fontSize: '0.85rem',
+                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    }}>
+                        {label}
+                        {/* Relapse count badge */}
+                        {relapseCount !== undefined && relapseCount > 0 && (
+                            <span style={{
+                                padding: '0.125rem 0.4rem', borderRadius: '999px',
+                                background: '#FEF2F2', border: '1px solid #FEE2E2',
+                                color: '#DC2626', fontSize: '0.65rem', fontWeight: 700,
+                            }}>
+                                {relapseCount} relapse{relapseCount > 1 ? 's' : ''}
+                            </span>
+                        )}
+                    </div>
+                    {/* Progress bar */}
+                    <div style={{
+                        marginTop: '0.35rem', height: '4px', borderRadius: '2px',
+                        background: '#E5E7EB', overflow: 'hidden',
+                    }}>
+                        <div style={{
+                            width: `${cfg.progress}%`, height: '100%',
+                            background: `linear-gradient(90deg, ${cfg.color}80, ${cfg.color})`,
+                            borderRadius: '2px', transition: 'width 0.6s ease',
+                        }} />
+                    </div>
+                </div>
+
+                {/* Stats */}
+                <div style={{ display: 'flex', gap: '0.75rem', flexShrink: 0 }}>
+                    {/* Cooldown timer (PAUSED phase only) */}
+                    {phase === 'paused' && cooldownRemaining && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Cooldown</div>
+                            <div style={{
+                                fontSize: '0.85rem', fontWeight: 800,
+                                color: cooldownRemaining === 'Ready' ? '#16A34A' : '#DC2626',
+                            }}>
+                                {cooldownRemaining}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Graduation progress */}
+                    {graduationInfo && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>
+                                {graduationInfo.label}
+                            </div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
+                                {graduationInfo.value}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Bounce rate (if available) */}
+                    {bounceRate !== undefined && bounceRate !== null && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Bounce</div>
+                            <div style={{
+                                fontSize: '0.85rem', fontWeight: 800,
+                                color: bounceRate < 0.02 ? '#16A34A' : bounceRate < 0.03 ? '#F59E0B' : '#EF4444',
+                            }}>
+                                {(bounceRate * 100).toFixed(1)}%
+                            </div>
+                        </div>
+                    )}
+
+                    {resilience !== undefined && resilience !== null && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
+                            <div style={{
+                                fontSize: '0.85rem', fontWeight: 800,
+                                color: resilience >= 70 ? '#16A34A' : resilience >= 30 ? '#F59E0B' : '#EF4444',
+                            }}>
+                                {resilience}
+                            </div>
+                        </div>
+                    )}
+
+                    {volumeLimit !== undefined && volumeLimit !== null && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Vol. Limit</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
+                                {volumeLimit}%
+                            </div>
+                        </div>
+                    )}
+
+                    {timeInPhase && (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>In Phase</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6B7280' }}>
+                                {timeInPhase}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Entity name */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 700, color: '#1E293B', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {label}
-                </div>
-                {/* Progress bar */}
+            {/* Next Phase Preview */}
+            {nextPhaseInfo && (
                 <div style={{
-                    marginTop: '0.35rem', height: '4px', borderRadius: '2px',
-                    background: '#E5E7EB', overflow: 'hidden',
+                    marginTop: '0.75rem', paddingTop: '0.75rem',
+                    borderTop: `1px solid ${cfg.border}`,
                 }}>
                     <div style={{
-                        width: `${cfg.progress}%`, height: '100%',
-                        background: `linear-gradient(90deg, ${cfg.color}80, ${cfg.color})`,
-                        borderRadius: '2px', transition: 'width 0.6s ease',
-                    }} />
+                        fontSize: '0.7rem', color: '#6B7280',
+                        display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    }}>
+                        <span style={{ opacity: 0.7 }}>→</span>
+                        <span style={{ fontWeight: 600 }}>{nextPhaseInfo}</span>
+                    </div>
                 </div>
-            </div>
-
-            {/* Stats */}
-            <div style={{ display: 'flex', gap: '0.75rem', flexShrink: 0 }}>
-                {resilience !== undefined && resilience !== null && (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
-                        <div style={{
-                            fontSize: '0.85rem', fontWeight: 800,
-                            color: resilience >= 70 ? '#16A34A' : resilience >= 30 ? '#F59E0B' : '#EF4444',
-                        }}>
-                            {resilience}
-                        </div>
-                    </div>
-                )}
-                {cleanSends !== undefined && cleanSends !== null && (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Clean Sends</div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
-                            {cleanSends}
-                        </div>
-                    </div>
-                )}
-                {volumeLimit !== undefined && volumeLimit !== null && (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Vol. Limit</div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
-                            {volumeLimit}%
-                        </div>
-                    </div>
-                )}
-                {timeInPhase && (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>In Phase</div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6B7280' }}>
-                            {timeInPhase}
-                        </div>
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 }

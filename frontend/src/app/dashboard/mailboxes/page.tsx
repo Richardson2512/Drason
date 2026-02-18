@@ -288,6 +288,131 @@ export default function MailboxesPage() {
                             </div>
                         </div>
 
+                        {/* Recovery Status */}
+                        {selectedMailbox.recovery_phase && selectedMailbox.recovery_phase !== 'healthy' && (
+                            <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                    🔄 Recovery Status
+                                    <span style={{
+                                        padding: '0.25rem 0.75rem',
+                                        borderRadius: '999px',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                        background: selectedMailbox.recovery_phase === 'paused' ? '#FEF2F2' :
+                                            selectedMailbox.recovery_phase === 'quarantine' ? '#FEF2F2' :
+                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#FFF7ED' :
+                                            '#ECFDF5',
+                                        color: selectedMailbox.recovery_phase === 'paused' ? '#DC2626' :
+                                            selectedMailbox.recovery_phase === 'quarantine' ? '#DC2626' :
+                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#F59E0B' :
+                                            '#16A34A',
+                                        border: '1px solid',
+                                        borderColor: selectedMailbox.recovery_phase === 'paused' ? '#FEE2E2' :
+                                            selectedMailbox.recovery_phase === 'quarantine' ? '#FEE2E2' :
+                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#FED7AA' :
+                                            '#BBF7D0',
+                                    }}>
+                                        {selectedMailbox.recovery_phase.replace('_', ' ')}
+                                    </span>
+                                </h2>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+                                    {/* Resilience Score */}
+                                    <div style={{
+                                        padding: '1rem',
+                                        background: '#F8FAFC',
+                                        borderRadius: '12px',
+                                        border: '1px solid #F1F5F9',
+                                    }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
+                                        <div style={{
+                                            fontSize: '1.75rem',
+                                            fontWeight: 800,
+                                            color: (selectedMailbox.resilience_score || 0) >= 70 ? '#16A34A' :
+                                                (selectedMailbox.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
+                                        }}>
+                                            {selectedMailbox.resilience_score || 0}
+                                        </div>
+                                    </div>
+
+                                    {/* Bounce Rate */}
+                                    <div style={{
+                                        padding: '1rem',
+                                        background: '#F8FAFC',
+                                        borderRadius: '12px',
+                                        border: '1px solid #F1F5F9',
+                                    }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Bounce Rate</div>
+                                        <div style={{
+                                            fontSize: '1.75rem',
+                                            fontWeight: 800,
+                                            color: selectedMailbox.total_sent_count > 0 && (selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) < 0.02 ? '#16A34A' :
+                                                selectedMailbox.total_sent_count > 0 && (selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) < 0.03 ? '#F59E0B' : '#EF4444',
+                                        }}>
+                                            {selectedMailbox.total_sent_count > 0
+                                                ? ((selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) * 100).toFixed(1)
+                                                : '0.0'}%
+                                        </div>
+                                    </div>
+
+                                    {/* Clean Sends / Graduation Progress */}
+                                    <div style={{
+                                        padding: '1rem',
+                                        background: '#F8FAFC',
+                                        borderRadius: '12px',
+                                        border: '1px solid #F1F5F9',
+                                    }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                                            {selectedMailbox.recovery_phase === 'restricted_send' || selectedMailbox.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
+                                        </div>
+                                        <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1E293B' }}>
+                                            {selectedMailbox.clean_sends_since_phase || 0}
+                                            {selectedMailbox.recovery_phase === 'restricted_send' && `/${(selectedMailbox.consecutive_pauses || 0) > 1 ? 25 : 15}`}
+                                            {selectedMailbox.recovery_phase === 'warm_recovery' && `/50`}
+                                        </div>
+                                    </div>
+
+                                    {/* Relapse Count */}
+                                    {(selectedMailbox.relapse_count || 0) > 0 && (
+                                        <div style={{
+                                            padding: '1rem',
+                                            background: '#FEF2F2',
+                                            borderRadius: '12px',
+                                            border: '1px solid #FEE2E2',
+                                        }}>
+                                            <div style={{ fontSize: '0.75rem', color: '#DC2626', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Relapses</div>
+                                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#DC2626' }}>
+                                                {selectedMailbox.relapse_count}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Next Phase Preview */}
+                                {selectedMailbox.recovery_phase !== 'healthy' && (
+                                    <div style={{
+                                        padding: '0.875rem 1rem',
+                                        background: '#EFF6FF',
+                                        borderRadius: '12px',
+                                        border: '1px solid #BFDBFE',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                    }}>
+                                        <span style={{ fontSize: '1rem', opacity: 0.7 }}>→</span>
+                                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1E40AF' }}>
+                                            {selectedMailbox.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}
+                                            {selectedMailbox.recovery_phase === 'quarantine' && 'Next: Restricted Send (DNS check required)'}
+                                            {selectedMailbox.recovery_phase === 'restricted_send' && `Next: Warm Recovery (need ${Math.max(0, ((selectedMailbox.consecutive_pauses || 0) > 1 ? 25 : 15) - (selectedMailbox.clean_sends_since_phase || 0))} more clean sends)`}
+                                            {selectedMailbox.recovery_phase === 'warm_recovery' && `Next: Healthy (need ${Math.max(0, 50 - (selectedMailbox.clean_sends_since_phase || 0))} more sends, 3+ days, <2% bounce)`}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <div className="premium-card" style={{ marginBottom: '2rem' }}>
                             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Active Campaigns</h2>
                             {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 ? (
