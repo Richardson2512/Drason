@@ -390,6 +390,32 @@ export default function MailboxesPage() {
                                     )}
                                 </div>
 
+                                {/* Automated Warmup Banner */}
+                                {(selectedMailbox.recovery_phase === 'restricted_send' || selectedMailbox.recovery_phase === 'warm_recovery') && (
+                                    <div style={{
+                                        padding: '0.875rem 1rem',
+                                        background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
+                                        borderRadius: '12px',
+                                        border: '1px solid #7DD3FC',
+                                        marginBottom: '1rem',
+                                    }}>
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                            <span style={{ fontSize: '1.25rem' }}>🤖</span>
+                                            <div>
+                                                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0369A1', marginBottom: '0.25rem' }}>
+                                                    Automated Warmup Active
+                                                </div>
+                                                <div style={{ fontSize: '0.75rem', color: '#075985', lineHeight: '1.5' }}>
+                                                    {selectedMailbox.recovery_phase === 'restricted_send' &&
+                                                        'Smartlead is sending 10 warmup emails/day. System will auto-graduate after 15-25 clean sends (zero bounces).'}
+                                                    {selectedMailbox.recovery_phase === 'warm_recovery' &&
+                                                        'Smartlead is sending 50 warmup emails/day (+5/day rampup). System will auto-graduate after 50 clean sends over 3+ days.'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Next Phase Preview */}
                                 {selectedMailbox.recovery_phase !== 'healthy' && (
                                     <div style={{

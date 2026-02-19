@@ -546,6 +546,37 @@ function LeadsPageContent() {
                                             <div style={{ fontSize: '1rem', fontWeight: '500', color: '#1E293B' }}>{selectedLead.source}</div>
                                         </div>
                                     </div>
+
+                                    {/* Activity Stats Section */}
+                                    <div className="premium-card">
+                                        <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Email Activity</h3>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.25rem' }}>Sent</div>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1E293B' }}>{selectedLead.emails_sent || 0}</div>
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.25rem' }}>Opens</div>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#10B981' }}>{selectedLead.emails_opened || 0}</div>
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.25rem' }}>Clicks</div>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#3B82F6' }}>{selectedLead.emails_clicked || 0}</div>
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.25rem' }}>Replies</div>
+                                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#8B5CF6' }}>{selectedLead.emails_replied || 0}</div>
+                                            </div>
+                                        </div>
+                                        {selectedLead.last_activity_at && (
+                                            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #E5E7EB' }}>
+                                                <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                                                    Last Activity: {new Date(selectedLead.last_activity_at).toLocaleString()}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
                                     <div className="premium-card">
                                         <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Execution Context</h3>
                                         <div style={{ marginBottom: '1rem' }}>
