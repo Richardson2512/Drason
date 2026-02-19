@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 
 function SignupContent() {
@@ -12,6 +13,7 @@ function SignupContent() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [orgName, setOrgName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -168,14 +170,23 @@ function SignupContent() {
 
                         <div className="space-y-1.5">
                             <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Password</label>
-                            <input
-                                type="password"
-                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm pr-12"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0AEC0] hover:text-[#718096] p-1"
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            </div>
                         </div>
 
                         <button type="submit" className="w-full bg-[#1C4532] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#1C4532]/20 hover:shadow-[#1C4532]/30 hover:-translate-y-0.5 transition-all text-base mt-2" disabled={loading}>
