@@ -12,11 +12,11 @@ export default function SpfDkimDmarcArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "SPF, DKIM, and DMARC Explained",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://superkabe.com/blog/spf-dkim-dmarc-explained"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
     };
 
     const howToSchema = {

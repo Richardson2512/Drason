@@ -12,11 +12,11 @@ export default function BounceRateArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "How Bounce Rate Affects Email Deliverability",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://superkabe.com/blog/bounce-rate-deliverability"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/bounce-rate-deliverability"
     };
 
     const faqSchema = {

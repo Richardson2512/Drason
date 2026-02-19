@@ -11,7 +11,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://superkabe.com'),
+  metadataBase: new URL('https://www.superkabe.com'),
   title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
   description:
     'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
     description: 'Protect your outbound email infrastructure with production-hardened monitoring and auto-healing.',
-    url: 'https://superkabe.com',
+    url: 'https://www.superkabe.com',
     siteName: 'Superkabe',
     images: [
       {
@@ -57,10 +57,10 @@ export default function RootLayout({
   const orgSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': 'https://superkabe.com/#organization',
+    '@id': 'https://www.superkabe.com/#organization',
     name: 'Superkabe',
-    url: 'https://superkabe.com',
-    logo: 'https://superkabe.com/image/logo-v2.png',
+    url: 'https://www.superkabe.com',
+    logo: 'https://www.superkabe.com/image/logo-v2.png',
     description: 'Email infrastructure protection and sender reputation recovery platform for modern outbound teams.',
     foundingDate: '2024',
     founder: {
@@ -81,12 +81,12 @@ export default function RootLayout({
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    '@id': 'https://superkabe.com/#software',
+    '@id': 'https://www.superkabe.com/#software',
     name: 'Superkabe',
     operatingSystem: 'Web',
     applicationCategory: 'BusinessApplication',
     isPartOf: {
-      '@id': 'https://superkabe.com/#organization',
+      '@id': 'https://www.superkabe.com/#organization',
     },
     offers: {
       '@type': 'Offer',

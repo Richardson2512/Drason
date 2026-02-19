@@ -12,11 +12,11 @@ export default function DomainWarmingArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Domain Warming Methodology",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://superkabe.com/blog/domain-warming-methodology"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/domain-warming-methodology"
     };
 
     const howToSchema = {

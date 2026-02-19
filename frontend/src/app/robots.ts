@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/dashboard/', '/api/', '/login', '/signup'],
             },
         ],
-        sitemap: 'https://superkabe.com/sitemap.xml',
+        sitemap: 'https://www.superkabe.com/sitemap.xml',
     };
 }

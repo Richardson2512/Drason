@@ -12,11 +12,11 @@ export default function EmailReputationArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "The Email Reputation Lifecycle",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://superkabe.com/blog/email-reputation-lifecycle"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/email-reputation-lifecycle"
     };
 
     const faqSchema = {

@@ -13,11 +13,11 @@ export default function EmailDeliverabilityGuide() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "The Complete Email Deliverability Guide for Outbound Teams",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://superkabe.com/blog/email-deliverability-guide"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/email-deliverability-guide"
     };
 
     const faqSchema = {

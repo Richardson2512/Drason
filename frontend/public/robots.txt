@@ -25,4 +25,4 @@ Allow: /
 User-agent: Slurp
 Allow: /
 
-Sitemap: https://drason.com/sitemap.xml
+Sitemap: https://www.superkabe.com/sitemap.xml
