@@ -41,6 +41,11 @@ export const metadata: Metadata = {
     description: 'The monitoring layer between your enrichment and email stack.',
     images: ['/image/og-image.png'],
   },
+  verification: {
+    other: {
+      'msvalidate.01': 'DC874AF623CE70A235655B84EEA5CF8A',
+    },
+  },
 };
 
 export default function RootLayout({
