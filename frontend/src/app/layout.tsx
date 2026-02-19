@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://superkabe.com'),
   title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
   description:
-    'Production-hardened monitoring and protection layer for multi-domain, multi-mailbox outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
+    'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
   icons: {
     icon: '/image/favicon-32.png',
     apple: '/image/apple-touch-icon.png',
