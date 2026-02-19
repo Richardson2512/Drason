@@ -384,7 +384,7 @@ export default function Settings() {
                                     });
                                 } catch (e: any) {
                                     // Error will be shown in modal via SSE
-                                    console.error('Sync error:', e);
+                                    // Silent catch - error handling delegated to SyncProgressModal
                                 }
                             }}
                             disabled={loading}
