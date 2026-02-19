@@ -7,6 +7,46 @@ import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
 
+// Map raw Smartlead errors to user-friendly resolution guidance
+function getConnectionResolution(error: string | null | undefined): { cause: string; resolution: string } {
+    if (!error) return { cause: 'Unknown connection issue', resolution: 'Check email account settings in Smartlead.' };
+    const e = error.toLowerCase();
+    if (e.includes('invalid_grant') || e.includes('refresh') && e.includes('token')) {
+        return {
+            cause: 'Google OAuth token expired or revoked',
+            resolution: 'Re-authorize this email account in Smartlead → Email Accounts → Reconnect. The Google account password may have changed or access was revoked.'
+        };
+    }
+    if (e.includes('authentication') || e.includes('auth') && e.includes('fail')) {
+        return {
+            cause: 'Email authentication failed',
+            resolution: 'Check the email password in Smartlead → Email Accounts. If using an app password, regenerate it.'
+        };
+    }
+    if (e.includes('connection refused') || e.includes('econnrefused')) {
+        return {
+            cause: 'SMTP/IMAP server unreachable',
+            resolution: 'The mail server is refusing connections. Check DNS settings, firewall rules, or contact your email provider.'
+        };
+    }
+    if (e.includes('timeout') || e.includes('timed out')) {
+        return {
+            cause: 'Connection timed out',
+            resolution: 'The mail server is not responding. This may be a temporary outage — try reconnecting in Smartlead later.'
+        };
+    }
+    if (e.includes('certificate') || e.includes('ssl') || e.includes('tls')) {
+        return {
+            cause: 'SSL/TLS certificate error',
+            resolution: 'The mail server\'s SSL certificate is invalid or expired. Check SMTP/IMAP port and encryption settings in Smartlead.'
+        };
+    }
+    return {
+        cause: error,
+        resolution: 'Check this email account\'s settings in Smartlead → Email Accounts and try reconnecting.'
+    };
+}
+
 export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<any[]>([]);
     const [selectedMailbox, setSelectedMailbox] = useState<any>(null);
@@ -224,6 +264,12 @@ export default function MailboxesPage() {
                                 onChange={() => { }}
                                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
                             />
+                            {/* Status dot */}
+                            <span style={{
+                                width: '10px', height: '10px', borderRadius: '50%', flexShrink: 0,
+                                background: mb.status === 'healthy' ? '#22C55E' : mb.status === 'warning' ? '#F59E0B' : '#EF4444',
+                                boxShadow: mb.status === 'healthy' ? '0 0 6px rgba(34,197,94,0.4)' : mb.status === 'paused' ? '0 0 6px rgba(239,68,68,0.4)' : 'none'
+                            }} title={mb.status === 'healthy' ? 'Connected' : mb.status === 'paused' ? 'Disconnected' : mb.status} />
                             <div style={{ flex: 1 }}>
                                 <div style={{ fontWeight: 600, marginBottom: '0.25rem', wordBreak: 'break-all', color: '#1E293B', fontSize: '0.9rem' }}>{mb.email}</div>
                                 <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -251,22 +297,104 @@ export default function MailboxesPage() {
                             <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Mailbox Health & Usage</div>
                         </div>
 
+                        {/* Connection Diagnostic Card — shown when mailbox is disconnected */}
+                        {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
+                            const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error);
+                            return (
+                                <div style={{
+                                    margin: '0 0 2rem 0',
+                                    padding: '1.25rem 1.5rem',
+                                    borderRadius: '16px',
+                                    background: 'linear-gradient(135deg, #FEF2F2, #FFF1F2)',
+                                    border: '1px solid #FECACA',
+                                }}
+                                >
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                                        <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+                                        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#991B1B', margin: 0 }}>Connection Failed</h3>
+                                    </div>
+
+                                    <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.9rem' }}>
+                                        {/* What happened */}
+                                        <div>
+                                            <div style={{ fontWeight: 600, color: '#7F1D1D', marginBottom: '0.25rem' }}>
+                                                {!selectedMailbox.smtp_status && !selectedMailbox.imap_status ? 'SMTP & IMAP failed' :
+                                                    !selectedMailbox.smtp_status ? 'SMTP connection failed' : 'IMAP connection failed'}
+                                            </div>
+                                            <div style={{ color: '#991B1B' }}>{cause}</div>
+                                        </div>
+
+                                        {/* Impact */}
+                                        <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
+                                            <div style={{ fontWeight: 600, color: '#92400E', marginBottom: '0.25rem' }}>📋 Impact</div>
+                                            <div style={{ color: '#78350F', lineHeight: 1.5 }}>
+                                                This mailbox is paused inside its campaigns. Leads assigned to this mailbox are being rotated to other active mailboxes in the campaign.
+                                            </div>
+                                        </div>
+
+                                        {/* How to fix */}
+                                        <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
+                                            <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.25rem' }}>✅ How to Fix</div>
+                                            <div style={{ color: '#14532D', lineHeight: 1.5 }}>{resolution}</div>
+                                        </div>
+
+                                        {/* Affected campaigns */}
+                                        {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 && (
+                                            <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
+                                                <div style={{ fontWeight: 600, color: '#1E40AF', marginBottom: '0.5rem' }}>🎯 Affected Campaigns</div>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                    {selectedMailbox.campaigns.map((c: any) => (
+                                                        <span key={c.id} style={{
+                                                            padding: '0.25rem 0.75rem',
+                                                            borderRadius: '999px',
+                                                            fontSize: '0.8rem',
+                                                            fontWeight: 500,
+                                                            background: '#EFF6FF',
+                                                            color: '#1E40AF',
+                                                            border: '1px solid #BFDBFE'
+                                                        }}>{c.name}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })()}
+
                         <div className="grid grid-cols-2 gap-6" style={{ marginBottom: '2rem' }}>
                             <div className="premium-card">
                                 <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Associated Domain</h3>
                                 <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1E293B', marginBottom: '0.5rem' }}>{selectedMailbox.domain?.domain}</div>
-                                <div style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    padding: '0.25rem 0.75rem',
-                                    borderRadius: '999px',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '600',
-                                    ...getStatusColors(selectedMailbox.domain?.status || 'unknown')
-                                }}>
-                                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
-                                    {selectedMailbox.domain?.status.toUpperCase()}
+                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                    {/* Domain status badge */}
+                                    <div style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        padding: '0.25rem 0.75rem',
+                                        borderRadius: '999px',
+                                        fontSize: '0.8rem',
+                                        fontWeight: '600',
+                                        ...getStatusColors(selectedMailbox.domain?.status || 'unknown')
+                                    }}>
+                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
+                                        Domain: {selectedMailbox.domain?.status?.toUpperCase()}
+                                    </div>
+                                    {/* Mailbox connection status badge */}
+                                    <div style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        padding: '0.25rem 0.75rem',
+                                        borderRadius: '999px',
+                                        fontSize: '0.8rem',
+                                        fontWeight: '600',
+                                        ...getStatusColors(selectedMailbox.status || 'unknown')
+                                    }}>
+                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
+                                        {selectedMailbox.status === 'healthy' ? 'CONNECTED' : 'DISCONNECTED'}
+                                    </div>
                                 </div>
                             </div>
                             <div className="premium-card">
@@ -374,17 +502,17 @@ export default function MailboxesPage() {
                                         letterSpacing: '0.05em',
                                         background: selectedMailbox.recovery_phase === 'paused' ? '#FEF2F2' :
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#FEF2F2' :
-                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#FFF7ED' :
-                                            '#ECFDF5',
+                                                selectedMailbox.recovery_phase === 'restricted_send' ? '#FFF7ED' :
+                                                    '#ECFDF5',
                                         color: selectedMailbox.recovery_phase === 'paused' ? '#DC2626' :
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#DC2626' :
-                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#F59E0B' :
-                                            '#16A34A',
+                                                selectedMailbox.recovery_phase === 'restricted_send' ? '#F59E0B' :
+                                                    '#16A34A',
                                         border: '1px solid',
                                         borderColor: selectedMailbox.recovery_phase === 'paused' ? '#FEE2E2' :
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#FEE2E2' :
-                                            selectedMailbox.recovery_phase === 'restricted_send' ? '#FED7AA' :
-                                            '#BBF7D0',
+                                                selectedMailbox.recovery_phase === 'restricted_send' ? '#FED7AA' :
+                                                    '#BBF7D0',
                                     }}>
                                         {selectedMailbox.recovery_phase.replace('_', ' ')}
                                     </span>
