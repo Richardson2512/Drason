@@ -17,6 +17,26 @@ export default function LoginPage() {
     const [rememberMe, setRememberMe] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    // Get backend URL for Google OAuth redirect
+    const getBackendUrl = () => {
+        // In production/Railway, backend is same origin
+        // In local dev, backend is on port 3001
+        if (typeof window !== 'undefined') {
+            const protocol = window.location.protocol;
+            const hostname = window.location.hostname;
+
+            // If localhost, use port 3001 for backend
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return `${protocol}//localhost:3001`;
+            }
+
+            // Production: same origin
+            return `${protocol}//${hostname}`;
+        }
+
+        return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    };
+
     const slides = [
         {
             title: "Real-time\nHealth Monitoring",
@@ -74,6 +94,12 @@ export default function LoginPage() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleGoogleLogin = () => {
+        // Redirect to backend Google OAuth initiation endpoint
+        const backendUrl = getBackendUrl();
+        window.location.href = `${backendUrl}/api/auth/google`;
     };
 
     return (
@@ -178,11 +204,15 @@ export default function LoginPage() {
                             <div className="h-px bg-[#E2E8F0] flex-1"></div>
                         </div>
 
-                        <button type="button" className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm">
+                        <button
+                            type="button"
+                            onClick={handleGoogleLogin}
+                            className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm"
+                        >
                             <div className="w-5 h-5 relative">
                                 <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill />
                             </div>
-                            <span className="text-sm">Google</span>
+                            <span className="text-sm">Sign in with Google</span>
                         </button>
 
                     </form>
