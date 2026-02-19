@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
@@ -213,6 +213,40 @@ export default function DomainsPage() {
             {/* Right: Details (Unchanged mostly) */}
             <div style={{ flex: 1, overflowY: 'auto' }} className="scrollbar-hide">
                 {selectedDomain ? (
+                    <DomainDetailsView selectedDomain={selectedDomain} auditLogs={auditLogs} />
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
+                        <div style={{ fontSize: '3rem' }}>👈</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: '500' }}>Select a domain to view details</div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+// Memoized component for better Safari performance
+function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any; auditLogs: any[] }) {
+    // Memoize engagement rate calculations to prevent re-calculation on every render
+    const openRate = useMemo(() => {
+        return selectedDomain.total_sent_lifetime > 0
+            ? ((selectedDomain.total_opens / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+            : '0';
+    }, [selectedDomain.total_sent_lifetime, selectedDomain.total_opens]);
+
+    const clickRate = useMemo(() => {
+        return selectedDomain.total_sent_lifetime > 0
+            ? ((selectedDomain.total_clicks / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+            : '0';
+    }, [selectedDomain.total_sent_lifetime, selectedDomain.total_clicks]);
+
+    const replyRate = useMemo(() => {
+        return selectedDomain.total_sent_lifetime > 0
+            ? ((selectedDomain.total_replies / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+            : '0';
+    }, [selectedDomain.total_sent_lifetime, selectedDomain.total_replies]);
+
+    return (
                     <div className="animate-fade-in">
                         <div className="page-header">
                             <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedDomain.domain}</h1>
@@ -283,10 +317,7 @@ export default function DomainsPage() {
                                         {selectedDomain.total_opens?.toLocaleString() || '0'}
                                     </div>
                                     <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {selectedDomain.total_sent_lifetime > 0
-                                            ? `${((selectedDomain.total_opens / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
-                                            : '0%'
-                                        } rate
+                                        {openRate}% rate
                                     </div>
                                 </div>
 
@@ -299,10 +330,7 @@ export default function DomainsPage() {
                                         {selectedDomain.total_clicks?.toLocaleString() || '0'}
                                     </div>
                                     <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {selectedDomain.total_sent_lifetime > 0
-                                            ? `${((selectedDomain.total_clicks / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
-                                            : '0%'
-                                        } rate
+                                        {clickRate}% rate
                                     </div>
                                 </div>
 
@@ -315,10 +343,7 @@ export default function DomainsPage() {
                                         {selectedDomain.total_replies?.toLocaleString() || '0'}
                                     </div>
                                     <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {selectedDomain.total_sent_lifetime > 0
-                                            ? `${((selectedDomain.total_replies / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
-                                            : '0%'
-                                        } rate
+                                        {replyRate}% rate
                                     </div>
                                 </div>
                             </div>
@@ -499,13 +524,5 @@ export default function DomainsPage() {
                         {/* Infrastructure Health Issues */}
                         <FindingsCard entityType="domain" entityId={selectedDomain.id} />
                     </div>
-                ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
-                        <div style={{ fontSize: '3rem' }}>👈</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: '500' }}>Select a domain to view health</div>
-                    </div>
-                )}
-            </div>
-        </div>
     );
 }
