@@ -115,7 +115,7 @@ export default function Overview() {
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6" style={{ paddingBottom: '2rem' }}>
       {/* Welcome Section */}
       <div style={{
         padding: '1.5rem 2rem',
