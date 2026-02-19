@@ -178,20 +178,12 @@ export default function LoginPage() {
                             <div className="h-px bg-[#E2E8F0] flex-1"></div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3">
-                            <button type="button" className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm">
-                                <div className="w-5 h-5 relative">
-                                    <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill />
-                                </div>
-                                <span className="text-sm">Google</span>
-                            </button>
-                            <button type="button" className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm">
-                                <div className="w-5 h-5 relative">
-                                    <Image src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" fill />
-                                </div>
-                                <span className="text-sm">Facebook</span>
-                            </button>
-                        </div>
+                        <button type="button" className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm">
+                            <div className="w-5 h-5 relative">
+                                <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill />
+                            </div>
+                            <span className="text-sm">Google</span>
+                        </button>
 
                     </form>
                 </div>
