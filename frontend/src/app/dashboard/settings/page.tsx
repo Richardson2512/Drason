@@ -376,6 +376,9 @@ export default function Settings() {
                                 setSyncSessionId(sessionId);
                                 setShowSyncModal(true);
 
+                                // Wait 500ms for SSE connection to establish before triggering sync
+                                await new Promise(resolve => setTimeout(resolve, 500));
+
                                 // Trigger sync with session ID
                                 try {
                                     await apiClient<any>(`/api/sync?session=${sessionId}`, {
