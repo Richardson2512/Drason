@@ -25,6 +25,7 @@ export default function DashboardLayout({
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
+    const [orgName, setOrgName] = useState<string>('');
 
     useEffect(() => {
         // Fetch current user info including role
@@ -45,6 +46,7 @@ export default function DashboardLayout({
         apiClient<any>('/api/organization').then((response) => {
             const org = response.data || response; // Handle wrapped response
             if (org?.system_mode) setSystemMode(org.system_mode);
+            if (org?.name) setOrgName(org.name);
         }).catch(() => { });
 
         // Get user name from cookie-based JWT (decoded on client for display only)
@@ -284,17 +286,22 @@ export default function DashboardLayout({
 
                     <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                         {!isCollapsed && (
-                            <div style={{ padding: '0.75rem', background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)', borderRadius: '12px', border: '1px solid #DBEAFE', transition: 'all 0.3s' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                        <User size={16} color="#fff" />
-                                    </div>
-                                    <div style={{ overflow: 'hidden' }}>
-                                        <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userName || 'My Account'}</div>
-                                        <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>
+                            <Link href="/dashboard/profile" style={{ textDecoration: 'none' }}>
+                                <div style={{ padding: '0.75rem', background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)', borderRadius: '12px', border: '1px solid #DBEAFE', transition: 'all 0.3s', cursor: 'pointer' }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.15)'; e.currentTarget.style.borderColor = '#93C5FD'; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#DBEAFE'; }}
+                                >
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                            <User size={16} color="#fff" />
+                                        </div>
+                                        <div style={{ overflow: 'hidden' }}>
+                                            <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{orgName || 'My Organization'}</div>
+                                            <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         )}
 
                         <button

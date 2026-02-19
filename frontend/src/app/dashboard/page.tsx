@@ -19,10 +19,10 @@ export default function Overview() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch user info
-    apiClient<any>('/api/organization').then((response) => {
-      const org = response.data || response; // Handle wrapped response
-      if (org?.name) setUserName(org.name);
+    // Fetch user info for welcome message
+    apiClient<any>('/api/user/me').then((response) => {
+      const user = response.data || response;
+      if (user?.name) setUserName(user.name);
     }).catch(() => { });
 
     // Fetch subscription data
