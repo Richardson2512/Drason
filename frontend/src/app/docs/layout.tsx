@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List } from 'lucide-react';
+import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle } from 'lucide-react';
 
 const docSections = [
     {
@@ -31,6 +31,16 @@ const docSections = [
         title: 'Configuration',
         items: [
             { title: 'Configuration', href: '/docs/configuration', icon: Settings },
+        ]
+    },
+    {
+        title: 'Help Center',
+        items: [
+            { title: 'Connection Errors', href: '/docs/help/connection-errors', icon: AlertTriangle },
+            { title: 'Campaign Paused', href: '/docs/help/campaign-paused', icon: HelpCircle },
+            { title: 'Auto-Healing', href: '/docs/help/auto-healing', icon: HelpCircle },
+            { title: 'Infrastructure Score', href: '/docs/help/infrastructure-score-explained', icon: HelpCircle },
+            { title: '24/7 Monitoring', href: '/docs/help/24-7-monitoring', icon: HelpCircle },
         ]
     }
 ];

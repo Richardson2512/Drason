@@ -334,8 +334,37 @@ export default function MailboxesPage() {
 
                                         {/* How to fix */}
                                         <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
-                                            <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.25rem' }}>✅ How to Fix</div>
-                                            <div style={{ color: '#14532D', lineHeight: 1.5 }}>{resolution}</div>
+                                            <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.5rem' }}>✅ Quick Fix</div>
+                                            <div style={{ color: '#14532D', lineHeight: 1.5, marginBottom: '0.75rem' }}>
+                                                Reconnect this email account in Smartlead, then trigger a Manual Sync in Superkabe.
+                                            </div>
+                                            <a
+                                                href={`/docs/help/connection-errors${selectedMailbox.connection_error?.includes('invalid_grant') || selectedMailbox.connection_error?.includes('refresh') ? '#google-oauth' :
+                                                        selectedMailbox.connection_error?.includes('Authentication') || selectedMailbox.connection_error?.includes('credentials') ? '#auth-failed' :
+                                                            selectedMailbox.connection_error?.includes('refused') || selectedMailbox.connection_error?.includes('ECONNREFUSED') ? '#connection-refused' :
+                                                                selectedMailbox.connection_error?.includes('timeout') || selectedMailbox.connection_error?.includes('ETIMEDOUT') ? '#timeout' :
+                                                                    selectedMailbox.connection_error?.includes('SSL') || selectedMailbox.connection_error?.includes('certificate') ? '#ssl-tls' :
+                                                                        '#error-types'
+                                                    }`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    padding: '0.625rem 1.25rem',
+                                                    background: 'linear-gradient(135deg, #166534, #15803D)',
+                                                    color: '#FFFFFF',
+                                                    borderRadius: '10px',
+                                                    fontSize: '0.875rem',
+                                                    fontWeight: 600,
+                                                    textDecoration: 'none',
+                                                    boxShadow: '0 2px 8px rgba(22, 101, 52, 0.3)',
+                                                    transition: 'all 0.2s ease',
+                                                }}
+                                            >
+                                                How to Fix →
+                                            </a>
                                         </div>
 
                                         {/* Affected campaigns */}
