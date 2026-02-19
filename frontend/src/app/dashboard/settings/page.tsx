@@ -380,14 +380,17 @@ export default function Settings() {
                                 await new Promise(resolve => setTimeout(resolve, 500));
 
                                 // Trigger sync with session ID
+                                // Use a very high timeout (10 minutes) since large syncs can take time
+                                // SSE will show real-time progress regardless
                                 try {
                                     await apiClient<any>(`/api/sync?session=${sessionId}`, {
                                         method: 'POST',
-                                        timeout: 180_000
+                                        timeout: 600_000 // 10 minutes
                                     });
                                 } catch (e: any) {
                                     // Error will be shown in modal via SSE
                                     // Silent catch - error handling delegated to SyncProgressModal
+                                    console.error('[Sync] API call failed:', e.message);
                                 }
                             }}
                             disabled={loading}
