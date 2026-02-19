@@ -388,9 +388,14 @@ export default function Settings() {
                                         timeout: 600_000 // 10 minutes
                                     });
                                 } catch (e: any) {
+                                    // Log detailed error information for debugging
+                                    console.error('[Sync] API call error:', {
+                                        message: e.message,
+                                        name: e.name,
+                                        stack: e.stack,
+                                        isTimeout: e.message?.includes('timeout')
+                                    });
                                     // Error will be shown in modal via SSE
-                                    // Silent catch - error handling delegated to SyncProgressModal
-                                    console.error('[Sync] API call failed:', e.message);
                                 }
                             }}
                             disabled={loading}

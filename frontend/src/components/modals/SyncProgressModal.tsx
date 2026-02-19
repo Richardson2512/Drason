@@ -72,12 +72,17 @@ export default function SyncProgressModal({
         setIsComplete(false);
 
         // Connect to SSE endpoint (use relative URL like apiClient does)
+        let retryCount = 0;
+        const MAX_RETRIES = 3;
+        let completed = false;
+
         const eventSource = new EventSource(`/api/sync-progress/${sessionId}`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
 
             if (data.type === 'progress') {
+                retryCount = 0; // Reset on successful message
                 setProgress(prev => ({
                     ...prev,
                     [data.step]: {
@@ -89,10 +94,12 @@ export default function SyncProgressModal({
                     }
                 }));
             } else if (data.type === 'complete') {
+                completed = true;
                 setResult(data.result);
                 setIsComplete(true);
                 eventSource.close();
             } else if (data.type === 'error') {
+                completed = true;
                 setError(data.error);
                 setIsComplete(true);
                 eventSource.close();
@@ -100,12 +107,23 @@ export default function SyncProgressModal({
         };
 
         eventSource.onerror = () => {
-            setError('Connection lost. Please refresh to see latest status.');
-            setIsComplete(true);
-            eventSource.close();
+            // Don't show error if sync already completed
+            if (completed) {
+                eventSource.close();
+                return;
+            }
+
+            retryCount++;
+            if (retryCount >= MAX_RETRIES) {
+                setError('Connection lost. Please refresh to see latest status.');
+                setIsComplete(true);
+                eventSource.close();
+            }
+            // Otherwise, EventSource will auto-reconnect
         };
 
         return () => {
+            completed = true;
             eventSource.close();
         };
     }, [isOpen, sessionId]);
@@ -188,11 +206,10 @@ export default function SyncProgressModal({
                                         {getStepIcon(stepProgress)}
                                         <div className="flex-1">
                                             <div className="flex items-center justify-between mb-1">
-                                                <span className={`font-medium ${
-                                                    stepProgress.status === 'in_progress' ? 'text-blue-600' :
-                                                    stepProgress.status === 'completed' ? 'text-gray-900' :
-                                                    'text-gray-400'
-                                                }`}>
+                                                <span className={`font-medium ${stepProgress.status === 'in_progress' ? 'text-blue-600' :
+                                                        stepProgress.status === 'completed' ? 'text-gray-900' :
+                                                            'text-gray-400'
+                                                    }`}>
                                                     {STEP_LABELS[stepProgress.step]}
                                                 </span>
                                                 <span className="text-sm text-gray-500">
