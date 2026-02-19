@@ -288,6 +288,78 @@ export default function MailboxesPage() {
                             </div>
                         </div>
 
+                        {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
+                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                                    Engagement Metrics
+                                </h2>
+                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                                    Lifetime engagement from emails sent via this mailbox (informational only)
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-4">
+                                {/* Opens */}
+                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
+                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Total Opens
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                                        {selectedMailbox.open_count_lifetime?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+
+                                {/* Clicks */}
+                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
+                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Total Clicks
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                                        {selectedMailbox.click_count_lifetime?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+
+                                {/* Replies */}
+                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
+                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Total Replies
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                                        {selectedMailbox.reply_count_lifetime?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Spam & Warmup Row */}
+                            <div className="grid grid-cols-2 gap-4" style={{ marginTop: '1rem' }}>
+                                {/* Spam Count */}
+                                <div style={{ padding: '1rem', background: '#FEF2F2', borderRadius: '12px', border: '1px solid #FECACA' }}>
+                                    <div style={{ color: '#991B1B', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Spam Reports
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#DC2626' }}>
+                                        {selectedMailbox.spam_count?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+
+                                {/* Warmup Status */}
+                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Warmup Status
+                                    </div>
+                                    <div style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', marginBottom: '0.25rem' }}>
+                                        {selectedMailbox.warmup_status || 'Not configured'}
+                                    </div>
+                                    {selectedMailbox.warmup_reputation && (
+                                        <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                            Reputation: {selectedMailbox.warmup_reputation}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Recovery Status */}
                         {selectedMailbox.recovery_phase && selectedMailbox.recovery_phase !== 'healthy' && (
                             <div className="premium-card" style={{ marginBottom: '2rem' }}>

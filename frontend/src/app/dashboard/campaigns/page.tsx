@@ -316,6 +316,95 @@ export default function CampaignsPage() {
                             </div>
                         </div>
 
+                        {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
+                        <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                                    Engagement Metrics
+                                </h2>
+                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                                    Campaign-level analytics (informational only, does not affect automated decisions)
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-4 gap-4">
+                                {/* Total Sent */}
+                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Total Sent
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                                        {selectedCampaign.total_sent?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+
+                                {/* Opens */}
+                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
+                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Opens
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                                        {selectedCampaign.open_count?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedCampaign.open_rate ? `${selectedCampaign.open_rate.toFixed(1)}%` : '0%'} rate
+                                    </div>
+                                </div>
+
+                                {/* Clicks */}
+                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
+                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Clicks
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                                        {selectedCampaign.click_count?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedCampaign.click_rate ? `${selectedCampaign.click_rate.toFixed(1)}%` : '0%'} rate
+                                    </div>
+                                </div>
+
+                                {/* Replies */}
+                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
+                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Replies
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                                        {selectedCampaign.reply_count?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedCampaign.reply_rate ? `${selectedCampaign.reply_rate.toFixed(1)}%` : '0%'} rate
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bounce & Unsubscribe Row */}
+                            <div className="grid grid-cols-2 gap-4" style={{ marginTop: '1rem' }}>
+                                {/* Bounces */}
+                                <div style={{ padding: '1rem', background: '#FEF2F2', borderRadius: '12px', border: '1px solid #FECACA' }}>
+                                    <div style={{ color: '#991B1B', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Bounces (HARD SIGNAL)
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#DC2626' }}>
+                                        {selectedCampaign.total_bounced?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#EF4444', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedCampaign.bounce_rate ? `${selectedCampaign.bounce_rate.toFixed(1)}%` : '0%'} rate
+                                    </div>
+                                </div>
+
+                                {/* Unsubscribes */}
+                                <div style={{ padding: '1rem', background: '#FFFBEB', borderRadius: '12px', border: '1px solid #FDE68A' }}>
+                                    <div style={{ color: '#92400E', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Unsubscribes
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#B45309' }}>
+                                        {selectedCampaign.unsubscribed_count?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Mailboxes Section */}
                         <div className="premium-card">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>

@@ -252,6 +252,78 @@ export default function DomainsPage() {
                             </div>
                         </div>
 
+                        {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
+                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                                    Domain-Wide Engagement
+                                </h2>
+                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                                    Aggregated metrics across all mailboxes on this domain (informational only)
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-4 gap-4">
+                                {/* Total Sent */}
+                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Total Sent
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                                        {selectedDomain.total_sent_lifetime?.toLocaleString() || '0'}
+                                    </div>
+                                </div>
+
+                                {/* Opens */}
+                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
+                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Opens
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                                        {selectedDomain.total_opens?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedDomain.total_sent_lifetime > 0
+                                            ? `${((selectedDomain.total_opens / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
+                                            : '0%'
+                                        } rate
+                                    </div>
+                                </div>
+
+                                {/* Clicks */}
+                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
+                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Clicks
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                                        {selectedDomain.total_clicks?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedDomain.total_sent_lifetime > 0
+                                            ? `${((selectedDomain.total_clicks / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
+                                            : '0%'
+                                        } rate
+                                    </div>
+                                </div>
+
+                                {/* Replies */}
+                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
+                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                        Replies
+                                    </div>
+                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                                        {selectedDomain.total_replies?.toLocaleString() || '0'}
+                                    </div>
+                                    <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
+                                        {selectedDomain.total_sent_lifetime > 0
+                                            ? `${((selectedDomain.total_replies / selectedDomain.total_sent_lifetime) * 100).toFixed(1)}%`
+                                            : '0%'
+                                        } rate
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Recovery Status */}
                         {selectedDomain.recovery_phase && selectedDomain.recovery_phase !== 'healthy' && (
                             <div className="premium-card" style={{ marginBottom: '2rem' }}>
