@@ -44,6 +44,7 @@ export const metadata: Metadata = {
   verification: {
     other: {
       'msvalidate.01': 'DC874AF623CE70A235655B84EEA5CF8A',
+      'yandex-verification': '62fe10ad8516a592',
     },
   },
 };
