@@ -102,6 +102,18 @@ export default function DocsPage() {
                     title="Smartlead Integration"
                     description="Monitor campaigns and sync mailboxes from Smartlead"
                 />
+                <DocCard
+                    href="/docs/warmup-recovery"
+                    icon={<Activity className="text-green-600" size={24} />}
+                    title="Warmup Recovery System"
+                    description="Automated mailbox healing through graduated recovery phases"
+                />
+                <DocCard
+                    href="/docs/deployment"
+                    icon={<Settings className="text-purple-600" size={24} />}
+                    title="Deployment Checklist"
+                    description="Production deployment steps and verification procedures"
+                />
             </div>
 
             {/* Core Principles - Gradient Card (Matching Landing) */}
