@@ -17,6 +17,12 @@ function LeadsPageContent() {
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string>('all');
 
+    // Sorting & Filtering State
+    const [sortBy, setSortBy] = useState('created_desc');
+    const [minScore, setMinScore] = useState<string>('');
+    const [maxScore, setMaxScore] = useState<string>('');
+    const [hasEngagement, setHasEngagement] = useState<string>('all');
+
     // Pagination & Selection State
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
@@ -49,7 +55,8 @@ function LeadsPageContent() {
         const queryParams: any = {
             page: meta.page.toString(),
             limit: meta.limit.toString(),
-            status: leadTab
+            status: leadTab,
+            sortBy
         };
 
         // Add campaign filter if not 'all'
@@ -60,6 +67,19 @@ function LeadsPageContent() {
         // Add search query if present
         if (searchQuery.trim()) {
             queryParams.search = searchQuery.trim();
+        }
+
+        // Add score range filters
+        if (minScore) {
+            queryParams.minScore = minScore;
+        }
+        if (maxScore) {
+            queryParams.maxScore = maxScore;
+        }
+
+        // Add engagement filter
+        if (hasEngagement !== 'all') {
+            queryParams.hasEngagement = hasEngagement;
         }
 
         const query = new URLSearchParams(queryParams);
@@ -85,7 +105,7 @@ function LeadsPageContent() {
             console.error('Failed to fetch leads:', err);
             setLeads([]);
         }
-    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, selectedLead]);
+    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, sortBy, minScore, maxScore, hasEngagement, selectedLead]);
 
     useEffect(() => {
         fetchLeads();
@@ -380,6 +400,127 @@ function LeadsPageContent() {
                             {campaigns.map(c => (
                                 <option key={c.id} value={c.id}>{c.name}</option>
                             ))}
+                        </select>
+                    </div>
+
+                    {/* Sort By Dropdown */}
+                    <div>
+                        <label htmlFor="sort-by" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Sort By
+                        </label>
+                        <select
+                            id="sort-by"
+                            value={sortBy}
+                            onChange={(e) => {
+                                setSortBy(e.target.value);
+                                setMeta(prev => ({ ...prev, page: 1 }));
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 1rem',
+                                borderRadius: '12px',
+                                border: '1px solid #E5E7EB',
+                                background: '#FFFFFF',
+                                color: '#111827',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                outline: 'none',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            <option value="created_desc">Newest First</option>
+                            <option value="created_asc">Oldest First</option>
+                            <option value="email_asc">Email (A-Z)</option>
+                            <option value="email_desc">Email (Z-A)</option>
+                            <option value="score_desc">Score (High to Low)</option>
+                            <option value="score_asc">Score (Low to High)</option>
+                            <option value="activity_desc">Recently Active</option>
+                            <option value="activity_asc">Least Active</option>
+                        </select>
+                    </div>
+
+                    {/* Score Range Filter */}
+                    <div>
+                        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Lead Score Range
+                        </label>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={minScore}
+                                onChange={(e) => {
+                                    setMinScore(e.target.value);
+                                    setMeta(prev => ({ ...prev, page: 1 }));
+                                }}
+                                min="0"
+                                max="100"
+                                style={{
+                                    flex: 1,
+                                    padding: '0.625rem 1rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid #E5E7EB',
+                                    background: '#FFFFFF',
+                                    color: '#111827',
+                                    fontSize: '0.875rem',
+                                    outline: 'none'
+                                }}
+                            />
+                            <span style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>-</span>
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={maxScore}
+                                onChange={(e) => {
+                                    setMaxScore(e.target.value);
+                                    setMeta(prev => ({ ...prev, page: 1 }));
+                                }}
+                                min="0"
+                                max="100"
+                                style={{
+                                    flex: 1,
+                                    padding: '0.625rem 1rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid #E5E7EB',
+                                    background: '#FFFFFF',
+                                    color: '#111827',
+                                    fontSize: '0.875rem',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Engagement Filter */}
+                    <div>
+                        <label htmlFor="engagement-filter" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Has Engagement
+                        </label>
+                        <select
+                            id="engagement-filter"
+                            value={hasEngagement}
+                            onChange={(e) => {
+                                setHasEngagement(e.target.value);
+                                setMeta(prev => ({ ...prev, page: 1 }));
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '0.625rem 1rem',
+                                borderRadius: '12px',
+                                border: '1px solid #E5E7EB',
+                                background: '#FFFFFF',
+                                color: '#111827',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                outline: 'none',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            <option value="all">All Leads</option>
+                            <option value="yes">With Engagement (Opens/Clicks/Replies)</option>
+                            <option value="no">No Engagement Yet</option>
                         </select>
                     </div>
                 </div>
