@@ -18,6 +18,7 @@ export default function APIIntegrationPage() {
                     <li><strong>1. Clay Webhook</strong> — Receive enriched leads from Clay tables</li>
                     <li><strong>2. Smartlead Webhook</strong> — Monitor bounce/sent events from Smartlead campaigns</li>
                     <li><strong>3. Direct Ingestion API</strong> — Programmatic lead submission</li>
+                    <li><strong>4. Campaign Resolution API</strong> — Automate stalled campaign recovery</li>
                 </ol>
             </div>
 

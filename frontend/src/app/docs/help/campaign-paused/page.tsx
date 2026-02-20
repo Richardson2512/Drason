@@ -12,7 +12,7 @@ export default function CampaignPausedPage() {
             <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-12 rounded-r-lg">
                 <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
                 <p className="text-blue-800 mb-4">
-                    Campaigns are automatically paused when your <strong>bounce rate exceeds 10%</strong> OR when the underlying infrastructure (domains/mailboxes) becomes unhealthy.
+                    Campaigns are automatically paused when your <strong>bounce rate exceeds 10%</strong> OR when the underlying infrastructure (domains/mailboxes) becomes unhealthy and unable to safely send.
                 </p>
                 <p className="text-blue-700 text-sm">
                     This is a protective measure to prevent permanent reputation damage. The system will automatically heal and resume when conditions improve.
@@ -68,15 +68,18 @@ export default function CampaignPausedPage() {
                             📬
                         </div>
                         <div className="flex-1">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">3. Mailbox Health Issues</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">3. Mailbox Health Issues & "Stalled" Campaigns</h3>
                             <p className="text-gray-600 mb-3">
-                                All mailboxes assigned to this campaign are unhealthy:
+                                All mailboxes assigned to this campaign are unhealthy. This causes an "Infrastructure health enforcement" pause.
                             </p>
-                            <ul className="space-y-1 text-sm text-gray-600 ml-4">
+                            <ul className="space-y-1 text-sm text-gray-600 ml-4 mb-3">
                                 <li>• Mailboxes hit 10%+ bounce rate individually</li>
                                 <li>• Mailboxes were manually paused</li>
                                 <li>• Mailboxes are in recovery mode</li>
                             </ul>
+                            <div className="bg-purple-50 p-3 rounded-lg border border-purple-100 mt-2 text-sm text-purple-800">
+                                <strong>💡 Stalled Campaigns:</strong> When a campaign hits 0 healthy mailboxes, it becomes "Stalled". You will see a red "Resolve Issue" button on the Campaigns dashboard allowing you to directly add healthy mailboxes or reroute leads.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,14 +160,16 @@ export default function CampaignPausedPage() {
                     Speed up the process by addressing root causes:
                 </p>
                 <div className="space-y-3">
-                    <div className="bg-white rounded-lg p-4 border border-amber-200">
-                        <h4 className="font-bold text-gray-900 mb-1">For High Bounce Rates:</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>• Clean your email list (remove invalid addresses)</li>
-                            <li>• Use email verification tools (ZeroBounce, NeverBounce)</li>
-                            <li>• Remove old contacts (6+ months inactive)</li>
-                            <li>• Switch to better lead sources</li>
-                        </ul>
+                    <div className="bg-white rounded-lg p-4 border border-amber-200 flex flex-col items-start lg:flex-row gap-6">
+                        <div className="flex-1">
+                            <h4 className="font-bold text-gray-900 mb-1">For High Bounce Rates:</h4>
+                            <ul className="text-sm text-gray-600 space-y-1">
+                                <li>• Clean your email list (remove invalid addresses)</li>
+                                <li>• Use email verification tools (ZeroBounce, NeverBounce)</li>
+                                <li>• Remove old contacts (6+ months inactive)</li>
+                                <li>• Switch to better lead sources</li>
+                            </ul>
+                        </div>
                     </div>
                     <div className="bg-white rounded-lg p-4 border border-amber-200">
                         <h4 className="font-bold text-gray-900 mb-1">For Domain Blacklisting:</h4>
@@ -175,12 +180,15 @@ export default function CampaignPausedPage() {
                             <li>• Trigger manual re-assessment in Superkabe</li>
                         </ul>
                     </div>
-                    <div className="bg-white rounded-lg p-4 border border-amber-200">
-                        <h4 className="font-bold text-gray-900 mb-1">For Mailbox Issues:</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>• Wait for mailbox recovery (auto-healing)</li>
-                            <li>• Add new, healthy mailboxes to the campaign</li>
-                            <li>• Reduce daily send volume</li>
+                    <div className="bg-white rounded-lg p-4 border border-amber-200 border-l-4 border-l-blue-500">
+                        <h4 className="font-bold text-gray-900 mb-1 text-lg flex items-center gap-2">
+                            Interactive Stalled Resolution (New)
+                        </h4>
+                        <p className="text-sm text-gray-600 mb-3">If your campaign paused due to "Infrastructure health enforcement" (0 healthy mailboxes), click <strong>Resolve Issue</strong> on the campaigns dashboard to access the interactive resolution flow:</p>
+                        <ul className="text-sm text-gray-600 space-y-2 bg-gray-50 p-3 rounded-md">
+                            <li><strong>Option A:</strong> View your remaining healthy mailboxes and add them to the campaign to instantly restart it.</li>
+                            <li><strong>Option B:</strong> Safely abandon the stalled campaign by automatically rerouting its active leads to another running campaign.</li>
+                            <li><strong>Option C:</strong> Dismiss the UI warning and manage the campaign manually in Smartlead.</li>
                         </ul>
                     </div>
                 </div>
