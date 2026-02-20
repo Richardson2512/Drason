@@ -10,7 +10,7 @@ interface StalledCampaignResolutionModalProps {
 }
 
 export default function StalledCampaignResolutionModal({ isOpen, onClose, campaign, onSuccess }: StalledCampaignResolutionModalProps) {
-    const [resolutionType, setResolutionType] = useState<'add_mailboxes' | 'reroute_leads' | 'manual' | 'wait_recovery' | null>(null);
+    const [resolutionType, setResolutionType] = useState<'add_mailboxes' | 'reroute_leads' | 'manual' | 'wait_recovery' | 'export_archive' | null>(null);
     const [context, setContext] = useState<any>(null);
 
     // Form state
@@ -61,17 +61,41 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
         setError(null);
 
         try {
-            await apiClient(`/api/dashboard/campaigns/${campaign.id}/resolve-stalled`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    resolutionType,
-                    selectedMailboxIds: resolutionType === 'add_mailboxes' ? selectedMailboxIds : undefined,
-                    targetCampaignId: resolutionType === 'reroute_leads' ? targetCampaignId : undefined
-                })
-            });
+            // Handle export & archive separately
+            if (resolutionType === 'export_archive') {
+                // Step 1: Export leads
+                const exportUrl = `/api/dashboard/campaigns/${campaign.id}/export-leads`;
+                const link = document.createElement('a');
+                link.href = exportUrl;
+                link.download = 'leads.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-            onSuccess();
-            onClose();
+                // Wait a moment for download to start
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Step 2: Archive campaign
+                await apiClient(`/api/dashboard/campaigns/${campaign.id}/archive`, {
+                    method: 'POST'
+                });
+
+                onSuccess();
+                onClose();
+            } else {
+                // Standard resolution
+                await apiClient(`/api/dashboard/campaigns/${campaign.id}/resolve-stalled`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        resolutionType,
+                        selectedMailboxIds: resolutionType === 'add_mailboxes' ? selectedMailboxIds : undefined,
+                        targetCampaignId: resolutionType === 'reroute_leads' ? targetCampaignId : undefined
+                    })
+                });
+
+                onSuccess();
+                onClose();
+            }
         } catch (err: any) {
             setError(err.message || 'Failed to resolve campaign.');
         } finally {
@@ -254,7 +278,33 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
                                     </div>
                                 )}
 
-                                {/* Option D: Manual */}
+                                {/* Option D: Export & Archive */}
+                                <div
+                                    onClick={() => setResolutionType('export_archive')}
+                                    style={{
+                                        padding: '1rem', border: '2px solid',
+                                        borderColor: resolutionType === 'export_archive' ? '#3B82F6' : '#E5E7EB',
+                                        borderRadius: '12px', cursor: 'pointer', background: resolutionType === 'export_archive' ? '#EFF6FF' : '#FFF',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 600, color: '#111827' }}>
+                                        <input type="radio" checked={resolutionType === 'export_archive'} readOnly style={{ accentColor: '#3B82F6', width: '16px', height: '16px' }} />
+                                        Option D: Export Leads & Archive Campaign
+                                    </label>
+                                    {resolutionType === 'export_archive' && (
+                                        <div style={{ marginTop: '0.75rem', paddingLeft: '2.25rem' }}>
+                                            <p style={{ fontSize: '0.875rem', color: '#4B5563', marginBottom: '0.75rem' }}>
+                                                Downloads {context.leads.total} leads as CSV and archives this campaign.
+                                            </p>
+                                            <div style={{ padding: '0.75rem', background: '#FEF3C7', border: '1px solid #FCD34D', borderRadius: '6px', fontSize: '0.75rem', color: '#92400E' }}>
+                                                ⚠️ Campaign will be paused and marked as archived. Historical data will be preserved.
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Option E: Manual */}
                                 <div
                                     onClick={() => setResolutionType('manual')}
                                     style={{
@@ -266,7 +316,7 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
                                 >
                                     <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 600, color: '#111827' }}>
                                         <input type="radio" checked={resolutionType === 'manual'} readOnly style={{ accentColor: '#3B82F6', width: '16px', height: '16px' }} />
-                                        Option {context.recovery.eta_hours && context.recovery.eta_hours <= 24 ? 'D' : 'C'}: Dismiss & Handle Manually
+                                        Option E: Dismiss & Handle Manually
                                     </label>
                                     {resolutionType === 'manual' && (
                                         <p style={{ fontSize: '0.875rem', color: '#4B5563', margin: '0.5rem 0 0 2.25rem' }}>
