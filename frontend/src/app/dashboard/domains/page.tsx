@@ -597,291 +597,293 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
     }, [selectedDomain.total_sent_lifetime, selectedDomain.total_replies]);
 
     return (
-                    <div className="animate-fade-in">
-                        <div className="page-header">
-                            <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedDomain.domain}</h1>
-                            <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Reputation & Usage</div>
+        <div className="animate-fade-in">
+            <div className="page-header">
+                <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedDomain.domain}</h1>
+                <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Reputation & Usage</div>
+            </div>
+
+            {selectedDomain.status === 'paused' && (
+                <div className="premium-card" style={{
+                    background: '#FEF2F2',
+                    border: '1px solid #FECACA',
+                    borderLeft: '6px solid #EF4444',
+                    marginBottom: '2rem'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+                        <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+                        <div style={{ flex: 1 }}>
+                            <h3 style={{ color: '#B91C1C', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>DOMAIN PAUSED</h3>
+                            <p style={{ color: '#7F1D1D', fontSize: '1rem', lineHeight: '1.5', marginBottom: '0.5rem' }}>
+                                {selectedDomain.paused_reason || 'No reason provided'}
+                            </p>
+                            {selectedDomain.last_pause_at && (
+                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
+                                    Paused {new Date(selectedDomain.last_pause_at).toLocaleString()} by {selectedDomain.paused_by || 'system'}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Bounce Analytics</h2>
+                <div className="grid grid-cols-2 gap-8">
+                    <div>
+                        <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Bounce Rate Trend</div>
+                        <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.aggregated_bounce_rate_trend > 2 ? '#EF4444' : '#16A34A' }}>
+                            {selectedDomain.aggregated_bounce_rate_trend.toFixed(2)}<span style={{ fontSize: '1.5rem' }}>%</span>
+                        </div>
+                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Rolling 7-day average</div>
+                    </div>
+                    <div>
+                        <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Warnings Triggered</div>
+                        <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.warning_count > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count}</div>
+                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Lifetime incidents</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
+            <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                <div style={{ marginBottom: '1.5rem' }}>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                        Domain-Wide Engagement
+                    </h2>
+                    <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                        Aggregated metrics across all mailboxes on this domain (informational only)
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-4 gap-4">
+                    {/* Total Sent */}
+                    <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                        <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Total Sent
+                        </div>
+                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                            {selectedDomain.total_sent_lifetime?.toLocaleString() || '0'}
+                        </div>
+                    </div>
+
+                    {/* Opens */}
+                    <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
+                        <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Opens
+                        </div>
+                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                            {selectedDomain.total_opens?.toLocaleString() || '0'}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
+                            {openRate}% rate
+                        </div>
+                    </div>
+
+                    {/* Clicks */}
+                    <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
+                        <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Clicks
+                        </div>
+                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                            {selectedDomain.total_clicks?.toLocaleString() || '0'}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
+                            {clickRate}% rate
+                        </div>
+                    </div>
+
+                    {/* Replies */}
+                    <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
+                        <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                            Replies
+                        </div>
+                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                            {selectedDomain.total_replies?.toLocaleString() || '0'}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
+                            {replyRate}% rate
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Recovery Status */}
+            {selectedDomain.recovery_phase && selectedDomain.recovery_phase !== 'healthy' && (
+                <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        🔄 Recovery Status
+                        <span style={{
+                            padding: '0.25rem 0.75rem',
+                            borderRadius: '999px',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            background: selectedDomain.recovery_phase === 'paused' ? '#FEF2F2' :
+                                selectedDomain.recovery_phase === 'quarantine' ? '#FEF2F2' :
+                                    selectedDomain.recovery_phase === 'restricted_send' ? '#FFF7ED' :
+                                        '#ECFDF5',
+                            color: selectedDomain.recovery_phase === 'paused' ? '#DC2626' :
+                                selectedDomain.recovery_phase === 'quarantine' ? '#DC2626' :
+                                    selectedDomain.recovery_phase === 'restricted_send' ? '#F59E0B' :
+                                        '#16A34A',
+                            border: '1px solid',
+                            borderColor: selectedDomain.recovery_phase === 'paused' ? '#FEE2E2' :
+                                selectedDomain.recovery_phase === 'quarantine' ? '#FEE2E2' :
+                                    selectedDomain.recovery_phase === 'restricted_send' ? '#FED7AA' :
+                                        '#BBF7D0',
+                        }}>
+                            {selectedDomain.recovery_phase.replace('_', ' ')}
+                        </span>
+                    </h2>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+                        {/* Resilience Score */}
+                        <div style={{
+                            padding: '1rem',
+                            background: '#F8FAFC',
+                            borderRadius: '12px',
+                            border: '1px solid #F1F5F9',
+                        }}>
+                            <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
+                            <div style={{
+                                fontSize: '1.75rem',
+                                fontWeight: 800,
+                                color: (selectedDomain.resilience_score || 0) >= 70 ? '#16A34A' :
+                                    (selectedDomain.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
+                            }}>
+                                {selectedDomain.resilience_score || 0}
+                            </div>
                         </div>
 
-                        {selectedDomain.status === 'paused' && (
-                            <div className="premium-card" style={{
+                        {/* Clean Sends / Graduation Progress */}
+                        <div style={{
+                            padding: '1rem',
+                            background: '#F8FAFC',
+                            borderRadius: '12px',
+                            border: '1px solid #F1F5F9',
+                        }}>
+                            <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                                {selectedDomain.recovery_phase === 'restricted_send' || selectedDomain.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
+                            </div>
+                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1E293B' }}>
+                                {selectedDomain.clean_sends_since_phase || 0}
+                                {selectedDomain.recovery_phase === 'restricted_send' && `/${(selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15}`}
+                                {selectedDomain.recovery_phase === 'warm_recovery' && `/50`}
+                            </div>
+                        </div>
+
+                        {/* Relapse Count */}
+                        {(selectedDomain.relapse_count || 0) > 0 && (
+                            <div style={{
+                                padding: '1rem',
                                 background: '#FEF2F2',
-                                border: '1px solid #FECACA',
-                                borderLeft: '6px solid #EF4444',
-                                marginBottom: '2rem'
+                                borderRadius: '12px',
+                                border: '1px solid #FEE2E2',
                             }}>
-                                <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
-                                    <span style={{ fontSize: '1.5rem' }}>⚠️</span>
-                                    <div style={{ flex: 1 }}>
-                                        <h3 style={{ color: '#B91C1C', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>DOMAIN PAUSED</h3>
-                                        <p style={{ color: '#7F1D1D', fontSize: '1rem', lineHeight: '1.5', marginBottom: '0.5rem' }}>
-                                            {selectedDomain.paused_reason || 'No reason provided'}
-                                        </p>
-                                        {selectedDomain.last_pause_at && (
-                                            <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
-                                                Paused {new Date(selectedDomain.last_pause_at).toLocaleString()} by {selectedDomain.paused_by || 'system'}
-                                            </div>
-                                        )}
-                                    </div>
+                                <div style={{ fontSize: '0.75rem', color: '#DC2626', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Relapses</div>
+                                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#DC2626' }}>
+                                    {selectedDomain.relapse_count}
                                 </div>
                             </div>
                         )}
+                    </div>
 
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Bounce Analytics</h2>
-                            <div className="grid grid-cols-2 gap-8">
-                                <div>
-                                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Bounce Rate Trend</div>
-                                    <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.aggregated_bounce_rate_trend > 2 ? '#EF4444' : '#16A34A' }}>
-                                        {selectedDomain.aggregated_bounce_rate_trend.toFixed(2)}<span style={{ fontSize: '1.5rem' }}>%</span>
-                                    </div>
-                                    <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Rolling 7-day average</div>
-                                </div>
-                                <div>
-                                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Warnings Triggered</div>
-                                    <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.warning_count > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count}</div>
-                                    <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Lifetime incidents</div>
-                                </div>
+                    {/* Next Phase Preview */}
+                    {selectedDomain.recovery_phase !== 'healthy' && (
+                        <div style={{
+                            padding: '0.875rem 1rem',
+                            background: '#EFF6FF',
+                            borderRadius: '12px',
+                            border: '1px solid #BFDBFE',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                        }}>
+                            <span style={{ fontSize: '1rem', opacity: 0.7 }}>→</span>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1E40AF' }}>
+                                {selectedDomain.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}
+                                {selectedDomain.recovery_phase === 'quarantine' && 'Next: Restricted Send (DNS check required)'}
+                                {selectedDomain.recovery_phase === 'restricted_send' && `Next: Warm Recovery (need ${Math.max(0, ((selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15) - (selectedDomain.clean_sends_since_phase || 0))} more clean sends)`}
+                                {selectedDomain.recovery_phase === 'warm_recovery' && `Next: Healthy (need ${Math.max(0, 50 - (selectedDomain.clean_sends_since_phase || 0))} more sends, 3+ days, <2% bounce)`}
                             </div>
                         </div>
+                    )}
+                </div>
+            )}
 
-                        {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
-                                    Domain-Wide Engagement
-                                </h2>
-                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
-                                    Aggregated metrics across all mailboxes on this domain (informational only)
-                                </p>
-                            </div>
+            <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Domain Events Log</h2>
+                {auditLogs.length > 0 ? (
+                    <div style={{ maxHeight: '300px', overflowY: 'auto', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
+                            <thead style={{ position: 'sticky', top: 0, zIndex: 1, background: '#F8FAFC' }}>
+                                <tr>
+                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</th>
+                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Trigger</th>
+                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {auditLogs.map(log => (
+                                    <tr key={log.id} style={{ transition: 'background 0.2s' }} className="hover:bg-gray-50">
+                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569', whiteSpace: 'nowrap' }}>
+                                            {new Date(log.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
+                                        </td>
+                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.9rem', fontWeight: '500', color: '#1E293B' }}>{log.trigger}</td>
+                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600, color: '#2563EB' }}>{log.action}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div style={{ padding: '3rem', textAlign: 'center', color: '#9CA3AF', background: '#F8FAFC', borderRadius: '12px', border: '1px dashed #E2E8F0', fontStyle: 'italic' }}>
+                        No events recorded.
+                    </div>
+                )}
+            </div>
 
-                            <div className="grid grid-cols-4 gap-4">
-                                {/* Total Sent */}
-                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
-                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                                        Total Sent
-                                    </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
-                                        {selectedDomain.total_sent_lifetime?.toLocaleString() || '0'}
-                                    </div>
-                                </div>
-
-                                {/* Opens */}
-                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
-                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                                        Opens
-                                    </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
-                                        {selectedDomain.total_opens?.toLocaleString() || '0'}
-                                    </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {openRate}% rate
-                                    </div>
-                                </div>
-
-                                {/* Clicks */}
-                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
-                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                                        Clicks
-                                    </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
-                                        {selectedDomain.total_clicks?.toLocaleString() || '0'}
-                                    </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {clickRate}% rate
-                                    </div>
-                                </div>
-
-                                {/* Replies */}
-                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
-                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                                        Replies
-                                    </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
-                                        {selectedDomain.total_replies?.toLocaleString() || '0'}
-                                    </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
-                                        {replyRate}% rate
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Recovery Status */}
-                        {selectedDomain.recovery_phase && selectedDomain.recovery_phase !== 'healthy' && (
-                            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    🔄 Recovery Status
+            <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Child Mailboxes</h2>
+                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
+                    <thead>
+                        <tr>
+                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email</th>
+                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
+                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Campaigns</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {selectedDomain.mailboxes && selectedDomain.mailboxes.map((mb: any) => (
+                            <tr key={mb.id} className="hover:bg-gray-50 transition-colors">
+                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#1E293B', fontWeight: 500 }}>{mb.email}</td>
+                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
                                     <span style={{
                                         padding: '0.25rem 0.75rem',
                                         borderRadius: '999px',
                                         fontSize: '0.75rem',
                                         fontWeight: 600,
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.05em',
-                                        background: selectedDomain.recovery_phase === 'paused' ? '#FEF2F2' :
-                                            selectedDomain.recovery_phase === 'quarantine' ? '#FEF2F2' :
-                                            selectedDomain.recovery_phase === 'restricted_send' ? '#FFF7ED' :
-                                            '#ECFDF5',
-                                        color: selectedDomain.recovery_phase === 'paused' ? '#DC2626' :
-                                            selectedDomain.recovery_phase === 'quarantine' ? '#DC2626' :
-                                            selectedDomain.recovery_phase === 'restricted_send' ? '#F59E0B' :
-                                            '#16A34A',
-                                        border: '1px solid',
-                                        borderColor: selectedDomain.recovery_phase === 'paused' ? '#FEE2E2' :
-                                            selectedDomain.recovery_phase === 'quarantine' ? '#FEE2E2' :
-                                            selectedDomain.recovery_phase === 'restricted_send' ? '#FED7AA' :
-                                            '#BBF7D0',
+                                        ...getStatusColors(mb.status)
                                     }}>
-                                        {selectedDomain.recovery_phase.replace('_', ' ')}
+                                        {mb.status.toUpperCase()}
                                     </span>
-                                </h2>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
-                                    {/* Resilience Score */}
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9',
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
-                                        <div style={{
-                                            fontSize: '1.75rem',
-                                            fontWeight: 800,
-                                            color: (selectedDomain.resilience_score || 0) >= 70 ? '#16A34A' :
-                                                (selectedDomain.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
-                                        }}>
-                                            {selectedDomain.resilience_score || 0}
-                                        </div>
-                                    </div>
-
-                                    {/* Clean Sends / Graduation Progress */}
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9',
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>
-                                            {selectedDomain.recovery_phase === 'restricted_send' || selectedDomain.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
-                                        </div>
-                                        <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1E293B' }}>
-                                            {selectedDomain.clean_sends_since_phase || 0}
-                                            {selectedDomain.recovery_phase === 'restricted_send' && `/${(selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15}`}
-                                            {selectedDomain.recovery_phase === 'warm_recovery' && `/50`}
-                                        </div>
-                                    </div>
-
-                                    {/* Relapse Count */}
-                                    {(selectedDomain.relapse_count || 0) > 0 && (
-                                        <div style={{
-                                            padding: '1rem',
-                                            background: '#FEF2F2',
-                                            borderRadius: '12px',
-                                            border: '1px solid #FEE2E2',
-                                        }}>
-                                            <div style={{ fontSize: '0.75rem', color: '#DC2626', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Relapses</div>
-                                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#DC2626' }}>
-                                                {selectedDomain.relapse_count}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Next Phase Preview */}
-                                {selectedDomain.recovery_phase !== 'healthy' && (
-                                    <div style={{
-                                        padding: '0.875rem 1rem',
-                                        background: '#EFF6FF',
-                                        borderRadius: '12px',
-                                        border: '1px solid #BFDBFE',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                    }}>
-                                        <span style={{ fontSize: '1rem', opacity: 0.7 }}>→</span>
-                                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1E40AF' }}>
-                                            {selectedDomain.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}
-                                            {selectedDomain.recovery_phase === 'quarantine' && 'Next: Restricted Send (DNS check required)'}
-                                            {selectedDomain.recovery_phase === 'restricted_send' && `Next: Warm Recovery (need ${Math.max(0, ((selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15) - (selectedDomain.clean_sends_since_phase || 0))} more clean sends)`}
-                                            {selectedDomain.recovery_phase === 'warm_recovery' && `Next: Healthy (need ${Math.max(0, 50 - (selectedDomain.clean_sends_since_phase || 0))} more sends, 3+ days, <2% bounce)`}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                                </td>
+                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B' }}>
+                                    {mb.campaigns?.map((c: any) => c.name).join(', ') || '-'}
+                                </td>
+                            </tr>
+                        ))}
+                        {(!selectedDomain.mailboxes || selectedDomain.mailboxes.length === 0) && (
+                            <tr><td colSpan={3} style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF', fontStyle: 'italic' }}>No mailboxes found.</td></tr>
                         )}
+                    </tbody>
+                </table>
+            </div>
 
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Domain Events Log</h2>
-                            {auditLogs.length > 0 ? (
-                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                    <thead>
-                                        <tr>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Trigger</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {auditLogs.map(log => (
-                                            <tr key={log.id} style={{ transition: 'background 0.2s' }} className="hover:bg-gray-50">
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569', whiteSpace: 'nowrap' }}>
-                                                    {new Date(log.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
-                                                </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.9rem', fontWeight: '500', color: '#1E293B' }}>{log.trigger}</td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600, color: '#2563EB' }}>{log.action}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <div style={{ padding: '3rem', textAlign: 'center', color: '#9CA3AF', background: '#F8FAFC', borderRadius: '12px', border: '1px dashed #E2E8F0', fontStyle: 'italic' }}>
-                                    No events recorded.
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Child Mailboxes</h2>
-                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email</th>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Campaigns</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {selectedDomain.mailboxes && selectedDomain.mailboxes.map((mb: any) => (
-                                        <tr key={mb.id} className="hover:bg-gray-50 transition-colors">
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#1E293B', fontWeight: 500 }}>{mb.email}</td>
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
-                                                <span style={{
-                                                    padding: '0.25rem 0.75rem',
-                                                    borderRadius: '999px',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: 600,
-                                                    ...getStatusColors(mb.status)
-                                                }}>
-                                                    {mb.status.toUpperCase()}
-                                                </span>
-                                            </td>
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B' }}>
-                                                {mb.campaigns?.map((c: any) => c.name).join(', ') || '-'}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {(!selectedDomain.mailboxes || selectedDomain.mailboxes.length === 0) && (
-                                        <tr><td colSpan={3} style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF', fontStyle: 'italic' }}>No mailboxes found.</td></tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Infrastructure Health Issues */}
-                        <FindingsCard entityType="domain" entityId={selectedDomain.id} />
-                    </div>
+            {/* Infrastructure Health Issues */}
+            <FindingsCard entityType="domain" entityId={selectedDomain.id} />
+        </div>
     );
 }

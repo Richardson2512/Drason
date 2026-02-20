@@ -32,10 +32,10 @@ export default function FindingsCard({ entityType, entityId }: FindingsCardProps
                 });
 
                 const data = await apiClient<any>(`/api/findings/entity?${params}`);
-                if (data?.data) {
-                    setFindings(data.data.findings || []);
-                    setReportAge(data.data.reportAge || '');
-                }
+                // apiClient already unwraps { success: true, data: X } -> X
+                // so 'data' here is { findings: [...], reportAge: '...' }
+                setFindings(data?.findings || []);
+                setReportAge(data?.reportAge || '');
             } catch (err) {
                 console.error('Failed to fetch findings:', err);
                 setFindings([]);

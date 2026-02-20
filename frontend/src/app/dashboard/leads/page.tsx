@@ -415,7 +415,7 @@ function LeadsPageContent() {
                     )}
 
                     {/* Campaign Filter Dropdown */}
-                    <div>
+                    <div style={{ marginBottom: '0.75rem' }}>
                         <label htmlFor="campaign-filter" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
                             Filter by Campaign
                         </label>
@@ -534,11 +534,11 @@ function LeadsPageContent() {
                                             borderRadius: '6px',
                                             fontSize: '0.7rem',
                                             background: l.lead_score >= 80 ? '#DCFCE7' :
-                                                       l.lead_score >= 60 ? '#FEF3C7' :
-                                                       l.lead_score >= 40 ? '#FED7AA' : '#FEE2E2',
+                                                l.lead_score >= 60 ? '#FEF3C7' :
+                                                    l.lead_score >= 40 ? '#FED7AA' : '#FEE2E2',
                                             color: l.lead_score >= 80 ? '#166534' :
-                                                  l.lead_score >= 60 ? '#92400E' :
-                                                  l.lead_score >= 40 ? '#C2410C' : '#991B1B'
+                                                l.lead_score >= 60 ? '#92400E' :
+                                                    l.lead_score >= 40 ? '#C2410C' : '#991B1B'
                                         }}>
                                             {l.lead_score}/100
                                         </span>
@@ -617,16 +617,16 @@ function LeadsPageContent() {
                                                 Engagement Score
                                                 <span style={{ fontSize: '0.75rem', color: '#9CA3AF', marginLeft: '0.5rem' }}>
                                                     {selectedLead.lead_score >= 80 ? '🌟 Top Performer' :
-                                                     selectedLead.lead_score >= 60 ? '✅ Engaged' :
-                                                     selectedLead.lead_score >= 40 ? '😐 Moderate' : '⚠️ Low Activity'}
+                                                        selectedLead.lead_score >= 60 ? '✅ Engaged' :
+                                                            selectedLead.lead_score >= 40 ? '😐 Moderate' : '⚠️ Low Activity'}
                                                 </span>
                                             </div>
                                             <div style={{
                                                 fontSize: '1.5rem',
                                                 fontWeight: '700',
                                                 color: selectedLead.lead_score >= 80 ? '#16A34A' :
-                                                      selectedLead.lead_score >= 60 ? '#D97706' :
-                                                      selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
+                                                    selectedLead.lead_score >= 60 ? '#D97706' :
+                                                        selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
                                             }}>
                                                 {selectedLead.lead_score} <span style={{ fontSize: '0.875rem', color: '#9CA3AF', fontWeight: '400' }}>/ 100</span>
                                             </div>
@@ -754,8 +754,8 @@ function LeadsPageContent() {
                                                     fontSize: '2rem',
                                                     fontWeight: 800,
                                                     color: selectedLead.lead_score >= 80 ? '#16A34A' :
-                                                          selectedLead.lead_score >= 60 ? '#D97706' :
-                                                          selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
+                                                        selectedLead.lead_score >= 60 ? '#D97706' :
+                                                            selectedLead.lead_score >= 40 ? '#F97316' : '#DC2626'
                                                 }}>
                                                     {selectedLead.lead_score || 0}
                                                 </div>
