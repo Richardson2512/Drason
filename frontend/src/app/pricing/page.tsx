@@ -87,15 +87,15 @@ export default function PricingPage() {
                             "Up to 10,000 active leads",
                             "Up to 20 domains",
                             "Up to 75 mailboxes",
-                            "Clay integration",
-                            "Smartlead integration",
+                            "Clay & Smartlead integrations",
                             "ICP → Campaign routing",
                             "Bounce & failure monitoring",
-                            "Mailbox-level pause",
-                            "Campaign-level pause",
+                            "Mailbox & Campaign-level pause",
                             "Sliding window risk tracking",
-                            "Observe + Suggest modes",
-                            "Audit log & infra visibility"
+                            "All operational modes (Observe, Suggest, Enforce)",
+                            "Failure classification (hard vs soft)",
+                            "Audit log & infra visibility",
+                            "Standard support"
                         ]}
                         bestFor="Teams sending ~5k–10k leads/month across multiple domains"
                         ctaText="Start free trial"
@@ -114,12 +114,14 @@ export default function PricingPage() {
                             "Up to 50,000 active leads",
                             "Up to 75 domains",
                             "Up to 350 mailboxes",
-                            "Everything in Starter",
-                            "Ratio-based domain protection",
-                            "Domain-level pause logic",
-                            "Lead lifecycle protection",
-                            "Enforce mode automation",
+                            "Clay & Smartlead integrations",
+                            "ICP → Campaign routing",
+                            "Bounce & failure monitoring",
+                            "Mailbox & Campaign-level pause",
+                            "Sliding window risk tracking",
+                            "All operational modes (Observe, Suggest, Enforce)",
                             "Failure classification (hard vs soft)",
+                            "Audit log & infra visibility",
                             "Priority support"
                         ]}
                         bestFor="B2B SaaS teams running aggressive outbound operations"
@@ -140,12 +142,14 @@ export default function PricingPage() {
                             "Up to 100,000 active leads",
                             "Up to 150 domains",
                             "Up to 700 mailboxes",
-                            "Everything in Growth",
-                            "Advanced risk calibration",
-                            "Custom threshold tuning",
-                            "Infra audit mode (read-only attach)",
-                            "Execution safety analytics",
-                            "Dedicated onboarding session",
+                            "Clay & Smartlead integrations",
+                            "ICP → Campaign routing",
+                            "Bounce & failure monitoring",
+                            "Mailbox & Campaign-level pause",
+                            "Sliding window risk tracking",
+                            "All operational modes (Observe, Suggest, Enforce)",
+                            "Failure classification (hard vs soft)",
+                            "Audit log & infra visibility",
                             "Slack support"
                         ]}
                         bestFor="Agencies and high-volume outbound operations"
@@ -164,11 +168,16 @@ export default function PricingPage() {
                         features={[
                             "Unlimited active leads",
                             "Unlimited domains",
-                            "Custom integrations",
-                            "Custom risk configuration",
-                            "SLA-backed uptime",
-                            "Dedicated account support",
-                            "Compliance-ready audit exports"
+                            "Unlimited mailboxes",
+                            "Clay & Smartlead integrations",
+                            "ICP → Campaign routing",
+                            "Bounce & failure monitoring",
+                            "Mailbox & Campaign-level pause",
+                            "Sliding window risk tracking",
+                            "All operational modes (Observe, Suggest, Enforce)",
+                            "Failure classification (hard vs soft)",
+                            "Audit log & infra visibility",
+                            "Dedicated account support"
                         ]}
                         ctaText="Contact sales"
                         isLoggedIn={isLoggedIn}
