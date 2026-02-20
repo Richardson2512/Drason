@@ -152,7 +152,7 @@ export default function Settings() {
     };
 
     return (
-        <div style={{ maxWidth: '1200px', paddingLeft: '1rem', paddingBottom: '3rem' }}>
+        <div style={{ paddingLeft: '1rem', paddingRight: '1rem', paddingBottom: '3rem' }}>
             <div className="page-header">
                 <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>Settings & Configuration</h1>
                 <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Manage integrations, system modes, and credentials</div>
