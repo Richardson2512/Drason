@@ -403,6 +403,32 @@ export default function LandingPage() {
                 </div>
             </section>
 
+            {/* ================= G2 REVIEW CTA ================= */}
+            <section className="py-24 px-6 bg-white border-y border-gray-100">
+                <div className="max-w-4xl mx-auto text-center">
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-10 md:p-14 border border-blue-100 shadow-xl shadow-blue-500/5">
+                        <div className="flex justify-center mb-6">
+                            <span className="text-6xl">⭐</span>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+                            Love using Superkabe?
+                        </h2>
+                        <p className="text-lg text-gray-600 leading-relaxed mb-8 max-w-2xl mx-auto">
+                            Share your experience on G2 and help other outbound teams discover how to protect their infrastructure and scale safely.
+                        </p>
+                        <a
+                            href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-[#FF492C] text-white rounded-2xl font-bold shadow-lg shadow-[#FF492C]/20 hover:bg-[#E03A1F] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                        >
+                            Leave a Review on G2
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* ================= FAQ ================= */}
             <section className="py-24 px-6 bg-white">
                 <div className="max-w-4xl mx-auto">
