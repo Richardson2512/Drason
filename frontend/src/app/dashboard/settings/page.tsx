@@ -29,6 +29,9 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
 
+    // Integration slide box
+    const [activeIntegration, setActiveIntegration] = useState<'smartlead' | 'instantly' | 'emailbison' | 'replyio'>('smartlead');
+
 
     useEffect(() => {
         // Fetch current settings
@@ -159,7 +162,7 @@ export default function Settings() {
             </div>
 
             {/* System Mode Control - Phase 5 */}
-            <div className="premium-card" style={{ marginBottom: '2.5rem', borderLeft: `6px solid ${modeDescriptions[systemMode]?.color || '#E2E8F0'}` }}>
+            <div className="premium-card" style={{ marginBottom: '1.5rem', borderLeft: `6px solid ${modeDescriptions[systemMode]?.color || '#E2E8F0'}` }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
                     <div>
                         <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>System Mode</h2>
@@ -260,7 +263,7 @@ export default function Settings() {
             </div>
 
             {/* Organization Info */}
-            <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
+            <div className="premium-card" style={{ marginBottom: '1rem' }}>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1E293B' }}>Organization Details</h2>
                 {org ? (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -308,164 +311,271 @@ export default function Settings() {
                 )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Smartlead */}
-                <div className="premium-card">
-                    <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
-                            <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>Smartlead Integration</h2>
-                            <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Sync campaigns & monitor activity.</p>
-                        </div>
-                        <a
-                            href="/docs/smartlead-integration"
-                            target="_blank"
-                            title="View integration guide"
-                            style={{
-                                width: '32px',
-                                height: '32px',
-                                borderRadius: '8px',
+            {/* Integration Provider Selector — below Org Details, above the 2-column grid */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                {[
+                    { key: 'smartlead' as const, label: 'Smartlead', icon: '/smartlead.webp', active: true },
+                    { key: 'instantly' as const, label: 'Instantly', icon: null, active: false },
+                    { key: 'emailbison' as const, label: 'EmailBison', icon: null, active: false },
+                    { key: 'replyio' as const, label: 'Reply.io', icon: null, active: false },
+                ].map(provider => (
+                    <button
+                        key={provider.key}
+                        onClick={() => setActiveIntegration(provider.key)}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '10px',
+                            border: activeIntegration === provider.key ? '2px solid #2563EB' : '1px solid #E2E8F0',
+                            background: activeIntegration === provider.key ? '#EFF6FF' : '#FFFFFF',
+                            color: activeIntegration === provider.key ? '#1E40AF' : '#64748B',
+                            fontWeight: activeIntegration === provider.key ? 700 : 500,
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        {provider.icon && <Image src={provider.icon} alt={provider.label} width={18} height={18} />}
+                        {provider.label}
+                        {!provider.active && (
+                            <span style={{
+                                fontSize: '0.6rem',
                                 background: '#F1F5F9',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: '#64748B',
-                                textDecoration: 'none',
-                                transition: 'all 0.2s',
-                                border: '1px solid #E2E8F0'
-                            }}
-                            onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
-                            onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
-                        >
-                            <span style={{ fontSize: '1rem' }}>❓</span>
-                        </a>
-                    </div>
+                                color: '#94A3B8',
+                                padding: '0.1rem 0.4rem',
+                                borderRadius: '4px',
+                                fontWeight: 600,
+                            }}>SOON</span>
+                        )}
+                    </button>
+                ))}
+            </div>
 
-                    <form onSubmit={handleSave} style={{ marginBottom: '2rem' }}>
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>API Key</label>
-                            <input
-                                type="password"
-                                value={apiKey}
-                                onChange={e => setApiKey(e.target.value)}
-                                className="premium-input w-full"
-                                placeholder="sk_..."
-                                style={{ width: '100%' }}
-                            />
-                        </div>
-                        <button type="submit" className="premium-btn w-full" disabled={loading}>
-                            {loading ? 'Saving...' : 'Save Configuration'}
-                        </button>
-                        {msg && <div className="text-center mt-4 text-sm font-medium" style={{ color: msg.includes('Error') ? '#EF4444' : '#10B981' }}>{msg}</div>}
-                    </form>
-
-                    <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
-                        <div className="flex justify-between items-center mb-2">
-                            <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Webhook Endpoint</h3>
-                            <CopyButton text={smartleadWebhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
-                        </div>
-                        <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
-                            {smartleadWebhookUrl || 'Loading...'}
-                        </div>
-                        <button
-                            onClick={async () => {
-                                // Generate unique session ID for this sync
-                                const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-                                setSyncSessionId(sessionId);
-                                setShowSyncModal(true);
-
-                                // Wait 500ms for SSE connection to establish before triggering sync
-                                await new Promise(resolve => setTimeout(resolve, 500));
-
-                                // Trigger sync with session ID
-                                // Use a very high timeout (10 minutes) since large syncs can take time
-                                // SSE will show real-time progress regardless
-                                try {
-                                    await apiClient<any>(`/api/sync?session=${sessionId}`, {
-                                        method: 'POST',
-                                        timeout: 600_000 // 10 minutes
-                                    });
-                                } catch (e: any) {
-                                    // Log detailed error information for debugging
-                                    console.error('[Sync] API call error:', {
-                                        message: e.message,
-                                        name: e.name,
-                                        stack: e.stack,
-                                        isTimeout: e.message?.includes('timeout')
-                                    });
-                                    // Error will be shown in modal via SSE
-                                }
-                            }}
-                            disabled={loading}
-                            className="premium-btn"
-                            style={{ width: '100%', marginTop: '1rem', background: '#FFFFFF', color: '#1E293B', border: '1px solid #E2E8F0' }}
-                        >
-                            Trigger Manual Sync
-                        </button>
-
-                        {/* 24/7 Monitoring Info */}
-                        <div style={{
-                            marginTop: '1.5rem',
-                            padding: '1rem',
-                            background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
-                            border: '2px solid #10B981',
-                            borderRadius: '10px'
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                                <div style={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '8px',
-                                    background: '#10B981',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '1rem',
-                                    flexShrink: 0
-                                }}>
-                                    ⚡
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Integration Slide Box */}
+                <div className="premium-card" style={{ position: 'relative', overflow: 'hidden' }}>
+                    {/* Smartlead Content */}
+                    {activeIntegration === 'smartlead' && (
+                        <>
+                            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
+                                    <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} />
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
-                                        <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#065F46', margin: 0 }}>
-                                            24/7 Auto-Sync Active
-                                        </h4>
-                                        <span style={{
-                                            padding: '0.125rem 0.5rem',
+                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>Smartlead Integration</h2>
+                                    <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Sync campaigns & monitor activity.</p>
+                                </div>
+                                <a
+                                    href="/docs/smartlead-integration"
+                                    target="_blank"
+                                    title="View integration guide"
+                                    style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        borderRadius: '8px',
+                                        background: '#F1F5F9',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: '#64748B',
+                                        textDecoration: 'none',
+                                        transition: 'all 0.2s',
+                                        border: '1px solid #E2E8F0'
+                                    }}
+                                    onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
+                                    onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                                >
+                                    <span style={{ fontSize: '1rem' }}>❓</span>
+                                </a>
+                            </div>
+
+                            <form onSubmit={handleSave} style={{ marginBottom: '2rem' }}>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>API Key</label>
+                                    <input
+                                        type="password"
+                                        value={apiKey}
+                                        onChange={e => setApiKey(e.target.value)}
+                                        className="premium-input w-full"
+                                        placeholder="sk_..."
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <button type="submit" className="premium-btn w-full" disabled={loading}>
+                                    {loading ? 'Saving...' : 'Save Configuration'}
+                                </button>
+                                {msg && <div className="text-center mt-4 text-sm font-medium" style={{ color: msg.includes('Error') ? '#EF4444' : '#10B981' }}>{msg}</div>}
+                            </form>
+
+                            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
+                                <div className="flex justify-between items-center mb-2">
+                                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Webhook Endpoint</h3>
+                                    <CopyButton text={smartleadWebhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
+                                </div>
+                                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
+                                    {smartleadWebhookUrl || 'Loading...'}
+                                </div>
+                                <button
+                                    onClick={async () => {
+                                        const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+                                        setSyncSessionId(sessionId);
+                                        setShowSyncModal(true);
+                                        await new Promise(resolve => setTimeout(resolve, 500));
+                                        try {
+                                            await apiClient<any>(`/api/sync?session=${sessionId}`, {
+                                                method: 'POST',
+                                                timeout: 600_000
+                                            });
+                                        } catch (e: any) {
+                                            console.error('[Sync] API call error:', {
+                                                message: e.message,
+                                                name: e.name,
+                                                stack: e.stack,
+                                                isTimeout: e.message?.includes('timeout')
+                                            });
+                                        }
+                                    }}
+                                    disabled={loading}
+                                    className="premium-btn"
+                                    style={{ width: '100%', marginTop: '1rem', background: '#FFFFFF', color: '#1E293B', border: '1px solid #E2E8F0' }}
+                                >
+                                    Trigger Manual Sync
+                                </button>
+
+                                {/* 24/7 Monitoring Info */}
+                                <div style={{
+                                    marginTop: '1.5rem',
+                                    padding: '1rem',
+                                    background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                                    border: '2px solid #10B981',
+                                    borderRadius: '10px'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                        <div style={{
+                                            width: '32px',
+                                            height: '32px',
+                                            borderRadius: '8px',
                                             background: '#10B981',
-                                            color: 'white',
-                                            borderRadius: '999px',
-                                            fontSize: '0.5rem',
-                                            fontWeight: 700,
-                                            letterSpacing: '0.05em'
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '1rem',
+                                            flexShrink: 0
                                         }}>
-                                            LIVE
-                                        </span>
+                                            ⚡
+                                        </div>
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
+                                                <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#065F46', margin: 0 }}>
+                                                    24/7 Auto-Sync Active
+                                                </h4>
+                                                <span style={{
+                                                    padding: '0.125rem 0.5rem',
+                                                    background: '#10B981',
+                                                    color: 'white',
+                                                    borderRadius: '999px',
+                                                    fontSize: '0.5rem',
+                                                    fontWeight: 700,
+                                                    letterSpacing: '0.05em'
+                                                }}>
+                                                    LIVE
+                                                </span>
+                                            </div>
+                                            <p style={{ fontSize: '0.75rem', color: '#047857', margin: 0, lineHeight: 1.6 }}>
+                                                Your Smartlead data syncs automatically every <strong>20 minutes</strong>.
+                                                Manual sync is available for immediate updates after changes.
+                                            </p>
+                                            <a
+                                                href="/docs/help/24-7-monitoring"
+                                                target="_blank"
+                                                style={{
+                                                    fontSize: '0.6875rem',
+                                                    color: '#059669',
+                                                    fontWeight: 700,
+                                                    textDecoration: 'underline',
+                                                    marginTop: '0.5rem',
+                                                    display: 'inline-block'
+                                                }}
+                                            >
+                                                Learn about 24/7 monitoring →
+                                            </a>
+                                        </div>
                                     </div>
-                                    <p style={{ fontSize: '0.75rem', color: '#047857', margin: 0, lineHeight: 1.6 }}>
-                                        Your Smartlead data syncs automatically every <strong>20 minutes</strong>.
-                                        Manual sync is available for immediate updates after changes.
-                                    </p>
-                                    <a
-                                        href="/docs/help/24-7-monitoring"
-                                        target="_blank"
-                                        style={{
-                                            fontSize: '0.6875rem',
-                                            color: '#059669',
-                                            fontWeight: 700,
-                                            textDecoration: 'underline',
-                                            marginTop: '0.5rem',
-                                            display: 'inline-block'
-                                        }}
-                                    >
-                                        Learn about 24/7 monitoring →
-                                    </a>
                                 </div>
                             </div>
+                        </>
+                    )}
+
+                    {/* Instantly — Coming Soon */}
+                    {activeIntegration === 'instantly' && (
+                        <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚡</div>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.5rem' }}>Instantly Integration</h2>
+                            <p style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                                Connect your Instantly account to sync campaigns, manage mailbox rotation, and monitor deliverability.
+                            </p>
+                            <div style={{
+                                display: 'inline-block',
+                                padding: '0.5rem 1.5rem',
+                                background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+                                border: '1px solid #93C5FD',
+                                borderRadius: '999px',
+                                color: '#1E40AF',
+                                fontSize: '0.875rem',
+                                fontWeight: 700
+                            }}>
+                                🚀 Coming Soon
+                            </div>
                         </div>
-                    </div>
+                    )}
+
+                    {/* EmailBison — Coming Soon */}
+                    {activeIntegration === 'emailbison' && (
+                        <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🦬</div>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.5rem' }}>EmailBison Integration</h2>
+                            <p style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                                Connect EmailBison for advanced email warm-up monitoring and reputation tracking.
+                            </p>
+                            <div style={{
+                                display: 'inline-block',
+                                padding: '0.5rem 1.5rem',
+                                background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+                                border: '1px solid #93C5FD',
+                                borderRadius: '999px',
+                                color: '#1E40AF',
+                                fontSize: '0.875rem',
+                                fontWeight: 700
+                            }}>
+                                🚀 Coming Soon
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Reply.io — Coming Soon */}
+                    {activeIntegration === 'replyio' && (
+                        <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>💬</div>
+                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.5rem' }}>Reply.io Integration</h2>
+                            <p style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                                Integrate Reply.io to sync multichannel sequences and track engagement across email, LinkedIn, and calls.
+                            </p>
+                            <div style={{
+                                display: 'inline-block',
+                                padding: '0.5rem 1.5rem',
+                                background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+                                border: '1px solid #93C5FD',
+                                borderRadius: '999px',
+                                color: '#1E40AF',
+                                fontSize: '0.875rem',
+                                fontWeight: 700
+                            }}>
+                                🚀 Coming Soon
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Clay */}
