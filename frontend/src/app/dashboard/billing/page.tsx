@@ -370,19 +370,39 @@ function BillingContent() {
                 </div>
 
                 {/* Upgrade Options */}
-                {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && data?.subscription.status !== 'active' && (
+                {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && (
                     <>
                         <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1rem', color: '#1E293B' }}>
-                            {data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : 'Choose a Plan'}
+                            {data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : data?.subscription.status === 'active' ? 'Upgrade Your Plan' : 'Choose a Plan'}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginBottom: '2rem' }}>
                             {Object.entries(TIER_INFO)
                                 .filter(([key]) => !['trial', 'enterprise'].includes(key))
                                 .map(([key, info]) => {
                                     const isCurrentTier = key === currentTier;
+
+                                    // Determine tier ranks for comparison
+                                    const tierOrder: Record<string, number> = {
+                                        'trial': 0,
+                                        'starter': 1,
+                                        'growth': 2,
+                                        'scale': 3,
+                                        'enterprise': 4
+                                    };
+                                    const currentTierRank = tierOrder[currentTier] || 0;
+                                    const thisTierRank = tierOrder[key] || 0;
+                                    const isLowerTier = thisTierRank <= currentTierRank && !isCurrentTier;
+
+                                    // Skip lower tiers for active subscriptions
+                                    if (data?.subscription.status === 'active' && isLowerTier) {
+                                        return null;
+                                    }
+
                                     const buttonText = data?.subscription.status === 'trialing'
                                         ? (isCurrentTier ? `Continue with ${info.name}` : `Switch to ${info.name}`)
-                                        : `Subscribe to ${info.name}`;
+                                        : data?.subscription.status === 'active'
+                                            ? `Upgrade to ${info.name}`
+                                            : `Subscribe to ${info.name}`;
 
                                     return (
                                         <div
@@ -422,7 +442,7 @@ function BillingContent() {
                                             </div>
                                             <button
                                                 onClick={() => handleUpgrade(key)}
-                                                disabled={actionLoading}
+                                                disabled={actionLoading || (data?.subscription.status === 'active' && isCurrentTier)}
                                                 style={{
                                                     width: '100%',
                                                     padding: '0.75rem',
@@ -432,14 +452,14 @@ function BillingContent() {
                                                     borderRadius: '8px',
                                                     fontSize: '0.875rem',
                                                     fontWeight: 700,
-                                                    cursor: actionLoading ? 'not-allowed' : 'pointer',
-                                                    opacity: actionLoading ? 0.6 : 1,
+                                                    cursor: (actionLoading || (data?.subscription.status === 'active' && isCurrentTier)) ? 'not-allowed' : 'pointer',
+                                                    opacity: (actionLoading || (data?.subscription.status === 'active' && isCurrentTier)) ? 0.6 : 1,
                                                     transition: 'all 0.2s'
                                                 }}
-                                                onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.transform = 'scale(1.02)')}
+                                                onMouseEnter={(e) => !actionLoading && !(data?.subscription.status === 'active' && isCurrentTier) && (e.currentTarget.style.transform = 'scale(1.02)')}
                                                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                                             >
-                                                {actionLoading ? 'Processing...' : buttonText}
+                                                {actionLoading ? 'Processing...' : (data?.subscription.status === 'active' && isCurrentTier) ? 'Current Plan' : buttonText}
                                             </button>
                                         </div>
                                     );
