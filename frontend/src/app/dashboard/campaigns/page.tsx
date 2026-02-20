@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
+import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampaignResolutionModal';
 import { apiClient } from '@/lib/api';
 
 export default function CampaignsPage() {
@@ -26,6 +27,9 @@ export default function CampaignsPage() {
     const [maxSent, setMaxSent] = useState<string>('');
     const [minOpenRate, setMinOpenRate] = useState<string>('');
     const [maxOpenRate, setMaxOpenRate] = useState<string>('');
+
+    // Modal state
+    const [showResolveModal, setShowResolveModal] = useState(false);
 
     // Modal State
     const [showSortModal, setShowSortModal] = useState(false);
@@ -374,6 +378,18 @@ export default function CampaignsPage() {
                                                 Paused {new Date(selectedCampaign.paused_at).toLocaleString()} by {selectedCampaign.paused_by || 'system'}
                                             </div>
                                         )}
+                                        {selectedCampaign.paused_reason === 'Infrastructure health enforcement' && (
+                                            <button
+                                                onClick={() => setShowResolveModal(true)}
+                                                style={{
+                                                    marginTop: '1rem', padding: '0.5rem 1rem', background: '#991B1B',
+                                                    color: 'white', border: 'none', borderRadius: '6px',
+                                                    fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer'
+                                                }}
+                                            >
+                                                Resolve Issue
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -590,6 +606,19 @@ export default function CampaignsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Resolution Modal */}
+            {selectedCampaign && (
+                <StalledCampaignResolutionModal
+                    isOpen={showResolveModal}
+                    onClose={() => setShowResolveModal(false)}
+                    campaign={selectedCampaign}
+                    onSuccess={() => {
+                        fetchCampaigns();
+                        setShowResolveModal(false);
+                    }}
+                />
+            )}
 
             {/* Sort & Filter Modal */}
             {showSortModal && (
