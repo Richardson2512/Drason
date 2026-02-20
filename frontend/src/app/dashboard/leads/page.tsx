@@ -23,6 +23,13 @@ function LeadsPageContent() {
     const [maxScore, setMaxScore] = useState<string>('');
     const [hasEngagement, setHasEngagement] = useState<string>('all');
 
+    // Modal State
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [tempSortBy, setTempSortBy] = useState(sortBy);
+    const [tempMinScore, setTempMinScore] = useState(minScore);
+    const [tempMaxScore, setTempMaxScore] = useState(maxScore);
+    const [tempHasEngagement, setTempHasEngagement] = useState(hasEngagement);
+
     // Pagination & Selection State
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
@@ -179,6 +186,40 @@ function LeadsPageContent() {
         setLeadTab(tab);
         setMeta(prev => ({ ...prev, page: 1 })); // Reset to page 1 on tab change
         setSelectedLead(null);
+    };
+
+    // Sort & Filter Modal Handlers
+    const handleOpenSortModal = () => {
+        // Sync temp state with current state
+        setTempSortBy(sortBy);
+        setTempMinScore(minScore);
+        setTempMaxScore(maxScore);
+        setTempHasEngagement(hasEngagement);
+        setShowSortModal(true);
+    };
+
+    const handleApplySortFilter = () => {
+        // Apply temp state to actual state
+        setSortBy(tempSortBy);
+        setMinScore(tempMinScore);
+        setMaxScore(tempMaxScore);
+        setHasEngagement(tempHasEngagement);
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
+    };
+
+    const handleClearFilters = () => {
+        // Clear all filters
+        setTempSortBy('created_desc');
+        setTempMinScore('');
+        setTempMaxScore('');
+        setTempHasEngagement('all');
+        setSortBy('created_desc');
+        setMinScore('');
+        setMaxScore('');
+        setHasEngagement('all');
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
     };
 
     const handleCampaignFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -403,125 +444,43 @@ function LeadsPageContent() {
                         </select>
                     </div>
 
-                    {/* Sort By Dropdown */}
+                    {/* Sort & Filter Button */}
                     <div>
-                        <label htmlFor="sort-by" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                            Sort By
-                        </label>
-                        <select
-                            id="sort-by"
-                            value={sortBy}
-                            onChange={(e) => {
-                                setSortBy(e.target.value);
-                                setMeta(prev => ({ ...prev, page: 1 }));
-                            }}
+                        <button
+                            onClick={handleOpenSortModal}
                             style={{
                                 width: '100%',
-                                padding: '0.625rem 1rem',
+                                padding: '0.75rem 1rem',
                                 borderRadius: '12px',
                                 border: '1px solid #E5E7EB',
                                 background: '#FFFFFF',
                                 color: '#111827',
                                 fontSize: '0.875rem',
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 cursor: 'pointer',
-                                outline: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
                                 transition: 'all 0.2s'
                             }}
+                            className="hover:bg-gray-50 hover:border-blue-300"
                         >
-                            <option value="created_desc">Newest First</option>
-                            <option value="created_asc">Oldest First</option>
-                            <option value="email_asc">Email (A-Z)</option>
-                            <option value="email_desc">Email (Z-A)</option>
-                            <option value="score_desc">Score (High to Low)</option>
-                            <option value="score_asc">Score (Low to High)</option>
-                            <option value="activity_desc">Recently Active</option>
-                            <option value="activity_asc">Least Active</option>
-                        </select>
-                    </div>
-
-                    {/* Score Range Filter */}
-                    <div>
-                        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                            Lead Score Range
-                        </label>
-                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                            <input
-                                type="number"
-                                placeholder="Min"
-                                value={minScore}
-                                onChange={(e) => {
-                                    setMinScore(e.target.value);
-                                    setMeta(prev => ({ ...prev, page: 1 }));
-                                }}
-                                min="0"
-                                max="100"
-                                style={{
-                                    flex: 1,
-                                    padding: '0.625rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #E5E7EB',
-                                    background: '#FFFFFF',
-                                    color: '#111827',
-                                    fontSize: '0.875rem',
-                                    outline: 'none'
-                                }}
-                            />
-                            <span style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>-</span>
-                            <input
-                                type="number"
-                                placeholder="Max"
-                                value={maxScore}
-                                onChange={(e) => {
-                                    setMaxScore(e.target.value);
-                                    setMeta(prev => ({ ...prev, page: 1 }));
-                                }}
-                                min="0"
-                                max="100"
-                                style={{
-                                    flex: 1,
-                                    padding: '0.625rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #E5E7EB',
-                                    background: '#FFFFFF',
-                                    color: '#111827',
-                                    fontSize: '0.875rem',
-                                    outline: 'none'
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Engagement Filter */}
-                    <div>
-                        <label htmlFor="engagement-filter" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                            Has Engagement
-                        </label>
-                        <select
-                            id="engagement-filter"
-                            value={hasEngagement}
-                            onChange={(e) => {
-                                setHasEngagement(e.target.value);
-                                setMeta(prev => ({ ...prev, page: 1 }));
-                            }}
-                            style={{
-                                width: '100%',
-                                padding: '0.625rem 1rem',
-                                borderRadius: '12px',
-                                border: '1px solid #E5E7EB',
-                                background: '#FFFFFF',
-                                color: '#111827',
-                                fontSize: '0.875rem',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                outline: 'none',
-                                transition: 'all 0.2s'
-                            }}
-                        >
-                            <option value="all">All Leads</option>
-                            <option value="yes">With Engagement (Opens/Clicks/Replies)</option>
-                            <option value="no">No Engagement Yet</option>
-                        </select>
+                            <span style={{ fontSize: '1rem' }}>⚙️</span>
+                            Sort & Filter
+                            {(sortBy !== 'created_desc' || minScore || maxScore || hasEngagement !== 'all') && (
+                                <span style={{
+                                    background: '#3B82F6',
+                                    color: 'white',
+                                    fontSize: '0.65rem',
+                                    padding: '0.125rem 0.375rem',
+                                    borderRadius: '999px',
+                                    fontWeight: 700
+                                }}>
+                                    Active
+                                </span>
+                            )}
+                        </button>
                     </div>
                 </div>
 
@@ -1016,6 +975,243 @@ function LeadsPageContent() {
                     </div>
                 )}
             </div>
+
+            {/* Sort & Filter Modal */}
+            {showSortModal && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                        padding: '1rem'
+                    }}
+                    onClick={() => setShowSortModal(false)}
+                >
+                    <div
+                        style={{
+                            background: '#FFFFFF',
+                            borderRadius: '24px',
+                            maxWidth: '500px',
+                            width: '100%',
+                            maxHeight: '90vh',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderBottom: '1px solid #E5E7EB',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                                ⚙️ Sort & Filter Leads
+                            </h2>
+                            <button
+                                onClick={() => setShowSortModal(false)}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    fontSize: '1.5rem',
+                                    color: '#9CA3AF',
+                                    cursor: 'pointer',
+                                    padding: '0.25rem',
+                                    lineHeight: 1
+                                }}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div style={{
+                            padding: '1.5rem',
+                            overflowY: 'auto',
+                            flex: 1
+                        }}>
+                            {/* Sort By */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-sort-by" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Sort By
+                                </label>
+                                <select
+                                    id="modal-sort-by"
+                                    value={tempSortBy}
+                                    onChange={(e) => setTempSortBy(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="created_desc">Newest First</option>
+                                    <option value="created_asc">Oldest First</option>
+                                    <option value="email_asc">Email (A-Z)</option>
+                                    <option value="email_desc">Email (Z-A)</option>
+                                    <option value="score_desc">Score (High to Low)</option>
+                                    <option value="score_asc">Score (Low to High)</option>
+                                    <option value="activity_desc">Recently Active</option>
+                                    <option value="activity_asc">Least Active</option>
+                                </select>
+                            </div>
+
+                            {/* Score Range */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Lead Score Range
+                                </label>
+                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                    <input
+                                        type="number"
+                                        placeholder="Min (0)"
+                                        value={tempMinScore}
+                                        onChange={(e) => setTempMinScore(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Max (100)"
+                                        value={tempMaxScore}
+                                        onChange={(e) => setTempMaxScore(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Engagement Filter */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-engagement" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Has Engagement
+                                </label>
+                                <select
+                                    id="modal-engagement"
+                                    value={tempHasEngagement}
+                                    onChange={(e) => setTempHasEngagement(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="all">All Leads</option>
+                                    <option value="yes">With Engagement (Opens/Clicks/Replies)</option>
+                                    <option value="no">No Engagement Yet</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderTop: '1px solid #E5E7EB',
+                            display: 'flex',
+                            gap: '0.75rem'
+                        }}>
+                            <button
+                                onClick={handleClearFilters}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid #D1D5DB',
+                                    background: '#FFFFFF',
+                                    color: '#374151',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-gray-50"
+                            >
+                                Clear All
+                            </button>
+                            <button
+                                onClick={handleApplySortFilter}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    background: '#3B82F6',
+                                    color: '#FFFFFF',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-blue-600"
+                            >
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
