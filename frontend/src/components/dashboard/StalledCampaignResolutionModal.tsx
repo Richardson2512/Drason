@@ -12,6 +12,8 @@ interface StalledCampaignResolutionModalProps {
 export default function StalledCampaignResolutionModal({ isOpen, onClose, campaign, onSuccess }: StalledCampaignResolutionModalProps) {
     const [resolutionType, setResolutionType] = useState<'add_mailboxes' | 'reroute_leads' | 'manual' | 'wait_recovery' | 'export_archive' | null>(null);
     const [context, setContext] = useState<any>(null);
+    const [smartRecommendations, setSmartRecommendations] = useState<any>(null);
+    const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
     // Form state
     const [selectedMailboxIds, setSelectedMailboxIds] = useState<string[]>([]);
@@ -41,6 +43,27 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
 
         fetchContext();
     }, [isOpen, campaign]);
+
+    // Fetch smart recommendations when reroute option is selected
+    useEffect(() => {
+        if (resolutionType !== 'reroute_leads' || !context || !context.leads.sampleLeadId) return;
+
+        const fetchRecommendations = async () => {
+            setLoadingRecommendations(true);
+            try {
+                const data = await apiClient<any>(
+                    `/api/dashboard/leads/${context.leads.sampleLeadId}/campaign-recommendations?excludeCurrentCampaign=true&maxResults=5`
+                );
+                setSmartRecommendations(data.report);
+            } catch (err: any) {
+                console.error('Failed to fetch smart recommendations', err);
+            } finally {
+                setLoadingRecommendations(false);
+            }
+        };
+
+        fetchRecommendations();
+    }, [resolutionType, context]);
 
     if (!isOpen || !campaign) return null;
 
@@ -229,22 +252,98 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
                                         </label>
                                         {resolutionType === 'reroute_leads' && (
                                             <div style={{ marginTop: '1rem', paddingLeft: '2.25rem' }}>
-                                                <select
-                                                    value={targetCampaignId}
-                                                    onChange={(e) => setTargetCampaignId(e.target.value)}
-                                                    style={{
-                                                        width: '100%', padding: '0.75rem', borderRadius: '8px',
-                                                        border: '1px solid #D1D5DB', fontSize: '0.875rem', outline: 'none'
-                                                    }}
-                                                >
-                                                    <option value="">Select Target Campaign...</option>
-                                                    {context.rerouteOptions.list.map((c: any) => (
-                                                        <option key={c.id} value={c.id}>
-                                                            {c.name} ({c.healthyMailboxCount} mailboxes)
-                                                            {c.warning ? ` - ⚠️ ${c.warning}` : ''}
-                                                        </option>
-                                                    ))}
-                                                </select>
+                                                {loadingRecommendations ? (
+                                                    <div style={{ padding: '1rem', textAlign: 'center', color: '#6B7280', fontSize: '0.875rem' }}>
+                                                        🔮 Analyzing campaign matches...
+                                                    </div>
+                                                ) : smartRecommendations && smartRecommendations.recommended_campaigns.length > 0 ? (
+                                                    <>
+                                                        <div style={{ fontSize: '0.875rem', color: '#6B7280', marginBottom: '0.75rem' }}>
+                                                            🎯 Smart Recommendations (based on lead: {smartRecommendations.lead_persona}, score: {smartRecommendations.lead_score})
+                                                        </div>
+                                                        <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #D1D5DB', borderRadius: '8px', background: '#FFF' }}>
+                                                            {smartRecommendations.recommended_campaigns.map((rec: any) => (
+                                                                <div
+                                                                    key={rec.campaign_id}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        setTargetCampaignId(rec.campaign_id);
+                                                                    }}
+                                                                    style={{
+                                                                        padding: '0.75rem',
+                                                                        borderBottom: '1px solid #F3F4F6',
+                                                                        cursor: 'pointer',
+                                                                        background: targetCampaignId === rec.campaign_id ? '#EFF6FF' : '#FFF',
+                                                                        transition: 'background 0.2s'
+                                                                    }}
+                                                                >
+                                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                                                        <input
+                                                                            type="radio"
+                                                                            checked={targetCampaignId === rec.campaign_id}
+                                                                            readOnly
+                                                                            style={{ accentColor: '#3B82F6' }}
+                                                                        />
+                                                                        <div style={{ flex: 1 }}>
+                                                                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#111827' }}>{rec.campaign_name}</div>
+                                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
+                                                                                <span style={{
+                                                                                    padding: '0.125rem 0.5rem',
+                                                                                    background: rec.confidence === 'high' ? '#DCFCE7' : rec.confidence === 'medium' ? '#FEF3C7' : '#FEE2E2',
+                                                                                    color: rec.confidence === 'high' ? '#16A34A' : rec.confidence === 'medium' ? '#F59E0B' : '#DC2626',
+                                                                                    fontSize: '0.75rem',
+                                                                                    fontWeight: 600,
+                                                                                    borderRadius: '4px',
+                                                                                    textTransform: 'uppercase'
+                                                                                }}>
+                                                                                    {rec.confidence}
+                                                                                </span>
+                                                                                <span style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                                                                    Match: {rec.match_score}/100
+                                                                                </span>
+                                                                                <span style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                                                                    | {rec.mailbox_count} mailboxes
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {rec.warnings.length > 0 && (
+                                                                        <div style={{ fontSize: '0.75rem', color: '#F59E0B', marginLeft: '2rem' }}>
+                                                                            ⚠️ {rec.warnings[0]}
+                                                                        </div>
+                                                                    )}
+                                                                    {targetCampaignId === rec.campaign_id && (
+                                                                        <div style={{ marginTop: '0.5rem', marginLeft: '2rem', padding: '0.5rem', background: '#F9FAFB', borderRadius: '4px' }}>
+                                                                            <div style={{ fontSize: '0.75rem', color: '#374151', marginBottom: '0.25rem', fontWeight: 600 }}>Match Details:</div>
+                                                                            <ul style={{ margin: 0, paddingLeft: '1rem', fontSize: '0.7rem', color: '#6B7280' }}>
+                                                                                {rec.reasons.slice(0, 3).map((reason: string, idx: number) => (
+                                                                                    <li key={idx}>{reason}</li>
+                                                                                ))}
+                                                                            </ul>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <select
+                                                        value={targetCampaignId}
+                                                        onChange={(e) => setTargetCampaignId(e.target.value)}
+                                                        style={{
+                                                            width: '100%', padding: '0.75rem', borderRadius: '8px',
+                                                            border: '1px solid #D1D5DB', fontSize: '0.875rem', outline: 'none'
+                                                        }}
+                                                    >
+                                                        <option value="">Select Target Campaign...</option>
+                                                        {context.rerouteOptions.list.map((c: any) => (
+                                                            <option key={c.id} value={c.id}>
+                                                                {c.name} ({c.healthyMailboxCount} mailboxes)
+                                                                {c.warning ? ` - ⚠️ ${c.warning}` : ''}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                )}
                                                 {context.rerouteOptions.warnings.length > 0 && (
                                                     <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: '#FEF3C7', border: '1px solid #FCD34D', borderRadius: '6px', fontSize: '0.75rem', color: '#92400E' }}>
                                                         ⚠️ Warning: Some campaigns may target different personas/ICPs. Review before rerouting.
