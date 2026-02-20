@@ -232,8 +232,47 @@ export default function ProfilePage() {
                     }}
                 >
                     <Lock size={14} />
-                    {passwordLoading ? 'Changing...' : 'Change Password'}
                 </button>
+            </div>
+
+            {/* G2 Review Section */}
+            <div style={{
+                background: 'rgba(255,255,255,0.85)',
+                backdropFilter: 'blur(12px)',
+                borderRadius: '16px',
+                border: '1px solid #E5E7EB',
+                padding: '1.5rem',
+                marginTop: '1.5rem',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '14px' }}>⭐</span>
+                    </div>
+                    <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Love using Superkabe?</h2>
+                </div>
+
+                <p style={{ fontSize: '0.85rem', color: '#6B7280', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+                    Your feedback helps us grow. Share your experience on G2 and help other outbound teams discover how to protect their infrastructure.
+                </p>
+
+                <a
+                    href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                        padding: '0.6rem 1.25rem', borderRadius: '10px', textDecoration: 'none',
+                        fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
+                        background: '#FF492C',
+                        color: '#fff',
+                        boxShadow: '0 4px 6px -1px rgba(255, 73, 44, 0.2)'
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-1.5px)'; e.currentTarget.style.boxShadow = '0 6px 8px -1px rgba(255, 73, 44, 0.3)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(255, 73, 44, 0.2)'; }}
+                >
+                    Leave a Review on G2
+                </a>
             </div>
         </div>
     );

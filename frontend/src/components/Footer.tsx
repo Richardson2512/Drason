@@ -40,6 +40,16 @@ export default function Footer() {
                                 <Link href="/terms" className="hover:text-gray-600 transition-colors">Terms & Conditions</Link>
                             </nav>
 
+                            {/* G2 Review Button */}
+                            <a
+                                href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
+                            >
+                                <span className="text-yellow-500">⭐</span> Review us on G2
+                            </a>
+
                             {/* Social Icons */}
                             <div className="flex gap-4">
                                 <a href="#" className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
