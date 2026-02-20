@@ -20,12 +20,28 @@ export default function CampaignsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
+    // Sorting & Filtering State
+    const [sortBy, setSortBy] = useState('name_asc');
+    const [minSent, setMinSent] = useState<string>('');
+    const [maxSent, setMaxSent] = useState<string>('');
+    const [minOpenRate, setMinOpenRate] = useState<string>('');
+    const [maxOpenRate, setMaxOpenRate] = useState<string>('');
+
+    // Modal State
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [tempSortBy, setTempSortBy] = useState(sortBy);
+    const [tempMinSent, setTempMinSent] = useState(minSent);
+    const [tempMaxSent, setTempMaxSent] = useState(maxSent);
+    const [tempMinOpenRate, setTempMinOpenRate] = useState(minOpenRate);
+    const [tempMaxOpenRate, setTempMaxOpenRate] = useState(maxOpenRate);
+
     const fetchCampaigns = useCallback(async () => {
         setLoading(true);
         try {
             const params = new URLSearchParams({
                 page: meta.page.toString(),
-                limit: meta.limit.toString()
+                limit: meta.limit.toString(),
+                sortBy
             });
 
             if (statusFilter !== 'all') {
@@ -34,6 +50,20 @@ export default function CampaignsPage() {
 
             if (searchQuery.trim()) {
                 params.append('search', searchQuery.trim());
+            }
+
+            // Add filter parameters
+            if (minSent) {
+                params.append('minSent', minSent);
+            }
+            if (maxSent) {
+                params.append('maxSent', maxSent);
+            }
+            if (minOpenRate) {
+                params.append('minOpenRate', minOpenRate);
+            }
+            if (maxOpenRate) {
+                params.append('maxOpenRate', maxOpenRate);
             }
 
             const data = await apiClient<any>(`/api/dashboard/campaigns?${params}`);
@@ -52,7 +82,7 @@ export default function CampaignsPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, statusFilter, searchQuery, selectedCampaign]);
+    }, [meta.page, meta.limit, statusFilter, searchQuery, sortBy, minSent, maxSent, minOpenRate, maxOpenRate, selectedCampaign]);
 
     useEffect(() => {
         fetchCampaigns();
@@ -119,6 +149,41 @@ export default function CampaignsPage() {
         router.push(`/dashboard/leads?${params.toString()}`);
     };
 
+    // Sort & Filter Modal Handlers
+    const handleOpenSortModal = () => {
+        setTempSortBy(sortBy);
+        setTempMinSent(minSent);
+        setTempMaxSent(maxSent);
+        setTempMinOpenRate(minOpenRate);
+        setTempMaxOpenRate(maxOpenRate);
+        setShowSortModal(true);
+    };
+
+    const handleApplySortFilter = () => {
+        setSortBy(tempSortBy);
+        setMinSent(tempMinSent);
+        setMaxSent(tempMaxSent);
+        setMinOpenRate(tempMinOpenRate);
+        setMaxOpenRate(tempMaxOpenRate);
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
+    };
+
+    const handleClearFilters = () => {
+        setTempSortBy('name_asc');
+        setTempMinSent('');
+        setTempMaxSent('');
+        setTempMinOpenRate('');
+        setTempMaxOpenRate('');
+        setSortBy('name_asc');
+        setMinSent('');
+        setMaxSent('');
+        setMinOpenRate('');
+        setMaxOpenRate('');
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
+    };
+
     if (loading && campaigns.length === 0) {
         return <div className="flex items-center justify-center h-full text-gray-500">Loading Campaigns...</div>;
     }
@@ -174,6 +239,43 @@ export default function CampaignsPage() {
                         <option value="paused">Paused</option>
                         <option value="completed">Completed</option>
                     </select>
+
+                    {/* Sort & Filter Button */}
+                    <button
+                        onClick={handleOpenSortModal}
+                        style={{
+                            width: '100%',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            color: '#111827',
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            transition: 'all 0.2s'
+                        }}
+                        className="hover:bg-gray-50 hover:border-blue-300"
+                    >
+                        <span style={{ fontSize: '1rem' }}>⚙️</span>
+                        Sort & Filter
+                        {(sortBy !== 'name_asc' || minSent || maxSent || minOpenRate || maxOpenRate) && (
+                            <span style={{
+                                background: '#3B82F6',
+                                color: 'white',
+                                fontSize: '0.65rem',
+                                padding: '0.125rem 0.375rem',
+                                borderRadius: '999px',
+                                fontWeight: 700
+                            }}>
+                                Active
+                            </span>
+                        )}
+                    </button>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
@@ -460,6 +562,262 @@ export default function CampaignsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Sort & Filter Modal */}
+            {showSortModal && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                        padding: '1rem'
+                    }}
+                    onClick={() => setShowSortModal(false)}
+                >
+                    <div
+                        style={{
+                            background: '#FFFFFF',
+                            borderRadius: '24px',
+                            maxWidth: '500px',
+                            width: '100%',
+                            maxHeight: '90vh',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderBottom: '1px solid #E5E7EB',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                                ⚙️ Sort & Filter Campaigns
+                            </h2>
+                            <button
+                                onClick={() => setShowSortModal(false)}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    fontSize: '1.5rem',
+                                    color: '#9CA3AF',
+                                    cursor: 'pointer',
+                                    padding: '0.25rem',
+                                    lineHeight: 1
+                                }}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div style={{
+                            padding: '1.5rem',
+                            overflowY: 'auto',
+                            flex: 1
+                        }}>
+                            {/* Sort By */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-sort-by" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Sort By
+                                </label>
+                                <select
+                                    id="modal-sort-by"
+                                    value={tempSortBy}
+                                    onChange={(e) => setTempSortBy(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="name_asc">Name (A-Z)</option>
+                                    <option value="name_desc">Name (Z-A)</option>
+                                    <option value="sent_desc">Sent (High to Low)</option>
+                                    <option value="sent_asc">Sent (Low to High)</option>
+                                    <option value="open_rate_desc">Open Rate (High to Low)</option>
+                                    <option value="open_rate_asc">Open Rate (Low to High)</option>
+                                    <option value="reply_rate_desc">Reply Rate (High to Low)</option>
+                                    <option value="reply_rate_asc">Reply Rate (Low to High)</option>
+                                    <option value="bounce_rate_desc">Bounce Rate (High to Low)</option>
+                                    <option value="bounce_rate_asc">Bounce Rate (Low to High)</option>
+                                </select>
+                            </div>
+
+                            {/* Total Sent Range */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Total Sent Range
+                                </label>
+                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                    <input
+                                        type="number"
+                                        placeholder="Min"
+                                        value={tempMinSent}
+                                        onChange={(e) => setTempMinSent(e.target.value)}
+                                        min="0"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Max"
+                                        value={tempMaxSent}
+                                        onChange={(e) => setTempMaxSent(e.target.value)}
+                                        min="0"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Open Rate Range */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Open Rate Range (%)
+                                </label>
+                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                    <input
+                                        type="number"
+                                        placeholder="Min"
+                                        value={tempMinOpenRate}
+                                        onChange={(e) => setTempMinOpenRate(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Max"
+                                        value={tempMaxOpenRate}
+                                        onChange={(e) => setTempMaxOpenRate(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderTop: '1px solid #E5E7EB',
+                            display: 'flex',
+                            gap: '0.75rem'
+                        }}>
+                            <button
+                                onClick={handleClearFilters}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid #D1D5DB',
+                                    background: '#FFFFFF',
+                                    color: '#374151',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-gray-50"
+                            >
+                                Clear All
+                            </button>
+                            <button
+                                onClick={handleApplySortFilter}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    background: '#3B82F6',
+                                    color: '#FFFFFF',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-blue-600"
+                            >
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
