@@ -351,6 +351,34 @@ export default function CampaignsPage() {
                             <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Campaign Performance Details</div>
                         </div>
 
+                        {/* Pause Reason Banner */}
+                        {selectedCampaign.status === 'paused' && selectedCampaign.paused_reason && (
+                            <div style={{
+                                padding: '1rem',
+                                background: '#FEF2F2',
+                                border: '1px solid #FCA5A5',
+                                borderRadius: '8px',
+                                marginBottom: '1.5rem'
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+                                    <span style={{ fontSize: '1.25rem' }}>⏸️</span>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontWeight: 700, color: '#991B1B', marginBottom: '0.25rem' }}>
+                                            Campaign Paused
+                                        </div>
+                                        <div style={{ fontSize: '0.875rem', color: '#7F1D1D', lineHeight: '1.5' }}>
+                                            {selectedCampaign.paused_reason}
+                                        </div>
+                                        {selectedCampaign.paused_at && (
+                                            <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
+                                                Paused {new Date(selectedCampaign.paused_at).toLocaleString()} by {selectedCampaign.paused_by || 'system'}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Top Stats - SPECIFIC TO CAMPAIGN (Clickable) */}
                         <div className="grid grid-cols-3 gap-6" style={{ marginBottom: '2.5rem' }}>
                             <div

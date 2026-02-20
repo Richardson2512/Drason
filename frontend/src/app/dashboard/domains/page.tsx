@@ -610,11 +610,20 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                                 borderLeft: '6px solid #EF4444',
                                 marginBottom: '2rem'
                             }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
                                     <span style={{ fontSize: '1.5rem' }}>⚠️</span>
-                                    <h3 style={{ color: '#B91C1C', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.025em' }}>DOMAIN PAUSED</h3>
+                                    <div style={{ flex: 1 }}>
+                                        <h3 style={{ color: '#B91C1C', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>DOMAIN PAUSED</h3>
+                                        <p style={{ color: '#7F1D1D', fontSize: '1rem', lineHeight: '1.5', marginBottom: '0.5rem' }}>
+                                            {selectedDomain.paused_reason || 'No reason provided'}
+                                        </p>
+                                        {selectedDomain.last_pause_at && (
+                                            <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
+                                                Paused {new Date(selectedDomain.last_pause_at).toLocaleString()} by {selectedDomain.paused_by || 'system'}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                                <p style={{ color: '#7F1D1D', fontSize: '1rem', lineHeight: '1.5' }}>{selectedDomain.paused_reason}</p>
                             </div>
                         )}
 
