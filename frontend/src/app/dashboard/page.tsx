@@ -17,6 +17,45 @@ export default function Overview() {
   const [campaignData, setCampaignData] = useState<any[]>([]);
 
   const [error, setError] = useState<string | null>(null);
+  const [resuming, setResuming] = useState<string | null>(null);
+
+  const handleResumeDomain = async (domainId: string) => {
+    setResuming(domainId);
+    try {
+      await apiClient('/api/infrastructure/domain/resume', {
+        method: 'POST',
+        body: JSON.stringify({ domainId })
+      });
+      // Refresh domains
+      const domainsData = await apiClient<any>('/api/dashboard/domains');
+      setDomains(domainsData?.data || []);
+      alert('Domain resumed successfully!');
+    } catch (err: any) {
+      console.error('Failed to resume domain', err);
+      alert(`Failed to resume domain: ${err.message}`);
+    } finally {
+      setResuming(null);
+    }
+  };
+
+  const handleResumeMailbox = async (mailboxId: string) => {
+    setResuming(mailboxId);
+    try {
+      await apiClient('/api/infrastructure/mailbox/resume', {
+        method: 'POST',
+        body: JSON.stringify({ mailboxId })
+      });
+      // Refresh mailboxes
+      const mailboxesData = await apiClient<any>('/api/dashboard/mailboxes');
+      setMailboxes(mailboxesData?.data || []);
+      alert('Mailbox resumed successfully!');
+    } catch (err: any) {
+      console.error('Failed to resume mailbox', err);
+      alert(`Failed to resume mailbox: ${err.message}`);
+    } finally {
+      setResuming(null);
+    }
+  };
 
   useEffect(() => {
     // Fetch user info for welcome message
@@ -77,9 +116,10 @@ export default function Overview() {
   const daysRemaining = calculateDaysRemaining();
   const isTrialing = subscription?.subscription_status === 'trialing';
 
-  // Domain alerts
+  // Domain and Mailbox alerts
   const pausedDomains = domains.filter(d => d.status === 'paused');
   const warningDomains = domains.filter(d => d.status === 'warning');
+  const pausedMailboxes = mailboxes.filter(m => m.status === 'paused');
 
   // Color Constants
   const COLORS = {
@@ -247,7 +287,7 @@ export default function Overview() {
       </div>
 
       {/* 1. Critical Alerts Section */}
-      {(pausedDomains.length > 0 || warningDomains.length > 0) && (
+      {(pausedDomains.length > 0 || warningDomains.length > 0 || pausedMailboxes.length > 0) && (
         <div style={{ marginBottom: '2rem' }}>
           <h2 style={{ fontSize: '1.25rem', color: '#EF4444', marginBottom: '1rem', fontWeight: '700', paddingLeft: '0.5rem' }}>
             ⚠️ Critical Attention Needed
@@ -259,10 +299,44 @@ export default function Overview() {
                   <div>
                     <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Paused</div>
                     <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{d.domain}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {d.paused_reason || 'Unknown'}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
                   </div>
-                  <button className="premium-btn" style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', background: '#EF4444' }}>
-                    Fix Now
+                  <button
+                    onClick={() => handleResumeDomain(d.id)}
+                    disabled={resuming === d.id}
+                    className="premium-btn"
+                    style={{
+                      fontSize: '0.8rem',
+                      padding: '0.5rem 1rem',
+                      background: resuming === d.id ? '#9CA3AF' : '#EF4444',
+                      cursor: resuming === d.id ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    {resuming === d.id ? 'Resuming...' : 'Fix Now'}
+                  </button>
+                </div>
+              </div>
+            ))}
+            {pausedMailboxes.map(m => (
+              <div key={m.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                  <div>
+                    <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Mailbox Paused</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{m.email}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {m.paused_reason || 'Health degradation detected'}</div>
+                  </div>
+                  <button
+                    onClick={() => handleResumeMailbox(m.id)}
+                    disabled={resuming === m.id}
+                    className="premium-btn"
+                    style={{
+                      fontSize: '0.8rem',
+                      padding: '0.5rem 1rem',
+                      background: resuming === m.id ? '#9CA3AF' : '#EF4444',
+                      cursor: resuming === m.id ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    {resuming === m.id ? 'Resuming...' : 'Fix Now'}
                   </button>
                 </div>
               </div>
