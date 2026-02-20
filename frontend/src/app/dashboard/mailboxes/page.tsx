@@ -54,9 +54,25 @@ export default function MailboxesPage() {
 
     // Filters
     const [campaigns, setCampaigns] = useState<any[]>([]);
+    const [domains, setDomains] = useState<any[]>([]);
     const [selectedCampaign, setSelectedCampaign] = useState<string>('all');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
+
+    // Sorting & Filtering State
+    const [sortBy, setSortBy] = useState('email_asc');
+    const [domainId, setDomainId] = useState<string>('all');
+    const [warmupStatus, setWarmupStatus] = useState<string>('all');
+    const [minEngagement, setMinEngagement] = useState<string>('');
+    const [maxEngagement, setMaxEngagement] = useState<string>('');
+
+    // Modal State
+    const [showSortModal, setShowSortModal] = useState(false);
+    const [tempSortBy, setTempSortBy] = useState(sortBy);
+    const [tempDomainId, setTempDomainId] = useState(domainId);
+    const [tempWarmupStatus, setTempWarmupStatus] = useState(warmupStatus);
+    const [tempMinEngagement, setTempMinEngagement] = useState(minEngagement);
+    const [tempMaxEngagement, setTempMaxEngagement] = useState(maxEngagement);
 
     // Pagination & Selection
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
@@ -75,6 +91,13 @@ export default function MailboxesPage() {
             if (selectedStatus !== 'all') params.append('status', selectedStatus);
             if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
+            // Add sort & filter parameters
+            params.append('sortBy', sortBy);
+            if (domainId !== 'all') params.append('domainId', domainId);
+            if (warmupStatus !== 'all') params.append('warmupStatus', warmupStatus);
+            if (minEngagement) params.append('minEngagement', minEngagement);
+            if (maxEngagement) params.append('maxEngagement', maxEngagement);
+
             const data = await apiClient<any>(`/api/dashboard/mailboxes?${params}`);
             if (data?.data) {
                 setMailboxes(data.data);
@@ -91,13 +114,13 @@ export default function MailboxesPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, selectedMailbox]);
+    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, sortBy, domainId, warmupStatus, minEngagement, maxEngagement, selectedMailbox]);
 
     useEffect(() => {
         fetchMailboxes();
     }, [fetchMailboxes]);
 
-    // Fetch campaigns for filter dropdown
+    // Fetch campaigns and domains for filter dropdowns
     useEffect(() => {
         apiClient<any>('/api/dashboard/campaigns?limit=1000')
             .then(data => {
@@ -106,6 +129,14 @@ export default function MailboxesPage() {
                 }
             })
             .catch(err => console.error('Failed to fetch campaigns:', err));
+
+        apiClient<any>('/api/dashboard/domains?limit=1000')
+            .then(data => {
+                if (data?.data) {
+                    setDomains(data.data);
+                }
+            })
+            .catch(err => console.error('Failed to fetch domains:', err));
     }, []);
 
     // Selection Logic
@@ -140,6 +171,41 @@ export default function MailboxesPage() {
 
     const handleLimitChange = (newLimit: number) => {
         setMeta(prev => ({ ...prev, limit: newLimit, page: 1 }));
+    };
+
+    // Sort & Filter Modal Handlers
+    const handleOpenSortModal = () => {
+        setTempSortBy(sortBy);
+        setTempDomainId(domainId);
+        setTempWarmupStatus(warmupStatus);
+        setTempMinEngagement(minEngagement);
+        setTempMaxEngagement(maxEngagement);
+        setShowSortModal(true);
+    };
+
+    const handleApplySortFilter = () => {
+        setSortBy(tempSortBy);
+        setDomainId(tempDomainId);
+        setWarmupStatus(tempWarmupStatus);
+        setMinEngagement(tempMinEngagement);
+        setMaxEngagement(tempMaxEngagement);
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
+    };
+
+    const handleClearFilters = () => {
+        setTempSortBy('email_asc');
+        setTempDomainId('all');
+        setTempWarmupStatus('all');
+        setTempMinEngagement('');
+        setTempMaxEngagement('');
+        setSortBy('email_asc');
+        setDomainId('all');
+        setWarmupStatus('all');
+        setMinEngagement('');
+        setMaxEngagement('');
+        setMeta(prev => ({ ...prev, page: 1 }));
+        setShowSortModal(false);
     };
 
     if (loading && mailboxes.length === 0) {
@@ -225,6 +291,43 @@ export default function MailboxesPage() {
                             <option key={c.id} value={c.id}>{c.name}</option>
                         ))}
                     </select>
+
+                    {/* Sort & Filter Button */}
+                    <button
+                        onClick={handleOpenSortModal}
+                        style={{
+                            width: '100%',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '12px',
+                            border: '1px solid #E5E7EB',
+                            background: '#FFFFFF',
+                            color: '#111827',
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            transition: 'all 0.2s'
+                        }}
+                        className="hover:bg-gray-50 hover:border-blue-300"
+                    >
+                        <span style={{ fontSize: '1rem' }}>⚙️</span>
+                        Sort & Filter
+                        {(sortBy !== 'email_asc' || domainId !== 'all' || warmupStatus !== 'all' || minEngagement || maxEngagement) && (
+                            <span style={{
+                                background: '#3B82F6',
+                                color: 'white',
+                                fontSize: '0.65rem',
+                                padding: '0.125rem 0.375rem',
+                                borderRadius: '999px',
+                                fontWeight: 700
+                            }}>
+                                Active
+                            </span>
+                        )}
+                    </button>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
@@ -704,6 +807,277 @@ export default function MailboxesPage() {
                     </div>
                 )}
             </div>
+
+            {/* Sort & Filter Modal */}
+            {showSortModal && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                        padding: '1rem'
+                    }}
+                    onClick={() => setShowSortModal(false)}
+                >
+                    <div
+                        style={{
+                            background: '#FFFFFF',
+                            borderRadius: '24px',
+                            maxWidth: '500px',
+                            width: '100%',
+                            maxHeight: '90vh',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderBottom: '1px solid #E5E7EB',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                                ⚙️ Sort & Filter Mailboxes
+                            </h2>
+                            <button
+                                onClick={() => setShowSortModal(false)}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    fontSize: '1.5rem',
+                                    color: '#9CA3AF',
+                                    cursor: 'pointer',
+                                    padding: '0.25rem',
+                                    lineHeight: 1
+                                }}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div style={{
+                            padding: '1.5rem',
+                            overflowY: 'auto',
+                            flex: 1
+                        }}>
+                            {/* Sort By */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-sort-by" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Sort By
+                                </label>
+                                <select
+                                    id="modal-sort-by"
+                                    value={tempSortBy}
+                                    onChange={(e) => setTempSortBy(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="email_asc">Email (A-Z)</option>
+                                    <option value="email_desc">Email (Z-A)</option>
+                                    <option value="sent_desc">Sent (High to Low)</option>
+                                    <option value="sent_asc">Sent (Low to High)</option>
+                                    <option value="engagement_desc">Engagement (High to Low)</option>
+                                    <option value="engagement_asc">Engagement (Low to High)</option>
+                                    <option value="bounce_desc">Bounce (High to Low)</option>
+                                    <option value="bounce_asc">Bounce (Low to High)</option>
+                                </select>
+                            </div>
+
+                            {/* Domain Filter */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-domain" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Domain
+                                </label>
+                                <select
+                                    id="modal-domain"
+                                    value={tempDomainId}
+                                    onChange={(e) => setTempDomainId(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="all">All Domains</option>
+                                    {domains.map(d => (
+                                        <option key={d.id} value={d.id}>{d.domain}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Warmup Status Filter */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label htmlFor="modal-warmup" style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Warmup Status
+                                </label>
+                                <select
+                                    id="modal-warmup"
+                                    value={tempWarmupStatus}
+                                    onChange={(e) => setTempWarmupStatus(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem 1rem',
+                                        borderRadius: '12px',
+                                        border: '1px solid #D1D5DB',
+                                        background: '#FFFFFF',
+                                        color: '#111827',
+                                        fontSize: '0.875rem',
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="all">All Warmup Status</option>
+                                    <option value="enabled">Enabled</option>
+                                    <option value="disabled">Disabled</option>
+                                </select>
+                            </div>
+
+                            {/* Engagement Rate Range */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    color: '#374151',
+                                    marginBottom: '0.5rem'
+                                }}>
+                                    Engagement Rate Range (%)
+                                </label>
+                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                    <input
+                                        type="number"
+                                        placeholder="Min"
+                                        value={tempMinEngagement}
+                                        onChange={(e) => setTempMinEngagement(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Max"
+                                        value={tempMaxEngagement}
+                                        onChange={(e) => setTempMaxEngagement(e.target.value)}
+                                        min="0"
+                                        max="100"
+                                        style={{
+                                            flex: 1,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '12px',
+                                            border: '1px solid #D1D5DB',
+                                            background: '#FFFFFF',
+                                            color: '#111827',
+                                            fontSize: '0.875rem',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div style={{
+                            padding: '1.5rem',
+                            borderTop: '1px solid #E5E7EB',
+                            display: 'flex',
+                            gap: '0.75rem'
+                        }}>
+                            <button
+                                onClick={handleClearFilters}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid #D1D5DB',
+                                    background: '#FFFFFF',
+                                    color: '#374151',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-gray-50"
+                            >
+                                Clear All
+                            </button>
+                            <button
+                                onClick={handleApplySortFilter}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '12px',
+                                    border: 'none',
+                                    background: '#3B82F6',
+                                    color: '#FFFFFF',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                className="hover:bg-blue-600"
+                            >
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
