@@ -55,7 +55,6 @@ export default function SyncProgressModal({
     const [result, setResult] = useState<SyncResult | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
-    const [inProgressSince, setInProgressSince] = useState<Record<string, number>>({});
     const [pausingCampaigns, setPausingCampaigns] = useState(false);
 
     useEffect(() => {
@@ -85,9 +84,7 @@ export default function SyncProgressModal({
             if (data.type === 'progress') {
                 retryCount = 0; // Reset on successful message
 
-                // If transitioning TO in_progress, record the time
                 if (data.status === 'in_progress') {
-                    setInProgressSince(prev => ({ ...prev, [data.step]: Date.now() }));
                     setProgress(prev => ({
                         ...prev,
                         [data.step]: {
@@ -98,29 +95,6 @@ export default function SyncProgressModal({
                             count: data.count
                         }
                     }));
-                } else if (data.status === 'completed') {
-                    // Ensure minimum 1.5s visibility of in_progress state
-                    const MIN_DISPLAY_MS = 1500;
-                    setInProgressSince(prev => {
-                        const startedAt = prev[data.step];
-                        const elapsed = startedAt ? Date.now() - startedAt : MIN_DISPLAY_MS;
-                        const delay = Math.max(0, MIN_DISPLAY_MS - elapsed);
-
-                        setTimeout(() => {
-                            setProgress(p => ({
-                                ...p,
-                                [data.step]: {
-                                    step: data.step,
-                                    status: 'completed',
-                                    current: data.current,
-                                    total: data.total,
-                                    count: data.count
-                                }
-                            }));
-                        }, delay);
-
-                        return prev;
-                    });
                 } else {
                     setProgress(prev => ({
                         ...prev,
