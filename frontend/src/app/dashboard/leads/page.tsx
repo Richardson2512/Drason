@@ -233,7 +233,8 @@ function LeadsPageContent() {
         setScoreLoading(true);
         try {
             const result = await apiClient<any>(`/api/leads/${leadId}/score-breakdown`);
-            setScoreBreakdown(result.data);
+            // apiClient already unwraps { success: true, data: X } -> X
+            setScoreBreakdown(result);
         } catch (error) {
             console.error('Failed to fetch score breakdown:', error);
             setScoreBreakdown(null);
@@ -262,7 +263,7 @@ function LeadsPageContent() {
                 timeout: 60000 // 1 minute timeout for scoring
             });
 
-            setScoreRefreshResult(result.data);
+            setScoreRefreshResult(result);
 
             // Auto-dismiss after 5 seconds
             setTimeout(() => setScoreRefreshResult(null), 5000);
@@ -445,7 +446,7 @@ function LeadsPageContent() {
                     </div>
 
                     {/* Sort & Filter Button */}
-                    <div>
+                    <div style={{ marginTop: '1rem' }}>
                         <button
                             onClick={handleOpenSortModal}
                             style={{
