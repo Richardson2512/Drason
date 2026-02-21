@@ -99,181 +99,191 @@ export default function ProfilePage() {
     };
 
     return (
-        <div style={{ padding: '2rem 1rem', maxWidth: '640px' }}>
+        <div style={{ padding: '2rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Profile</h1>
             <p style={{ fontSize: '0.85rem', color: '#6B7280', marginBottom: '2rem' }}>Manage your account details and security</p>
 
-            {/* Name Section */}
-            <div style={{
-                background: 'rgba(255,255,255,0.85)',
-                backdropFilter: 'blur(12px)',
-                borderRadius: '16px',
-                border: '1px solid #E5E7EB',
-                padding: '1.5rem',
-                marginBottom: '1.5rem',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #3B82F6, #6366F1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <User size={16} color="#fff" />
-                    </div>
-                    <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Personal Information</h2>
-                </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'flex-start' }}>
+                {/* Left Column */}
+                <div style={{ flex: '1 1 500px', maxWidth: '640px' }}>
 
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Email</label>
-                    <div style={{ ...inputStyle, background: '#F3F4F6', color: '#6B7280', cursor: 'not-allowed' }}>{email}</div>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Full Name</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        style={inputStyle}
-                        placeholder="Enter your full name"
-                        onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
-                    />
-                </div>
-
-                {nameMessage && (
+                    {/* Name Section */}
                     <div style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 500, marginBottom: '1rem',
-                        background: nameMessage.type === 'success' ? '#F0FDF4' : '#FEF2F2',
-                        color: nameMessage.type === 'success' ? '#166534' : '#991B1B',
-                        border: `1px solid ${nameMessage.type === 'success' ? '#BBF7D0' : '#FECACA'}`
+                        background: 'rgba(255,255,255,0.85)',
+                        backdropFilter: 'blur(12px)',
+                        borderRadius: '16px',
+                        border: '1px solid #E5E7EB',
+                        padding: '1.5rem',
+                        marginBottom: '1.5rem',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
                     }}>
-                        {nameMessage.type === 'success' ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
-                        {nameMessage.text}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #3B82F6, #6366F1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <User size={16} color="#fff" />
+                            </div>
+                            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Personal Information</h2>
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Email</label>
+                            <div style={{ ...inputStyle, background: '#F3F4F6', color: '#6B7280', cursor: 'not-allowed' }}>{email}</div>
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Full Name</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                style={inputStyle}
+                                placeholder="Enter your full name"
+                                onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
+                                onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
+                            />
+                        </div>
+
+                        {nameMessage && (
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 500, marginBottom: '1rem',
+                                background: nameMessage.type === 'success' ? '#F0FDF4' : '#FEF2F2',
+                                color: nameMessage.type === 'success' ? '#166534' : '#991B1B',
+                                border: `1px solid ${nameMessage.type === 'success' ? '#BBF7D0' : '#FECACA'}`
+                            }}>
+                                {nameMessage.type === 'success' ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
+                                {nameMessage.text}
+                            </div>
+                        )}
+
+                        <button
+                            onClick={handleSaveName}
+                            disabled={nameLoading || name.trim() === originalName}
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                                padding: '0.6rem 1.25rem', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                                fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
+                                background: name.trim() === originalName ? '#E5E7EB' : 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+                                color: name.trim() === originalName ? '#9CA3AF' : '#fff',
+                                opacity: nameLoading ? 0.7 : 1,
+                            }}
+                        >
+                            <Save size={14} />
+                            {nameLoading ? 'Saving...' : 'Save Changes'}
+                        </button>
                     </div>
-                )}
 
-                <button
-                    onClick={handleSaveName}
-                    disabled={nameLoading || name.trim() === originalName}
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                        padding: '0.6rem 1.25rem', borderRadius: '10px', border: 'none', cursor: 'pointer',
-                        fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
-                        background: name.trim() === originalName ? '#E5E7EB' : 'linear-gradient(135deg, #4F46E5, #7C3AED)',
-                        color: name.trim() === originalName ? '#9CA3AF' : '#fff',
-                        opacity: nameLoading ? 0.7 : 1,
-                    }}
-                >
-                    <Save size={14} />
-                    {nameLoading ? 'Saving...' : 'Save Changes'}
-                </button>
-            </div>
-
-            {/* Password Section */}
-            <div style={{
-                background: 'rgba(255,255,255,0.85)',
-                backdropFilter: 'blur(12px)',
-                borderRadius: '16px',
-                border: '1px solid #E5E7EB',
-                padding: '1.5rem',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #F59E0B, #EF4444)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Lock size={16} color="#fff" />
-                    </div>
-                    <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Change Password</h2>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Current Password</label>
-                    <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} style={inputStyle} placeholder="Enter current password"
-                        onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
-                    />
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>New Password</label>
-                    <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} style={inputStyle} placeholder="At least 8 characters"
-                        onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
-                    />
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Confirm New Password</label>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} style={inputStyle} placeholder="Repeat new password"
-                        onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
-                    />
-                </div>
-
-                {passwordMessage && (
+                    {/* Password Section */}
                     <div style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 500, marginBottom: '1rem',
-                        background: passwordMessage.type === 'success' ? '#F0FDF4' : '#FEF2F2',
-                        color: passwordMessage.type === 'success' ? '#166534' : '#991B1B',
-                        border: `1px solid ${passwordMessage.type === 'success' ? '#BBF7D0' : '#FECACA'}`
+                        background: 'rgba(255,255,255,0.85)',
+                        backdropFilter: 'blur(12px)',
+                        borderRadius: '16px',
+                        border: '1px solid #E5E7EB',
+                        padding: '1.5rem',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
                     }}>
-                        {passwordMessage.type === 'success' ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
-                        {passwordMessage.text}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #F59E0B, #EF4444)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Lock size={16} color="#fff" />
+                            </div>
+                            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Change Password</h2>
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Current Password</label>
+                            <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} style={inputStyle} placeholder="Enter current password"
+                                onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
+                                onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>New Password</label>
+                            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} style={inputStyle} placeholder="At least 8 characters"
+                                onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
+                                onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>Confirm New Password</label>
+                            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} style={inputStyle} placeholder="Repeat new password"
+                                onFocus={(e) => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.1)'; }}
+                                onBlur={(e) => { e.currentTarget.style.borderColor = '#D1D5DB'; e.currentTarget.style.boxShadow = 'none'; }}
+                            />
+                        </div>
+
+                        {passwordMessage && (
+                            <div style={{
+                                display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 0.75rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 500, marginBottom: '1rem',
+                                background: passwordMessage.type === 'success' ? '#F0FDF4' : '#FEF2F2',
+                                color: passwordMessage.type === 'success' ? '#166534' : '#991B1B',
+                                border: `1px solid ${passwordMessage.type === 'success' ? '#BBF7D0' : '#FECACA'}`
+                            }}>
+                                {passwordMessage.type === 'success' ? <CheckCircle size={14} /> : <AlertCircle size={14} />}
+                                {passwordMessage.text}
+                            </div>
+                        )}
+
+                        <button
+                            onClick={handleChangePassword}
+                            disabled={passwordLoading || !currentPassword || !newPassword || !confirmPassword}
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                                padding: '0.6rem 1.25rem', borderRadius: '10px', border: 'none', cursor: 'pointer',
+                                fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
+                                background: (!currentPassword || !newPassword || !confirmPassword) ? '#E5E7EB' : 'linear-gradient(135deg, #F59E0B, #EF4444)',
+                                color: (!currentPassword || !newPassword || !confirmPassword) ? '#9CA3AF' : '#fff',
+                                opacity: passwordLoading ? 0.7 : 1,
+                            }}
+                        >
+                            <Lock size={14} />
+                        </button>
                     </div>
-                )}
 
-                <button
-                    onClick={handleChangePassword}
-                    disabled={passwordLoading || !currentPassword || !newPassword || !confirmPassword}
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                        padding: '0.6rem 1.25rem', borderRadius: '10px', border: 'none', cursor: 'pointer',
-                        fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
-                        background: (!currentPassword || !newPassword || !confirmPassword) ? '#E5E7EB' : 'linear-gradient(135deg, #F59E0B, #EF4444)',
-                        color: (!currentPassword || !newPassword || !confirmPassword) ? '#9CA3AF' : '#fff',
-                        opacity: passwordLoading ? 0.7 : 1,
-                    }}
-                >
-                    <Lock size={14} />
-                </button>
-            </div>
+                </div> {/* End Left Column */}
 
-            {/* G2 Review Section */}
-            <div style={{
-                background: 'rgba(255,255,255,0.85)',
-                backdropFilter: 'blur(12px)',
-                borderRadius: '16px',
-                border: '1px solid #E5E7EB',
-                padding: '1.5rem',
-                marginTop: '1.5rem',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span style={{ fontSize: '14px' }}>⭐</span>
+                {/* Right Column */}
+                <div style={{ flex: '1 1 300px', maxWidth: '400px' }}>
+
+                    {/* G2 Review Section */}
+                    <div style={{
+                        background: 'rgba(255,255,255,0.85)',
+                        backdropFilter: 'blur(12px)',
+                        borderRadius: '16px',
+                        border: '1px solid #E5E7EB',
+                        padding: '1.5rem',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <span style={{ fontSize: '14px' }}>⭐</span>
+                            </div>
+                            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Love using Superkabe?</h2>
+                        </div>
+
+                        <p style={{ fontSize: '0.85rem', color: '#6B7280', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+                            Your feedback helps us grow. Share your experience on G2 and help other outbound teams discover how to protect their infrastructure.
+                        </p>
+
+                        <a
+                            href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                                padding: '0.6rem 1.25rem', borderRadius: '10px', textDecoration: 'none',
+                                fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
+                                background: '#FF492C',
+                                color: '#fff',
+                                boxShadow: '0 4px 6px -1px rgba(255, 73, 44, 0.2)'
+                            }}
+                            onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-1.5px)'; e.currentTarget.style.boxShadow = '0 6px 8px -1px rgba(255, 73, 44, 0.3)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(255, 73, 44, 0.2)'; }}
+                        >
+                            Leave a Review on G2
+                        </a>
                     </div>
-                    <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Love using Superkabe?</h2>
-                </div>
-
-                <p style={{ fontSize: '0.85rem', color: '#6B7280', marginBottom: '1.25rem', lineHeight: 1.5 }}>
-                    Your feedback helps us grow. Share your experience on G2 and help other outbound teams discover how to protect their infrastructure.
-                </p>
-
-                <a
-                    href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                        padding: '0.6rem 1.25rem', borderRadius: '10px', textDecoration: 'none',
-                        fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s',
-                        background: '#FF492C',
-                        color: '#fff',
-                        boxShadow: '0 4px 6px -1px rgba(255, 73, 44, 0.2)'
-                    }}
-                    onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-1.5px)'; e.currentTarget.style.boxShadow = '0 6px 8px -1px rgba(255, 73, 44, 0.3)'; }}
-                    onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(255, 73, 44, 0.2)'; }}
-                >
-                    Leave a Review on G2
-                </a>
-            </div>
+                </div> {/* End Right Column */}
+            </div> {/* End Flex Container */}
         </div>
     );
 }
