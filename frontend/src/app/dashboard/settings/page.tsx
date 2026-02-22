@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 export default function Settings() {
     const router = useRouter();
     const [apiKey, setApiKey] = useState('');
+    const [ebApiKey, setEbApiKey] = useState('');
     const [webhookUrl, setWebhookUrl] = useState('');
     const [webhookSecret, setWebhookSecret] = useState('');
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
@@ -54,6 +55,9 @@ export default function Settings() {
                     const settingsData = Array.isArray(data) ? data : [];
                     const keySetting = settingsData.find((s: any) => s.key === 'SMARTLEAD_API_KEY');
                     if (keySetting) setApiKey(keySetting.value);
+
+                    const ebKeySetting = settingsData.find((s: any) => s.key === 'EMAILBISON_API_KEY');
+                    if (ebKeySetting) setEbApiKey(ebKeySetting.value);
 
                     const slackSetting = settingsData.find((s: any) => s.key === 'SLACK_CONNECTED');
                     const isSlackConnected = slackSetting?.value === 'true';
@@ -171,6 +175,22 @@ export default function Settings() {
             setMsg('Settings saved successfully.');
         } catch (err: any) {
             setMsg(err.message || 'Error saving settings.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSaveEmailBison = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await apiClient('/api/settings', {
+                method: 'POST',
+                body: JSON.stringify({ EMAILBISON_API_KEY: ebApiKey })
+            });
+            setMsg('EmailBison API key saved successfully.');
+        } catch (err: any) {
+            setMsg(err.message || 'Error saving EmailBison settings.');
         } finally {
             setLoading(false);
         }
@@ -390,7 +410,7 @@ export default function Settings() {
                 {[
                     { key: 'smartlead' as const, label: 'Smartlead', icon: '/smartlead.webp', active: true },
                     { key: 'instantly' as const, label: 'Instantly', icon: null, active: false },
-                    { key: 'emailbison' as const, label: 'EmailBison', icon: null, active: false },
+                    { key: 'emailbison' as const, label: 'EmailBison', icon: null, active: true },
                     { key: 'replyio' as const, label: 'Reply.io', icon: null, active: false },
                 ].map(provider => (
                     <button
@@ -605,27 +625,62 @@ export default function Settings() {
                         </div>
                     )}
 
-                    {/* EmailBison — Coming Soon */}
+                    {/* EmailBison Integration */}
                     {activeIntegration === 'emailbison' && (
-                        <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
-                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🦬</div>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.5rem' }}>EmailBison Integration</h2>
-                            <p style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                Connect EmailBison for advanced email warm-up monitoring and reputation tracking.
-                            </p>
-                            <div style={{
-                                display: 'inline-block',
-                                padding: '0.5rem 1.5rem',
-                                background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
-                                border: '1px solid #93C5FD',
-                                borderRadius: '999px',
-                                color: '#1E40AF',
-                                fontSize: '0.875rem',
-                                fontWeight: 700
-                            }}>
-                                🚀 Coming Soon
+                        <>
+                            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9', fontSize: '1.25rem' }}>
+                                    🦬
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>EmailBison Integration</h2>
+                                    <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Warm-up monitoring & reputation tracking.</p>
+                                </div>
                             </div>
-                        </div>
+
+                            <form onSubmit={handleSaveEmailBison} style={{ marginBottom: '2rem' }}>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>API Key</label>
+                                    <input
+                                        type="password"
+                                        value={ebApiKey}
+                                        onChange={e => setEbApiKey(e.target.value)}
+                                        className="premium-input w-full"
+                                        placeholder="eb_..."
+                                        style={{ width: '100%' }}
+                                    />
+                                </div>
+                                <button type="submit" className="premium-btn w-full" disabled={loading}>
+                                    {loading ? 'Saving...' : 'Save Configuration'}
+                                </button>
+                                {msg && <div className="text-center mt-4 text-sm font-medium" style={{ color: msg.includes('Error') ? '#EF4444' : '#10B981' }}>{msg}</div>}
+                            </form>
+
+                            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
+                                <div style={{
+                                    padding: '1rem',
+                                    background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                                    border: '2px solid #10B981',
+                                    borderRadius: '10px'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                        <div style={{
+                                            width: '32px', height: '32px', borderRadius: '8px', background: '#10B981',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+                                        }}>⚡</div>
+                                        <div style={{ flex: 1 }}>
+                                            <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#065F46', margin: 0, marginBottom: '0.375rem' }}>
+                                                Multi-Platform Sync
+                                            </h4>
+                                            <p style={{ fontSize: '0.75rem', color: '#047857', margin: 0, lineHeight: 1.6 }}>
+                                                EmailBison data syncs alongside Smartlead automatically every <strong>20 minutes</strong>.
+                                                Each platform syncs independently with failure isolation.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
                     )}
 
                     {/* Reply.io — Coming Soon */}
