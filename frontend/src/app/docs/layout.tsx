@@ -14,8 +14,9 @@ const docSections = [
             { title: 'Getting Started', href: '/docs/getting-started', icon: Zap },
             { title: 'Clay Integration', href: '/docs/clay-integration', icon: Activity },
             { title: 'Smartlead Integration', href: '/docs/smartlead-integration', icon: Activity },
+            { title: 'EmailBison Integration', href: '/docs/emailbison-integration', icon: Activity },
+            { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
             { title: 'API Integration', href: '/docs/api-integration', icon: Settings },
-            { title: 'Advanced Integrations', href: '/docs/advanced-integrations', icon: Settings },
         ]
     },
     {

@@ -641,7 +641,7 @@ export default function Settings() {
                                         <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Warm-up monitoring & reputation tracking.</p>
                                     </div>
                                     <a
-                                        href="/docs/advanced-integrations"
+                                        href="/docs/emailbison-integration"
                                         target="_blank"
                                         title="View integration guide"
                                         style={{
@@ -882,6 +882,28 @@ export default function Settings() {
                                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>Slack Bot Integration</h2>
                                 <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Get infrastructure alerts and run slash commands directly from Slack.</p>
                             </div>
+                            <a
+                                href="/docs/slack-integration"
+                                target="_blank"
+                                title="View integration guide"
+                                style={{
+                                    width: '32px',
+                                    height: '32px',
+                                    borderRadius: '8px',
+                                    background: '#F1F5F9',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#64748B',
+                                    textDecoration: 'none',
+                                    transition: 'all 0.2s',
+                                    border: '1px solid #E2E8F0'
+                                }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                            >
+                                <span style={{ fontSize: '1rem' }}>❓</span>
+                            </a>
                         </div>
 
                         <div style={{ padding: '1.5rem', background: '#F8FAFC', borderRadius: '16px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
