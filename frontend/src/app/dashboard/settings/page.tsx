@@ -705,7 +705,7 @@ export default function Settings() {
                         </div>
 
                         <a
-                            href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&state=${org?.id}`}
+                            href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}`}
                             style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
