@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Introducing Infrastructure Assessment: The Pre-Flight Check for Cold Email',
+    title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
     description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
     openGraph: {
-        title: 'Introducing Infrastructure Assessment: The Pre-Flight Check for Cold Email',
+        title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
         description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
         type: 'article',
         publishedTime: '2024-03-20',

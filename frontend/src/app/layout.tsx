@@ -12,7 +12,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
-  title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
+  title: 'Superkabe - Infrastructure Protection for Outbound',
   description:
     'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
   icons: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     apple: '/image/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Superkabe - Infrastructure Protection for Modern Outbound Teams',
+    title: 'Superkabe - Infrastructure Protection for Outbound',
     description: 'Protect your outbound email infrastructure with production-hardened monitoring and auto-healing.',
     url: 'https://www.superkabe.com',
     siteName: 'Superkabe',

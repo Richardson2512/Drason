@@ -4,7 +4,7 @@ import { Shield, AlertTriangle, CheckCircle, Zap, Lock, Activity } from 'lucide-
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'The Complete Email Deliverability Guide for Outbound Teams – Superkabe',
+    title: 'The Complete Email Deliverability Guide for Outbound',
     description: 'Comprehensive guide to email deliverability covering sender reputation, bounce rates, DNS authentication, domain warming, and infrastructure protection for outbound email operators.',
 };
 

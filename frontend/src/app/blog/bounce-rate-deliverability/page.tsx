@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How Bounce Rate Affects Email Deliverability – Superkabe Blog',
+    title: 'How Bounce Rate Affects Email Deliverability',
     description: 'Technical guide on email bounce rates, their impact on sender reputation and domain health, and strategies for preventing deliverability degradation.',
 };
 

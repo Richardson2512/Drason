@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const articles = [
     {
         slug: 'introducing-infrastructure-assessment',
-        title: 'Introducing Infrastructure Assessment: The Pre-Flight Check for Cold Email',
+        title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
         description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
         icon: Activity,
         readTime: '3 min read',
@@ -20,7 +20,7 @@ const articles = [
     },
     {
         slug: 'email-deliverability-guide',
-        title: 'The Complete Email Deliverability Guide for Outbound Teams',
+        title: 'The Complete Email Deliverability Guide for Outbound',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
         icon: BookOpen,
         readTime: '20 min read',

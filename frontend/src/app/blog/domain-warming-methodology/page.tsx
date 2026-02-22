@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Domain Warming Methodology – Superkabe Blog',
+    title: 'Domain Warming Methodology for Outbound Teams',
     description: 'Systematic approach to building sender reputation on new domains. Volume ramp schedules, warming signals, and common mistakes that burn domains.',
 };
 
