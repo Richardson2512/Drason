@@ -177,7 +177,7 @@ export default function CampaignPausedPage() {
                             <li>• Check blacklist status at <a href="https://mxtoolbox.com/blacklists.aspx" target="_blank" className="text-blue-600 hover:underline">mxtoolbox.com</a></li>
                             <li>• Request delisting from each blacklist</li>
                             <li>• Fix SPF/DKIM/DMARC records</li>
-                            <li>• Trigger manual re-assessment in Drason</li>
+                            <li>• Trigger manual re-assessment in Superkabe</li>
                         </ul>
                     </div>
                     <div className="bg-white rounded-lg p-4 border border-amber-200 border-l-4 border-l-blue-500">
@@ -204,7 +204,7 @@ export default function CampaignPausedPage() {
                     </li>
                     <li className="flex items-start gap-2">
                         <span className="text-red-600 font-bold">•</span>
-                        <span><strong>Don't bypass Drason</strong> - Resuming directly in Smartlead will cause sync conflicts. Always use Drason's controls.</span>
+                        <span><strong>Don't bypass Superkabe</strong> - Resuming directly in Smartlead will cause sync conflicts. Always use Superkabe's controls.</span>
                     </li>
                     <li className="flex items-start gap-2">
                         <span className="text-red-600 font-bold">•</span>

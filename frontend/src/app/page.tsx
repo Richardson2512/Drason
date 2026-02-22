@@ -23,7 +23,7 @@ export default function LandingPage() {
 
     const features = [
         {
-            title: "Drason Integration & Monitoring",
+            title: "Superkabe Integration & Monitoring",
             desc: "Native webhooks synchronize with Smartlead and Clay in real-time. We capture every bounce event and delivery block instantly to maintain 99%+ infrastructure health."
         },
         {
@@ -32,11 +32,11 @@ export default function LandingPage() {
         },
         {
             title: "Auto-Healing Infrastructure",
-            desc: "Drason algorithms automatically detect mailbox fatigue. When a mailbox underperforms, it is instantly paused and traffic is weight-balanced toward healthy assets."
+            desc: "Superkabe algorithms automatically detect mailbox fatigue. When a mailbox underperforms, it is instantly paused and traffic is weight-balanced toward healthy assets."
         },
         {
             title: "Multi-Entity Scaling",
-            desc: "Supporting unlimited mailboxes and unique domains. Drason scales your outbound operations without increasing the risk profile of your primary sender profiles."
+            desc: "Supporting unlimited mailboxes and unique domains. Superkabe scales your outbound operations without increasing the risk profile of your primary sender profiles."
         },
         {
             title: "Infrastructure Analytics Engine",
@@ -58,74 +58,74 @@ export default function LandingPage() {
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "How does Drason protect sender reputation?",
+                "name": "How does Superkabe protect sender reputation?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Drason monitors bounce rates, DNS authentication status, and mailbox health continuously. When a mailbox exceeds safe bounce thresholds, Drason auto-pauses it and redistributes traffic to healthy senders. If a domain reaches critical risk levels, all outbound traffic is gated until metrics recover. This prevents the compounding damage that destroys sender reputation."
+                    "text": "Superkabe monitors bounce rates, DNS authentication status, and mailbox health continuously. When a mailbox exceeds safe bounce thresholds, Superkabe auto-pauses it and redistributes traffic to healthy senders. If a domain reaches critical risk levels, all outbound traffic is gated until metrics recover. This prevents the compounding damage that destroys sender reputation."
                 }
             },
             {
                 "@type": "Question",
-                "name": "How is Drason different from traditional email deliverability tools?",
+                "name": "How is Superkabe different from traditional email deliverability tools?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Traditional deliverability tools report problems after damage has occurred. Drason is a real-time protection layer that prevents damage before it compounds. It auto-pauses risky mailboxes, gates domain traffic at unsafe bounce thresholds, and enforces graduated recovery — acting as infrastructure armor rather than a diagnostic dashboard."
+                    "text": "Traditional deliverability tools report problems after damage has occurred. Superkabe is a real-time protection layer that prevents damage before it compounds. It auto-pauses risky mailboxes, gates domain traffic at unsafe bounce thresholds, and enforces graduated recovery — acting as infrastructure armor rather than a diagnostic dashboard."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Who is Drason built for?",
+                "name": "Who is Superkabe built for?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Drason is built for outbound email operators, revenue teams, and agencies managing multi-domain sending infrastructure. It is designed for teams running cold outbound campaigns through platforms like Smartlead or Instantly who need automated protection against domain burnout, bounce-rate spikes, and DNS misconfiguration."
+                    "text": "Superkabe is built for outbound email operators, revenue teams, and agencies managing multi-domain sending infrastructure. It is designed for teams running cold outbound campaigns through platforms like Smartlead or Instantly who need automated protection against domain burnout, bounce-rate spikes, and DNS misconfiguration."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Does Drason replace email sending platforms like Smartlead?",
+                "name": "Does Superkabe replace email sending platforms like Smartlead?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "No. Drason is a protection layer that sits between your sending platform and your infrastructure. It integrates with tools like Smartlead and Clay via webhooks to monitor bounce events, DNS health, and lead quality. Drason does not send emails — it protects the infrastructure that does."
+                    "text": "No. Superkabe is a protection layer that sits between your sending platform and your infrastructure. It integrates with tools like Smartlead and Clay via webhooks to monitor bounce events, DNS health, and lead quality. Superkabe does not send emails — it protects the infrastructure that does."
                 }
             },
             {
                 "@type": "Question",
-                "name": "How does Drason prevent domain burnout?",
+                "name": "How does Superkabe prevent domain burnout?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Domain burnout occurs when sustained high bounce rates or spam complaints permanently damage a domain's sender reputation. Drason prevents this by monitoring every bounce event in real-time, auto-pausing mailboxes at configurable thresholds, gating entire domains when aggregate risk is critical, and enforcing graduated recovery before resuming full volume."
+                    "text": "Domain burnout occurs when sustained high bounce rates or spam complaints permanently damage a domain's sender reputation. Superkabe prevents this by monitoring every bounce event in real-time, auto-pausing mailboxes at configurable thresholds, gating entire domains when aggregate risk is critical, and enforcing graduated recovery before resuming full volume."
                 }
             },
             {
                 "@type": "Question",
-                "name": "What problems does Drason solve for outbound teams?",
+                "name": "What problems does Superkabe solve for outbound teams?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Drason solves domain burnout from unmonitored bounce rates, DNS authentication failures that silently degrade deliverability, mailbox fatigue from excessive sending volume, toxic leads that generate hard bounces, and the inability to detect infrastructure damage before it becomes irreversible. It automates the monitoring and response that would otherwise require manual oversight across every domain and mailbox."
+                    "text": "Superkabe solves domain burnout from unmonitored bounce rates, DNS authentication failures that silently degrade deliverability, mailbox fatigue from excessive sending volume, toxic leads that generate hard bounces, and the inability to detect infrastructure damage before it becomes irreversible. It automates the monitoring and response that would otherwise require manual oversight across every domain and mailbox."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Can Drason help recover a damaged email domain?",
+                "name": "Can Superkabe help recover a damaged email domain?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes, for domains with moderate reputation damage. Drason enforces a graduated recovery workflow: it stops all sending, identifies the root cause, waits for ISP scoring models to register the pause, then re-warms the domain at reduced volume with tighter monitoring thresholds. Severely blacklisted domains may require replacement rather than recovery."
+                    "text": "Yes, for domains with moderate reputation damage. Superkabe enforces a graduated recovery workflow: it stops all sending, identifies the root cause, waits for ISP scoring models to register the pause, then re-warms the domain at reduced volume with tighter monitoring thresholds. Severely blacklisted domains may require replacement rather than recovery."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Is Drason an email warmup tool?",
+                "name": "Is Superkabe an email warmup tool?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "No. Drason is an infrastructure protection platform, not a warmup service. Warmup tools generate artificial engagement to build initial reputation. Drason monitors and protects live sending infrastructure — tracking bounce rates, DNS health, and mailbox resilience to prevent damage during actual outbound campaigns. Both serve different functions and can be used together."
+                    "text": "No. Superkabe is an infrastructure protection platform, not a warmup service. Warmup tools generate artificial engagement to build initial reputation. Superkabe monitors and protects live sending infrastructure — tracking bounce rates, DNS health, and mailbox resilience to prevent damage during actual outbound campaigns. Both serve different functions and can be used together."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Does Drason support multiple domains?",
+                "name": "Does Superkabe support multiple domains?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. Drason supports unlimited domains and mailboxes per organization. Each domain is monitored independently for DNS authentication compliance, bounce rates, and mailbox health. This isolation ensures that a problem on one domain does not cascade to others, which is critical for agencies and teams operating multi-domain outbound infrastructure."
+                    "text": "Yes. Superkabe supports unlimited domains and mailboxes per organization. Each domain is monitored independently for DNS authentication compliance, bounce rates, and mailbox health. This isolation ensures that a problem on one domain does not cascade to others, which is critical for agencies and teams operating multi-domain outbound infrastructure."
                 }
             }
         ]
@@ -144,8 +144,8 @@ export default function LandingPage() {
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Drason</span>
+                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
@@ -179,7 +179,7 @@ export default function LandingPage() {
                     </h1>
 
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-6 leading-relaxed">
-                        Stop burning domains. Drason sits between your enrichment and email layers to monitor health, block risks, and auto-heal your infrastructure.
+                        Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block risks, and auto-heal your infrastructure.
                     </p>
 
                     <p className="text-sm text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed tracking-wide">
@@ -202,10 +202,10 @@ export default function LandingPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-10 md:p-14 border border-gray-100 shadow-xl shadow-blue-500/5">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight text-center">
-                            What is Drason?
+                            What is Superkabe?
                         </h2>
                         <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10 text-center">
-                            Drason is an <strong className="text-gray-900">email deliverability</strong> and <strong className="text-gray-900">sender reputation</strong> protection platform. It monitors <strong className="text-gray-900">domain health</strong>, maintains <strong className="text-gray-900">mailbox health</strong> by auto-pausing fatigued senders, tracks <strong className="text-gray-900">lead health</strong> to prevent toxic contacts from damaging your infrastructure, and safeguards <strong className="text-gray-900">campaign health</strong> with real-time bounce gating. Drason enforces <strong className="text-gray-900">DNS authentication</strong> compliance (SPF, DKIM, DMARC), gates <strong className="text-gray-900">outbound email</strong> traffic based on live bounce data, and automates infrastructure recovery for outbound email operators.
+                            Superkabe is an <strong className="text-gray-900">email deliverability</strong> and <strong className="text-gray-900">sender reputation</strong> protection platform. It monitors <strong className="text-gray-900">domain health</strong>, maintains <strong className="text-gray-900">mailbox health</strong> by auto-pausing fatigued senders, tracks <strong className="text-gray-900">lead health</strong> to prevent toxic contacts from damaging your infrastructure, and safeguards <strong className="text-gray-900">campaign health</strong> with real-time bounce gating. Superkabe enforces <strong className="text-gray-900">DNS authentication</strong> compliance (SPF, DKIM, DMARC), gates <strong className="text-gray-900">outbound email</strong> traffic based on live bounce data, and automates infrastructure recovery for outbound email operators.
                         </p>
                         <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Designed to keep your email deliverability above 95%.
@@ -322,7 +322,7 @@ export default function LandingPage() {
                         <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">Simple Pricing</div>
                         <h2 className="text-5xl font-bold mb-6 text-gray-900">Protect your revenue.</h2>
                         <p className="text-gray-500 mb-8 text-lg leading-relaxed">
-                            Don't let a $10 domain burn cost you a $50k deal. Drason pays for itself by saving your infrastructure from irreversible damage.
+                            Don't let a $10 domain burn cost you a $50k deal. Superkabe pays for itself by saving your infrastructure from irreversible damage.
                         </p>
 
                         <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl">
@@ -385,7 +385,7 @@ export default function LandingPage() {
             <section className="py-24 px-6 bg-[#F8FAFF] border-y border-gray-100">
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Drason Technical Specifications</h2>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">Superkabe Technical Specifications</h2>
                         <p className="text-gray-500">Deterministic signals for high-volume outbound engineering teams.</p>
                     </div>
                     <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
@@ -443,7 +443,7 @@ export default function LandingPage() {
                         Stop Burning Domains.
                     </h2>
                     <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-                        Join modern outbound teams who trust Drason to keep their infrastructure healthy and their deliverability high.
+                        Join modern outbound teams who trust Superkabe to keep their infrastructure healthy and their deliverability high.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">

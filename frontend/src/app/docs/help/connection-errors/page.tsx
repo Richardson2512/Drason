@@ -12,7 +12,7 @@ export default function ConnectionErrorsPage() {
             <div className="bg-red-50 border-l-4 border-red-500 p-6 mb-12 rounded-r-lg">
                 <h2 className="text-xl font-bold mb-3 text-red-900">What Does &ldquo;Disconnected&rdquo; Mean?</h2>
                 <p className="text-red-800 mb-4">
-                    A disconnected mailbox means Drason cannot send or receive emails through this account.
+                    A disconnected mailbox means Superkabe cannot send or receive emails through this account.
                     The SMTP (sending) or IMAP (receiving) connection to your email provider has failed.
                 </p>
                 <p className="text-red-700 text-sm">
@@ -21,7 +21,7 @@ export default function ConnectionErrorsPage() {
                 </p>
             </div>
 
-            {/* How Drason Detects Connection Issues */}
+            {/* How Superkabe Detects Connection Issues */}
             <h2 className="text-3xl font-bold mb-6 text-gray-900">How Connection Status Works</h2>
             <div className="bg-gradient-to-br from-gray-50 to-blue-50 border border-gray-200 rounded-2xl p-8 mb-12">
                 <ol className="space-y-4">
@@ -29,14 +29,14 @@ export default function ConnectionErrorsPage() {
                         <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
                         <div>
                             <h3 className="font-bold text-gray-900">Sync with Smartlead</h3>
-                            <p className="text-gray-600 text-sm">Drason syncs your mailbox data from Smartlead, which tests SMTP and IMAP connections.</p>
+                            <p className="text-gray-600 text-sm">Superkabe syncs your mailbox data from Smartlead, which tests SMTP and IMAP connections.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
                         <div>
                             <h3 className="font-bold text-gray-900">Connection Check (First Priority)</h3>
-                            <p className="text-gray-600 text-sm">Before any bounce rate or risk analysis, Drason checks if SMTP and IMAP are working.</p>
+                            <p className="text-gray-600 text-sm">Before any bounce rate or risk analysis, Superkabe checks if SMTP and IMAP are working.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
@@ -83,7 +83,7 @@ export default function ConnectionErrorsPage() {
                                     <li>1. Go to <strong>Smartlead → Email Accounts</strong></li>
                                     <li>2. Find the affected mailbox and click <strong>Reconnect</strong></li>
                                     <li>3. Complete the Google OAuth authorization flow</li>
-                                    <li>4. Return to Drason and trigger a <strong>Manual Sync</strong></li>
+                                    <li>4. Return to Superkabe and trigger a <strong>Manual Sync</strong></li>
                                 </ol>
                             </div>
 
@@ -131,7 +131,7 @@ export default function ConnectionErrorsPage() {
                                     <li>2. Update the mailbox password/app password</li>
                                     <li>3. If using Google with 2FA, generate a new <strong>App Password</strong></li>
                                     <li>4. If using Microsoft with 2FA, generate a new <strong>App Password</strong></li>
-                                    <li>5. Return to Drason and trigger a <strong>Manual Sync</strong></li>
+                                    <li>5. Return to Superkabe and trigger a <strong>Manual Sync</strong></li>
                                 </ol>
                             </div>
 
@@ -222,7 +222,7 @@ export default function ConnectionErrorsPage() {
                             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                                 <h4 className="font-bold text-green-900 mb-2">✅ How to Fix</h4>
                                 <ol className="space-y-2 text-sm text-green-800">
-                                    <li>1. Wait 15-30 minutes and trigger a <strong>Manual Sync</strong> in Drason</li>
+                                    <li>1. Wait 15-30 minutes and trigger a <strong>Manual Sync</strong> in Superkabe</li>
                                     <li>2. Check your email provider&apos;s status page for outages</li>
                                     <li>3. If persistent, try reconnecting the account in Smartlead</li>
                                 </ol>
@@ -351,14 +351,14 @@ export default function ConnectionErrorsPage() {
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Sync in Drason</h3>
-                            <p className="text-gray-600 text-sm">After fixing the connection in Smartlead, go to Drason → Settings and click <strong>Manual Sync</strong>. This will re-fetch connection status and update the mailbox.</p>
+                            <h3 className="font-bold text-gray-900">Sync in Superkabe</h3>
+                            <p className="text-gray-600 text-sm">After fixing the connection in Smartlead, go to Superkabe → Settings and click <strong>Manual Sync</strong>. This will re-fetch connection status and update the mailbox.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Verify in Drason</h3>
+                            <h3 className="font-bold text-gray-900">Verify in Superkabe</h3>
                             <p className="text-gray-600 text-sm">Go to Mailboxes and confirm the status changed from &ldquo;Disconnected&rdquo; to &ldquo;Connected&rdquo;. The mailbox will automatically resume in its campaigns.</p>
                         </div>
                     </li>
@@ -374,7 +374,7 @@ export default function ConnectionErrorsPage() {
                 <ul className="space-y-1 text-sm text-blue-700">
                     <li>• Check the <strong>exact error message</strong> shown in the diagnostic card on the Mailboxes page</li>
                     <li>• Contact your email provider&apos;s support team with the error details</li>
-                    <li>• Reach out to <a href="mailto:support@drason.com" className="underline font-medium">support@drason.com</a> and we&apos;ll help investigate</li>
+                    <li>• Reach out to <a href="mailto:support@superkabe.com" className="underline font-medium">support@superkabe.com</a> and we&apos;ll help investigate</li>
                 </ul>
             </div>
 

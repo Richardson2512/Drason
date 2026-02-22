@@ -206,7 +206,7 @@ export default function BillingSection() {
                     <span style={{ fontSize: '1.5rem' }}>⏰</span>
                     <div>
                         <p style={{ color: '#92400E', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
-                            Your trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Upgrade now to continue using Drason.
+                            Your trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Upgrade now to continue using Superkabe.
                         </p>
                     </div>
                 </div>

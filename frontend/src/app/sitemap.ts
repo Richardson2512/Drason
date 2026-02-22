@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
 
-const BASE_URL = 'https://www.drason.com';
+const BASE_URL = 'https://www.superkabe.com';
 
 /**
  * Dynamically scans a directory under src/app for page.tsx files

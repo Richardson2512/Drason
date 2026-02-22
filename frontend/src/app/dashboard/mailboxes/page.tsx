@@ -439,7 +439,7 @@ export default function MailboxesPage() {
                                         <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
                                             <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.5rem' }}>✅ Quick Fix</div>
                                             <div style={{ color: '#14532D', lineHeight: 1.5, marginBottom: '0.75rem' }}>
-                                                Reconnect this email account in Smartlead, then trigger a Manual Sync in Drason.
+                                                Reconnect this email account in Smartlead, then trigger a Manual Sync in Superkabe.
                                             </div>
                                             <a
                                                 href={`/docs/help/connection-errors${selectedMailbox.connection_error?.includes('invalid_grant') || selectedMailbox.connection_error?.includes('refresh') ? '#google-oauth' :

@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'SPF, DKIM, and DMARC Explained – Drason Blog',
+    title: 'SPF, DKIM, and DMARC Explained – Superkabe Blog',
     description: 'Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.',
 };
 
@@ -12,11 +12,11 @@ export default function SpfDkimDmarcArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "SPF, DKIM, and DMARC Explained",
-        "author": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.drason.com/blog/spf-dkim-dmarc-explained"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
     };
 
     const howToSchema = {
@@ -61,18 +61,18 @@ export default function SpfDkimDmarcArticle() {
             },
             {
                 "@type": "Question",
-                "name": "How does Drason monitor DNS records?",
+                "name": "How does Superkabe monitor DNS records?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Drason performs continuous DNS health checks across all configured sending domains. It monitors SPF record validity (including the 10-lookup limit), DKIM key presence, and DMARC policy strength. When misconfigurations are detected, alerts are triggered before they cause deliverability failures."
+                    "text": "Superkabe performs continuous DNS health checks across all configured sending domains. It monitors SPF record validity (including the 10-lookup limit), DKIM key presence, and DMARC policy strength. When misconfigurations are detected, alerts are triggered before they cause deliverability failures."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Does Drason check SPF, DKIM, and DMARC?",
+                "name": "Does Superkabe check SPF, DKIM, and DMARC?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. Drason validates all three authentication protocols for every sending domain. It checks SPF for authorized IPs and lookup limits, DKIM for valid key publications, and DMARC for policy enforcement level. Domains with missing or weak configurations are flagged automatically."
+                    "text": "Yes. Superkabe validates all three authentication protocols for every sending domain. It checks SPF for authorized IPs and lookup limits, DKIM for valid key publications, and DMARC for policy enforcement level. Domains with missing or weak configurations are flagged automatically."
                 }
             },
             {
@@ -114,7 +114,7 @@ export default function SpfDkimDmarcArticle() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> All three must be configured on every sending domain — no exceptions since Feb 2024</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> SPF has a 10-lookup limit; exceeding it silently fails authentication</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Use -all (hard fail) for SPF and p=quarantine or p=reject for DMARC</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Drason continuously monitors all three protocols for misconfigurations</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe continuously monitors all three protocols for misconfigurations</li>
                     </ul>
                 </div>
 
@@ -129,7 +129,7 @@ export default function SpfDkimDmarcArticle() {
                     </p>
 
                     <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
-                        <p className="text-gray-500 mb-2"># Example SPF record for drason.com</p>
+                        <p className="text-gray-500 mb-2"># Example SPF record for superkabe.com</p>
                         <p>v=spf1 include:_spf.google.com include:sendgrid.net -all</p>
                     </div>
 
@@ -154,7 +154,7 @@ export default function SpfDkimDmarcArticle() {
 
                     <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
                         <p className="text-gray-500 mb-2"># Example DKIM DNS record</p>
-                        <p>selector1._domainkey.drason.com IN TXT &quot;v=DKIM1; k=rsa; p=MIGfMA0GCS...&quot;</p>
+                        <p>selector1._domainkey.superkabe.com IN TXT &quot;v=DKIM1; k=rsa; p=MIGfMA0GCS...&quot;</p>
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
@@ -168,7 +168,7 @@ export default function SpfDkimDmarcArticle() {
 
                     <div className="bg-gray-900 text-green-400 p-6 rounded-2xl mb-8 font-mono text-sm overflow-x-auto">
                         <p className="text-gray-500 mb-2"># Recommended DMARC record</p>
-                        <p>_dmarc.drason.com IN TXT &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc@drason.com; pct=100&quot;</p>
+                        <p>_dmarc.superkabe.com IN TXT &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc@superkabe.com; pct=100&quot;</p>
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
@@ -191,7 +191,7 @@ export default function SpfDkimDmarcArticle() {
                         As of February 2024, Google and Yahoo require bulk senders to have all three protocols properly configured. Domains without DMARC will have emails throttled or rejected by these providers. For outbound teams running 3–10 domains, this means each domain must have its own SPF, DKIM, and DMARC records independently configured.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-8">
-                        Drason monitors DNS authentication health across all your sending domains. When SPF records approach the 10-lookup limit, DKIM keys are missing, or DMARC policies are too permissive, Drason flags these issues before they cause deliverability failures.
+                        Superkabe monitors DNS authentication health across all your sending domains. When SPF records approach the 10-lookup limit, DKIM keys are missing, or DMARC policies are too permissive, Superkabe flags these issues before they cause deliverability failures.
                     </p>
 
                     <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
@@ -224,7 +224,7 @@ export default function SpfDkimDmarcArticle() {
                     </Link>
                 </div>
                 <div className="mt-6">
-                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Drason protects your infrastructure</Link>
+                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
                 </div>
             </section>
 

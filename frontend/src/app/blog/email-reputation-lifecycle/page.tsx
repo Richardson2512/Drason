@@ -12,11 +12,11 @@ export default function EmailReputationArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "The Email Reputation Lifecycle",
-        "author": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
+        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.drason.com/blog/email-reputation-lifecycle"
+        "mainEntityOfPage": "https://www.superkabe.com/blog/email-reputation-lifecycle"
     };
 
     const faqSchema = {
@@ -57,10 +57,10 @@ export default function EmailReputationArticle() {
             },
             {
                 "@type": "Question",
-                "name": "How does Drason heal a damaged mailbox?",
+                "name": "How does Superkabe heal a damaged mailbox?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Drason implements a graduated healing workflow for damaged mailboxes. It auto-pauses the mailbox, identifies the damage source (bad leads, volume spike, authentication failure), waits for ISP score decay, then re-enables sending at reduced volume. Throughout recovery, tighter thresholds are enforced to prevent relapse."
+                    "text": "Superkabe implements a graduated healing workflow for damaged mailboxes. It auto-pauses the mailbox, identifies the damage source (bad leads, volume spike, authentication failure), waits for ISP score decay, then re-enables sending at reduced volume. Throughout recovery, tighter thresholds are enforced to prevent relapse."
                 }
             },
             {
@@ -73,10 +73,10 @@ export default function EmailReputationArticle() {
             },
             {
                 "@type": "Question",
-                "name": "Can Drason prevent relapse after recovery?",
+                "name": "Can Superkabe prevent relapse after recovery?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. After a mailbox or domain enters recovery, Drason applies permanently tighter monitoring thresholds for a configurable grace period. Warning triggers are set lower, domain gates activate earlier, and volume caps are enforced more strictly. This prevents the same failure pattern from recurring."
+                    "text": "Yes. After a mailbox or domain enters recovery, Superkabe applies permanently tighter monitoring thresholds for a configurable grace period. Warning triggers are set lower, domain gates activate earlier, and volume caps are enforced more strictly. This prevents the same failure pattern from recurring."
                 }
             }
         ]
@@ -212,7 +212,7 @@ export default function EmailReputationArticle() {
                         Not all domains can be recovered. If a domain has been blacklisted by multiple major ISPs (Google, Microsoft, Yahoo), hit recycled spam traps, or sustained bounce rates above 15% for more than a week, recovery is typically not cost-effective. Purchasing a new domain and starting the warming process from scratch is often faster and more reliable than attempting to rehabilitate a severely damaged domain.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-8">
-                        This is the core value proposition of Drason: preventing domains from ever reaching the point of no return. By monitoring bounce rates, engagement signals, and authentication health in real-time, Drason triggers protective action (mailbox pausing, domain gating, traffic redistribution) before damage becomes irreversible.
+                        This is the core value proposition of Superkabe: preventing domains from ever reaching the point of no return. By monitoring bounce rates, engagement signals, and authentication health in real-time, Superkabe triggers protective action (mailbox pausing, domain gating, traffic redistribution) before damage becomes irreversible.
                     </p>
 
                     <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
@@ -245,7 +245,7 @@ export default function EmailReputationArticle() {
                     </Link>
                 </div>
                 <div className="mt-6">
-                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Drason protects your infrastructure</Link>
+                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
                 </div>
             </section>
 

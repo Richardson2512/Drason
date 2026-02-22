@@ -12,7 +12,7 @@ export default function AutoHealingPage() {
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl p-8 mb-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">What Is Auto-Healing?</h2>
                 <p className="text-gray-700 mb-4 text-lg">
-                    Auto-healing is Drason's automatic recovery system. When a mailbox, domain, or campaign gets paused due to health issues,
+                    Auto-healing is Superkabe's automatic recovery system. When a mailbox, domain, or campaign gets paused due to health issues,
                     the system doesn't just leave it broken - it walks it through a **graduated recovery process** to safely bring it back online.
                 </p>
                 <p className="text-gray-600">

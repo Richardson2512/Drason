@@ -263,7 +263,7 @@ export default function Settings() {
                     <div>
                         <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>System Mode</h2>
                         <p style={{ color: '#64748B', fontSize: '1rem', maxWidth: '600px', lineHeight: '1.5' }}>
-                            Control the level of automation and intervention Drason processes.
+                            Control the level of automation and intervention Superkabe processes.
                         </p>
                     </div>
                     {org && (
@@ -844,8 +844,8 @@ export default function Settings() {
                             </h3>
                             <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '400px', lineHeight: '1.5' }}>
                                 {slackConnected
-                                    ? 'Your Drason bot is installed and actively monitoring your infrastructure.'
-                                    : <><span style={{ marginRight: '3px' }}>Install the Drason bot to monitor domains and mailboxes via</span><code style={{ background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>/drason</code> commands.</>
+                                    ? 'Your Superkabe bot is installed and actively monitoring your infrastructure.'
+                                    : <><span style={{ marginRight: '3px' }}>Install the Superkabe bot to monitor domains and mailboxes via</span><code style={{ background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>/superkabe</code> commands.</>
                                 }
                             </p>
                         </div>
@@ -870,7 +870,7 @@ export default function Settings() {
                             </div>
                         ) : (
                             <a
-                                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.drason.com/slack/oauth/callback&state=${org?.id}:${user?.id}`}
+                                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}:${user?.id}`}
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
@@ -920,7 +920,7 @@ export default function Settings() {
                                 )}
                             </h3>
                             <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '500px', lineHeight: '1.5' }}>
-                                Drason will send critical infrastructure events, domain bounce spikes, and risk transitions directly to your designated Slack channel.
+                                Superkabe will send critical infrastructure events, domain bounce spikes, and risk transitions directly to your designated Slack channel.
                             </p>
                         </div>
 

@@ -5,7 +5,7 @@ export default function SmartleadIntegrationPage() {
                 Smartlead Integration Guide
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Step-by-step guide to connect Smartlead with Drason for real-time bounce monitoring and mailbox protection
+                Step-by-step guide to connect Smartlead with Superkabe for real-time bounce monitoring and mailbox protection
             </p>
 
             {/* Overview */}
@@ -15,7 +15,7 @@ export default function SmartleadIntegrationPage() {
                     By the end of this guide, your Smartlead campaigns will:
                 </p>
                 <ol className="space-y-2 text-gray-600">
-                    <li>✅ Send real-time bounce and delivery events to Drason</li>
+                    <li>✅ Send real-time bounce and delivery events to Superkabe</li>
                     <li>✅ Trigger automated mailbox pausing at 5 bounces / 100 sends</li>
                     <li>✅ Enable domain-level protection when 50% of mailboxes are unhealthy</li>
                     <li>✅ Provide visibility into execution blocking reasons</li>
@@ -26,18 +26,18 @@ export default function SmartleadIntegrationPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Prerequisites</h2>
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
                 <ul className="space-y-3 text-gray-600">
-                    <li>✓ Active Drason account (<a href="/signup" className="text-blue-600 hover:text-blue-800">Sign up here</a>)</li>
+                    <li>✓ Active Superkabe account (<a href="/signup" className="text-blue-600 hover:text-blue-800">Sign up here</a>)</li>
                     <li>✓ Smartlead account with active campaigns</li>
                     <li>✓ Smartlead API key (found in Smartlead Settings)</li>
-                    <li>✓ Your mailboxes should be imported into Drason first</li>
+                    <li>✓ Your mailboxes should be imported into Superkabe first</li>
                     <li>✓ Admin access to Smartlead webhook settings</li>
                 </ul>
             </div>
 
             {/* Step 1 */}
-            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 1: Add Smartlead API Key to Drason</h2>
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 1: Add Smartlead API Key to Superkabe</h2>
             <p className="text-gray-600 mb-4">
-                Drason needs your Smartlead API key to sync campaign and mailbox data.
+                Superkabe needs your Smartlead API key to sync campaign and mailbox data.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
@@ -50,20 +50,20 @@ export default function SmartleadIntegrationPage() {
             </div>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">Add API Key to Drason</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">Add API Key to Superkabe</h3>
                 <ol className="space-y-3 text-gray-600 text-sm">
-                    <li><strong>1.</strong> In Drason, go to <strong>Settings → Integrations</strong></li>
+                    <li><strong>1.</strong> In Superkabe, go to <strong>Settings → Integrations</strong></li>
                     <li><strong>2.</strong> Find the <strong>Smartlead</strong> section</li>
                     <li><strong>3.</strong> Paste your API key in the <strong>API Key</strong> field</li>
                     <li><strong>4.</strong> Click <strong>Save</strong></li>
-                    <li><strong>5.</strong> Drason will validate the key and sync your campaigns</li>
+                    <li><strong>5.</strong> Superkabe will validate the key and sync your campaigns</li>
                 </ol>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-bold text-green-700 mb-2">✓ Expected Result</h3>
                 <p className="text-gray-600">
-                    After saving, you should see your Smartlead campaigns appear in the Drason dashboard under <strong>Campaigns</strong>.
+                    After saving, you should see your Smartlead campaigns appear in the Superkabe dashboard under <strong>Campaigns</strong>.
                 </p>
             </div>
 
@@ -77,11 +77,11 @@ export default function SmartleadIntegrationPage() {
                 <div className="space-y-4">
                     <div>
                         <p className="text-sm font-semibold text-gray-700 mb-2">Webhook URL:</p>
-                        <code className="text-green-600 bg-green-50 px-3 py-2 rounded-lg text-sm inline-block">https://api.drason.com/api/monitor/smartlead-webhook</code>
+                        <code className="text-green-600 bg-green-50 px-3 py-2 rounded-lg text-sm inline-block">https://api.superkabe.com/api/monitor/smartlead-webhook</code>
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-gray-700 mb-2">Your Organization ID:</p>
-                        <p className="text-gray-500 text-sm">Found in <strong>Drason → Settings → API Keys</strong></p>
+                        <p className="text-gray-500 text-sm">Found in <strong>Superkabe → Settings → API Keys</strong></p>
                         <code className="text-blue-600 bg-blue-50 px-3 py-2 rounded-lg text-sm inline-block mt-1">YOUR_ORGANIZATION_ID</code>
                         <p className="text-gray-400 text-xs mt-1">UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)</p>
                     </div>
@@ -91,7 +91,7 @@ export default function SmartleadIntegrationPage() {
             {/* Step 3 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 3: Configure Webhooks in Smartlead</h2>
             <p className="text-gray-600 mb-4">
-                Set up Smartlead to send bounce and delivery events to Drason in real-time.
+                Set up Smartlead to send bounce and delivery events to Superkabe in real-time.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
@@ -105,11 +105,11 @@ export default function SmartleadIntegrationPage() {
                         <div className="mt-2 bg-white border border-gray-200 rounded-xl p-4 space-y-3 text-sm">
                             <div>
                                 <p className="font-semibold text-gray-700 mb-1">Webhook Name:</p>
-                                <code className="text-blue-600 bg-blue-50 px-2 py-1 rounded">Drason Monitoring</code>
+                                <code className="text-blue-600 bg-blue-50 px-2 py-1 rounded">Superkabe Monitoring</code>
                             </div>
                             <div>
                                 <p className="font-semibold text-gray-700 mb-1">Webhook URL:</p>
-                                <code className="text-green-600 bg-green-50 px-2 py-1 rounded text-xs">https://api.drason.com/api/monitor/smartlead-webhook</code>
+                                <code className="text-green-600 bg-green-50 px-2 py-1 rounded text-xs">https://api.superkabe.com/api/monitor/smartlead-webhook</code>
                             </div>
                         </div>
                     </li>
@@ -179,23 +179,23 @@ export default function SmartleadIntegrationPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
                 <ol className="space-y-3 text-gray-600 text-sm">
                     <li><strong>1.</strong> In Smartlead, generate a webhook secret (if supported)</li>
-                    <li><strong>2.</strong> In Drason, go to <strong>Settings → Integrations → Smartlead</strong></li>
+                    <li><strong>2.</strong> In Superkabe, go to <strong>Settings → Integrations → Smartlead</strong></li>
                     <li><strong>3.</strong> Add the secret in the <strong>Webhook Secret</strong> field</li>
-                    <li><strong>4.</strong> Drason will validate incoming webhook signatures using HMAC-SHA256</li>
+                    <li><strong>4.</strong> Superkabe will validate incoming webhook signatures using HMAC-SHA256</li>
                 </ol>
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-bold text-blue-700 mb-2">💡 Development vs Production</h3>
                 <p className="text-gray-600 text-sm">
-                    In development, Drason allows webhooks without signature validation. For production, we strongly recommend configuring a webhook secret.
+                    In development, Superkabe allows webhooks without signature validation. For production, we strongly recommend configuring a webhook secret.
                 </p>
             </div>
 
             {/* Step 5 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 5: Verify Webhook Integration</h2>
             <p className="text-gray-600 mb-4">
-                Test that Smartlead events are flowing correctly into Drason.
+                Test that Smartlead events are flowing correctly into Superkabe.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
@@ -203,7 +203,7 @@ export default function SmartleadIntegrationPage() {
                 <ol className="space-y-3 text-gray-600 text-sm">
                     <li><strong>1.</strong> From one of your Smartlead campaigns, send a test email</li>
                     <li><strong>2.</strong> Wait 1-2 minutes for the <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">email_sent</code> webhook</li>
-                    <li><strong>3.</strong> In Drason, check <strong>Dashboard → Mailboxes</strong></li>
+                    <li><strong>3.</strong> In Superkabe, check <strong>Dashboard → Mailboxes</strong></li>
                     <li><strong>4.</strong> Verify the send count incremented for the mailbox</li>
                 </ol>
             </div>
@@ -211,7 +211,7 @@ export default function SmartleadIntegrationPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-semibold mb-4 text-gray-900">Method 2: Check Audit Logs</h3>
                 <ol className="space-y-3 text-gray-600 text-sm">
-                    <li><strong>1.</strong> Navigate to <strong>Drason → Audit Log</strong></li>
+                    <li><strong>1.</strong> Navigate to <strong>Superkabe → Audit Log</strong></li>
                     <li><strong>2.</strong> Look for recent events like:</li>
                 </ol>
                 <div className="mt-3 bg-white border border-gray-200 rounded-xl p-4 text-xs">
@@ -229,7 +229,7 @@ export default function SmartleadIntegrationPage() {
                     When webhooks are working correctly, you'll see:
                 </p>
                 <ul className="space-y-2 text-gray-600 text-sm">
-                    <li>✓ Real-time send counts updating in Drason dashboard</li>
+                    <li>✓ Real-time send counts updating in Superkabe dashboard</li>
                     <li>✓ Bounce events logged in audit trail</li>
                     <li>✓ Mailbox health scores reflecting actual sending patterns</li>
                     <li>✓ Warnings appearing when thresholds approach (3 bounces / 60 sends)</li>
@@ -239,7 +239,7 @@ export default function SmartleadIntegrationPage() {
             {/* Step 6 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 6: Configure System Mode</h2>
             <p className="text-gray-600 mb-4">
-                Choose how aggressively Drason should protect your infrastructure.
+                Choose how aggressively Superkabe should protect your infrastructure.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -292,7 +292,7 @@ export default function SmartleadIntegrationPage() {
                         </tr>
                         <tr>
                             <td className="px-6 py-4 text-gray-700">Signature validation fails</td>
-                            <td className="px-6 py-4 text-gray-600">Ensure webhook secret matches in both Smartlead and Drason</td>
+                            <td className="px-6 py-4 text-gray-600">Ensure webhook secret matches in both Smartlead and Superkabe</td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 text-gray-700">Mailbox not found errors</td>
@@ -307,7 +307,7 @@ export default function SmartleadIntegrationPage() {
             </div>
 
             {/* Understanding Monitoring */}
-            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Understanding What Drason Monitors</h2>
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Understanding What Superkabe Monitors</h2>
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
                 <div className="space-y-4 text-gray-600 text-sm">
                     <div>
@@ -341,7 +341,7 @@ export default function SmartleadIntegrationPage() {
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mt-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">🎉 Integration Complete!</h2>
                 <p className="text-gray-600 mb-4">
-                    Your Smartlead campaigns are now protected by Drason. Next steps:
+                    Your Smartlead campaigns are now protected by Superkabe. Next steps:
                 </p>
                 <ul className="space-y-2 text-gray-600">
                     <li>✓ <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">Learn about monitoring thresholds</a></li>

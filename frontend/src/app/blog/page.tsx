@@ -5,7 +5,7 @@ import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen } from 'lucide
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Blog – Drason',
+    title: 'Blog – Superkabe',
     description: 'Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.',
 };
 
@@ -68,8 +68,8 @@ export default function BlogPage() {
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Drason</span>
+                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
@@ -95,7 +95,7 @@ export default function BlogPage() {
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
                     <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
                         <Zap size={14} className="inline mr-1.5" />
-                        Drason Blog
+                        Superkabe Blog
                     </div>
                     <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
                         Email Infrastructure Intelligence
