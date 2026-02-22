@@ -443,9 +443,9 @@ export default function Settings() {
                 <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                     {[
                         { key: 'smartlead' as const, label: 'Smartlead', icon: '/smartlead.webp', active: true },
-                        { key: 'instantly' as const, label: 'Instantly', icon: null, active: false },
-                        { key: 'emailbison' as const, label: 'EmailBison', icon: null, active: true },
-                        { key: 'replyio' as const, label: 'Reply.io', icon: null, active: false },
+                        { key: 'instantly' as const, label: 'Instantly', icon: '/instantly.png', active: false },
+                        { key: 'emailbison' as const, label: 'EmailBison', icon: '/emailbison.png', active: true },
+                        { key: 'replyio' as const, label: 'Reply.io', icon: '/replyio.png', active: false },
                     ].map(provider => (
                         <button
                             key={provider.key}
