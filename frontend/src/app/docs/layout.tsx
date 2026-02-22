@@ -17,6 +17,7 @@ const docSections = [
             { title: 'EmailBison Integration', href: '/docs/emailbison-integration', icon: Activity },
             { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
             { title: 'API Integration', href: '/docs/api-integration', icon: Settings },
+            { title: 'Multi-Platform Sync', href: '/docs/multi-platform-sync', icon: GitBranch },
         ]
     },
     {

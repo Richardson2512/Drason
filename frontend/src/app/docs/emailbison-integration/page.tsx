@@ -74,19 +74,6 @@ export default function EmailBisonIntegrationPage() {
                 </div>
             </div>
 
-            {/* Step 3 */}
-            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 3: Multi-Platform Sync</h2>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Parallel Cron Execution</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                    Superkabe allows concurrent parallel integrations between Smartlead, EmailBison, and Clay. We run independent sync workers every <strong>20 minutes</strong> for each platform. Because they run in isolation via distinct queue processors, if the Smartlead API goes down, it will not affect your EmailBison warm-up health checks and vice-versa.
-                </p>
-                <h4 className="text-sm font-bold text-gray-900 mt-6 mb-2">Triggering Manual Syncs</h4>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                    Normally, you rely on Webhooks for real-time risk blocking, but if you need to force-pull historical data or manually reconcile state representations on demand, you can navigate to the EmailBison Integration card in Settings and click the <strong>Trigger Manual Sync</strong> button.
-                </p>
-            </div>
-
             {/* Next Steps */}
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mt-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">🎉 Integration Complete!</h2>
@@ -95,7 +82,7 @@ export default function EmailBisonIntegrationPage() {
                 </p>
                 <ul className="space-y-2 text-gray-600">
                     <li>✓ <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">Learn about continuous monitoring</a></li>
-                    <li>✓ <a href="/docs/risk-scoring" className="text-blue-600 hover:text-blue-800">Review Risk Scoring Algorithms</a></li>
+                    <li>✓ <a href="/docs/multi-platform-sync" className="text-blue-600 hover:text-blue-800">Configure Multi-Platform Syncs</a></li>
                     <li>✓ <a href="/docs/slack-integration" className="text-blue-600 hover:text-blue-800">Set up Slack alerts for bounces</a></li>
                 </ul>
             </div>
