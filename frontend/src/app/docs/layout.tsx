@@ -15,6 +15,7 @@ const docSections = [
             { title: 'Clay Integration', href: '/docs/clay-integration', icon: Activity },
             { title: 'Smartlead Integration', href: '/docs/smartlead-integration', icon: Activity },
             { title: 'API Integration', href: '/docs/api-integration', icon: Settings },
+            { title: 'Advanced Integrations', href: '/docs/advanced-integrations', icon: Settings },
         ]
     },
     {

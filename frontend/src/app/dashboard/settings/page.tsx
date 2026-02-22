@@ -379,7 +379,7 @@ export default function Settings() {
                                     <span style={{ fontSize: '1.5rem' }}>💡</span>
                                     <div style={{ flex: 1 }}>
                                         <p style={{ color: '#1E40AF', fontSize: '0.9rem', margin: 0 }}>
-                                            <strong>Webhook Header Required:</strong> Include <code style={{ fontFamily: 'monospace', fontWeight: 700 }}>x-organization-id</code> in your Clay and Smartlead webhook configurations.
+                                            <strong>Webhook Header Required:</strong> Include <code style={{ fontFamily: 'monospace', fontWeight: 700 }}>x-organization-id</code> in your Clay, Smartlead, and EmailBison webhook configurations.
                                         </p>
                                     </div>
                                 </div>
@@ -640,6 +640,28 @@ export default function Settings() {
                                         <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>EmailBison Integration</h2>
                                         <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Warm-up monitoring & reputation tracking.</p>
                                     </div>
+                                    <a
+                                        href="/docs/advanced-integrations"
+                                        target="_blank"
+                                        title="View integration guide"
+                                        style={{
+                                            width: '32px',
+                                            height: '32px',
+                                            borderRadius: '8px',
+                                            background: '#F1F5F9',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: '#64748B',
+                                            textDecoration: 'none',
+                                            transition: 'all 0.2s',
+                                            border: '1px solid #E2E8F0'
+                                        }}
+                                        onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
+                                        onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                                    >
+                                        <span style={{ fontSize: '1rem' }}>❓</span>
+                                    </a>
                                 </div>
 
                                 <form onSubmit={handleSaveEmailBison} style={{ marginBottom: '2rem' }}>
@@ -668,6 +690,29 @@ export default function Settings() {
                                     <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
                                         {emailBisonWebhookUrl || 'Loading...'}
                                     </div>
+                                    <button
+                                        onClick={async () => {
+                                            const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+                                            setSyncSessionId(sessionId);
+                                            setShowSyncModal(true);
+                                            await new Promise(resolve => setTimeout(resolve, 500));
+                                            try {
+                                                await apiClient<any>(`/api/sync?session=${sessionId}`, {
+                                                    method: 'POST',
+                                                    timeout: 600_000
+                                                });
+                                            } catch (e: any) {
+                                                console.error('[Sync] API call error:', {
+                                                    message: e?.message,
+                                                });
+                                            }
+                                        }}
+                                        disabled={loading}
+                                        className="premium-btn"
+                                        style={{ width: '100%', marginTop: '1rem', background: '#FFFFFF', color: '#1E293B', border: '1px solid #E2E8F0' }}
+                                    >
+                                        Trigger Manual Sync
+                                    </button>
                                 </div>
 
                                 <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
