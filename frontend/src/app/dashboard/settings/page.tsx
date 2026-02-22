@@ -20,6 +20,7 @@ export default function Settings() {
 
     // Phase 5: System Mode
     const [org, setOrg] = useState<any>(null);
+    const [user, setUser] = useState<any>(null);
     const [systemMode, setSystemMode] = useState('observe');
 
     // Health Enforcement Modal
@@ -60,6 +61,14 @@ export default function Settings() {
             .catch(() => {
                 setMsg('Failed to fetch organization details');
             });
+
+        // Fetch current user
+        apiClient<any>('/api/user/me')
+            .then(response => {
+                const user = response.data || response;
+                setUser(user);
+            })
+            .catch(() => { });
 
         // Fetch Clay webhook configuration with secret
         apiClient<any>('/api/settings/clay-webhook-url')
@@ -733,7 +742,7 @@ export default function Settings() {
                             </div>
                         ) : (
                             <a
-                                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}`}
+                                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}:${user?.id}`}
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
