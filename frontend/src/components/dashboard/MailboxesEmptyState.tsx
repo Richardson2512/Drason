@@ -32,7 +32,7 @@ export default function MailboxesEmptyState() {
 
             <h2 className="text-3xl font-extrabold mb-4 text-gray-900 tracking-tight">No Mailboxes Connected</h2>
             <p className="text-gray-500 text-lg max-w-xl mb-10 leading-relaxed">
-                Superkabe needs to see your mailboxes to protect them. Connect your sending platform to import active mailboxes automatically.
+                Drason needs to see your mailboxes to protect them. Connect your sending platform to import active mailboxes automatically.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6">

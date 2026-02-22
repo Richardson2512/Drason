@@ -10,7 +10,7 @@ export default function PlatformRulesPage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">System Modes</h2>
             <p className="text-gray-600 mb-6">
-                Superkabe operates in 3 modes that control enforcement behavior:
+                Drason operates in 3 modes that control enforcement behavior:
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">

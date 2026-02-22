@@ -12,11 +12,11 @@ export default function DomainWarmingArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Domain Warming Methodology",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/domain-warming-methodology"
+        "mainEntityOfPage": "https://www.drason.com/blog/domain-warming-methodology"
     };
 
     const howToSchema = {
@@ -81,7 +81,7 @@ export default function DomainWarmingArticle() {
                 "name": "How can outbound teams prevent reputation damage?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Outbound teams prevent reputation damage by verifying leads before sending, following graduated warming schedules, monitoring bounce rates in real-time, configuring DNS authentication correctly, and using automated protection tools like Superkabe that pause mailboxes and gate domains when thresholds are breached."
+                    "text": "Outbound teams prevent reputation damage by verifying leads before sending, following graduated warming schedules, monitoring bounce rates in real-time, configuring DNS authentication correctly, and using automated protection tools like Drason that pause mailboxes and gate domains when thresholds are breached."
                 }
             }
         ]
@@ -107,7 +107,7 @@ export default function DomainWarmingArticle() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Start at 5-10 emails/day per mailbox, ramping to 40-50 by week 4-6</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> ISPs track both mailbox-level AND domain-level volume — aggregate matters</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Unverified leads during warming are catastrophic — one bad batch burns the domain</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe applies tighter thresholds during warming (2 bounces = warning, 20% = gate)</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Drason applies tighter thresholds during warming (2 bounces = warning, 20% = gate)</li>
                     </ul>
                 </div>
 
@@ -222,9 +222,9 @@ export default function DomainWarmingArticle() {
                         </li>
                     </ul>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe Protects Warming Domains</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Drason Protects Warming Domains</h2>
                     <p className="text-gray-600 leading-relaxed mb-8">
-                        Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
+                        Drason applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
                     </p>
 
                     <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
@@ -232,7 +232,7 @@ export default function DomainWarmingArticle() {
                         <div className="relative z-10">
                             <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
                             <p className="text-blue-100 leading-relaxed">
-                                Domain warming is not optional — it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Superkabe enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it.
+                                Domain warming is not optional — it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Drason enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it.
                             </p>
                         </div>
                     </div>
@@ -257,7 +257,7 @@ export default function DomainWarmingArticle() {
                     </Link>
                 </div>
                 <div className="mt-6">
-                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Drason protects your infrastructure</Link>
                 </div>
             </section>
 

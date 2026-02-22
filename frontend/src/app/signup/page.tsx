@@ -110,14 +110,14 @@ function SignupContent() {
                 {/* Content Container - NOW IN A CARD */}
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 md:p-10">
                     <Link href="/" className="flex items-center gap-2 mb-8 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={32} height={32} />
-                        <span className="font-bold text-xl text-[#171923]">Superkabe</span>
+                        <Image src="/image/logo-v2.png" alt="Drason" width={32} height={32} />
+                        <span className="font-bold text-xl text-[#171923]">Drason</span>
                     </Link>
 
                     <div className="mb-8 text-center">
                         <h1 className="text-3xl font-bold text-[#171923] mb-2">Get Started</h1>
                         <p className="text-[#718096] text-sm">
-                            Create your Superkabe account
+                            Create your Drason account
                         </p>
                         {selectedPlan && (
                             <div className="mt-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-xl">
@@ -283,7 +283,7 @@ function SignupContent() {
                     <div className="mt-12 text-center max-w-md">
                         <h3 className="text-white text-3xl font-bold mb-4">Protect Your Infrastructure</h3>
                         <p className="text-white/60 text-sm leading-relaxed">
-                            Stop burning domains. Superkabe monitors your health, blocks risks, and auto-heals your infrastructure so you can scale with confidence.
+                            Stop burning domains. Drason monitors your health, blocks risks, and auto-heals your infrastructure so you can scale with confidence.
                         </p>
 
                         <div className="flex justify-center gap-2 mt-8">

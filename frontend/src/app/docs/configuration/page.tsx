@@ -10,7 +10,7 @@ export default function ConfigurationPage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Integration Setup</h2>
             <p className="text-gray-600 mb-6">
-                Superkabe integrates with Clay and Smartlead to monitor your outbound infrastructure.
+                Drason integrates with Clay and Smartlead to monitor your outbound infrastructure.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Smartlead API Key</h3>
@@ -33,7 +33,7 @@ export default function ConfigurationPage() {
                     <strong>Webhook URL:</strong>
                 </p>
                 <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                    <code className="text-green-600">https://api.superkabe.com/webhooks/clay</code>
+                    <code className="text-green-600">https://api.drason.com/webhooks/clay</code>
                 </div>
                 <p className="text-gray-600 mb-4">
                     <strong>Required Fields:</strong>

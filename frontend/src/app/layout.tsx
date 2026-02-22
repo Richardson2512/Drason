@@ -11,8 +11,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.superkabe.com'),
-  title: 'Superkabe - Infrastructure Protection for Outbound',
+  metadataBase: new URL('https://www.drason.com'),
+  title: 'Drason - Infrastructure Protection for Outbound',
   description:
     'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
   icons: {
@@ -20,16 +20,16 @@ export const metadata: Metadata = {
     apple: '/image/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Superkabe - Infrastructure Protection for Outbound',
+    title: 'Drason - Infrastructure Protection for Outbound',
     description: 'Protect your outbound email infrastructure with production-hardened monitoring and auto-healing.',
-    url: 'https://www.superkabe.com',
-    siteName: 'Superkabe',
+    url: 'https://www.drason.com',
+    siteName: 'Drason',
     images: [
       {
         url: '/image/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Superkabe - Infrastructure Protection',
+        alt: 'Drason - Infrastructure Protection',
       },
     ],
     locale: 'en_US',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Superkabe - Modern Outbound Protection',
+    title: 'Drason - Modern Outbound Protection',
     description: 'The monitoring layer between your enrichment and email stack.',
     images: ['/image/og-image.png'],
   },
@@ -57,10 +57,10 @@ export default function RootLayout({
   const orgSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': 'https://www.superkabe.com/#organization',
-    name: 'Superkabe',
-    url: 'https://www.superkabe.com',
-    logo: 'https://www.superkabe.com/image/logo-v2.png',
+    '@id': 'https://www.drason.com/#organization',
+    name: 'Drason',
+    url: 'https://www.drason.com',
+    logo: 'https://www.drason.com/image/logo-v2.png',
     description: 'Email infrastructure protection and sender reputation recovery platform for modern outbound teams.',
     foundingDate: '2024',
     founder: {
@@ -70,23 +70,23 @@ export default function RootLayout({
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer support',
-      email: 'support@superkabe.com',
+      email: 'support@drason.com',
     },
     sameAs: [
-      'https://twitter.com/superkabe',
-      'https://www.linkedin.com/company/superkabe',
+      'https://twitter.com/drason',
+      'https://www.linkedin.com/company/drason',
     ],
   };
 
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    '@id': 'https://www.superkabe.com/#software',
-    name: 'Superkabe',
+    '@id': 'https://www.drason.com/#software',
+    name: 'Drason',
     operatingSystem: 'Web',
     applicationCategory: 'BusinessApplication',
     isPartOf: {
-      '@id': 'https://www.superkabe.com/#organization',
+      '@id': 'https://www.drason.com/#organization',
     },
     offers: {
       '@type': 'Offer',

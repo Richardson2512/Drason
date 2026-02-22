@@ -232,7 +232,7 @@ export default function InfrastructureScoreExplainedPage() {
                     <ol className="text-sm text-gray-600 space-y-1 ml-4 list-decimal">
                         <li>Visit <a href="https://mxtoolbox.com/blacklists.aspx" target="_blank" className="text-blue-600 hover:underline">mxtoolbox.com/blacklists.aspx</a></li>
                         <li>Enter your domain</li>
-                        <li>If all checks show "Not Listed", trigger a manual re-assessment in Superkabe</li>
+                        <li>If all checks show "Not Listed", trigger a manual re-assessment in Drason</li>
                     </ol>
                 </div>
             </div>

@@ -13,11 +13,11 @@ export default function EmailDeliverabilityGuide() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "The Complete Email Deliverability Guide for Outbound Teams",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/email-deliverability-guide"
+        "mainEntityOfPage": "https://www.drason.com/blog/email-deliverability-guide"
     };
 
     const faqSchema = {
@@ -45,7 +45,7 @@ export default function EmailDeliverabilityGuide() {
                 "name": "How can I improve email deliverability for cold outbound?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Verify leads before sending, warm new domains gradually, configure SPF/DKIM/DMARC, keep bounce rates below 2%, monitor sender reputation, and use tools like Superkabe to gate traffic automatically."
+                    "text": "Verify leads before sending, warm new domains gradually, configure SPF/DKIM/DMARC, keep bounce rates below 2%, monitor sender reputation, and use tools like Drason to gate traffic automatically."
                 }
             },
             {
@@ -58,10 +58,10 @@ export default function EmailDeliverabilityGuide() {
             },
             {
                 "@type": "Question",
-                "name": "How does Superkabe protect email deliverability?",
+                "name": "How does Drason protect email deliverability?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Superkabe monitors bounce rates, DNS health, and mailbox resilience in real-time. It auto-pauses risky mailboxes, gates domain traffic, and redistributes volume to prevent sender reputation damage."
+                    "text": "Drason monitors bounce rates, DNS health, and mailbox resilience in real-time. It auto-pauses risky mailboxes, gates domain traffic, and redistributes volume to prevent sender reputation damage."
                 }
             },
             {
@@ -117,7 +117,7 @@ export default function EmailDeliverabilityGuide() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Bounce rate is the single most heavily weighted signal in ISP reputation models</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Every sending domain needs its own SPF, DKIM, and DMARC — mandatory since Feb 2024</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Domain warming takes 6-8 weeks; skipping it burns the domain within days</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe implements 3-tier automated protection: warning → mailbox pause → domain gate</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Drason implements 3-tier automated protection: warning → mailbox pause → domain gate</li>
                     </ul>
                 </div>
 
@@ -342,7 +342,7 @@ export default function EmailDeliverabilityGuide() {
                         Reactive monitoring — checking dashboards after damage has occurred — is insufficient for outbound email operations. By the time a human notices a bounce rate spike, the domain may already be irreversibly damaged. Effective deliverability protection requires automated, real-time monitoring with tiered escalation.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Superkabe implements a three-tier protection model:
+                        Drason implements a three-tier protection model:
                     </p>
                     <div className="space-y-4 mb-8">
                         <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
@@ -359,7 +359,7 @@ export default function EmailDeliverabilityGuide() {
                         </div>
                     </div>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        This tiered approach ensures human operators have time to diagnose and respond while automated systems prevent compounding damage. During domain warming, Superkabe applies tighter thresholds (warnings at 2 bounces, gates at 20%) to protect fragile new domains.
+                        This tiered approach ensures human operators have time to diagnose and respond while automated systems prevent compounding damage. During domain warming, Drason applies tighter thresholds (warnings at 2 bounces, gates at 20%) to protect fragile new domains.
                     </p>
 
                     {/* Section 8 */}
@@ -397,15 +397,15 @@ export default function EmailDeliverabilityGuide() {
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                             <h3 className="font-bold text-gray-900 mb-2">How can I improve email deliverability for cold outbound?</h3>
-                            <p className="text-gray-600 text-sm">Verify leads before sending, warm new domains gradually, configure SPF/DKIM/DMARC, keep bounce rates below 2%, monitor sender reputation, and use tools like Superkabe to gate traffic automatically.</p>
+                            <p className="text-gray-600 text-sm">Verify leads before sending, warm new domains gradually, configure SPF/DKIM/DMARC, keep bounce rates below 2%, monitor sender reputation, and use tools like Drason to gate traffic automatically.</p>
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                             <h3 className="font-bold text-gray-900 mb-2">What is sender reputation and why does it matter?</h3>
                             <p className="text-gray-600 text-sm">Sender reputation is a score ISPs assign to each sending domain based on bounce rates, complaints, engagement, and authentication. Low reputation means emails go to spam or get rejected entirely.</p>
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                            <h3 className="font-bold text-gray-900 mb-2">How does Superkabe protect email deliverability?</h3>
-                            <p className="text-gray-600 text-sm">Superkabe monitors bounce rates, DNS health, and mailbox resilience in real-time. It auto-pauses risky mailboxes, gates domain traffic, and redistributes volume to prevent sender reputation damage.</p>
+                            <h3 className="font-bold text-gray-900 mb-2">How does Drason protect email deliverability?</h3>
+                            <p className="text-gray-600 text-sm">Drason monitors bounce rates, DNS health, and mailbox resilience in real-time. It auto-pauses risky mailboxes, gates domain traffic, and redistributes volume to prevent sender reputation damage.</p>
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                             <h3 className="font-bold text-gray-900 mb-2">What is the difference between email deliverability and email delivery?</h3>
@@ -427,7 +427,7 @@ export default function EmailDeliverabilityGuide() {
                         <div className="relative z-10">
                             <h3 className="font-bold text-2xl mb-3">Protect Your Sending Infrastructure</h3>
                             <p className="text-blue-100 leading-relaxed mb-6">
-                                Superkabe monitors, protects, and recovers email infrastructure automatically. Stop burning domains. Start protecting them.
+                                Drason monitors, protects, and recovers email infrastructure automatically. Stop burning domains. Start protecting them.
                             </p>
                             <Link href="/signup" className="inline-block px-8 py-3 bg-white text-blue-700 rounded-2xl text-sm font-bold hover:bg-blue-50 transition-colors">
                                 Start Your Trial →

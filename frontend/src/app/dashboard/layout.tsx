@@ -168,7 +168,7 @@ export default function DashboardLayout({
                     }}>
                         <div style={{ flexShrink: 0, width: '32px', height: '32px' }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} style={{ display: 'block' }} onError={(e) => {
+                            <img src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} style={{ display: 'block' }} onError={(e) => {
                                 // Fallback: show a branded icon if image fails to load
                                 const target = e.currentTarget;
                                 target.style.display = 'none';
@@ -186,7 +186,7 @@ export default function DashboardLayout({
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text'
                         }}>
-                            Superkabe
+                            Drason
                         </span>
                     </div>
 

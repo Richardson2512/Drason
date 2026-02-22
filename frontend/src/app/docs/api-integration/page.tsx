@@ -12,7 +12,7 @@ export default function APIIntegrationPage() {
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">Integration Overview</h2>
                 <p className="text-gray-600 mb-4">
-                    Superkabe provides three primary integration points:
+                    Drason provides three primary integration points:
                 </p>
                 <ol className="space-y-2 text-gray-600">
                     <li><strong>1. Clay Webhook</strong> — Receive enriched leads from Clay tables</li>
@@ -25,12 +25,12 @@ export default function APIIntegrationPage() {
             {/* SECTION 1: Clay Webhook */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">1. Clay Webhook Integration</h2>
             <p className="text-gray-600 mb-6">
-                Send enriched leads from Clay directly to Superkabe for campaign routing and protection.
+                Send enriched leads from Clay directly to Drason for campaign routing and protection.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Endpoint</h3>
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 mb-6">
-                <code className="text-green-600">POST https://api.superkabe.com/api/ingest/clay</code>
+                <code className="text-green-600">POST https://api.drason.com/api/ingest/clay</code>
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Authentication</h3>
@@ -39,7 +39,7 @@ export default function APIIntegrationPage() {
                     <strong>Header:</strong> <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">x-organization-id</code>
                 </p>
                 <p className="text-gray-600">
-                    Your organization ID from Superkabe dashboard (Settings → API Keys)
+                    Your organization ID from Drason dashboard (Settings → API Keys)
                 </p>
             </div>
 
@@ -84,22 +84,22 @@ export default function APIIntegrationPage() {
             {/* SECTION 2: Smartlead Webhook */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Smartlead Webhook Integration</h2>
             <p className="text-gray-600 mb-6">
-                Smartlead sends real-time bounce and delivery events to Superkabe for monitoring.
+                Smartlead sends real-time bounce and delivery events to Drason for monitoring.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Endpoint</h3>
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 mb-6">
-                <code className="text-green-600">POST https://api.superkabe.com/api/monitor/smartlead-webhook</code>
+                <code className="text-green-600">POST https://api.drason.com/api/monitor/smartlead-webhook</code>
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Setup in Smartlead</h3>
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-6 shadow-sm">
                 <ol className="space-y-3 text-gray-600">
                     <li><strong>1.</strong> Navigate to Smartlead → Settings → Webhooks</li>
-                    <li><strong>2.</strong> Add webhook URL: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">https://api.superkabe.com/api/monitor/smartlead-webhook</code></li>
+                    <li><strong>2.</strong> Add webhook URL: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">https://api.drason.com/api/monitor/smartlead-webhook</code></li>
                     <li><strong>3.</strong> Add header: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">x-organization-id: YOUR_ORG_ID</code></li>
                     <li><strong>4.</strong> Select events: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">email_sent</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">email_bounce</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">delivery_failure</code></li>
-                    <li><strong>5.</strong> (Optional) Configure webhook secret in Superkabe Settings for signature validation</li>
+                    <li><strong>5.</strong> (Optional) Configure webhook secret in Drason Settings for signature validation</li>
                 </ol>
             </div>
 
@@ -109,7 +109,7 @@ export default function APIIntegrationPage() {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-gray-600 font-semibold">Smartlead Event</th>
-                            <th className="px-6 py-3 text-gray-600 font-semibold">Superkabe Action</th>
+                            <th className="px-6 py-3 text-gray-600 font-semibold">Drason Action</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -153,12 +153,12 @@ export default function APIIntegrationPage() {
             {/* SECTION 3: Direct Ingestion API */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">3. Direct Ingestion API</h2>
             <p className="text-gray-600 mb-6">
-                Programmatically submit leads to Superkabe from your own systems.
+                Programmatically submit leads to Drason from your own systems.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Endpoint</h3>
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 mb-6">
-                <code className="text-green-600">POST https://api.superkabe.com/api/ingest</code>
+                <code className="text-green-600">POST https://api.drason.com/api/ingest</code>
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Authentication</h3>
@@ -167,7 +167,7 @@ export default function APIIntegrationPage() {
                     <strong>Header:</strong> <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">x-organization-id</code>
                 </p>
                 <p className="text-gray-600">
-                    Your organization ID from Superkabe dashboard
+                    Your organization ID from Drason dashboard
                 </p>
             </div>
 
@@ -241,13 +241,13 @@ export default function APIIntegrationPage() {
                         <strong className="text-green-700">2. Retries:</strong> Implement exponential backoff for 5xx errors
                     </li>
                     <li>
-                        <strong className="text-green-700">3. Webhook Security:</strong> Configure webhook secrets in Smartlead and Superkabe for signature validation
+                        <strong className="text-green-700">3. Webhook Security:</strong> Configure webhook secrets in Smartlead and Drason for signature validation
                     </li>
                     <li>
                         <strong className="text-green-700">4. Field Mapping:</strong> Use consistent field names in Clay to avoid case-sensitivity issues
                     </li>
                     <li>
-                        <strong className="text-green-700">5. Monitoring:</strong> Check Superkabe audit logs to verify successful webhook delivery
+                        <strong className="text-green-700">5. Monitoring:</strong> Check Drason audit logs to verify successful webhook delivery
                     </li>
                 </ul>
             </div>
@@ -257,7 +257,7 @@ export default function APIIntegrationPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-semibold mb-4 text-gray-900">cURL Example - Clay Webhook</h3>
                 <pre className="text-sm text-blue-600 overflow-x-auto">
-                    {`curl -X POST https://api.superkabe.com/api/ingest/clay \\
+                    {`curl -X POST https://api.drason.com/api/ingest/clay \\
   -H "Content-Type: application/json" \\
   -H "x-organization-id: YOUR_ORG_ID" \\
   -d '{
@@ -273,7 +273,7 @@ export default function APIIntegrationPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-semibold mb-4 text-gray-900">cURL Example - Smartlead Webhook Test</h3>
                 <pre className="text-sm text-blue-600 overflow-x-auto">
-                    {`curl -X POST https://api.superkabe.com/api/monitor/smartlead-webhook \\
+                    {`curl -X POST https://api.drason.com/api/monitor/smartlead-webhook \\
   -H "Content-Type: application/json" \\
   -H "x-organization-id: YOUR_ORG_ID" \\
   -d '{

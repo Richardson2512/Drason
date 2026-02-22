@@ -12,11 +12,11 @@ export default function BounceRateArticle() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "How Bounce Rate Affects Email Deliverability",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
+        "author": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
+        "publisher": { "@type": "Organization", "name": "Drason", "@id": "https://www.drason.com/#organization" },
         "datePublished": "2026-02-13",
         "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/bounce-rate-deliverability"
+        "mainEntityOfPage": "https://www.drason.com/blog/bounce-rate-deliverability"
     };
 
     const faqSchema = {
@@ -57,10 +57,10 @@ export default function BounceRateArticle() {
             },
             {
                 "@type": "Question",
-                "name": "Does Superkabe reduce bounce rates automatically?",
+                "name": "Does Drason reduce bounce rates automatically?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Superkabe does not modify leads or sending lists directly. It reduces effective bounce rates by auto-pausing mailboxes that exceed bounce thresholds and gating domain traffic when aggregate bounce ratios become critical. This prevents further bounces from compounding damage to sender reputation."
+                    "text": "Drason does not modify leads or sending lists directly. It reduces effective bounce rates by auto-pausing mailboxes that exceed bounce thresholds and gating domain traffic when aggregate bounce ratios become critical. This prevents further bounces from compounding damage to sender reputation."
                 }
             },
             {
@@ -182,9 +182,9 @@ export default function BounceRateArticle() {
                         Modern outbound teams typically operate 3–10 domains with 3+ mailboxes per domain, sending 20–30 emails per mailbox per day. At this scale, a single batch of bad leads can push a domain&apos;s bounce rate above the 5% threshold within hours. Once the reputation is damaged, every mailbox on that domain is affected — not just the one that sent the bouncing emails.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe Prevents Bounce-Driven Damage</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Drason Prevents Bounce-Driven Damage</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Superkabe monitors bounce events in real-time across all sending domains and mailboxes. When bounce rates approach warning thresholds (3% per domain in a rolling 7-day window), Superkabe triggers tiered escalation:
+                        Drason monitors bounce events in real-time across all sending domains and mailboxes. When bounce rates approach warning thresholds (3% per domain in a rolling 7-day window), Drason triggers tiered escalation:
                     </p>
                     <ul className="space-y-3 text-gray-600 mb-8">
                         <li className="flex items-start gap-3">
@@ -210,7 +210,7 @@ export default function BounceRateArticle() {
                         <div className="relative z-10">
                             <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
                             <p className="text-blue-100 leading-relaxed">
-                                Bounce rate is not just a metric — it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Superkabe provides proactive, real-time protection that blocks damage before it compounds.
+                                Bounce rate is not just a metric — it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Drason provides proactive, real-time protection that blocks damage before it compounds.
                             </p>
                         </div>
                     </div>
@@ -235,7 +235,7 @@ export default function BounceRateArticle() {
                     </Link>
                 </div>
                 <div className="mt-6">
-                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
+                    <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Drason protects your infrastructure</Link>
                 </div>
             </section>
 

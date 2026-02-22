@@ -25,8 +25,8 @@ export default function PricingPage() {
             <header className="absolute top-4 md:top-8 left-0 right-0 flex justify-center z-50 px-4">
                 <div className="glass-nav px-4 md:px-10 py-3 md:py-4 flex items-center gap-4 md:gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full w-full max-w-4xl justify-between md:justify-center md:w-auto">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-lg md:text-xl tracking-tight">Superkabe</span>
+                        <Image src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} />
+                        <span className="font-bold text-lg md:text-xl tracking-tight">Drason</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
@@ -52,13 +52,13 @@ export default function PricingPage() {
 
                 <div className="relative z-10 max-w-7xl mx-auto">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight">
-                        Superkabe Pricing
+                        Drason Pricing
                     </h1>
                     <p className="text-lg md:text-2xl text-gray-500 mb-4 max-w-3xl mx-auto">
                         Protect Your Outbound Infrastructure Before It Breaks
                     </p>
                     <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Superkabe is a control layer for modern outbound teams running multi-domain, multi-mailbox email infrastructure.
+                        Drason is a control layer for modern outbound teams running multi-domain, multi-mailbox email infrastructure.
                     </p>
                     <div className="mt-6 md:mt-8 inline-flex items-center gap-2 px-6 py-3 bg-green-50 border-2 border-green-200 rounded-full">
                         <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,7 +220,7 @@ export default function PricingPage() {
                     Why We Don't Charge Per Email Sent
                 </h2>
                 <p className="text-xl text-gray-500 mb-4 text-center">
-                    Superkabe does not send emails.
+                    Drason does not send emails.
                 </p>
                 <p className="text-xl text-gray-900 mb-4 text-center font-bold">
                     We protect infrastructure.
@@ -255,7 +255,7 @@ export default function PricingPage() {
                     </div>
                 </div>
                 <p className="text-gray-700 text-center mt-12 text-lg font-medium">
-                    Superkabe is priced to match this operational reality.
+                    Drason is priced to match this operational reality.
                 </p>
             </div>
 
@@ -283,7 +283,7 @@ export default function PricingPage() {
                         </li>
                     </ul>
                     <p className="text-2xl font-bold text-center text-blue-600">
-                        Superkabe costs less than a single mistake.
+                        Drason costs less than a single mistake.
                     </p>
                 </div>
             </div>
@@ -311,7 +311,7 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
     const handleCTAClick = () => {
         if (tierKey === 'enterprise') {
             // For enterprise, always go to contact/sales page
-            window.location.href = 'mailto:sales@superkabe.com?subject=Enterprise Plan Inquiry';
+            window.location.href = 'mailto:sales@drason.com?subject=Enterprise Plan Inquiry';
             return;
         }
 

@@ -170,8 +170,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
+                        <Image src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Drason</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>

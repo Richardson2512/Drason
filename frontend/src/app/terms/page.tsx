@@ -11,8 +11,8 @@ export default function TermsPage() {
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
+                        <Image src="/image/logo-v2.png" alt="Drason Logo" width={32} height={32} />
+                        <span className="font-bold text-xl tracking-tight">Drason</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/" className="hover:text-black transition-colors">Product</Link>
@@ -40,14 +40,14 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Acceptance of Terms</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    By accessing and using Superkabe (&quot;Service&quot;), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use our Service.
+                                    By accessing and using Drason (&quot;Service&quot;), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these terms, please do not use our Service.
                                 </p>
                             </section>
 
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Description of Service</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    Superkabe provides email infrastructure protection services, including but not limited to:
+                                    Drason provides email infrastructure protection services, including but not limited to:
                                 </p>
                                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
                                     <li>Real-time domain and mailbox health monitoring</li>
@@ -94,7 +94,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Intellectual Property</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    The Service and its original content, features, and functionality are owned by Superkabe and are protected by international copyright, trademark, and other intellectual property laws. You may not copy, modify, or distribute our content without prior written consent.
+                                    The Service and its original content, features, and functionality are owned by Drason and are protected by international copyright, trademark, and other intellectual property laws. You may not copy, modify, or distribute our content without prior written consent.
                                 </p>
                             </section>
 
@@ -108,7 +108,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Limitation of Liability</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    To the maximum extent permitted by law, Superkabe shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or business opportunities, arising out of your use of the Service.
+                                    To the maximum extent permitted by law, Drason shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or business opportunities, arising out of your use of the Service.
                                 </p>
                             </section>
 
@@ -146,8 +146,8 @@ export default function TermsPage() {
                                     If you have any questions about these Terms, please contact us at:
                                 </p>
                                 <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                    <p className="text-gray-700 font-medium">Superkabe Legal</p>
-                                    <p className="text-gray-500">Email: legal@superkabe.com</p>
+                                    <p className="text-gray-700 font-medium">Drason Legal</p>
+                                    <p className="text-gray-500">Email: legal@drason.com</p>
                                 </div>
                             </section>
                         </div>

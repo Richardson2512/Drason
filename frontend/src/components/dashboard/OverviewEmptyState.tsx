@@ -15,7 +15,7 @@ export default function OverviewEmptyState({ stats }: { stats: any }) {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-gray-900">
-                Welcome to <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Superkabe</span> Control Plane
+                Welcome to <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Drason</span> Control Plane
             </h1>
             <p className="text-gray-500 text-xl mb-16 max-w-2xl leading-relaxed">
                 Your infrastructure is currently inactive. Set up your integrations and launch your first campaign to start monitoring and protecting your domains.
@@ -67,7 +67,7 @@ export default function OverviewEmptyState({ stats }: { stats: any }) {
                             <Rocket size={24} className="text-green-600" />
                         </div>
                         <h3 className="font-bold text-xl mb-3 text-gray-900">3. Monitor Campaigns</h3>
-                        <p className="text-gray-500 mb-6 leading-relaxed">Watch your campaigns run safely under Superkabe's protection layer.</p>
+                        <p className="text-gray-500 mb-6 leading-relaxed">Watch your campaigns run safely under Drason's protection layer.</p>
                         <div className="flex items-center text-green-600 font-bold text-sm group-hover:translate-x-2 transition-transform">
                             View Campaigns <ArrowRight size={16} className="ml-2" />
                         </div>

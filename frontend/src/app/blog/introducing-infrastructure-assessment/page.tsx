@@ -29,7 +29,7 @@ export default function InfrastructureAssessmentPost() {
                     </li>
                     <li className="flex items-start gap-3">
                         <span className="text-blue-600 mt-1">●</span>
-                        <span className="text-gray-700 font-medium">Superkabe's new <strong>Infrastructure Assessment</strong> scans DNS, blacklists, and mailbox health automatically.</span>
+                        <span className="text-gray-700 font-medium">Drason's new <strong>Infrastructure Assessment</strong> scans DNS, blacklists, and mailbox health automatically.</span>
                     </li>
                     <li className="flex items-start gap-3">
                         <span className="text-blue-600 mt-1">●</span>
@@ -64,7 +64,7 @@ export default function InfrastructureAssessmentPost() {
 
             <h2 className="text-3xl font-bold mt-12 mb-6">Enter: Automated Assessment</h2>
             <p>
-                We built the <strong>Infrastructure Assessment</strong> to solve this. It's an automated auditor that lives inside your Superkabe dashboard.
+                We built the <strong>Infrastructure Assessment</strong> to solve this. It's an automated auditor that lives inside your Drason dashboard.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 my-8">
@@ -113,7 +113,7 @@ export default function InfrastructureAssessmentPost() {
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-8 mt-12 text-center">
                 <h3 className="text-2xl font-bold text-blue-900 mb-4">Ready to fix your infrastructure?</h3>
                 <p className="text-blue-700 mb-6">
-                    Log in to Superkabe and run your first free assessment report.
+                    Log in to Drason and run your first free assessment report.
                 </p>
                 <a href="/dashboard/infrastructure" className="inline-block px-8 py-3 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
                     Run Audit Now

@@ -5,7 +5,7 @@ export default function DocsPage() {
     return (
         <div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900 tracking-tight">
-                Superkabe Documentation
+                Drason Documentation
             </h1>
             <p className="text-xl text-gray-500 mb-12 leading-relaxed max-w-2xl">
                 Production-hardened monitoring and protection for modern outbound infrastructure.
@@ -13,9 +13,9 @@ export default function DocsPage() {
 
             {/* Overview Card */}
             <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 mb-16">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900">What is Superkabe?</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-900">What is Drason?</h2>
                 <p className="text-gray-600 mb-6">
-                    Superkabe is a control layer for multi-domain, multi-mailbox outbound email infrastructure.
+                    Drason is a control layer for multi-domain, multi-mailbox outbound email infrastructure.
                     We don't optimize volume— we prevent irreversible damage.
                 </p>
                 <p className="text-gray-600 mb-4">
@@ -28,7 +28,7 @@ export default function DocsPage() {
                     <li>Structured ICP-based campaign routing</li>
                 </ul>
                 <p className="text-gray-600">
-                    Superkabe monitors bounce rates, failure patterns, and domain health to protect your infrastructure
+                    Drason monitors bounce rates, failure patterns, and domain health to protect your infrastructure
                     before reputation damage becomes irreversible.
                 </p>
             </div>
@@ -94,7 +94,7 @@ export default function DocsPage() {
                     href="/docs/clay-integration"
                     icon={<Database className="text-blue-600" size={24} />}
                     title="Clay Integration"
-                    description="Connect Clay tables with Superkabe for lead routing"
+                    description="Connect Clay tables with Drason for lead routing"
                 />
                 <DocCard
                     href="/docs/smartlead-integration"

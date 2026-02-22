@@ -67,7 +67,7 @@ export default function RiskScoringPage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Hard vs Soft Signal Separation</h2>
             <p className="text-gray-600 mb-6">
-                Superkabe separates risk signals into two independent scores:
+                Drason separates risk signals into two independent scores:
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

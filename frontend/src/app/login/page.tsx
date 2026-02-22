@@ -119,8 +119,8 @@ export default function LoginPage() {
 
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 mb-8 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={32} height={32} />
-                        <span className="font-bold text-xl text-[#171923]">Superkabe</span>
+                        <Image src="/image/logo-v2.png" alt="Drason" width={32} height={32} />
+                        <span className="font-bold text-xl text-[#171923]">Drason</span>
                     </Link>
 
                     {/* Header */}
@@ -300,7 +300,7 @@ export default function LoginPage() {
                     <div className="mt-12 text-center max-w-md">
                         <h3 className="text-white text-3xl font-bold mb-4">Protect Your Infrastructure</h3>
                         <p className="text-white/60 text-sm leading-relaxed">
-                            Stop burning domains. Superkabe monitors your health, blocks risks, and auto-heals your infrastructure so you can scale with confidence.
+                            Stop burning domains. Drason monitors your health, blocks risks, and auto-heals your infrastructure so you can scale with confidence.
                         </p>
 
                         <div className="flex justify-center gap-2 mt-8">

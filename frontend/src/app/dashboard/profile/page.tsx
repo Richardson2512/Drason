@@ -257,7 +257,7 @@ export default function ProfilePage() {
                             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <span style={{ fontSize: '14px' }}>⭐</span>
                             </div>
-                            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Love using Superkabe?</h2>
+                            <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', margin: 0 }}>Love using Drason?</h2>
                         </div>
 
                         <p style={{ fontSize: '0.85rem', color: '#6B7280', marginBottom: '1.25rem', lineHeight: 1.5 }}>
@@ -265,7 +265,7 @@ export default function ProfilePage() {
                         </p>
 
                         <a
-                            href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
+                            href="https://www.g2.com/contributor/drason-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{

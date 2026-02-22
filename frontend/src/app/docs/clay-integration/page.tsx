@@ -5,7 +5,7 @@ export default function ClayIntegrationPage() {
                 Clay Integration Guide
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Step-by-step guide to connect Clay tables with Superkabe for automated lead routing
+                Step-by-step guide to connect Clay tables with Drason for automated lead routing
             </p>
 
             {/* Overview */}
@@ -15,7 +15,7 @@ export default function ClayIntegrationPage() {
                     By the end of this guide, enriched leads from your Clay tables will automatically:
                 </p>
                 <ol className="space-y-2 text-gray-600">
-                    <li>✅ Flow into Superkabe for campaign routing</li>
+                    <li>✅ Flow into Drason for campaign routing</li>
                     <li>✅ <strong>Pass through the Lead Health Gate</strong> (blocking disposable/spam domains)</li>
                     <li>✅ Match to the correct Smartlead campaign based on ICP</li>
                     <li>✅ Be protected by real-time monitoring thresholds</li>
@@ -25,7 +25,7 @@ export default function ClayIntegrationPage() {
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-12">
                 <h3 className="text-lg font-bold text-amber-700 mb-2">⚠️ Automatic Quality Filtering</h3>
                 <p className="text-gray-600">
-                    Superkabe automatically blocks leads with <strong>disposable domains</strong> (e.g., mailinator.com) or <strong>role-based emails</strong> (e.g., admin@).
+                    Drason automatically blocks leads with <strong>disposable domains</strong> (e.g., mailinator.com) or <strong>role-based emails</strong> (e.g., admin@).
                     These leads will be marked as <code className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">BLOCKED</code> and will NOT be routed to Smartlead.
                 </p>
             </div>
@@ -34,7 +34,7 @@ export default function ClayIntegrationPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Prerequisites</h2>
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
                 <ul className="space-y-3 text-gray-600">
-                    <li>✓ Active Superkabe account (<a href="/signup" className="text-blue-600 hover:text-blue-800">Sign up here</a>)</li>
+                    <li>✓ Active Drason account (<a href="/signup" className="text-blue-600 hover:text-blue-800">Sign up here</a>)</li>
                     <li>✓ Clay account with at least one table containing lead data</li>
                     <li>✓ Your leads should have: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">email</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">firstName</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">lastName</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">company</code></li>
                     <li>✓ Smartlead campaign IDs ready for routing</li>
@@ -48,7 +48,7 @@ export default function ClayIntegrationPage() {
             </p>
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
                 <ol className="space-y-3 text-gray-600">
-                    <li><strong>1.</strong> Log in to Superkabe dashboard</li>
+                    <li><strong>1.</strong> Log in to Drason dashboard</li>
                     <li><strong>2.</strong> Navigate to <strong>Settings → API Keys</strong></li>
                     <li><strong>3.</strong> Copy your <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">Organization ID</code> (UUID format)</li>
                 </ol>
@@ -64,7 +64,7 @@ export default function ClayIntegrationPage() {
             {/* Step 2 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 2: Prepare Your Clay Table</h2>
             <p className="text-gray-600 mb-4">
-                Ensure your Clay table has the required fields for Superkabe ingestion.
+                Ensure your Clay table has the required fields for Drason ingestion.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Required Fields</h3>
@@ -128,7 +128,7 @@ export default function ClayIntegrationPage() {
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
                 <h3 className="text-lg font-bold text-blue-700 mb-2">💡 Field Flexibility</h3>
                 <p className="text-gray-600 mb-4">
-                    Superkabe's Clay webhook supports <strong>case-insensitive field matching</strong>. These work interchangeably:
+                    Drason's Clay webhook supports <strong>case-insensitive field matching</strong>. These work interchangeably:
                 </p>
                 <ul className="space-y-2 text-gray-600 text-sm">
                     <li>• <code className="px-2 py-1 bg-white rounded text-gray-700">email</code> = <code className="px-2 py-1 bg-white rounded text-gray-700">Email</code> = <code className="px-2 py-1 bg-white rounded text-gray-700">work email</code></li>
@@ -140,7 +140,7 @@ export default function ClayIntegrationPage() {
             {/* Step 3 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 3: Add Webhook Integration in Clay</h2>
             <p className="text-gray-600 mb-4">
-                Configure Clay to send enriched leads to Superkabe automatically.
+                Configure Clay to send enriched leads to Drason automatically.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
@@ -162,7 +162,7 @@ export default function ClayIntegrationPage() {
                             </div>
                             <div>
                                 <p className="text-sm font-semibold text-gray-700 mb-1">URL:</p>
-                                <code className="text-green-600 bg-green-50 px-2 py-1 rounded text-sm">https://api.superkabe.com/api/ingest/clay</code>
+                                <code className="text-green-600 bg-green-50 px-2 py-1 rounded text-sm">https://api.drason.com/api/ingest/clay</code>
                             </div>
                             <div>
                                 <p className="text-sm font-semibold text-gray-700 mb-1">Headers:</p>
@@ -201,7 +201,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
                 <ol className="space-y-3 text-gray-600">
-                    <li><strong>1.</strong> In Superkabe, navigate to <strong>Dashboard → Routing Rules</strong></li>
+                    <li><strong>1.</strong> In Drason, navigate to <strong>Dashboard → Routing Rules</strong></li>
                     <li><strong>2.</strong> Click <strong>Add Rule</strong></li>
                     <li><strong>3.</strong> Configure your rule:</li>
                 </ol>
@@ -219,13 +219,13 @@ x-organization-id: YOUR_ORG_ID`}</pre>
             {/* Step 5 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 5: Verify Integration</h2>
             <p className="text-gray-600 mb-4">
-                Test that leads are flowing correctly from Clay to Superkabe.
+                Test that leads are flowing correctly from Clay to Drason.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8">
                 <ol className="space-y-3 text-gray-600">
                     <li><strong>1.</strong> In Clay, trigger the webhook on 1-2 test rows</li>
-                    <li><strong>2.</strong> In Superkabe dashboard, check <strong>Leads</strong> tab</li>
+                    <li><strong>2.</strong> In Drason dashboard, check <strong>Leads</strong> tab</li>
                     <li><strong>3.</strong> Verify the test leads appear with status <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">HELD</code> or <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">ACTIVE</code></li>
                     <li><strong>4.</strong> Check <strong>Audit Log</strong> to see routing decisions</li>
                     <li><strong>5.</strong> Confirm leads were assigned to the correct campaign</li>
@@ -248,7 +248,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
                             <td className="px-6 py-4 text-gray-600">Check <code className="px-2 py-1 bg-gray-100 rounded">x-organization-id</code> header is correct</td>
                         </tr>
                         <tr>
-                            <td className="px-6 py-4 text-gray-700">Leads not appearing in Superkabe</td>
+                            <td className="px-6 py-4 text-gray-700">Leads not appearing in Drason</td>
                             <td className="px-6 py-4 text-gray-600">Verify webhook URL: <code className="px-2 py-1 bg-gray-100 rounded text-xs">/api/ingest/clay</code></td>
                         </tr>
                         <tr>
@@ -267,7 +267,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
             <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mt-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">🎉 Integration Complete!</h2>
                 <p className="text-gray-600 mb-4">
-                    Your Clay leads are now flowing into Superkabe. Next steps:
+                    Your Clay leads are now flowing into Drason. Next steps:
                 </p>
                 <ul className="space-y-2 text-gray-600">
                     <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Set up Smartlead webhook</a> for bounce monitoring</li>

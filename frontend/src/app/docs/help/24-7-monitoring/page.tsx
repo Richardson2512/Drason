@@ -5,14 +5,14 @@ export default function MonitoringPage() {
                 24/7 Infrastructure Monitoring
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                How Superkabe continuously monitors your email infrastructure and automatically protects your sender reputation
+                How Drason continuously monitors your email infrastructure and automatically protects your sender reputation
             </p>
 
             {/* What Is 24/7 Monitoring */}
             <div className="bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200 rounded-2xl p-8 mb-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">What Is 24/7 Monitoring?</h2>
                 <p className="text-gray-700 mb-4 text-lg">
-                    Superkabe runs an <strong>automated background worker</strong> that syncs your Smartlead data every 20 minutes around the clock.
+                    Drason runs an <strong>automated background worker</strong> that syncs your Smartlead data every 20 minutes around the clock.
                     This continuous monitoring enables real-time detection of infrastructure health issues and immediate protection through auto-pause.
                 </p>
                 <div className="bg-white rounded-lg p-6 border-2 border-green-100 mt-4">
