@@ -14,6 +14,7 @@ export default function Settings() {
     const [webhookUrl, setWebhookUrl] = useState('');
     const [webhookSecret, setWebhookSecret] = useState('');
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
+    const [slackConnected, setSlackConnected] = useState(false);
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
 
@@ -42,6 +43,9 @@ export default function Settings() {
                     const settingsData = Array.isArray(data) ? data : [];
                     const keySetting = settingsData.find((s: any) => s.key === 'SMARTLEAD_API_KEY');
                     if (keySetting) setApiKey(keySetting.value);
+
+                    const slackSetting = settingsData.find((s: any) => s.key === 'SLACK_CONNECTED');
+                    if (slackSetting) setSlackConnected(slackSetting.value === 'true');
                 }
             })
             .catch(() => { }); // Silent fail for settings
@@ -698,44 +702,69 @@ export default function Settings() {
 
                     <div style={{ padding: '1.5rem', background: '#F8FAFC', borderRadius: '16px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div>
-                            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem' }}>Connect your Workspace</h3>
+                            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem' }}>
+                                {slackConnected ? 'Slack is Connected' : 'Connect your Workspace'}
+                            </h3>
                             <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '400px', lineHeight: '1.5' }}>
-                                Install the Superkabe bot to monitor domains and mailboxes via <code style={{ background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>/superkabe</code> commands.
+                                {slackConnected
+                                    ? 'Your Superkabe bot is installed and actively monitoring your infrastructure.'
+                                    : <><span style={{ marginRight: '3px' }}>Install the Superkabe bot to monitor domains and mailboxes via</span><code style={{ background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>/superkabe</code> commands.</>
+                                }
                             </p>
                         </div>
 
-                        <a
-                            href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}`}
-                            style={{
+                        {slackConnected ? (
+                            <div style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.5rem',
                                 padding: '0.75rem 1.25rem',
-                                background: '#FFFFFF',
-                                color: '#0F172A',
-                                fontWeight: 600,
+                                background: '#ECFDF5',
+                                color: '#059669',
+                                fontWeight: 700,
                                 fontSize: '0.875rem',
                                 borderRadius: '8px',
-                                border: '1px solid #CBD5E1',
-                                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                                transition: 'all 0.2s ease',
-                                textDecoration: 'none'
-                            }}
-                            onMouseOver={(e) => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.borderColor = '#94A3B8'; }}
-                            onMouseOut={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#CBD5E1'; }}
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z" fill="#E01E5A" />
-                                <path d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A" />
-                                <path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z" fill="#36C5F0" />
-                                <path d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0" />
-                                <path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z" fill="#2EB67D" />
-                                <path d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D" />
-                                <path d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z" fill="#ECB22E" />
-                                <path d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.52h-6.313z" fill="#ECB22E" />
-                            </svg>
-                            Add to Slack
-                        </a>
+                                border: '1px solid #A7F3D0'
+                            }}>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                                Connected
+                            </div>
+                        ) : (
+                            <a
+                                href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}`}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    padding: '0.75rem 1.25rem',
+                                    background: '#FFFFFF',
+                                    color: '#0F172A',
+                                    fontWeight: 600,
+                                    fontSize: '0.875rem',
+                                    borderRadius: '8px',
+                                    border: '1px solid #CBD5E1',
+                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                                    transition: 'all 0.2s ease',
+                                    textDecoration: 'none'
+                                }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.borderColor = '#94A3B8'; }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#CBD5E1'; }}
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z" fill="#E01E5A" />
+                                    <path d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A" />
+                                    <path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z" fill="#36C5F0" />
+                                    <path d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0" />
+                                    <path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z" fill="#2EB67D" />
+                                    <path d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D" />
+                                    <path d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z" fill="#ECB22E" />
+                                    <path d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.52h-6.313z" fill="#ECB22E" />
+                                </svg>
+                                Add to Slack
+                            </a>
+                        )}
                     </div>
                 </div>
             </div>
@@ -768,31 +797,33 @@ export default function Settings() {
             />
 
             {/* Health Enforcement Modal */}
-            {healthCheckData && (
-                <HealthEnforcementModal
-                    isOpen={showHealthModal}
-                    onClose={() => setShowHealthModal(false)}
-                    criticalCount={healthCheckData.critical_count || 0}
-                    findings={healthCheckData.findings || []}
-                    overallScore={healthCheckData.overall_score}
-                    onPauseCampaigns={async () => {
-                        try {
-                            setLoading(true);
+            {
+                healthCheckData && (
+                    <HealthEnforcementModal
+                        isOpen={showHealthModal}
+                        onClose={() => setShowHealthModal(false)}
+                        criticalCount={healthCheckData.critical_count || 0}
+                        findings={healthCheckData.findings || []}
+                        overallScore={healthCheckData.overall_score}
+                        onPauseCampaigns={async () => {
+                            try {
+                                setLoading(true);
+                                setShowHealthModal(false);
+                                const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
+                                setMsg(result.message || 'All campaigns paused successfully.');
+                            } catch (e: any) {
+                                setMsg('Failed to pause campaigns: ' + e.message);
+                            } finally {
+                                setLoading(false);
+                            }
+                        }}
+                        onViewDetails={() => {
                             setShowHealthModal(false);
-                            const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
-                            setMsg(result.message || 'All campaigns paused successfully.');
-                        } catch (e: any) {
-                            setMsg('Failed to pause campaigns: ' + e.message);
-                        } finally {
-                            setLoading(false);
-                        }
-                    }}
-                    onViewDetails={() => {
-                        setShowHealthModal(false);
-                        router.push('/dashboard/infrastructure');
-                    }}
-                />
-            )}
-        </div>
+                            router.push('/dashboard/infrastructure');
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 }
