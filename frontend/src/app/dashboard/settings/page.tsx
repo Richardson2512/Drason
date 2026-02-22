@@ -27,6 +27,7 @@ export default function Settings() {
     const [slackAlertsLastErrorAt, setSlackAlertsLastErrorAt] = useState('');
     const [loadingChannels, setLoadingChannels] = useState(false);
     const [savingChannel, setSavingChannel] = useState(false);
+    const [disconnectingSlack, setDisconnectingSlack] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
@@ -145,25 +146,54 @@ export default function Settings() {
     }, [slackConnected]);
 
     const handleSaveSlackChannel = async (channelId: string) => {
-        setSavingChannel(true);
-        setMsg('');
         try {
-            const res = await apiClient<any>('/api/slack/channel', {
-                method: 'POST',
-                body: JSON.stringify({ channel_id: channelId })
+            setSavingChannel(true);
+            setMsg('');
+
+            const selectedChannel = slackChannels.find(c => c.id === channelId);
+
+            const result = await apiClient<any>('/api/user/settings', {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    slack_alerts_channel: channelId,
+                    slack_alerts_channel_name: selectedChannel?.name || null,
+                    slack_alerts_status: 'active' // Re-activate if it was failing
+                }),
             });
-            if (res.success) {
-                setSlackAlertsChannel(channelId);
-                setSlackAlertsStatus('active');
-                setSlackAlertsLastError('');
-                setMsg('Slack alerts successfully configured and tested.');
-            } else {
-                setMsg(res.message || res.error || 'Failed to configure channel.');
-            }
-        } catch (error: any) {
-            setMsg(error.message || 'Error validating Slack channel.');
+
+            setSlackAlertsChannel(channelId);
+            setSlackAlertsStatus('active');
+            setMsg('Slack alerts channel updated successfully. Test message sent!');
+        } catch (e: any) {
+            setMsg('Failed to update Slack channel: ' + e.message);
         } finally {
             setSavingChannel(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
+    const handleDisconnectSlack = async () => {
+        if (!confirm('Are you sure you want to disconnect Slack? This will remove all proactive alerts and slash commands for this workspace.')) {
+            return;
+        }
+
+        try {
+            setDisconnectingSlack(true);
+            setMsg('');
+
+            await apiClient<any>('/api/user/settings/slack/disconnect', {
+                method: 'POST'
+            });
+
+            setSlackConnected(false);
+            setSlackAlertsChannel('');
+            setSlackAlertsStatus('revoked');
+            setMsg('Slack integration disconnected successfully.');
+        } catch (e: any) {
+            setMsg('Failed to disconnect Slack: ' + e.message);
+        } finally {
+            setDisconnectingSlack(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -920,22 +950,47 @@ export default function Settings() {
                             </div>
 
                             {slackConnected ? (
-                                <div style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    padding: '0.75rem 1.25rem',
-                                    background: '#ECFDF5',
-                                    color: '#059669',
-                                    fontWeight: 700,
-                                    fontSize: '0.875rem',
-                                    borderRadius: '8px',
-                                    border: '1px solid #A7F3D0'
-                                }}>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
-                                    Connected
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        padding: '0.75rem 1.25rem',
+                                        background: '#ECFDF5',
+                                        color: '#059669',
+                                        fontWeight: 700,
+                                        fontSize: '0.875rem',
+                                        borderRadius: '8px',
+                                        border: '1px solid #A7F3D0'
+                                    }}>
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        Connected
+                                    </div>
+                                    <button
+                                        onClick={handleDisconnectSlack}
+                                        disabled={disconnectingSlack}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            padding: '0.75rem 1.25rem',
+                                            background: '#FFFFFF',
+                                            color: '#DC2626',
+                                            fontWeight: 600,
+                                            fontSize: '0.875rem',
+                                            borderRadius: '8px',
+                                            border: '1px solid #FECACA',
+                                            cursor: disconnectingSlack ? 'not-allowed' : 'pointer',
+                                            opacity: disconnectingSlack ? 0.7 : 1,
+                                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        onMouseOver={(e) => { if (!disconnectingSlack) { e.currentTarget.style.background = '#FEF2F2'; e.currentTarget.style.borderColor = '#F87171'; } }}
+                                        onMouseOut={(e) => { if (!disconnectingSlack) { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#FECACA'; } }}
+                                    >
+                                        {disconnectingSlack ? 'Disconnecting...' : 'Disconnect'}
+                                    </button>
                                 </div>
                             ) : (
                                 <a
@@ -972,62 +1027,62 @@ export default function Settings() {
                                 </a>
                             )}
                         </div>
-                    </div>
 
-                    {slackConnected && (
-                        <div style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <div>
-                                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    Proactive Alerts Configuration
-                                    {slackAlertsStatus === 'active' && slackAlertsChannel && (
-                                        <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#ECFDF5', color: '#059669', border: '1px solid #A7F3D0' }}>Active</span>
-                                    )}
-                                    {slackAlertsStatus !== 'active' && slackAlertsChannel && (
-                                        <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#FEF2F2', color: '#DC2626', border: '1px solid #FECACA' }}>
-                                            {slackAlertsStatus === 'channel_not_found' ? 'Channel Not Found' : slackAlertsStatus === 'auth_error' ? 'Auth Error' : 'Revoked'}
-                                        </span>
-                                    )}
-                                </h3>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '500px', lineHeight: '1.5' }}>
-                                    Superkabe will send critical infrastructure events, domain bounce spikes, and risk transitions directly to your designated Slack channel.
-                                </p>
-                            </div>
-
-                            {slackAlertsLastError && (
-                                <div style={{ padding: '0.75rem 1rem', background: '#FEF2F2', borderLeft: '4px solid #DC2626', borderRadius: '0 8px 8px 0', fontSize: '0.875rem', color: '#991B1B' }}>
-                                    <strong>Alerts Suspended:</strong> {slackAlertsLastError}
-                                    {slackAlertsLastErrorAt && <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#B91C1C' }}>Last Error: {new Date(slackAlertsLastErrorAt).toLocaleString()}</div>}
+                        {slackConnected && (
+                            <div style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        Proactive Alerts Configuration
+                                        {slackAlertsStatus === 'active' && slackAlertsChannel && (
+                                            <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#ECFDF5', color: '#059669', border: '1px solid #A7F3D0' }}>Active</span>
+                                        )}
+                                        {slackAlertsStatus !== 'active' && slackAlertsChannel && (
+                                            <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#FEF2F2', color: '#DC2626', border: '1px solid #FECACA' }}>
+                                                {slackAlertsStatus === 'channel_not_found' ? 'Channel Not Found' : slackAlertsStatus === 'auth_error' ? 'Auth Error' : 'Revoked'}
+                                            </span>
+                                        )}
+                                    </h3>
+                                    <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '500px', lineHeight: '1.5' }}>
+                                        Superkabe will send critical infrastructure events, domain bounce spikes, and risk transitions directly to your designated Slack channel.
+                                    </p>
                                 </div>
-                            )}
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <div style={{ flex: 1, maxWidth: '300px' }}>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Destination Channel</label>
-                                    <select
-                                        value={slackAlertsChannel}
-                                        onChange={(e) => handleSaveSlackChannel(e.target.value)}
-                                        disabled={loadingChannels || savingChannel}
-                                        className="w-full text-sm border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        style={{ height: '42px', backgroundColor: loadingChannels ? '#F1F5F9' : '#FFFFFF' }}
-                                    >
-                                        <option value="" disabled>{loadingChannels ? 'Loading channels...' : 'Select a channel'}</option>
-                                        {slackChannels.map(c => (
-                                            <option key={c.id} value={c.id}>{c.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                {(savingChannel || loadingChannels) && (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem', fontSize: '0.875rem', color: '#64748B' }}>
-                                        <svg className="animate-spin h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        {savingChannel ? 'Validating channel...' : 'Fetching list...'}
+                                {slackAlertsLastError && (
+                                    <div style={{ padding: '0.75rem 1rem', background: '#FEF2F2', borderLeft: '4px solid #DC2626', borderRadius: '0 8px 8px 0', fontSize: '0.875rem', color: '#991B1B' }}>
+                                        <strong>Alerts Suspended:</strong> {slackAlertsLastError}
+                                        {slackAlertsLastErrorAt && <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#B91C1C' }}>Last Error: {new Date(slackAlertsLastErrorAt).toLocaleString()}</div>}
                                     </div>
                                 )}
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                    <div style={{ flex: 1, maxWidth: '300px' }}>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">Destination Channel</label>
+                                        <select
+                                            value={slackAlertsChannel}
+                                            onChange={(e) => handleSaveSlackChannel(e.target.value)}
+                                            disabled={loadingChannels || savingChannel}
+                                            className="w-full text-sm border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            style={{ height: '42px', backgroundColor: loadingChannels ? '#F1F5F9' : '#FFFFFF' }}
+                                        >
+                                            <option value="" disabled>{loadingChannels ? 'Loading channels...' : 'Select a channel'}</option>
+                                            {slackChannels.map(c => (
+                                                <option key={c.id} value={c.id}>{c.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {(savingChannel || loadingChannels) && (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem', fontSize: '0.875rem', color: '#64748B' }}>
+                                            <svg className="animate-spin h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            {savingChannel ? 'Validating channel...' : 'Fetching list...'}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
 
