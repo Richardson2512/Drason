@@ -15,6 +15,7 @@ export default function Settings() {
     const [webhookUrl, setWebhookUrl] = useState('');
     const [webhookSecret, setWebhookSecret] = useState('');
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
+    const [emailBisonWebhookUrl, setEmailBisonWebhookUrl] = useState('');
     const [slackConnected, setSlackConnected] = useState(false);
 
     // Slack Alerts State
@@ -125,6 +126,7 @@ export default function Settings() {
             });
 
         setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
+        setEmailBisonWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/emailbison-webhook`);
     }, []);
 
     useEffect(() => {
@@ -656,6 +658,16 @@ export default function Settings() {
                                 {msg && <div className="text-center mt-4 text-sm font-medium" style={{ color: msg.includes('Error') ? '#EF4444' : '#10B981' }}>{msg}</div>}
                             </form>
 
+                            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem', marginBottom: '1.5rem' }}>
+                                <div className="flex justify-between items-center mb-2">
+                                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Webhook Endpoint</h3>
+                                    <CopyButton text={emailBisonWebhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
+                                </div>
+                                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
+                                    {emailBisonWebhookUrl || 'Loading...'}
+                                </div>
+                            </div>
+
                             <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
                                 <div style={{
                                     padding: '1rem',
@@ -894,7 +906,7 @@ export default function Settings() {
                 </div>
 
                 {slackConnected && (
-                    <div style={{ padding: '1.5rem', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div>
                             <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 Proactive Alerts Configuration
@@ -948,20 +960,48 @@ export default function Settings() {
                     </div>
                 )}
             </div>
+        </div>
 
-            {/* Sync Progress Modal */}
-            <SyncProgressModal
-                isOpen={showSyncModal}
-                sessionId={syncSessionId}
-                onClose={() => {
-                    setShowSyncModal(false);
-                    setSyncSessionId(null);
-                    // Optionally refresh the page to show updated data
-                    window.location.reload();
-                }}
+            {/* Sync Progress Modal */ }
+    <SyncProgressModal
+        isOpen={showSyncModal}
+        sessionId={syncSessionId}
+        onClose={() => {
+            setShowSyncModal(false);
+            setSyncSessionId(null);
+            // Optionally refresh the page to show updated data
+            window.location.reload();
+        }}
+        onPauseCampaigns={async () => {
+            try {
+                setLoading(true);
+                const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
+                setMsg(result.message || 'All campaigns paused successfully.');
+            } catch (e: any) {
+                setMsg('Failed to pause campaigns: ' + e.message);
+            } finally {
+                setLoading(false);
+            }
+        }}
+        onViewHealthReport={() => {
+            setShowSyncModal(false);
+            router.push('/dashboard/infrastructure');
+        }}
+    />
+
+    {/* Health Enforcement Modal */ }
+    {
+        healthCheckData && (
+            <HealthEnforcementModal
+                isOpen={showHealthModal}
+                onClose={() => setShowHealthModal(false)}
+                criticalCount={healthCheckData.critical_count || 0}
+                findings={healthCheckData.findings || []}
+                overallScore={healthCheckData.overall_score}
                 onPauseCampaigns={async () => {
                     try {
                         setLoading(true);
+                        setShowHealthModal(false);
                         const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
                         setMsg(result.message || 'All campaigns paused successfully.');
                     } catch (e: any) {
@@ -970,40 +1010,13 @@ export default function Settings() {
                         setLoading(false);
                     }
                 }}
-                onViewHealthReport={() => {
-                    setShowSyncModal(false);
+                onViewDetails={() => {
+                    setShowHealthModal(false);
                     router.push('/dashboard/infrastructure');
                 }}
             />
-
-            {/* Health Enforcement Modal */}
-            {
-                healthCheckData && (
-                    <HealthEnforcementModal
-                        isOpen={showHealthModal}
-                        onClose={() => setShowHealthModal(false)}
-                        criticalCount={healthCheckData.critical_count || 0}
-                        findings={healthCheckData.findings || []}
-                        overallScore={healthCheckData.overall_score}
-                        onPauseCampaigns={async () => {
-                            try {
-                                setLoading(true);
-                                setShowHealthModal(false);
-                                const result = await apiClient<any>('/api/dashboard/campaigns/pause-all', { method: 'POST' });
-                                setMsg(result.message || 'All campaigns paused successfully.');
-                            } catch (e: any) {
-                                setMsg('Failed to pause campaigns: ' + e.message);
-                            } finally {
-                                setLoading(false);
-                            }
-                        }}
-                        onViewDetails={() => {
-                            setShowHealthModal(false);
-                            router.push('/dashboard/infrastructure');
-                        }}
-                    />
-                )
-            }
+        )
+    }
         </div >
     );
 }
