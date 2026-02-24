@@ -87,6 +87,12 @@ export default function ProductIndexPage() {
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
                         <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
                     </nav>
+                    <div className="flex gap-4 items-center">
+                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
+                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
+                            Get Started
+                        </Link>
+                    </div>
                 </div>
             </header>
 
