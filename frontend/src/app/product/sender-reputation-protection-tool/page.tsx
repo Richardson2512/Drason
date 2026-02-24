@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function ArticlePage() {
     return (
         <div className="bg-[#F5F8FF] text-[#1E1E2F] font-sans min-h-screen">
-            {/* Minimal Nav */}
+            {/* ================= NAVBAR ================= */}
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
                     <Link href="/" className="flex items-center gap-2">
@@ -23,9 +23,17 @@ export default function ArticlePage() {
                         <span className="font-bold text-xl tracking-tight">Superkabe</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/product" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
+                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
                     </nav>
+                    <div className="flex gap-4 items-center">
+                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
+                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
+                            Get Started
+                        </Link>
+                    </div>
                 </div>
             </header>
 
@@ -33,6 +41,12 @@ export default function ArticlePage() {
                 <h1 className="text-5xl font-bold leading-tight tracking-tight text-gray-900 mb-8">
                     Sender Reputation Protection Tool
                 </h1>
+
+                <div className="max-w-4xl mx-auto mb-10 p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                    <p className="text-lg text-blue-900 leading-relaxed font-medium">
+                        <strong className="text-blue-950">Superkabe</strong> is an email deliverability and sender reputation protection platform designed for outbound email infrastructure. We protect your domains from burnout by monitoring bounce rates, blocking toxic leads, and auto-healing your infrastructure before mailbox providers can penalize your sender score.
+                    </p>
+                </div>
                 
                 <div className="prose prose-lg max-w-none text-gray-700">
                     <h2 className="text-3xl font-bold mb-6 mt-12 text-gray-900">Understanding the Mechanics of Protection</h2>
