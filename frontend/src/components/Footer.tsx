@@ -27,11 +27,19 @@ export default function Footer() {
                         {/* Right: Navigation & Social */}
                         <div className="flex flex-col items-start lg:items-end gap-6">
                             {/* Navigation Links */}
-                            <nav className="flex flex-wrap gap-6 text-sm font-medium text-gray-600">
+                            <nav className="flex flex-wrap justify-end gap-6 text-sm font-medium text-gray-600 w-full">
                                 <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
                                 <Link href="/docs" className="hover:text-gray-900 transition-colors">Documentation</Link>
                                 <Link href="/pricing" className="hover:text-gray-900 transition-colors">Pricing</Link>
                                 <Link href="/blog" className="hover:text-gray-900 transition-colors">Blog</Link>
+                            </nav>
+
+                            {/* Resources & Guides (SEO Pillars) */}
+                            <nav className="flex flex-wrap justify-end gap-6 text-sm font-medium text-gray-500 w-full">
+                                <Link href="/email-deliverability-protection" className="hover:text-gray-900 transition-colors">Deliverability Guide</Link>
+                                <Link href="/domain-burnout-prevention-tool" className="hover:text-gray-900 transition-colors">Domain Protection</Link>
+                                <Link href="/sender-reputation-monitoring" className="hover:text-gray-900 transition-colors">Reputation Monitoring</Link>
+                                <Link href="/automated-domain-healing" className="hover:text-gray-900 transition-colors">Auto-Healing Engine</Link>
                             </nav>
 
                             {/* Legal Links */}
