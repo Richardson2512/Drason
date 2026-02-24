@@ -42,6 +42,13 @@ export default function Footer() {
                                 <Link href="/automated-domain-healing" className="hover:text-gray-900 transition-colors">Auto-Healing Engine</Link>
                             </nav>
 
+                            {/* Case Studies */}
+                            <nav className="flex flex-wrap justify-end gap-6 text-sm font-medium text-gray-500 w-full">
+                                <Link href="/case-study-bounce-reduction" className="hover:text-gray-900 transition-colors">Bounce Reduction Case Study</Link>
+                                <Link href="/case-study-domain-recovery" className="hover:text-gray-900 transition-colors">Domain Recovery Case Study</Link>
+                                <Link href="/case-study-infrastructure-protection" className="hover:text-gray-900 transition-colors">Infrastructure Protection Case Study</Link>
+                            </nav>
+
                             {/* Legal Links */}
                             <nav className="flex flex-wrap gap-6 text-sm font-medium text-gray-400">
                                 <Link href="/privacy" className="hover:text-gray-600 transition-colors">Privacy Policy</Link>
