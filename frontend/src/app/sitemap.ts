@@ -115,7 +115,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             'case-study-bounce-reduction',
             'case-study-infrastructure-protection',
         ].map(slug => ({
-            url: `${BASE_URL}/${slug}`,
+            url: `${BASE_URL}/product/${slug}`,
             lastModified: new Date(),
             changeFrequency: 'weekly' as const,
             priority: 0.9,

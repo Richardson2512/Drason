@@ -29,33 +29,33 @@ export default function Footer() {
 
                             {/* Product */}
                             <div className="flex flex-col gap-4">
-                                <h4 className="font-bold text-gray-900 mb-2">Product</h4>
+                                <h4 className="font-bold text-gray-900 mb-2">Platform</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
                                     <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+                                    <Link href="/product" className="hover:text-blue-600 transition-colors">Product Hub</Link>
                                     <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
                                     <Link href="/docs" className="hover:text-blue-600 transition-colors">Documentation</Link>
-                                    <Link href="/blog" className="hover:text-blue-600 transition-colors">Blog</Link>
                                 </nav>
                             </div>
 
                             {/* Resources */}
                             <div className="flex flex-col gap-4">
-                                <h4 className="font-bold text-gray-900 mb-2">Resources</h4>
+                                <h4 className="font-bold text-gray-900 mb-2">Product Guides</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/email-deliverability-protection" className="hover:text-blue-600 transition-colors">Deliverability Guide</Link>
-                                    <Link href="/domain-burnout-prevention-tool" className="hover:text-blue-600 transition-colors">Domain Protection</Link>
-                                    <Link href="/sender-reputation-monitoring" className="hover:text-blue-600 transition-colors">Reputation</Link>
-                                    <Link href="/automated-domain-healing" className="hover:text-blue-600 transition-colors">Auto-Healing</Link>
+                                    <Link href="/product/email-deliverability-protection" className="hover:text-blue-600 transition-colors">Deliverability Guide</Link>
+                                    <Link href="/product/domain-burnout-prevention-tool" className="hover:text-blue-600 transition-colors">Domain Protection</Link>
+                                    <Link href="/product/sender-reputation-monitoring" className="hover:text-blue-600 transition-colors">Reputation</Link>
+                                    <Link href="/product/automated-domain-healing" className="hover:text-blue-600 transition-colors">Auto-Healing</Link>
                                 </nav>
                             </div>
 
                             {/* Case Studies */}
                             <div className="flex flex-col gap-4">
-                                <h4 className="font-bold text-gray-900 mb-2">Case Studies</h4>
+                                <h4 className="font-bold text-gray-900 mb-2">Product Case Studies</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors">Bounce Reduction</Link>
-                                    <Link href="/case-study-domain-recovery" className="hover:text-blue-600 transition-colors">Domain Recovery</Link>
-                                    <Link href="/case-study-infrastructure-protection" className="hover:text-blue-600 transition-colors">Infrastructure</Link>
+                                    <Link href="/product/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors">Bounce Reduction</Link>
+                                    <Link href="/product/case-study-domain-recovery" className="hover:text-blue-600 transition-colors">Domain Recovery</Link>
+                                    <Link href="/product/case-study-infrastructure-protection" className="hover:text-blue-600 transition-colors">Infrastructure</Link>
                                 </nav>
                             </div>
 

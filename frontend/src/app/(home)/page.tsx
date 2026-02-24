@@ -148,7 +148,7 @@ export default function LandingPage() {
                         <span className="font-bold text-xl tracking-tight">Superkabe</span>
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
+                        <Link href="/product" className="hover:text-black transition-colors">Product</Link>
                         <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
                         <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
