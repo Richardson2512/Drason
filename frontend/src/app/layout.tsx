@@ -80,7 +80,7 @@ export default function RootLayout({
     sameAs: [
       'https://www.linkedin.com/company/superkabe',
       'https://github.com/superkabe',
-      'https://crunchbase.com/organization/superkabe',
+      'https://www.crunchbase.com/organization/superkabe',
       'https://producthunt.com/products/superkabe',
       'https://g2.com/products/superkabe',
     ],
