@@ -87,8 +87,9 @@ export default function Footer() {
 
                         {/* Entity Links Array (Crawler Pathing) */}
                         <div className="flex flex-wrap items-center justify-center gap-6">
+                            <a href="/open-source" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium border border-gray-200 px-3 py-1 rounded-full bg-gray-50">Open Source Manifesto</a>
                             <a href="https://www.linkedin.com/company/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">LinkedIn</a>
-                            <a href="https://github.com/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">GitHub</a>
+                            <a href="https://github.com/Superkabereal/Superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">GitHub</a>
                             <a href="https://www.crunchbase.com/organization/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Crunchbase</a>
                             <a href="https://producthunt.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Product Hunt</a>
                             <a href="https://g2.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">G2</a>
