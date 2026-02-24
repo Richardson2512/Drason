@@ -203,7 +203,7 @@ export default function LandingPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-10 md:p-14 border border-gray-100 shadow-xl shadow-blue-500/5">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight text-center">
-                            What is Superkabe?
+                            What problems does the Superkabe platform solve?
                         </h2>
                         <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-12 text-center">
                             Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.
@@ -313,7 +313,7 @@ export default function LandingPage() {
             <section className="py-24 px-6 bg-white/50 backdrop-blur-sm">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Total Infrastructure Control</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Total Outbound Infrastructure Control</h2>
                         <p className="text-gray-500 max-w-2xl mx-auto">Everything you need to keep your domains healthy and your emails landing in the primary inbox.</p>
                     </div>
 
@@ -334,7 +334,7 @@ export default function LandingPage() {
                             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                             <div className="relative z-10 text-center">
                                 <span className="text-5xl mb-4 block">🛡️</span>
-                                <h3 className="font-bold text-2xl mb-2">Enterprise Ready</h3>
+                                <h3 className="font-bold text-2xl mb-2">Enterprise-Grade Deliverability Architecture</h3>
                                 <p className="text-blue-100 text-sm">Custom solutions for high-volume teams.</p>
                             </div>
                         </div>
@@ -349,7 +349,7 @@ export default function LandingPage() {
 
                     <div>
                         <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">Simple Pricing</div>
-                        <h2 className="text-5xl font-bold mb-6 text-gray-900">Protect your revenue.</h2>
+                        <h2 className="text-5xl font-bold mb-6 text-gray-900">Protect your outbound revenue with Superkabe.</h2>
                         <p className="text-gray-500 mb-8 text-lg leading-relaxed">
                             Don't let a $10 domain burn cost you a $50k deal. Superkabe pays for itself by saving your infrastructure from irreversible damage.
                         </p>
@@ -435,7 +435,7 @@ export default function LandingPage() {
             {/* ================= FAQ ================= */}
             <section className="py-24 px-6 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-16">Common Questions</h2>
+                    <h2 className="text-4xl font-bold text-center mb-16">Common Questions about Outbound Infrastructure Protection</h2>
 
                     <div className="space-y-4">
                         {faqSchema.mainEntity.map((faq, index) => (
@@ -469,7 +469,8 @@ export default function LandingPage() {
 
                 <div className="relative z-10 container max-w-3xl mx-auto">
                     <h2 className="text-5xl md:text-6xl font-bold mb-8 text-white tracking-tight">
-                        Stop Burning Domains.
+                        Stop Burning Domains. <br />
+                        Protect your outbound infrastructure.
                     </h2>
                     <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
                         Join modern outbound teams who trust Superkabe to keep their infrastructure healthy and their deliverability high.

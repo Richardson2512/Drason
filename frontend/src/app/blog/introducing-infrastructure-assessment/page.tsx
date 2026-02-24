@@ -39,8 +39,8 @@ export default function InfrastructureAssessmentPost() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    How to assess your outbound email infrastructure before sending your first campaign
-                </h1>
+                How to assess your outbound email infrastructure before sending your first campaign
+            </h1>
 
             <p className="lead text-xl text-gray-500 mb-8">
                 You wouldn't fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?
@@ -54,7 +54,7 @@ export default function InfrastructureAssessmentPost() {
                 The problem wasn't the copy. It wasn't the offer. It was the <strong>infrastructure</strong>.
             </p>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">The Silent Killer of Campaigns</h2>
+            <h2 className="text-3xl font-bold mt-12 mb-6">The Silent Killer of Outbound Campaigns: Unmonitored Infrastructure</h2>
             <p>
                 Email infrastructure is fragile. A single missing DMARC record, a hidden blacklist listing, or a "burned" mailbox from a previous provider can tank your entire operation.
             </p>
@@ -62,13 +62,13 @@ export default function InfrastructureAssessmentPost() {
                 Until now, checking this required manual work: using one tool for SPF checks, another for blacklists, and spreadsheets to track mailbox age.
             </p>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">Enter: Automated Assessment</h2>
+            <h2 className="text-3xl font-bold mt-12 mb-6">Enter: Automated Email Infrastructure Assessment</h2>
             <p>
                 We built the <strong>Infrastructure Assessment</strong> to solve this. It's an automated auditor that lives inside your Superkabe dashboard.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 my-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">What We Scan</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">What the Infrastructure Assessment Scans</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="bg-white p-6 rounded-xl shadow-sm">
                         <h4 className="font-bold text-blue-600 mb-2">1. DNS Configuration</h4>
@@ -89,7 +89,7 @@ export default function InfrastructureAssessmentPost() {
                 </div>
             </div>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">The 0-100 Score</h2>
+            <h2 className="text-3xl font-bold mt-12 mb-6">The 0-100 Infrastructure Health Score</h2>
             <p>
                 We boil everything down to a simple <strong>Health Score</strong>.
             </p>
@@ -99,7 +99,7 @@ export default function InfrastructureAssessmentPost() {
                 <li><strong>0-69 (Critical):</strong> DO NOT SEND. You have structural issues that will cause immediate deliverability failures.</li>
             </ul>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">How to Run Your First Audit</h2>
+            <h2 className="text-3xl font-bold mt-12 mb-6">How to Run Your First Infrastructure Audit</h2>
             <p>
                 This feature is available today for all active workspaces.
             </p>
@@ -111,7 +111,7 @@ export default function InfrastructureAssessmentPost() {
             </ol>
 
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-8 mt-12 text-center">
-                <h3 className="text-2xl font-bold text-blue-900 mb-4">Ready to fix your infrastructure?</h3>
+                <h3 className="text-2xl font-bold text-blue-900 mb-4">Ready to fix your outbound infrastructure?</h3>
                 <p className="text-blue-700 mb-6">
                     Log in to Superkabe and run your first free assessment report.
                 </p>
