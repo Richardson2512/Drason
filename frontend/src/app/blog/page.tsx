@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const articles = [
     {
         slug: 'introducing-infrastructure-assessment',
-        title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
+        title: 'How to assess your outbound email infrastructure before sending your first campaign',
         description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
         icon: Activity,
         readTime: '3 min read',
@@ -23,7 +23,7 @@ const articles = [
     },
     {
         slug: 'email-deliverability-guide',
-        title: 'The Complete Email Deliverability Guide for Outbound',
+        title: 'How to protect and master your outbound email deliverability',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
         icon: BookOpen,
         readTime: '20 min read',
@@ -31,7 +31,7 @@ const articles = [
     },
     {
         slug: 'bounce-rate-deliverability',
-        title: 'How Bounce Rate Affects Email Deliverability',
+        title: 'How bounce rates damage sender reputation (and how to prevent it)',
         description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
         icon: Activity,
         readTime: '8 min read',
@@ -39,7 +39,7 @@ const articles = [
     },
     {
         slug: 'spf-dkim-dmarc-explained',
-        title: 'SPF, DKIM, and DMARC Explained',
+        title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
         description: 'A technical breakdown of email authentication protocols, how they protect your sender identity, and why misconfiguration leads to inbox placement failure.',
         icon: Shield,
         readTime: '10 min read',
@@ -47,7 +47,7 @@ const articles = [
     },
     {
         slug: 'domain-warming-methodology',
-        title: 'Domain Warming Methodology',
+        title: 'How to safely warm up new outbound email domains',
         description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
         icon: Globe,
         readTime: '9 min read',
@@ -55,7 +55,7 @@ const articles = [
     },
     {
         slug: 'email-reputation-lifecycle',
-        title: 'The Email Reputation Lifecycle',
+        title: 'How sender reputation is built, damaged, and repaired over time',
         description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
         icon: Mail,
         readTime: '11 min read',

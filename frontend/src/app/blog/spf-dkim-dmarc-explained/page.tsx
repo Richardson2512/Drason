@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'SPF, DKIM, and DMARC Explained – Superkabe Blog',
+    title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
     description: 'Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.',
 };
 
@@ -102,9 +102,13 @@ export default function SpfDkimDmarcArticle() {
 
             <article>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    SPF, DKIM, and DMARC Explained
+                    Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams
                 </h1>
                 <p className="text-gray-400 text-sm mb-8">10 min read · Updated February 2026</p>
+
+                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                    This guide answers a common question from outbound teams: &quot;How exactly do I configure SPF, DKIM, and DMARC to ensure my cold emails land in the primary inbox?&quot;
+                </p>
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-12">

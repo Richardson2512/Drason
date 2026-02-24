@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
+    title: 'How to assess your outbound email infrastructure before sending your first campaign',
     description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
     openGraph: {
         title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
@@ -38,9 +38,9 @@ export default function InfrastructureAssessmentPost() {
                 </ul>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Introducing Infrastructure Assessment: The Pre-Flight Check for Cold Email
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+                    How to assess your outbound email infrastructure before sending your first campaign
+                </h1>
 
             <p className="lead text-xl text-gray-500 mb-8">
                 You wouldn't fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?

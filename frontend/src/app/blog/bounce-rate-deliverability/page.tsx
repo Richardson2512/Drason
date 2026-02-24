@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How Bounce Rate Affects Email Deliverability',
+    title: 'How bounce rates damage sender reputation (and how to prevent it)',
     description: 'Technical guide on email bounce rates, their impact on sender reputation and domain health, and strategies for preventing deliverability degradation.',
 };
 
@@ -81,9 +81,13 @@ export default function BounceRateArticle() {
 
             <article>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    How Bounce Rate Affects Email Deliverability
+                    How bounce rates damage sender reputation (and how to prevent it)
                 </h1>
                 <p className="text-gray-400 text-sm mb-8">8 min read · Updated February 2026</p>
+
+                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                    This guide answers a common question from outbound teams: &quot;How do bounce rates actually affect my sender reputation over time, and what is a safe threshold?&quot;
+                </p>
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-12">

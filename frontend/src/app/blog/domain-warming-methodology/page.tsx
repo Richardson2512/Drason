@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Domain Warming Methodology for Outbound Teams',
+    title: 'How to safely warm up new outbound email domains',
     description: 'Systematic approach to building sender reputation on new domains. Volume ramp schedules, warming signals, and common mistakes that burn domains.',
 };
 
@@ -95,9 +95,13 @@ export default function DomainWarmingArticle() {
 
             <article>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    Domain Warming Methodology
+                    How to safely warm up new outbound email domains
                 </h1>
                 <p className="text-gray-400 text-sm mb-8">9 min read · Updated February 2026</p>
+
+                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                    This guide answers a common question from outbound teams: &quot;What is the correct schedule and methodology for warming up new domains without burning them?&quot;
+                </p>
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-12">
