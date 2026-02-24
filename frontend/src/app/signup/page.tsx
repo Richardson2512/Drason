@@ -20,13 +20,37 @@ function SignupContent() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
-    // Capture plan parameter from URL
+    // Get backend URL for Google OAuth redirect
+    const getBackendUrl = () => {
+        if (typeof window !== 'undefined') {
+            const protocol = window.location.protocol;
+            const hostname = window.location.hostname;
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return `${protocol}//localhost:3001`;
+            }
+            return `${protocol}//${hostname}`;
+        }
+        return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    };
+
+    // Capture plan parameter and OAuth errors from URL
     useEffect(() => {
         const plan = searchParams.get('plan');
         if (plan && ['starter', 'growth', 'scale'].includes(plan)) {
             setSelectedPlan(plan);
         }
+        const oauthError = searchParams.get('error');
+        if (oauthError) {
+            setError(oauthError);
+        }
     }, [searchParams]);
+
+    const handleGoogleSignup = () => {
+        const backendUrl = getBackendUrl();
+        const params = new URLSearchParams({ source: 'signup' });
+        if (selectedPlan) params.set('plan', selectedPlan);
+        window.location.href = `${backendUrl}/api/auth/google?${params.toString()}`;
+    };
 
     const slides = [
         {
@@ -191,6 +215,23 @@ function SignupContent() {
 
                         <button type="submit" className="w-full bg-[#1C4532] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#1C4532]/20 hover:shadow-[#1C4532]/30 hover:-translate-y-0.5 transition-all text-base mt-2" disabled={loading}>
                             {loading ? 'Creating Account...' : 'Create Account'}
+                        </button>
+
+                        <div className="flex items-center gap-4 py-2">
+                            <div className="h-px bg-[#E2E8F0] flex-1"></div>
+                            <span className="text-[#A0AEC0] text-xs font-medium uppercase">OR CONTINUE WITH</span>
+                            <div className="h-px bg-[#E2E8F0] flex-1"></div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={handleGoogleSignup}
+                            className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm"
+                        >
+                            <div className="w-5 h-5 relative">
+                                <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill />
+                            </div>
+                            <span className="text-sm">Sign up with Google</span>
                         </button>
                     </form>
 
