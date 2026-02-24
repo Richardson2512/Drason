@@ -13,8 +13,24 @@ export const metadata: Metadata = {
 };
 
 export default function ArticlePage() {
+    
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Superkabe - Instantly Infrastructure Protection",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Superkabe enterprise deliverability protection layer for Instantly Infrastructure Protection.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        }
+    };
+
     return (
         <div className="bg-[#F5F8FF] text-[#1E1E2F] font-sans min-h-screen">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             {/* ================= NAVBAR ================= */}
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
