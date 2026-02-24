@@ -171,11 +171,12 @@ export default function LandingPage() {
                 </div>
 
                 <div className="relative z-10 max-w-5xl mx-auto px-6">
-                    <h1 className="text-5xl md:text-6xl font-bold leading-tight tracking-tight text-gray-900 mb-6 max-w-4xl mx-auto">
+                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight text-gray-900 mb-6 max-w-5xl mx-auto">
                         Superkabe — <br className="hidden md:block" />
-                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            Email Deliverability Protection Platform
-                        </span><br className="hidden md:block" /> for Outbound Infrastructure
+                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent pb-1 block">
+                            Email Deliverability Protection
+                        </span>
+                        Platform for Outbound Infrastructure
                     </h1>
 
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-6 leading-relaxed">
