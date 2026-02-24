@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 
 interface SubscriptionData {
@@ -70,10 +70,32 @@ const TIER_INFO: Record<string, TierInfo> = {
 
 function BillingContent() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [data, setData] = useState<SubscriptionData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [actionLoading, setActionLoading] = useState(false);
+
+    // Reset processing state when user navigates back from Polar checkout
+    // via browser back button (bfcache restore or visibility change)
+    useEffect(() => {
+        const handlePageShow = (event: PageTransitionEvent) => {
+            if (event.persisted) {
+                setActionLoading(false);
+            }
+        };
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                setActionLoading(false);
+            }
+        };
+        window.addEventListener('pageshow', handlePageShow);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            window.removeEventListener('pageshow', handlePageShow);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, []);
 
     const fetchSubscription = async () => {
         try {
@@ -137,6 +159,11 @@ function BillingContent() {
         // Check for upgrade parameter and auto-trigger checkout
         const upgradeTier = searchParams.get('upgrade');
         if (upgradeTier && ['starter', 'growth', 'scale'].includes(upgradeTier)) {
+            // Clear the upgrade param from URL to prevent re-triggering on back nav
+            const url = new URL(window.location.href);
+            url.searchParams.delete('upgrade');
+            window.history.replaceState({}, '', url.toString());
+
             // Small delay to let subscription data load first
             setTimeout(() => {
                 handleUpgrade(upgradeTier);
