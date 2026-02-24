@@ -50,16 +50,22 @@ export default function Footer() {
                                 <span className="text-yellow-500">⭐</span> Review us on G2
                             </a>
 
-                            {/* Social Icons */}
-                            <div className="flex gap-4">
-                                <a href="#" className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
-                                    <Instagram size={18} />
+                            {/* Entity Links Array */}
+                            <div className="flex flex-wrap items-center gap-4 mt-2">
+                                <a href="https://www.linkedin.com/company/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium border-b border-transparent hover:border-gray-300">
+                                    LinkedIn
                                 </a>
-                                <a href="#" className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
-                                    <Linkedin size={18} />
+                                <a href="https://github.com/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium border-b border-transparent hover:border-gray-300">
+                                    GitHub
                                 </a>
-                                <a href="#" className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
-                                    <Twitter size={18} />
+                                <a href="https://crunchbase.com/organization/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium border-b border-transparent hover:border-gray-300">
+                                    Crunchbase
+                                </a>
+                                <a href="https://producthunt.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium border-b border-transparent hover:border-gray-300">
+                                    Product Hunt
+                                </a>
+                                <a href="https://g2.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium border-b border-transparent hover:border-gray-300">
+                                    G2
                                 </a>
                             </div>
                         </div>

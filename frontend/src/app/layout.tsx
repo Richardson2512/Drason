@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   title: 'Superkabe - Infrastructure Protection for Outbound',
   description:
     'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
+  authors: [{ name: 'Richardson', url: 'https://www.superkabe.com' }],
+  publisher: 'Superkabe',
   icons: {
     icon: '/image/favicon-32.png',
     apple: '/image/apple-touch-icon.png',
@@ -73,8 +75,11 @@ export default function RootLayout({
       email: 'support@superkabe.com',
     },
     sameAs: [
-      'https://twitter.com/superkabe',
       'https://www.linkedin.com/company/superkabe',
+      'https://github.com/superkabe',
+      'https://crunchbase.com/organization/superkabe',
+      'https://producthunt.com/products/superkabe',
+      'https://g2.com/products/superkabe',
     ],
   };
 
@@ -83,17 +88,24 @@ export default function RootLayout({
     '@type': 'SoftwareApplication',
     '@id': 'https://www.superkabe.com/#software',
     name: 'Superkabe',
-    operatingSystem: 'Web',
     applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: 'https://www.superkabe.com',
+    description:
+      'Infrastructure protection layer for outbound email that monitors bounce rates, protects sender reputation, and auto-heals domain infrastructure.',
+    offers: {
+      '@type': 'Offer',
+      price: '49',
+      priceCurrency: 'USD',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Superkabe',
+      url: 'https://www.superkabe.com',
+    },
     isPartOf: {
       '@id': 'https://www.superkabe.com/#organization',
     },
-    offers: {
-      '@type': 'Offer',
-      price: '49.00',
-      priceCurrency: 'USD',
-    },
-    description: 'Email infrastructure protection and sender reputation recovery platform. Monitor bounce rates, enforce lead gating, and automate recovery.',
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',

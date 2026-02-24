@@ -7,6 +7,9 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Blog – Superkabe',
     description: 'Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.',
+    alternates: {
+        canonical: '/blog',
+    },
 };
 
 const articles = [

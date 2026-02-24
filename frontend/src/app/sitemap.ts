@@ -86,5 +86,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
         // ─── Blog (auto-discovered) ───────────────────
         ...discoverRoutes('blog', '/blog', 'weekly', 0.7),
+
+        // ─── Auto-Generated SEO & Case Study Pages ────
+        ...[
+            'email-deliverability-protection',
+            'what-is-email-deliverability-protection',
+            'sender-reputation-protection-tool',
+            'how-to-protect-sender-reputation',
+            'b2b-sender-reputation-management',
+            'domain-burnout-prevention-tool',
+            'how-to-prevent-domain-burnout',
+            'automated-domain-healing',
+            'outbound-domain-protection',
+            'email-infrastructure-protection',
+            'cold-email-infrastructure-protection',
+            'outbound-email-infrastructure-monitoring',
+            'email-infrastructure-health-check',
+            'bounce-rate-protection-system',
+            'sender-reputation-monitoring',
+            'automated-bounce-management',
+            'smartlead-infrastructure-protection',
+            'smartlead-deliverability-protection',
+            'instantly-infrastructure-protection',
+            'reply-io-deliverability-protection',
+            'emailbison-infrastructure-protection',
+            'multi-platform-outbound-protection',
+            'case-study-domain-recovery',
+            'case-study-bounce-reduction',
+            'case-study-infrastructure-protection',
+        ].map(slug => ({
+            url: `${BASE_URL}/${slug}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.9,
+        })),
     ];
 }

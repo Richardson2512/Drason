@@ -1,5 +1,14 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { ArrowRight, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, Plug, Database } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: 'Documentation | Superkabe',
+    description: 'Production-hardened monitoring and protection for modern outbound infrastructure.',
+    alternates: {
+        canonical: '/docs',
+    },
+};
 
 export default function DocsPage() {
     return (
