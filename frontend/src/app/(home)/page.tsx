@@ -269,11 +269,38 @@ export default function LandingPage() {
                                 </span>
                             ))}
                         </div>
-                        <div className="text-center">
-                            <Link href="/docs" className="inline-flex items-center gap-2 px-8 py-3.5 bg-gray-900 text-white rounded-2xl font-semibold hover:bg-black transition-colors shadow-lg shadow-gray-900/10">
-                                Learn More
+                        <div className="text-center mt-6">
+                            <Link href="/infrastructure-playbook" className="inline-flex items-center gap-2 px-8 py-3.5 bg-gray-900 text-white rounded-2xl font-semibold hover:bg-black transition-colors shadow-lg shadow-gray-900/10">
+                                Read the Playbook
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </Link>
+                        </div>
+                    </div>
+
+                    {/* ================= CORE CONCEPTS EXPLAINED (AEO) ================= */}
+                    <div className="mt-16 bg-white/60 backdrop-blur-md rounded-3xl p-10 border border-blue-100 shadow-sm max-w-4xl mx-auto">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Core Outbound Infrastructure Concepts Explained</h2>
+                        <div className="space-y-8">
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">What is domain burnout?</h3>
+                                <p className="text-gray-600 leading-relaxed text-sm">
+                                    Domain burnout occurs when sustained high bounce rates or spam complaints permanently damage a domain's sender reputation, making inbox placement nearly impossible even after configuration fixes.
+                                </p>
+                            </div>
+                            <div className="h-px bg-gray-100 w-full"></div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">What is mailbox fatigue?</h3>
+                                <p className="text-gray-600 leading-relaxed text-sm">
+                                    Mailbox fatigue is the degradation of sender reputation caused by sending too many emails too quickly from a single address, measurable through sudden spikes in soft bounces and declining open rates.
+                                </p>
+                            </div>
+                            <div className="h-px bg-gray-100 w-full"></div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">What is a Deliverability Protection Layer (DPL)?</h3>
+                                <p className="text-gray-600 leading-relaxed text-sm">
+                                    A Deliverability Protection Layer (DPL) is infrastructural middleware that sits between your enrichment tools and sending accounts to actively halt vulnerable outbound traffic before ISP reputation penalties are triggered.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
