@@ -33,7 +33,6 @@ export default function Footer() {
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
                                     <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
                                     <Link href="/product" className="hover:text-blue-600 transition-colors">Product Hub</Link>
-                                    <Link href="/infrastructure-playbook" className="hover:text-blue-600 transition-colors">Playbook</Link>
                                     <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
                                     <Link href="/docs" className="hover:text-blue-600 transition-colors">Documentation</Link>
                                 </nav>

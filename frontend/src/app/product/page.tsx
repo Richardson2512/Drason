@@ -14,6 +14,12 @@ export const metadata: Metadata = {
 export default function ProductIndexPage() {
     const categories = [
         {
+            title: 'Master Documentation & Playbooks',
+            links: [
+                { title: 'The Infrastructure Playbook', href: '/infrastructure-playbook', desc: 'The authoritative, highly detailed A-Z guide on setting up, protecting, and scaling outbound deliverability. Start here.' },
+            ]
+        },
+        {
             title: 'Core Platform & Infrastructure',
             links: [
                 { title: 'Email Deliverability Protection', href: '/product/email-deliverability-protection', desc: 'Complete overview of our deliverability protection layer.' },

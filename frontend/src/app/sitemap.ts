@@ -87,6 +87,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ─── Blog (auto-discovered) ───────────────────
         ...discoverRoutes('blog', '/blog', 'weekly', 0.7),
 
+        // ─── Manifestos & Playbooks ───────────────────
+        {
+            url: `${BASE_URL}/open-source`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${BASE_URL}/infrastructure-playbook`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${BASE_URL}/product`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+
         // ─── Auto-Generated SEO & Case Study Pages ────
         ...[
             'email-deliverability-protection',

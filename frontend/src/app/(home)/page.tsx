@@ -188,7 +188,6 @@ export default function LandingPage() {
                     </Link>
                     <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
                         <Link href="/product" className="hover:text-black transition-colors">Product</Link>
-                        <Link href="/infrastructure-playbook" className="hover:text-black transition-colors">Playbook</Link>
                         <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
                         <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
                         <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
