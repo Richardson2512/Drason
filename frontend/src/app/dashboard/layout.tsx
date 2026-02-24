@@ -49,15 +49,7 @@ export default function DashboardLayout({
             if (org?.name) setOrgName(org.name);
         }).catch(() => { });
 
-        // Get user name from cookie-based JWT (decoded on client for display only)
-        try {
-            const cookies = document.cookie.split(';').reduce((acc: any, c) => {
-                const [k, v] = c.trim().split('=');
-                acc[k] = v;
-                return acc;
-            }, {});
-            // Note: httpOnly cookies won't be readable here, so we use a fallback
-        } catch { }
+
 
         // Fetch unread notification count
         const fetchUnreadCount = () => {

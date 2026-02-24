@@ -205,9 +205,37 @@ export default function LandingPage() {
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight text-center">
                             What is Superkabe?
                         </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10 text-center">
-                            Superkabe is an <strong className="text-gray-900">email deliverability</strong> and <strong className="text-gray-900">sender reputation</strong> protection platform. It monitors <strong className="text-gray-900">domain health</strong>, maintains <strong className="text-gray-900">mailbox health</strong> by auto-pausing fatigued senders, tracks <strong className="text-gray-900">lead health</strong> to prevent toxic contacts from damaging your infrastructure, and safeguards <strong className="text-gray-900">campaign health</strong> with real-time bounce gating. Superkabe enforces <strong className="text-gray-900">DNS authentication</strong> compliance (SPF, DKIM, DMARC), gates <strong className="text-gray-900">outbound email</strong> traffic based on live bounce data, and executes proactive <strong className="text-gray-900">auto-healing</strong> to algorithmically quarantine and restore burned domains for outbound email operators.
+                        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-12 text-center">
+                            Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.
                         </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left max-w-4xl mx-auto mb-12">
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">Mailbox fatigue detection</h2>
+                                <p className="text-gray-600 leading-relaxed">
+                                    Superkabe algorithms automatically detect mailbox fatigue and instantly pause underperforming mailboxes, rebalancing traffic to healthy assets to preserve reputation.
+                                </p>
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">DNS authentication enforcement</h2>
+                                <p className="text-gray-600 leading-relaxed">
+                                    Superkabe continuously monitors SPF, DKIM, and DMARC status on every domain and blocks or gates outbound traffic when misconfigurations threaten deliverability.
+                                </p>
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">Domain burnout prevention</h2>
+                                <p className="text-gray-600 leading-relaxed">
+                                    By gating outbound email traffic based on live bounce data, Superkabe halts campaigns before an isolated spike in bounces compounds into permanent domain blocklisting.
+                                </p>
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">Toxic lead filtering</h2>
+                                <p className="text-gray-600 leading-relaxed">
+                                    We track lead health across your entire infrastructure, automatically isolating and dropping toxic contacts to prevent hard bounces from damaging your underlying sender reputation.
+                                </p>
+                            </div>
+                        </div>
+
                         <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Designed to keep your email deliverability above 95%.
                         </p>

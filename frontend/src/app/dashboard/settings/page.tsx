@@ -8,6 +8,9 @@ import CopyButton from '@/components/CopyButton';
 import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
 import SyncProgressModal from '@/components/modals/SyncProgressModal';
 import { useRouter } from 'next/navigation';
+import SystemModeCard from '@/components/settings/SystemModeCard';
+import SlackIntegrationCard from '@/components/settings/SlackIntegrationCard';
+import EmailBisonCard from '@/components/settings/EmailBisonCard';
 
 export default function Settings() {
     const router = useRouter();
@@ -287,106 +290,106 @@ export default function Settings() {
                     <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Manage integrations, system modes, and credentials</div>
                 </div>
 
-                {/* System Mode Control - Phase 5 */}
-                <div className="premium-card" style={{ marginBottom: '1.5rem', borderLeft: `6px solid ${modeDescriptions[systemMode]?.color || '#E2E8F0'}` }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
-                        <div>
-                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>System Mode</h2>
-                            <p style={{ color: '#64748B', fontSize: '1rem', maxWidth: '600px', lineHeight: '1.5' }}>
-                                Control the level of automation and intervention Superkabe processes.
-                            </p>
-                        </div>
-                        {org && (
-                            <div style={{ textAlign: 'right', background: '#F8FAFC', padding: '0.75rem 1rem', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
-                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>Active Mode</div>
-                                <div style={{ fontSize: '1.125rem', fontWeight: 800, color: modeDescriptions[systemMode]?.color }}>{systemMode.toUpperCase()}</div>
-                            </div>
-                        )}
-                    </div>
+                <SystemModeCard />
 
-                    {/* Explanation Banner */}
-                    <div style={{
-                        padding: '1.25rem',
-                        background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
-                        border: '2px solid #3B82F6',
-                        borderRadius: '12px',
-                        marginBottom: '1.5rem'
-                    }}>
-                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
-                            <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>💡</span>
-                            <div>
-                                <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#1E40AF', marginBottom: '0.5rem' }}>
-                                    How System Modes Work
-                                </h3>
-                                <p style={{ fontSize: '0.8rem', color: '#1E40AF', lineHeight: '1.6', margin: 0 }}>
-                                    <strong>All modes automatically pause unhealthy infrastructure to protect your reputation.</strong> The difference between modes is how the <strong>execution gate</strong> handles new leads:
-                                </p>
-                                <ul style={{ fontSize: '0.75rem', color: '#1E40AF', lineHeight: '1.6', margin: '0.5rem 0 0 0', paddingLeft: '1.25rem' }}>
-                                    <li><strong>Observe:</strong> Logs warnings but allows leads through</li>
-                                    <li><strong>Suggest:</strong> Shows recommendations but allows leads through</li>
-                                    <li><strong>Enforce:</strong> Blocks leads when infrastructure unhealthy (recommended)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {['observe', 'suggest', 'enforce'].map(mode => (
-                            <div
-                                key={mode}
-                                onClick={() => handleSystemModeChange(mode)}
-                                className="hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
-                                style={{
-                                    padding: '1.5rem',
-                                    borderRadius: '16px',
-                                    border: systemMode === mode ? `2px solid ${modeDescriptions[mode].color}` : '1px solid #E2E8F0',
-                                    background: systemMode === mode ? '#FFFFFF' : '#FAFAFA',
-                                    boxShadow: systemMode === mode ? `0 10px 30px -10px ${modeDescriptions[mode].color}30` : 'none',
-                                    opacity: systemMode === mode ? 1 : 0.7
-                                }}
-                            >
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                    <div style={{ fontSize: '1.125rem', fontWeight: 800, textTransform: 'uppercase', color: modeDescriptions[mode].color }}>
-                                        {mode}
-                                    </div>
-                                    {systemMode === mode && (
-                                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: modeDescriptions[mode].color }}></div>
-                                    )}
-                                </div>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6', marginBottom: '1rem' }}>
-                                    {modeDescriptions[mode].desc}
-                                </p>
 
-                                {/* Detailed Behavior Breakdown */}
-                                <div style={{
-                                    padding: '1rem',
-                                    background: '#F8FAFC',
-                                    borderRadius: '10px',
-                                    border: '1px solid #F1F5F9',
-                                    fontSize: '0.75rem',
-                                    lineHeight: '1.6'
-                                }}>
-                                    <div style={{ marginBottom: '0.75rem' }}>
-                                        <div style={{ fontWeight: 700, color: '#334155', marginBottom: '0.25rem' }}>
-                                            🔧 Infrastructure Pausing:
-                                        </div>
-                                        <div style={{ color: '#10B981', fontSize: '0.7rem' }}>
-                                            {modeDescriptions[mode].pausingBehavior}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style={{ fontWeight: 700, color: '#334155', marginBottom: '0.25rem' }}>
-                                            {modeDescriptions[mode].gateIcon} Execution Gate:
-                                        </div>
-                                        <div style={{ color: mode === 'enforce' ? '#10B981' : '#F59E0B', fontSize: '0.7rem' }}>
-                                            {modeDescriptions[mode].gateBehavior}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 {/* Organization Info */}
                 <div className="premium-card" style={{ marginBottom: '1rem' }}>
@@ -657,118 +660,118 @@ export default function Settings() {
                             </div>
                         )}
 
-                        {/* EmailBison Integration */}
-                        {activeIntegration === 'emailbison' && (
-                            <>
-                                <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9', fontSize: '1.25rem' }}>
-                                        🦬
-                                    </div>
-                                    <div style={{ flex: 1 }}>
-                                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>EmailBison Integration</h2>
-                                        <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Warm-up monitoring & reputation tracking.</p>
-                                    </div>
-                                    <a
-                                        href="/docs/emailbison-integration"
-                                        target="_blank"
-                                        title="View integration guide"
-                                        style={{
-                                            width: '32px',
-                                            height: '32px',
-                                            borderRadius: '8px',
-                                            background: '#F1F5F9',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            color: '#64748B',
-                                            textDecoration: 'none',
-                                            transition: 'all 0.2s',
-                                            border: '1px solid #E2E8F0'
-                                        }}
-                                        onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
-                                        onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
-                                    >
-                                        <span style={{ fontSize: '1rem' }}>❓</span>
-                                    </a>
-                                </div>
+                        {activeIntegration === "emailbison" && <EmailBisonCard />}
 
-                                <form onSubmit={handleSaveEmailBison} style={{ marginBottom: '2rem' }}>
-                                    <div style={{ marginBottom: '1rem' }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>API Key</label>
-                                        <input
-                                            type="password"
-                                            value={ebApiKey}
-                                            onChange={e => setEbApiKey(e.target.value)}
-                                            className="premium-input w-full"
-                                            placeholder="eb_..."
-                                            style={{ width: '100%' }}
-                                        />
-                                    </div>
-                                    <button type="submit" className="premium-btn w-full" disabled={loading}>
-                                        {loading ? 'Saving...' : 'Save Configuration'}
-                                    </button>
-                                    {msg && <div className="text-center mt-4 text-sm font-medium" style={{ color: msg.includes('Error') ? '#EF4444' : '#10B981' }}>{msg}</div>}
-                                </form>
 
-                                <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem', marginBottom: '1.5rem' }}>
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Webhook Endpoint</h3>
-                                        <CopyButton text={emailBisonWebhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />
-                                    </div>
-                                    <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
-                                        {emailBisonWebhookUrl || 'Loading...'}
-                                    </div>
-                                    <button
-                                        onClick={async () => {
-                                            const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-                                            setSyncSessionId(sessionId);
-                                            setShowSyncModal(true);
-                                            await new Promise(resolve => setTimeout(resolve, 500));
-                                            try {
-                                                await apiClient<any>(`/api/sync?session=${sessionId}`, {
-                                                    method: 'POST',
-                                                    timeout: 600_000
-                                                });
-                                            } catch (e: any) {
-                                                console.error('[Sync] API call error:', {
-                                                    message: e?.message,
-                                                });
-                                            }
-                                        }}
-                                        disabled={loading}
-                                        className="premium-btn"
-                                        style={{ width: '100%', marginTop: '1rem', background: '#FFFFFF', color: '#1E293B', border: '1px solid #E2E8F0' }}
-                                    >
-                                        Trigger Manual Sync
-                                    </button>
-                                </div>
 
-                                <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
-                                        border: '2px solid #10B981',
-                                        borderRadius: '10px'
-                                    }}>
-                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                                            <div style={{
-                                                width: '32px', height: '32px', borderRadius: '8px', background: '#10B981',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
-                                            }}>⚡</div>
-                                            <div style={{ flex: 1 }}>
-                                                <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#065F46', margin: 0, marginBottom: '0.375rem' }}>
-                                                    Multi-Platform Sync
-                                                </h4>
-                                                <p style={{ fontSize: '0.75rem', color: '#047857', margin: 0, lineHeight: 1.6 }}>
-                                                    EmailBison data syncs alongside Smartlead automatically every <strong>20 minutes</strong>.
-                                                    Each platform syncs independently with failure isolation.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         {/* Reply.io — Coming Soon */}
                         {activeIntegration === 'replyio' && (
@@ -891,196 +894,196 @@ export default function Settings() {
                         </div>
                     </div>
 
-                    {/* Slack Integration */}
-                    <div className="col-span-1 md:col-span-2 premium-card mt-2">
-                        <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                            <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z" fill="#E01E5A" />
-                                    <path d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A" />
-                                    <path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z" fill="#36C5F0" />
-                                    <path d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0" />
-                                    <path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z" fill="#2EB67D" />
-                                    <path d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D" />
-                                    <path d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z" fill="#ECB22E" />
-                                    <path d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.52h-6.313z" fill="#ECB22E" />
-                                </svg>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>Slack Bot Integration</h2>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Get infrastructure alerts and run slash commands directly from Slack.</p>
-                            </div>
-                            <a
-                                href="/docs/slack-integration"
-                                target="_blank"
-                                title="View integration guide"
-                                style={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '8px',
-                                    background: '#F1F5F9',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: '#64748B',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.2s',
-                                    border: '1px solid #E2E8F0'
-                                }}
-                                onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
-                                onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
-                            >
-                                <span style={{ fontSize: '1rem' }}>❓</span>
-                            </a>
-                        </div>
+                    <SlackIntegrationCard />
 
-                        <div style={{ padding: '1.5rem', background: '#F8FAFC', borderRadius: '16px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <div>
-                                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem' }}>
-                                    {slackConnected ? 'Slack is Connected' : 'Connect your Workspace'}
-                                </h3>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '400px', lineHeight: '1.5' }}>
-                                    {slackConnected
-                                        ? 'Your Superkabe bot is installed and actively monitoring your infrastructure.'
-                                        : <><span style={{ marginRight: '3px' }}>Install the Superkabe bot to monitor domains and mailboxes via</span><code style={{ background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>/superkabe</code> commands.</>
-                                    }
-                                </p>
-                            </div>
 
-                            {slackConnected ? (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <div style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        padding: '0.75rem 1.25rem',
-                                        background: '#ECFDF5',
-                                        color: '#059669',
-                                        fontWeight: 700,
-                                        fontSize: '0.875rem',
-                                        borderRadius: '8px',
-                                        border: '1px solid #A7F3D0'
-                                    }}>
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                        </svg>
-                                        Connected
-                                    </div>
-                                    <button
-                                        onClick={() => setShowDisconnectConfirm(true)}
-                                        disabled={disconnectingSlack}
-                                        style={{
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            padding: '0.75rem 1.25rem',
-                                            background: '#FFFFFF',
-                                            color: '#DC2626',
-                                            fontWeight: 600,
-                                            fontSize: '0.875rem',
-                                            borderRadius: '8px',
-                                            border: '1px solid #FECACA',
-                                            cursor: disconnectingSlack ? 'not-allowed' : 'pointer',
-                                            opacity: disconnectingSlack ? 0.7 : 1,
-                                            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                                            transition: 'all 0.2s ease'
-                                        }}
-                                        onMouseOver={(e) => { if (!disconnectingSlack) { e.currentTarget.style.background = '#FEF2F2'; e.currentTarget.style.borderColor = '#F87171'; } }}
-                                        onMouseOut={(e) => { if (!disconnectingSlack) { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#FECACA'; } }}
-                                    >
-                                        {disconnectingSlack ? 'Disconnecting...' : 'Disconnect'}
-                                    </button>
-                                </div>
-                            ) : (
-                                <a
-                                    href={`https://slack.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&scope=chat:write,commands,app_mentions:read,channels:read,groups:read&redirect_uri=https://api.superkabe.com/slack/oauth/callback&state=${org?.id}:${user?.id}`}
-                                    style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        padding: '0.75rem 1.25rem',
-                                        background: '#FFFFFF',
-                                        color: '#0F172A',
-                                        fontWeight: 600,
-                                        fontSize: '0.875rem',
-                                        borderRadius: '8px',
-                                        border: '1px solid #CBD5E1',
-                                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                                        transition: 'all 0.2s ease',
-                                        textDecoration: 'none'
-                                    }}
-                                    onMouseOver={(e) => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.borderColor = '#94A3B8'; }}
-                                    onMouseOut={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#CBD5E1'; }}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z" fill="#E01E5A" />
-                                        <path d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A" />
-                                        <path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z" fill="#36C5F0" />
-                                        <path d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0" />
-                                        <path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z" fill="#2EB67D" />
-                                        <path d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D" />
-                                        <path d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z" fill="#ECB22E" />
-                                        <path d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.52h-6.313z" fill="#ECB22E" />
-                                    </svg>
-                                    Add to Slack
-                                </a>
-                            )}
-                        </div>
 
-                        {slackConnected && (
-                            <div style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div>
-                                    <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        Proactive Alerts Configuration
-                                        {slackAlertsStatus === 'active' && slackAlertsChannel && (
-                                            <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#ECFDF5', color: '#059669', border: '1px solid #A7F3D0' }}>Active</span>
-                                        )}
-                                        {slackAlertsStatus !== 'active' && slackAlertsChannel && (
-                                            <span style={{ fontSize: '0.75rem', padding: '0.1rem 0.4rem', borderRadius: '12px', background: '#FEF2F2', color: '#DC2626', border: '1px solid #FECACA' }}>
-                                                {slackAlertsStatus === 'channel_not_found' ? 'Channel Not Found' : slackAlertsStatus === 'auth_error' ? 'Auth Error' : 'Revoked'}
-                                            </span>
-                                        )}
-                                    </h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#64748B', maxWidth: '500px', lineHeight: '1.5' }}>
-                                        Superkabe will send critical infrastructure events, domain bounce spikes, and risk transitions directly to your designated Slack channel.
-                                    </p>
-                                </div>
 
-                                {slackAlertsLastError && (
-                                    <div style={{ padding: '0.75rem 1rem', background: '#FEF2F2', borderLeft: '4px solid #DC2626', borderRadius: '0 8px 8px 0', fontSize: '0.875rem', color: '#991B1B' }}>
-                                        <strong>Alerts Suspended:</strong> {slackAlertsLastError}
-                                        {slackAlertsLastErrorAt && <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#B91C1C' }}>Last Error: {new Date(slackAlertsLastErrorAt).toLocaleString()}</div>}
-                                    </div>
-                                )}
 
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <div style={{ flex: 1, maxWidth: '300px' }}>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1">Destination Channel</label>
-                                        <select
-                                            value={slackAlertsChannel}
-                                            onChange={(e) => handleSaveSlackChannel(e.target.value)}
-                                            disabled={loadingChannels || savingChannel}
-                                            className="w-full text-sm border-slate-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                            style={{ height: '42px', backgroundColor: loadingChannels ? '#F1F5F9' : '#FFFFFF' }}
-                                        >
-                                            <option value="" disabled>{loadingChannels ? 'Loading channels...' : 'Select a channel'}</option>
-                                            {slackChannels.map(c => (
-                                                <option key={c.id} value={c.id}>{c.name}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    {(savingChannel || loadingChannels) && (
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.5rem', fontSize: '0.875rem', color: '#64748B' }}>
-                                            <svg className="animate-spin h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            {savingChannel ? 'Validating channel...' : 'Fetching list...'}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
 
