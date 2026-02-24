@@ -5,18 +5,30 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How to safely warm up new outbound email domains',
     description: 'Systematic approach to building sender reputation on new domains. Volume ramp schedules, warming signals, and common mistakes that burn domains.',
+    alternates: {
+        canonical: '/blog/domain-warming-methodology',
+    },
 };
 
 export default function DomainWarmingArticle() {
-    const articleSchema = {
+    const blogPostingSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Domain Warming Methodology",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "datePublished": "2026-02-13",
-        "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/domain-warming-methodology"
+        "@type": "BlogPosting",
+        "headline": "How to safely warm up new outbound email domains",
+        "description": "The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/domain-warming-methodology"
+        }
     };
 
     const howToSchema = {
@@ -89,7 +101,7 @@ export default function DomainWarmingArticle() {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 

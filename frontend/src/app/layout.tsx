@@ -12,9 +12,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
-  title: 'Superkabe - Infrastructure Protection for Outbound',
+  title: 'Superkabe – Email deliverability and infrastructure protection for outbound teams',
   description:
-    'Monitoring and protection for multi-domain outbound email infrastructure. Prevent bounces and protect domain reputation automatically.',
+    'Superkabe is an infrastructure protection layer for outbound email teams. It monitors bounce rates, DNS authentication, mailbox fatigue, and lead health in real time to prevent domain burnout and protect sender reputation.',
+  alternates: {
+    canonical: '/',
+  },
   authors: [{ name: 'Richardson', url: 'https://www.superkabe.com' }],
   publisher: 'Superkabe',
   icons: {
@@ -63,7 +66,7 @@ export default function RootLayout({
     name: 'Superkabe',
     url: 'https://www.superkabe.com',
     logo: 'https://www.superkabe.com/image/logo-v2.png',
-    description: 'Email infrastructure protection and sender reputation recovery platform for modern outbound teams.',
+    description: 'Superkabe is an email deliverability and sender reputation protection platform that protects outbound email infrastructure through real-time bounce monitoring, DNS authentication enforcement, and mailbox fatigue detection.',
     foundingDate: '2024',
     founder: {
       '@type': 'Person',

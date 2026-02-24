@@ -140,6 +140,21 @@ export default function LandingPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
 
+            {/* Explicit WebSite + Org Schema for Entity Resolution */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    name: "Superkabe",
+                    url: "https://www.superkabe.com",
+                    description: "Superkabe is an email deliverability and sender reputation protection platform that protects outbound email infrastructure through real-time bounce monitoring, DNS authentication enforcement, and mailbox fatigue detection.",
+                    publisher: {
+                        "@type": "Organization",
+                        name: "Superkabe"
+                    }
+                })
+            }} />
+
             {/* ================= NAVBAR ================= */}
             <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
                 <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">

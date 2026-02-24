@@ -5,18 +5,30 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How bounce rates damage sender reputation (and how to prevent it)',
     description: 'Technical guide on email bounce rates, their impact on sender reputation and domain health, and strategies for preventing deliverability degradation.',
+    alternates: {
+        canonical: '/blog/bounce-rate-deliverability',
+    },
 };
 
 export default function BounceRateArticle() {
-    const articleSchema = {
+    const blogPostingSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "How Bounce Rate Affects Email Deliverability",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "datePublished": "2026-02-13",
-        "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/bounce-rate-deliverability"
+        "@type": "BlogPosting",
+        "headline": "How bounce rates damage sender reputation (and how to prevent it)",
+        "description": "Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/bounce-rate-deliverability"
+        }
     };
 
     const faqSchema = {
@@ -76,7 +88,7 @@ export default function BounceRateArticle() {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>

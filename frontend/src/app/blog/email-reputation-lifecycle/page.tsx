@@ -5,18 +5,30 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How sender reputation is built, damaged, and repaired over time',
     description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+    alternates: {
+        canonical: '/blog/email-reputation-lifecycle',
+    },
 };
 
 export default function EmailReputationArticle() {
-    const articleSchema = {
+    const blogPostingSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "The Email Reputation Lifecycle",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "datePublished": "2026-02-13",
-        "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/email-reputation-lifecycle"
+        "@type": "BlogPosting",
+        "headline": "How sender reputation is built, damaged, and repaired over time",
+        "description": "How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/email-reputation-lifecycle"
+        }
     };
 
     const faqSchema = {
@@ -84,7 +96,7 @@ export default function EmailReputationArticle() {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>

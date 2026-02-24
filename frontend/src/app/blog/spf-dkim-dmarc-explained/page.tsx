@@ -5,18 +5,30 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
     description: 'Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.',
+    alternates: {
+        canonical: '/blog/spf-dkim-dmarc-explained',
+    },
 };
 
 export default function SpfDkimDmarcArticle() {
-    const articleSchema = {
+    const blogPostingSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "SPF, DKIM, and DMARC Explained",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "datePublished": "2026-02-13",
-        "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
+        "@type": "BlogPosting",
+        "headline": "Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams",
+        "description": "Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
+        }
     };
 
     const howToSchema = {
@@ -96,7 +108,7 @@ export default function SpfDkimDmarcArticle() {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 

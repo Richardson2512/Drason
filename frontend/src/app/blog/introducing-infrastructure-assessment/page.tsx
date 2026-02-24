@@ -9,6 +9,9 @@ export const metadata: Metadata = {
         type: 'article',
         publishedTime: '2024-03-20',
     },
+    alternates: {
+        canonical: '/blog/introducing-infrastructure-assessment',
+    },
 };
 
 export default function InfrastructureAssessmentPost() {

@@ -6,18 +6,30 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How to protect and master your outbound email deliverability',
     description: 'Comprehensive guide to email deliverability covering sender reputation, bounce rates, DNS authentication, domain warming, and infrastructure protection for outbound email operators.',
+    alternates: {
+        canonical: '/blog/email-deliverability-guide',
+    },
 };
 
 export default function EmailDeliverabilityGuide() {
-    const articleSchema = {
+    const blogPostingSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "The Complete Email Deliverability Guide for Outbound Teams",
-        "author": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "publisher": { "@type": "Organization", "name": "Superkabe", "@id": "https://www.superkabe.com/#organization" },
-        "datePublished": "2026-02-13",
-        "dateModified": "2026-02-13",
-        "mainEntityOfPage": "https://www.superkabe.com/blog/email-deliverability-guide"
+        "@type": "BlogPosting",
+        "headline": "How to protect and master your outbound email deliverability",
+        "description": "Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/email-deliverability-guide"
+        }
     };
 
     const faqSchema = {
@@ -93,7 +105,7 @@ export default function EmailDeliverabilityGuide() {
 
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
