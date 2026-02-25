@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Footer() {
     return (
-        <footer className="py-20 md:py-24 px-6">
+        <footer className="relative z-10 py-20 md:py-24 px-6">
             <div className="max-w-6xl mx-auto">
                 {/* White Rounded Card Footer */}
                 <div className="bg-white rounded-[2rem] p-12 md:p-16 shadow-xl shadow-gray-200/50 border border-gray-100">

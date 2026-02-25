@@ -21,18 +21,21 @@ export default function CloudBackground() {
             vantaRef.current = CLOUDS({
                 el: containerRef.current,
                 THREE,
-                // Light blue sky — white clouds need a blue background to be visible
                 skyColor: 0xc9e8ff,
-                // Pure white clouds
                 cloudColor: 0xffffff,
-                // Slightly deeper blue shadow under each cloud puff
                 cloudShadowColor: 0x89b8d8,
-                // No visible sun or light source
                 sunColor: 0x000000,
                 sunGlareColor: 0x000000,
                 sunlightColor: 0x000000,
-                speed: 0.6,
-                zoom: 1.0,
+                speed: 0.5,
+                // scale controls render resolution: devicePixelRatio / scale.
+                // Higher = fewer pixels rendered = significantly less GPU load.
+                scale: 5,
+                scaleMobile: 8,
+                // Disable mouse/touch tracking — saves per-frame event overhead
+                mouseControls: false,
+                touchControls: false,
+                gyroControls: false,
             });
         })();
 
