@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function CloudBackground() {
     const containerRef = useRef<HTMLDivElement>(null);
     const vantaRef = useRef<any>(null);
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         if (!containerRef.current || vantaRef.current) return;
@@ -37,6 +38,8 @@ export default function CloudBackground() {
                 touchControls: false,
                 gyroControls: false,
             });
+
+            if (!cancelled) setReady(true);
         })();
 
         return () => {
@@ -52,7 +55,13 @@ export default function CloudBackground() {
         <div
             ref={containerRef}
             className="absolute inset-0"
-            style={{ pointerEvents: 'none', willChange: 'transform', transform: 'translateZ(0)' }}
+            style={{
+                pointerEvents: 'none',
+                willChange: 'transform',
+                transform: 'translateZ(0)',
+                opacity: ready ? 1 : 0,
+                transition: 'opacity 0.6s ease',
+            }}
         />
     );
 }
