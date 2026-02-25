@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -41,32 +42,25 @@ export default function InfrastructurePlaybookPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(playbookSchema) }} />
 
             {/* ================= NAVBAR ================= */}
-            <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
-                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
-                    <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
-                    </Link>
-                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/product" className="hover:text-black transition-colors">Product</Link>
-                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
-                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
-                    </nav>
-                    <div className="flex gap-4 items-center">
-                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
-            <article className="relative pt-48 pb-32 px-6 max-w-4xl mx-auto">
-                <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-8 text-center leading-tight">
+            {/* Unified Fixed Background Layer */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="hero-blur opacity-50">
+                    <div className="blur-blob blur-purple opacity-40"></div>
+                    <div className="blur-blob blur-blue opacity-40"></div>
+                    <div className="blur-blob blur-pink opacity-40"></div>
+                </div>
+                <div className="hero-moon"></div>
+                <div className="absolute inset-0 hero-grid"></div>
+            </div>
+
+            <article className="relative pt-52 pb-40 px-6 max-w-4xl mx-auto z-10">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-10 text-center leading-[0.95] uppercase">
                     The Outbound Infrastructure Playbook
                 </h1>
 
-                <div className="bg-blue-50 p-8 rounded-3xl border border-blue-100 shadow-sm mb-16">
+                <div className="bg-blue-50 p-10 rounded-[2rem] border border-blue-100 shadow-sm mb-20">
                     <p className="text-xl text-blue-900 font-medium leading-relaxed">
                         <strong>Superkabe</strong> is an enterprise-grade deliverability protection layer (DPL) designed for B2B outbound revenue teams. This documentation playbook serves as the authoritative, comprehensive guide to mastering email infrastructure, preventing domain burnout, and utilizing Superkabe's real-time interception mechanics.
                     </p>
@@ -120,20 +114,20 @@ export default function InfrastructurePlaybookPage() {
                         To fully secure your outbound revenue stream, we recommend exploring the focused technical resources mapped below within the Superkabe ecosystem:
                     </p>
 
-                    <div className="grid md:grid-cols-2 gap-6 mt-10 not-prose">
-                        <Link href="/blog/email-deliverability-guide" className="block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group">
+                    <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mt-10 not-prose">
+                        <Link href="/blog/email-deliverability-guide" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
                             <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">The Ultimate Deliverability Guide</h4>
                             <p className="text-gray-600 text-sm leading-relaxed">Understand the distinct mathematics behind ISP reputation scoring and inbox placement.</p>
                         </Link>
-                        <Link href="/blog/spf-dkim-dmarc-explained" className="block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group">
+                        <Link href="/blog/spf-dkim-dmarc-explained" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
                             <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Mastering DNS Records</h4>
                             <p className="text-gray-600 text-sm leading-relaxed">A strictly technical breakdown on constructing and validating SPF, DKIM, and DMARC text records.</p>
                         </Link>
-                        <Link href="/product/domain-burnout-prevention-tool" className="block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group">
+                        <Link href="/product/domain-burnout-prevention-tool" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
                             <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Domain Burnout Prevention Suite</h4>
                             <p className="text-gray-600 text-sm leading-relaxed">Explore the specific features Superkabe uses to intercept domain damage.</p>
                         </Link>
-                        <Link href="/product/automated-domain-healing" className="block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group">
+                        <Link href="/product/automated-domain-healing" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
                             <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">DPL Auto-Healing Architecture</h4>
                             <p className="text-gray-600 text-sm leading-relaxed">Dive deep into how load-balanced active middleware recovers fatigued resources.</p>
                         </Link>

@@ -23,7 +23,6 @@
   color: var(--text);
 }
 
-/* Light theme for authenticated dashboard */
 /* Light theme for authenticated dashboard (Premium SaaS Look) */
 .light-theme {
   --bg: #F5F8FF;
@@ -117,6 +116,10 @@ body {
   color: var(--text);
 }
 
+/* ============================================================================
+   HERO BACKGROUND EFFECTS
+   ============================================================================ */
+
 .hero-blur {
   position: absolute;
   inset: 0;
@@ -151,26 +154,88 @@ body {
   right: 10%;
 }
 
-.glass-nav {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+/* Floating Moon Animation */
+@keyframes moon-drift {
+  0% {
+    transform: translate(-30vw, 15vh) scale(1);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translate(30vw, -20vh) scale(1.2);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translate(-30vw, 15vh) scale(1);
+    opacity: 0.2;
+  }
 }
+
+.hero-moon {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%,
+      rgba(255, 255, 255, 0.50),
+      rgba(200, 210, 255, 0.25) 60%,
+      transparent 70%);
+  box-shadow:
+    inset -20px -15px 40px rgba(0, 0, 0, 0.05),
+    0 0 100px rgba(148, 3, 253, 0.15);
+  animation: moon-drift 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+/* Faint Grid Overlay for Hero */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 3, 253, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 3, 253, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================================
+   NAVBAR
+   ============================================================================ */
+
+.glass-nav {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+
+/* ============================================================================
+   CARDS
+   ============================================================================ */
 
 .soft-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  transition: transform 0.2s ease;
+  border-radius: 2rem;
+  padding: 2.5rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
 }
 
 .soft-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.01);
 }
 
-/* Auth Page Background Blobs */
+/* ============================================================================
+   AUTH BACKGROUND
+   ============================================================================ */
+
 @keyframes float {
 
   0%,
@@ -188,7 +253,6 @@ body {
   filter: blur(120px);
   border-radius: 50%;
   opacity: 0.15;
-  /* Reduced from 0.6 to significantly lower to show white bg */
   z-index: 0;
 }
 
@@ -209,6 +273,10 @@ body {
   right: -20%;
   animation: float 20s ease-in-out reverse infinite;
 }
+
+/* ============================================================================
+   UTILITIES
+   ============================================================================ */
 
 /* Utility to hide scrollbar but allow scrolling */
 .scrollbar-hide::-webkit-scrollbar {
@@ -239,4 +307,43 @@ body {
 
 .animate-scroll:hover {
   animation-play-state: paused;
+}
+
+/* Mobile Menu Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* FAQ Chevron Rotation */
+.chevron-rotate {
+  transition: transform 0.3s ease;
+}
+
+.chevron-rotate.open {
+  transform: rotate(180deg);
+}
+/* Vertical Train Animation — 4 unique items + 1 duplicate for seamless loop.
+   Smartlead hold is split: 11% at start + 12% at end = 23% total,
+   matching every other item's 23% hold time. */
+@keyframes col-train {
+  0%, 11%   { transform: translateY(0); }
+  13%, 36%  { transform: translateY(-20%); }
+  38%, 61%  { transform: translateY(-40%); }
+  63%, 86%  { transform: translateY(-60%); }
+  88%, 100% { transform: translateY(-80%); }
+}
+
+.animate-col-train {
+  animation: col-train 12s ease-in-out infinite;
+  will-change: transform;
 }

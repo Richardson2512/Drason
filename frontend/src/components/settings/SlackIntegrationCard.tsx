@@ -133,9 +133,15 @@ export default function SlackIntegrationCard() {
                         background: '#111827', color: '#FFFFFF', fontWeight: 600,
                         border: 'none', cursor: 'pointer', fontSize: '1rem',
                         transition: 'all 0.2s', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-                        display: 'flex', alignItems: 'center', gap: '0.5rem'
+                        display: 'flex', alignItems: 'center', gap: '0.75rem'
                     }}
                 >
+                    <svg width="20" height="20" viewBox="0 0 127 127" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M27.2 80a13.6 13.6 0 01-13.6 13.6A13.6 13.6 0 010 80a13.6 13.6 0 0113.6-13.6h13.6V80zm6.8 0a13.6 13.6 0 0113.6-13.6 13.6 13.6 0 0113.6 13.6v34a13.6 13.6 0 01-13.6 13.6A13.6 13.6 0 0134 114V80z" fill="#E01E5A" />
+                        <path d="M47.6 27.2A13.6 13.6 0 0134 13.6 13.6 13.6 0 0147.6 0a13.6 13.6 0 0113.6 13.6v13.6H47.6zm0 6.8a13.6 13.6 0 0113.6 13.6 13.6 13.6 0 01-13.6 13.6H13.6A13.6 13.6 0 010 47.6 13.6 13.6 0 0113.6 34h34z" fill="#36C5F0" />
+                        <path d="M99.6 47.6a13.6 13.6 0 0113.6-13.6 13.6 13.6 0 0113.6 13.6 13.6 13.6 0 01-13.6 13.6H99.6V47.6zm-6.8 0a13.6 13.6 0 01-13.6 13.6 13.6 13.6 0 01-13.6-13.6V13.6A13.6 13.6 0 0179.2 0a13.6 13.6 0 0113.6 13.6v34z" fill="#2EB67D" />
+                        <path d="M79.2 99.6a13.6 13.6 0 0113.6 13.6 13.6 13.6 0 01-13.6 13.6 13.6 13.6 0 01-13.6-13.6V99.6h13.6zm0-6.8a13.6 13.6 0 01-13.6-13.6 13.6 13.6 0 0113.6-13.6h34a13.6 13.6 0 0113.6 13.6 13.6 13.6 0 01-13.6 13.6h-34z" fill="#ECB22E" />
+                    </svg>
                     Connect Slack
                 </button>
             ) : (

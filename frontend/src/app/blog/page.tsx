@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -68,39 +69,26 @@ export default function BlogPage() {
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
             {/* ================= NAVBAR ================= */}
-            <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
-                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
-                    <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
-                    </Link>
-                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
-                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
-                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                        <Link href="/blog" className="text-black font-semibold transition-colors">Blog</Link>
-                    </nav>
-                    <div className="flex gap-4 items-center">
-                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
-                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            <Navbar />
 
             {/* Hero */}
-            <section className="relative pt-48 pb-16 text-center">
-                <div className="hero-blur pointer-events-none">
-                    <div className="blur-blob blur-purple opacity-30"></div>
-                    <div className="blur-blob blur-blue opacity-30"></div>
+            <section className="relative pt-52 pb-20 text-center">
+                {/* Unified Fixed Background Layer */}
+                <div className="fixed inset-0 pointer-events-none z-0">
+                    <div className="hero-blur opacity-50">
+                        <div className="blur-blob blur-purple opacity-40"></div>
+                        <div className="blur-blob blur-blue opacity-40"></div>
+                        <div className="blur-blob blur-pink opacity-40"></div>
+                    </div>
+                    <div className="hero-moon"></div>
+                    <div className="absolute inset-0 hero-grid"></div>
                 </div>
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
                     <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
                         <Zap size={14} className="inline mr-1.5" />
                         Superkabe Blog
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 uppercase">
                         Email Infrastructure Intelligence
                     </h1>
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
@@ -118,7 +106,7 @@ export default function BlogPage() {
                             <Link
                                 key={article.slug}
                                 href={`/blog/${article.slug}`}
-                                className="block bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 group"
+                                className="block bg-white p-8 md:p-10 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 group"
                             >
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

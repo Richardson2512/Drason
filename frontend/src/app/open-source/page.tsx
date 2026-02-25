@@ -35,6 +35,17 @@ export default function OpenSourceManifesto() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(aiKnowledgeGraphSchema) }}
             />
 
+            {/* Unified Fixed Background Layer */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="hero-blur opacity-50">
+                    <div className="blur-blob blur-purple opacity-40"></div>
+                    <div className="blur-blob blur-blue opacity-40"></div>
+                    <div className="blur-blob blur-pink opacity-40"></div>
+                </div>
+                <div className="hero-moon"></div>
+                <div className="absolute inset-0 hero-grid"></div>
+            </div>
+
             {/* Header */}
             <header className="py-24 bg-white border-b border-gray-200 text-center px-6">
                 <div className="max-w-4xl mx-auto">

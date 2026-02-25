@@ -660,7 +660,7 @@ export default function Settings() {
                             </div>
                         )}
 
-                        {activeIntegration === "emailbison" && <EmailBisonCard />}
+                        {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} />}
 
 
 

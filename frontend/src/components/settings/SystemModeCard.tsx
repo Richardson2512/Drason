@@ -34,16 +34,33 @@ export default function SystemModeCard() {
         }
     };
 
-    const modeDescriptions: Record<string, { title: string; desc: string; icon: string }> = {
+    const modeDescriptions: Record<string, { title: string; desc: string; icon: string; color: string; activeBg: string; badgeBg: string; badgeColor: string }> = {
         'observe': {
             title: 'Observe Mode',
             desc: 'Risks are logged and alerts are sent, but traffic is not actively blocked.',
-            icon: '👀'
+            icon: '👀',
+            color: '#D97706',
+            activeBg: '#FFFBEB',
+            badgeBg: '#FDE68A',
+            badgeColor: '#92400E'
+        },
+        'suggest': {
+            title: 'Suggest Mode',
+            desc: 'Balanced protection. Infrastructure pauses automatically and shows recommendations before blocking.',
+            icon: '⚡',
+            color: '#2563EB',
+            activeBg: '#EFF6FF',
+            badgeBg: '#BFDBFE',
+            badgeColor: '#1E40AF'
         },
         'enforce': {
             title: 'Enforce Mode',
-            desc: 'Active protection. Traffic to burned domains is paused; toxic leads are auto-killed.',
-            icon: '🛡️'
+            desc: 'Full protection. Traffic to burned domains is paused; toxic leads are auto-killed.',
+            icon: '🛡️',
+            color: '#7C3AED',
+            activeBg: '#F5F3FF',
+            badgeBg: '#DDD6FE',
+            badgeColor: '#5B21B6'
         }
     };
 
@@ -73,7 +90,6 @@ export default function SystemModeCard() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
                 {Object.entries(modeDescriptions).map(([key, info]) => {
                     const isActive = systemMode === key;
-                    const isObserve = key === 'observe';
                     return (
                         <div
                             key={key}
@@ -81,8 +97,8 @@ export default function SystemModeCard() {
                             style={{
                                 padding: '1.5rem',
                                 borderRadius: '16px',
-                                border: `2px solid ${isActive ? (isObserve ? '#F59E0B' : '#8B5CF6') : '#E5E7EB'}`,
-                                background: isActive ? (isObserve ? '#FFFBEB' : '#F5F3FF') : '#FFFFFF',
+                                border: `2px solid ${isActive ? info.color : '#E5E7EB'}`,
+                                background: isActive ? info.activeBg : '#FFFFFF',
                                 cursor: loading ? 'not-allowed' : 'pointer',
                                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                                 opacity: loading && !isActive ? 0.6 : 1
@@ -92,15 +108,15 @@ export default function SystemModeCard() {
                                 <span style={{ fontSize: '1.25rem' }}>{info.icon}</span>
                                 <h3 style={{
                                     fontSize: '1.1rem', fontWeight: 700, margin: 0,
-                                    color: isActive ? (isObserve ? '#D97706' : '#7C3AED') : '#374151'
+                                    color: isActive ? info.color : '#374151'
                                 }}>
                                     {info.title}
                                 </h3>
                                 {isActive && (
                                     <span style={{
                                         marginLeft: 'auto', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem',
-                                        borderRadius: '999px', background: isObserve ? '#FDE68A' : '#DDD6FE', textTransform: 'uppercase',
-                                        color: isObserve ? '#92400E' : '#5B21B6'
+                                        borderRadius: '999px', background: info.badgeBg, textTransform: 'uppercase',
+                                        color: info.badgeColor
                                     }}>Current</span>
                                 )}
                             </div>
@@ -112,7 +128,7 @@ export default function SystemModeCard() {
             {systemMode === 'observe' && (
                 <div style={{ background: '#FEF3C7', padding: '1rem', borderRadius: '12px', borderLeft: '4px solid #F59E0B' }}>
                     <p style={{ margin: 0, color: '#92400E', fontSize: '0.9rem', fontWeight: 500 }}>
-                        <strong style={{ fontWeight: 800 }}>Warning:</strong> Your infrastructure is currently unprotected. Switch to <strong style={{ color: '#7C3AED' }}>Enforce Mode</strong> out of staging.
+                        <strong style={{ fontWeight: 800 }}>Warning:</strong> Your infrastructure is currently unprotected. Switch to <strong style={{ color: '#2563EB' }}>Suggest</strong> or <strong style={{ color: '#7C3AED' }}>Enforce Mode</strong> for production use.
                     </p>
                 </div>
             )}

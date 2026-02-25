@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -72,33 +73,25 @@ export default function ProductIndexPage() {
     ];
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col pt-32">
+        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col">
 
-            {/* Header / Nav Area placeholder block - utilizing shared Navbar if desired, otherwise simple nav */}
-            <header className="absolute top-8 left-0 right-0 flex justify-center z-50">
-                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
-                    <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
-                    </Link>
-                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/product" className="text-black font-semibold transition-colors">Product</Link>
-                        <Link href="/docs" className="hover:text-black transition-colors">Documentation</Link>
-                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
-                    </nav>
-                    <div className="flex gap-4 items-center">
-                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
-                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
-                            Get Started
-                        </Link>
-                    </div>
+            {/* ================= NAVBAR ================= */}
+            <Navbar />
+
+            {/* Unified Fixed Background Layer */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="hero-blur opacity-50">
+                    <div className="blur-blob blur-purple opacity-40"></div>
+                    <div className="blur-blob blur-blue opacity-40"></div>
+                    <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-            </header>
+                <div className="hero-moon"></div>
+                <div className="absolute inset-0 hero-grid"></div>
+            </div>
 
-            <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10">
-                <div className="text-center mb-16 mt-10">
-                    <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">
+            <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10 pt-44 md:pt-56">
+                <div className="text-center mb-20 mt-10">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 uppercase">
                         Product Hub
                     </h1>
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
@@ -106,16 +99,16 @@ export default function ProductIndexPage() {
                     </p>
                 </div>
 
-                <div className="space-y-16">
+                <div className="space-y-20">
                     {categories.map((category) => (
                         <section key={category.title}>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-8 pb-4 border-b border-gray-200">
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 pb-4 border-b border-gray-200">
                                 {category.title}
                             </h2>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                                 {category.links.map((link) => (
-                                    <Link key={link.href} href={link.href} className="group block bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-100 transition-all duration-300">
-                                        <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                    <Link key={link.href} href={link.href} className="group block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-100 transition-all duration-300 hover:scale-[1.02]">
+                                        <h3 className="font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors text-lg">
                                             {link.title}
                                         </h3>
                                         <p className="text-sm text-gray-500 leading-relaxed">

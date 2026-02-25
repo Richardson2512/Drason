@@ -1,8 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
+import CopyButton from '@/components/CopyButton';
 
-export default function EmailBisonCard() {
+export default function EmailBisonCard({ webhookUrl }: { webhookUrl?: string }) {
     const [ebApiKey, setEbApiKey] = useState('');
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
@@ -36,16 +37,20 @@ export default function EmailBisonCard() {
     };
 
     return (
-        <div style={{
-            background: '#FFFFFF', borderRadius: '24px', padding: '2.5rem',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)', marginBottom: '2rem', border: '1px solid #E5E7EB'
-        }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>EmailBison Integration</h2>
-            <p style={{ color: '#6B7280', fontSize: '0.95rem', marginBottom: '2rem' }}>Connect your EmailBison account to sync mailboxes and enable health tracking.</p>
+        <div>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ width: '40px', height: '40px', background: '#fff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}>
+                    <img src="/emailbison.png" alt="EmailBison" width={24} height={24} />
+                </div>
+                <div style={{ flex: 1 }}>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>EmailBison Integration</h2>
+                    <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Connect your EmailBison account to sync mailboxes and enable health tracking.</p>
+                </div>
+            </div>
 
             {msg && (
                 <div style={{
-                    padding: '1rem', marginBottom: '2rem', borderRadius: '12px', fontSize: '0.9rem',
+                    padding: '1rem', marginBottom: '1.5rem', borderRadius: '12px', fontSize: '0.9rem',
                     background: msg.includes('Error') || msg.includes('Failed') ? '#FEF2F2' : '#F0FDF4',
                     color: msg.includes('Error') || msg.includes('Failed') ? '#991B1B' : '#166534',
                     border: `1px solid ${msg.includes('Error') || msg.includes('Failed') ? '#FECACA' : '#BBF7D0'}`
@@ -54,9 +59,9 @@ export default function EmailBisonCard() {
                 </div>
             )}
 
-            <form onSubmit={handleSaveEmailBison} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div>
-                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+            <form onSubmit={handleSaveEmailBison} style={{ marginBottom: '2rem' }}>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
                         EmailBison API Key
                     </label>
                     <input
@@ -64,26 +69,25 @@ export default function EmailBisonCard() {
                         placeholder="Paste your key here..."
                         value={ebApiKey}
                         onChange={e => setEbApiKey(e.target.value)}
-                        style={{
-                            width: '100%', padding: '0.75rem 1rem', borderRadius: '12px',
-                            border: '1px solid #E5E7EB', outline: 'none', transition: 'all 0.2s',
-                            boxShadow: '0 1px 2px rgb(0 0 0 / 0.05)', fontSize: '1rem', color: '#111827'
-                        }}
+                        className="premium-input w-full"
+                        style={{ width: '100%' }}
                     />
                 </div>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    style={{
-                        alignSelf: 'flex-start', padding: '0.75rem 2rem', borderRadius: '999px',
-                        background: loading ? '#9CA3AF' : '#111827', color: '#FFFFFF', fontWeight: 600,
-                        border: 'none', cursor: loading ? 'not-allowed' : 'pointer', fontSize: '1rem',
-                        transition: 'all 0.2s', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                    }}
-                >
-                    {loading ? 'Saving...' : 'Save EmailBison Key'}
+                <button type="submit" className="premium-btn w-full" disabled={loading}>
+                    {loading ? 'Saving...' : 'Save Configuration'}
                 </button>
             </form>
+
+            {/* Webhook Endpoint */}
+            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
+                <div className="flex justify-between items-center mb-2">
+                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Webhook Endpoint</h3>
+                    {webhookUrl && <CopyButton text={webhookUrl} label="Copy URL" className="text-xs text-blue-600 font-semibold hover:text-blue-800 transition-colors bg-transparent border-0 p-0" />}
+                </div>
+                <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
+                    {webhookUrl || 'Loading...'}
+                </div>
+            </div>
         </div>
     );
 }

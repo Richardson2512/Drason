@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 const docSections = [
     {
@@ -169,39 +170,18 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
-            {/* ================= FLOATING GLASS NAVBAR (Matching Landing/Pricing) ================= */}
-            <header className="fixed top-8 left-0 right-0 flex justify-center z-50">
-                <div className="glass-nav px-10 py-4 flex items-center gap-10 shadow-sm bg-white/60 backdrop-blur-md border border-white/20 rounded-full">
-                    <Link href="/" className="flex items-center gap-2">
-                        <Image src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} />
-                        <span className="font-bold text-xl tracking-tight">Superkabe</span>
-                    </Link>
-                    <nav className="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-                        <Link href="/" className="hover:text-black transition-colors">Product</Link>
-                        <Link href="/docs" className="text-black font-semibold transition-colors">Documentation</Link>
-                        <Link href="/pricing" className="hover:text-black transition-colors">Pricing</Link>
-                        <Link href="/blog" className="hover:text-black transition-colors">Blog</Link>
-                    </nav>
-                    <div className="flex gap-4 items-center">
-                        <Link href="/login" className="text-gray-600 hover:text-black text-sm font-medium transition-colors">Sign In</Link>
-                        <Link href="/signup" className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-black/20">
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-                {/* Mobile Menu Button */}
-                <button
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-white/60 backdrop-blur-md border border-white/20 lg:hidden text-gray-600"
-                >
-                    {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
-            </header>
+            {/* ================= NAVBAR ================= */}
+            <Navbar />
 
-            {/* ================= HERO BLUR BLOBS (Matching Landing/Pricing) ================= */}
-            <div className="hero-blur pointer-events-none">
-                <div className="blur-blob blur-purple opacity-30"></div>
-                <div className="blur-blob blur-blue opacity-30"></div>
+            {/* ================= Unified Fixed Background Layer ================= */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="hero-blur opacity-50">
+                    <div className="blur-blob blur-purple opacity-40"></div>
+                    <div className="blur-blob blur-blue opacity-40"></div>
+                    <div className="blur-blob blur-pink opacity-40"></div>
+                </div>
+                <div className="hero-moon"></div>
+                <div className="absolute inset-0 hero-grid"></div>
             </div>
 
             {/* ================= MAIN LAYOUT ================= */}
@@ -209,7 +189,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 <div className="flex">
                     {/* Sidebar - fixed on desktop, stays frozen while scrolling */}
                     <aside className={`
-                        hidden lg:block fixed top-32 left-6 w-72 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto
+                        hidden lg:block fixed top-32 left-6 w-72 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
                         shadow-xl shadow-gray-200/50 z-30
                     `}>
                         <div className="p-6">
@@ -238,7 +218,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
                     {/* Mobile Sidebar - fixed overlay */}
                     <aside className={`
-                        fixed top-32 left-6 h-[calc(100vh-10rem)] w-72 bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto
+                        fixed top-32 left-6 h-[calc(100vh-10rem)] w-72 bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
                         transition-transform duration-300 z-40 shadow-xl shadow-gray-200/50 lg:hidden
                         ${sidebarOpen ? 'translate-x-0' : '-translate-x-[120%]'}
                     `}>
