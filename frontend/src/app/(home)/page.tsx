@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import CloudBackground from '@/components/CloudBackground';
 
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -190,9 +191,7 @@ export default function LandingPage() {
                     <div className="blur-blob blur-blue opacity-40"></div>
                     <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-                <div className="hero-cloud cloud-1"></div>
-                <div className="hero-cloud cloud-2"></div>
-                <div className="hero-cloud cloud-3"></div>
+                <CloudBackground />
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 

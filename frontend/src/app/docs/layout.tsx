@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import CloudBackground from '@/components/CloudBackground';
 
 const docSections = [
     {
@@ -180,9 +181,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                     <div className="blur-blob blur-blue opacity-40"></div>
                     <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-                <div className="hero-cloud cloud-1"></div>
-                <div className="hero-cloud cloud-2"></div>
-                <div className="hero-cloud cloud-3"></div>
+                <CloudBackground />
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 

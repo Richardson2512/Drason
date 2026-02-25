@@ -154,65 +154,6 @@ body {
   right: 10%;
 }
 
-/* Background Clouds — 3 individual clouds drifting right-to-left */
-
-/*
- * Each cloud div is one distinct cloud shape (not a repeating tile).
- * translateX animates from off-screen right → off-screen left.
- * Negative delays stagger the start so all 3 are visible and spread
- * across the screen at page load — no clustering.
- *
- * White fill + drop-shadow gives the "white cloud with border shadow" look.
- * drop-shadow(0 0 …) = outline border, drop-shadow(0 Y …) = floating shadow.
- * NO blur on the element — keeps the cloud shape crisp.
- */
-@keyframes cloud-move {
-  from { transform: translateX(calc(100vw + 60px)); }
-  to   { transform: translateX(-400px); }
-}
-
-.hero-cloud {
-  position: absolute;
-  left: 0;
-  pointer-events: none;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 120'%3E%3Cellipse cx='42' cy='86' rx='40' ry='30' fill='white'/%3E%3Cellipse cx='95' cy='62' rx='45' ry='42' fill='white'/%3E%3Cellipse cx='158' cy='52' rx='50' ry='50' fill='white'/%3E%3Cellipse cx='218' cy='66' rx='42' ry='38' fill='white'/%3E%3Cellipse cx='265' cy='86' rx='28' ry='24' fill='white'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  filter:
-    drop-shadow(0 0 3px rgba(0, 0, 0, 0.15))
-    drop-shadow(0 6px 16px rgba(0, 0, 0, 0.1));
-}
-
-/* Cloud 1 — large, upper screen */
-.cloud-1 {
-  top: 10%;
-  width: 300px;
-  height: 129px;
-  opacity: 0.82;
-  animation: cloud-move 62s linear infinite;
-  animation-delay: 0s;
-}
-
-/* Cloud 2 — medium, mid screen */
-.cloud-2 {
-  top: 45%;
-  width: 230px;
-  height: 99px;
-  opacity: 0.72;
-  animation: cloud-move 58s linear infinite;
-  animation-delay: -22s;
-}
-
-/* Cloud 3 — small, lower screen */
-.cloud-3 {
-  top: 78%;
-  width: 180px;
-  height: 77px;
-  opacity: 0.65;
-  animation: cloud-move 66s linear infinite;
-  animation-delay: -42s;
-}
 
 /* Faint Grid Overlay for Hero */
 .hero-grid {

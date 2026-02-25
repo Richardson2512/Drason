@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import CloudBackground from '@/components/CloudBackground';
 
 const blogArticles = [
     {
@@ -177,9 +178,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                     <div className="blur-blob blur-blue opacity-40"></div>
                     <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-                <div className="hero-cloud cloud-1"></div>
-                <div className="hero-cloud cloud-2"></div>
-                <div className="hero-cloud cloud-3"></div>
+                <CloudBackground />
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 
