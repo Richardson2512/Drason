@@ -154,64 +154,64 @@ body {
   right: 10%;
 }
 
-/* Background Clouds — full-screen seamless horizontal scroll */
+/* Background Clouds — 3 individual clouds drifting right-to-left */
 
 /*
- * Each cloud div covers the entire fixed background (top:0, height:100%).
- * background-repeat: repeat tiles the cloud SVG in BOTH directions, filling
- * the whole screen. Three layers at different y-offsets, speeds, and sizes
- * spread clouds naturally across the full background without HTML changes.
+ * Each cloud div is one distinct cloud shape (not a repeating tile).
+ * translateX animates from off-screen right → off-screen left.
+ * Negative delays stagger the start so all 3 are visible and spread
+ * across the screen at page load — no clustering.
  *
- * Tile: 600×380px. The cloud shape sits in the vertical centre (~y 92–298)
- * leaving ~92px clear above and ~82px clear below — natural sky gap between rows.
- * Animate background-position-x by exactly -600px for a seamless loop.
- *
- * Fill: #D0C8F0 (light lavender) — visible on the #F5F8FF page background.
- * NO flat rect base: 5 overlapping ellipses only, fully rounded undersides.
+ * White fill + drop-shadow gives the "white cloud with border shadow" look.
+ * drop-shadow(0 0 …) = outline border, drop-shadow(0 Y …) = floating shadow.
+ * NO blur on the element — keeps the cloud shape crisp.
  */
-@keyframes cloud-scroll {
-  from { background-position-x: 0; }
-  to   { background-position-x: -600px; }
+@keyframes cloud-move {
+  from { transform: translateX(calc(100vw + 60px)); }
+  to   { transform: translateX(-400px); }
 }
 
 .hero-cloud {
   position: absolute;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
   z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380'%3E%3Cellipse cx='100' cy='240' rx='75' ry='58' fill='%23D0C8F0'/%3E%3Cellipse cx='200' cy='200' rx='82' ry='78' fill='%23D0C8F0'/%3E%3Cellipse cx='300' cy='182' rx='88' ry='90' fill='%23D0C8F0'/%3E%3Cellipse cx='400' cy='205' rx='80' ry='74' fill='%23D0C8F0'/%3E%3Cellipse cx='500' cy='238' rx='73' ry='58' fill='%23D0C8F0'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  filter: blur(3px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 120'%3E%3Cellipse cx='42' cy='86' rx='40' ry='30' fill='white'/%3E%3Cellipse cx='95' cy='62' rx='45' ry='42' fill='white'/%3E%3Cellipse cx='158' cy='52' rx='50' ry='50' fill='white'/%3E%3Cellipse cx='218' cy='66' rx='42' ry='38' fill='white'/%3E%3Cellipse cx='265' cy='86' rx='28' ry='24' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter:
+    drop-shadow(0 0 3px rgba(0, 0, 0, 0.15))
+    drop-shadow(0 6px 16px rgba(0, 0, 0, 0.1));
 }
 
-/* Layer 1 — largest tiles, slowest, y-offset 0 */
+/* Cloud 1 — large, upper screen */
 .cloud-1 {
-  background-size: 600px 380px;
-  background-position: 0 0;
-  opacity: 0.42;
-  animation: cloud-scroll 42s linear infinite;
+  top: 10%;
+  width: 300px;
+  height: 129px;
+  opacity: 0.82;
+  animation: cloud-move 62s linear infinite;
+  animation-delay: 0s;
 }
 
-/* Layer 2 — slightly smaller tiles, medium speed, shifted down ~190px so
-   its rows fall between layer 1's rows */
+/* Cloud 2 — medium, mid screen */
 .cloud-2 {
-  background-size: 560px 355px;
-  background-position: -200px 190px;
-  opacity: 0.28;
-  animation: cloud-scroll 30s linear infinite;
-  animation-delay: -12s;
+  top: 45%;
+  width: 230px;
+  height: 99px;
+  opacity: 0.72;
+  animation: cloud-move 58s linear infinite;
+  animation-delay: -22s;
 }
 
-/* Layer 3 — smallest tiles, fastest, shifted again to fill remaining gaps */
+/* Cloud 3 — small, lower screen */
 .cloud-3 {
-  background-size: 520px 330px;
-  background-position: -400px 95px;
-  opacity: 0.18;
-  animation: cloud-scroll 22s linear infinite;
-  animation-delay: -7s;
+  top: 78%;
+  width: 180px;
+  height: 77px;
+  opacity: 0.65;
+  animation: cloud-move 66s linear infinite;
+  animation-delay: -42s;
 }
 
 /* Faint Grid Overlay for Hero */
