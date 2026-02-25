@@ -158,17 +158,17 @@ body {
 @keyframes moon-drift {
   0% {
     transform: translate(-30vw, 15vh) scale(1);
-    opacity: 0.3;
+    opacity: 0.35;
   }
 
   50% {
-    transform: translate(30vw, -20vh) scale(1.2);
-    opacity: 0.55;
+    transform: translate(30vw, -20vh) scale(1.1);
+    opacity: 0.5;
   }
 
   100% {
     transform: translate(-30vw, 15vh) scale(1);
-    opacity: 0.3;
+    opacity: 0.35;
   }
 }
 
@@ -176,27 +176,37 @@ body {
   position: absolute;
   top: 10%;
   right: 15%;
-  width: 500px;
-  height: 500px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  /* Solid silvery-white surface so the moon phase shadow is visible */
-  background: radial-gradient(circle at 38% 38%,
-      rgba(232, 235, 255, 0.92) 0%,
-      rgba(205, 210, 245, 0.82) 30%,
-      rgba(175, 180, 225, 0.65) 58%,
-      rgba(145, 150, 200, 0.3) 78%,
-      transparent 93%);
-  box-shadow:
-    /* Strong dark inset offset to lower-left — carves out the shadow side,
-       leaving the upper-right lit like a waxing gibbous moon */
-    inset -110px -65px 100px rgba(3, 3, 16, 0.75),
-    /* Outer atmosphere glow matching brand purple */
-    0 0 160px rgba(148, 3, 253, 0.14),
-    0 0 55px rgba(200, 210, 255, 0.08);
+  /* Silvery-blue moon surface */
+  background: radial-gradient(circle at 42% 42%,
+      rgba(228, 232, 255, 0.95) 0%,
+      rgba(205, 212, 248, 0.88) 40%,
+      rgba(178, 186, 235, 0.72) 68%,
+      transparent 90%);
+  /*
+   * Crescent shape: two radial-gradient mask layers composited together.
+   * Bottom layer = full disc. Top layer = offset cut-out circle.
+   * "subtract" removes the cut-out from the disc, leaving a crescent.
+   */
+  -webkit-mask-image:
+    radial-gradient(circle at 68% 32%, black 38%, transparent 39%),
+    radial-gradient(circle at 50% 50%, black 47%, transparent 48%);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: destination-out, source-over;
+  mask-image:
+    radial-gradient(circle at 68% 32%, black 38%, transparent 39%),
+    radial-gradient(circle at 50% 50%, black 47%, transparent 48%);
+  mask-repeat: no-repeat;
+  mask-composite: subtract, add;
+  /* Glow follows the crescent shape (drop-shadow respects transparency) */
+  filter:
+    drop-shadow(0 0 18px rgba(210, 220, 255, 0.45))
+    drop-shadow(0 0 55px rgba(148, 3, 253, 0.15));
   animation: moon-drift 12s ease-in-out infinite;
   pointer-events: none;
   z-index: 1;
-  will-change: transform, opacity;
 }
 
 /* Faint Grid Overlay for Hero */
