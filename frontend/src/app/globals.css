@@ -154,17 +154,20 @@ body {
   right: 10%;
 }
 
-/* Background Cloud Row — horizontal seamless scroll */
+/* Background Clouds — full-screen seamless horizontal scroll */
 
 /*
- * Tile width = 600px. Animate background-position-x by -600px so
- * the repeating tile loops back to exactly where it started — seamless.
- * Three rows run at different speeds + offsets for a parallax sky feel.
+ * Each cloud div covers the entire fixed background (top:0, height:100%).
+ * background-repeat: repeat tiles the cloud SVG in BOTH directions, filling
+ * the whole screen. Three layers at different y-offsets, speeds, and sizes
+ * spread clouds naturally across the full background without HTML changes.
  *
- * Cloud SVG: 5 overlapping ellipses, NO flat rect base.
- * viewBox 0 0 600 240 — bottoms of ellipses stay inside the box
- * so you see fully rounded cloud undersides, no cut-off line.
- * Fill: #D0C8F0 (light lavender) visible on the #F5F8FF page background.
+ * Tile: 600×380px. The cloud shape sits in the vertical centre (~y 92–298)
+ * leaving ~92px clear above and ~82px clear below — natural sky gap between rows.
+ * Animate background-position-x by exactly -600px for a seamless loop.
+ *
+ * Fill: #D0C8F0 (light lavender) — visible on the #F5F8FF page background.
+ * NO flat rect base: 5 overlapping ellipses only, fully rounded undersides.
  */
 @keyframes cloud-scroll {
   from { background-position-x: 0; }
@@ -173,43 +176,42 @@ body {
 
 .hero-cloud {
   position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 240'%3E%3Cellipse cx='100' cy='170' rx='75' ry='58' fill='%23D0C8F0'/%3E%3Cellipse cx='200' cy='128' rx='82' ry='78' fill='%23D0C8F0'/%3E%3Cellipse cx='300' cy='110' rx='88' ry='90' fill='%23D0C8F0'/%3E%3Cellipse cx='400' cy='132' rx='80' ry='74' fill='%23D0C8F0'/%3E%3Cellipse cx='500' cy='168' rx='73' ry='58' fill='%23D0C8F0'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-position: 0 bottom;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 380'%3E%3Cellipse cx='100' cy='240' rx='75' ry='58' fill='%23D0C8F0'/%3E%3Cellipse cx='200' cy='200' rx='82' ry='78' fill='%23D0C8F0'/%3E%3Cellipse cx='300' cy='182' rx='88' ry='90' fill='%23D0C8F0'/%3E%3Cellipse cx='400' cy='205' rx='80' ry='74' fill='%23D0C8F0'/%3E%3Cellipse cx='500' cy='238' rx='73' ry='58' fill='%23D0C8F0'/%3E%3C/svg%3E");
+  background-repeat: repeat;
   filter: blur(3px);
 }
 
-/* Row 1 — top of hero, largest, slowest */
+/* Layer 1 — largest tiles, slowest, y-offset 0 */
 .cloud-1 {
-  top: 3%;
-  height: 170px;
-  background-size: 600px 170px;
-  opacity: 0.45;
-  animation: cloud-scroll 40s linear infinite;
+  background-size: 600px 380px;
+  background-position: 0 0;
+  opacity: 0.42;
+  animation: cloud-scroll 42s linear infinite;
 }
 
-/* Row 2 — slightly lower, medium size, offset so clouds don't align */
+/* Layer 2 — slightly smaller tiles, medium speed, shifted down ~190px so
+   its rows fall between layer 1's rows */
 .cloud-2 {
-  top: 20%;
-  height: 125px;
-  background-size: 600px 125px;
-  opacity: 0.3;
-  animation: cloud-scroll 28s linear infinite;
-  animation-delay: -14s;
+  background-size: 560px 355px;
+  background-position: -200px 190px;
+  opacity: 0.28;
+  animation: cloud-scroll 30s linear infinite;
+  animation-delay: -12s;
 }
 
-/* Row 3 — lower, smallest, fastest — creates depth/parallax */
+/* Layer 3 — smallest tiles, fastest, shifted again to fill remaining gaps */
 .cloud-3 {
-  top: 38%;
-  height: 95px;
-  background-size: 600px 95px;
-  opacity: 0.2;
-  animation: cloud-scroll 20s linear infinite;
-  animation-delay: -6s;
+  background-size: 520px 330px;
+  background-position: -400px 95px;
+  opacity: 0.18;
+  animation: cloud-scroll 22s linear infinite;
+  animation-delay: -7s;
 }
 
 /* Faint Grid Overlay for Hero */
