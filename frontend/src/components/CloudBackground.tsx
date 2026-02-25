@@ -21,17 +21,17 @@ export default function CloudBackground() {
             vantaRef.current = CLOUDS({
                 el: containerRef.current,
                 THREE,
-                // Sky matches the page background (#F5F8FF)
-                skyColor: 0xf5f8ff,
+                // Light blue sky — white clouds need a blue background to be visible
+                skyColor: 0xc9e8ff,
                 // Pure white clouds
                 cloudColor: 0xffffff,
-                // Soft blue-grey shadow under each cloud puff
-                cloudShadowColor: 0xd8e0f0,
-                // No sun / light source visible
+                // Slightly deeper blue shadow under each cloud puff
+                cloudShadowColor: 0x89b8d8,
+                // No visible sun or light source
                 sunColor: 0x000000,
                 sunGlareColor: 0x000000,
                 sunlightColor: 0x000000,
-                speed: 0.8,
+                speed: 0.6,
                 zoom: 1.0,
             });
         })();
