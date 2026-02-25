@@ -77,7 +77,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 
-            <article className="pt-52 pb-40 max-w-4xl mx-auto px-6 relative z-10">
+            <article className="pt-32 md:pt-36 pb-40 max-w-4xl mx-auto px-6 relative z-10">
                 <h1 className="text-5xl font-bold leading-tight tracking-tight text-gray-900 mb-8">
                     {data.title}
                 </h1>

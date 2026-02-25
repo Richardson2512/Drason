@@ -400,6 +400,31 @@ export default function MailboxesPage() {
                             <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Mailbox Health & Usage</div>
                         </div>
 
+                        {/* Pause Reason Banner — shown when Drason's automation paused the mailbox */}
+                        {selectedMailbox.status === 'paused' && selectedMailbox.paused_reason && (
+                            <div style={{
+                                margin: '0 0 2rem 0',
+                                padding: '1.25rem 1.5rem',
+                                borderRadius: '16px',
+                                background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)',
+                                border: '1px solid #FCD34D',
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                                    <span style={{ fontSize: '1.5rem' }}>⏸</span>
+                                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#92400E', margin: 0 }}>Paused by Drason</h3>
+                                </div>
+                                <div style={{ display: 'grid', gap: '0.5rem', fontSize: '0.9rem' }}>
+                                    <div style={{ color: '#78350F', lineHeight: 1.5 }}>{selectedMailbox.paused_reason}</div>
+                                    {selectedMailbox.paused_at && (
+                                        <div style={{ color: '#92400E', fontSize: '0.8rem' }}>
+                                            Paused: {new Date(selectedMailbox.paused_at).toLocaleString()}
+                                            {selectedMailbox.paused_by && ` · By: ${selectedMailbox.paused_by}`}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Connection Diagnostic Card — shown when mailbox is disconnected */}
                         {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
                             const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error);

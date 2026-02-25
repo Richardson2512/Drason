@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
 import CopyButton from '@/components/CopyButton';
 
-export default function EmailBisonCard({ webhookUrl }: { webhookUrl?: string }) {
+export default function EmailBisonCard({ webhookUrl, onTriggerSync }: { webhookUrl?: string; onTriggerSync?: () => Promise<void> }) {
     const [ebApiKey, setEbApiKey] = useState('');
     const [loading, setLoading] = useState(false);
+    const [syncing, setSyncing] = useState(false);
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
@@ -86,6 +87,71 @@ export default function EmailBisonCard({ webhookUrl }: { webhookUrl?: string }) 
                 </div>
                 <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
                     {webhookUrl || 'Loading...'}
+                </div>
+
+                {onTriggerSync && (
+                    <button
+                        onClick={async () => {
+                            setSyncing(true);
+                            try {
+                                await onTriggerSync();
+                            } finally {
+                                setSyncing(false);
+                            }
+                        }}
+                        disabled={loading || syncing}
+                        className="premium-btn"
+                        style={{ width: '100%', marginTop: '1rem', background: '#FFFFFF', color: '#1E293B', border: '1px solid #E2E8F0' }}
+                    >
+                        {syncing ? 'Syncing...' : 'Trigger Manual Sync'}
+                    </button>
+                )}
+
+                {/* 24/7 Monitoring Info */}
+                <div style={{
+                    marginTop: '1.5rem',
+                    padding: '1rem',
+                    background: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)',
+                    border: '2px solid #7C3AED',
+                    borderRadius: '10px'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '8px',
+                            background: '#7C3AED',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '1rem',
+                            flexShrink: 0
+                        }}>
+                            ⚡
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
+                                <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#4C1D95', margin: 0 }}>
+                                    24/7 Auto-Sync Active
+                                </h4>
+                                <span style={{
+                                    padding: '0.125rem 0.5rem',
+                                    background: '#7C3AED',
+                                    color: 'white',
+                                    borderRadius: '999px',
+                                    fontSize: '0.5rem',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.05em'
+                                }}>
+                                    LIVE
+                                </span>
+                            </div>
+                            <p style={{ fontSize: '0.75rem', color: '#5B21B6', margin: 0, lineHeight: 1.6 }}>
+                                Your EmailBison data syncs automatically every <strong>20 minutes</strong>.
+                                Manual sync is available for immediate updates after changes.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

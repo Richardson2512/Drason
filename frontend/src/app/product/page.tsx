@@ -89,7 +89,7 @@ export default function ProductIndexPage() {
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 
-            <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10 pt-44 md:pt-56">
+            <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10 pt-32 md:pt-36">
                 <div className="text-center mb-20 mt-10">
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 uppercase">
                         Product Hub

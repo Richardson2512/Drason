@@ -195,7 +195,7 @@ export default function LandingPage() {
             </div>
 
             {/* ================= HERO ================= */}
-            <section className="relative pt-32 pb-20 text-center z-10">
+            <section className="relative pt-32 md:pt-36 pb-20 text-center z-10">
                 <div className="relative z-10 max-w-5xl mx-auto px-6">
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-extrabold leading-[0.95] tracking-tight text-gray-900 mb-5 max-w-5xl mx-auto uppercase">
                         Email

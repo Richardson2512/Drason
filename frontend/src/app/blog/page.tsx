@@ -72,7 +72,7 @@ export default function BlogPage() {
             <Navbar />
 
             {/* Hero */}
-            <section className="relative pt-52 pb-20 text-center">
+            <section className="relative pt-32 md:pt-36 pb-20 text-center">
                 {/* Unified Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="hero-blur opacity-50">

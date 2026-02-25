@@ -230,6 +230,26 @@ export default function Settings() {
         }
     };
 
+    const handleTriggerSync = async () => {
+        const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+        setSyncSessionId(sessionId);
+        setShowSyncModal(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            await apiClient<any>(`/api/sync?session=${sessionId}`, {
+                method: 'POST',
+                timeout: 600_000
+            });
+        } catch (e: any) {
+            console.error('[Sync] API call error:', {
+                message: e.message,
+                name: e.name,
+                stack: e.stack,
+                isTimeout: e.message?.includes('timeout')
+            });
+        }
+    };
+
     const handleSystemModeChange = async (mode: string) => {
         setLoading(true);
         try {
@@ -660,7 +680,7 @@ export default function Settings() {
                             </div>
                         )}
 
-                        {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} />}
+                        {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} onTriggerSync={handleTriggerSync} />}
 
 
 

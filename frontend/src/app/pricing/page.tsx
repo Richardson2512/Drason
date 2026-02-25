@@ -26,7 +26,7 @@ export default function PricingPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <div className="relative pt-44 md:pt-56 pb-24 md:pb-32 text-center px-4 md:px-6">
+            <div className="relative pt-32 md:pt-36 pb-24 md:pb-32 text-center px-4 md:px-6">
                 {/* Unified Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="hero-blur opacity-50">

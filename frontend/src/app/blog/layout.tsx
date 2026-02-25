@@ -182,7 +182,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             {/* ================= MAIN LAYOUT ================= */}
-            <div className="relative z-10 pt-40 pb-8">
+            <div className="relative z-10 pt-32 md:pt-36 pb-8">
                 <div className="flex">
                     {/* Sidebar - fixed on desktop */}
                     <aside className={`

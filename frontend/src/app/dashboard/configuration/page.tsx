@@ -59,14 +59,14 @@ export default function Configuration() {
 
     const fetchRules = () => {
         apiClient<any>('/api/dashboard/routing-rules')
-            .then(data => setRules(Array.isArray(data) ? data : []))
+            .then(data => setRules(Array.isArray(data) ? data : (data?.data || [])))
             .catch(() => setRules([]));
     };
 
     const fetchCampaigns = () => {
-        apiClient<any>('/api/dashboard/campaigns')
+        apiClient<any>('/api/dashboard/campaigns?limit=1000')
             .then(data => {
-                const campaignList = Array.isArray(data) ? data : (data?.campaigns || []);
+                const campaignList = Array.isArray(data) ? data : (data?.data || []);
                 setCampaigns(campaignList);
             })
             .catch(() => setCampaigns([]));
