@@ -176,7 +176,7 @@ export default function PricingPage() {
             </div>
 
             {/* Active Leads Explanation */}
-            <div className="max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
+            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-gray-900 tracking-tight">
                     What "Active Leads" Means
                 </h2>
@@ -204,7 +204,7 @@ export default function PricingPage() {
             </div>
 
             {/* Why We Don't Charge Per Email */}
-            <div className="max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
+            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-gray-900 tracking-tight">
                     Why We Don't Charge Per Email Sent
                 </h2>
@@ -220,7 +220,7 @@ export default function PricingPage() {
             </div>
 
             {/* 2026 Outbound Context */}
-            <div className="max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
+            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 tracking-tight">
                     Why This Pricing Aligns With 2026 Outbound
                 </h2>
@@ -249,7 +249,7 @@ export default function PricingPage() {
             </div>
 
             {/* ROI Framing */}
-            <div className="max-w-4xl mx-auto px-6 py-20 mb-8 border-t border-gray-200">
+            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 mb-8 border-t border-gray-200">
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 tracking-tight">
                     ROI Framing
                 </h2>

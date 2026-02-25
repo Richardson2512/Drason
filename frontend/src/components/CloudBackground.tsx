@@ -52,7 +52,7 @@ export default function CloudBackground() {
         <div
             ref={containerRef}
             className="absolute inset-0"
-            style={{ pointerEvents: 'none' }}
+            style={{ pointerEvents: 'none', willChange: 'transform', transform: 'translateZ(0)' }}
         />
     );
 }

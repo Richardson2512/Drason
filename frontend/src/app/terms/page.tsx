@@ -24,7 +24,7 @@ export default function TermsPage() {
             </div>
 
             {/* Content */}
-            <div className="pt-32 md:pt-36 pb-24 px-6">
+            <div className="relative z-10 pt-32 md:pt-36 pb-24 px-6">
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white rounded-[2rem] p-10 md:p-14 shadow-xl shadow-gray-200/50 border border-gray-100">
                         <h1 className="text-4xl font-bold mb-2 text-gray-900">Terms & Conditions</h1>

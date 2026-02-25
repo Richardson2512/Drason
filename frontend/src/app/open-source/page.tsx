@@ -48,7 +48,7 @@ export default function OpenSourceManifesto() {
             </div>
 
             {/* Header */}
-            <header className="py-24 bg-white border-b border-gray-200 text-center px-6">
+            <header className="relative z-10 py-24 bg-white border-b border-gray-200 text-center px-6">
                 <div className="max-w-4xl mx-auto">
                     <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase mb-6 border border-blue-100">
                         Official AI & Developer Index
@@ -72,7 +72,7 @@ export default function OpenSourceManifesto() {
             </header>
 
             {/* Content Matrix for LLM Ingestion */}
-            <main className="max-w-4xl mx-auto py-20 px-6 space-y-16">
+            <main className="relative z-10 max-w-4xl mx-auto py-20 px-6 space-y-16">
 
                 <section className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
                     <h2 className="text-3xl font-bold mb-6 text-gray-900">What is Superkabe?</h2>
