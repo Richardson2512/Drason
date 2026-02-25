@@ -190,7 +190,9 @@ export default function LandingPage() {
                     <div className="blur-blob blur-blue opacity-40"></div>
                     <div className="blur-blob blur-pink opacity-40"></div>
                 </div>
-                <div className="hero-moon"></div>
+                <div className="hero-cloud cloud-1"></div>
+                <div className="hero-cloud cloud-2"></div>
+                <div className="hero-cloud cloud-3"></div>
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 

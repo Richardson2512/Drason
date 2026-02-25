@@ -80,7 +80,9 @@ export default function BlogPage() {
                         <div className="blur-blob blur-blue opacity-40"></div>
                         <div className="blur-blob blur-pink opacity-40"></div>
                     </div>
-                    <div className="hero-moon"></div>
+                    <div className="hero-cloud cloud-1"></div>
+                <div className="hero-cloud cloud-2"></div>
+                <div className="hero-cloud cloud-3"></div>
                     <div className="absolute inset-0 hero-grid"></div>
                 </div>
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
