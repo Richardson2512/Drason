@@ -112,6 +112,12 @@ export default function DocsPage() {
                     description="Monitor campaigns and sync mailboxes from Smartlead"
                 />
                 <DocCard
+                    href="/docs/instantly-integration"
+                    icon={<Zap className="text-orange-500" size={24} />}
+                    title="Instantly Integration"
+                    description="Sync Instantly campaigns, track per-mailbox stats, and enable real-time bounce protection"
+                />
+                <DocCard
                     href="/docs/warmup-recovery"
                     icon={<Activity className="text-green-600" size={24} />}
                     title="Warmup Recovery System"

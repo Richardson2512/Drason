@@ -64,6 +64,28 @@ export default function InstantlyCard({
                         Connect your Instantly account to sync campaigns, monitor deliverability, and auto-heal infrastructure.
                     </p>
                 </div>
+                <a
+                    href="/docs/instantly-integration"
+                    target="_blank"
+                    title="View integration guide"
+                    style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: '#F1F5F9',
+                        color: '#64748B',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textDecoration: 'none',
+                        flexShrink: 0,
+                        transition: 'background 0.15s, color 0.15s',
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                >
+                    <span style={{ fontSize: '1rem' }}>❓</span>
+                </a>
             </div>
 
             {/* Status message */}
