@@ -157,25 +157,16 @@ export default function Overview() {
   return (
     <div className="grid gap-6" style={{ paddingBottom: '2rem' }}>
       {/* Welcome Section */}
-      <div style={{
-        padding: '1.5rem 2rem',
-        background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)',
-        borderRadius: '16px',
-        border: '1px solid #DBEAFE',
-        marginBottom: '1rem'
-      }}>
+      <div style={{ paddingBottom: '0.25rem' }}>
         <h2 style={{
-          fontSize: '1.5rem',
-          fontWeight: '700',
-          background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          marginBottom: '0.5rem'
+          fontSize: '1.1rem',
+          fontWeight: '600',
+          color: '#4F46E5',
+          marginBottom: '0.125rem'
         }}>
-          Welcome back, {userName || 'User'}! 👋
+          Welcome back, {userName || 'User'} 👋
         </h2>
-        <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+        <p style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>
           Here's your system overview and health status.
         </p>
       </div>
