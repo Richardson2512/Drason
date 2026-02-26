@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import SystemModeCard from '@/components/settings/SystemModeCard';
 import SlackIntegrationCard from '@/components/settings/SlackIntegrationCard';
 import EmailBisonCard from '@/components/settings/EmailBisonCard';
+import InstantlyCard from '@/components/settings/InstantlyCard';
 
 export default function Settings() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function Settings() {
     const [webhookSecret, setWebhookSecret] = useState('');
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
     const [emailBisonWebhookUrl, setEmailBisonWebhookUrl] = useState('');
+    const [instantlyWebhookUrl, setInstantlyWebhookUrl] = useState('');
     const [slackConnected, setSlackConnected] = useState(false);
 
     // Slack Alerts State
@@ -133,6 +135,7 @@ export default function Settings() {
 
         setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
         setEmailBisonWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/emailbison-webhook`);
+        setInstantlyWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/instantly-webhook`);
     }, []);
 
     useEffect(() => {
@@ -657,27 +660,9 @@ export default function Settings() {
                             </>
                         )}
 
-                        {/* Instantly — Coming Soon */}
+                        {/* Instantly */}
                         {activeIntegration === 'instantly' && (
-                            <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚡</div>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.5rem' }}>Instantly Integration</h2>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                                    Connect your Instantly account to sync campaigns, manage mailbox rotation, and monitor deliverability.
-                                </p>
-                                <div style={{
-                                    display: 'inline-block',
-                                    padding: '0.5rem 1.5rem',
-                                    background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
-                                    border: '1px solid #93C5FD',
-                                    borderRadius: '999px',
-                                    color: '#1E40AF',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 700
-                                }}>
-                                    🚀 Coming Soon
-                                </div>
-                            </div>
+                            <InstantlyCard webhookUrl={instantlyWebhookUrl} onTriggerSync={handleTriggerSync} />
                         )}
 
                         {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} onTriggerSync={handleTriggerSync} />}
