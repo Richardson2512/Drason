@@ -235,7 +235,8 @@ export default function CampaignsPage() {
                             fontSize: '0.875rem',
                             outline: 'none',
                             cursor: 'pointer',
-                            background: 'white'
+                            background: 'white',
+                            marginBottom: '0.75rem'
                         }}
                     >
                         <option value="all">All Statuses</option>
