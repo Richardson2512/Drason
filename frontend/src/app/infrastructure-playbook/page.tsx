@@ -47,11 +47,6 @@ export default function InfrastructurePlaybookPage() {
 
             {/* Unified Fixed Background Layer */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="hero-blur opacity-50">
-                    <div className="blur-blob blur-purple opacity-40"></div>
-                    <div className="blur-blob blur-blue opacity-40"></div>
-                    <div className="blur-blob blur-pink opacity-40"></div>
-                </div>
                 <CloudBackground />
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
