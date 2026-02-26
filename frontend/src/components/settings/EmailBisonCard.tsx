@@ -88,6 +88,11 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync }: { webhookU
                 <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
                     {webhookUrl || 'Loading...'}
                 </div>
+                <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.5rem', lineHeight: 1.5 }}>
+                    Paste this URL in EmailBison → Settings → Webhooks.
+                    Select all events: email sent, opened, clicked, bounced, replied, unsubscribed.
+                    Include the <code style={{ fontFamily: 'monospace', fontWeight: 600 }}>x-organization-id</code> header.
+                </p>
 
                 {onTriggerSync && (
                     <button

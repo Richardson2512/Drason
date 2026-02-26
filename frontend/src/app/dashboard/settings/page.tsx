@@ -467,7 +467,7 @@ export default function Settings() {
                 <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                     {[
                         { key: 'smartlead' as const, label: 'Smartlead', icon: '/smartlead.webp', active: true },
-                        { key: 'instantly' as const, label: 'Instantly', icon: '/instantly.png', active: false },
+                        { key: 'instantly' as const, label: 'Instantly', icon: '/instantly.png', active: true },
                         { key: 'emailbison' as const, label: 'EmailBison', icon: '/emailbison.png', active: true },
                         { key: 'replyio' as const, label: 'Reply.io', icon: '/replyio.png', active: false },
                     ].map(provider => (
@@ -569,6 +569,11 @@ export default function Settings() {
                                     <div style={{ background: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB' }}>
                                         {smartleadWebhookUrl || 'Loading...'}
                                     </div>
+                                    <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.5rem', lineHeight: 1.5 }}>
+                                        Paste this URL in Smartlead → Settings → Webhooks.
+                                        Select all events: email sent, opened, clicked, bounced, replied, unsubscribed.
+                                        Include the <code style={{ fontFamily: 'monospace', fontWeight: 600 }}>x-organization-id</code> header.
+                                    </p>
                                     <button
                                         onClick={async () => {
                                             const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;

@@ -194,22 +194,6 @@ export default function InstantlyCard({
                     </div>
                 </div>
 
-                {/* Capability summary */}
-                <div style={{
-                    marginTop: '1rem', padding: '1rem',
-                    background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px',
-                }}>
-                    <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
-                        What Superkabe monitors
-                    </h4>
-                    <ul style={{ margin: 0, padding: '0 0 0 1rem', fontSize: '0.75rem', color: '#64748B', lineHeight: 1.8 }}>
-                        <li>Campaign analytics — open, click, reply, bounce rates</li>
-                        <li>Per-mailbox daily send & bounce stats</li>
-                        <li>Per-domain aggregated health (bounce rate across all mailboxes)</li>
-                        <li>Per-lead engagement — opens, clicks, replies, bounce status</li>
-                        <li>Warmup analytics — inbox vs spam placement rate</li>
-                    </ul>
-                </div>
             </div>
         </div>
     );
