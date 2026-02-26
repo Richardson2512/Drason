@@ -546,6 +546,9 @@ export default function Settings() {
                                 <form onSubmit={handleSave} style={{ marginBottom: '2rem' }}>
                                     <div style={{ marginBottom: '1rem' }}>
                                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>API Key</label>
+                                        <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '0.5rem' }}>
+                                            Generate at Smartlead → Settings → API Key. Available on all paid plans.
+                                        </p>
                                         <input
                                             type="password"
                                             value={apiKey}

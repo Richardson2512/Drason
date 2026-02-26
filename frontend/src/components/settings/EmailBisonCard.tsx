@@ -65,6 +65,9 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync }: { webhookU
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
                         EmailBison API Key
                     </label>
+                    <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '0.5rem' }}>
+                        Generate at EmailBison → Settings → API Keys. Available on all paid plans.
+                    </p>
                     <input
                         type="password"
                         placeholder="Paste your key here..."
