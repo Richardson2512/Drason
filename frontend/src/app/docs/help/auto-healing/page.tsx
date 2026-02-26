@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'How Auto-Healing Works | Superkabe Help',
+    description: 'Understanding the 5-phase pipeline that automatically recovers your email infrastructure in Superkabe.',
+    alternates: { canonical: '/docs/help/auto-healing' },
+    openGraph: {
+        title: 'How Auto-Healing Works | Superkabe Help',
+        description: 'Understanding the 5-phase pipeline that automatically recovers your email infrastructure in Superkabe.',
+        url: '/docs/help/auto-healing',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function AutoHealingPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

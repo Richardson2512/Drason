@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Multi-Platform Data Sync | Superkabe Docs',
+    description: 'How Superkabe synchronizes data across Smartlead, EmailBison, and Clay simultaneously with parallel cron execution.',
+    alternates: { canonical: '/docs/multi-platform-sync' },
+    openGraph: {
+        title: 'Multi-Platform Data Sync | Superkabe Docs',
+        description: 'How Superkabe synchronizes data across Smartlead, EmailBison, and Clay simultaneously with parallel cron execution.',
+        url: '/docs/multi-platform-sync',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function MultiPlatformSyncPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

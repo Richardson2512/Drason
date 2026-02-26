@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Smartlead Integration Guide | Superkabe Docs',
+    description: 'Connect Smartlead with Superkabe for real-time bounce monitoring, mailbox protection, and campaign health tracking.',
+    alternates: { canonical: '/docs/smartlead-integration' },
+    openGraph: {
+        title: 'Smartlead Integration Guide | Superkabe Docs',
+        description: 'Connect Smartlead with Superkabe for real-time bounce monitoring, mailbox protection, and campaign health tracking.',
+        url: '/docs/smartlead-integration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function SmartleadIntegrationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

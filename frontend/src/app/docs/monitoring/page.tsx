@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Monitoring System | Superkabe Docs',
+    description: 'Production-hardened monitoring with tiered thresholds, sliding windows, and ratio-based domain protection for outbound email.',
+    alternates: { canonical: '/docs/monitoring' },
+    openGraph: {
+        title: 'Monitoring System | Superkabe Docs',
+        description: 'Production-hardened monitoring with tiered thresholds, sliding windows, and ratio-based domain protection for outbound email.',
+        url: '/docs/monitoring',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function MonitoringPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

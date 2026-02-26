@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Getting Started | Superkabe Docs',
+    description: 'Set up Superkabe to protect your outbound email infrastructure in minutes. Connect Clay, Smartlead, and start monitoring.',
+    alternates: { canonical: '/docs/getting-started' },
+    openGraph: {
+        title: 'Getting Started | Superkabe Docs',
+        description: 'Set up Superkabe to protect your outbound email infrastructure in minutes. Connect Clay, Smartlead, and start monitoring.',
+        url: '/docs/getting-started',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function GettingStartedPage() {
     return (
         <div className="prose prose-lg max-w-none">

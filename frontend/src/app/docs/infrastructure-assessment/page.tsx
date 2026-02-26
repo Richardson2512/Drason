@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Infrastructure Assessment | Superkabe Docs',
+    description: 'Automated health checks for your sending infrastructure. Detect DNS issues, blacklist listings, and damaged mailboxes.',
+    alternates: { canonical: '/docs/infrastructure-assessment' },
+    openGraph: {
+        title: 'Infrastructure Assessment | Superkabe Docs',
+        description: 'Automated health checks for your sending infrastructure. Detect DNS issues, blacklist listings, and damaged mailboxes.',
+        url: '/docs/infrastructure-assessment',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function InfrastructureAssessmentPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

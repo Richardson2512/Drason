@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Mailbox Connection Errors | Superkabe Help',
+    description: 'Troubleshoot disconnected mailboxes in Superkabe. Understand causes and fixes for mailbox connection errors.',
+    alternates: { canonical: '/docs/help/connection-errors' },
+    openGraph: {
+        title: 'Mailbox Connection Errors | Superkabe Help',
+        description: 'Troubleshoot disconnected mailboxes in Superkabe. Understand causes and fixes for mailbox connection errors.',
+        url: '/docs/help/connection-errors',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function ConnectionErrorsPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

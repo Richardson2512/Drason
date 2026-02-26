@@ -19,35 +19,33 @@ function discoverRoutes(
 
     if (!fs.existsSync(appDir)) return entries;
 
-    // Check if the directory itself has a page.tsx (index page)
-    const indexPage = path.join(appDir, 'page.tsx');
-    if (fs.existsSync(indexPage)) {
-        const stats = fs.statSync(indexPage);
-        entries.push({
-            url: `${BASE_URL}/${directory}`,
-            lastModified: stats.mtime,
-            changeFrequency,
-            priority,
-        });
-    }
+    function scanDir(dir: string, urlPrefix: string, depth: number) {
+        // Check if this directory has a page.tsx
+        const pagePath = path.join(dir, 'page.tsx');
+        if (fs.existsSync(pagePath)) {
+            const stats = fs.statSync(pagePath);
+            entries.push({
+                url: `${BASE_URL}${urlPrefix}`,
+                lastModified: stats.mtime,
+                changeFrequency,
+                priority: Math.max(priority - depth * 0.1, 0.5),
+            });
+        }
 
-    // Scan subdirectories for page.tsx
-    const subdirs = fs.readdirSync(appDir, { withFileTypes: true });
-    for (const dirent of subdirs) {
-        if (dirent.isDirectory()) {
-            const subPagePath = path.join(appDir, dirent.name, 'page.tsx');
-            if (fs.existsSync(subPagePath)) {
-                const stats = fs.statSync(subPagePath);
-                entries.push({
-                    url: `${BASE_URL}/${directory}/${dirent.name}`,
-                    lastModified: stats.mtime,
-                    changeFrequency,
-                    priority: Math.max(priority - 0.1, 0.5),
-                });
+        // Recursively scan subdirectories
+        const subdirs = fs.readdirSync(dir, { withFileTypes: true });
+        for (const dirent of subdirs) {
+            if (dirent.isDirectory()) {
+                scanDir(
+                    path.join(dir, dirent.name),
+                    `${urlPrefix}/${dirent.name}`,
+                    depth + 1
+                );
             }
         }
     }
 
+    scanDir(appDir, `/${directory}`, 0);
     return entries;
 }
 

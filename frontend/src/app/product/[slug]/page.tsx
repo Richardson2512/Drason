@@ -22,8 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
         title: `${data.title} | Superkabe`,
         description: data.description,
-        alternates: {
-            canonical: `/product/${slug}`,
+        alternates: { canonical: `/product/${slug}` },
+        openGraph: {
+            title: `${data.title} | Superkabe`,
+            description: data.description,
+            url: `/product/${slug}`,
+            siteName: 'Superkabe',
+            type: 'article',
         },
     };
 }

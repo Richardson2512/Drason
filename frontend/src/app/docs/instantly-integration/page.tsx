@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Instantly Integration Guide | Superkabe',
+    title: 'Instantly Integration Guide | Superkabe Docs',
     description: 'Connect your Instantly account to sync campaigns, monitor deliverability, and protect mailboxes with Superkabe.',
     alternates: {
         canonical: '/docs/instantly-integration',
+    },
+    openGraph: {
+        title: 'Instantly Integration Guide | Superkabe Docs',
+        description: 'Connect your Instantly account to sync campaigns, monitor deliverability, and protect mailboxes with Superkabe.',
+        url: '/docs/instantly-integration',
+        siteName: 'Superkabe',
+        type: 'article',
     },
 };
 

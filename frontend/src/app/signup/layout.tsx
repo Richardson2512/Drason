@@ -3,9 +3,8 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Get Started | Superkabe',
     description: 'Create your Superkabe account and protect your email infrastructure from domain burnout.',
-    alternates: {
-        canonical: '/signup',
-    },
+    alternates: { canonical: '/signup' },
+    robots: { index: false, follow: false },
 };
 
 export default function SignupLayout({

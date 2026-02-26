@@ -78,10 +78,8 @@ export default function RootLayout({
       email: 'support@superkabe.com',
     },
     sameAs: [
-      'https://www.linkedin.com/company/superkabe',
       'https://github.com/Superkabereal/Superkabe',
       'https://www.crunchbase.com/organization/superkabe',
-      'https://producthunt.com/products/superkabe',
       'https://g2.com/products/superkabe',
     ],
   };

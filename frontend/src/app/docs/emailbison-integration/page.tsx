@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'EmailBison Integration Guide | Superkabe Docs',
+    description: 'Connect EmailBison to ingest warm-up metrics, engagement tracking, and reputation scoring into Superkabe.',
+    alternates: { canonical: '/docs/emailbison-integration' },
+    openGraph: {
+        title: 'EmailBison Integration Guide | Superkabe Docs',
+        description: 'Connect EmailBison to ingest warm-up metrics, engagement tracking, and reputation scoring into Superkabe.',
+        url: '/docs/emailbison-integration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function EmailBisonIntegrationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

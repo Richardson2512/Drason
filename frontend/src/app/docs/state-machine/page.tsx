@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'State Machine | Superkabe Docs',
+    description: 'Understand mailbox states, domain states, and valid transitions through the Superkabe protection lifecycle.',
+    alternates: { canonical: '/docs/state-machine' },
+    openGraph: {
+        title: 'State Machine | Superkabe Docs',
+        description: 'Understand mailbox states, domain states, and valid transitions through the Superkabe protection lifecycle.',
+        url: '/docs/state-machine',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function StateMachinePage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

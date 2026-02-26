@@ -17,6 +17,7 @@ const docSections = [
             { title: 'Clay Integration', href: '/docs/clay-integration', icon: Activity },
             { title: 'Smartlead Integration', href: '/docs/smartlead-integration', icon: Activity },
             { title: 'EmailBison Integration', href: '/docs/emailbison-integration', icon: Activity },
+            { title: 'Instantly Integration', href: '/docs/instantly-integration', icon: Activity },
             { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
             { title: 'API Integration', href: '/docs/api-integration', icon: Settings },
             { title: 'Multi-Platform Sync', href: '/docs/multi-platform-sync', icon: GitBranch },
@@ -29,6 +30,7 @@ const docSections = [
             { title: 'Monitoring System', href: '/docs/monitoring', icon: Activity },
             { title: 'Execution Gate', href: '/docs/execution-gate', icon: GitBranch },
             { title: 'Risk Scoring', href: '/docs/risk-scoring', icon: TrendingUp },
+            { title: 'Technical Architecture', href: '/docs/technical-architecture', icon: GitBranch },
             { title: 'State Machine', href: '/docs/state-machine', icon: GitBranch },
         ]
     },
@@ -36,6 +38,9 @@ const docSections = [
         title: 'Configuration',
         items: [
             { title: 'Configuration', href: '/docs/configuration', icon: Settings },
+            { title: 'Deployment', href: '/docs/deployment', icon: Settings },
+            { title: 'Infrastructure Assessment', href: '/docs/infrastructure-assessment', icon: TrendingUp },
+            { title: 'Warmup Recovery', href: '/docs/warmup-recovery', icon: Activity },
         ]
     },
     {
@@ -49,6 +54,82 @@ const docSections = [
         ]
     }
 ];
+
+const docMeta: Record<string, { title: string; description: string }> = {};
+docSections.forEach(section => {
+    section.items.forEach(item => {
+        docMeta[item.href] = {
+            title: item.title,
+            description: `${item.title} — Superkabe documentation for outbound email infrastructure protection.`,
+        };
+    });
+});
+
+function DocJsonLd() {
+    const pathname = usePathname();
+    const page = docMeta[pathname];
+    if (!page) return null;
+
+    // Find which section this page belongs to
+    const section = docSections.find(s => s.items.some(i => i.href === pathname));
+    const sectionTitle = section?.title || 'Documentation';
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: page.title,
+        description: page.description,
+        url: `https://www.superkabe.com${pathname}`,
+        publisher: {
+            '@type': 'Organization',
+            name: 'Superkabe',
+            url: 'https://www.superkabe.com',
+            logo: 'https://www.superkabe.com/image/logo-v2.png',
+        },
+        isPartOf: {
+            '@type': 'WebSite',
+            name: 'Superkabe Documentation',
+            url: 'https://www.superkabe.com/docs',
+        },
+    };
+
+    const breadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Docs',
+                item: 'https://www.superkabe.com/docs',
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: sectionTitle,
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: page.title,
+                item: `https://www.superkabe.com${pathname}`,
+            },
+        ],
+    };
+
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+            />
+        </>
+    );
+}
 
 interface TocItem {
     id: string;
@@ -170,6 +251,9 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+
+            {/* ================= JSON-LD ================= */}
+            <DocJsonLd />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />

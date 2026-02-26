@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: '24/7 Infrastructure Monitoring | Superkabe Help',
+    description: 'How Superkabe continuously monitors your email infrastructure and automatically protects your sender reputation.',
+    alternates: { canonical: '/docs/help/24-7-monitoring' },
+    openGraph: {
+        title: '24/7 Infrastructure Monitoring | Superkabe Help',
+        description: 'How Superkabe continuously monitors your email infrastructure and automatically protects your sender reputation.',
+        url: '/docs/help/24-7-monitoring',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function MonitoringPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

@@ -1,0 +1,105 @@
+# Superkabe — Full AI Context
+
+> Superkabe is an infrastructure protection layer for outbound email teams. It sits between lead enrichment tools (Clay) and email sending platforms (Smartlead, Instantly, EmailBison) to monitor bounce rates, enforce DNS authentication, detect mailbox fatigue, and score lead health in real time. The goal: prevent domain burnout and protect sender reputation before damage becomes irreversible.
+
+## What Superkabe Does
+
+Superkabe does NOT send emails. It monitors and protects the infrastructure that does. Key capabilities:
+
+- **Bounce Rate Monitoring**: Tiered thresholds (warning at 5%, critical at 10%) with sliding window analysis
+- **DNS Authentication Enforcement**: SPF, DKIM, DMARC validation per domain
+- **Mailbox Fatigue Detection**: Tracks send volume, bounce patterns, and cooldown periods per mailbox
+- **Lead Health Scoring**: Classifies leads as GREEN (80-100), YELLOW (50-79), or RED (0-49) before they enter campaigns
+- **Execution Gate**: Two-stage gate that blocks bad leads and protects unhealthy infrastructure
+- **Auto-Healing**: 5-phase recovery pipeline that automatically heals paused mailboxes via warmup
+- **State Machine**: Manages mailbox lifecycle through active, warning, paused, healing, and recovered states
+- **Risk Scoring**: Separates hard signals (bounces) from soft signals (velocity spikes) for accurate risk assessment
+
+## Integrations
+
+### Smartlead
+Real-time bounce monitoring, campaign health tracking, mailbox protection. Syncs campaigns, mailboxes, and lead activity every 20 minutes. Automatically pauses mailboxes exceeding bounce thresholds.
+
+### Clay
+Webhook-based lead ingestion. Enriched leads from Clay tables are routed through the execution gate, health-scored, and pushed to appropriate Smartlead campaigns based on persona matching and minimum score rules.
+
+### Instantly
+Campaign sync, per-mailbox engagement tracking, and deliverability protection. Monitors inbox placement and sender reputation across Instantly accounts.
+
+### EmailBison
+Ingests warm-up metrics, engagement tracking, and reputation scoring. Monitors warmup health and detects mailboxes that need attention.
+
+### Slack
+Real-time infrastructure alerts. Notifies teams when mailboxes are paused, domains are unhealthy, or bounce rates spike. Two-way: query infrastructure status from Slack.
+
+### API & Webhooks
+Direct lead ingestion API, Clay webhook endpoint, Smartlead event webhook, and campaign resolution API for automating stalled campaign recovery.
+
+## Architecture
+
+- **Frontend**: Next.js 14 App Router, deployed on Vercel
+- **Backend**: Node.js/Express with Prisma ORM, deployed on Railway
+- **Database**: PostgreSQL
+- **Monitoring**: Cron-based sync every 20 minutes, event-driven webhook processing
+- **Rate Limits**: Smartlead API — 10 requests per 2 seconds, max 100 leads per batch
+
+## System Modes
+
+1. **Observe**: Logs all events, no automated actions. For learning baseline metrics.
+2. **Suggest**: Provides recommendations without blocking. For reviewing suggestions before automation.
+3. **Enforce**: Fully automated pausing and blocking. Production-ready protection.
+
+## Pricing
+
+Starting at $49/month. Includes infrastructure monitoring, auto-healing, multi-platform sync, and Slack alerts.
+
+---
+
+## Documentation Index
+
+### Getting Started
+- [Introduction](https://www.superkabe.com/docs): Overview of the documentation
+- [Getting Started](https://www.superkabe.com/docs/getting-started): Set up Superkabe in minutes
+- [Clay Integration](https://www.superkabe.com/docs/clay-integration): Connect Clay tables for automated lead routing
+- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): Real-time bounce monitoring and mailbox protection
+- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Warm-up metrics and reputation scoring
+- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Sync campaigns and monitor deliverability
+- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Real-time infrastructure alerts
+- [API Integration](https://www.superkabe.com/docs/api-integration): Webhooks and direct lead ingestion API
+- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Parallel data sync architecture
+
+### Core Concepts
+- [Platform Rules](https://www.superkabe.com/docs/platform-rules): Automated rules, thresholds, and enforcement mechanisms
+- [Monitoring System](https://www.superkabe.com/docs/monitoring): Tiered thresholds with sliding window analysis
+- [Execution Gate](https://www.superkabe.com/docs/execution-gate): Two-stage lead and infrastructure protection gate
+- [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Hard vs soft signal separation for risk assessment
+- [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System architecture and design decisions
+- [State Machine](https://www.superkabe.com/docs/state-machine): Mailbox and domain state transitions
+
+### Configuration
+- [Configuration](https://www.superkabe.com/docs/configuration): Integration setup and threshold tuning
+- [Deployment](https://www.superkabe.com/docs/deployment): Production deployment checklist
+- [Infrastructure Assessment](https://www.superkabe.com/docs/infrastructure-assessment): Pre-flight health checks for sending infrastructure
+- [Warmup Recovery](https://www.superkabe.com/docs/warmup-recovery): Automated mailbox healing via Smartlead warmup
+
+### Help Center
+- [Connection Errors](https://www.superkabe.com/docs/help/connection-errors): Troubleshoot disconnected mailboxes
+- [Campaign Paused](https://www.superkabe.com/docs/help/campaign-paused): Why campaigns are paused and how to resume
+- [Auto-Healing](https://www.superkabe.com/docs/help/auto-healing): The 5-phase automatic recovery pipeline
+- [Infrastructure Score](https://www.superkabe.com/docs/help/infrastructure-score-explained): Why score and status can differ
+- [24/7 Monitoring](https://www.superkabe.com/docs/help/24-7-monitoring): Continuous background infrastructure monitoring
+
+### Blog — Technical Guides
+- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide covering sender reputation, bounce rates, DNS auth, domain warming, and infrastructure protection
+- [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rates damage sender reputation and strategies for prevention
+- [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): Step-by-step DNS authentication setup for outbound teams
+- [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): Volume ramp schedules, warming signals, and common mistakes
+- [Email Reputation Lifecycle](https://www.superkabe.com/blog/email-reputation-lifecycle): How reputation is built, maintained, damaged, and recovered
+- [Infrastructure Assessment](https://www.superkabe.com/blog/introducing-infrastructure-assessment): How to assess your setup before sending your first campaign
+
+### Key Pages
+- [Home](https://www.superkabe.com): Main landing page with product overview
+- [Pricing](https://www.superkabe.com/pricing): Plans and pricing details
+- [Product](https://www.superkabe.com/product): Feature pages and case studies
+- [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): The authoritative A-Z guide on outbound deliverability
+- [Technical Manifesto](https://www.superkabe.com/open-source): Technical architecture breakdown

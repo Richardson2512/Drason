@@ -8,8 +8,13 @@ import CloudBackground from '@/components/CloudBackground';
 export const metadata: Metadata = {
     title: 'Product Platform | Superkabe',
     description: 'Explore the complete Superkabe deliverability protection platform, covering infrastructure monitoring, DNS healing, and domain recovery.',
-    alternates: {
-        canonical: '/product',
+    alternates: { canonical: '/product' },
+    openGraph: {
+        title: 'Product Platform | Superkabe',
+        description: 'Explore the complete Superkabe deliverability protection platform.',
+        url: '/product',
+        siteName: 'Superkabe',
+        type: 'website',
     },
 };
 

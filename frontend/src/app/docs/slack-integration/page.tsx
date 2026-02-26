@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Slack Integration Guide | Superkabe Docs',
+    description: 'Deploy the Superkabe Slack bot for real-time infrastructure alerts and observability in your team channels.',
+    alternates: { canonical: '/docs/slack-integration' },
+    openGraph: {
+        title: 'Slack Integration Guide | Superkabe Docs',
+        description: 'Deploy the Superkabe Slack bot for real-time infrastructure alerts and observability in your team channels.',
+        url: '/docs/slack-integration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function SlackIntegrationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

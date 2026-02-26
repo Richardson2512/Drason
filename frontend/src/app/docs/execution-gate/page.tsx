@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Execution Gate | Superkabe Docs',
+    description: 'Intelligent gate logic that determines whether a lead can be processed, with failure classification and retry strategies.',
+    alternates: { canonical: '/docs/execution-gate' },
+    openGraph: {
+        title: 'Execution Gate | Superkabe Docs',
+        description: 'Intelligent gate logic that determines whether a lead can be processed, with failure classification and retry strategies.',
+        url: '/docs/execution-gate',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function ExecutionGatePage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

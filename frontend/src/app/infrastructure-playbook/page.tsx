@@ -8,8 +8,13 @@ import CloudBackground from '@/components/CloudBackground';
 export const metadata: Metadata = {
     title: 'The Outbound Email Infrastructure Playbook – Superkabe',
     description: 'The authoritative, highly detailed A-Z guide on setting up, protecting, and scaling outbound deliverability using Superkabe.',
-    alternates: {
-        canonical: '/infrastructure-playbook',
+    alternates: { canonical: '/infrastructure-playbook' },
+    openGraph: {
+        title: 'The Outbound Email Infrastructure Playbook – Superkabe',
+        description: 'The authoritative A-Z guide on setting up, protecting, and scaling outbound deliverability.',
+        url: '/infrastructure-playbook',
+        siteName: 'Superkabe',
+        type: 'article',
     },
 };
 

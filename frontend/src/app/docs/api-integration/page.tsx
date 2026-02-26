@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'API & Webhook Integration | Superkabe Docs',
+    description: 'Complete API reference for Clay webhooks, Smartlead monitoring, and direct lead ingestion into Superkabe.',
+    alternates: { canonical: '/docs/api-integration' },
+    openGraph: {
+        title: 'API & Webhook Integration | Superkabe Docs',
+        description: 'Complete API reference for Clay webhooks, Smartlead monitoring, and direct lead ingestion into Superkabe.',
+        url: '/docs/api-integration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function APIIntegrationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

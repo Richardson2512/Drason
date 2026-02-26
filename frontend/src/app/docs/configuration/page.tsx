@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Configuration | Superkabe Docs',
+    description: 'Set up integrations and tune thresholds for your organization. Configure Smartlead API keys, Clay webhooks, and monitoring rules.',
+    alternates: { canonical: '/docs/configuration' },
+    openGraph: {
+        title: 'Configuration | Superkabe Docs',
+        description: 'Set up integrations and tune thresholds for your organization. Configure Smartlead API keys, Clay webhooks, and monitoring rules.',
+        url: '/docs/configuration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function ConfigurationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Why Is My Campaign Paused? | Superkabe Help',
+    description: 'Understand why Superkabe automatically pauses campaigns and how to safely resume sending.',
+    alternates: { canonical: '/docs/help/campaign-paused' },
+    openGraph: {
+        title: 'Why Is My Campaign Paused? | Superkabe Help',
+        description: 'Understand why Superkabe automatically pauses campaigns and how to safely resume sending.',
+        url: '/docs/help/campaign-paused',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function CampaignPausedPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

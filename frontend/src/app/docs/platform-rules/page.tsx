@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Platform Rules | Superkabe Docs',
+    description: 'Understand the automated rules, thresholds, and enforcement mechanisms that protect your outbound email infrastructure.',
+    alternates: { canonical: '/docs/platform-rules' },
+    openGraph: {
+        title: 'Platform Rules | Superkabe Docs',
+        description: 'Understand the automated rules, thresholds, and enforcement mechanisms that protect your outbound email infrastructure.',
+        url: '/docs/platform-rules',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function PlatformRulesPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

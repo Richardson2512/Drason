@@ -4,9 +4,16 @@ import { ArrowRight, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, Plu
 
 export const metadata: Metadata = {
     title: 'Documentation | Superkabe',
-    description: 'Production-hardened monitoring and protection for modern outbound infrastructure.',
+    description: 'Production-hardened monitoring and protection for modern outbound infrastructure. Guides for Clay, Smartlead, EmailBison, and Instantly integrations.',
     alternates: {
         canonical: '/docs',
+    },
+    openGraph: {
+        title: 'Documentation | Superkabe',
+        description: 'Production-hardened monitoring and protection for modern outbound infrastructure.',
+        url: '/docs',
+        siteName: 'Superkabe',
+        type: 'website',
     },
 };
 

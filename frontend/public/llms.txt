@@ -1,0 +1,60 @@
+# Superkabe
+
+> Infrastructure protection layer for outbound email teams. Monitors bounce rates, DNS authentication, mailbox fatigue, and lead health in real time to prevent domain burnout and protect sender reputation.
+
+## Documentation
+
+- [Getting Started](https://www.superkabe.com/docs/getting-started): Set up Superkabe to protect your outbound infrastructure
+- [Clay Integration](https://www.superkabe.com/docs/clay-integration): Connect Clay tables for automated lead routing
+- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): Real-time bounce monitoring and mailbox protection
+- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Warm-up metrics and reputation scoring
+- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Sync campaigns and monitor deliverability
+- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Real-time infrastructure alerts in your channels
+- [API Integration](https://www.superkabe.com/docs/api-integration): Clay webhooks, Smartlead monitoring, and direct lead ingestion API
+- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Parallel data sync across Smartlead, EmailBison, and Clay
+
+## Core Concepts
+
+- [Platform Rules](https://www.superkabe.com/docs/platform-rules): Automated rules, thresholds, and enforcement mechanisms
+- [Monitoring System](https://www.superkabe.com/docs/monitoring): Tiered thresholds, sliding windows, and domain protection
+- [Execution Gate](https://www.superkabe.com/docs/execution-gate): Lead processing gate with failure classification
+- [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Hard and soft signal separation for risk assessment
+- [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System architecture and infrastructure design
+- [State Machine](https://www.superkabe.com/docs/state-machine): Mailbox and domain state transitions
+
+## Configuration
+
+- [Configuration](https://www.superkabe.com/docs/configuration): Integration setup and threshold tuning
+- [Deployment](https://www.superkabe.com/docs/deployment): Production deployment checklist
+- [Infrastructure Assessment](https://www.superkabe.com/docs/infrastructure-assessment): Automated health checks for sending infrastructure
+- [Warmup Recovery](https://www.superkabe.com/docs/warmup-recovery): Automated mailbox healing via warmup
+
+## Help Center
+
+- [Connection Errors](https://www.superkabe.com/docs/help/connection-errors): Troubleshoot disconnected mailboxes
+- [Campaign Paused](https://www.superkabe.com/docs/help/campaign-paused): Why campaigns are paused and how to resume
+- [Auto-Healing](https://www.superkabe.com/docs/help/auto-healing): 5-phase automatic recovery pipeline
+- [Infrastructure Score](https://www.superkabe.com/docs/help/infrastructure-score-explained): Score vs status explained
+- [24/7 Monitoring](https://www.superkabe.com/docs/help/24-7-monitoring): Continuous infrastructure monitoring
+
+## Blog
+
+- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide to protecting outbound email deliverability
+- [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rates damage sender reputation and how to prevent it
+- [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): Step-by-step DNS authentication setup for outbound teams
+- [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): How to safely warm up new outbound email domains
+- [Email Reputation Lifecycle](https://www.superkabe.com/blog/email-reputation-lifecycle): How sender reputation is built, damaged, and repaired
+- [Infrastructure Assessment Guide](https://www.superkabe.com/blog/introducing-infrastructure-assessment): Assess your email infrastructure before your first campaign
+
+## Key Pages
+
+- [Home](https://www.superkabe.com): Main landing page
+- [Pricing](https://www.superkabe.com/pricing): Plans and pricing
+- [Product](https://www.superkabe.com/product): Product overview and feature pages
+- [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z guide on outbound deliverability
+- [Technical Manifesto](https://www.superkabe.com/open-source): Technical breakdown of Superkabe architecture
+- [Blog](https://www.superkabe.com/blog): Technical guides on email deliverability
+
+## Optional
+
+- [llms-full.txt](https://www.superkabe.com/llms-full.txt): Extended version with detailed content descriptions

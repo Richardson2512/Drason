@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Deployment Checklist | Superkabe Docs',
+    description: 'Production deployment steps for Superkabe billing integration and infrastructure setup.',
+    alternates: { canonical: '/docs/deployment' },
+    openGraph: {
+        title: 'Deployment Checklist | Superkabe Docs',
+        description: 'Production deployment steps for Superkabe billing integration and infrastructure setup.',
+        url: '/docs/deployment',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function DeploymentPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

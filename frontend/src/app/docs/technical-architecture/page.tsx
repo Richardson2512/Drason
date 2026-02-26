@@ -6,10 +6,17 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'Superkabe Technical Architecture | Superkabe',
-    description: 'Comprehensive guide to superkabe technical architecture and how Superkabe protects your outbound email infrastructure.',
+    title: 'Technical Architecture | Superkabe Docs',
+    description: 'Comprehensive guide to Superkabe technical architecture and how it protects your outbound email infrastructure.',
     alternates: {
-        canonical: '/technical-architecture',
+        canonical: '/docs/technical-architecture',
+    },
+    openGraph: {
+        title: 'Technical Architecture | Superkabe Docs',
+        description: 'Comprehensive guide to Superkabe technical architecture and how it protects your outbound email infrastructure.',
+        url: '/docs/technical-architecture',
+        siteName: 'Superkabe',
+        type: 'article',
     },
 };
 

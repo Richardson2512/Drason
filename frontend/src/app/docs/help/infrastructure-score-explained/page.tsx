@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Infrastructure Score Explained | Superkabe Help',
+    description: 'Why your infrastructure score and entity status might differ. Understanding Superkabe scoring in plain English.',
+    alternates: { canonical: '/docs/help/infrastructure-score-explained' },
+    openGraph: {
+        title: 'Infrastructure Score Explained | Superkabe Help',
+        description: 'Why your infrastructure score and entity status might differ. Understanding Superkabe scoring in plain English.',
+        url: '/docs/help/infrastructure-score-explained',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function InfrastructureScoreExplainedPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

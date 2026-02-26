@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Risk Scoring | Superkabe Docs',
+    description: 'How Superkabe separates hard and soft signals to score leads and infrastructure risk before sending emails.',
+    alternates: { canonical: '/docs/risk-scoring' },
+    openGraph: {
+        title: 'Risk Scoring | Superkabe Docs',
+        description: 'How Superkabe separates hard and soft signals to score leads and infrastructure risk before sending emails.',
+        url: '/docs/risk-scoring',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function RiskScoringPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

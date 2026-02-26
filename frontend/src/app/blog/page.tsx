@@ -9,8 +9,13 @@ import CloudBackground from '@/components/CloudBackground';
 export const metadata: Metadata = {
     title: 'Blog – Superkabe',
     description: 'Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.',
-    alternates: {
-        canonical: '/blog',
+    alternates: { canonical: '/blog' },
+    openGraph: {
+        title: 'Blog – Superkabe',
+        description: 'Deep technical guides on email deliverability, sender reputation, and infrastructure protection.',
+        url: '/blog',
+        siteName: 'Superkabe',
+        type: 'website',
     },
 };
 

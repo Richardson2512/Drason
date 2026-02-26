@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Warmup-Based Recovery | Superkabe Docs',
+    description: 'Automated mailbox healing using Smartlead warmup for guaranteed engagement recovery and zero maintenance.',
+    alternates: { canonical: '/docs/warmup-recovery' },
+    openGraph: {
+        title: 'Warmup-Based Recovery | Superkabe Docs',
+        description: 'Automated mailbox healing using Smartlead warmup for guaranteed engagement recovery and zero maintenance.',
+        url: '/docs/warmup-recovery',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function WarmupRecoveryPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">

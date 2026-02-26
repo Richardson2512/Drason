@@ -2,9 +2,14 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Privacy Policy | Superkabe',
-    description: 'Our privacy policy and data protection guidelines.',
-    alternates: {
-        canonical: '/privacy',
+    description: 'Superkabe privacy policy and data protection guidelines. How we handle and protect your data.',
+    alternates: { canonical: '/privacy' },
+    openGraph: {
+        title: 'Privacy Policy | Superkabe',
+        description: 'Superkabe privacy policy and data protection guidelines.',
+        url: '/privacy',
+        siteName: 'Superkabe',
+        type: 'website',
     },
 };
 

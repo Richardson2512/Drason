@@ -1,3 +1,18 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Clay Integration Guide | Superkabe Docs',
+    description: 'Connect Clay tables with Superkabe for automated lead routing, health scoring, and campaign protection.',
+    alternates: { canonical: '/docs/clay-integration' },
+    openGraph: {
+        title: 'Clay Integration Guide | Superkabe Docs',
+        description: 'Connect Clay tables with Superkabe for automated lead routing, health scoring, and campaign protection.',
+        url: '/docs/clay-integration',
+        siteName: 'Superkabe',
+        type: 'article',
+    },
+};
+
 export default function ClayIntegrationPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">
