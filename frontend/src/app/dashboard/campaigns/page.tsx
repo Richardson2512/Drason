@@ -553,49 +553,61 @@ export default function CampaignsPage() {
 
                         {/* Mailboxes Section */}
                         <div className="premium-card">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>Connected Mailboxes & Domains</h2>
                                 <div style={{ background: '#F3F4F6', color: '#4B5563', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '600' }}>
                                     {selectedCampaign.mailboxes?.length || 0} Connected
                                 </div>
                             </div>
-                            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Mailbox Email</th>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Domain</th>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Status</th>
-                                        <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Win Sent</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {selectedCampaign.mailboxes && selectedCampaign.mailboxes.map((mb: any) => (
-                                        <tr key={mb.id} className="hover:bg-gray-50 transition-colors">
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#1E293B', fontWeight: 500 }}>{mb.email}</td>
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#475569' }}>
-                                                {mb.domain?.domain}
-                                                {mb.domain?.status === 'paused' && <span style={{ color: '#EF4444', marginLeft: '0.5rem', fontWeight: 600, fontSize: '0.75rem', background: '#FEF2F2', padding: '2px 6px', borderRadius: '4px' }}>PAUSED</span>}
-                                            </td>
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
+
+                            {(!selectedCampaign.mailboxes || selectedCampaign.mailboxes.length === 0) ? (
+                                <div style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF', fontStyle: 'italic', fontSize: '0.875rem' }}>
+                                    No mailboxes linked.
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    {/* Column headers */}
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', padding: '0.5rem 0.75rem', borderBottom: '2px solid #E2E8F0' }}>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Mailbox</span>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '90px' }}>Domain</span>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '72px' }}>Status</span>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '48px', textAlign: 'right' }}>Sent</span>
+                                    </div>
+                                    {selectedCampaign.mailboxes.map((mb: any) => (
+                                        <div key={mb.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', padding: '0.625rem 0.75rem', borderRadius: '8px', background: '#FAFAFA', border: '1px solid #F1F5F9', alignItems: 'center' }}>
+                                            {/* Email — truncated */}
+                                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.8rem', fontWeight: 500, color: '#1E293B' }} title={mb.email}>
+                                                {mb.email}
+                                            </div>
+                                            {/* Domain */}
+                                            <div style={{ minWidth: '90px', fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0 }}>
+                                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80px' }} title={mb.domain?.domain}>{mb.domain?.domain}</span>
+                                                {mb.domain?.status === 'paused' && (
+                                                    <span style={{ color: '#EF4444', fontWeight: 700, fontSize: '0.6rem', background: '#FEF2F2', padding: '1px 5px', borderRadius: '4px', flexShrink: 0 }}>PAUSED</span>
+                                                )}
+                                            </div>
+                                            {/* Status badge */}
+                                            <div style={{ minWidth: '72px', flexShrink: 0 }}>
                                                 <span style={{
+                                                    display: 'inline-block',
                                                     color: (mb.status === 'active' || mb.status === 'healthy') ? '#166534' : (mb.status === 'warning' ? '#B45309' : '#991B1B'),
                                                     background: (mb.status === 'active' || mb.status === 'healthy') ? '#DCFCE7' : (mb.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
-                                                    padding: '0.25rem 0.75rem',
+                                                    padding: '0.2rem 0.6rem',
                                                     borderRadius: '999px',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: 600
+                                                    fontSize: '0.65rem',
+                                                    fontWeight: 700,
                                                 }}>
-                                                    {mb.status.toUpperCase()}
+                                                    {mb.status?.toUpperCase()}
                                                 </span>
-                                            </td>
-                                            <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#475569', fontFamily: 'monospace' }}>{mb.window_sent_count}</td>
-                                        </tr>
+                                            </div>
+                                            {/* Sent count */}
+                                            <div style={{ minWidth: '48px', textAlign: 'right', fontSize: '0.8rem', color: '#475569', fontFamily: 'monospace', flexShrink: 0 }}>
+                                                {mb.window_sent_count ?? 0}
+                                            </div>
+                                        </div>
                                     ))}
-                                    {(!selectedCampaign.mailboxes || selectedCampaign.mailboxes.length === 0) && (
-                                        <tr><td colSpan={4} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No mailboxes linked.</td></tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                </div>
+                            )}
                         </div>
 
                     </div>
