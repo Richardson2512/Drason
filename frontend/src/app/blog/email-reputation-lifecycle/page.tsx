@@ -5,6 +5,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How sender reputation is built, damaged, and repaired over time',
     description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+    openGraph: {
+        title: 'How sender reputation is built, damaged, and repaired over time',
+        description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+        type: 'article',
+        publishedTime: '2024-04-01',
+    },
     alternates: {
         canonical: '/blog/email-reputation-lifecycle',
     },

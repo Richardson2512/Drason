@@ -15,7 +15,30 @@ export const metadata: Metadata = {
 };
 
 export default function InfrastructureAssessmentPost() {
+    const blogPostingSchema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How to assess your outbound email infrastructure before sending your first campaign",
+        "description": "Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.",
+        "datePublished": "2024-03-20",
+        "author": {
+            "@type": "Organization",
+            "name": "Superkabe"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.superkabe.com/blog/introducing-infrastructure-assessment"
+        }
+    };
+
     return (
+        <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
         <article className="prose prose-lg text-gray-700 max-w-none">
             {/* Key Takeaways */}
             <div className="not-prose bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6 mb-12 shadow-sm">
@@ -130,5 +153,6 @@ export default function InfrastructureAssessmentPost() {
                 </p>
             </div>
         </article>
+        </>
     );
 }

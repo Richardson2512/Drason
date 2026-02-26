@@ -5,6 +5,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
     description: 'Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.',
+    openGraph: {
+        title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
+        description: 'How SPF, DKIM, and DMARC protect sender identity and why misconfiguration causes inbox placement failure for outbound email teams.',
+        type: 'article',
+        publishedTime: '2024-02-15',
+    },
     alternates: {
         canonical: '/blog/spf-dkim-dmarc-explained',
     },

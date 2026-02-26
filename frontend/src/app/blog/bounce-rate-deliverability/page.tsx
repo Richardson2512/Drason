@@ -5,6 +5,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How bounce rates damage sender reputation (and how to prevent it)',
     description: 'Technical guide on email bounce rates, their impact on sender reputation and domain health, and strategies for preventing deliverability degradation.',
+    openGraph: {
+        title: 'How bounce rates damage sender reputation (and how to prevent it)',
+        description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
+        type: 'article',
+        publishedTime: '2024-02-01',
+    },
     alternates: {
         canonical: '/blog/bounce-rate-deliverability',
     },

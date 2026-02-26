@@ -5,6 +5,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How to safely warm up new outbound email domains',
     description: 'Systematic approach to building sender reputation on new domains. Volume ramp schedules, warming signals, and common mistakes that burn domains.',
+    openGraph: {
+        title: 'How to safely warm up new outbound email domains',
+        description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
+        type: 'article',
+        publishedTime: '2024-03-01',
+    },
     alternates: {
         canonical: '/blog/domain-warming-methodology',
     },
