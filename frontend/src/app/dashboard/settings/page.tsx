@@ -418,44 +418,44 @@ export default function Settings() {
                 <div className="premium-card" style={{ marginBottom: '1rem' }}>
                     <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1E293B' }}>Organization Details</h2>
                     {org ? (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="col-span-1 md:col-span-3">
-                                <div style={{
-                                    padding: '1rem 1.5rem',
-                                    background: '#EFF6FF',
-                                    borderRadius: '12px',
-                                    border: '1px solid #DBEAFE',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '1rem',
-                                    marginBottom: '1.5rem'
-                                }}>
-                                    <span style={{ fontSize: '1.5rem' }}>💡</span>
-                                    <div style={{ flex: 1 }}>
-                                        <p style={{ color: '#1E40AF', fontSize: '0.9rem', margin: 0 }}>
-                                            <strong>Webhook Header Required:</strong> Include <code style={{ fontFamily: 'monospace', fontWeight: 700 }}>x-organization-id</code> in your Clay, Smartlead, and EmailBison webhook configurations.
-                                        </p>
-                                    </div>
+                        <div>
+                            <div style={{
+                                padding: '1rem 1.5rem',
+                                background: '#EFF6FF',
+                                borderRadius: '12px',
+                                border: '1px solid #DBEAFE',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '1rem',
+                                marginBottom: '1.5rem'
+                            }}>
+                                <span style={{ fontSize: '1.5rem' }}>💡</span>
+                                <div style={{ flex: 1 }}>
+                                    <p style={{ color: '#1E40AF', fontSize: '0.9rem', margin: 0 }}>
+                                        <strong>Webhook Header Required:</strong> Include <code style={{ fontFamily: 'monospace', fontWeight: 700 }}>x-organization-id</code> in your Clay, Smartlead, and EmailBison webhook configurations.
+                                    </p>
                                 </div>
                             </div>
 
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                                    Organization ID
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 500, color: '#94A3B8', textTransform: 'none', marginLeft: '0.5rem' }}>(UUID format)</span>
-                                </label>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <code style={{ flex: 1, padding: '0.75rem', background: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#334155', fontFamily: 'monospace', fontSize: '0.875rem' }}>{org.id}</code>
-                                    <CopyButton text={org.id} label="Copy" />
+                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                                <div style={{ width: '140px', flexShrink: 0 }}>
+                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Name</label>
+                                    <div style={{ padding: '0.75rem', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#1E293B', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{org.name}</div>
                                 </div>
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Name</label>
-                                <div style={{ padding: '0.75rem', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#1E293B', fontWeight: 600 }}>{org.name}</div>
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Slug</label>
-                                <div style={{ padding: '0.75rem', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#1E293B' }}>{org.slug}</div>
+                                <div style={{ width: '120px', flexShrink: 0 }}>
+                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Slug</label>
+                                    <div style={{ padding: '0.75rem', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#1E293B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{org.slug}</div>
+                                </div>
+                                <div style={{ flex: 1, minWidth: '260px' }}>
+                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                                        Organization ID
+                                        <span style={{ fontSize: '0.65rem', fontWeight: 500, color: '#94A3B8', textTransform: 'none', marginLeft: '0.5rem' }}>(UUID format)</span>
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <code style={{ flex: 1, padding: '0.75rem', background: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#334155', fontFamily: 'monospace', fontSize: '0.875rem' }}>{org.id}</code>
+                                        <CopyButton text={org.id} label="Copy" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ) : (
