@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, Tooltip as BarTooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from 'recharts';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 
 export default function Overview() {
@@ -18,6 +18,7 @@ export default function Overview() {
 
   const [error, setError] = useState<string | null>(null);
   const [resuming, setResuming] = useState<string | null>(null);
+  const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
 
   const handleResumeDomain = async (domainId: string) => {
     setResuming(domainId);
@@ -151,8 +152,6 @@ export default function Overview() {
     { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
   ];
 
-  // Campaign status filter for stat box
-  const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
   const filteredCampaignCount = campaignStatusFilter === 'all'
     ? campaigns.length
     : campaigns.filter(c => c.status === campaignStatusFilter).length;
@@ -544,7 +543,7 @@ export default function Overview() {
               <BarChart data={campaignData}>
                 <XAxis dataKey="name" stroke="#9CA3AF" fontSize={10} tickLine={false} axisLine={false} tick={{ dy: 10 }} tickFormatter={(v: string) => v.length > 15 ? v.substring(0, 15) + '...' : v} />
                 <YAxis stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={false} />
-                <BarTooltip
+                <Tooltip
                   cursor={{ fill: '#F3F4F6' }}
                   contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '0.75rem 1rem' }}
                   formatter={(value: any) => [`${value} leads`, 'Leads']}
