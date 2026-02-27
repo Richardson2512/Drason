@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from 'recharts';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
+import LeadHealthChart from '@/components/dashboard/LeadHealthChart';
+import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
 
 export default function Overview() {
   const [stats, setStats] = useState<any>(null);
@@ -571,6 +573,12 @@ export default function Overview() {
           </div>
         </div>
       </div>
+
+      {/* Lead Health Classification */}
+      <LeadHealthChart />
+
+      {/* Top Performing Leads */}
+      <TopLeadsCard campaigns={campaigns} />
     </div>
   );
 }

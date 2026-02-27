@@ -5,6 +5,7 @@ import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
 import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampaignResolutionModal';
+import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
 import { apiClient } from '@/lib/api';
 
 export default function CampaignsPage() {
@@ -551,6 +552,9 @@ export default function CampaignsPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Top Performing Leads */}
+                        <CampaignTopLeads campaignId={selectedCampaign.id} />
 
                         {/* Mailboxes Section */}
                         <div className="premium-card">

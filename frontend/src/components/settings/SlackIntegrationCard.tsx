@@ -62,13 +62,9 @@ export default function SlackIntegrationCard() {
             setMsg('');
             const selectedChannel = slackChannels.find(c => c.id === channelId);
 
-            await apiClient<any>('/api/user/settings', {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    slack_alerts_channel: channelId,
-                    slack_alerts_channel_name: selectedChannel?.name || null,
-                    slack_alerts_status: 'active'
-                }),
+            await apiClient<any>('/api/slack/channel', {
+                method: 'POST',
+                body: JSON.stringify({ channel_id: channelId }),
             });
 
             setSlackAlertsChannel(channelId);

@@ -22,19 +22,6 @@ export default function Settings() {
     const [smartleadWebhookUrl, setSmartleadWebhookUrl] = useState('');
     const [emailBisonWebhookUrl, setEmailBisonWebhookUrl] = useState('');
     const [instantlyWebhookUrl, setInstantlyWebhookUrl] = useState('');
-    const [slackConnected, setSlackConnected] = useState(false);
-
-    // Slack Alerts State
-    const [slackChannels, setSlackChannels] = useState<{ id: string, name: string }[]>([]);
-    const [slackAlertsChannel, setSlackAlertsChannel] = useState('');
-    const [slackAlertsStatus, setSlackAlertsStatus] = useState('active');
-    const [slackAlertsLastError, setSlackAlertsLastError] = useState('');
-    const [slackAlertsLastErrorAt, setSlackAlertsLastErrorAt] = useState('');
-    const [loadingChannels, setLoadingChannels] = useState(false);
-    const [savingChannel, setSavingChannel] = useState(false);
-    const [disconnectingSlack, setDisconnectingSlack] = useState(false);
-    const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
-
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
 
@@ -67,24 +54,6 @@ export default function Settings() {
 
                     const ebKeySetting = settingsData.find((s: any) => s.key === 'EMAILBISON_API_KEY');
                     if (ebKeySetting) setEbApiKey(ebKeySetting.value);
-
-                    const slackSetting = settingsData.find((s: any) => s.key === 'SLACK_CONNECTED');
-                    const isSlackConnected = slackSetting?.value === 'true';
-                    setSlackConnected(isSlackConnected);
-
-                    if (isSlackConnected) {
-                        const channelDef = settingsData.find((s: any) => s.key === 'SLACK_ALERTS_CHANNEL');
-                        if (channelDef) setSlackAlertsChannel(channelDef.value);
-
-                        const statusDef = settingsData.find((s: any) => s.key === 'SLACK_ALERTS_STATUS');
-                        if (statusDef) setSlackAlertsStatus(statusDef.value);
-
-                        const lastErrDef = settingsData.find((s: any) => s.key === 'SLACK_ALERTS_LAST_ERROR');
-                        if (lastErrDef) setSlackAlertsLastError(lastErrDef.value);
-
-                        const lastErrAtDef = settingsData.find((s: any) => s.key === 'SLACK_ALERTS_LAST_ERROR_AT');
-                        if (lastErrAtDef) setSlackAlertsLastErrorAt(lastErrAtDef.value);
-                    }
                 }
             })
             .catch(() => { }); // Silent fail for settings
@@ -137,69 +106,6 @@ export default function Settings() {
         setEmailBisonWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/emailbison-webhook`);
         setInstantlyWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/instantly-webhook`);
     }, []);
-
-    useEffect(() => {
-        if (slackConnected) {
-            setLoadingChannels(true);
-            apiClient<any>('/api/slack/channels')
-                .then(res => {
-                    if (res?.data) {
-                        setSlackChannels(res.data);
-                    }
-                })
-                .catch(err => console.error('Failed to fetch slack channels', err))
-                .finally(() => setLoadingChannels(false));
-        }
-    }, [slackConnected]);
-
-    const handleSaveSlackChannel = async (channelId: string) => {
-        try {
-            setSavingChannel(true);
-            setMsg('');
-
-            const selectedChannel = slackChannels.find(c => c.id === channelId);
-
-            const result = await apiClient<any>('/api/user/settings', {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    slack_alerts_channel: channelId,
-                    slack_alerts_channel_name: selectedChannel?.name || null,
-                    slack_alerts_status: 'active' // Re-activate if it was failing
-                }),
-            });
-
-            setSlackAlertsChannel(channelId);
-            setSlackAlertsStatus('active');
-            setMsg('Slack alerts channel updated successfully. Test message sent!');
-        } catch (e: any) {
-            setMsg('Failed to update Slack channel: ' + e.message);
-        } finally {
-            setSavingChannel(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
-
-    const handleDisconnectSlack = async () => {
-        try {
-            setShowDisconnectConfirm(false);
-            setDisconnectingSlack(true);
-            setMsg('');
-
-            await apiClient<any>('/api/user/settings/slack/disconnect', {
-                method: 'POST'
-            });
-
-            setSlackConnected(false);
-            setSlackAlertsChannel('');
-            setSlackAlertsStatus('revoked');
-            setMsg('Slack integration disconnected successfully.');
-        } catch (e: any) {
-            setMsg('Failed to disconnect Slack: ' + e.message);
-        } finally {
-            setDisconnectingSlack(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -1126,34 +1032,6 @@ export default function Settings() {
                     router.push('/dashboard/infrastructure');
                 }}
             />
-
-            {/* Slack Disconnect Confirm Modal */}
-            {showDisconnectConfirm && (
-                <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: '12px', maxWidth: '400px', width: '90%', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>Disconnect Slack?</h3>
-                        <p style={{ fontSize: '0.875rem', color: '#4B5563', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-                            Are you sure you want to disconnect Slack? This will remove all proactive alerts, slash commands, and completely uninstall the Superkabe bot from your workspace.
-                        </p>
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button
-                                onClick={() => setShowDisconnectConfirm(false)}
-                                disabled={disconnectingSlack}
-                                style={{ padding: '0.5rem 1rem', background: '#FFFFFF', color: '#374151', border: '1px solid #D1D5DB', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDisconnectSlack}
-                                disabled={disconnectingSlack}
-                                style={{ padding: '0.5rem 1rem', background: '#DC2626', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontWeight: 600, cursor: disconnectingSlack ? 'not-allowed' : 'pointer', opacity: disconnectingSlack ? 0.7 : 1 }}
-                            >
-                                Disconnect
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Health Enforcement Modal */}
             {healthCheckData && (

@@ -7,6 +7,7 @@ import { ScoreBar } from '@/components/ui/ScoreBar';
 import { StatBadge } from '@/components/ui/StatBadge';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
+import BatchRecommendationsModal from '@/components/dashboard/BatchRecommendationsModal';
 
 function LeadsPageContent() {
     const searchParams = useSearchParams();
@@ -33,6 +34,9 @@ function LeadsPageContent() {
     // Pagination & Selection State
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
     const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
+
+    // Recommendations modal state
+    const [showRecommendationsModal, setShowRecommendationsModal] = useState(false);
 
     // Score breakdown state
     const [scoreBreakdown, setScoreBreakdown] = useState<any>(null);
@@ -1213,6 +1217,67 @@ function LeadsPageContent() {
                     </div>
                 </div>
             )}
+
+            {/* Floating Action Bar for Multi-Select */}
+            {selectedLeadIds.size >= 2 && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 50,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    padding: '0.75rem 1.5rem',
+                    background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+                    borderRadius: '16px',
+                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.15), 0 8px 10px -6px rgba(0,0,0,0.1)',
+                }}>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#FFFFFF' }}>
+                        {selectedLeadIds.size} leads selected
+                    </span>
+                    <button
+                        onClick={() => setShowRecommendationsModal(true)}
+                        style={{
+                            padding: '0.5rem 1rem',
+                            borderRadius: '10px',
+                            border: '1px solid rgba(255,255,255,0.3)',
+                            background: 'rgba(255,255,255,0.15)',
+                            color: '#FFFFFF',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        Get Campaign Recommendations
+                    </button>
+                    <button
+                        onClick={() => setSelectedLeadIds(new Set())}
+                        style={{
+                            padding: '0.5rem 0.75rem',
+                            borderRadius: '10px',
+                            border: 'none',
+                            background: 'rgba(255,255,255,0.1)',
+                            color: 'rgba(255,255,255,0.8)',
+                            fontSize: '0.8rem',
+                            fontWeight: 500,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        Clear
+                    </button>
+                </div>
+            )}
+
+            <BatchRecommendationsModal
+                isOpen={showRecommendationsModal}
+                onClose={() => setShowRecommendationsModal(false)}
+                leadIds={Array.from(selectedLeadIds)}
+                leads={leads.filter(l => selectedLeadIds.has(l.id)).map(l => ({ id: l.id, email: l.email }))}
+            />
         </div>
     );
 }
