@@ -105,6 +105,30 @@ export default function EmailDeliverabilityGuide() {
                     "@type": "Answer",
                     "text": "Email delivery measures whether the email was accepted by the receiving server. Email deliverability measures whether it reached the inbox specifically, not spam or promotions. An email can be successfully delivered but still land in spam. Deliverability is the metric that determines campaign effectiveness."
                 }
+            },
+            {
+                "@type": "Question",
+                "name": "What factors affect email deliverability?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Four primary factors affect email deliverability: sender reputation (~40% weight), DNS authentication like SPF/DKIM/DMARC (~20%), content quality including subject lines and formatting (~25%), and sending infrastructure health including volume patterns and warmup status (~15%). These factors interact — strong authentication cannot compensate for a damaged reputation, and good content won't help if DNS records are misconfigured."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How can I improve my email deliverability rates for marketing campaigns?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Improve deliverability by: (1) configuring SPF, DKIM, and DMARC on every sending domain, (2) verifying lead lists to keep bounce rates below 2%, (3) warming new domains over 6-8 weeks, (4) monitoring bounce rates in real time with automated protection, (5) maintaining consistent sending volume without spikes, (6) using plain-text formatting with personalized content, and (7) distributing sends across 3-10 domains for risk isolation."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How to improve email inbox placement rates?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Inbox placement depends on engagement signals on top of standard deliverability factors. Write emails that generate replies (the strongest positive signal). Target relevant audiences to maximize opens. Send during business hours for higher engagement. Protect infrastructure health with real-time monitoring to maintain the domain reputation that inbox placement depends on."
+                }
             }
         ]
     };
@@ -125,7 +149,7 @@ export default function EmailDeliverabilityGuide() {
                 <p className="text-xl text-gray-500 mb-4 leading-relaxed max-w-3xl">
                     Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.
                 </p>
-                <p className="text-gray-400 text-sm mb-8">20 min read · Updated February 2026</p>
+                <p className="text-gray-400 text-sm mb-8">25 min read · Updated February 2026</p>
 
                 <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
                     This guide answers a common question from outbound teams: &quot;What are the exact technical requirements and strategies to maintain 95%+ email deliverability at scale?&quot;
@@ -148,14 +172,17 @@ export default function EmailDeliverabilityGuide() {
                     <h2 className="font-bold text-gray-900 mb-4 text-lg">Table of Contents</h2>
                     <nav className="space-y-2 text-sm">
                         <a href="#what-is-deliverability" className="block text-blue-600 hover:text-blue-800 transition-colors">1. What Is Email Deliverability?</a>
-                        <a href="#sender-reputation" className="block text-blue-600 hover:text-blue-800 transition-colors">2. Sender Reputation: The Core Metric</a>
-                        <a href="#dns-authentication" className="block text-blue-600 hover:text-blue-800 transition-colors">3. DNS Authentication: SPF, DKIM, and DMARC</a>
-                        <a href="#bounce-rates" className="block text-blue-600 hover:text-blue-800 transition-colors">4. Bounce Rates and Their Impact</a>
-                        <a href="#domain-warming" className="block text-blue-600 hover:text-blue-800 transition-colors">5. Domain Warming Strategy</a>
-                        <a href="#infrastructure" className="block text-blue-600 hover:text-blue-800 transition-colors">6. Multi-Domain Infrastructure Architecture</a>
-                        <a href="#monitoring" className="block text-blue-600 hover:text-blue-800 transition-colors">7. Real-Time Monitoring and Automated Protection</a>
-                        <a href="#recovery" className="block text-blue-600 hover:text-blue-800 transition-colors">8. Reputation Recovery When Things Go Wrong</a>
-                        <a href="#faq" className="block text-blue-600 hover:text-blue-800 transition-colors">9. Frequently Asked Questions</a>
+                        <a href="#sender-reputation" className="block text-blue-600 hover:text-blue-800 transition-colors">2. What Is Sender Reputation and Why Is It the Core Metric?</a>
+                        <a href="#dns-authentication" className="block text-blue-600 hover:text-blue-800 transition-colors">3. How Do SPF, DKIM, and DMARC Protect Your Email?</a>
+                        <a href="#bounce-rates" className="block text-blue-600 hover:text-blue-800 transition-colors">4. How Do Bounce Rates Impact Email Deliverability?</a>
+                        <a href="#domain-warming" className="block text-blue-600 hover:text-blue-800 transition-colors">5. What Is the Right Domain Warming Strategy?</a>
+                        <a href="#infrastructure" className="block text-blue-600 hover:text-blue-800 transition-colors">6. How Should You Design Multi-Domain Infrastructure Architecture?</a>
+                        <a href="#monitoring" className="block text-blue-600 hover:text-blue-800 transition-colors">7. Why Is Real-Time Monitoring and Automated Protection Essential?</a>
+                        <a href="#recovery" className="block text-blue-600 hover:text-blue-800 transition-colors">8. How Do You Recover Email Reputation When Things Go Wrong?</a>
+                        <a href="#factors" className="block text-blue-600 hover:text-blue-800 transition-colors">9. What Factors Affect Email Deliverability?</a>
+                        <a href="#improve-rates" className="block text-blue-600 hover:text-blue-800 transition-colors">10. How Can I Improve My Email Deliverability Rates?</a>
+                        <a href="#inbox-placement" className="block text-blue-600 hover:text-blue-800 transition-colors">11. How Can You Improve Email Inbox Placement Rates?</a>
+                        <a href="#faq" className="block text-blue-600 hover:text-blue-800 transition-colors">12. Frequently Asked Questions</a>
                     </nav>
                 </div>
 
@@ -177,7 +204,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 2 */}
                     <h2 id="sender-reputation" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 2. Sender Reputation: The Core Metric
+                        <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 2. What Is Sender Reputation and Why Is It the Core Metric?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Sender reputation is a dynamic score that ISPs assign to every domain that sends email through their systems. It determines whether emails from that domain reach the inbox, are routed to spam, or are rejected outright. There are two types of reputation: <strong>domain reputation</strong> (tied to your domain name) and <strong>IP reputation</strong> (tied to the server&apos;s IP address). Modern ISPs weight domain reputation significantly more than IP reputation.
@@ -237,7 +264,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 3 */}
                     <h2 id="dns-authentication" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <Lock className="w-6 h-6 text-blue-600 shrink-0" /> 3. DNS Authentication: SPF, DKIM, and DMARC
+                        <Lock className="w-6 h-6 text-blue-600 shrink-0" /> 3. How Do SPF, DKIM, and DMARC Protect Your Email?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         DNS authentication is the trust layer that proves an email was authorized by the domain owner and was not modified in transit. Three protocols work together: SPF declares which servers can send on behalf of the domain, DKIM cryptographically signs each email, and DMARC defines the policy for how receiving servers should handle authentication failures.
@@ -265,7 +292,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 4 */}
                     <h2 id="bounce-rates" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <AlertTriangle className="w-6 h-6 text-blue-600 shrink-0" /> 4. Bounce Rates and Their Impact
+                        <AlertTriangle className="w-6 h-6 text-blue-600 shrink-0" /> 4. How Do Bounce Rates Impact Email Deliverability?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Bounce rate is the percentage of emails that fail to deliver. It is the single most heavily weighted signal in ISP reputation models. There are two types: <strong>hard bounces</strong> (permanent failures — invalid addresses, non-existent domains) and <strong>soft bounces</strong> (temporary failures — full mailboxes, server downtime). Hard bounces are significantly more damaging.
@@ -312,7 +339,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 5 */}
                     <h2 id="domain-warming" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <Zap className="w-6 h-6 text-blue-600 shrink-0" /> 5. Domain Warming Strategy
+                        <Zap className="w-6 h-6 text-blue-600 shrink-0" /> 5. What Is the Right Domain Warming Strategy?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Every new domain starts with zero sending history. ISPs treat it as neutral — not trusted, not penalized. Domain warming is the systematic process of building positive reputation by gradually increasing sending volume while generating engagement signals (opens, replies).
@@ -336,7 +363,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 6 */}
                     <h2 id="infrastructure" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <Shield className="w-6 h-6 text-blue-600 shrink-0" /> 6. Multi-Domain Infrastructure Architecture
+                        <Shield className="w-6 h-6 text-blue-600 shrink-0" /> 6. How Should You Design Multi-Domain Infrastructure Architecture?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Professional outbound teams operate 3–10+ sending domains, each with 3–5 mailboxes. This architecture provides: risk isolation (one burned domain doesn&apos;t take down the entire operation), volume distribution (no single domain exceeds ISP thresholds), and brand separation (different domains for different verticals or campaigns).
@@ -358,7 +385,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 7 */}
                     <h2 id="monitoring" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 7. Real-Time Monitoring and Automated Protection
+                        <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 7. Why Is Real-Time Monitoring and Automated Protection Essential?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Reactive monitoring — checking dashboards after damage has occurred — is insufficient for outbound email operations. By the time a human notices a bounce rate spike, the domain may already be irreversibly damaged. Effective deliverability protection requires automated, real-time monitoring with tiered escalation.
@@ -386,7 +413,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* Section 8 */}
                     <h2 id="recovery" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
-                        <AlertTriangle className="w-6 h-6 text-blue-600 shrink-0" /> 8. Reputation Recovery When Things Go Wrong
+                        <AlertTriangle className="w-6 h-6 text-blue-600 shrink-0" /> 8. How Do You Recover Email Reputation When Things Go Wrong?
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Despite best practices, reputation damage can still occur. Recovery follows a structured process:
@@ -405,8 +432,148 @@ export default function EmailDeliverabilityGuide() {
                         For the complete lifecycle analysis, see: <Link href="/blog/email-reputation-lifecycle" className="text-blue-600 hover:underline font-medium">The Email Reputation Lifecycle</Link>.
                     </p>
 
-                    {/* Section 9: FAQ */}
-                    <h2 id="faq" className="text-2xl font-bold text-gray-900 mt-16 mb-6">9. Frequently Asked Questions</h2>
+                    {/* Section 9: Factors */}
+                    <h2 id="factors" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
+                        <Shield className="w-6 h-6 text-blue-600 shrink-0" /> 9. What Factors Affect Email Deliverability?
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        Email deliverability is determined by the interaction of four primary factors, each weighted differently by ISPs. Understanding what affects deliverability — and in what proportion — is essential for prioritizing your infrastructure investments.
+                    </p>
+                    <div className="space-y-4 mb-8">
+                        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                            <h3 className="font-bold text-gray-900 mb-2">Sender Reputation (~40% weight)</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                The cumulative score ISPs assign to your domain based on bounce rates, complaint rates, engagement metrics, and sending history. Reputation is asymmetric — it takes 6-8 weeks to build and can be destroyed in hours. This is the single most important factor and the hardest to recover once damaged.
+                            </p>
+                        </div>
+                        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                            <h3 className="font-bold text-gray-900 mb-2">DNS Authentication (~20% weight)</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                SPF, DKIM, and DMARC configuration. Since February 2024, Google and Yahoo require DMARC for bulk senders. Missing or misconfigured authentication results in immediate spam routing or rejection. Each sending domain must have its own independent authentication records.
+                            </p>
+                        </div>
+                        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                            <h3 className="font-bold text-gray-900 mb-2">Content Quality (~25% weight)</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Subject line patterns, body content, HTML structure, link density, and formatting. Spam filters use Bayesian classification and ML models to score content. For cold outbound, plain-text emails with personalized opening lines perform best. Content flags compound — multiple minor triggers can push an email into spam.
+                            </p>
+                        </div>
+                        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                            <h3 className="font-bold text-gray-900 mb-2">Sending Infrastructure (~15% weight)</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Volume consistency, warmup status, mailbox health, and sending patterns. Sudden volume spikes, sending from un-warmed domains, and using blacklisted IPs all trigger ISP anomaly detection. Infrastructure health is the foundation that all other factors depend on.
+                            </p>
+                        </div>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        For a deeper analysis of how spam filters evaluate these factors, see: <Link href="/blog/how-spam-filters-work" className="text-blue-600 hover:underline font-medium">How Spam Filters Work</Link>.
+                    </p>
+
+                    {/* Section 10: Improve Rates */}
+                    <h2 id="improve-rates" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
+                        <Zap className="w-6 h-6 text-blue-600 shrink-0" /> 10. How Can I Improve My Email Deliverability Rates?
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        Improving deliverability is a systematic process, not a single fix. The following actions are listed in order of impact — address the highest-impact items first before optimizing lower-priority areas.
+                    </p>
+                    <ol className="space-y-4 text-gray-600 mb-8">
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                            <span><strong>Fix DNS authentication first.</strong> Verify that every sending domain has valid SPF, DKIM, and DMARC records. Use <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:underline">our DNS authentication guide</Link> for step-by-step instructions. This is non-negotiable since 2024.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                            <span><strong>Verify lead lists before sending.</strong> Remove invalid, catch-all, disposable, and role-based addresses. Every hard bounce directly damages domain reputation. Aim for &lt;2% bounce rate per domain.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                            <span><strong>Warm domains properly.</strong> New domains need 6-8 weeks of gradual volume increase. Start at 5-10 emails per mailbox per day and increase weekly. See our <Link href="/blog/domain-warming-methodology" className="text-blue-600 hover:underline">domain warming guide</Link> for the full schedule.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                            <span><strong>Monitor bounce rates in real time.</strong> Reactive monitoring (checking dashboards daily) is too slow — a domain can be burned in hours. Use automated monitoring with tiered escalation (warning → pause → gate) to catch problems before they compound.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</span>
+                            <span><strong>Maintain consistent sending volume.</strong> Avoid spikes — doubling your daily volume triggers ISP anomaly detection. Increase gradually and predictably.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">6</span>
+                            <span><strong>Optimize email content.</strong> Use plain-text or minimal HTML. Personalize opening lines. Limit to 1-2 links. Avoid spam trigger phrases. Keep body copy under 150 words for cold outbound.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">7</span>
+                            <span><strong>Distribute sending across multiple domains.</strong> Operating 3-10 domains provides risk isolation — one damaged domain doesn&apos;t take down the operation. Each domain must be independently configured and monitored.</span>
+                        </li>
+                    </ol>
+
+                    {/* Section 11: Inbox Placement */}
+                    <h2 id="inbox-placement" className="text-2xl font-bold text-gray-900 mt-16 mb-4 flex items-center gap-3">
+                        <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 11. How Can You Improve Email Inbox Placement Rates?
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        Inbox placement rate is the percentage of sent emails that land in the recipient&apos;s primary inbox — not spam, not promotions, not quarantined. It is more specific than deliverability (which measures whether the server accepted the email at all). An email can be &quot;delivered&quot; but still land in spam — inbox placement is the metric that actually matters for campaign effectiveness.
+                    </p>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        Inbox placement is influenced by the same factors as deliverability, but with an additional emphasis on engagement signals. ISPs use recipient behavior to determine inbox placement:
+                    </p>
+                    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-8 shadow-sm">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="border-b border-gray-100 bg-gray-50">
+                                    <th className="py-4 px-6 font-bold text-gray-900 text-sm">Signal</th>
+                                    <th className="py-4 px-6 font-bold text-gray-900 text-sm">Positive Impact</th>
+                                    <th className="py-4 px-6 font-bold text-gray-900 text-sm">Negative Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border-b border-gray-100">
+                                    <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Opens</td>
+                                    <td className="py-4 px-6 text-green-600 text-sm">Recipient opens email = positive signal</td>
+                                    <td className="py-4 px-6 text-red-500 text-sm">Consistently ignored = negative signal</td>
+                                </tr>
+                                <tr className="border-b border-gray-100">
+                                    <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Replies</td>
+                                    <td className="py-4 px-6 text-green-600 text-sm">Strongest positive signal for inbox placement</td>
+                                    <td className="py-4 px-6 text-gray-400 text-sm">No negative from absence</td>
+                                </tr>
+                                <tr className="border-b border-gray-100">
+                                    <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Spam marking</td>
+                                    <td className="py-4 px-6 text-gray-400 text-sm">N/A</td>
+                                    <td className="py-4 px-6 text-red-500 text-sm">Strongest negative signal — affects entire domain</td>
+                                </tr>
+                                <tr>
+                                    <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Move from spam</td>
+                                    <td className="py-4 px-6 text-green-600 text-sm">Recipient moves email to inbox = strong positive</td>
+                                    <td className="py-4 px-6 text-gray-400 text-sm">N/A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        To improve inbox placement specifically:
+                    </p>
+                    <ul className="space-y-3 text-gray-600 mb-8">
+                        <li className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-0.5">&#9656;</span>
+                            <span><strong>Write emails that generate replies.</strong> Ask questions. Reference specific company details. Make it easy and natural for the recipient to respond. Replies are the strongest positive signal for inbox placement.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-0.5">&#9656;</span>
+                            <span><strong>Target the right audience.</strong> Emails sent to relevant recipients generate higher engagement. Irrelevant emails get ignored or marked as spam — both damage inbox placement for future sends.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-0.5">&#9656;</span>
+                            <span><strong>Send during business hours.</strong> Emails received during work hours are more likely to be opened and engaged with, generating positive signals. Emails sent at 3 AM are more likely to be bulk-deleted.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-0.5">&#9656;</span>
+                            <span><strong>Protect infrastructure health.</strong> Inbox placement depends on domain reputation, which depends on bounce rates, authentication, and sending patterns. Use monitoring tools to catch problems before they affect placement. See our <Link href="/blog/email-deliverability-tools-compared" className="text-blue-600 hover:underline">tools comparison guide</Link> for recommendations.</span>
+                        </li>
+                    </ul>
+
+                    {/* Section 12: FAQ */}
+                    <h2 id="faq" className="text-2xl font-bold text-gray-900 mt-16 mb-6">12. Frequently Asked Questions</h2>
 
                     <div className="space-y-6 mb-12">
                         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">

@@ -85,11 +85,14 @@ export default function Overview() {
       setMailboxes(mailboxesData?.data || []); // { data: [], meta: {} }
       setCampaigns(campaignsData?.data || []); // { data: [], meta: {} }
 
-      // Process Campaigns Distribution
+      // Process Campaigns Distribution — map IDs to readable names
       const cmap: Record<string, number> = {};
+      const campaignsList = campaignsData?.data || [];
+      const cNameMap = new Map(campaignsList.map((c: any) => [c.id, c.name || c.id]));
       (leadsData?.data || []).forEach((l: any) => {
         const cid = l.assigned_campaign_id || 'Unassigned';
-        cmap[cid] = (cmap[cid] || 0) + 1;
+        const displayName = cNameMap.get(cid) || cid;
+        cmap[displayName] = (cmap[displayName] || 0) + 1;
       });
       setCampaignData(Object.keys(cmap).map(k => ({ name: k, count: cmap[k] })));
     }).catch((e) => {
@@ -147,6 +150,12 @@ export default function Overview() {
     { name: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length, color: COLORS.warning },
     { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
   ];
+
+  // Campaign status filter for stat box
+  const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
+  const filteredCampaignCount = campaignStatusFilter === 'all'
+    ? campaigns.length
+    : campaigns.filter(c => c.status === campaignStatusFilter).length;
 
   const hasData = (stats.active + stats.held + stats.paused) > 0 || campaigns.length > 0 || mailboxes.length > 0;
 
@@ -215,6 +224,76 @@ export default function Overview() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Infrastructure Stat Boxes */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+            Mailboxes
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563EB', lineHeight: 1.2 }}>
+            {mailboxes.length}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+            {mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length} healthy
+          </div>
+        </div>
+        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+            Leads
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#7C3AED', lineHeight: 1.2 }}>
+            {stats.active + stats.held + stats.paused}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+            {stats.active} active
+          </div>
+        </div>
+        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center', position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Campaigns
+            </span>
+            <select
+              value={campaignStatusFilter}
+              onChange={(e) => setCampaignStatusFilter(e.target.value)}
+              style={{
+                fontSize: '0.65rem',
+                padding: '0.125rem 0.375rem',
+                borderRadius: '6px',
+                border: '1px solid #E5E7EB',
+                background: '#F9FAFB',
+                color: '#374151',
+                fontWeight: 600,
+                cursor: 'pointer',
+                outline: 'none',
+              }}
+            >
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#059669', lineHeight: 1.2 }}>
+            {filteredCampaignCount}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+            {campaignStatusFilter === 'all' ? `${campaigns.filter(c => c.status === 'active').length} active` : campaignStatusFilter}
+          </div>
+        </div>
+        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+            Domains
+          </div>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#F59E0B', lineHeight: 1.2 }}>
+            {domains.length}
+          </div>
+          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+            {domains.filter(d => d.status === 'healthy').length} healthy
+          </div>
+        </div>
       </div>
 
       {/* 24/7 Monitoring Status */}
@@ -463,11 +542,13 @@ export default function Overview() {
           <div style={{ height: '240px' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={campaignData}>
-                <XAxis dataKey="name" stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={false} tick={{ dy: 10 }} />
+                <XAxis dataKey="name" stroke="#9CA3AF" fontSize={10} tickLine={false} axisLine={false} tick={{ dy: 10 }} tickFormatter={(v: string) => v.length > 15 ? v.substring(0, 15) + '...' : v} />
                 <YAxis stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={false} />
                 <BarTooltip
                   cursor={{ fill: '#F3F4F6' }}
-                  contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                  contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '0.75rem 1rem' }}
+                  formatter={(value: any) => [`${value} leads`, 'Leads']}
+                  labelFormatter={(label: any) => String(label).length > 30 ? String(label).substring(0, 30) + '...' : String(label)}
                 />
                 <Bar dataKey="count" fill="url(#colorGradient)" radius={[6, 6, 0, 0]} barSize={40}>
                   {campaignData.map((entry, index) => (

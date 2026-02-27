@@ -302,8 +302,8 @@ export default function Configuration() {
                                                                 padding: '2px 6px',
                                                                 borderRadius: '4px',
                                                                 fontWeight: 600,
-                                                                background: campaign.status === 'active' ? '#ECFDF5' : '#FEF3C7',
-                                                                color: campaign.status === 'active' ? '#059669' : '#D97706',
+                                                                background: campaign.status === 'active' ? '#ECFDF5' : campaign.status === 'paused' ? '#FEF2F2' : campaign.status === 'completed' ? '#FFF7ED' : '#FEF3C7',
+                                                                color: campaign.status === 'active' ? '#059669' : campaign.status === 'paused' ? '#DC2626' : campaign.status === 'completed' ? '#C2410C' : '#D97706',
                                                                 flexShrink: 0,
                                                             }}>
                                                                 {campaign.status}

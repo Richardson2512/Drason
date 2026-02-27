@@ -22,9 +22,9 @@ export function getStatusColors(status: string): StatusStyle {
         blocked: { bg: '#FEE2E2', color: '#991B1B' },
         error: { bg: '#FEE2E2', color: '#991B1B' },
 
-        // Completed/Done states - Blue/Indigo
-        completed: { bg: '#E0E7FF', color: '#3730A3' },
-        done: { bg: '#E0E7FF', color: '#3730A3' },
+        // Completed/Done states - Orange
+        completed: { bg: '#FFF7ED', color: '#C2410C' },
+        done: { bg: '#FFF7ED', color: '#C2410C' },
 
         // Inactive/Neutral states - Gray
         inactive: { bg: '#F3F4F6', color: '#6B7280' },

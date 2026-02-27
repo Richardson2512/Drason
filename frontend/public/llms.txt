@@ -40,6 +40,8 @@
 ## Blog
 
 - [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide to protecting outbound email deliverability
+- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): How ISP spam filters evaluate emails and how to avoid the spam folder
+- [Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Compare email deliverability monitoring, reputation, and protection tools
 - [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rates damage sender reputation and how to prevent it
 - [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): Step-by-step DNS authentication setup for outbound teams
 - [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): How to safely warm up new outbound email domains

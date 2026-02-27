@@ -111,9 +111,9 @@ export function getCampaignStatusColor(status: 'active' | 'paused' | 'completed'
         case 'active':
             return '#10B981'; // Green
         case 'paused':
-            return '#F59E0B'; // Amber
+            return '#EF4444'; // Red
         case 'completed':
-            return '#6B7280'; // Gray
+            return '#F97316'; // Orange
         default:
             return '#6B7280';
     }

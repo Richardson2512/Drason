@@ -47,6 +47,28 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync }: { webhookU
                     <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>EmailBison Integration</h2>
                     <p style={{ fontSize: '0.875rem', color: '#64748B' }}>Connect your EmailBison account to sync mailboxes and enable health tracking.</p>
                 </div>
+                <a
+                    href="/docs/emailbison-integration"
+                    target="_blank"
+                    title="View integration guide"
+                    style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: '#F1F5F9',
+                        color: '#64748B',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textDecoration: 'none',
+                        flexShrink: 0,
+                        transition: 'background 0.15s, color 0.15s',
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                >
+                    <span style={{ fontSize: '1rem' }}>❓</span>
+                </a>
             </div>
 
             {msg && (

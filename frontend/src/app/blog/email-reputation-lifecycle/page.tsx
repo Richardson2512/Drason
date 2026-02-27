@@ -127,12 +127,24 @@ export default function EmailReputationArticle() {
                     </ul>
                 </div>
 
+                {/* Table of Contents */}
+                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
+                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
+                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
+                        <li><a href="#build-email-reputation" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Build Email Reputation in Weeks 1-8?</a></li>
+                        <li><a href="#maintain-email-reputation" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Maintain Email Reputation Long-Term?</a></li>
+                        <li><a href="#email-reputation-damage" style={{ color: '#2563EB', textDecoration: 'none' }}>How Quickly Can Email Reputation Be Damaged?</a></li>
+                        <li><a href="#email-reputation-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>How Long Does Email Reputation Recovery Take?</a></li>
+                        <li><a href="#point-of-no-return" style={{ color: '#2563EB', textDecoration: 'none' }}>When Does Email Reputation Reach the Point of No Return?</a></li>
+                    </ol>
+                </div>
+
                 <div className="prose prose-lg max-w-none">
                     <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         Email domain reputation is a dynamic score maintained by ISPs that determines whether emails from a domain reach the inbox, land in spam, or get rejected. Reputation moves through a lifecycle: it is built gradually through consistent, positive sending behavior, maintained through ongoing infrastructure discipline, damaged rapidly by spikes in bounces or complaints, and recovered — if possible — through careful remediation. Understanding this lifecycle is essential for any outbound team operating at scale.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Phase 1: Building Reputation (Weeks 1–8)</h2>
+                    <h2 id="build-email-reputation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Do You Build Email Reputation in Weeks 1-8?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Every new domain starts with zero sending history. ISPs have no data to evaluate it, so the domain exists in a neutral state — neither trusted nor untrusted. During this phase, every email sent is scrutinized more heavily than it would be from an established domain.
                     </p>
@@ -143,7 +155,7 @@ export default function EmailReputationArticle() {
                         This is the domain warming phase. Volume starts low (5–10 emails per mailbox per day) and increases gradually over 4–8 weeks. Attempting to skip this phase — by sending full-volume cold outbound from a new domain — almost always results in immediate throttling or blacklisting.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Phase 2: Maintaining Reputation (Ongoing)</h2>
+                    <h2 id="maintain-email-reputation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Do You Maintain Email Reputation Long-Term?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Once a domain has established positive reputation, maintenance requires ongoing discipline. The primary maintenance requirements are:
                     </p>
@@ -169,7 +181,7 @@ export default function EmailReputationArticle() {
                         </ul>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Phase 3: Reputation Damage (Hours to Days)</h2>
+                    <h2 id="email-reputation-damage" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Quickly Can Email Reputation Be Damaged?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Reputation damage happens fast — significantly faster than reputation building. A domain that took 6 weeks to warm can be damaged in a single afternoon. The most common causes of rapid reputation damage:
                     </p>
@@ -217,7 +229,7 @@ export default function EmailReputationArticle() {
                         The asymmetry between building and damaging reputation is the central challenge of outbound email operations. It takes 6 weeks to build what can be destroyed in 6 hours. This is why proactive monitoring is not optional — it is the only viable defense.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Phase 4: Recovery (Weeks to Months)</h2>
+                    <h2 id="email-reputation-recovery" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Long Does Email Reputation Recovery Take?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Recovery from reputation damage follows a process similar to initial warming but with additional constraints. The domain now has negative history that ISPs remember. Recovery steps:
                     </p>
@@ -229,7 +241,7 @@ export default function EmailReputationArticle() {
                         <li><strong>Monitor engagement aggressively.</strong> Every bounce during recovery carries more weight than during initial warming.</li>
                     </ol>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">The Point of No Return</h2>
+                    <h2 id="point-of-no-return" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When Does Email Reputation Reach the Point of No Return?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Not all domains can be recovered. If a domain has been blacklisted by multiple major ISPs (Google, Microsoft, Yahoo), hit recycled spam traps, or sustained bounce rates above 15% for more than a week, recovery is typically not cost-effective. Purchasing a new domain and starting the warming process from scratch is often faster and more reliable than attempting to rehabilitate a severely damaged domain.
                     </p>

@@ -330,8 +330,8 @@ export default function CampaignsPage() {
                                     display: 'inline-block',
                                     padding: '0.25rem 0.75rem',
                                     borderRadius: '999px',
-                                    background: c.status === 'active' ? '#DCFCE7' : (c.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
-                                    color: c.status === 'active' ? '#166534' : (c.status === 'warning' ? '#B45309' : '#991B1B'),
+                                    background: c.status === 'active' ? '#DCFCE7' : c.status === 'paused' ? '#FEE2E2' : c.status === 'completed' ? '#FFF7ED' : c.status === 'warning' ? '#FEF3C7' : '#F3F4F6',
+                                    color: c.status === 'active' ? '#166534' : c.status === 'paused' ? '#991B1B' : c.status === 'completed' ? '#C2410C' : c.status === 'warning' ? '#B45309' : '#6B7280',
                                     fontWeight: 600
                                 }}>
                                     {c.status.toUpperCase()}
@@ -566,7 +566,7 @@ export default function CampaignsPage() {
                                     No mailboxes linked.
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '420px', overflowY: 'auto' }}>
                                     {/* Column headers */}
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', padding: '0.5rem 0.75rem', borderBottom: '2px solid #E2E8F0' }}>
                                         <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Mailbox</span>

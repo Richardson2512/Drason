@@ -40,6 +40,14 @@ export default function InfrastructureAssessmentPost() {
         <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
         <article className="prose prose-lg text-gray-700 max-w-none">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+                How to assess your outbound email infrastructure before sending your first campaign
+            </h1>
+
+            <p className="lead text-xl text-gray-500 mb-8">
+                You wouldn't fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?
+            </p>
+
             {/* Key Takeaways */}
             <div className="not-prose bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6 mb-12 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
@@ -64,13 +72,17 @@ export default function InfrastructureAssessmentPost() {
                 </ul>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                How to assess your outbound email infrastructure before sending your first campaign
-            </h1>
-
-            <p className="lead text-xl text-gray-500 mb-8">
-                You wouldn't fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?
-            </p>
+            {/* Table of Contents */}
+            <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
+                <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
+                <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
+                    <li><a href="#silent-killer" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is the Silent Killer of Outbound Campaigns?</a></li>
+                    <li><a href="#automated-assessment" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is Automated Email Infrastructure Assessment?</a></li>
+                    <li><a href="#what-it-scans" style={{ color: '#2563EB', textDecoration: 'none' }}>What Does the Infrastructure Assessment Scan?</a></li>
+                    <li><a href="#health-score" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does the 0-100 Infrastructure Health Score Work?</a></li>
+                    <li><a href="#first-audit" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Run Your First Infrastructure Audit?</a></li>
+                </ol>
+            </div>
 
             <p>
                 We've seen it happen hundreds of times: A team spends weeks crafting the perfect offer, writing compelling copy, and scraping high-quality leads. They launch the campaign, and... crickets.
@@ -80,7 +92,7 @@ export default function InfrastructureAssessmentPost() {
                 The problem wasn't the copy. It wasn't the offer. It was the <strong>infrastructure</strong>.
             </p>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">The Silent Killer of Outbound Campaigns: Unmonitored Infrastructure</h2>
+            <h2 id="silent-killer" className="text-3xl font-bold mt-12 mb-6">What Is the Silent Killer of Outbound Campaigns?</h2>
             <p>
                 Email infrastructure is fragile. A single missing DMARC record, a hidden blacklist listing, or a "burned" mailbox from a previous provider can tank your entire operation.
             </p>
@@ -88,13 +100,13 @@ export default function InfrastructureAssessmentPost() {
                 Until now, checking this required manual work: using one tool for SPF checks, another for blacklists, and spreadsheets to track mailbox age.
             </p>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">Enter: Automated Email Infrastructure Assessment</h2>
+            <h2 id="automated-assessment" className="text-3xl font-bold mt-12 mb-6">What Is Automated Email Infrastructure Assessment?</h2>
             <p>
                 We built the <strong>Infrastructure Assessment</strong> to solve this. It's an automated auditor that lives inside your Superkabe dashboard.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 my-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">What the Infrastructure Assessment Scans</h3>
+                <h3 id="what-it-scans" className="text-2xl font-bold text-gray-900 mb-4">What Does the Infrastructure Assessment Scan?</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="bg-white p-6 rounded-xl shadow-sm">
                         <h4 className="font-bold text-blue-600 mb-2">1. DNS Configuration</h4>
@@ -115,7 +127,7 @@ export default function InfrastructureAssessmentPost() {
                 </div>
             </div>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">The 0-100 Infrastructure Health Score</h2>
+            <h2 id="health-score" className="text-3xl font-bold mt-12 mb-6">How Does the 0-100 Infrastructure Health Score Work?</h2>
             <p>
                 We boil everything down to a simple <strong>Health Score</strong>.
             </p>
@@ -125,7 +137,7 @@ export default function InfrastructureAssessmentPost() {
                 <li><strong>0-69 (Critical):</strong> DO NOT SEND. You have structural issues that will cause immediate deliverability failures.</li>
             </ul>
 
-            <h2 className="text-3xl font-bold mt-12 mb-6">How to Run Your First Infrastructure Audit</h2>
+            <h2 id="first-audit" className="text-3xl font-bold mt-12 mb-6">How Do You Run Your First Infrastructure Audit?</h2>
             <p>
                 This feature is available today for all active workspaces.
             </p>

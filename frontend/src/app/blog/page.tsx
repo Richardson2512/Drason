@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen } from 'lucide-react';
+import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3 } from 'lucide-react';
 import type { Metadata } from 'next';
 import CloudBackground from '@/components/CloudBackground';
 
@@ -33,8 +33,24 @@ const articles = [
         title: 'How to protect and master your outbound email deliverability',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
         icon: BookOpen,
-        readTime: '20 min read',
+        readTime: '25 min read',
         tag: 'Complete Guide',
+    },
+    {
+        slug: 'how-spam-filters-work',
+        title: 'How spam filters work and how they affect email deliverability',
+        description: 'Technical breakdown of how ISP spam filters evaluate outbound emails across four layers, content triggers that cause filtering, and proven strategies for staying in the inbox.',
+        icon: Filter,
+        readTime: '12 min read',
+        tag: 'Deep Dive',
+    },
+    {
+        slug: 'email-deliverability-tools-compared',
+        title: 'Email deliverability tools compared: monitoring, reputation, and protection software',
+        description: 'Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software for outbound email teams.',
+        icon: BarChart3,
+        readTime: '14 min read',
+        tag: 'Comparison',
     },
     {
         slug: 'bounce-rate-deliverability',

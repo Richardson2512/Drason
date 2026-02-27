@@ -133,12 +133,24 @@ export default function DomainWarmingArticle() {
                     </ul>
                 </div>
 
+                {/* Table of Contents */}
+                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
+                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
+                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
+                        <li><a href="#why-is-domain-warming-required" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Is Domain Warming Required for Cold Email?</a></li>
+                        <li><a href="#warming-ramp-schedule" style={{ color: '#2563EB', textDecoration: 'none' }}>What Does a Domain Warming Ramp Schedule Look Like?</a></li>
+                        <li><a href="#warming-signals-that-matter" style={{ color: '#2563EB', textDecoration: 'none' }}>Which Warming Signals Matter Most for Deliverability?</a></li>
+                        <li><a href="#common-mistakes-that-burn-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>What Are the Common Mistakes That Burn Domains?</a></li>
+                        <li><a href="#how-superkabe-protects-warming-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does Superkabe Protect Warming Domains?</a></li>
+                    </ol>
+                </div>
+
                 <div className="prose prose-lg max-w-none">
                     <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         Domain warming is the process of gradually building sender reputation on a new or inactive email domain by systematically increasing sending volume over time. A properly warmed domain can sustain 40–50 cold outbound emails per mailbox per day with strong inbox placement. A domain that skips or rushes the warming process will be flagged, throttled, and potentially blacklisted within days.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Domain Warming Is Required</h2>
+                    <h2 id="why-is-domain-warming-required" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Is Domain Warming Required for Cold Email?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         When a new domain begins sending email, ISPs have no historical data to assess its trustworthiness. Without sending history, the domain starts with a neutral reputation — not positive, not negative. ISPs treat emails from neutral-reputation domains with suspicion, routing them to spam or applying heavy throttling.
                     </p>
@@ -146,7 +158,7 @@ export default function DomainWarmingArticle() {
                         The warming process generates positive engagement signals (opens, replies, non-bounces) that build the domain&apos;s reputation score over time. Each successful delivery without a bounce or spam complaint contributes to the domain&apos;s credibility with ISPs.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">The Warming Ramp Schedule</h2>
+                    <h2 id="warming-ramp-schedule" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Does a Domain Warming Ramp Schedule Look Like?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         The following schedule represents conservative warming for cold outbound domains. These volumes are per mailbox, per day:
                     </p>
@@ -196,7 +208,7 @@ export default function DomainWarmingArticle() {
                         </table>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Warming Signals That Matter</h2>
+                    <h2 id="warming-signals-that-matter" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Which Warming Signals Matter Most for Deliverability?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         ISPs evaluate multiple signals during the warming period. Not all signals carry equal weight:
                     </p>
@@ -224,7 +236,7 @@ export default function DomainWarmingArticle() {
                         </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Common Mistakes That Burn Domains</h2>
+                    <h2 id="common-mistakes-that-burn-domains" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Are the Common Mistakes That Burn Domains?</h2>
                     <ul className="space-y-3 text-gray-600 mb-8">
                         <li className="flex items-start gap-3">
                             <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
@@ -244,7 +256,7 @@ export default function DomainWarmingArticle() {
                         </li>
                     </ul>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe Protects Warming Domains</h2>
+                    <h2 id="how-superkabe-protects-warming-domains" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Does Superkabe Protect Warming Domains?</h2>
                     <p className="text-gray-600 leading-relaxed mb-8">
                         Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
                     </p>

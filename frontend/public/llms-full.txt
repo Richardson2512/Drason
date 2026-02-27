@@ -90,7 +90,9 @@ Starting at $49/month. Includes infrastructure monitoring, auto-healing, multi-p
 - [24/7 Monitoring](https://www.superkabe.com/docs/help/24-7-monitoring): Continuous background infrastructure monitoring
 
 ### Blog — Technical Guides
-- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide covering sender reputation, bounce rates, DNS auth, domain warming, and infrastructure protection
+- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide covering sender reputation, bounce rates, DNS auth, domain warming, inbox placement factors, and infrastructure protection
+- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): Four layers of spam filtering (connection, authentication, content, engagement), ISP-specific filter behavior (Gmail vs Outlook vs Yahoo), content triggers, and best practices for avoiding spam filters
+- [Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, sending platforms (Smartlead, Instantly, Lemlist), and infrastructure protection software
 - [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rates damage sender reputation and strategies for prevention
 - [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): Step-by-step DNS authentication setup for outbound teams
 - [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): Volume ramp schedules, warming signals, and common mistakes

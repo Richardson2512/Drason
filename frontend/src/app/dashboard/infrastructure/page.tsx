@@ -118,11 +118,14 @@ export default function InfrastructureHealthPage() {
         try {
             const data = await apiClient<any[]>('/api/assessment/reports');
             if (data && Array.isArray(data)) {
+                // Deduplicate by day — keep only the latest assessment per day
+                const byDay = new Map<string, number>();
+                data.reverse().forEach((r: any) => {
+                    const dayKey = new Date(r.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                    byDay.set(dayKey, r.overall_score ?? 0); // later entries overwrite earlier ones
+                });
                 setScoreHistory(
-                    data.reverse().map((r: any) => ({
-                        date: new Date(r.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
-                        score: r.overall_score ?? 0,
-                    }))
+                    Array.from(byDay.entries()).map(([date, score]) => ({ date, score }))
                 );
             }
         } catch (err) {

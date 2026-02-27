@@ -558,16 +558,32 @@ export default function MailboxesPage() {
                                 <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Activity Stats</h3>
                                 <div style={{ display: 'grid', gap: '0.75rem' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span style={{ color: '#64748B' }}>Total Sent</span>
+                                        <span style={{ fontWeight: '600', color: '#1E293B' }}>{(selectedMailbox.total_sent_count || 0).toLocaleString()}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span style={{ color: '#64748B' }}>Sent (Window)</span>
-                                        <span style={{ fontWeight: '600', color: '#1E293B' }}>{selectedMailbox.window_sent_count}</span>
+                                        <span style={{ fontWeight: '600', color: '#1E293B' }}>{selectedMailbox.window_sent_count ?? 0}</span>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span style={{ color: '#64748B' }}>Bounces</span>
-                                        <span style={{ fontWeight: '600', color: '#EF4444' }}>{selectedMailbox.hard_bounce_count}</span>
+                                        <span style={{ fontWeight: '600', color: '#EF4444' }}>{selectedMailbox.hard_bounce_count ?? 0}</span>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <span style={{ color: '#64748B' }}>Failures</span>
-                                        <span style={{ fontWeight: '600', color: '#F59E0B' }}>{selectedMailbox.delivery_failure_count}</span>
+                                        <span style={{ fontWeight: '600', color: '#F59E0B' }}>{selectedMailbox.delivery_failure_count ?? 0}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid #F1F5F9' }}>
+                                        <span style={{ color: '#64748B' }}>Bounce Rate</span>
+                                        <span style={{
+                                            fontWeight: '700',
+                                            color: (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) < 0.02 ? '#16A34A' :
+                                                (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) < 0.03 ? '#F59E0B' : '#EF4444',
+                                        }}>
+                                            {(selectedMailbox.total_sent_count || 0) > 0
+                                                ? (((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) * 100).toFixed(1)
+                                                : '0.0'}%
+                                        </span>
                                     </div>
                                 </div>
                             </div>

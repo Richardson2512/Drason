@@ -140,12 +140,23 @@ export default function SpfDkimDmarcArticle() {
                     </ul>
                 </div>
 
+                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
+                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
+                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
+                        <li><a href="#what-is-spf" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is SPF (Sender Policy Framework) and How Does It Work?</a></li>
+                        <li><a href="#what-is-dkim" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DKIM (DomainKeys Identified Mail) and Why Does It Matter?</a></li>
+                        <li><a href="#what-is-dmarc" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DMARC and How Does It Protect Your Domain?</a></li>
+                        <li><a href="#authentication-decision-flow" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does the Email Authentication Decision Flow Work?</a></li>
+                        <li><a href="#why-it-matters-for-outbound" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Does Email Authentication Matter for Outbound Teams?</a></li>
+                    </ol>
+                </div>
+
                 <div className="prose prose-lg max-w-none">
                     <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         SPF, DKIM, and DMARC are the three email authentication protocols that verify sender identity and prevent domain spoofing. Together, they form the trust layer that ISPs use to decide whether an email should reach the inbox, be routed to spam, or be rejected entirely. For outbound email operators running multiple domains, correct configuration of all three protocols is non-negotiable.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">SPF (Sender Policy Framework)</h2>
+                    <h2 id="what-is-spf" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is SPF (Sender Policy Framework) and How Does It Work?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         SPF is a DNS-based authentication mechanism that specifies which mail servers are authorized to send email on behalf of a domain. When an email arrives at a receiving server, the server looks up the sending domain&apos;s SPF record (a DNS TXT record) and checks whether the originating IP address is listed as an authorized sender.
                     </p>
@@ -169,7 +180,7 @@ export default function SpfDkimDmarcArticle() {
                         </ul>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">DKIM (DomainKeys Identified Mail)</h2>
+                    <h2 id="what-is-dkim" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is DKIM (DomainKeys Identified Mail) and Why Does It Matter?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         DKIM adds a cryptographic signature to every outgoing email. The sending server signs the email headers and body with a private key, and the receiving server uses the corresponding public key (published as a DNS TXT record) to verify the signature. If the signature validates, the receiving server knows two things: the email was authorized by the domain owner, and it was not modified in transit.
                     </p>
@@ -183,7 +194,7 @@ export default function SpfDkimDmarcArticle() {
                         DKIM is particularly important for outbound email because it provides per-message authentication. Unlike SPF which only validates the sending IP, DKIM proves that each individual email was authorized. This makes it significantly harder for attackers to spoof your domain.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">DMARC (Domain-based Message Authentication, Reporting, and Conformance)</h2>
+                    <h2 id="what-is-dmarc" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is DMARC and How Does It Protect Your Domain?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         DMARC ties SPF and DKIM together with a policy declaration. It tells receiving servers what to do when an email fails authentication checks: allow it through (p=none), quarantine it to spam (p=quarantine), or reject it entirely (p=reject).
                     </p>
@@ -197,7 +208,7 @@ export default function SpfDkimDmarcArticle() {
                         The <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">rua</code> tag specifies where aggregate reports should be sent. These reports contain data about who is sending email using your domain, including unauthorized senders. For multi-domain outbound operations, these reports are essential for detecting infrastructure compromise.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">The Authentication Decision Flow</h2>
+                    <h2 id="authentication-decision-flow" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Does the Email Authentication Decision Flow Work?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         When an email arrives at a receiving server, the authentication check follows this sequence:
                     </p>
@@ -208,7 +219,7 @@ export default function SpfDkimDmarcArticle() {
                         <li>Apply DMARC policy: If checks fail, apply the domain&apos;s published DMARC policy (none/quarantine/reject).</li>
                     </ol>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why This Matters for Outbound Teams</h2>
+                    <h2 id="why-it-matters-for-outbound" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Does Email Authentication Matter for Outbound Teams?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         As of February 2024, Google and Yahoo require bulk senders to have all three protocols properly configured. Domains without DMARC will have emails throttled or rejected by these providers. For outbound teams running 3–10 domains, this means each domain must have its own SPF, DKIM, and DMARC records independently configured.
                     </p>

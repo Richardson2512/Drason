@@ -119,12 +119,22 @@ export default function BounceRateArticle() {
                     </ul>
                 </div>
 
+                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
+                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
+                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
+                        <li><a href="#what-is-email-bounce-rate" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is Email Bounce Rate?</a></li>
+                        <li><a href="#bounce-rate-thresholds" style={{ color: '#2563EB', textDecoration: 'none' }}>What Are the Bounce Rate Thresholds That Trigger ISP Action?</a></li>
+                        <li><a href="#cold-outbound-vulnerable" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Is Cold Outbound Particularly Vulnerable to Bounces?</a></li>
+                        <li><a href="#superkabe-prevents-bounce-damage" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does Superkabe Prevent Bounce-Driven Damage?</a></li>
+                    </ol>
+                </div>
+
                 <div className="prose prose-lg max-w-none">
                     <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         Email bounce rate is the percentage of sent emails that fail to reach the recipient&apos;s inbox. It is the single most important metric for outbound email infrastructure health. A bounce rate above 5% on any sending domain triggers reputation scoring downgrades at major ISPs, causing all subsequent emails from that domain to be routed to spam or rejected entirely.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is Email Bounce Rate?</h2>
+                    <h2 id="what-is-email-bounce-rate" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is Email Bounce Rate?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Bounce rate is calculated as the number of bounced emails divided by the total number of emails sent, expressed as a percentage. For example, if you send 1,000 emails and 30 bounce, your bounce rate is 3%.
                     </p>
@@ -157,7 +167,7 @@ export default function BounceRateArticle() {
                         </ul>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Bounce Rate Thresholds and ISP Behavior</h2>
+                    <h2 id="bounce-rate-thresholds" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Are the Bounce Rate Thresholds That Trigger ISP Action?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Internet Service Providers (ISPs) — Google, Microsoft, Yahoo — maintain internal sender reputation models for every domain that sends email through their systems. Bounce rate is a primary input to these models.
                     </p>
@@ -196,7 +206,7 @@ export default function BounceRateArticle() {
                         </table>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Cold Outbound Is Particularly Vulnerable</h2>
+                    <h2 id="cold-outbound-vulnerable" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Is Cold Outbound Particularly Vulnerable to Bounces?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Cold outbound email campaigns are inherently higher-risk for bounce rate issues because the recipient list has not been validated through prior engagement. Unlike marketing emails sent to opted-in subscribers, cold outbound targets addresses that may be outdated, misspelled, or belong to deactivated accounts.
                     </p>
@@ -204,7 +214,7 @@ export default function BounceRateArticle() {
                         Modern outbound teams typically operate 3–10 domains with 3+ mailboxes per domain, sending 20–30 emails per mailbox per day. At this scale, a single batch of bad leads can push a domain&apos;s bounce rate above the 5% threshold within hours. Once the reputation is damaged, every mailbox on that domain is affected — not just the one that sent the bouncing emails.
                     </p>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe Prevents Bounce-Driven Damage</h2>
+                    <h2 id="superkabe-prevents-bounce-damage" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Does Superkabe Prevent Bounce-Driven Damage?</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Superkabe monitors bounce events in real-time across all sending domains and mailboxes. When bounce rates approach warning thresholds (3% per domain in a rolling 7-day window), Superkabe triggers tiered escalation:
                     </p>
