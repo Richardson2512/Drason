@@ -130,13 +130,11 @@ export default function RootLayout({
             gtag('config', 'G-C36CG3CRSJ');
           `}
         </Script>
-        <Script
-          id="org-schema"
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
-        <Script
-          id="software-schema"
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
         />
