@@ -7,6 +7,7 @@ import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
 import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampaignResolutionModal';
 import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
 import { apiClient } from '@/lib/api';
+import { PlatformBadge } from '@/components/ui/PlatformBadge';
 
 export default function CampaignsPage() {
     const router = useRouter();
@@ -323,7 +324,10 @@ export default function CampaignsPage() {
                                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
                             />
                             <div style={{ flex: 1 }}>
-                                <div style={{ fontWeight: 600, marginBottom: '0.25rem', color: '#1E293B' }}>{c.name}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                                    <span style={{ fontWeight: 600, color: '#1E293B' }}>{c.name}</span>
+                                    {c.source_platform && <PlatformBadge platform={c.source_platform} />}
+                                </div>
                                 <div style={{ fontSize: '0.75rem', color: '#64748B', fontFamily: 'monospace' }}>ID: {c.id}</div>
                                 <div style={{
                                     fontSize: '0.7rem',

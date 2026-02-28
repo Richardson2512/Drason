@@ -338,7 +338,7 @@ export default function Overview() {
             </span>
           </div>
           <p style={{ fontSize: '0.75rem', color: '#15803D', margin: 0, lineHeight: 1.5 }}>
-            Auto-syncing from Smartlead every 20 minutes • Real-time health detection • Instant protection
+            Auto-syncing all connected platforms every 20 minutes • Real-time health detection • Instant protection
           </p>
         </div>
         <a

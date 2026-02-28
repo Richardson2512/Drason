@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
+import { PlatformBadge } from '@/components/ui/PlatformBadge';
 
 interface Campaign {
     id: string;
@@ -16,33 +17,6 @@ interface RoutingRule {
     target_campaign_id: string;
     priority: number;
     campaign?: Campaign;
-}
-
-const PLATFORM_CONFIG: Record<string, { label: string; color: string; bg: string; border: string }> = {
-    smartlead: { label: 'Smartlead', color: '#2563EB', bg: '#EFF6FF', border: '#BFDBFE' },
-    emailbison: { label: 'EmailBison', color: '#7C3AED', bg: '#F5F3FF', border: '#DDD6FE' },
-    instantly: { label: 'Instantly', color: '#059669', bg: '#ECFDF5', border: '#A7F3D0' },
-    replyio: { label: 'Reply.io', color: '#DC2626', bg: '#FEF2F2', border: '#FECACA' },
-};
-
-function PlatformBadge({ platform }: { platform: string }) {
-    const config = PLATFORM_CONFIG[platform] || { label: platform, color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB' };
-    return (
-        <span style={{
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            color: config.color,
-            background: config.bg,
-            border: `1px solid ${config.border}`,
-            padding: '2px 8px',
-            borderRadius: '6px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            whiteSpace: 'nowrap',
-        }}>
-            {config.label}
-        </span>
-    );
 }
 
 export default function Configuration() {

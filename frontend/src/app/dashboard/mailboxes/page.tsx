@@ -6,21 +6,23 @@ import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
+import { PlatformBadge, getPlatformLabel } from '@/components/ui/PlatformBadge';
 
-// Map raw Smartlead errors to user-friendly resolution guidance
-function getConnectionResolution(error: string | null | undefined): { cause: string; resolution: string } {
-    if (!error) return { cause: 'Unknown connection issue', resolution: 'Check email account settings in Smartlead.' };
+// Map raw connection errors to user-friendly resolution guidance (platform-aware)
+function getConnectionResolution(error: string | null | undefined, platform?: string): { cause: string; resolution: string } {
+    const name = getPlatformLabel(platform);
+    if (!error) return { cause: 'Unknown connection issue', resolution: `Check email account settings in ${name}.` };
     const e = error.toLowerCase();
     if (e.includes('invalid_grant') || e.includes('refresh') && e.includes('token')) {
         return {
             cause: 'Google OAuth token expired or revoked',
-            resolution: 'Re-authorize this email account in Smartlead → Email Accounts → Reconnect. The Google account password may have changed or access was revoked.'
+            resolution: `Re-authorize this email account in ${name}. The Google account password may have changed or access was revoked.`
         };
     }
     if (e.includes('authentication') || e.includes('auth') && e.includes('fail')) {
         return {
             cause: 'Email authentication failed',
-            resolution: 'Check the email password in Smartlead → Email Accounts. If using an app password, regenerate it.'
+            resolution: `Check the email password in ${name}. If using an app password, regenerate it.`
         };
     }
     if (e.includes('connection refused') || e.includes('econnrefused')) {
@@ -32,18 +34,18 @@ function getConnectionResolution(error: string | null | undefined): { cause: str
     if (e.includes('timeout') || e.includes('timed out')) {
         return {
             cause: 'Connection timed out',
-            resolution: 'The mail server is not responding. This may be a temporary outage — try reconnecting in Smartlead later.'
+            resolution: `The mail server is not responding. This may be a temporary outage — try reconnecting in ${name} later.`
         };
     }
     if (e.includes('certificate') || e.includes('ssl') || e.includes('tls')) {
         return {
             cause: 'SSL/TLS certificate error',
-            resolution: 'The mail server\'s SSL certificate is invalid or expired. Check SMTP/IMAP port and encryption settings in Smartlead.'
+            resolution: `The mail server\'s SSL certificate is invalid or expired. Check SMTP/IMAP port and encryption settings in ${name}.`
         };
     }
     return {
         cause: error,
-        resolution: 'Check this email account\'s settings in Smartlead → Email Accounts and try reconnecting.'
+        resolution: `Check this email account\'s settings in ${name} and try reconnecting.`
     };
 }
 
@@ -374,7 +376,10 @@ export default function MailboxesPage() {
                                 boxShadow: mb.status === 'healthy' ? '0 0 6px rgba(34,197,94,0.4)' : mb.status === 'paused' ? '0 0 6px rgba(239,68,68,0.4)' : 'none'
                             }} title={mb.status === 'healthy' ? 'Connected' : mb.status === 'paused' ? 'Disconnected' : mb.status} />
                             <div style={{ flex: 1 }}>
-                                <div style={{ fontWeight: 600, marginBottom: '0.25rem', wordBreak: 'break-all', color: '#1E293B', fontSize: '0.9rem' }}>{mb.email}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                                    <span style={{ fontWeight: 600, wordBreak: 'break-all', color: '#1E293B', fontSize: '0.9rem' }}>{mb.email}</span>
+                                    {mb.source_platform && <PlatformBadge platform={mb.source_platform} />}
+                                </div>
                                 <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                     <span style={{ opacity: 0.7 }}>Domain:</span>
                                     <span style={{ fontWeight: 500 }}>{mb.domain?.domain}</span>
@@ -427,7 +432,7 @@ export default function MailboxesPage() {
 
                         {/* Connection Diagnostic Card — shown when mailbox is disconnected */}
                         {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
-                            const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error);
+                            const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error, selectedMailbox.source_platform);
                             return (
                                 <div style={{
                                     margin: '0 0 2rem 0',
@@ -464,7 +469,7 @@ export default function MailboxesPage() {
                                         <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
                                             <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.5rem' }}>✅ Quick Fix</div>
                                             <div style={{ color: '#14532D', lineHeight: 1.5, marginBottom: '0.75rem' }}>
-                                                Reconnect this email account in Smartlead, then trigger a Manual Sync in Superkabe.
+                                                Reconnect this email account in {getPlatformLabel(selectedMailbox.source_platform)}, then trigger a Manual Sync in Drason.
                                             </div>
                                             <a
                                                 href={`/docs/help/connection-errors${selectedMailbox.connection_error?.includes('invalid_grant') || selectedMailbox.connection_error?.includes('refresh') ? '#google-oauth' :
@@ -780,9 +785,9 @@ export default function MailboxesPage() {
                                                 </div>
                                                 <div style={{ fontSize: '0.75rem', color: '#075985', lineHeight: '1.5' }}>
                                                     {selectedMailbox.recovery_phase === 'restricted_send' &&
-                                                        'Smartlead is sending 10 warmup emails/day. System will auto-graduate after 15-25 clean sends (zero bounces).'}
+                                                        `${getPlatformLabel(selectedMailbox.source_platform)} is sending 10 warmup emails/day. System will auto-graduate after 15-25 clean sends (zero bounces).`}
                                                     {selectedMailbox.recovery_phase === 'warm_recovery' &&
-                                                        'Smartlead is sending 50 warmup emails/day (+5/day rampup). System will auto-graduate after 50 clean sends over 3+ days.'}
+                                                        `${getPlatformLabel(selectedMailbox.source_platform)} is sending 50 warmup emails/day (+5/day rampup). System will auto-graduate after 50 clean sends over 3+ days.`}
                                                 </div>
                                             </div>
                                         </div>

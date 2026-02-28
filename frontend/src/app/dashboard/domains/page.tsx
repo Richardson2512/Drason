@@ -5,6 +5,7 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
+import { PlatformBadge } from '@/components/ui/PlatformBadge';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<any[]>([]);
@@ -283,7 +284,10 @@ export default function DomainsPage() {
                                 style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
                             />
                             <div style={{ flex: 1 }}>
-                                <div style={{ fontWeight: 600, marginBottom: '0.25rem', color: '#1E293B', fontSize: '0.9rem' }}>{d.domain}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                                    <span style={{ fontWeight: 600, color: '#1E293B', fontSize: '0.9rem' }}>{d.domain}</span>
+                                    {d.source_platform && <PlatformBadge platform={d.source_platform} />}
+                                </div>
                                 <div style={{
                                     fontSize: '0.7rem',
                                     fontWeight: 600,

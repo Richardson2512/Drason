@@ -7,6 +7,7 @@ import { ScoreBar } from '@/components/ui/ScoreBar';
 import { StatBadge } from '@/components/ui/StatBadge';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
+import { getPlatformLabel } from '@/components/ui/PlatformBadge';
 import BatchRecommendationsModal from '@/components/dashboard/BatchRecommendationsModal';
 
 function LeadsPageContent() {
@@ -308,7 +309,7 @@ function LeadsPageContent() {
             return { type: 'warning', title: 'Holding Pool', msg: 'Lead is currently in the Holding Pool. It is waiting for the "Execution Gate" to verify mailbox capacity and domain health before transitioning to Active.' };
         }
         if (lead.status === 'active') {
-            return { type: 'success', title: 'Active Execution', msg: 'Lead has passed all health checks and routed to a campaign. It is currently available for outreach by the external sender (Smartlead).' };
+            return { type: 'success', title: 'Active Execution', msg: `Lead has passed all health checks and routed to a campaign. It is currently available for outreach by the external sender (${getPlatformLabel(lead.source_platform)}).` };
         }
         return null;
     };
@@ -830,7 +831,7 @@ function LeadsPageContent() {
                                                     fontStyle: 'italic',
                                                     border: '1px solid #E2E8F0'
                                                 }}>
-                                                    💡 Score is calculated from Smartlead engagement data. Higher engagement and recent activity increase the score.
+                                                    💡 Score is calculated from engagement data. Higher engagement and recent activity increase the score.
                                                 </div>
                                             </>
                                         ) : (

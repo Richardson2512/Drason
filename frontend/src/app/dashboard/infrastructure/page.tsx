@@ -417,7 +417,7 @@ export default function InfrastructureHealthPage() {
                             </span>
                         </div>
                         <p style={{ fontSize: '0.875rem', color: '#047857', marginBottom: '1rem', lineHeight: 1.6 }}>
-                            Your infrastructure is being automatically synced every <strong>20 minutes</strong> from Smartlead.
+                            Your infrastructure is being automatically synced every <strong>20 minutes</strong> from all connected platforms.
                             Health assessments run automatically, and campaigns/mailboxes are paused instantly when thresholds are crossed.
                             No manual monitoring needed - the system protects your reputation 24/7, even while you sleep.
                         </p>
