@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function DashboardLayout({
     children,
@@ -20,7 +21,7 @@ export default function DashboardLayout({
     const [userRole, setUserRole] = useState<string>('');
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
-    const [subscription, setSubscription] = useState<any>(null);
+    const [subscription, setSubscription] = useState<{ status?: string; trialEndsAt?: string } | null>(null);
     const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
@@ -40,14 +41,14 @@ export default function DashboardLayout({
                     setUserRole(data.data.role);
                 }
             })
-            .catch(() => { });
+            .catch(err => console.error('[Layout] Failed to fetch user info', err));
 
         // Fetch organization info including system_mode
         apiClient<any>('/api/organization').then((response) => {
             const org = response.data || response; // Handle wrapped response
             if (org?.system_mode) setSystemMode(org.system_mode);
             if (org?.name) setOrgName(org.name);
-        }).catch(() => { });
+        }).catch(err => console.error('[Layout] Failed to fetch organization info', err));
 
 
 
@@ -57,7 +58,7 @@ export default function DashboardLayout({
                 .then(data => {
                     if (data?.data?.count !== undefined) setUnreadCount(data.data.count);
                 })
-                .catch(() => { });
+                .catch(err => console.error('[Layout] Failed to fetch unread count', err));
         };
         fetchUnreadCount();
         const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30s
@@ -74,7 +75,7 @@ export default function DashboardLayout({
                     setDaysRemaining(days);
                 }
             })
-            .catch(() => { }); // Silent fail
+            .catch(err => console.error('[Layout] Failed to fetch subscription status', err));
 
         return () => clearInterval(interval);
     }, []);
@@ -470,7 +471,9 @@ export default function DashboardLayout({
                 )}
 
                 <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem', padding: '0.5rem 1rem 0 1.5rem' }}>
-                    {children}
+                    <ErrorBoundary>
+                        {children}
+                    </ErrorBoundary>
                 </div>
             </main>
 

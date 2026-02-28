@@ -23,7 +23,7 @@ export default function TopLeadsCard({ campaigns }: { campaigns: Array<{ id: str
     useEffect(() => {
         apiClient<TopLead[]>('/api/leads/top?limit=5')
             .then(data => setLeads(Array.isArray(data) ? data : []))
-            .catch(() => {})
+            .catch(err => console.error('[TopLeadsCard] Failed to fetch top leads', err))
             .finally(() => setLoading(false));
     }, []);
 

@@ -41,7 +41,8 @@ interface BounceReason {
 
 export default function BounceAnalytics({ mailboxId, campaignId, showFilters = false }: BounceAnalyticsProps) {
     const [loading, setLoading] = useState(true);
-    const [summary, setSummary] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [summary, setSummary] = useState<Record<string, any> | null>(null);
     const [mailboxBreakdown, setMailboxBreakdown] = useState<MailboxBreakdown[]>([]);
     const [campaignBreakdown, setCampaignBreakdown] = useState<CampaignBreakdown[]>([]);
     const [bounceReasons, setBounceReasons] = useState<BounceReason[]>([]);

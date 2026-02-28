@@ -11,8 +11,10 @@ interface StalledCampaignResolutionModalProps {
 
 export default function StalledCampaignResolutionModal({ isOpen, onClose, campaign, onSuccess }: StalledCampaignResolutionModalProps) {
     const [resolutionType, setResolutionType] = useState<'add_mailboxes' | 'reroute_leads' | 'manual' | 'wait_recovery' | 'export_archive' | null>(null);
-    const [context, setContext] = useState<any>(null);
-    const [smartRecommendations, setSmartRecommendations] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [context, setContext] = useState<Record<string, any> | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [smartRecommendations, setSmartRecommendations] = useState<Record<string, any> | null>(null);
     const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
     // Form state

@@ -9,7 +9,8 @@ import { PlatformBadge } from '@/components/ui/PlatformBadge';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<any[]>([]);
-    const [selectedDomain, setSelectedDomain] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [selectedDomain, setSelectedDomain] = useState<Record<string, any> | null>(null);
     const [auditLogs, setAuditLogs] = useState<any[]>([]);
 
     // Filters

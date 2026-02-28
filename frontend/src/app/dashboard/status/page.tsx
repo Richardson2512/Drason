@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 
 export default function StatusPage() {
-    const [health, setHealth] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [health, setHealth] = useState<Record<string, any> | null>(null);
     const [stateTransitions, setStateTransitions] = useState<any[]>([]);
     const [rawEvents, setRawEvents] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState<'health' | 'transitions' | 'events'>('health');

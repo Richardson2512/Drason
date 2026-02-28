@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -26,13 +25,14 @@ export default function Settings() {
     const [msg, setMsg] = useState('');
 
     // Phase 5: System Mode
-    const [org, setOrg] = useState<any>(null);
-    const [user, setUser] = useState<any>(null);
+    const [org, setOrg] = useState<{ id: string; name: string; slug: string; system_mode?: string } | null>(null);
+    const [user, setUser] = useState<{ name?: string; email?: string; role?: string } | null>(null);
     const [systemMode, setSystemMode] = useState('observe');
 
     // Health Enforcement Modal
     const [showHealthModal, setShowHealthModal] = useState(false);
-    const [healthCheckData, setHealthCheckData] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [healthCheckData, setHealthCheckData] = useState<Record<string, any> | null>(null);
 
     // Sync Progress Modal
     const [showSyncModal, setShowSyncModal] = useState(false);
@@ -56,7 +56,7 @@ export default function Settings() {
                     if (ebKeySetting) setEbApiKey(ebKeySetting.value);
                 }
             })
-            .catch(() => { }); // Silent fail for settings
+            .catch(err => console.error('[Settings] Failed to fetch settings', err));
 
         // Fetch organization info (Phase 5)
         apiClient<any>('/api/organization')
@@ -75,7 +75,7 @@ export default function Settings() {
                 const user = response.data || response;
                 setUser(user);
             })
-            .catch(() => { });
+            .catch(err => console.error('[Settings] Failed to fetch user info', err));
 
         // Fetch Clay webhook configuration with secret
         apiClient<any>('/api/settings/clay-webhook-url')
@@ -102,9 +102,10 @@ export default function Settings() {
                 setWebhookUrl(`${backendUrl}/api/ingest/clay`);
             });
 
-        setSmartleadWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/smartlead-webhook`);
-        setEmailBisonWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/emailbison-webhook`);
-        setInstantlyWebhookUrl(`${window.location.protocol}//${window.location.hostname}:3001/api/monitor/instantly-webhook`);
+        const backendBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}`;
+        setSmartleadWebhookUrl(`${backendBase}/api/monitor/smartlead-webhook`);
+        setEmailBisonWebhookUrl(`${backendBase}/api/monitor/emailbison-webhook`);
+        setInstantlyWebhookUrl(`${backendBase}/api/monitor/instantly-webhook`);
     }, []);
 
     const handleSave = async (e: React.FormEvent) => {

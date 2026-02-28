@@ -18,7 +18,7 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync }: { webhookU
                     if (ebKeySetting) setEbApiKey(ebKeySetting.value);
                 }
             })
-            .catch(() => { });
+            .catch(err => console.error('[EmailBisonCard] Failed to fetch settings', err));
     }, []);
 
     const handleSaveEmailBison = async (e: React.FormEvent) => {

@@ -1,22 +1,29 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from 'recharts';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 import LeadHealthChart from '@/components/dashboard/LeadHealthChart';
 import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
 
+interface DashboardStats { active: number; held: number; paused: number }
+interface DomainSummary { id: string; domain: string; status: string; paused_reason?: string }
+interface MailboxSummary { id: string; email: string; status: string; paused_reason?: string }
+interface CampaignSummary { id: string; name: string; status: string }
+interface ChartEntry { name: string; count: number }
+
 export default function Overview() {
-  const [stats, setStats] = useState<any>(null);
-  const [leads, setLeads] = useState<any[]>([]);
-  const [domains, setDomains] = useState<any[]>([]);
-  const [mailboxes, setMailboxes] = useState<any[]>([]);
-  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [leads, setLeads] = useState<Record<string, unknown>[]>([]);
+  const [domains, setDomains] = useState<DomainSummary[]>([]);
+  const [mailboxes, setMailboxes] = useState<MailboxSummary[]>([]);
+  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
   const [userName, setUserName] = useState<string>('');
-  const [subscription, setSubscription] = useState<any>(null);
+  const [subscription, setSubscription] = useState<{ subscription_status?: string; trial_ends_at?: string } | null>(null);
 
   // Chart Data State
-  const [campaignData, setCampaignData] = useState<any[]>([]);
+  const [campaignData, setCampaignData] = useState<ChartEntry[]>([]);
 
   const [error, setError] = useState<string | null>(null);
   const [resuming, setResuming] = useState<string | null>(null);
@@ -32,10 +39,10 @@ export default function Overview() {
       // Refresh domains
       const domainsData = await apiClient<any>('/api/dashboard/domains');
       setDomains(domainsData?.data || []);
-      alert('Domain resumed successfully!');
+      toast.success('Domain resumed successfully!');
     } catch (err: any) {
       console.error('Failed to resume domain', err);
-      alert(`Failed to resume domain: ${err.message}`);
+      toast.error(`Failed to resume domain: ${err.message}`);
     } finally {
       setResuming(null);
     }
@@ -51,10 +58,10 @@ export default function Overview() {
       // Refresh mailboxes
       const mailboxesData = await apiClient<any>('/api/dashboard/mailboxes');
       setMailboxes(mailboxesData?.data || []);
-      alert('Mailbox resumed successfully!');
+      toast.success('Mailbox resumed successfully!');
     } catch (err: any) {
       console.error('Failed to resume mailbox', err);
-      alert(`Failed to resume mailbox: ${err.message}`);
+      toast.error(`Failed to resume mailbox: ${err.message}`);
     } finally {
       setResuming(null);
     }
@@ -65,14 +72,14 @@ export default function Overview() {
     apiClient<any>('/api/user/me').then((response) => {
       const user = response.data || response;
       if (user?.name) setUserName(user.name);
-    }).catch(() => { });
+    }).catch(err => console.error('[Overview] Failed to fetch user info', err));
 
     // Fetch subscription data
     apiClient<any>('/api/billing/subscription').then((data) => {
       if (data?.success && data.data) {
         setSubscription(data.data);
       }
-    }).catch(() => { });
+    }).catch(err => console.error('[Overview] Failed to fetch subscription data', err));
 
     // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
     Promise.all([

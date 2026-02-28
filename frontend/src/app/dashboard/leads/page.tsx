@@ -13,7 +13,8 @@ import BatchRecommendationsModal from '@/components/dashboard/BatchRecommendatio
 function LeadsPageContent() {
     const searchParams = useSearchParams();
     const [leads, setLeads] = useState<any[]>([]);
-    const [selectedLead, setSelectedLead] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [selectedLead, setSelectedLead] = useState<Record<string, any> | null>(null);
     const [auditLogs, setAuditLogs] = useState<any[]>([]);
     const [leadTab, setLeadTab] = useState('all');
     const [campaigns, setCampaigns] = useState<any[]>([]);
@@ -40,12 +41,14 @@ function LeadsPageContent() {
     const [showRecommendationsModal, setShowRecommendationsModal] = useState(false);
 
     // Score breakdown state
-    const [scoreBreakdown, setScoreBreakdown] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [scoreBreakdown, setScoreBreakdown] = useState<Record<string, any> | null>(null);
     const [scoreLoading, setScoreLoading] = useState(false);
 
     // Manual score refresh state
     const [scoringInProgress, setScoringInProgress] = useState(false);
-    const [scoreRefreshResult, setScoreRefreshResult] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [scoreRefreshResult, setScoreRefreshResult] = useState<Record<string, any> | null>(null);
 
     // Search state
     const [searchQuery, setSearchQuery] = useState('');

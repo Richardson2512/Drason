@@ -24,7 +24,7 @@ export default function InstantlyCard({
                     if (keySetting) setApiKey(keySetting.value);
                 }
             })
-            .catch(() => { });
+            .catch(err => console.error('[InstantlyCard] Failed to fetch settings', err));
     }, []);
 
     const handleSave = async (e: React.FormEvent) => {

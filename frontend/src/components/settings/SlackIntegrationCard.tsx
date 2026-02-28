@@ -39,7 +39,7 @@ export default function SlackIntegrationCard() {
                     }
                 }
             })
-            .catch(() => { });
+            .catch(err => console.error('[SlackIntegrationCard] Failed to fetch settings', err));
     }, []);
 
     useEffect(() => {

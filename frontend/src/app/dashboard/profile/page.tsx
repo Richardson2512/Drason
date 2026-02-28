@@ -21,7 +21,7 @@ export default function ProfilePage() {
             const user = response.data || response;
             if (user?.name) { setName(user.name); setOriginalName(user.name); }
             if (user?.email) setEmail(user.email);
-        }).catch(() => { });
+        }).catch(err => console.error('[Profile] Failed to fetch user info', err));
     }, []);
 
     const handleSaveName = async () => {

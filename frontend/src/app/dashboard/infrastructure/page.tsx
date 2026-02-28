@@ -67,13 +67,15 @@ export default function InfrastructureHealthPage() {
     const [dnsLoading, setDnsLoading] = useState<string | null>(null);
 
     // ── Transition Gate State ──
-    const [gateData, setGateData] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [gateData, setGateData] = useState<Record<string, any> | null>(null);
     const [gateLoading, setGateLoading] = useState(false);
     const [acknowledging, setAcknowledging] = useState(false);
     const [ackResult, setAckResult] = useState<string | null>(null);
 
     // ── Recovery Status State ──
-    const [recoveryData, setRecoveryData] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [recoveryData, setRecoveryData] = useState<Record<string, any> | null>(null);
     const [recoveryLoading, setRecoveryLoading] = useState(false);
 
     // ── Score History ──

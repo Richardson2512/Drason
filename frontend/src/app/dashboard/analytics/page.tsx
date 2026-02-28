@@ -49,7 +49,7 @@ export default function AnalyticsPage() {
                 const list = res?.data || res || [];
                 setCampaigns(Array.isArray(list) ? list : []);
             })
-            .catch(() => {});
+            .catch(err => console.error('[Analytics] Failed to fetch campaigns', err));
     }, []);
 
     const fetchAnalytics = useCallback(async () => {

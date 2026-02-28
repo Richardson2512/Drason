@@ -12,8 +12,10 @@ import { PlatformBadge } from '@/components/ui/PlatformBadge';
 export default function CampaignsPage() {
     const router = useRouter();
     const [campaigns, setCampaigns] = useState<any[]>([]);
-    const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
-    const [stats, setStats] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [selectedCampaign, setSelectedCampaign] = useState<Record<string, any> | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [stats, setStats] = useState<Record<string, any> | null>(null);
     const [loading, setLoading] = useState(true);
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
 

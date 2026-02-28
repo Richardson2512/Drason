@@ -42,7 +42,7 @@ export default function LeadHealthChart() {
     useEffect(() => {
         apiClient<LeadHealthData>('/api/dashboard/lead-health-stats')
             .then(setData)
-            .catch(() => {})
+            .catch(err => console.error('[LeadHealthChart] Failed to fetch health stats', err))
             .finally(() => setLoading(false));
     }, []);
 

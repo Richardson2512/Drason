@@ -51,7 +51,8 @@ function getConnectionResolution(error: string | null | undefined, platform?: st
 
 export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<any[]>([]);
-    const [selectedMailbox, setSelectedMailbox] = useState<any>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [selectedMailbox, setSelectedMailbox] = useState<Record<string, any> | null>(null);
     const [loading, setLoading] = useState(true);
 
     // Filters
