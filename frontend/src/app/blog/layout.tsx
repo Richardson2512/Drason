@@ -251,7 +251,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             {/* ================= FOOTER ================= */}
-            <Footer />
+            <div className="relative z-40">
+                <Footer />
+            </div>
 
             {/* Overlay for mobile */}
             {sidebarOpen && (
