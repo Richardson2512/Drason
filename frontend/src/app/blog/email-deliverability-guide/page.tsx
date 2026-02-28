@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Footer from '@/components/Footer';
+
 import { Shield, AlertTriangle, CheckCircle, Zap, Lock, Activity } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -656,7 +656,6 @@ export default function EmailDeliverabilityGuide() {
                 </div>
             </section>
 
-            <Footer />
         </>
     );
 }

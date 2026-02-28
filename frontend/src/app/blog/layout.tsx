@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import CloudBackground from '@/components/CloudBackground';
 
 const blogArticles = [
@@ -166,7 +167,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
     }
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-x-hidden">
 
             {/* ================= NAVBAR ================= */}
             <Navbar />
@@ -248,6 +249,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                     <TableOfContents />
                 </div>
             </div>
+
+            {/* ================= FOOTER ================= */}
+            <Footer />
 
             {/* Overlay for mobile */}
             {sidebarOpen && (

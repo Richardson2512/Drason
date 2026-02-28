@@ -341,9 +341,24 @@ function BillingContent() {
                             ✓ {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining in your free trial
                         </div>
                     )}
-                    {data?.subscription.nextBillingDate && data?.subscription.status !== 'trialing' && (
-                        <div style={{ fontSize: '0.875rem', color: '#64748B' }}>
-                            Next billing date: <strong>{new Date(data.subscription.nextBillingDate).toLocaleDateString()}</strong>
+                    {data?.subscription.status === 'active' && (
+                        <div style={{
+                            display: 'flex',
+                            gap: '1.5rem',
+                            flexWrap: 'wrap',
+                            fontSize: '0.875rem',
+                            color: '#64748B'
+                        }}>
+                            {data.subscription.subscriptionStartedAt && (
+                                <div>
+                                    Billing started: <strong>{new Date(data.subscription.subscriptionStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</strong>
+                                </div>
+                            )}
+                            {data.subscription.nextBillingDate && (
+                                <div>
+                                    Next bill: <strong>{new Date(data.subscription.nextBillingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</strong>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
