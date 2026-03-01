@@ -126,6 +126,13 @@ function LeadsPageContent() {
         fetchLeads();
     }, [fetchLeads]);
 
+    // Auto-refresh when infrastructure assessment completes
+    useEffect(() => {
+        const handler = () => fetchLeads();
+        window.addEventListener('assessment-complete', handler);
+        return () => window.removeEventListener('assessment-complete', handler);
+    }, [fetchLeads]);
+
     // Fetch all campaigns for the filter dropdown
     useEffect(() => {
         apiClient<any>('/api/dashboard/campaigns?limit=1000')
@@ -348,7 +355,7 @@ function LeadsPageContent() {
                     {/* Status Filter Tabs */}
                     <div style={{ flexShrink: 0, marginBottom: '1rem' }}>
                         <div style={{ display: 'flex', background: '#F3F4F6', padding: '0.25rem', borderRadius: '12px' }}>
-                            {['all', 'held', 'active', 'paused'].map(t => (
+                            {['all', 'held', 'active', 'paused', 'bounced'].map(t => (
                                 <button
                                     key={t}
                                     onClick={() => handleTabChange(t)}

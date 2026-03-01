@@ -116,6 +116,16 @@ export default function InfrastructureHealthPage() {
         fetchScoreHistory();
     }, [fetchReport]);
 
+    // Auto-refresh when infrastructure assessment completes
+    useEffect(() => {
+        const handler = () => {
+            fetchReport();
+            fetchScoreHistory();
+        };
+        window.addEventListener('assessment-complete', handler);
+        return () => window.removeEventListener('assessment-complete', handler);
+    }, [fetchReport]);
+
     const fetchScoreHistory = async () => {
         try {
             const data = await apiClient<any[]>('/api/assessment/reports');
@@ -755,7 +765,7 @@ export default function InfrastructureHealthPage() {
             </div>
 
             {/* Score History */}
-            {scoreHistory.length > 1 && (
+            {scoreHistory.length > 0 && (
                 <div className="premium-card">
                     <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         📈 Score History

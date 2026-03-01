@@ -27,6 +27,40 @@ export default function DashboardLayout({
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
     const [orgName, setOrgName] = useState<string>('');
+    const [assessmentInProgress, setAssessmentInProgress] = useState<boolean>(false);
+    const [assessmentJustFinished, setAssessmentJustFinished] = useState<boolean>(false);
+
+    // Poll assessment status every 5 seconds
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        let wasInProgress = false;
+
+        const checkAssessment = () => {
+            apiClient<any>('/api/assessment/status')
+                .then(data => {
+                    const inProgress = data?.data?.inProgress ?? false;
+                    setAssessmentInProgress(inProgress);
+
+                    // If assessment just finished, trigger a full data refresh
+                    if (wasInProgress && !inProgress) {
+                        setAssessmentJustFinished(true);
+                        // Dispatch a custom event so child pages can refresh their data
+                        window.dispatchEvent(new CustomEvent('assessment-complete'));
+                        // Auto-clear the "complete" state after 2 seconds
+                        setTimeout(() => {
+                            setAssessmentJustFinished(false);
+                        }, 2000);
+                    }
+                    wasInProgress = inProgress;
+                })
+                .catch(() => {});
+        };
+
+        checkAssessment();
+        interval = setInterval(checkAssessment, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         // Fetch current user info including role
@@ -403,6 +437,108 @@ export default function DashboardLayout({
                     </div>
                 )}
 
+                {/* Infrastructure Assessment Progress Overlay */}
+                {assessmentInProgress && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.5)',
+                        backdropFilter: 'blur(4px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 100
+                    }}>
+                        <div style={{
+                            background: 'white',
+                            borderRadius: '20px',
+                            padding: '2.5rem 3rem',
+                            maxWidth: '440px',
+                            width: '90%',
+                            textAlign: 'center',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
+                            animation: 'slideIn 0.3s ease-out'
+                        }}>
+                            <div style={{
+                                width: '64px',
+                                height: '64px',
+                                margin: '0 auto 1.5rem',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <div style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    border: '4px solid #E0E7FF',
+                                    borderTop: '4px solid #6366F1',
+                                    borderRadius: '50%',
+                                    animation: 'spin 1s linear infinite'
+                                }} />
+                            </div>
+                            <h3 style={{
+                                margin: '0 0 0.5rem',
+                                fontSize: '1.25rem',
+                                fontWeight: 700,
+                                color: '#1E1B4B'
+                            }}>
+                                Infrastructure Assessment Running
+                            </h3>
+                            <p style={{
+                                margin: '0 0 1.5rem',
+                                fontSize: '0.9rem',
+                                color: '#6B7280',
+                                lineHeight: 1.5
+                            }}>
+                                Checking DNS records, bounce rates, and mailbox health across all domains. This takes a moment — data will refresh automatically when complete.
+                            </p>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                                padding: '0.75rem 1rem',
+                                background: '#F5F3FF',
+                                borderRadius: '12px',
+                                fontSize: '0.8rem',
+                                color: '#7C3AED',
+                                fontWeight: 600
+                            }}>
+                                <span style={{ animation: 'pulse 1.5s infinite' }}>●</span>
+                                Assessment in progress...
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Assessment Complete Flash */}
+                {assessmentJustFinished && !assessmentInProgress && (
+                    <div style={{
+                        position: 'fixed',
+                        top: '1rem',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: 'linear-gradient(135deg, #ECFDF5, #D1FAE5)',
+                        border: '2px solid #34D399',
+                        borderRadius: '16px',
+                        padding: '1rem 1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                        zIndex: 100,
+                        animation: 'slideIn 0.3s ease-out'
+                    }}>
+                        <span style={{ fontSize: '1.25rem' }}>✓</span>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#065F46' }}>Assessment complete — data refreshed</span>
+                    </div>
+                )}
+
                 {/* Trial Countdown Floating Popup */}
                 {subscription?.status === 'trialing' && daysRemaining !== null && !trialBannerDismissed && (
                     <div style={{
@@ -514,6 +650,10 @@ export default function DashboardLayout({
           50% {
             opacity: 0.5;
           }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         @keyframes slideIn {
           from {

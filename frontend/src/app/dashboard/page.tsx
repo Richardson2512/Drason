@@ -113,6 +113,25 @@ export default function Overview() {
     });
   }, []);
 
+  // Auto-refresh when infrastructure assessment completes
+  useEffect(() => {
+    const handler = () => {
+      Promise.all([
+        apiClient<any>('/api/dashboard/stats').catch(() => null),
+        apiClient<any>('/api/dashboard/domains').catch(() => null),
+        apiClient<any>('/api/dashboard/mailboxes').catch(() => null),
+        apiClient<any>('/api/dashboard/campaigns').catch(() => null),
+      ]).then(([statsData, domainsData, mailboxesData, campaignsData]) => {
+        if (statsData) setStats(statsData);
+        if (domainsData?.data) setDomains(domainsData.data);
+        if (mailboxesData?.data) setMailboxes(mailboxesData.data);
+        if (campaignsData?.data) setCampaigns(campaignsData.data);
+      });
+    };
+    window.addEventListener('assessment-complete', handler);
+    return () => window.removeEventListener('assessment-complete', handler);
+  }, []);
+
   if (error) return <div style={{ padding: '2rem', color: '#EF4444' }}>Error: {error}</div>;
   if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
 

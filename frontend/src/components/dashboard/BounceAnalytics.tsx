@@ -4,6 +4,7 @@ import { apiClient } from '@/lib/api';
 
 interface BounceAnalyticsProps {
     mailboxId?: string;
+    domainId?: string;
     campaignId?: string;
     showFilters?: boolean;
 }
@@ -39,7 +40,7 @@ interface BounceReason {
     count: number;
 }
 
-export default function BounceAnalytics({ mailboxId, campaignId, showFilters = false }: BounceAnalyticsProps) {
+export default function BounceAnalytics({ mailboxId, domainId, campaignId, showFilters = false }: BounceAnalyticsProps) {
     const [loading, setLoading] = useState(true);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [summary, setSummary] = useState<Record<string, any> | null>(null);
@@ -60,6 +61,7 @@ export default function BounceAnalytics({ mailboxId, campaignId, showFilters = f
                 const params = new URLSearchParams();
 
                 if (mailboxId) params.append('mailbox_id', mailboxId);
+                if (domainId) params.append('domain_id', domainId);
                 if (campaignId) params.append('campaign_id', campaignId);
                 if (bounceTypeFilter !== 'all') params.append('bounce_type', bounceTypeFilter);
                 if (startDate) params.append('start_date', startDate);
@@ -82,7 +84,7 @@ export default function BounceAnalytics({ mailboxId, campaignId, showFilters = f
         };
 
         fetchAnalytics();
-    }, [mailboxId, campaignId, bounceTypeFilter, startDate, endDate]);
+    }, [mailboxId, domainId, campaignId, bounceTypeFilter, startDate, endDate]);
 
     if (loading) {
         return (

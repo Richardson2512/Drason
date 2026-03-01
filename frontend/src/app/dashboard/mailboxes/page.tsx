@@ -7,6 +7,7 @@ import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge, getPlatformLabel } from '@/components/ui/PlatformBadge';
+import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
 
 // Map raw connection errors to user-friendly resolution guidance (platform-aware)
 function getConnectionResolution(error: string | null | undefined, platform?: string): { cause: string; resolution: string } {
@@ -121,6 +122,13 @@ export default function MailboxesPage() {
 
     useEffect(() => {
         fetchMailboxes();
+    }, [fetchMailboxes]);
+
+    // Auto-refresh when infrastructure assessment completes
+    useEffect(() => {
+        const handler = () => fetchMailboxes();
+        window.addEventListener('assessment-complete', handler);
+        return () => window.removeEventListener('assessment-complete', handler);
     }, [fetchMailboxes]);
 
     // Fetch campaigns and domains for filter dropdowns
@@ -843,6 +851,9 @@ export default function MailboxesPage() {
                                 </div>
                             )}
                         </div>
+
+                        {/* Bounce Event Details */}
+                        <BounceAnalytics mailboxId={selectedMailbox.id} />
 
                         {/* Infrastructure Health Issues */}
                         <FindingsCard entityType="mailbox" entityId={selectedMailbox.id} />

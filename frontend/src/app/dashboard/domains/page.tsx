@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
+import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
 import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
@@ -72,6 +73,13 @@ export default function DomainsPage() {
 
     useEffect(() => {
         fetchDomains();
+    }, [fetchDomains]);
+
+    // Auto-refresh when infrastructure assessment completes
+    useEffect(() => {
+        const handler = () => fetchDomains();
+        window.addEventListener('assessment-complete', handler);
+        return () => window.removeEventListener('assessment-complete', handler);
     }, [fetchDomains]);
 
     useEffect(() => {
@@ -649,6 +657,9 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                     </div>
                 </div>
             </div>
+
+            {/* Detailed Bounce Events for this Domain */}
+            <BounceAnalytics domainId={selectedDomain.id} />
 
             {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
             <div className="premium-card" style={{ marginBottom: '2rem' }}>
