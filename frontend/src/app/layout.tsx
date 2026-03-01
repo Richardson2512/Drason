@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
   title: 'Superkabe – Email deliverability and infrastructure protection for outbound teams',
   description:
-    'Superkabe protects outbound email infrastructure by monitoring bounce rates, DNS authentication, and mailbox fatigue in real time to prevent domain burnout.',
+    'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
   alternates: {
     canonical: '/',
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Superkabe - Infrastructure Protection for Outbound',
-    description: 'Protect your outbound email infrastructure with production-hardened monitoring and auto-healing.',
+    description: 'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
     url: 'https://www.superkabe.com',
     siteName: 'Superkabe',
     images: [
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Superkabe - Modern Outbound Protection',
-    description: 'The monitoring layer between your enrichment and email stack.',
+    description: 'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
     images: ['/image/og-image.png'],
   },
   verification: {
@@ -66,7 +66,7 @@ export default function RootLayout({
     name: 'Superkabe',
     url: 'https://www.superkabe.com',
     logo: 'https://www.superkabe.com/image/logo-v2.png',
-    description: 'Superkabe is an email deliverability and sender reputation protection platform that protects outbound email infrastructure through real-time bounce monitoring, DNS authentication enforcement, and mailbox fatigue detection.',
+    description: 'Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.',
     foundingDate: '2024',
     founder: {
       '@type': 'Person',
@@ -93,7 +93,7 @@ export default function RootLayout({
     operatingSystem: 'Web',
     url: 'https://www.superkabe.com',
     description:
-      'Infrastructure protection layer for outbound email that monitors bounce rates, protects sender reputation, and auto-heals domain infrastructure.',
+      'Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.',
     offers: {
       '@type': 'Offer',
       price: '49',

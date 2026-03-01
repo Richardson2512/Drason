@@ -173,7 +173,7 @@ export default function LandingPage() {
                     "@type": "WebSite",
                     name: "Superkabe",
                     url: "https://www.superkabe.com",
-                    description: "Superkabe is an email deliverability and sender reputation protection platform that protects outbound email infrastructure through real-time bounce monitoring, DNS authentication enforcement, and mailbox fatigue detection.",
+                    description: "Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.",
                     publisher: {
                         "@type": "Organization",
                         name: "Superkabe"
