@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from 'recharts';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 import LeadHealthChart from '@/components/dashboard/LeadHealthChart';
 import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
+import SemiCircleGauge from '@/components/dashboard/SemiCircleGauge';
 
 interface DashboardStats { active: number; held: number; paused: number }
 interface DomainSummary { id: string; domain: string; status: string; paused_reason?: string }
@@ -449,159 +449,66 @@ export default function Overview() {
         </div>
       )}
 
-      {/* 2. Visual Analytics (Charts) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="premium-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Lead Status</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Active vs. Paused leads</p>
-            </div>
-            <div style={{ background: '#F3F4F6', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '600', color: '#374151' }}>
-              Total: {stats.active + stats.held + stats.paused}
-            </div>
+      {/* 2. Visual Analytics (Gauges) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Lead Status</h2>
+            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Active vs. Paused leads</p>
           </div>
-          <div style={{ height: '240px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={leadChartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={90}
-                  paddingAngle={5}
-                  dataKey="value"
-                  cornerRadius={6}
-                >
-                  {leadChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} itemStyle={{ fontWeight: 600 }} />
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          <SemiCircleGauge
+            data={leadChartData}
+            centerValue={stats.active + stats.held + stats.paused}
+            centerLabel="Total"
+          />
         </div>
 
-        <div className="premium-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Domain Health</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Infrastructure reputation</p>
-            </div>
-            <div style={{ background: '#F0FDF4', color: '#16A34A', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700' }}>
-              {domains.length} Total
-            </div>
+        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Domain Health</h2>
+            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Infrastructure reputation</p>
           </div>
-          <div style={{ height: '240px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={domainChartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={90}
-                  paddingAngle={5}
-                  dataKey="value"
-                  cornerRadius={6}
-                >
-                  {domainChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} itemStyle={{ fontWeight: 600 }} />
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
+          <SemiCircleGauge
+            data={domainChartData}
+            centerValue={domains.length}
+            centerLabel="Domains"
+          />
+        </div>
+
+        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Mailbox Health</h2>
+            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Sending capacity status</p>
           </div>
+          <SemiCircleGauge
+            data={mailboxChartData}
+            centerValue={mailboxes.length}
+            centerLabel="Mailboxes"
+          />
         </div>
       </div>
 
-      {/* Mailbox and Campaign Charts */}
+      {/* Campaign Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="premium-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Mailbox Health</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Sending capacity status</p>
-            </div>
-            <div style={{ background: '#EFF6FF', color: '#2563EB', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700' }}>
-              {mailboxes.length} Total
-            </div>
+        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Active Campaigns</h2>
+            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Lead distribution by campaign</p>
           </div>
-          <div style={{ height: '240px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={mailboxChartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={90}
-                  paddingAngle={5}
-                  dataKey="value"
-                  cornerRadius={6}
-                >
-                  {mailboxChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} itemStyle={{ fontWeight: 600 }} />
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          <SemiCircleGauge
+            data={campaignData.map((c, i) => ({
+              name: c.name.length > 20 ? c.name.substring(0, 20) + '...' : c.name,
+              value: c.count,
+              color: ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#6366F1'][i % 8],
+            }))}
+            centerValue={campaignData.reduce((sum, c) => sum + c.count, 0)}
+            centerLabel="Leads"
+          />
         </div>
 
-        <div className="premium-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Active Campaigns</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Lead distribution by campaign</p>
-            </div>
-            <div style={{ background: '#EFF6FF', color: '#2563EB', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700' }}>
-              {campaigns.length} Active
-            </div>
-          </div>
-          <div style={{ height: '240px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={campaignData}>
-                <XAxis dataKey="name" stroke="#9CA3AF" fontSize={10} tickLine={false} axisLine={false} tick={{ dy: 10 }} tickFormatter={(v: string) => v.length > 15 ? v.substring(0, 15) + '...' : v} />
-                <YAxis stroke="#9CA3AF" fontSize={11} tickLine={false} axisLine={false} />
-                <Tooltip
-                  cursor={{ fill: '#F3F4F6' }}
-                  contentStyle={{ background: '#FFFFFF', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '0.75rem 1rem' }}
-                  formatter={(value: any) => [`${value} leads`, 'Leads']}
-                  labelFormatter={(label: any) => String(label).length > 30 ? String(label).substring(0, 30) + '...' : String(label)}
-                />
-                <Bar dataKey="count" fill="url(#colorGradient)" radius={[6, 6, 0, 0]} barSize={40}>
-                  {campaignData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={`url(#gradient-${index})`} />
-                  ))}
-                </Bar>
-                <defs>
-                  <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3B82F6" stopOpacity={1} />
-                    <stop offset="100%" stopColor="#2563EB" stopOpacity={0.8} />
-                  </linearGradient>
-                  {campaignData.map((entry, index) => (
-                    <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3B82F6" stopOpacity={1} />
-                      <stop offset="100%" stopColor="#60A5FA" stopOpacity={1} />
-                    </linearGradient>
-                  ))}
-                </defs>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        {/* Lead Health Classification */}
+        <LeadHealthChart />
       </div>
-
-      {/* Lead Health Classification */}
-      <LeadHealthChart />
 
       {/* Top Performing Leads */}
       <TopLeadsCard campaigns={campaigns} />
