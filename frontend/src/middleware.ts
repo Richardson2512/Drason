@@ -2,6 +2,16 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+    const host = request.headers.get('host') || '';
+
+    // 0. Redirect non-www to www (301 permanent)
+    if (host === 'superkabe.com') {
+        const url = request.nextUrl.clone();
+        url.host = 'www.superkabe.com';
+        url.protocol = 'https';
+        return NextResponse.redirect(url, 301);
+    }
+
     const token = request.cookies.get('token')?.value;
     const { pathname } = request.nextUrl;
 

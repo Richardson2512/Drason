@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
   title: 'Superkabe – Email deliverability and infrastructure protection for outbound teams',
   description:
-    'Superkabe is an infrastructure protection layer for outbound email teams. It monitors bounce rates, DNS authentication, mailbox fatigue, and lead health in real time to prevent domain burnout and protect sender reputation.',
+    'Superkabe protects outbound email infrastructure by monitoring bounce rates, DNS authentication, and mailbox fatigue in real time to prevent domain burnout.',
   alternates: {
     canonical: '/',
   },
