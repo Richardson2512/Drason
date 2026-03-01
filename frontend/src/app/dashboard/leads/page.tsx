@@ -652,9 +652,7 @@ function LeadsPageContent() {
                                                 marginTop: '0.5rem',
                                                 fontStyle: 'italic'
                                             }}>
-                                                {selectedLead.source === 'smartlead'
-                                                    ? 'Based on opens, clicks, replies & bounces'
-                                                    : 'Initial score (will update after engagement)'}
+                                                Based on opens, clicks, replies &amp; bounces
                                             </div>
                                         </div>
                                         <div>
@@ -727,7 +725,7 @@ function LeadsPageContent() {
                                 </div>
 
                                 {/* Score Breakdown Section */}
-                                {selectedLead.source === 'smartlead' && (
+                                {(selectedLead.emails_opened > 0 || selectedLead.emails_clicked > 0 || selectedLead.emails_replied > 0) && (
                                     <div className="premium-card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)', border: '2px solid #E2E8F0' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                                             <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

@@ -5,6 +5,33 @@ import path from 'path';
 const BASE_URL = 'https://www.superkabe.com';
 
 /**
+ * Get the last modified time of a page file.
+ * Falls back to current date if the file doesn't exist.
+ */
+function getPageMtime(routePath: string): Date {
+    // Map route path to file system path
+    // e.g. '/' → 'src/app/(home)/page.tsx', '/pricing' → 'src/app/pricing/page.tsx'
+    const routeMap: Record<string, string> = {
+        '/': '(home)',
+        '/pricing': 'pricing',
+        '/privacy': 'privacy',
+        '/terms': 'terms',
+        '/open-source': 'open-source',
+        '/infrastructure-playbook': 'infrastructure-playbook',
+        '/product': 'product',
+    };
+
+    const dir = routeMap[routePath];
+    if (!dir) return new Date();
+
+    const pagePath = path.join(process.cwd(), 'src', 'app', dir, 'page.tsx');
+    if (fs.existsSync(pagePath)) {
+        return fs.statSync(pagePath).mtime;
+    }
+    return new Date();
+}
+
+/**
  * Dynamically scans a directory under src/app for page.tsx files
  * and returns sitemap entries for each discovered route.
  */
@@ -49,18 +76,39 @@ function discoverRoutes(
     return entries;
 }
 
+/**
+ * Get the last modified time for a product/[slug] page.
+ * Uses the dynamic page template file and the product data source.
+ */
+function getProductPageMtime(): Date {
+    const templatePath = path.join(process.cwd(), 'src', 'app', 'product', '[slug]', 'page.tsx');
+    const dataPath = path.join(process.cwd(), 'src', 'data', 'productPages.ts');
+
+    // Use the more recently modified of the template or data file
+    let latest = new Date(0);
+    for (const p of [templatePath, dataPath]) {
+        if (fs.existsSync(p)) {
+            const mtime = fs.statSync(p).mtime;
+            if (mtime > latest) latest = mtime;
+        }
+    }
+    return latest > new Date(0) ? latest : new Date();
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
+    const productMtime = getProductPageMtime();
+
     return [
         // ─── Core Pages ───────────────────────────────
         {
             url: BASE_URL,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/'),
             changeFrequency: 'weekly',
             priority: 1.0,
         },
         {
             url: `${BASE_URL}/pricing`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/pricing'),
             changeFrequency: 'monthly',
             priority: 0.9,
         },
@@ -68,13 +116,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ─── Legal ────────────────────────────────────
         {
             url: `${BASE_URL}/privacy`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/privacy'),
             changeFrequency: 'yearly',
             priority: 0.3,
         },
         {
             url: `${BASE_URL}/terms`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/terms'),
             changeFrequency: 'yearly',
             priority: 0.3,
         },
@@ -88,19 +136,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ─── Manifestos & Playbooks ───────────────────
         {
             url: `${BASE_URL}/open-source`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/open-source'),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
             url: `${BASE_URL}/infrastructure-playbook`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/infrastructure-playbook'),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
             url: `${BASE_URL}/product`,
-            lastModified: new Date(),
+            lastModified: getPageMtime('/product'),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
@@ -134,7 +182,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             'case-study-infrastructure-protection',
         ].map(slug => ({
             url: `${BASE_URL}/product/${slug}`,
-            lastModified: new Date(),
+            lastModified: productMtime,
             changeFrequency: 'weekly' as const,
             priority: 0.9,
         })),

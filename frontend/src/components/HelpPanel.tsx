@@ -17,7 +17,7 @@ const helpArticles: HelpArticle[] = [
         title: '24/7 Infrastructure Monitoring',
         href: '/docs/help/24-7-monitoring',
         description: 'How automated background syncing protects your infrastructure 24/7',
-        tags: ['monitoring', 'automation', 'smartlead', 'sync', 'real-time', '24/7']
+        tags: ['monitoring', 'automation', 'sync', 'real-time', '24/7']
     },
     {
         title: 'Understanding Infrastructure Score',
@@ -74,6 +74,18 @@ const helpArticles: HelpArticle[] = [
         tags: ['smartlead', 'integration', 'sync']
     },
     {
+        title: 'EmailBison Integration',
+        href: '/docs/emailbison-integration',
+        description: 'Connecting and syncing with EmailBison',
+        tags: ['emailbison', 'integration', 'sync']
+    },
+    {
+        title: 'Instantly Integration',
+        href: '/docs/instantly-integration',
+        description: 'Connecting and syncing with Instantly',
+        tags: ['instantly', 'integration', 'sync']
+    },
+    {
         title: 'Notifications Guide',
         href: '/docs/help/notifications',
         description: 'Understanding notification types and severity levels',
@@ -89,7 +101,7 @@ const contextualHelp: Record<string, string[]> = {
     '/dashboard/domains': ['24-7-monitoring', 'dns-setup', 'status-colors', 'monitoring'],
     '/dashboard/mailboxes': ['24-7-monitoring', 'status-colors', 'monitoring', 'auto-healing'],
     '/dashboard/notifications': ['notifications', 'status-colors'],
-    '/dashboard/settings': ['24-7-monitoring', 'smartlead-integration', 'dns-setup'],
+    '/dashboard/settings': ['24-7-monitoring', 'smartlead-integration', 'emailbison-integration', 'instantly-integration', 'dns-setup'],
 };
 
 interface HelpPanelProps {

@@ -38,9 +38,17 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
 
-    // Integration slide box
+    // Integration slide box — default will be updated after settings load
     const [activeIntegration, setActiveIntegration] = useState<'smartlead' | 'instantly' | 'emailbison' | 'replyio'>('smartlead');
+    const [settingsLoaded, setSettingsLoaded] = useState(false);
 
+    // Auto-select first configured integration after settings load
+    useEffect(() => {
+        if (!settingsLoaded) return;
+        if (apiKey) return; // Smartlead is configured, keep default
+        if (ebApiKey) { setActiveIntegration('emailbison'); return; }
+        // Otherwise keep smartlead as default
+    }, [settingsLoaded, apiKey, ebApiKey]);
 
     useEffect(() => {
         // Fetch current settings
@@ -55,8 +63,12 @@ export default function Settings() {
                     const ebKeySetting = settingsData.find((s: any) => s.key === 'EMAILBISON_API_KEY');
                     if (ebKeySetting) setEbApiKey(ebKeySetting.value);
                 }
+                setSettingsLoaded(true);
             })
-            .catch(err => console.error('[Settings] Failed to fetch settings', err));
+            .catch(err => {
+                console.error('[Settings] Failed to fetch settings', err);
+                setSettingsLoaded(true);
+            });
 
         // Fetch organization info (Phase 5)
         apiClient<any>('/api/organization')

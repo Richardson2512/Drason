@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to assess your outbound email infrastructure before sending your first campaign',
+    title: 'Assess Your Email Infrastructure Before Your First Campaign',
     description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
     openGraph: {
         title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',

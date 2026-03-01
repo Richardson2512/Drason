@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'How spam filters work and how they affect email deliverability',
-    description: 'Technical breakdown of how ISP spam filters evaluate outbound emails, content-level triggers that cause filtering, and proven strategies for avoiding spam folders.',
+    description: 'How ISP spam filters evaluate outbound emails across four layers, content triggers that cause filtering, and strategies for staying in the inbox.',
     openGraph: {
         title: 'How spam filters work and how they affect email deliverability',
         description: 'How ISP spam filters score inbound email, what triggers filtering for outbound teams, and how to avoid the spam folder without sacrificing personalization.',

@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'How to protect and master your outbound email deliverability',
-    description: 'Comprehensive guide to email deliverability covering sender reputation, bounce rates, DNS authentication, domain warming, and infrastructure protection for outbound email operators.',
+    description: 'Complete guide to email deliverability: sender reputation, bounce rates, DNS authentication, domain warming, and infrastructure protection.',
     openGraph: {
         title: 'How to protect and master your outbound email deliverability',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',

@@ -1,8 +1,20 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard/
+Disallow: /onboarding/
+Disallow: /api/
 
 User-agent: Googlebot
 Allow: /
+Disallow: /dashboard/
+Disallow: /onboarding/
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /dashboard/
+Disallow: /onboarding/
+Disallow: /api/
 
 User-agent: GPTBot
 Allow: /
@@ -19,10 +31,10 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Bingbot
-Allow: /
-
 User-agent: Slurp
 Allow: /
+Disallow: /dashboard/
+Disallow: /onboarding/
+Disallow: /api/
 
 Sitemap: https://www.superkabe.com/sitemap.xml

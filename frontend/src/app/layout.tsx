@@ -12,7 +12,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
-  title: 'Superkabe – Email deliverability and infrastructure protection for outbound teams',
+  title: 'Superkabe – Email Deliverability Protection for Outbound',
   description:
     'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
   alternates: {

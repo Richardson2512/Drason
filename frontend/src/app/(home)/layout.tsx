@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Superkabe – Email Deliverability & Infrastructure Protection for Outbound Teams',
+    title: 'Superkabe – Outbound Email Infrastructure Protection',
     description: 'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
     alternates: { canonical: '/' },
     openGraph: {

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email deliverability tools compared: monitoring, reputation, and protection software',
-    description: 'Compare email deliverability tools, sender reputation monitoring platforms, and infrastructure protection software. Find the right tools for your outbound email operation.',
+    title: 'Email Deliverability Tools Compared for Outbound Teams',
+    description: 'Compare email deliverability tools, reputation monitoring platforms, and infrastructure protection software for outbound email teams.',
     openGraph: {
-        title: 'Email deliverability tools compared: monitoring, reputation, and protection software',
+        title: 'Email Deliverability Tools Compared for Outbound Teams',
         description: 'Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software for outbound email teams.',
         type: 'article',
         publishedTime: '2026-02-27',

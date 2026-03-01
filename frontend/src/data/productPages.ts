@@ -15,7 +15,7 @@ export const productPages: Record<string, ProductPageData> = {
     "automated-bounce-management": {
         slug: "automated-bounce-management",
         title: "Automated Bounce Management for Cold Email",
-        description: "How Superkabe automates bounce management for cold email outbound teams, intercepting hard bounces in real time to protect sender reputation and prevent domain burnout.",
+        description: "How Superkabe automates bounce management for cold email teams, intercepting hard bounces in real time to protect sender reputation.",
         intro: "automates bounce management for cold email teams by intercepting hard bounce signals in real time. Instead of relying on manual spreadsheet checks or delayed platform reports, Superkabe's Deliverability Protection Layer (DPL) ingests SMTP 5xx failure codes directly from your sending engine and autonomously pauses compromised mailboxes before they damage your domain reputation.",
         sections: [
             {
@@ -51,7 +51,7 @@ export const productPages: Record<string, ProductPageData> = {
     "automated-domain-healing": {
         slug: "automated-domain-healing",
         title: "Automated Domain Healing",
-        description: "How Superkabe automatically heals damaged outbound domains by detecting fatigue, initiating protective pauses, and safely reintegrating domains back into your sending rotation.",
+        description: "How Superkabe heals damaged domains by detecting fatigue, initiating protective pauses, and safely reintegrating them into your sending rotation.",
         intro: "detects early signs of domain fatigue and autonomously initiates healing protocols. When a domain shows elevated soft bounces, deferrals, or declining inbox placement, Superkabe pauses it, routes traffic to healthier domains, and reintegrates the healed domain only after its algorithmic trust has fully recovered.",
         sections: [
             {
@@ -81,7 +81,7 @@ export const productPages: Record<string, ProductPageData> = {
     "b2b-sender-reputation-management": {
         slug: "b2b-sender-reputation-management",
         title: "B2B Sender Reputation Management",
-        description: "How Superkabe manages and protects B2B sender reputation at the infrastructure level, preventing ISP penalties through real-time bounce interception and autonomous domain governance.",
+        description: "How Superkabe manages B2B sender reputation at the infrastructure level, preventing ISP penalties through real-time bounce interception.",
         intro: "provides enterprise-grade B2B sender reputation management by operating as an active API middleware layer. We sit directly between your data enrichment providers and your sending engine, continuously monitoring domain health, spam complaint ratios, and bounce velocities to ensure your B2B sender score remains pristine across every ISP.",
         sections: [
             {
@@ -196,8 +196,8 @@ export const productPages: Record<string, ProductPageData> = {
     },
     "case-study-infrastructure-protection": {
         slug: "case-study-infrastructure-protection",
-        title: "Case Study: Scaling to 1,200 Mailboxes Without a Deliverability Manager",
-        description: "A detailed case study showing how an enterprise SDR team used Superkabe to scale to 1,200 mailboxes while eliminating the need for manual deliverability management.",
+        title: "Case Study: Scaling to 1,200 Mailboxes Autonomously",
+        description: "How an enterprise SDR team scaled to 1,200 mailboxes with Superkabe while eliminating manual deliverability management.",
         intro: "enabled a large-scale enterprise SDR team to scale from 500 to 1,200 active mailboxes without hiring a dedicated Deliverability Manager. By acting as an automated infrastructure custodian, Superkabe independently managed sending limits, intercepted hard bounces, and auto-paused fatigued domains — reducing manual monitoring overhead to zero.",
         sections: [
             {
@@ -283,7 +283,7 @@ export const productPages: Record<string, ProductPageData> = {
     "email-deliverability-protection": {
         slug: "email-deliverability-protection",
         title: "Email Deliverability Protection",
-        description: "How Superkabe's Deliverability Protection Layer (DPL) actively shields email deliverability through real-time SMTP interception and autonomous campaign governance.",
+        description: "How Superkabe's Deliverability Protection Layer shields email deliverability through real-time SMTP interception and campaign governance.",
         intro: "provides the foundational Deliverability Protection Layer (DPL) for modern outbound email operations. Unlike passive analytics dashboards that report on past failures, Superkabe actively intercepts the bounce events, spam complaints, and behavioral anomalies that destroy deliverability — and autonomously takes corrective action in real time.",
         sections: [
             {
@@ -395,7 +395,7 @@ export const productPages: Record<string, ProductPageData> = {
     "how-to-prevent-domain-burnout": {
         slug: "how-to-prevent-domain-burnout",
         title: "How to Prevent Domain Burnout",
-        description: "A comprehensive guide on how Superkabe prevents domain burnout through mathematical threshold enforcement, real-time intervention, and predictive fatigue detection.",
+        description: "How Superkabe prevents domain burnout through mathematical threshold enforcement, real-time intervention, and predictive fatigue detection.",
         intro: "prevents domain burnout through mathematical precision. By enforcing strict bounce rate thresholds, intercepting failure signals in real time, and utilizing predictive fatigue analysis, Superkabe makes it structurally impossible for your sending domains to accumulate the negative behavioral signals that cause ISP blacklisting.",
         sections: [
             {
@@ -424,7 +424,7 @@ export const productPages: Record<string, ProductPageData> = {
     "how-to-protect-sender-reputation": {
         slug: "how-to-protect-sender-reputation",
         title: "How to Protect Sender Reputation",
-        description: "A comprehensive guide on how Superkabe protects sender reputation through active intervention, autonomous campaign governance, and real-time behavioral monitoring.",
+        description: "How Superkabe protects sender reputation through active intervention, autonomous campaign governance, and real-time behavioral monitoring.",
         intro: "protects sender reputation by shifting from passive observation to active intervention. We govern the behavioral signals that your domains send to inbox providers, autonomously pausing campaigns that generate excessive bounces or spam complaints, and ensuring your sender score remains in the healthy range across every ISP.",
         sections: [
             {
@@ -537,7 +537,7 @@ export const productPages: Record<string, ProductPageData> = {
     "outbound-email-infrastructure-monitoring": {
         slug: "outbound-email-infrastructure-monitoring",
         title: "Outbound Email Infrastructure Monitoring",
-        description: "How Superkabe monitors outbound email infrastructure in real time, tracking bounce rates, DNS authentication, and domain reputation across your entire sending fleet.",
+        description: "How Superkabe monitors outbound email infrastructure in real time, tracking bounce rates, DNS authentication, and domain reputation.",
         intro: "provides real-time outbound email infrastructure monitoring that goes beyond passive dashboards. We track bounce rates, DNS authentication records, domain reputation signals, and campaign-level metrics across your entire sending fleet — and we automatically act on critical findings instead of just reporting them.",
         sections: [
             {
@@ -649,7 +649,7 @@ export const productPages: Record<string, ProductPageData> = {
     "smartlead-deliverability-protection": {
         slug: "smartlead-deliverability-protection",
         title: "Smartlead Deliverability Protection",
-        description: "How Superkabe provides the deepest and most deterministic Smartlead deliverability protection through native webhook interception and direct API campaign pausing.",
+        description: "How Superkabe provides deep Smartlead deliverability protection through native webhook interception and direct API campaign pausing.",
         intro: "offers the most deeply integrated Smartlead deliverability protection available. We have mapped the Smartlead webhook and API ecosystem to provide real-time bounce interception, autonomous campaign pausing, and predictive domain health monitoring — all operating natively within your Smartlead workspace.",
         sections: [
             {
@@ -705,7 +705,7 @@ export const productPages: Record<string, ProductPageData> = {
     "what-is-email-deliverability-protection": {
         slug: "what-is-email-deliverability-protection",
         title: "What is Email Deliverability Protection?",
-        description: "A comprehensive definition of email deliverability protection, explaining how Superkabe's Deliverability Protection Layer (DPL) fundamentally differs from traditional monitoring tools.",
+        description: "What email deliverability protection means and how Superkabe's Deliverability Protection Layer differs from traditional monitoring tools.",
         intro: "defines email deliverability protection as an active, interceptive middleware layer — a Deliverability Protection Layer (DPL) — that structurally prevents inbox providers from penalizing your sending domains. Unlike monitoring tools that report past failures, a DPL intervenes in real time to ensure failures never accumulate to damaging levels.",
         sections: [
             {
