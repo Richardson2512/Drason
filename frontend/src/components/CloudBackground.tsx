@@ -30,9 +30,25 @@ export default function CloudBackground() {
 
                 if (cancelled || !containerRef.current) return;
 
+                // Proxy THREE so the WebGL renderer preserves its draw buffer,
+                // otherwise toDataURL() returns a blank white image.
+                const OrigRenderer = THREE.WebGLRenderer;
+                const PatchedTHREE = new Proxy(THREE, {
+                    get(target, prop) {
+                        if (prop === 'WebGLRenderer') {
+                            return class extends OrigRenderer {
+                                constructor(params: any = {}) {
+                                    super({ ...params, preserveDrawingBuffer: true });
+                                }
+                            };
+                        }
+                        return (target as any)[prop];
+                    },
+                });
+
                 vantaRef.current = CLOUDS({
                     el: containerRef.current,
-                    THREE,
+                    THREE: PatchedTHREE,
                     skyColor: 0xc9e8ff,
                     cloudColor: 0xffffff,
                     cloudShadowColor: 0x89b8d8,
