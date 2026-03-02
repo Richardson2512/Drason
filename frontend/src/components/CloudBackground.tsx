@@ -1,46 +1,95 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+
 export default function CloudBackground() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const vantaRef = useRef<any>(null);
+    const [vantaReady, setVantaReady] = useState(false);
+
+    useEffect(() => {
+        if (!containerRef.current || vantaRef.current) return;
+
+        let cancelled = false;
+
+        // Defer Three.js loading until after the page is fully interactive.
+        // This keeps LCP/FCP/TBT clean — the CSS gradient placeholder shows instantly,
+        // then 3D clouds fade in once the browser is idle.
+        const scheduleLoad = (cb: () => void) => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(cb, { timeout: 4000 });
+            } else {
+                setTimeout(cb, 3000);
+            }
+        };
+
+        scheduleLoad(async () => {
+            if (cancelled || !containerRef.current) return;
+
+            try {
+                const THREE = await import('three');
+                // @ts-ignore — vanta has no official TS types
+                const { default: CLOUDS } = await import('vanta/dist/vanta.clouds.min');
+
+                if (cancelled || !containerRef.current) return;
+
+                vantaRef.current = CLOUDS({
+                    el: containerRef.current,
+                    THREE,
+                    skyColor: 0xc9e8ff,
+                    cloudColor: 0xffffff,
+                    cloudShadowColor: 0x89b8d8,
+                    sunColor: 0x000000,
+                    sunGlareColor: 0x000000,
+                    sunlightColor: 0x000000,
+                    speed: 0.5,
+                    scale: 5,
+                    scaleMobile: 8,
+                    mouseControls: false,
+                    touchControls: false,
+                    gyroControls: false,
+                });
+
+                if (!cancelled) setVantaReady(true);
+            } catch (err) {
+                // If Three.js fails to load, CSS gradient fallback stays visible
+                console.warn('[CloudBackground] Failed to load 3D clouds, using CSS fallback', err);
+            }
+        });
+
+        return () => {
+            cancelled = true;
+            if (vantaRef.current) {
+                vantaRef.current.destroy();
+                vantaRef.current = null;
+            }
+        };
+    }, []);
+
     return (
-        <div
-            className="absolute inset-0"
-            style={{
-                pointerEvents: 'none',
-                background: 'linear-gradient(180deg, #c9e8ff 0%, #e8f4ff 40%, #f0f7ff 70%, #ffffff 100%)',
-                overflow: 'hidden',
-            }}
-        >
-            {/* Animated cloud layers using CSS radial gradients */}
+        <div className="absolute inset-0" style={{ pointerEvents: 'none', overflow: 'hidden' }}>
+            {/* CSS gradient placeholder — renders instantly, no JS needed */}
             <div
                 style={{
                     position: 'absolute',
                     inset: 0,
-                    background: `
-                        radial-gradient(ellipse 600px 200px at 15% 20%, rgba(255,255,255,0.9) 0%, transparent 70%),
-                        radial-gradient(ellipse 500px 150px at 70% 15%, rgba(255,255,255,0.85) 0%, transparent 70%),
-                        radial-gradient(ellipse 700px 180px at 40% 35%, rgba(255,255,255,0.8) 0%, transparent 70%),
-                        radial-gradient(ellipse 400px 120px at 85% 40%, rgba(255,255,255,0.75) 0%, transparent 70%)
-                    `,
-                    animation: 'cloud-drift 60s linear infinite',
+                    background: 'linear-gradient(180deg, #c9e8ff 0%, #e8f4ff 40%, #f0f7ff 70%, #ffffff 100%)',
+                    opacity: vantaReady ? 0 : 1,
+                    transition: 'opacity 1s ease',
                 }}
             />
+
+            {/* Three.js canvas container — fades in once loaded */}
             <div
+                ref={containerRef}
+                className="absolute inset-0"
                 style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: `
-                        radial-gradient(ellipse 550px 170px at 25% 45%, rgba(255,255,255,0.7) 0%, transparent 70%),
-                        radial-gradient(ellipse 650px 190px at 60% 55%, rgba(255,255,255,0.65) 0%, transparent 70%),
-                        radial-gradient(ellipse 450px 140px at 80% 25%, rgba(255,255,255,0.6) 0%, transparent 70%)
-                    `,
-                    animation: 'cloud-drift 80s linear infinite reverse',
+                    willChange: 'transform',
+                    transform: 'translateZ(0)',
+                    opacity: vantaReady ? 1 : 0,
+                    transition: 'opacity 1s ease',
                 }}
             />
-            <style>{`
-                @keyframes cloud-drift {
-                    0% { transform: translateX(0); }
-                    50% { transform: translateX(30px); }
-                    100% { transform: translateX(0); }
-                }
-            `}</style>
         </div>
     );
 }
