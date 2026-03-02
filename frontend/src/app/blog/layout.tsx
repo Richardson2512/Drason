@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -48,7 +48,7 @@ interface TocItem {
     level: number;
 }
 
-function TableOfContents() {
+function TableOfContents({ bottomPx }: { bottomPx: number }) {
     const [headings, setHeadings] = useState<TocItem[]>([]);
     const [activeId, setActiveId] = useState<string>('');
     const pathname = usePathname();
@@ -112,7 +112,10 @@ function TableOfContents() {
     if (headings.length === 0) return null;
 
     return (
-        <aside className="hidden xl:block sticky top-32 w-52 shrink-0 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
+        <aside
+            className="hidden xl:block fixed top-32 right-8 w-52 overflow-y-auto scrollbar-hide z-30"
+            style={{ bottom: `${bottomPx}px`, transition: 'bottom 0.15s ease-out' }}
+        >
             <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-4 shadow-lg shadow-gray-200/30">
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <List size={14} className="text-gray-400" />
@@ -144,18 +147,33 @@ function TableOfContents() {
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [sidebarBottom, setSidebarBottom] = useState(40);
     const pathname = usePathname();
 
     // Don't apply layout to the blog index page
     const isBlogIndex = pathname === '/blog';
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowScrollTop(window.scrollY > 300);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = useCallback(() => {
+        setShowScrollTop(window.scrollY > 300);
+
+        // Adjust sidebar bottom when footer is visible
+        const footer = document.querySelector('footer');
+        if (!footer) return;
+        const footerTop = footer.getBoundingClientRect().top;
+        const vh = window.innerHeight;
+
+        if (footerTop < vh) {
+            setSidebarBottom(vh - footerTop + 16);
+        } else {
+            setSidebarBottom(40);
+        }
     }, []);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -180,12 +198,12 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
             {/* ================= MAIN LAYOUT ================= */}
             <div className="relative z-10 pt-32 md:pt-36 pb-8">
-                <div className="flex items-start gap-6 px-6">
-                    {/* Sidebar - sticky on desktop */}
-                    <aside className={`
-                        hidden lg:block sticky top-32 w-72 shrink-0 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
-                        shadow-xl shadow-gray-200/50 z-30
-                    `}>
+                <div className="flex items-start">
+                    {/* Sidebar - fixed on desktop, shrinks above footer */}
+                    <aside
+                        className="hidden lg:block fixed top-32 left-6 w-72 bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide shadow-xl shadow-gray-200/50 z-30"
+                        style={{ bottom: `${sidebarBottom}px`, transition: 'bottom 0.15s ease-out' }}
+                    >
                         <div className="p-6">
                             <div className="mb-6 pb-4 border-b border-gray-100">
                                 <Link href="/blog" className="text-xs font-bold text-gray-400 uppercase tracking-wider hover:text-gray-600 transition-colors">
@@ -238,15 +256,15 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </aside>
 
-                    {/* Main content */}
-                    <main className="flex-1 min-w-0 px-6 lg:px-0">
+                    {/* Main content - offset for fixed sidebars on desktop */}
+                    <main className="flex-1 lg:ml-80 xl:mr-64 px-6 lg:px-12">
                         <div className="max-w-4xl py-4 lg:py-6">
                             {children}
                         </div>
                     </main>
 
                     {/* Table of Contents - right sidebar */}
-                    <TableOfContents />
+                    <TableOfContents bottomPx={sidebarBottom} />
                 </div>
             </div>
 
