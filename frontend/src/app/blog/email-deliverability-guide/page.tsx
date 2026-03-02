@@ -612,7 +612,7 @@ export default function EmailDeliverabilityGuide() {
 
                     {/* CTA */}
                     <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
                         <div className="relative z-10">
                             <h3 className="font-bold text-2xl mb-3">Protect Your Sending Infrastructure</h3>
                             <p className="text-blue-100 leading-relaxed mb-6">

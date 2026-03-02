@@ -328,7 +328,7 @@ export default function LandingPage() {
                                 {/* NODE 1: Clay */}
                                 <div className="flex flex-col items-center justify-center relative z-10 w-20 h-20">
                                     <div className="w-20 h-20 rounded-[1.5rem] bg-white shadow-xl border border-gray-100 flex items-center justify-center transform transition-transform group-hover:scale-105 duration-500 relative z-20">
-                                        <img src="/clay.png" alt="Clay" className="w-10 h-10 object-contain drop-shadow-sm" />
+                                        <Image src="/clay.png" alt="Clay" width={40} height={40} className="object-contain drop-shadow-sm" />
                                     </div>
                                     <span className="absolute -bottom-8 text-sm font-bold text-gray-700 tracking-wide uppercase text-[11px] whitespace-nowrap">Enrich</span>
                                 </div>
@@ -351,7 +351,7 @@ export default function LandingPage() {
                                 <div className="flex flex-col items-center justify-center relative z-20 w-[80px] h-[80px]">
                                     <div className="w-[80px] h-[80px] min-h-[80px] rounded-[1.5rem] bg-gray-900 shadow-[0_8px_20px_-8px_rgba(148,3,253,0.4)] border border-gray-800 flex items-center justify-center relative overflow-hidden transform transition-transform group-hover:scale-110 duration-500 z-20">
                                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-blue-500/10 mix-blend-overlay"></div>
-                                        <img src="/image/logo-v2.png" alt="Superkabe" className="w-10 h-10 relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] object-contain" />
+                                        <Image src="/image/logo-v2.png" alt="Superkabe" width={40} height={40} className="relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] object-contain" />
                                     </div>
                                     <span className="absolute -bottom-8 text-sm font-bold text-gray-900 tracking-wide uppercase text-[11px] whitespace-nowrap">Protect</span>
                                 </div>
@@ -375,19 +375,19 @@ export default function LandingPage() {
                                     <div className="w-[80px] h-[80px] min-h-[80px] rounded-[1.5rem] bg-white shadow-xl border border-gray-100 overflow-hidden relative transform transition-transform group-hover:scale-105 duration-500 z-20">
                                         <div className="absolute inset-x-0 w-full animate-col-train">
                                             <div className="h-20 flex items-center justify-center">
-                                                <img src="/smartlead.webp" alt="Smartlead" className="w-10 h-10 object-contain" />
+                                                <Image src="/smartlead.webp" alt="Smartlead" width={40} height={40} className="object-contain" />
                                             </div>
                                             <div className="h-20 flex items-center justify-center">
-                                                <img src="/instantly.png" alt="Instantly" className="w-10 h-10 object-contain" />
+                                                <Image src="/instantly.png" alt="Instantly" width={40} height={40} className="object-contain" />
                                             </div>
                                             <div className="h-20 flex items-center justify-center">
-                                                <img src="/emailbison.png" alt="Email Bison" className="w-10 h-10 object-contain" />
+                                                <Image src="/emailbison.png" alt="Email Bison" width={40} height={40} className="object-contain" />
                                             </div>
                                             <div className="h-20 flex items-center justify-center">
-                                                <img src="/replyio.png" alt="Reply.io" className="w-10 h-10 object-contain bg-white" />
+                                                <Image src="/replyio.png" alt="Reply.io" width={40} height={40} className="object-contain bg-white" />
                                             </div>
                                             <div className="h-20 flex items-center justify-center">
-                                                <img src="/smartlead.webp" alt="Smartlead" className="w-10 h-10 object-contain" />
+                                                <Image src="/smartlead.webp" alt="Smartlead" width={40} height={40} className="object-contain" />
                                             </div>
                                         </div>
                                     </div>
@@ -419,7 +419,7 @@ export default function LandingPage() {
                                 {/* NODE 4: Slack */}
                                 <div className="flex flex-col items-center justify-center relative z-10 w-20 h-20">
                                     <div className="w-20 h-20 rounded-[1.5rem] bg-white shadow-xl border border-gray-100 flex items-center justify-center transform transition-transform group-hover:scale-105 duration-500 relative z-20">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg" alt="Slack" className="w-10 h-10 object-contain drop-shadow-sm" />
+                                        <Image src="/slack-icon.svg" alt="Slack" width={40} height={40} className="object-contain drop-shadow-sm" />
                                     </div>
                                     <span className="absolute -bottom-8 text-sm font-bold text-gray-700 tracking-wide uppercase text-[11px] whitespace-nowrap">Alerts</span>
                                 </div>
@@ -452,7 +452,7 @@ export default function LandingPage() {
                         ))}
 
                         <div className="rounded-[2rem] flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white p-10 md:p-12 shadow-2xl relative overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
-                            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
                             <div className="relative z-10 text-center">
                                 <span className="text-5xl mb-4 block">🛡️</span>
                                 <h3 className="font-bold text-2xl mb-2">Enterprise-Grade Deliverability Architecture</h3>

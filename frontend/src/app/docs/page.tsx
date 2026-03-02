@@ -140,7 +140,7 @@ export default function DocsPage() {
 
             {/* Core Principles - Gradient Card (Matching Landing) */}
             <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-purple-700 text-white p-10 shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
                 <div className="relative z-10">
                     <h2 className="text-3xl font-bold mb-8">Core Principles</h2>
                     <div className="grid md:grid-cols-2 gap-8">
