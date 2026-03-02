@@ -5,16 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 export default function CloudBackground() {
     const containerRef = useRef<HTMLDivElement>(null);
     const vantaRef = useRef<any>(null);
-    const [vantaReady, setVantaReady] = useState(false);
+    const [frozenImage, setFrozenImage] = useState<string | null>(null);
 
     useEffect(() => {
         if (!containerRef.current || vantaRef.current) return;
 
         let cancelled = false;
 
-        // Defer Three.js loading until after the page is fully interactive.
-        // This keeps LCP/FCP/TBT clean — the CSS gradient placeholder shows instantly,
-        // then 3D clouds fade in once the browser is idle.
         const scheduleLoad = (cb: () => void) => {
             if ('requestIdleCallback' in window) {
                 requestIdleCallback(cb, { timeout: 4000 });
@@ -50,9 +47,28 @@ export default function CloudBackground() {
                     gyroControls: false,
                 });
 
-                if (!cancelled) setVantaReady(true);
+                // Let the clouds render for 3 seconds, then freeze + destroy WebGL
+                setTimeout(() => {
+                    if (cancelled || !containerRef.current) return;
+
+                    const canvas = containerRef.current.querySelector('canvas');
+                    if (canvas) {
+                        try {
+                            const dataUrl = canvas.toDataURL('image/webp', 0.85);
+                            setFrozenImage(dataUrl);
+                        } catch {
+                            // toDataURL can fail in some contexts — keep live render
+                            return;
+                        }
+                    }
+
+                    // Destroy Vanta + Three.js — frees GPU, stops render loop
+                    if (vantaRef.current) {
+                        vantaRef.current.destroy();
+                        vantaRef.current = null;
+                    }
+                }, 3000);
             } catch (err) {
-                // If Three.js fails to load, CSS gradient fallback stays visible
                 console.warn('[CloudBackground] Failed to load 3D clouds, using CSS fallback', err);
             }
         });
@@ -68,28 +84,42 @@ export default function CloudBackground() {
 
     return (
         <div className="absolute inset-0" style={{ pointerEvents: 'none', overflow: 'hidden' }}>
-            {/* CSS gradient placeholder — renders instantly, no JS needed */}
+            {/* CSS gradient placeholder — renders instantly */}
             <div
                 style={{
                     position: 'absolute',
                     inset: 0,
                     background: 'linear-gradient(180deg, #c9e8ff 0%, #e8f4ff 40%, #f0f7ff 70%, #ffffff 100%)',
-                    opacity: vantaReady ? 0 : 1,
+                    opacity: frozenImage ? 0 : 1,
                     transition: 'opacity 1s ease',
                 }}
             />
 
-            {/* Three.js canvas container — fades in once loaded */}
+            {/* Three.js renders here, then gets destroyed after freeze */}
             <div
                 ref={containerRef}
                 className="absolute inset-0"
                 style={{
                     willChange: 'transform',
                     transform: 'translateZ(0)',
-                    opacity: vantaReady ? 1 : 0,
-                    transition: 'opacity 1s ease',
+                    opacity: frozenImage ? 0 : 1,
+                    transition: 'opacity 0.5s ease',
                 }}
             />
+
+            {/* Frozen screenshot of the 3D clouds — zero ongoing cost */}
+            {frozenImage && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `url(${frozenImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        opacity: 1,
+                    }}
+                />
+            )}
         </div>
     );
 }
