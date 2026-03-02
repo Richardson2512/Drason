@@ -112,7 +112,7 @@ function TableOfContents() {
     if (headings.length === 0) return null;
 
     return (
-        <aside className="hidden xl:block fixed top-32 right-8 w-52 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
+        <aside className="hidden xl:block sticky top-32 w-52 shrink-0 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
             <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-4 shadow-lg shadow-gray-200/30">
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <List size={14} className="text-gray-400" />
@@ -180,10 +180,10 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
             {/* ================= MAIN LAYOUT ================= */}
             <div className="relative z-10 pt-32 md:pt-36 pb-8">
-                <div className="flex items-start">
-                    {/* Sidebar - fixed on desktop */}
+                <div className="flex items-start gap-6 px-6">
+                    {/* Sidebar - sticky on desktop */}
                     <aside className={`
-                        hidden lg:block fixed top-32 left-6 w-72 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
+                        hidden lg:block sticky top-32 w-72 shrink-0 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
                         shadow-xl shadow-gray-200/50 z-30
                     `}>
                         <div className="p-6">
@@ -238,8 +238,8 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </aside>
 
-                    {/* Main content - offset for fixed sidebars on desktop */}
-                    <main className="flex-1 lg:ml-80 xl:mr-64 px-6 lg:px-12">
+                    {/* Main content */}
+                    <main className="flex-1 min-w-0 px-6 lg:px-0">
                         <div className="max-w-4xl py-4 lg:py-6">
                             {children}
                         </div>
