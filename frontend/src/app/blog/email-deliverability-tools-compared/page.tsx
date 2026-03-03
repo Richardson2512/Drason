@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Email Deliverability Tools Compared for Outbound Teams',
         description: 'Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software for outbound email teams.',
+        url: '/blog/email-deliverability-tools-compared',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2026-02-27',
     },

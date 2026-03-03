@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How sender reputation is built, damaged, and repaired over time',
         description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+        url: '/blog/email-reputation-lifecycle',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-04-01',
     },

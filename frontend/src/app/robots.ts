@@ -1,38 +1,33 @@
 import { MetadataRoute } from 'next';
 
+const publicAllow = ['/', '/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source', '/privacy', '/terms'];
+const privateDisallow = ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'];
+
 export default function robots(): MetadataRoute.Robots {
     return {
         rules: [
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
+                disallow: privateDisallow,
             },
-            {
-                userAgent: 'GPTBot',
-                allow: ['/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source'],
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
-            },
-            {
-                userAgent: 'Google-Extended',
-                allow: ['/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source'],
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
-            },
-            {
-                userAgent: 'ClaudeBot',
-                allow: ['/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source'],
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
-            },
-            {
-                userAgent: 'PerplexityBot',
-                allow: ['/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source'],
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
-            },
-            {
-                userAgent: 'Bingbot',
-                allow: ['/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source'],
-                disallow: ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'],
-            },
+            // Major AI crawlers — explicitly allowed on all public content
+            ...[
+                'GPTBot',           // OpenAI
+                'Google-Extended',  // Google Gemini
+                'ClaudeBot',        // Anthropic Claude
+                'PerplexityBot',    // Perplexity AI
+                'Bingbot',          // Microsoft Copilot
+                'Applebot-Extended', // Apple Intelligence
+                'Amazonbot',        // Amazon Alexa AI
+                'meta-externalagent', // Meta AI (Llama)
+                'YouBot',           // You.com AI search
+                'cohere-ai',        // Cohere enterprise AI
+            ].map(bot => ({
+                userAgent: bot,
+                allow: publicAllow,
+                disallow: privateDisallow,
+            })),
         ],
         sitemap: 'https://www.superkabe.com/sitemap.xml',
     };

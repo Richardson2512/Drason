@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How spam filters work and how they affect email deliverability',
         description: 'How ISP spam filters score inbound email, what triggers filtering for outbound teams, and how to avoid the spam folder without sacrificing personalization.',
+        url: '/blog/how-spam-filters-work',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2026-02-27',
     },

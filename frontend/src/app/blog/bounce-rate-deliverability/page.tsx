@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How bounce rates damage sender reputation (and how to prevent it)',
         description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
+        url: '/blog/bounce-rate-deliverability',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-02-01',
     },

@@ -20,8 +20,33 @@ export default function PricingPage() {
         }, {});
         setIsLoggedIn(!!cookies.token);
     }, []);
+    const pricingSchema = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Superkabe Pricing",
+        "description": "Simple, transparent pricing for Superkabe infrastructure protection. Protect your outbound domains today.",
+        "url": "https://www.superkabe.com/pricing",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com",
+            "logo": "https://www.superkabe.com/image/logo-v2.png"
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Trial", "description": "Free 7-day trial with up to 3 domains and 9 mailboxes" },
+                { "@type": "ListItem", "position": 2, "name": "Starter", "description": "$49/month — 5 domains, 15 mailboxes, core protection" },
+                { "@type": "ListItem", "position": 3, "name": "Growth", "description": "$199/month — 20 domains, 60 mailboxes, advanced analytics" },
+                { "@type": "ListItem", "position": 4, "name": "Scale", "description": "$349/month — 50 domains, 150 mailboxes, priority support" },
+                { "@type": "ListItem", "position": 5, "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes" }
+            ]
+        }
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />

@@ -40,6 +40,16 @@ const blogArticles = [
         href: '/blog/email-reputation-lifecycle',
         icon: Mail,
     },
+    {
+        title: 'Deliverability Tools Compared',
+        href: '/blog/email-deliverability-tools-compared',
+        icon: Activity,
+    },
+    {
+        title: 'How Spam Filters Work',
+        href: '/blog/how-spam-filters-work',
+        icon: Shield,
+    },
 ];
 
 interface TocItem {

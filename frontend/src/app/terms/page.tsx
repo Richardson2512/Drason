@@ -7,8 +7,22 @@ import Navbar from '@/components/Navbar';
 import CloudBackground from '@/components/CloudBackground';
 
 export default function TermsPage() {
+    const termsSchema = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Terms & Conditions — Superkabe",
+        "description": "Terms of service and user agreements for Superkabe infrastructure protection.",
+        "url": "https://www.superkabe.com/terms",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        }
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termsSchema) }} />
             {/* Navbar */}
             <Navbar />
 

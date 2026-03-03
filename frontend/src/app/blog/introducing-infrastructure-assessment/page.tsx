@@ -6,6 +6,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
         description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
+        url: '/blog/introducing-infrastructure-assessment',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-03-20',
     },

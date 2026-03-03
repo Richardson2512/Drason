@@ -7,8 +7,22 @@ import Navbar from '@/components/Navbar';
 import CloudBackground from '@/components/CloudBackground';
 
 export default function PrivacyPolicyPage() {
+    const privacySchema = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Privacy Policy — Superkabe",
+        "description": "Superkabe privacy policy and data protection guidelines. How we handle and protect your data.",
+        "url": "https://www.superkabe.com/privacy",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com"
+        }
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacySchema) }} />
             {/* Navbar */}
             <Navbar />
 

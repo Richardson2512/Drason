@@ -282,6 +282,14 @@ export default function DashboardShell({
                             <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📈</span>
                             {!isCollapsed && <span>Analytics</span>}
                         </Link>
+                        <Link href="/dashboard/load-balancing" className="nav-link" title={isCollapsed ? "Load Balancing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>⚖️</span>
+                            {!isCollapsed && <span>Load Balancing</span>}
+                        </Link>
+                        <Link href="/dashboard/predictive-risks" className="nav-link" title={isCollapsed ? "Predictive Risks" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🔮</span>
+                            {!isCollapsed && <span>Predictive Risks</span>}
+                        </Link>
 
                         {!isCollapsed && (
                             <div style={{ paddingLeft: '1rem', marginTop: '0.75rem', marginBottom: '0.25rem', fontSize: '0.65rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', whiteSpace: 'nowrap' }}>

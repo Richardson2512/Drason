@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How to protect and master your outbound email deliverability',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
+        url: '/blog/email-deliverability-guide',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-01-15',
     },

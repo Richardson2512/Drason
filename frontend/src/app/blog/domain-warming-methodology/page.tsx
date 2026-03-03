@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How to safely warm up new outbound email domains',
         description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
+        url: '/blog/domain-warming-methodology',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-03-01',
     },

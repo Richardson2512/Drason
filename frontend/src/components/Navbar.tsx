@@ -24,6 +24,7 @@ export default function Navbar() {
         { href: '/docs', label: 'Documentation' },
         { href: '/pricing', label: 'Pricing' },
         { href: '/blog', label: 'Blog' },
+        { href: '/infrastructure-playbook', label: 'Playbook' },
     ];
 
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

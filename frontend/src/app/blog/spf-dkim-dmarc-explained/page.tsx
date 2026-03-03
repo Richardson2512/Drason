@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'SPF, DKIM & DMARC Setup Guide for Outbound Email Teams',
         description: 'How SPF, DKIM, and DMARC protect sender identity and why misconfiguration causes inbox placement failure for outbound email teams.',
+        url: '/blog/spf-dkim-dmarc-explained',
+        siteName: 'Superkabe',
         type: 'article',
         publishedTime: '2024-02-15',
     },
