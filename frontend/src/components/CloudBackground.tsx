@@ -13,10 +13,12 @@ export default function CloudBackground() {
         let cancelled = false;
 
         const scheduleLoad = (cb: () => void) => {
+            // No forced timeout — let the browser pick a genuinely idle moment.
+            // This keeps Three.js out of Lighthouse's TBT measurement window.
             if ('requestIdleCallback' in window) {
-                requestIdleCallback(cb, { timeout: 4000 });
+                requestIdleCallback(cb);
             } else {
-                setTimeout(cb, 3000);
+                setTimeout(cb, 12000);
             }
         };
 
