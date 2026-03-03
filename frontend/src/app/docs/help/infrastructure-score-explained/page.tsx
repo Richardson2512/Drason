@@ -199,7 +199,7 @@ export default function InfrastructureScoreExplainedPage() {
                 <ul className="space-y-2 text-gray-600 mb-4">
                     <li className="flex items-start gap-2">
                         <span className="text-purple-600 font-bold">1.</span>
-                        <span><strong>Initial onboarding gate</strong> - First time connecting to Smartlead</span>
+                        <span><strong>Initial onboarding gate</strong> - First time connecting your sending platform</span>
                     </li>
                     <li className="flex items-start gap-2">
                         <span className="text-purple-600 font-bold">2.</span>

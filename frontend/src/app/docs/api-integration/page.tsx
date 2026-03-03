@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'API & Webhook Integration | Superkabe Docs',
-    description: 'Complete API reference for Clay webhooks, Smartlead monitoring, and direct lead ingestion into Superkabe.',
+    description: 'Complete API reference for Clay webhooks, platform monitoring, and direct lead ingestion into Superkabe.',
     alternates: { canonical: '/docs/api-integration' },
     openGraph: {
         title: 'API & Webhook Integration | Superkabe Docs',
-        description: 'Complete API reference for Clay webhooks, Smartlead monitoring, and direct lead ingestion into Superkabe.',
+        description: 'Complete API reference for Clay webhooks, platform monitoring, and direct lead ingestion into Superkabe.',
         url: '/docs/api-integration',
         siteName: 'Superkabe',
         type: 'article',
@@ -20,7 +20,7 @@ export default function APIIntegrationPage() {
                 API & Webhook Integration
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Complete API reference for integrating Clay webhooks, Smartlead monitoring, and direct lead ingestion
+                Complete API reference for integrating Clay webhooks, platform monitoring, and direct lead ingestion
             </p>
 
             {/* Overview */}
@@ -31,7 +31,7 @@ export default function APIIntegrationPage() {
                 </p>
                 <ol className="space-y-2 text-gray-600">
                     <li><strong>1. Clay Webhook</strong> — Receive enriched leads from Clay tables</li>
-                    <li><strong>2. Smartlead Webhook</strong> — Monitor bounce/sent events from Smartlead campaigns</li>
+                    <li><strong>2. Platform Webhooks</strong> — Monitor bounce/sent events from Smartlead, EmailBison, and Instantly</li>
                     <li><strong>3. Direct Ingestion API</strong> — Programmatic lead submission</li>
                     <li><strong>4. Campaign Resolution API</strong> — Automate stalled campaign recovery</li>
                 </ol>
@@ -68,7 +68,7 @@ export default function APIIntegrationPage() {
   "firstName": "John",                      // Optional
   "lastName": "Doe",                        // Optional
   "company": "Acme Corp",                   // Optional
-  "campaignId": "smartlead_campaign_xyz"    // Optional (for direct assignment)
+  "campaignId": "campaign_xyz"    // Optional (for direct assignment)
 }`}
                 </pre>
             </div>
@@ -91,7 +91,7 @@ export default function APIIntegrationPage() {
                     {`{
   "message": "Lead ingested successfully",
   "leadId": "lead_abc123",
-  "assignedCampaignId": "smartlead_xyz" // null if no routing rule matched
+  "assignedCampaignId": "campaign_xyz" // null if no routing rule matched
 }`}
                 </pre>
             </div>

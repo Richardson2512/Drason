@@ -56,7 +56,7 @@ export default function DocsPage() {
                     href="/docs/getting-started"
                     icon={<Zap className="text-blue-600" size={24} />}
                     title="Getting Started"
-                    description="Set up your first campaign and integrate with Clay & Smartlead"
+                    description="Set up your first campaign and integrate with Clay & your sending platform"
                 />
                 <DocCard
                     href="/docs/platform-rules"

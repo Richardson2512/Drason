@@ -32,7 +32,7 @@ export default function ClayIntegrationPage() {
                 <ol className="space-y-2 text-gray-600">
                     <li>✅ Flow into Superkabe for campaign routing</li>
                     <li>✅ <strong>Pass through the Lead Health Gate</strong> (blocking disposable/spam domains)</li>
-                    <li>✅ Match to the correct Smartlead campaign based on ICP</li>
+                    <li>✅ Match to the correct campaign based on ICP</li>
                     <li>✅ Be protected by real-time monitoring thresholds</li>
                 </ol>
             </div>
@@ -41,7 +41,7 @@ export default function ClayIntegrationPage() {
                 <h3 className="text-lg font-bold text-amber-700 mb-2">⚠️ Automatic Quality Filtering</h3>
                 <p className="text-gray-600">
                     Superkabe automatically blocks leads with <strong>disposable domains</strong> (e.g., mailinator.com) or <strong>role-based emails</strong> (e.g., admin@).
-                    These leads will be marked as <code className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">BLOCKED</code> and will NOT be routed to Smartlead.
+                    These leads will be marked as <code className="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">BLOCKED</code> and will NOT be routed to any campaign.
                 </p>
             </div>
 
@@ -52,7 +52,7 @@ export default function ClayIntegrationPage() {
                     <li>✓ Active Superkabe account (<a href="/signup" className="text-blue-600 hover:text-blue-800">Sign up here</a>)</li>
                     <li>✓ Clay account with at least one table containing lead data</li>
                     <li>✓ Your leads should have: <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">email</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">firstName</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">lastName</code>, <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">company</code></li>
-                    <li>✓ Smartlead campaign IDs ready for routing</li>
+                    <li>✓ Campaign IDs ready for routing</li>
                 </ul>
             </div>
 
@@ -211,7 +211,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
             {/* Step 4 */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Step 4: Set Up Campaign Routing Rules</h2>
             <p className="text-gray-600 mb-4">
-                Configure which leads go to which Smartlead campaigns based on ICP.
+                Configure which leads go to which campaigns based on ICP.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-6">
@@ -285,7 +285,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
                     Your Clay leads are now flowing into Superkabe. Next steps:
                 </p>
                 <ul className="space-y-2 text-gray-600">
-                    <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Set up Smartlead webhook</a> for bounce monitoring</li>
+                    <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Set up platform webhooks</a> for bounce monitoring</li>
                     <li>✓ <a href="/docs/platform-rules" className="text-blue-600 hover:text-blue-800">Review platform rules</a> to understand thresholds</li>
                     <li>✓ <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">Learn about monitoring</a> to track mailbox health</li>
                 </ul>

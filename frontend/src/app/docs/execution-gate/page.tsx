@@ -25,7 +25,7 @@ export default function ExecutionGatePage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What is the Execution Gate?</h2>
             <p className="text-gray-600 mb-6">
-                Before a lead is sent to Smartlead, it passes through our **two-stage protection system**.
+                Before a lead is sent to a campaign, it passes through our **two-stage protection system**.
                 The gate performs safety checks to ensure both lead quality and infrastructure health.
             </p>
 
@@ -165,7 +165,7 @@ Lead scheduled for sending → Execution Gate (Stage 2)
 5. Hard risk score acceptable? → YES (avgHardScore: 35, threshold: 60)
 
 Result: ✅ ALLOWED
-Action: Lead sent to Smartlead campaign`}
+Action: Lead sent to campaign`}
                 </pre>
             </div>
 
@@ -202,7 +202,7 @@ Deferrable: false`}
                     <div className="flex items-center gap-4">
                         <span className="px-3 py-1 bg-green-100 border border-green-200 rounded-lg text-green-700 font-semibold">active</span>
                         <span className="text-gray-400">→</span>
-                        <p className="text-gray-600">Passed gate, sent to Smartlead campaign</p>
+                        <p className="text-gray-600">Passed gate, sent to campaign</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <span className="px-3 py-1 bg-amber-100 border border-amber-200 rounded-lg text-amber-700 font-semibold">paused</span>

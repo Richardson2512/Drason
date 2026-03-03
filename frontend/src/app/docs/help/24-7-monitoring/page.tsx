@@ -27,7 +27,7 @@ export default function MonitoringPage() {
             <div className="bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200 rounded-2xl p-8 mb-12">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">What Is 24/7 Monitoring?</h2>
                 <p className="text-gray-700 mb-4 text-lg">
-                    Superkabe runs an <strong>automated background worker</strong> that syncs your Smartlead data every 20 minutes around the clock.
+                    Superkabe runs an <strong>automated background worker</strong> that syncs your platform data every 20 minutes around the clock.
                     This continuous monitoring enables real-time detection of infrastructure health issues and immediate protection through auto-pause.
                 </p>
                 <div className="bg-white rounded-lg p-6 border-2 border-green-100 mt-4">
@@ -55,7 +55,7 @@ export default function MonitoringPage() {
                         <div className="flex-1">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">Automated Data Sync (Every 20 Minutes)</h3>
                             <p className="text-gray-600 mb-3">
-                                The Smartlead Sync Worker runs automatically in the background, fetching the latest data from your Smartlead account:
+                                The Platform Sync Worker runs automatically in the background, fetching the latest data from your connected sending platforms:
                             </p>
                             <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
                                 <ul className="text-sm text-gray-700 space-y-1 mb-0">
@@ -162,7 +162,7 @@ export default function MonitoringPage() {
                     <div className="flex items-center gap-3">
                         <span className="text-green-400 font-bold">00:00</span>
                         <span className="text-gray-400">→</span>
-                        <span>Sync Worker starts, fetches Smartlead data</span>
+                        <span>Sync Worker starts, fetches platform data</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="text-green-400 font-bold">00:02</span>
@@ -227,7 +227,7 @@ export default function MonitoringPage() {
                 <div className="bg-white border-2 border-green-200 rounded-xl p-6">
                     <h3 className="font-bold text-green-900 mb-3 text-lg">🌿 Respectful</h3>
                     <p className="text-gray-700 text-sm mb-3">
-                        We respect Smartlead's API rate limits and server resources.
+                        We respect each platform's API rate limits and server resources.
                     </p>
                     <ul className="text-sm text-gray-600 space-y-2 mb-0">
                         <li>• 72 syncs per day (well within limits)</li>
@@ -306,13 +306,13 @@ export default function MonitoringPage() {
                     <p className="text-sm text-gray-700 mb-2 font-semibold">How to manually sync:</p>
                     <ol className="text-sm text-gray-600 space-y-1 mb-0 list-decimal list-inside">
                         <li>Go to <strong>Settings → Integrations</strong></li>
-                        <li>Find your Smartlead connection</li>
+                        <li>Find your platform connection</li>
                         <li>Click the <strong>"Sync Now"</strong> button</li>
                         <li>Wait for the sync to complete (~30-60 seconds)</li>
                     </ol>
                 </div>
                 <p className="text-blue-700 text-sm mt-4">
-                    💡 <strong>Tip:</strong> Manual syncs are useful right after making changes in Smartlead (adding mailboxes, updating campaigns, etc.)
+                    💡 <strong>Tip:</strong> Manual syncs are useful right after making changes in your sending platform (adding mailboxes, updating campaigns, etc.)
                 </p>
             </div>
 
@@ -419,15 +419,15 @@ export default function MonitoringPage() {
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900 mb-2 text-base">Q: What if my Smartlead API key expires?</h3>
+                        <h3 className="font-bold text-gray-900 mb-2 text-base">Q: What if my API key expires?</h3>
                         <p className="text-sm text-gray-600 mb-0">
                             The worker will log sync failures and you'll be notified. Update your API key in Settings → Integrations to resume syncing.
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-bold text-gray-900 mb-2 text-base">Q: Does this cost extra API calls in Smartlead?</h3>
+                        <h3 className="font-bold text-gray-900 mb-2 text-base">Q: Does this cost extra API calls?</h3>
                         <p className="text-sm text-gray-600 mb-0">
-                            The worker uses Smartlead's standard API endpoints. Most Smartlead plans have generous API limits
+                            The worker uses each platform's standard API endpoints. Most plans have generous API limits
                             (thousands of calls per day), and our 72 daily syncs are well within normal usage.
                         </p>
                     </div>
@@ -451,8 +451,8 @@ export default function MonitoringPage() {
                     <a href="/docs/help/campaign-paused" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
                         → Why Is My Campaign Paused?
                     </a>
-                    <a href="/docs/help/smartlead-integration" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
-                        → Smartlead Integration Guide
+                    <a href="/docs/smartlead-integration" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        → Platform Integration Guides
                     </a>
                     <a href="/docs/monitoring" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
                         → Monitoring Thresholds

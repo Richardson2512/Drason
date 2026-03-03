@@ -107,7 +107,7 @@ export default function CampaignPausedPage() {
                         <div className="flex-1">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">4. Manual Pause</h3>
                             <p className="text-gray-600 mb-3">
-                                Someone on your team manually paused the campaign from the dashboard or via Smartlead.
+                                Someone on your team manually paused the campaign from the dashboard or via your sending platform.
                             </p>
                         </div>
                     </div>
@@ -128,8 +128,8 @@ export default function CampaignPausedPage() {
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Smartlead Sync</h3>
-                            <p className="text-gray-600 text-sm">Campaign is paused in Smartlead (if integrated)</p>
+                            <h3 className="font-bold text-gray-900">Platform Sync</h3>
+                            <p className="text-gray-600 text-sm">Campaign is paused in your sending platform</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
@@ -203,7 +203,7 @@ export default function CampaignPausedPage() {
                         <ul className="text-sm text-gray-600 space-y-2 bg-gray-50 p-3 rounded-md">
                             <li><strong>Option A:</strong> View your remaining healthy mailboxes and add them to the campaign to instantly restart it.</li>
                             <li><strong>Option B:</strong> Safely abandon the stalled campaign by automatically rerouting its active leads to another running campaign.</li>
-                            <li><strong>Option C:</strong> Dismiss the UI warning and manage the campaign manually in Smartlead.</li>
+                            <li><strong>Option C:</strong> Dismiss the UI warning and manage the campaign manually in your sending platform.</li>
                         </ul>
                     </div>
                 </div>
@@ -219,7 +219,7 @@ export default function CampaignPausedPage() {
                     </li>
                     <li className="flex items-start gap-2">
                         <span className="text-red-600 font-bold">•</span>
-                        <span><strong>Don't bypass Superkabe</strong> - Resuming directly in Smartlead will cause sync conflicts. Always use Superkabe's controls.</span>
+                        <span><strong>Don't bypass Superkabe</strong> - Resuming directly in your sending platform will cause sync conflicts. Always use Superkabe's controls.</span>
                     </li>
                     <li className="flex items-start gap-2">
                         <span className="text-red-600 font-bold">•</span>

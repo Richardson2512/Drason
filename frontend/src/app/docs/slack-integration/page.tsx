@@ -122,7 +122,7 @@ export default function SlackIntegrationPage() {
                 </p>
                 <ul className="space-y-2 text-gray-600">
                     <li>✓ <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">Learn how alerts are triggered</a></li>
-                    <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Learn about Smartlead</a></li>
+                    <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Smartlead Integration</a></li>
                     <li>✓ <a href="/docs/emailbison-integration" className="text-blue-600 hover:text-blue-800">Learn about EmailBison</a></li>
                 </ul>
             </div>

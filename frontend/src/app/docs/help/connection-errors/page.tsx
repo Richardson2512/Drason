@@ -43,8 +43,8 @@ export default function ConnectionErrorsPage() {
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Sync with Smartlead</h3>
-                            <p className="text-gray-600 text-sm">Superkabe syncs your mailbox data from Smartlead, which tests SMTP and IMAP connections.</p>
+                            <h3 className="font-bold text-gray-900">Sync with Sending Platform</h3>
+                            <p className="text-gray-600 text-sm">Superkabe syncs your mailbox data from your connected sending platform, which tests SMTP and IMAP connections.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
@@ -95,7 +95,7 @@ export default function ConnectionErrorsPage() {
                             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                                 <h4 className="font-bold text-green-900 mb-2">✅ How to Fix</h4>
                                 <ol className="space-y-2 text-sm text-green-800">
-                                    <li>1. Go to <strong>Smartlead → Email Accounts</strong></li>
+                                    <li>1. Go to your sending platform's <strong>Email Accounts</strong> settings</li>
                                     <li>2. Find the affected mailbox and click <strong>Reconnect</strong></li>
                                     <li>3. Complete the Google OAuth authorization flow</li>
                                     <li>4. Return to Superkabe and trigger a <strong>Manual Sync</strong></li>
@@ -142,7 +142,7 @@ export default function ConnectionErrorsPage() {
                             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                                 <h4 className="font-bold text-green-900 mb-2">✅ How to Fix</h4>
                                 <ol className="space-y-2 text-sm text-green-800">
-                                    <li>1. Go to <strong>Smartlead → Email Accounts</strong></li>
+                                    <li>1. Go to your sending platform's <strong>Email Accounts</strong> settings</li>
                                     <li>2. Update the mailbox password/app password</li>
                                     <li>3. If using Google with 2FA, generate a new <strong>App Password</strong></li>
                                     <li>4. If using Microsoft with 2FA, generate a new <strong>App Password</strong></li>
@@ -190,7 +190,7 @@ export default function ConnectionErrorsPage() {
                             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                                 <h4 className="font-bold text-green-900 mb-2">✅ How to Fix</h4>
                                 <ol className="space-y-2 text-sm text-green-800">
-                                    <li>1. Verify your email provider&apos;s SMTP/IMAP server addresses in Smartlead</li>
+                                    <li>1. Verify your email provider&apos;s SMTP/IMAP server addresses in your sending platform</li>
                                     <li>2. Check if your email provider is experiencing an outage</li>
                                     <li>3. Confirm DNS records (MX, A) are resolving correctly</li>
                                     <li>4. If using a custom mail server, check firewall rules for ports 587 (SMTP) and 993 (IMAP)</li>
@@ -239,7 +239,7 @@ export default function ConnectionErrorsPage() {
                                 <ol className="space-y-2 text-sm text-green-800">
                                     <li>1. Wait 15-30 minutes and trigger a <strong>Manual Sync</strong> in Superkabe</li>
                                     <li>2. Check your email provider&apos;s status page for outages</li>
-                                    <li>3. If persistent, try reconnecting the account in Smartlead</li>
+                                    <li>3. If persistent, try reconnecting the account in your sending platform</li>
                                 </ol>
                             </div>
                         </div>
@@ -264,7 +264,7 @@ export default function ConnectionErrorsPage() {
                             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                                 <h4 className="font-bold text-green-900 mb-2">✅ How to Fix</h4>
                                 <ol className="space-y-2 text-sm text-green-800">
-                                    <li>1. In Smartlead, verify the SMTP port (typically <strong>587</strong> with STARTTLS or <strong>465</strong> with SSL)</li>
+                                    <li>1. In your sending platform, verify the SMTP port (typically <strong>587</strong> with STARTTLS or <strong>465</strong> with SSL)</li>
                                     <li>2. Verify the IMAP port (typically <strong>993</strong> with SSL)</li>
                                     <li>3. Ensure the server hostname matches the certificate (e.g., <code>smtp.gmail.com</code>, not an IP address)</li>
                                     <li>4. If using a custom mail server, renew the SSL certificate</li>
@@ -352,14 +352,14 @@ export default function ConnectionErrorsPage() {
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Check Smartlead First</h3>
-                            <p className="text-gray-600 text-sm">Go to Smartlead → Email Accounts. If the account shows as disconnected there too, the issue is at the provider level.</p>
+                            <h3 className="font-bold text-gray-900">Check Your Sending Platform First</h3>
+                            <p className="text-gray-600 text-sm">Go to your sending platform's email accounts section. If the account shows as disconnected there too, the issue is at the provider level.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
                         <div>
-                            <h3 className="font-bold text-gray-900">Reconnect in Smartlead</h3>
+                            <h3 className="font-bold text-gray-900">Reconnect in Your Platform</h3>
                             <p className="text-gray-600 text-sm">Click &ldquo;Reconnect&rdquo; or re-enter credentials for the affected mailbox. For OAuth accounts (Google), complete the authorization flow again.</p>
                         </div>
                     </li>
@@ -367,7 +367,7 @@ export default function ConnectionErrorsPage() {
                         <span className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
                         <div>
                             <h3 className="font-bold text-gray-900">Sync in Superkabe</h3>
-                            <p className="text-gray-600 text-sm">After fixing the connection in Smartlead, go to Superkabe → Settings and click <strong>Manual Sync</strong>. This will re-fetch connection status and update the mailbox.</p>
+                            <p className="text-gray-600 text-sm">After fixing the connection in your sending platform, go to Superkabe → Settings and click <strong>Manual Sync</strong>. This will re-fetch connection status and update the mailbox.</p>
                         </div>
                     </li>
                     <li className="flex items-start gap-3">
@@ -404,7 +404,7 @@ export default function ConnectionErrorsPage() {
                         → How Auto-Healing Works (5-Phase Pipeline)
                     </a>
                     <a href="/docs/smartlead-integration" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
-                        → Smartlead Integration Guide
+                        → Platform Integration Guides
                     </a>
                 </div>
             </div>

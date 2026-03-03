@@ -170,7 +170,7 @@ export default function StateMachinePage() {
 
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
                     <h3 className="text-xl font-bold text-green-700 mb-3">active</h3>
-                    <p className="text-gray-600 mb-4">Passed execution gate, sent to Smartlead campaign.</p>
+                    <p className="text-gray-600 mb-4">Passed execution gate, sent to campaign.</p>
                 </div>
 
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">

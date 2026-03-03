@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Warmup-Based Recovery | Superkabe Docs',
-    description: 'Automated mailbox healing using Smartlead warmup for guaranteed engagement recovery and zero maintenance.',
+    description: 'Automated mailbox healing using platform warmup for guaranteed engagement recovery and zero maintenance.',
     alternates: { canonical: '/docs/warmup-recovery' },
     openGraph: {
         title: 'Warmup-Based Recovery | Superkabe Docs',
-        description: 'Automated mailbox healing using Smartlead warmup for guaranteed engagement recovery and zero maintenance.',
+        description: 'Automated mailbox healing using platform warmup for guaranteed engagement recovery and zero maintenance.',
         url: '/docs/warmup-recovery',
         siteName: 'Superkabe',
         type: 'article',
@@ -20,12 +20,12 @@ export default function WarmupRecoveryPage() {
                 Warmup-Based Automated Recovery
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Automated mailbox healing using Smartlead's native warmup feature for guaranteed engagement and zero maintenance
+                Automated mailbox healing using your sending platform's native warmup feature for guaranteed engagement and zero maintenance
             </p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">🎯 Overview</h2>
             <p className="text-gray-600 mb-6">
-                This system uses <strong>Smartlead's native warmup feature</strong> to automatically heal mailboxes through recovery phases.
+                This system uses <strong>your sending platform's native warmup feature</strong> to automatically heal mailboxes through recovery phases.
                 Warmup provides better engagement, automatic volume ramping, and zero test lead management compared to custom healing campaigns.
             </p>
 
@@ -44,7 +44,7 @@ export default function WarmupRecoveryPage() {
                             <tr>
                                 <td className="px-6 py-4 font-medium text-gray-700">Test Leads</td>
                                 <td className="px-6 py-4 text-gray-600">Manual management required</td>
-                                <td className="px-6 py-4 text-green-700 font-medium">Automatic (Smartlead warmup network)</td>
+                                <td className="px-6 py-4 text-green-700 font-medium">Automatic (platform warmup network)</td>
                             </tr>
                             <tr>
                                 <td className="px-6 py-4 font-medium text-gray-700">Engagement</td>
@@ -92,7 +92,7 @@ export default function WarmupRecoveryPage() {
                         <li>1. Webhook receives <code className="px-2 py-1 bg-gray-100 rounded">EMAIL_BOUNCED</code> event</li>
                         <li>2. Calculate bounce rate: 3.3% &gt; 3% threshold</li>
                         <li>3. ✅ Update mailbox: <code className="px-2 py-1 bg-red-100 rounded text-red-700">status = 'paused', recovery_phase = 'paused'</code></li>
-                        <li>4. ✅ Remove from ALL Smartlead campaigns (infrastructure hygiene)</li>
+                        <li>4. ✅ Remove from ALL active campaigns (infrastructure hygiene)</li>
                         <li>5. ✅ Set 48h cooldown</li>
                         <li>6. ✅ Notify user: "Mailbox auto-paused & removed"</li>
                     </ol>
@@ -132,7 +132,7 @@ export default function WarmupRecoveryPage() {
                 <div className="bg-white rounded-lg p-4 mb-4">
                     <ol className="text-sm text-gray-700 space-y-1 m-0 pl-4">
                         <li>1. ✅ Transition: <code className="px-2 py-1 bg-gray-100 rounded">QUARANTINE → RESTRICTED_SEND</code></li>
-                        <li>2. 🆕 <strong>Enable Smartlead warmup:</strong>
+                        <li>2. 🆕 <strong>Enable platform warmup:</strong>
                             <ul className="pl-4 mt-1">
                                 <li>• <code className="px-2 py-1 bg-gray-100 rounded">total_warmup_per_day: 10</code></li>
                                 <li>• <code className="px-2 py-1 bg-gray-100 rounded">daily_rampup: 0</code> (flat volume)</li>
@@ -157,7 +157,7 @@ export default function WarmupRecoveryPage() {
                 </p>
                 <div className="bg-white rounded-lg p-4 mb-4">
                     <ol className="text-sm text-gray-700 space-y-1 m-0 pl-4">
-                        <li>1. Poll Smartlead warmup stats API</li>
+                        <li>1. Poll platform warmup stats API</li>
                         <li>2. Get <code className="px-2 py-1 bg-gray-100 rounded">total_sent_count</code>, <code className="px-2 py-1 bg-gray-100 rounded">total_spam_count</code>, <code className="px-2 py-1 bg-gray-100 rounded">warmup_reputation</code></li>
                         <li>3. Check graduation criteria: <strong>15 clean sends, 0 spam</strong></li>
                         <li>4. If criteria met → Auto-graduate to <code className="px-2 py-1 bg-green-100 rounded text-green-700">WARM_RECOVERY</code></li>
@@ -194,7 +194,7 @@ export default function WarmupRecoveryPage() {
                     <ol className="text-sm text-gray-700 space-y-1 m-0 pl-4">
                         <li>1. ✅ Transition: <code className="px-2 py-1 bg-gray-100 rounded">WARM_RECOVERY → HEALTHY</code></li>
                         <li>2. ✅ Switch to maintenance warmup (10/day) OR disable completely</li>
-                        <li>3. ✅ Re-add mailbox to all production campaigns in Smartlead</li>
+                        <li>3. ✅ Re-add mailbox to all production campaigns</li>
                         <li>4. ✅ Notify user: "Mailbox fully recovered! Re-added to production."</li>
                     </ol>
                 </div>
@@ -276,7 +276,7 @@ export default function WarmupRecoveryPage() {
                 <ul className="space-y-2 text-gray-600 m-0">
                     <li>• <strong>Automated graduation</strong> via daily warmup worker checks</li>
                     <li>• <strong>Zero manual intervention</strong> — system progresses mailboxes automatically</li>
-                    <li>• <strong>Guaranteed engagement</strong> through Smartlead's reciprocal warmup network</li>
+                    <li>• <strong>Guaranteed engagement</strong> through your platform's reciprocal warmup network</li>
                     <li>• <strong>Progressive volume ramping</strong> ensures safe reputational recovery</li>
                     <li>• <strong>Zero tolerance for bounces</strong> during recovery prevents false positives</li>
                 </ul>

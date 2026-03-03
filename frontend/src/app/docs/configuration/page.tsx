@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Configuration | Superkabe Docs',
-    description: 'Set up integrations and tune thresholds for your organization. Configure Smartlead API keys, Clay webhooks, and monitoring rules.',
+    description: 'Set up integrations and tune thresholds for your organization. Configure platform API keys, Clay webhooks, and monitoring rules.',
     alternates: { canonical: '/docs/configuration' },
     openGraph: {
         title: 'Configuration | Superkabe Docs',
-        description: 'Set up integrations and tune thresholds for your organization. Configure Smartlead API keys, Clay webhooks, and monitoring rules.',
+        description: 'Set up integrations and tune thresholds for your organization. Configure platform API keys, Clay webhooks, and monitoring rules.',
         url: '/docs/configuration',
         siteName: 'Superkabe',
         type: 'article',
@@ -25,13 +25,13 @@ export default function ConfigurationPage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Integration Setup</h2>
             <p className="text-gray-600 mb-6">
-                Superkabe integrates with Clay and Smartlead to monitor your outbound infrastructure.
+                Superkabe integrates with Clay, Smartlead, EmailBison, and Instantly to monitor your outbound infrastructure.
             </p>
 
-            <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Smartlead API Key</h3>
+            <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Sending Platform API Keys</h3>
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-6 shadow-sm">
                 <p className="text-gray-600 mb-4">
-                    <strong>Location:</strong> Settings → Integrations → Smartlead
+                    <strong>Location:</strong> Settings → Integrations
                 </p>
                 <p className="text-gray-600 mb-4">
                     <strong>Required:</strong> Yes (for campaign routing and bounce monitoring)
@@ -58,7 +58,7 @@ export default function ConfigurationPage() {
                     <li>• <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">firstName</code></li>
                     <li>• <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">lastName</code></li>
                     <li>• <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">company</code></li>
-                    <li>• <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">campaignId</code> — Smartlead campaign ID to route to</li>
+                    <li>• <code className="px-2 py-1 bg-gray-100 rounded text-gray-700">campaignId</code> — Campaign ID to route to</li>
                 </ul>
             </div>
 

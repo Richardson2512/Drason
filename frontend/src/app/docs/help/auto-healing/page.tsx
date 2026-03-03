@@ -146,7 +146,7 @@ export default function AutoHealingPage() {
                         <div className="flex-1">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">Phase 5: HEALTHY (Full Recovery) ✅</h3>
                             <p className="text-gray-600 mb-3">
-                                <strong>What happens:</strong> Mailbox is fully recovered! All volume restrictions are lifted. Mailbox is automatically re-added to Smartlead campaigns.
+                                <strong>What happens:</strong> Mailbox is fully recovered! All volume restrictions are lifted. Mailbox is automatically re-added to production campaigns.
                             </p>
                             <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-100">
                                 <p className="text-sm text-gray-700 mb-2"><strong>Benefits:</strong></p>
@@ -280,7 +280,7 @@ export default function AutoHealingPage() {
                     </div>
                     <div>
                         <div className="text-3xl mb-2">🔄</div>
-                        <h3 className="font-bold mb-2 text-gray-900">Smartlead Integration</h3>
+                        <h3 className="font-bold mb-2 text-gray-900">Platform Integration</h3>
                         <p className="text-gray-600">When mailboxes recover to healthy, they're automatically re-added to campaigns. Zero manual work.</p>
                     </div>
                 </div>
