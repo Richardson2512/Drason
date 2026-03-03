@@ -49,8 +49,15 @@ const docSections = [
             { title: 'Connection Errors', href: '/docs/help/connection-errors', icon: AlertTriangle },
             { title: 'Campaign Paused', href: '/docs/help/campaign-paused', icon: HelpCircle },
             { title: 'Auto-Healing', href: '/docs/help/auto-healing', icon: HelpCircle },
+            { title: 'Bounce Classification', href: '/docs/help/bounce-classification', icon: HelpCircle },
             { title: 'Infrastructure Score', href: '/docs/help/infrastructure-score-explained', icon: HelpCircle },
             { title: '24/7 Monitoring', href: '/docs/help/24-7-monitoring', icon: HelpCircle },
+            { title: 'Load Balancing', href: '/docs/help/load-balancing', icon: HelpCircle },
+            { title: 'Analytics', href: '/docs/help/analytics', icon: Activity },
+            { title: 'Audit Logs', href: '/docs/help/audit-logs', icon: HelpCircle },
+            { title: 'Notifications', href: '/docs/help/notifications', icon: HelpCircle },
+            { title: 'Billing', href: '/docs/help/billing', icon: HelpCircle },
+            { title: 'Account Management', href: '/docs/help/account-management', icon: HelpCircle },
         ]
     }
 ];
