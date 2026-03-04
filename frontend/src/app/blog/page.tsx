@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3 } from 'lucide-react';
 import type { Metadata } from 'next';
-import CloudBackground from '@/components/CloudBackground';
+
 
 export const metadata: Metadata = {
     title: 'Blog – Superkabe',
@@ -95,9 +95,14 @@ export default function BlogPage() {
 
             {/* Hero */}
             <section className="relative pt-32 md:pt-36 pb-20 text-center">
-                {/* Unified Fixed Background Layer */}
+                {/* Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
-                    <CloudBackground />
+                    <div className="cloud-bg">
+                        <div className="cloud-shadow" />
+                        <div className="cloud-puff-1" />
+                        <div className="cloud-puff-2" />
+                        <div className="cloud-puff-3" />
+                    </div>
                     <div className="absolute inset-0 hero-grid"></div>
                 </div>
                 <div className="relative z-10 max-w-4xl mx-auto px-6">

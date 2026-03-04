@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import CloudBackground from '@/components/CloudBackground';
+
 
 const docSections = [
     {
@@ -265,9 +265,14 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             {/* ================= NAVBAR ================= */}
             <Navbar />
 
-            {/* ================= Unified Fixed Background Layer ================= */}
+            {/* ================= Fixed Background Layer ================= */}
             <div className="fixed inset-0 pointer-events-none z-0">
-                <CloudBackground />
+                <div className="cloud-bg">
+                    <div className="cloud-shadow" />
+                    <div className="cloud-puff-1" />
+                    <div className="cloud-puff-2" />
+                    <div className="cloud-puff-3" />
+                </div>
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 

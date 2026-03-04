@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import CloudBackground from '@/components/CloudBackground';
+
 
 export default function PricingPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,9 +53,14 @@ export default function PricingPage() {
 
             {/* Hero Section */}
             <div className="relative pt-32 md:pt-36 pb-24 md:pb-32 text-center px-4 md:px-6">
-                {/* Unified Fixed Background Layer */}
+                {/* Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
-                    <CloudBackground />
+                    <div className="cloud-bg">
+                        <div className="cloud-shadow" />
+                        <div className="cloud-puff-1" />
+                        <div className="cloud-puff-2" />
+                        <div className="cloud-puff-3" />
+                    </div>
                     <div className="absolute inset-0 hero-grid"></div>
                 </div>
 
