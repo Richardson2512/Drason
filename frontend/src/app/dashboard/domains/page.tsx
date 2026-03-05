@@ -648,7 +648,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                         <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.aggregated_bounce_rate_trend > 2 ? '#EF4444' : '#16A34A' }}>
                             {selectedDomain.aggregated_bounce_rate_trend.toFixed(2)}<span style={{ fontSize: '1.5rem' }}>%</span>
                         </div>
-                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Rolling 7-day average</div>
+                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Lifetime aggregate across all mailboxes</div>
                     </div>
                     <div>
                         <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Warnings Triggered</div>
