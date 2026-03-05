@@ -389,62 +389,64 @@ export default function Overview() {
           <h2 style={{ fontSize: '1.25rem', color: '#EF4444', marginBottom: '1rem', fontWeight: '700', paddingLeft: '0.5rem' }}>
             ⚠️ Critical Attention Needed
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {pausedDomains.map(d => (
-              <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                  <div>
-                    <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Paused</div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{d.domain}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
+          <div style={{ maxHeight: '240px', overflowY: 'auto', borderRadius: '12px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {pausedDomains.map(d => (
+                <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                    <div>
+                      <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Paused</div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{d.domain}</div>
+                      <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
+                    </div>
+                    <button
+                      onClick={() => handleResumeDomain(d.id)}
+                      disabled={resuming === d.id}
+                      className="premium-btn"
+                      style={{
+                        fontSize: '0.8rem',
+                        padding: '0.5rem 1rem',
+                        background: resuming === d.id ? '#9CA3AF' : '#EF4444',
+                        cursor: resuming === d.id ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      {resuming === d.id ? 'Resuming...' : 'Fix Now'}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => handleResumeDomain(d.id)}
-                    disabled={resuming === d.id}
-                    className="premium-btn"
-                    style={{
-                      fontSize: '0.8rem',
-                      padding: '0.5rem 1rem',
-                      background: resuming === d.id ? '#9CA3AF' : '#EF4444',
-                      cursor: resuming === d.id ? 'not-allowed' : 'pointer'
-                    }}
-                  >
-                    {resuming === d.id ? 'Resuming...' : 'Fix Now'}
-                  </button>
                 </div>
-              </div>
-            ))}
-            {pausedMailboxes.map(m => (
-              <div key={m.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                  <div>
-                    <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Mailbox Paused</div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{m.email}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {m.paused_reason || 'Health degradation detected'}</div>
+              ))}
+              {pausedMailboxes.map(m => (
+                <div key={m.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                    <div>
+                      <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Mailbox Paused</div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{m.email}</div>
+                      <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {m.paused_reason || 'Health degradation detected'}</div>
+                    </div>
+                    <button
+                      onClick={() => handleResumeMailbox(m.id)}
+                      disabled={resuming === m.id}
+                      className="premium-btn"
+                      style={{
+                        fontSize: '0.8rem',
+                        padding: '0.5rem 1rem',
+                        background: resuming === m.id ? '#9CA3AF' : '#EF4444',
+                        cursor: resuming === m.id ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      {resuming === m.id ? 'Resuming...' : 'Fix Now'}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => handleResumeMailbox(m.id)}
-                    disabled={resuming === m.id}
-                    className="premium-btn"
-                    style={{
-                      fontSize: '0.8rem',
-                      padding: '0.5rem 1rem',
-                      background: resuming === m.id ? '#9CA3AF' : '#EF4444',
-                      cursor: resuming === m.id ? 'not-allowed' : 'pointer'
-                    }}
-                  >
-                    {resuming === m.id ? 'Resuming...' : 'Fix Now'}
-                  </button>
                 </div>
-              </div>
-            ))}
-            {warningDomains.map(d => (
-              <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EAB308', background: '#FFFBEB' }}>
-                <div style={{ fontWeight: '800', color: '#B45309', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Warning</div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#78350F' }}>{d.domain}</div>
-                <div style={{ fontSize: '0.9rem', color: '#92400E', marginTop: '0.5rem' }}>High bounce rate detected</div>
-              </div>
-            ))}
+              ))}
+              {warningDomains.map(d => (
+                <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EAB308', background: '#FFFBEB' }}>
+                  <div style={{ fontWeight: '800', color: '#B45309', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Warning</div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#78350F' }}>{d.domain}</div>
+                  <div style={{ fontSize: '0.9rem', color: '#92400E', marginTop: '0.5rem' }}>High bounce rate detected</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

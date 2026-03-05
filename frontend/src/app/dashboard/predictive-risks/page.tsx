@@ -10,6 +10,14 @@ interface RiskSignal {
     score_impact: number;
 }
 
+interface Recommendation {
+    action: 'add_mailboxes' | 'remove_unhealthy' | 'wait_cooldown' | 'investigate_bounces' | 'fix_domains' | 'no_action';
+    label: string;
+    campaign_id: string;
+    mailbox_ids?: string[];
+    domain_ids?: string[];
+}
+
 interface CampaignRiskScore {
     campaign_id: string;
     campaign_name: string;
@@ -19,6 +27,7 @@ interface CampaignRiskScore {
     time_to_stall_hours: number | null;
     signals: RiskSignal[];
     recommended_actions: string[];
+    recommendations: Recommendation[];
 }
 
 interface PredictiveReport {
@@ -36,6 +45,8 @@ export default function PredictiveRisksPage() {
     const [sendingAlerts, setSendingAlerts] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [expandedCampaigns, setExpandedCampaigns] = useState<Set<string>>(new Set());
+    const [applyingRec, setApplyingRec] = useState<string | null>(null);
+    const [recResults, setRecResults] = useState<Record<string, { success: boolean; message: string }>>({});
 
     const fetchReport = async () => {
         setLoading(true);
@@ -69,6 +80,49 @@ export default function PredictiveRisksPage() {
             alert(`Failed to send alerts: ${err.message}`);
         } finally {
             setSendingAlerts(false);
+        }
+    };
+
+    const applyRecommendation = async (rec: Recommendation, index: number) => {
+        const key = `${rec.campaign_id}-${index}`;
+        setApplyingRec(key);
+        try {
+            const data = await apiClient<{ success: boolean; message: string }>(
+                '/api/dashboard/campaigns/predictive-risks/apply',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ recommendation: rec })
+                }
+            );
+            setRecResults(prev => ({ ...prev, [key]: { success: data.success !== false, message: data.message || 'Done' } }));
+            // Refresh report after applying
+            if (data.success !== false) {
+                await fetchReport();
+            }
+        } catch (err: any) {
+            setRecResults(prev => ({ ...prev, [key]: { success: false, message: err.message } }));
+        } finally {
+            setApplyingRec(null);
+        }
+    };
+
+    const getActionButtonLabel = (action: string): string => {
+        switch (action) {
+            case 'add_mailboxes': return 'Auto-Add';
+            case 'remove_unhealthy': return 'Remove';
+            case 'investigate_bounces': return 'View';
+            case 'fix_domains': return 'View';
+            case 'wait_cooldown': return 'Info';
+            case 'no_action': return '';
+            default: return 'Apply';
+        }
+    };
+
+    const getActionRoute = (rec: Recommendation): string | null => {
+        switch (rec.action) {
+            case 'investigate_bounces': return `/dashboard/campaigns?highlight=${rec.campaign_id}`;
+            case 'fix_domains': return '/dashboard/domains';
+            default: return null;
         }
     };
 
@@ -296,19 +350,86 @@ export default function PredictiveRisksPage() {
                                             </div>
                                         </div>
 
-                                        {/* Recommendations */}
+                                        {/* Recommendations with Action Buttons */}
                                         <div>
                                             <h4 style={{ fontSize: '0.875rem', fontWeight: 600, color: '#111827', marginBottom: '0.75rem', textTransform: 'uppercase' }}>
                                                 Recommended Actions
                                             </h4>
-                                            <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#374151', fontSize: '0.875rem' }}>
-                                                {campaign.recommended_actions.map((action, idx) => (
-                                                    <li key={idx} style={{ marginBottom: '0.5rem' }}>{action}</li>
-                                                ))}
-                                            </ul>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                {(campaign.recommendations || []).map((rec, idx) => {
+                                                    const key = `${rec.campaign_id}-${idx}`;
+                                                    const result = recResults[key];
+                                                    const isApplying = applyingRec === key;
+                                                    const route = getActionRoute(rec);
+                                                    const btnLabel = getActionButtonLabel(rec.action);
+
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            style={{
+                                                                padding: '0.75rem 1rem',
+                                                                background: result?.success ? '#F0FDF4' : result ? '#FEF2F2' : '#F9FAFB',
+                                                                border: `1px solid ${result?.success ? '#86EFAC' : result ? '#FCA5A5' : '#E5E7EB'}`,
+                                                                borderRadius: '8px',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                gap: '1rem'
+                                                            }}
+                                                        >
+                                                            <div style={{ flex: 1, fontSize: '0.875rem', color: '#374151' }}>
+                                                                {rec.label}
+                                                                {result && (
+                                                                    <div style={{ fontSize: '0.75rem', color: result.success ? '#16A34A' : '#DC2626', marginTop: '0.25rem' }}>
+                                                                        {result.message}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            {rec.action !== 'no_action' && rec.action !== 'wait_cooldown' && !result?.success && (
+                                                                route ? (
+                                                                    <Link
+                                                                        href={route}
+                                                                        style={{
+                                                                            padding: '0.375rem 0.875rem',
+                                                                            background: '#2563EB',
+                                                                            color: '#FFF',
+                                                                            border: 'none',
+                                                                            borderRadius: '6px',
+                                                                            fontSize: '0.75rem',
+                                                                            fontWeight: 600,
+                                                                            textDecoration: 'none',
+                                                                            whiteSpace: 'nowrap'
+                                                                        }}
+                                                                    >
+                                                                        {btnLabel} →
+                                                                    </Link>
+                                                                ) : (
+                                                                    <button
+                                                                        onClick={() => applyRecommendation(rec, idx)}
+                                                                        disabled={isApplying}
+                                                                        style={{
+                                                                            padding: '0.375rem 0.875rem',
+                                                                            background: isApplying ? '#93C5FD' : '#2563EB',
+                                                                            color: '#FFF',
+                                                                            border: 'none',
+                                                                            borderRadius: '6px',
+                                                                            fontSize: '0.75rem',
+                                                                            fontWeight: 600,
+                                                                            cursor: isApplying ? 'not-allowed' : 'pointer',
+                                                                            whiteSpace: 'nowrap'
+                                                                        }}
+                                                                    >
+                                                                        {isApplying ? 'Applying...' : btnLabel}
+                                                                    </button>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
 
-                                        {/* Action Button */}
+                                        {/* View Campaign Link */}
                                         <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #E5E7EB' }}>
                                             <Link
                                                 href={`/dashboard/campaigns?highlight=${campaign.campaign_id}`}

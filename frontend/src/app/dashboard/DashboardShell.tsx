@@ -31,6 +31,10 @@ export default function DashboardShell({
     const [orgName, setOrgName] = useState<string>('');
     const [assessmentInProgress, setAssessmentInProgress] = useState<boolean>(false);
     const [assessmentJustFinished, setAssessmentJustFinished] = useState<boolean>(false);
+    const [showTicketModal, setShowTicketModal] = useState(false);
+    const [ticketForm, setTicketForm] = useState({ subject: '', description: '', category: 'general' });
+    const [ticketSubmitting, setTicketSubmitting] = useState(false);
+    const [ticketResult, setTicketResult] = useState<{ success: boolean; ticketId?: string; error?: string } | null>(null);
 
     // Poll assessment status every 5 seconds
     useEffect(() => {
@@ -129,6 +133,28 @@ export default function DashboardShell({
 
     const handleLogout = async () => {
         await serverLogout();
+    };
+
+    const handleTicketSubmit = async () => {
+        if (!ticketForm.subject.trim() || !ticketForm.description.trim()) return;
+        setTicketSubmitting(true);
+        setTicketResult(null);
+        try {
+            const data = await apiClient<any>('/api/dashboard/tickets', {
+                method: 'POST',
+                body: JSON.stringify(ticketForm),
+            });
+            if (data?.success) {
+                setTicketResult({ success: true, ticketId: data.data.ticket_id });
+                setTicketForm({ subject: '', description: '', category: 'general' });
+            } else {
+                setTicketResult({ success: false, error: data?.error || 'Failed to submit ticket' });
+            }
+        } catch (err: any) {
+            setTicketResult({ success: false, error: err.message || 'Failed to submit ticket' });
+        } finally {
+            setTicketSubmitting(false);
+        }
     };
 
     return (
@@ -637,6 +663,155 @@ export default function DashboardShell({
             {/* Help Panel */}
             <HelpPanel isOpen={helpPanelOpen} onClose={() => setHelpPanelOpen(false)} />
             <HelpPanelTrigger onClick={() => setHelpPanelOpen(true)} />
+
+            {/* Raise a Ticket Button — fixed top-right */}
+            <button
+                onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
+                style={{
+                    position: 'fixed',
+                    top: '1rem',
+                    right: '4.5rem',
+                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                    zIndex: 45,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.4)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.3)'; }}
+            >
+                <span style={{ fontSize: '0.9rem' }}>🎫</span>
+                Raise a Ticket
+            </button>
+
+            {/* Support Ticket Modal */}
+            {showTicketModal && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9998,
+                }} onClick={() => { if (!ticketSubmitting) setShowTicketModal(false); }}>
+                    <div style={{
+                        background: '#fff', borderRadius: '20px', maxWidth: '520px', width: '90%',
+                        padding: '2rem', boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+                        animation: 'slideIn 0.3s ease-out',
+                    }} onClick={(e) => e.stopPropagation()}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>
+                                <span style={{ marginRight: '0.5rem' }}>🎫</span>Raise a Support Ticket
+                            </h2>
+                            <button onClick={() => setShowTicketModal(false)} style={{
+                                background: 'none', border: 'none', fontSize: '1.25rem', cursor: 'pointer', color: '#9CA3AF',
+                                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%',
+                            }}>✕</button>
+                        </div>
+
+                        {ticketResult?.success ? (
+                            <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+                                <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem', fontWeight: 700, color: '#065F46' }}>Ticket Submitted!</h3>
+                                <p style={{ margin: '0 0 0.5rem', color: '#6B7280', fontSize: '0.9rem' }}>Your ticket ID is:</p>
+                                <p style={{
+                                    margin: '0 0 1.5rem', fontSize: '1.1rem', fontWeight: 700, color: '#4F46E5',
+                                    background: '#EEF2FF', padding: '0.5rem 1rem', borderRadius: '8px', display: 'inline-block',
+                                }}>{ticketResult.ticketId}</p>
+                                <p style={{ margin: '0 0 1.5rem', color: '#6B7280', fontSize: '0.85rem' }}>
+                                    We&apos;ll get back to you as soon as possible.
+                                </p>
+                                <button onClick={() => setShowTicketModal(false)} style={{
+                                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', color: '#fff', border: 'none',
+                                    borderRadius: '10px', padding: '0.625rem 1.5rem', fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer',
+                                }}>Close</button>
+                            </div>
+                        ) : (
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Category</label>
+                                        <select
+                                            value={ticketForm.category}
+                                            onChange={(e) => setTicketForm(f => ({ ...f, category: e.target.value }))}
+                                            style={{
+                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
+                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
+                                                background: '#F9FAFB', outline: 'none',
+                                            }}
+                                        >
+                                            <option value="general">General</option>
+                                            <option value="bug">Bug Report</option>
+                                            <option value="feature">Feature Request</option>
+                                            <option value="billing">Billing</option>
+                                            <option value="urgent">Urgent</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Subject *</label>
+                                        <input
+                                            type="text"
+                                            value={ticketForm.subject}
+                                            onChange={(e) => setTicketForm(f => ({ ...f, subject: e.target.value }))}
+                                            placeholder="Brief summary of your issue"
+                                            style={{
+                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
+                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
+                                                background: '#F9FAFB', outline: 'none', boxSizing: 'border-box',
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Description *</label>
+                                        <textarea
+                                            value={ticketForm.description}
+                                            onChange={(e) => setTicketForm(f => ({ ...f, description: e.target.value }))}
+                                            placeholder="Describe your issue in detail..."
+                                            rows={5}
+                                            style={{
+                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
+                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
+                                                background: '#F9FAFB', outline: 'none', resize: 'vertical',
+                                                fontFamily: 'inherit', boxSizing: 'border-box',
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                {ticketResult?.error && (
+                                    <p style={{ color: '#DC2626', fontSize: '0.8rem', margin: '0.75rem 0 0', fontWeight: 500 }}>
+                                        {ticketResult.error}
+                                    </p>
+                                )}
+
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+                                    <button onClick={() => setShowTicketModal(false)} disabled={ticketSubmitting} style={{
+                                        background: '#F3F4F6', color: '#374151', border: '1px solid #D1D5DB',
+                                        borderRadius: '10px', padding: '0.625rem 1.25rem', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer',
+                                    }}>Cancel</button>
+                                    <button
+                                        onClick={handleTicketSubmit}
+                                        disabled={ticketSubmitting || !ticketForm.subject.trim() || !ticketForm.description.trim()}
+                                        style={{
+                                            background: ticketSubmitting ? '#9CA3AF' : 'linear-gradient(135deg, #6366F1, #8B5CF6)',
+                                            color: '#fff', border: 'none', borderRadius: '10px',
+                                            padding: '0.625rem 1.25rem', fontSize: '0.875rem', fontWeight: 600,
+                                            cursor: ticketSubmitting ? 'not-allowed' : 'pointer',
+                                            opacity: (!ticketForm.subject.trim() || !ticketForm.description.trim()) ? 0.5 : 1,
+                                        }}
+                                    >{ticketSubmitting ? 'Submitting...' : 'Submit Ticket'}</button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
             {showUpgradeModal && pathname !== '/dashboard/billing' && (
