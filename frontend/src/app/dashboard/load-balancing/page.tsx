@@ -9,6 +9,9 @@ interface MailboxLoad {
     campaign_count: number;
     load_category: 'overloaded' | 'optimal' | 'underutilized';
     health_score: number;
+    total_sent: number;
+    bounce_rate: number;
+    engagement_rate: number;
 }
 
 interface LoadBalancingSuggestion {
@@ -303,6 +306,9 @@ export default function LoadBalancingPage() {
                                 <th style={{ padding: '1rem', textAlign: 'left', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Mailbox</th>
                                 <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Status</th>
                                 <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Campaigns</th>
+                                <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Total Sent</th>
+                                <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Bounce Rate</th>
+                                <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Engagement</th>
                                 <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Load Category</th>
                                 <th style={{ padding: '1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' }}>Health Score</th>
                             </tr>
@@ -329,6 +335,15 @@ export default function LoadBalancingPage() {
                                         </td>
                                         <td style={{ padding: '1rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: 600, color: '#111827' }}>
                                             {mb.campaign_count}
+                                        </td>
+                                        <td style={{ padding: '1rem', textAlign: 'center', fontSize: '0.875rem', color: '#6B7280' }}>
+                                            {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '—'}
+                                        </td>
+                                        <td style={{ padding: '1rem', textAlign: 'center', fontSize: '0.875rem', color: mb.bounce_rate >= 3 ? '#DC2626' : mb.bounce_rate >= 2 ? '#D97706' : '#6B7280' }}>
+                                            {mb.total_sent > 0 ? `${mb.bounce_rate}%` : '—'}
+                                        </td>
+                                        <td style={{ padding: '1rem', textAlign: 'center', fontSize: '0.875rem', color: mb.engagement_rate < 2 ? '#DC2626' : mb.engagement_rate < 5 ? '#D97706' : '#6B7280' }}>
+                                            {mb.total_sent > 0 ? `${mb.engagement_rate}%` : '—'}
                                         </td>
                                         <td style={{ padding: '1rem', textAlign: 'center' }}>
                                             <span

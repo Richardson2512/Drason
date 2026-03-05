@@ -93,12 +93,12 @@ export default function DataSyncCoveragePage() {
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="py-2 pr-4">Emails Sent (per mailbox)</td>
-                            <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span> &mdash; No per-mailbox sent count API</td>
+                            <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> &mdash; Mailbox-statistics API per campaign</td>
                             <td className="py-2"><span className="text-green-600 font-semibold">Yes</span> &mdash; Webhooks include sender email</td>
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="py-2 pr-4">Opens, Clicks, Replies (per mailbox)</td>
-                            <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span> &mdash; Not exposed per-mailbox</td>
+                            <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> &mdash; Mailbox-statistics API per campaign</td>
                             <td className="py-2"><span className="text-green-600 font-semibold">Yes</span> &mdash; Webhooks include sender email</td>
                         </tr>
                         <tr>
@@ -109,8 +109,8 @@ export default function DataSyncCoveragePage() {
                     </tbody>
                 </table>
             </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 text-sm text-amber-800">
-                <strong>Why mailbox sent/engagement starts at zero:</strong> Smartlead's API returns engagement stats at the campaign level, not per-mailbox. The only way to attribute historical bounces to specific mailboxes is through the message-history API (which Superkabe uses for bounce backfill). For all other per-mailbox metrics, data accumulates from webhook events after you connect.
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-8 text-sm text-green-800">
+                <strong>Full per-mailbox historical data available:</strong> Smartlead&apos;s mailbox-statistics endpoint returns per-mailbox sent, open, click, reply, and bounce counts for each campaign. Superkabe aggregates these across all campaigns during sync, using <code className="bg-green-100 px-1 rounded">Math.max()</code> to never overwrite higher webhook-accumulated values. Historical bounce attribution also uses the message-history API for additional accuracy.
             </div>
 
             <h3 className="text-2xl font-bold mb-3 text-gray-900">Lead Data</h3>
@@ -375,19 +375,19 @@ export default function DataSyncCoveragePage() {
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="py-2 pr-4 font-medium">Historical Sent Count</td>
-                            <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span></td>
+                            <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> (mailbox-statistics)</td>
                             <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> (daily analytics)</td>
                             <td className="py-2"><span className="text-red-600 font-semibold">No</span></td>
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="py-2 pr-4 font-medium">Historical Opens</td>
-                            <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span></td>
+                            <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> (mailbox-statistics)</td>
                             <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> (daily analytics)</td>
                             <td className="py-2"><span className="text-red-600 font-semibold">No</span></td>
                         </tr>
                         <tr>
                             <td className="py-2 pr-4 font-medium">Historical Clicks/Replies</td>
-                            <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span></td>
+                            <td className="py-2 pr-4"><span className="text-green-600 font-semibold">Yes</span> (mailbox-statistics)</td>
                             <td className="py-2 pr-4"><span className="text-red-600 font-semibold">No</span></td>
                             <td className="py-2"><span className="text-red-600 font-semibold">No</span></td>
                         </tr>
@@ -411,7 +411,7 @@ export default function DataSyncCoveragePage() {
                         </li>
                         <li className="flex items-start gap-2">
                             <span>&#x2022;</span>
-                            <span>Full per-mailbox stats on Instantly (via daily analytics)</span>
+                            <span>Full per-mailbox stats on Smartlead (via mailbox-statistics API) and Instantly (via daily analytics)</span>
                         </li>
                         <li className="flex items-start gap-2">
                             <span>&#x2022;</span>
@@ -426,10 +426,6 @@ export default function DataSyncCoveragePage() {
                 <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-6">
                     <h3 className="font-bold text-amber-900 mb-3">Accumulates Over Time</h3>
                     <ul className="space-y-2 text-sm text-gray-700">
-                        <li className="flex items-start gap-2">
-                            <span>&#x2022;</span>
-                            <span>Per-mailbox engagement on Smartlead (webhook events)</span>
-                        </li>
                         <li className="flex items-start gap-2">
                             <span>&#x2022;</span>
                             <span>All per-mailbox metrics on EmailBison (webhook events)</span>
@@ -452,15 +448,15 @@ export default function DataSyncCoveragePage() {
                     </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">Why does Instantly show more mailbox data than Smartlead?</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">How does Smartlead per-mailbox data compare to Instantly?</h3>
                     <p className="text-gray-600 text-sm">
-                        Instantly exposes a dedicated daily analytics endpoint that returns per-mailbox, per-day breakdowns of sent, bounced, and opens. Smartlead's API returns these metrics only at the campaign level. Superkabe does not fabricate per-mailbox numbers when the platform does not provide them.
+                        Both platforms now provide full per-mailbox historical data. Smartlead&apos;s mailbox-statistics endpoint returns sent, open, click, reply, and bounce counts per mailbox per campaign. Instantly&apos;s daily analytics endpoint returns per-mailbox, per-day breakdowns. Smartlead actually provides more granular data (clicks and replies) that Instantly does not expose per-mailbox.
                     </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                     <h3 className="text-lg font-bold text-gray-900 mb-2">How does Superkabe attribute historical bounces to Smartlead mailboxes?</h3>
                     <p className="text-gray-600 text-sm">
-                        Through the message-history API. For each bounced lead, Superkabe fetches the full message history which includes a <code className="bg-gray-100 px-1 rounded">from</code> field identifying the sending mailbox. This is the only reliable method for per-mailbox bounce attribution on Smartlead.
+                        Through two methods: the mailbox-statistics endpoint provides aggregate bounce counts per mailbox per campaign, and the message-history API provides individual bounce attribution with a <code className="bg-gray-100 px-1 rounded">from</code> field identifying the sending mailbox. Superkabe uses <code className="bg-gray-100 px-1 rounded">Math.max()</code> to keep the higher value from either source.
                     </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">

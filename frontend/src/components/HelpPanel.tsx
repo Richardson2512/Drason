@@ -13,6 +13,7 @@ interface HelpArticle {
 }
 
 const helpArticles: HelpArticle[] = [
+    // ── Help Center Articles ──
     {
         title: '24/7 Infrastructure Monitoring',
         href: '/docs/help/24-7-monitoring',
@@ -38,25 +39,68 @@ const helpArticles: HelpArticle[] = [
         tags: ['healing', 'recovery', 'phases', 'automation']
     },
     {
-        title: 'Status Colors Explained',
-        href: '/docs/help/status-colors',
-        description: 'What each color badge means (healthy, warning, paused)',
-        tags: ['status', 'colors', 'badges', 'health']
+        title: 'Notifications Guide',
+        href: '/docs/help/notifications',
+        description: 'Understanding notification types and severity levels',
+        tags: ['notifications', 'alerts', 'severity']
     },
     {
-        title: 'Lead Scoring System',
-        href: '/docs/help/lead-scoring',
-        description: 'How engagement scores are calculated',
-        tags: ['leads', 'scoring', 'engagement']
+        title: 'Connection Errors Guide',
+        href: '/docs/help/connection-errors',
+        description: 'Troubleshoot SMTP/IMAP connection failures and mailbox disconnects',
+        tags: ['connection', 'errors', 'smtp', 'imap', 'troubleshoot']
     },
     {
-        title: 'DNS Configuration Guide',
-        href: '/docs/help/dns-setup',
-        description: 'Setting up SPF, DKIM, and DMARC records',
-        tags: ['dns', 'spf', 'dkim', 'dmarc', 'configuration']
+        title: 'Load Balancing Guide',
+        href: '/docs/help/load-balancing',
+        description: 'How mailbox-campaign load balancing optimizes deliverability',
+        tags: ['load balancing', 'campaigns', 'mailboxes', 'distribution']
     },
     {
-        title: 'Execution Gate Explained',
+        title: 'Audit Logs Guide',
+        href: '/docs/help/audit-logs',
+        description: 'Track every system action with full audit trail',
+        tags: ['audit', 'logs', 'history', 'tracking']
+    },
+    {
+        title: 'Billing & Subscription',
+        href: '/docs/help/billing',
+        description: 'Manage your plan, billing, and subscription details',
+        tags: ['billing', 'subscription', 'plan', 'payment']
+    },
+    {
+        title: 'Bounce Classification',
+        href: '/docs/help/bounce-classification',
+        description: 'How bounces are classified as hard, soft, or transient',
+        tags: ['bounce', 'classification', 'hard', 'soft', 'deliverability']
+    },
+    {
+        title: 'Account Management',
+        href: '/docs/help/account-management',
+        description: 'Manage your account settings, team, and organization',
+        tags: ['account', 'settings', 'team', 'organization']
+    },
+    {
+        title: 'Analytics Dashboard',
+        href: '/docs/help/analytics',
+        description: 'Understanding your analytics and performance metrics',
+        tags: ['analytics', 'metrics', 'performance', 'stats']
+    },
+    // ── Core Documentation ──
+    {
+        title: 'Getting Started',
+        href: '/docs/getting-started',
+        description: 'Quick start guide to set up your account and connect platforms',
+        tags: ['getting started', 'setup', 'onboarding', 'quickstart']
+    },
+    {
+        title: 'Configuration',
+        href: '/docs/configuration',
+        description: 'Configure thresholds, rules, and platform settings',
+        tags: ['configuration', 'settings', 'thresholds', 'rules']
+    },
+    {
+        title: 'Execution Gate',
         href: '/docs/execution-gate',
         description: 'How the pre-send validation gate works',
         tags: ['execution', 'gate', 'validation', 'sending']
@@ -67,6 +111,49 @@ const helpArticles: HelpArticle[] = [
         description: 'Bounce rate thresholds and monitoring windows',
         tags: ['monitoring', 'thresholds', 'bounces']
     },
+    {
+        title: 'Risk Scoring',
+        href: '/docs/risk-scoring',
+        description: 'How mailbox and domain risk scores are calculated',
+        tags: ['risk', 'scoring', 'health', 'assessment']
+    },
+    {
+        title: 'State Machine',
+        href: '/docs/state-machine',
+        description: 'Entity lifecycle states and transition rules',
+        tags: ['state', 'machine', 'lifecycle', 'transitions']
+    },
+    {
+        title: 'Warmup & Recovery',
+        href: '/docs/warmup-recovery',
+        description: 'Mailbox warmup phases and recovery workflows',
+        tags: ['warmup', 'recovery', 'healing', 'phases']
+    },
+    {
+        title: 'Platform Rules',
+        href: '/docs/platform-rules',
+        description: 'Platform-specific sending rules and rate limits',
+        tags: ['rules', 'platform', 'rate limits', 'sending']
+    },
+    {
+        title: 'Infrastructure Assessment',
+        href: '/docs/infrastructure-assessment',
+        description: 'How initial infrastructure health assessment works at onboarding',
+        tags: ['infrastructure', 'assessment', 'onboarding', 'dns']
+    },
+    {
+        title: 'Data Sync Coverage',
+        href: '/docs/data-sync-coverage',
+        description: 'What data syncs from each platform and what starts at zero',
+        tags: ['sync', 'data', 'coverage', 'smartlead', 'instantly', 'emailbison']
+    },
+    {
+        title: 'Multi-Platform Sync',
+        href: '/docs/multi-platform-sync',
+        description: 'How Superkabe syncs across Smartlead, Instantly, and EmailBison',
+        tags: ['multi-platform', 'sync', 'smartlead', 'instantly', 'emailbison']
+    },
+    // ── Integration Guides ──
     {
         title: 'Smartlead Integration',
         href: '/docs/smartlead-integration',
@@ -86,22 +173,52 @@ const helpArticles: HelpArticle[] = [
         tags: ['instantly', 'integration', 'sync']
     },
     {
-        title: 'Notifications Guide',
-        href: '/docs/help/notifications',
-        description: 'Understanding notification types and severity levels',
-        tags: ['notifications', 'alerts', 'severity']
-    }
+        title: 'Clay Integration',
+        href: '/docs/clay-integration',
+        description: 'Connect Clay for lead enrichment and webhook ingestion',
+        tags: ['clay', 'integration', 'leads', 'webhook', 'enrichment']
+    },
+    {
+        title: 'Slack Integration',
+        href: '/docs/slack-integration',
+        description: 'Set up Slack alerts for real-time infrastructure notifications',
+        tags: ['slack', 'integration', 'alerts', 'notifications']
+    },
+    {
+        title: 'API Integration',
+        href: '/docs/api-integration',
+        description: 'REST API reference for programmatic access',
+        tags: ['api', 'integration', 'rest', 'endpoints']
+    },
+    // ── Technical Documentation ──
+    {
+        title: 'Technical Architecture',
+        href: '/docs/technical-architecture',
+        description: 'System design, data flow, and architecture overview',
+        tags: ['architecture', 'technical', 'design', 'system']
+    },
+    {
+        title: 'Deployment Guide',
+        href: '/docs/deployment',
+        description: 'Deploy and configure Superkabe infrastructure',
+        tags: ['deployment', 'railway', 'infrastructure', 'hosting']
+    },
 ];
 
 // Context-aware help based on current page
 const contextualHelp: Record<string, string[]> = {
-    '/dashboard/infrastructure': ['24-7-monitoring', 'infrastructure-score-explained', 'auto-healing', 'dns-setup'],
-    '/dashboard/campaigns': ['24-7-monitoring', 'campaign-paused', 'status-colors', 'auto-healing'],
-    '/dashboard/leads': ['lead-scoring', 'status-colors'],
-    '/dashboard/domains': ['24-7-monitoring', 'dns-setup', 'status-colors', 'monitoring'],
-    '/dashboard/mailboxes': ['24-7-monitoring', 'status-colors', 'monitoring', 'auto-healing'],
-    '/dashboard/notifications': ['notifications', 'status-colors'],
-    '/dashboard/settings': ['24-7-monitoring', 'smartlead-integration', 'emailbison-integration', 'instantly-integration', 'dns-setup'],
+    '/dashboard/infrastructure': ['infrastructure-score-explained', 'infrastructure-assessment', '24-7-monitoring', 'auto-healing'],
+    '/dashboard/campaigns': ['campaign-paused', '24-7-monitoring', 'auto-healing', 'monitoring'],
+    '/dashboard/leads': ['analytics', 'risk-scoring', 'clay-integration'],
+    '/dashboard/domains': ['infrastructure-score-explained', '24-7-monitoring', 'monitoring', 'bounce-classification'],
+    '/dashboard/mailboxes': ['connection-errors', '24-7-monitoring', 'monitoring', 'auto-healing', 'warmup-recovery'],
+    '/dashboard/notifications': ['notifications', '24-7-monitoring'],
+    '/dashboard/settings': ['smartlead-integration', 'emailbison-integration', 'instantly-integration', 'configuration', 'account-management'],
+    '/dashboard/billing': ['billing'],
+    '/dashboard/predictive-risks': ['risk-scoring', 'monitoring', '24-7-monitoring', 'bounce-classification'],
+    '/dashboard/load-balancing': ['load-balancing', 'campaign-paused', 'monitoring'],
+    '/dashboard/audit-logs': ['audit-logs', '24-7-monitoring'],
+    '/dashboard/analytics': ['analytics', 'data-sync-coverage', 'monitoring'],
 };
 
 interface HelpPanelProps {
