@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
@@ -15,6 +15,7 @@ export default function DashboardShell({
     children: React.ReactNode;
 }) {
     const router = useRouter();
+    const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [userName, setUserName] = useState<string>('');
     const [userEmail, setUserEmail] = useState<string>('');
@@ -26,6 +27,7 @@ export default function DashboardShell({
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [orgName, setOrgName] = useState<string>('');
     const [assessmentInProgress, setAssessmentInProgress] = useState<boolean>(false);
     const [assessmentJustFinished, setAssessmentJustFinished] = useState<boolean>(false);
@@ -108,10 +110,21 @@ export default function DashboardShell({
                     const days = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
                     setDaysRemaining(days);
                 }
+                // Show upgrade modal for expired/past_due/canceled subscriptions
+                if (['expired', 'past_due', 'canceled'].includes(data.subscription?.status)) {
+                    setShowUpgradeModal(true);
+                }
             })
             .catch(err => console.error('[Layout] Failed to fetch subscription status', err));
 
         return () => clearInterval(interval);
+    }, []);
+
+    // Listen for 403 subscription-expired events from API client
+    useEffect(() => {
+        const handler = () => setShowUpgradeModal(true);
+        window.addEventListener('subscription-expired', handler);
+        return () => window.removeEventListener('subscription-expired', handler);
     }, []);
 
     const handleLogout = async () => {
@@ -624,6 +637,67 @@ export default function DashboardShell({
             {/* Help Panel */}
             <HelpPanel isOpen={helpPanelOpen} onClose={() => setHelpPanelOpen(false)} />
             <HelpPanelTrigger onClick={() => setHelpPanelOpen(true)} />
+
+            {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
+            {showUpgradeModal && pathname !== '/dashboard/billing' && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0, 0, 0, 0.6)',
+                    backdropFilter: 'blur(4px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999,
+                }}>
+                    <div style={{
+                        background: '#FFFFFF',
+                        borderRadius: '24px',
+                        maxWidth: '480px',
+                        width: '90%',
+                        padding: '3rem 2.5rem',
+                        textAlign: 'center',
+                        boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+                    }}>
+                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏰</div>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.75rem' }}>
+                            {subscription?.status === 'past_due' ? 'Payment Past Due' :
+                             subscription?.status === 'canceled' ? 'Subscription Canceled' :
+                             'Your Trial Has Ended'}
+                        </h2>
+                        <p style={{ color: '#6B7280', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+                            {subscription?.status === 'past_due'
+                                ? 'Your payment method failed. Please update your payment details to continue using Superkabe.'
+                                : subscription?.status === 'canceled'
+                                ? 'Your subscription has been canceled. Resubscribe to a plan to regain access to Superkabe.'
+                                : 'Your 14-day free trial has expired. Upgrade to a paid plan to continue using Superkabe and protect your outbound infrastructure.'}
+                        </p>
+                        <Link href="/dashboard/billing" style={{
+                            display: 'inline-block',
+                            padding: '0.875rem 2.5rem',
+                            background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                            color: '#FFFFFF',
+                            borderRadius: '12px',
+                            fontWeight: 700,
+                            fontSize: '1rem',
+                            textDecoration: 'none',
+                            boxShadow: '0 4px 14px rgba(59,130,246,0.4)',
+                            transition: 'transform 0.2s, box-shadow 0.2s',
+                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 6px 20px rgba(59,130,246,0.5)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 4px 14px rgba(59,130,246,0.4)';
+                            }}
+                        >
+                            Upgrade Now
+                        </Link>
+                    </div>
+                </div>
+            )}
 
             <style jsx>{`
         .nav-link {

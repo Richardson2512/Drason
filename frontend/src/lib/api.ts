@@ -83,6 +83,19 @@ export async function apiClient<T>(
             // so we can show "Invalid credentials" etc.
         }
 
+        // Global Subscription Gate — show upgrade modal for expired/canceled/past_due
+        if (response.status === 403 && data?.upgrade_required) {
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('subscription-expired', {
+                    detail: {
+                        status: data.subscription_status,
+                        message: data.message
+                    }
+                }));
+            }
+            throw new Error(data.message || 'Subscription required');
+        }
+
         if (!response.ok) {
             // Handle standardized error format { success: false, error: ... }
             const errorMessage = data?.error || data?.message || `Request failed with status ${response.status}`;
