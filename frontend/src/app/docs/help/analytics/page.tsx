@@ -207,6 +207,9 @@ export default function AnalyticsPage() {
                     <a href="/docs/monitoring" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
                         &rarr; Monitoring System (Technical Details)
                     </a>
+                    <a href="/docs/data-sync-coverage" className="block p-3 bg-white rounded-lg hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        &rarr; Data Sync Coverage by Platform
+                    </a>
                 </div>
             </div>
         </div>

@@ -125,6 +125,12 @@ export default function DocsPage() {
                     description="Sync Instantly campaigns, track per-mailbox stats, and enable real-time bounce protection"
                 />
                 <DocCard
+                    href="/docs/data-sync-coverage"
+                    icon={<Database className="text-blue-600" size={24} />}
+                    title="Data Sync Coverage"
+                    description="What data Superkabe can sync from each platform, what it cannot, and why"
+                />
+                <DocCard
                     href="/docs/warmup-recovery"
                     icon={<Activity className="text-green-600" size={24} />}
                     title="Warmup Recovery System"

@@ -82,6 +82,7 @@ export default function MultiPlatformSyncPage() {
                     <li>✓ <a href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Smartlead Integration</a></li>
                     <li>✓ <a href="/docs/emailbison-integration" className="text-blue-600 hover:text-blue-800">EmailBison Integration</a></li>
                     <li>✓ <a href="/docs/clay-integration" className="text-blue-600 hover:text-blue-800">Clay Integration</a></li>
+                    <li>✓ <a href="/docs/data-sync-coverage" className="text-blue-600 hover:text-blue-800">Data Sync Coverage by Platform</a></li>
                 </ul>
             </div>
         </div>

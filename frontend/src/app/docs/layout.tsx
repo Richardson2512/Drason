@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle } from 'lucide-react';
+import { Menu, X, Book, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, ChevronUp, List, HelpCircle, AlertTriangle, Database } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 
 
@@ -21,6 +21,7 @@ const docSections = [
             { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
             { title: 'API Integration', href: '/docs/api-integration', icon: Settings },
             { title: 'Multi-Platform Sync', href: '/docs/multi-platform-sync', icon: GitBranch },
+            { title: 'Data Sync Coverage', href: '/docs/data-sync-coverage', icon: Database },
         ]
     },
     {
