@@ -175,9 +175,10 @@ export default function Overview() {
   ];
 
   const mailboxChartData = [
-    { name: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length, color: COLORS.healthy },
+    { name: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy').length, color: COLORS.healthy },
     { name: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length, color: COLORS.warning },
     { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
+    { name: 'Quarantine', value: mailboxes.filter(m => m.status === 'quarantine' || m.status === 'restricted_send').length, color: '#EF4444' },
   ];
 
   const filteredCampaignCount = campaignStatusFilter === 'all'
