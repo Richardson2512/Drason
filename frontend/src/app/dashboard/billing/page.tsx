@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 
 interface SubscriptionData {
     subscription: {
@@ -85,6 +86,7 @@ function BillingContent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [actionLoading, setActionLoading] = useState(false);
+    const [refreshingUsage, setRefreshingUsage] = useState(false);
     const [activeTab, setActiveTab] = useState<'usage' | 'billing'>('usage');
 
     useEffect(() => {
@@ -156,6 +158,18 @@ function BillingContent() {
         }
     };
 
+    const handleRefreshUsage = async () => {
+        setRefreshingUsage(true);
+        try {
+            await apiClient('/api/billing/refresh-usage', { method: 'POST' });
+            await fetchSubscription();
+        } catch (err: any) {
+            console.error('Failed to refresh usage:', err);
+        } finally {
+            setRefreshingUsage(false);
+        }
+    };
+
     const getDaysRemaining = (): number | null => {
         if (!data?.subscription.trialEndsAt) return null;
         const endDate = new Date(data.subscription.trialEndsAt);
@@ -217,8 +231,8 @@ function BillingContent() {
 
     if (loading) {
         return (
-            <div className="premium-card">
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>Loading billing information...</div>
+            <div style={{ padding: '2rem' }}>
+                <LoadingSkeleton type="stat" rows={3} />
             </div>
         );
     }
@@ -383,7 +397,26 @@ function BillingContent() {
 
                     {/* Resource Usage */}
                     <div className="premium-card">
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1.25rem', color: '#1E293B' }}>Resource Usage</h3>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1E293B' }}>Resource Usage</h3>
+                            <button
+                                onClick={handleRefreshUsage}
+                                disabled={refreshingUsage}
+                                style={{
+                                    padding: '0.4rem 0.75rem',
+                                    background: refreshingUsage ? '#E5E7EB' : '#F8FAFC',
+                                    color: '#475569',
+                                    border: '1px solid #E2E8F0',
+                                    borderRadius: '8px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    cursor: refreshingUsage ? 'not-allowed' : 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {refreshingUsage ? 'Refreshing...' : 'Refresh Usage'}
+                            </button>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[
                                 { label: 'Active Leads', current: data?.usage.leads || 0, limit: data?.limits.leads || 0, icon: '📧' },
@@ -602,9 +635,9 @@ function BillingContent() {
                                                         </span>
                                                     </td>
                                                     <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                                        {invoice.url ? (
+                                                        {(invoice.url || invoice.id) ? (
                                                             <a
-                                                                href={invoice.url}
+                                                                href={invoice.url || `/api/billing/invoices/${invoice.id}/pdf`}
                                                                 download
                                                                 style={{
                                                                     display: 'inline-flex',

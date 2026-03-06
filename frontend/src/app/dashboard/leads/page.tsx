@@ -9,6 +9,7 @@ import { apiClient } from '@/lib/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { getPlatformLabel } from '@/components/ui/PlatformBadge';
 import BatchRecommendationsModal from '@/components/dashboard/BatchRecommendationsModal';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 
 function LeadsPageContent() {
     const searchParams = useSearchParams();
@@ -19,6 +20,7 @@ function LeadsPageContent() {
     const [leadTab, setLeadTab] = useState('all');
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string>('all');
+    const [leadCampaigns, setLeadCampaigns] = useState<any[]>([]);
 
     // Sorting & Filtering State
     const [sortBy, setSortBy] = useState('created_desc');
@@ -258,12 +260,16 @@ function LeadsPageContent() {
         }
     }, []);
 
-    // Auto-load score breakdown when lead is selected
+    // Auto-load score breakdown and lead campaigns when lead is selected
     useEffect(() => {
         if (selectedLead?.id) {
             fetchScoreBreakdown(selectedLead.id);
+            apiClient<any>(`/api/leads/${selectedLead.id}/campaigns`)
+                .then(data => setLeadCampaigns(data?.campaigns || []))
+                .catch(() => setLeadCampaigns([]));
         } else {
             setScoreBreakdown(null);
+            setLeadCampaigns([]);
         }
     }, [selectedLead?.id, fetchScoreBreakdown]);
 
@@ -723,6 +729,41 @@ function LeadsPageContent() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Lead Campaign History */}
+                                {leadCampaigns.length > 0 && (
+                                    <div className="premium-card" style={{ marginBottom: '2rem' }}>
+                                        <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '0.75rem' }}>
+                                            Campaign History ({leadCampaigns.length})
+                                        </h3>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                            {leadCampaigns.map((c: any) => (
+                                                <div key={c.id} style={{
+                                                    padding: '0.5rem 0.75rem',
+                                                    background: '#F8FAFC',
+                                                    borderRadius: '8px',
+                                                    border: '1px solid #F1F5F9',
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1E293B' }}>{c.name || c.id}</span>
+                                                    <span style={{
+                                                        padding: '0.15rem 0.5rem',
+                                                        borderRadius: '999px',
+                                                        fontSize: '0.7rem',
+                                                        fontWeight: 600,
+                                                        background: c.status === 'active' ? '#DCFCE7' : c.status === 'paused' ? '#FEE2E2' : '#F3F4F6',
+                                                        color: c.status === 'active' ? '#166534' : c.status === 'paused' ? '#991B1B' : '#6B7280',
+                                                        textTransform: 'uppercase'
+                                                    }}>
+                                                        {c.status || 'unknown'}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Score Breakdown Section */}
                                 {(selectedLead.emails_opened > 0 || selectedLead.emails_clicked > 0 || selectedLead.emails_replied > 0) && (
@@ -1293,7 +1334,7 @@ function LeadsPageContent() {
 
 export default function LeadsPage() {
     return (
-        <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#6B7280' }}>Loading leads...</div>}>
+        <Suspense fallback={<div style={{ padding: '2rem' }}><LoadingSkeleton type="table" rows={10} /></div>}>
             <LeadsPageContent />
         </Suspense>
     );

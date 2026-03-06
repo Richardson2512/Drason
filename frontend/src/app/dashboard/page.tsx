@@ -12,6 +12,7 @@ interface DomainSummary { id: string; domain: string; status: string; paused_rea
 interface MailboxSummary { id: string; email: string; status: string; paused_reason?: string }
 interface CampaignSummary { id: string; name: string; status: string }
 interface ChartEntry { name: string; count: number }
+interface OrgFinding { category: string; severity: string; title: string; details: string; entity?: string; entityName?: string }
 
 export default function Overview() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -24,6 +25,8 @@ export default function Overview() {
 
   // Chart Data State
   const [campaignData, setCampaignData] = useState<ChartEntry[]>([]);
+
+  const [orgFindings, setOrgFindings] = useState<OrgFinding[]>([]);
 
   const [error, setError] = useState<string | null>(null);
   const [resuming, setResuming] = useState<string | null>(null);
@@ -87,8 +90,9 @@ export default function Overview() {
       apiClient<any>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { leads: [], meta: {} }; }),
       apiClient<any>('/api/dashboard/domains').catch((e) => { console.error('Domains fetch failed:', e); return { domains: [], meta: {} }; }),
       apiClient<any>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { mailboxes: [], meta: {} }; }),
-      apiClient<any>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { campaigns: [], meta: {} }; })
-    ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData]) => {
+      apiClient<any>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { campaigns: [], meta: {} }; }),
+      apiClient<any>('/api/findings').catch(() => ({ findings: [] }))
+    ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData, findingsData]) => {
       setStats(statsData); // statsData is { active: ..., ... } (unwrapped by apiClient)
       setLeads(leadsData?.data || []);      // { data: [], meta: {} }
       setDomains(domainsData?.data || []);    // { data: [], meta: {} }
@@ -105,6 +109,7 @@ export default function Overview() {
         cmap[displayName] = (cmap[displayName] || 0) + 1;
       });
       setCampaignData(Object.keys(cmap).map(k => ({ name: k, count: cmap[k] })));
+      setOrgFindings(findingsData?.findings || []);
     }).catch((e) => {
       console.error('Dashboard load error:', e);
       setError(e.message || 'Failed to load dashboard');
@@ -515,6 +520,51 @@ export default function Overview() {
 
       {/* Top Performing Leads */}
       <TopLeadsCard campaigns={campaigns} />
+
+      {/* Infrastructure Findings Summary */}
+      {orgFindings.length > 0 && (
+        <div className="premium-card" style={{ borderRadius: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>Infrastructure Findings</h2>
+            <a href="/dashboard/infrastructure" style={{ fontSize: '0.875rem', color: '#3B82F6', fontWeight: 600, textDecoration: 'none' }}>
+              View Details →
+            </a>
+          </div>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            {(() => {
+              const critical = orgFindings.filter(f => f.severity === 'critical').length;
+              const warning = orgFindings.filter(f => f.severity === 'warning').length;
+              const info = orgFindings.filter(f => f.severity === 'info').length;
+              return (
+                <>
+                  {critical > 0 && (
+                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#FEE2E2', color: '#DC2626', border: '1px solid #FCA5A5' }}>
+                      {critical} critical
+                    </span>
+                  )}
+                  {warning > 0 && (
+                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A' }}>
+                      {warning} warnings
+                    </span>
+                  )}
+                  {info > 0 && (
+                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE' }}>
+                      {info} info
+                    </span>
+                  )}
+                </>
+              );
+            })()}
+          </div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {orgFindings.filter(f => f.severity === 'critical').slice(0, 3).map((f, i) => (
+              <div key={i} style={{ padding: '0.5rem 0.75rem', background: '#FEF2F2', borderRadius: '8px', fontSize: '0.875rem', color: '#991B1B', fontWeight: 500 }}>
+                {f.title}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

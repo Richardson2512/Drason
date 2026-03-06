@@ -8,7 +8,8 @@ export default function StatusPage() {
     const [health, setHealth] = useState<Record<string, any> | null>(null);
     const [stateTransitions, setStateTransitions] = useState<any[]>([]);
     const [rawEvents, setRawEvents] = useState<any[]>([]);
-    const [activeTab, setActiveTab] = useState<'health' | 'transitions' | 'events'>('health');
+    const [diagnostics, setDiagnostics] = useState<any[]>([]);
+    const [activeTab, setActiveTab] = useState<'health' | 'transitions' | 'events' | 'diagnostics'>('health');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,15 +29,17 @@ export default function StatusPage() {
             // /health returns { status: 'ok', ... } directly.
             // So apiClient will return the full object as `data.success` is undefined.
 
-            const [healthRes, transitionsRes, eventsRes] = await Promise.all([
+            const [healthRes, transitionsRes, eventsRes, diagRes] = await Promise.all([
                 apiClient<any>('/api/health').catch(() => null),
                 apiClient<any>('/api/dashboard/state-transitions?limit=50').catch(() => []),
-                apiClient<any>('/api/dashboard/events?limit=50').catch(() => [])
+                apiClient<any>('/api/dashboard/events?limit=50').catch(() => []),
+                apiClient<any>('/api/diagnostics/campaign-mailboxes').catch(() => [])
             ]);
 
             setHealth(healthRes);
             setStateTransitions(Array.isArray(transitionsRes) ? transitionsRes : []);
             setRawEvents(Array.isArray(eventsRes) ? eventsRes : []);
+            setDiagnostics(Array.isArray(diagRes) ? diagRes : diagRes?.data || []);
         } catch (e) {
             console.error('Status fetch error:', e);
         }
@@ -61,25 +64,6 @@ export default function StatusPage() {
             }} />
         );
     };
-
-    const TabButton = ({ tab, label }: { tab: typeof activeTab, label: string }) => (
-        <button
-            onClick={() => setActiveTab(tab)}
-            style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '6px',
-                background: activeTab === tab ? '#fff' : 'transparent',
-                color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
-                boxShadow: activeTab === tab ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.875rem',
-                fontWeight: 500
-            }}
-        >
-            {label}
-        </button>
-    );
 
     return (
         <div style={{ height: 'calc(100vh - 4rem)', display: 'flex', flexDirection: 'column' }}>
@@ -149,7 +133,7 @@ export default function StatusPage() {
             <div className="premium-card" style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '0', borderRadius: '24px' }}>
                 <div style={{ padding: '1.5rem 1.5rem 0 1.5rem', borderBottom: '1px solid #F1F5F9', background: '#FFFFFF' }}>
                     <div style={{ display: 'flex', gap: '2rem' }}>
-                        {[{ id: 'health', label: 'System Health' }, { id: 'transitions', label: 'State Transitions' }, { id: 'events', label: 'Raw Events' }].map(t => (
+                        {[{ id: 'health', label: 'System Health' }, { id: 'transitions', label: 'State Transitions' }, { id: 'events', label: 'Raw Events' }, { id: 'diagnostics', label: 'Campaign Diagnostics' }].map(t => (
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id as any)}
@@ -321,6 +305,53 @@ export default function StatusPage() {
                                             </tr>
                                         )) : (
                                             <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No events recorded.</td></tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'diagnostics' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1E293B' }}>Campaign-Mailbox Mappings</h2>
+                                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>Diagnostic view of campaign-to-mailbox relationships.</p>
+                            </div>
+                            <div style={{ overflowY: 'auto', flex: 1, borderRadius: '12px', border: '1px solid #E2E8F0', background: '#FFFFFF' }}>
+                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
+                                    <thead style={{ position: 'sticky', top: 0, background: '#F8FAFC', zIndex: 10 }}>
+                                        <tr>
+                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Campaign</th>
+                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Mailbox</th>
+                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {diagnostics.length > 0 ? diagnostics.map((d: any, i: number) => (
+                                            <tr key={i} className="hover:bg-gray-50 transition-colors">
+                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', fontWeight: 600, color: '#1E293B' }}>
+                                                    {d.campaign_name || d.campaign_id}
+                                                </td>
+                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569' }}>
+                                                    {d.mailbox_email || d.mailbox_id}
+                                                </td>
+                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
+                                                    <span style={{
+                                                        padding: '0.15rem 0.5rem',
+                                                        borderRadius: '999px',
+                                                        fontSize: '0.7rem',
+                                                        fontWeight: 600,
+                                                        background: d.mailbox_status === 'healthy' ? '#DCFCE7' : d.mailbox_status === 'paused' ? '#FEE2E2' : '#FEF3C7',
+                                                        color: d.mailbox_status === 'healthy' ? '#166534' : d.mailbox_status === 'paused' ? '#991B1B' : '#92400E',
+                                                        textTransform: 'uppercase'
+                                                    }}>
+                                                        {d.mailbox_status || 'unknown'}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        )) : (
+                                            <tr><td colSpan={3} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No campaign-mailbox data available.</td></tr>
                                         )}
                                     </tbody>
                                 </table>

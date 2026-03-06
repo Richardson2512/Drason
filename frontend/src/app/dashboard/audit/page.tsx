@@ -1,16 +1,33 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '@/lib/api';
+import { useSimplePagination } from '@/hooks/usePagination';
 
 export default function Audit() {
     const [logs, setLogs] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState('all');
+    const { meta, setMeta } = useSimplePagination(1, 50);
+
+    const fetchLogs = useCallback(() => {
+        const query = new URLSearchParams({
+            page: meta.page.toString(),
+            limit: meta.limit.toString(),
+        });
+        apiClient<any>(`/api/dashboard/audit-logs?${query}`)
+            .then(data => {
+                if (data?.data) {
+                    setLogs(Array.isArray(data.data) ? data.data : []);
+                    if (data.meta) setMeta(data.meta);
+                } else {
+                    setLogs(Array.isArray(data) ? data : []);
+                }
+            })
+            .catch(() => setLogs([]));
+    }, [meta.page, meta.limit, setMeta]);
 
     useEffect(() => {
-        apiClient<any>('/api/dashboard/audit-logs')
-            .then(data => setLogs(Array.isArray(data) ? data : []))
-            .catch(() => setLogs([]));
-    }, []);
+        fetchLogs();
+    }, [fetchLogs]);
 
     const filteredLogs = activeTab === 'all' ? logs : logs.filter(log => log.entity === activeTab);
 
@@ -100,6 +117,27 @@ export default function Audit() {
                         </tbody>
                     </table>
                 </div>
+                {meta.totalPages > 1 && (
+                    <div style={{ padding: '1rem', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                        <button
+                            disabled={meta.page <= 1}
+                            onClick={() => setMeta({ ...meta, page: meta.page - 1 })}
+                            style={{ padding: '0.4rem 0.75rem', borderRadius: '6px', border: '1px solid #E2E8F0', background: '#FFFFFF', cursor: meta.page <= 1 ? 'not-allowed' : 'pointer', opacity: meta.page <= 1 ? 0.5 : 1, fontSize: '0.8rem', fontWeight: 600 }}
+                        >
+                            Previous
+                        </button>
+                        <span style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', color: '#64748B' }}>
+                            Page {meta.page} of {meta.totalPages}
+                        </span>
+                        <button
+                            disabled={meta.page >= meta.totalPages}
+                            onClick={() => setMeta({ ...meta, page: meta.page + 1 })}
+                            style={{ padding: '0.4rem 0.75rem', borderRadius: '6px', border: '1px solid #E2E8F0', background: '#FFFFFF', cursor: meta.page >= meta.totalPages ? 'not-allowed' : 'pointer', opacity: meta.page >= meta.totalPages ? 0.5 : 1, fontSize: '0.8rem', fontWeight: 600 }}
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

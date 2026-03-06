@@ -6,6 +6,8 @@ import { apiClient } from '@/lib/api';
 import { HelpLink } from '@/components/HelpLink';
 import { Tooltip } from '@/components/Tooltip';
 import { getScoreColor, getScoreLabel, getScoreEmoji } from '@/lib/statusHelpers';
+import AssessmentConfirmationModal from '@/components/AssessmentConfirmationModal';
+import AssessmentProgressOverlay from '@/components/AssessmentProgressOverlay';
 
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
 const FindingsChart = dynamic(() => import('./Charts').then(mod => ({ default: mod.FindingsChart })), { ssr: false });
@@ -62,6 +64,8 @@ export default function InfrastructureHealthPage() {
     const [error, setError] = useState<string | null>(null);
     const [reassessing, setReassessing] = useState(false);
     const [reassessResult, setReassessResult] = useState<string | null>(null);
+    const [assessmentStage, setAssessmentStage] = useState<'syncing' | 'assessing' | 'finalizing'>('syncing');
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
     const [dnsDetails, setDnsDetails] = useState<Record<string, any>>({});
     const [dnsLoading, setDnsLoading] = useState<string | null>(null);
@@ -80,6 +84,12 @@ export default function InfrastructureHealthPage() {
 
     // ── Score History ──
     const [scoreHistory, setScoreHistory] = useState<Array<{ date: string; score: number }>>([]);
+
+    // ── Warmup Status ──
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
+    const [warmupLoading, setWarmupLoading] = useState(false);
+    const [warmupChecking, setWarmupChecking] = useState(false);
 
     // ── Expanded Finding (for collapsible remediation) ──
     const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
@@ -114,6 +124,7 @@ export default function InfrastructureHealthPage() {
         fetchTransitionGate();
         fetchRecoveryStatus();
         fetchScoreHistory();
+        fetchWarmupStatus();
     }, [fetchReport]);
 
     // Auto-refresh when infrastructure assessment completes
@@ -173,6 +184,31 @@ export default function InfrastructureHealthPage() {
         }
     };
 
+    const fetchWarmupStatus = async () => {
+        setWarmupLoading(true);
+        try {
+            const data = await apiClient<any>('/api/dashboard/warmup-status');
+            if (data) setWarmupData(data);
+        } catch (err) {
+            console.error('Failed to fetch warmup status:', err);
+        } finally {
+            setWarmupLoading(false);
+        }
+    };
+
+    const handleWarmupCheck = async () => {
+        setWarmupChecking(true);
+        try {
+            await apiClient('/api/dashboard/warmup/check', { method: 'POST' });
+            await fetchWarmupStatus();
+            await fetchRecoveryStatus();
+        } catch (err) {
+            console.error('Failed to run warmup check:', err);
+        } finally {
+            setWarmupChecking(false);
+        }
+    };
+
     const handleAcknowledge = async () => {
         setAcknowledging(true);
         setAckResult(null);
@@ -190,10 +226,20 @@ export default function InfrastructureHealthPage() {
     const handleReassess = async () => {
         setReassessing(true);
         setReassessResult(null);
+        setAssessmentStage('syncing');
         try {
+            setTimeout(() => setAssessmentStage('assessing'), 2000);
+            setTimeout(() => setAssessmentStage('finalizing'), 5000);
             await apiClient('/api/assessment/run', { method: 'POST' });
             setReassessResult('Assessment completed successfully! Refreshing report...');
             setTimeout(fetchReport, 1000);
+
+            // Show confirmation modal if there are critical findings
+            const findingsData = await apiClient<any>('/api/findings').catch(() => null);
+            const criticalFindings = (findingsData?.findings || []).filter((f: any) => f.severity === 'critical' || f.severity === 'warning');
+            if (criticalFindings.length > 0) {
+                setShowConfirmModal(true);
+            }
         } catch (err: any) {
             setReassessResult(`Assessment failed: ${err.message || 'Unknown error'}`);
         } finally {
@@ -343,6 +389,18 @@ export default function InfrastructureHealthPage() {
 
     return (
         <div className="grid gap-6">
+            <AssessmentProgressOverlay isVisible={reassessing} stage={assessmentStage} />
+            <AssessmentConfirmationModal
+                isOpen={showConfirmModal}
+                findings={(report?.findings || []).filter((f: any) => f.severity === 'critical' || f.severity === 'warning').map((f: any) => ({
+                    severity: f.severity,
+                    title: f.title,
+                    entity: f.entity || f.category || '',
+                    entityName: f.entityName || f.details || ''
+                }))}
+                onConfirm={() => { setShowConfirmModal(false); }}
+                onReview={() => { setShowConfirmModal(false); }}
+            />
             <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                     <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -627,6 +685,111 @@ export default function InfrastructureHealthPage() {
                     )}
                 </div>
             )}
+            {/* ── WARMUP STATUS PANEL ── */}
+            {warmupData && warmupData.totalRecovering > 0 && (
+                <div className="premium-card" style={{ borderRadius: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            🔥 Warmup Progress
+                        </h2>
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                {warmupData.quarantine > 0 && (
+                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5' }}>
+                                        {warmupData.quarantine} quarantine
+                                    </span>
+                                )}
+                                {warmupData.restrictedSend > 0 && (
+                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A' }}>
+                                        {warmupData.restrictedSend} restricted
+                                    </span>
+                                )}
+                                {warmupData.warmRecovery > 0 && (
+                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE' }}>
+                                        {warmupData.warmRecovery} warm recovery
+                                    </span>
+                                )}
+                            </div>
+                            <button
+                                onClick={handleWarmupCheck}
+                                disabled={warmupChecking}
+                                style={{
+                                    padding: '0.4rem 0.75rem',
+                                    background: warmupChecking ? '#E5E7EB' : '#F8FAFC',
+                                    color: '#475569',
+                                    border: '1px solid #E2E8F0',
+                                    borderRadius: '8px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    cursor: warmupChecking ? 'not-allowed' : 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {warmupChecking ? 'Checking...' : 'Check Now'}
+                            </button>
+                        </div>
+                    </div>
+
+                    {warmupData.avgDaysInRecovery > 0 && (
+                        <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1rem' }}>
+                            Average time in recovery: <strong>{warmupData.avgDaysInRecovery} days</strong>
+                        </div>
+                    )}
+
+                    {warmupData.estimatedGraduations && warmupData.estimatedGraduations.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {warmupData.estimatedGraduations.map((est: any) => {
+                                const progress = est.targetProgress > 0 ? Math.min(100, (est.currentProgress / est.targetProgress) * 100) : 0;
+                                const phaseLabel = est.recoveryPhase === 'quarantine' ? 'Quarantine' :
+                                    est.recoveryPhase === 'restricted_send' ? 'Restricted Send' : 'Warm Recovery';
+                                const phaseColor = est.recoveryPhase === 'quarantine' ? '#DC2626' :
+                                    est.recoveryPhase === 'restricted_send' ? '#D97706' : '#2563EB';
+                                return (
+                                    <div key={est.mailboxId} style={{
+                                        padding: '0.75rem 1rem',
+                                        background: '#F8FAFC',
+                                        borderRadius: '12px',
+                                        border: '1px solid #F1F5F9'
+                                    }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1E293B' }}>
+                                                {est.mailboxEmail}
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: phaseColor, textTransform: 'uppercase' }}>
+                                                    {phaseLabel}
+                                                </span>
+                                                {est.estimatedDays > 0 && (
+                                                    <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+                                                        ~{est.estimatedDays}d left
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        {est.recoveryPhase !== 'quarantine' && (
+                                            <div style={{ width: '100%', height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
+                                                <div style={{
+                                                    width: `${progress}%`,
+                                                    height: '100%',
+                                                    background: phaseColor,
+                                                    borderRadius: '999px',
+                                                    transition: 'width 0.3s ease'
+                                                }} />
+                                            </div>
+                                        )}
+                                        {est.recoveryPhase === 'quarantine' && (
+                                            <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
+                                                Waiting for DNS/blacklist checks to pass
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* Info Banner: Score vs Status Explanation */}
             <div className="premium-card" style={{
                 background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',

@@ -8,6 +8,7 @@ import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampai
 import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
 import { apiClient } from '@/lib/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 
 export default function CampaignsPage() {
     const router = useRouter();
@@ -34,6 +35,7 @@ export default function CampaignsPage() {
 
     // Modal state
     const [showResolveModal, setShowResolveModal] = useState(false);
+    const [campaignActionLoading, setCampaignActionLoading] = useState(false);
 
     // Modal State
     const [showSortModal, setShowSortModal] = useState(false);
@@ -157,6 +159,40 @@ export default function CampaignsPage() {
         router.push(`/dashboard/leads?${params.toString()}`);
     };
 
+    const handlePauseCampaign = async () => {
+        if (!selectedCampaign || campaignActionLoading) return;
+        setCampaignActionLoading(true);
+        try {
+            await apiClient('/api/dashboard/campaign/pause', {
+                method: 'POST',
+                body: JSON.stringify({ campaignId: selectedCampaign.id, reason: 'Manual pause from dashboard' })
+            });
+            setSelectedCampaign({ ...selectedCampaign, status: 'paused', paused_reason: 'Manual pause from dashboard', paused_at: new Date().toISOString(), paused_by: 'user' });
+            fetchCampaigns();
+        } catch (err: any) {
+            console.error('Failed to pause campaign:', err);
+        } finally {
+            setCampaignActionLoading(false);
+        }
+    };
+
+    const handleResumeCampaign = async () => {
+        if (!selectedCampaign || campaignActionLoading) return;
+        setCampaignActionLoading(true);
+        try {
+            await apiClient('/api/dashboard/campaign/resume', {
+                method: 'POST',
+                body: JSON.stringify({ campaignId: selectedCampaign.id })
+            });
+            setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: null, paused_at: null, paused_by: null });
+            fetchCampaigns();
+        } catch (err: any) {
+            console.error('Failed to resume campaign:', err);
+        } finally {
+            setCampaignActionLoading(false);
+        }
+    };
+
     // Sort & Filter Modal Handlers
     const handleOpenSortModal = () => {
         setTempSortBy(sortBy);
@@ -193,7 +229,7 @@ export default function CampaignsPage() {
     };
 
     if (loading && campaigns.length === 0) {
-        return <div className="flex items-center justify-center h-full text-gray-500">Loading Campaigns...</div>;
+        return <div style={{ padding: '2rem' }}><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
     if (!loading && (!campaigns || campaigns.length === 0)) {
@@ -358,9 +394,54 @@ export default function CampaignsPage() {
             <div style={{ flex: 1, overflowY: 'auto' }} className="scrollbar-hide">
                 {selectedCampaign ? (
                     <div className="animate-fade-in">
-                        <div className="page-header">
-                            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedCampaign.name}</h1>
-                            <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Campaign Performance Details</div>
+                        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div>
+                                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedCampaign.name}</h1>
+                                <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Campaign Performance Details</div>
+                            </div>
+                            {selectedCampaign.status === 'active' ? (
+                                <button
+                                    onClick={handlePauseCampaign}
+                                    disabled={campaignActionLoading}
+                                    style={{
+                                        padding: '0.625rem 1.25rem',
+                                        background: '#FFFFFF',
+                                        color: '#EF4444',
+                                        border: '1px solid #FCA5A5',
+                                        borderRadius: '10px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: 600,
+                                        cursor: campaignActionLoading ? 'not-allowed' : 'pointer',
+                                        opacity: campaignActionLoading ? 0.6 : 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        transition: 'all 0.2s',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    {campaignActionLoading ? 'Pausing...' : '⏸ Pause Campaign'}
+                                </button>
+                            ) : selectedCampaign.status === 'paused' ? (
+                                <button
+                                    onClick={handleResumeCampaign}
+                                    disabled={campaignActionLoading}
+                                    className="premium-btn"
+                                    style={{
+                                        padding: '0.625rem 1.25rem',
+                                        fontSize: '0.875rem',
+                                        fontWeight: 600,
+                                        opacity: campaignActionLoading ? 0.6 : 1,
+                                        cursor: campaignActionLoading ? 'not-allowed' : 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    {campaignActionLoading ? 'Resuming...' : '▶ Resume Campaign'}
+                                </button>
+                            ) : null}
                         </div>
 
                         {/* Pause Reason Banner */}
