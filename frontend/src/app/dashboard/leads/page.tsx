@@ -168,7 +168,7 @@ function LeadsPageContent() {
         if (selectedLead?.id) {
             fetchScoreBreakdown(selectedLead.id);
             apiClient<Record<string, any>>(`/api/leads/${selectedLead.id}/campaigns`)
-                .then(data => setLeadCampaigns(data?.campaigns || data || []))
+                .then(data => setLeadCampaigns(data?.all_campaigns || []))
                 .catch(() => setLeadCampaigns([]));
         } else {
             setScoreBreakdown(null);
