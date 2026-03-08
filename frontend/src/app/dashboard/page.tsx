@@ -35,7 +35,7 @@ export default function Overview() {
         body: JSON.stringify({ domainId })
       });
       // Refresh domains
-      const domainsData = await apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains');
+      const domainsData = await apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains?limit=1000');
       setDomains(domainsData?.data || []);
       toast.success('Domain resumed successfully!');
     } catch (err: any) {
@@ -54,7 +54,7 @@ export default function Overview() {
         body: JSON.stringify({ mailboxId })
       });
       // Refresh mailboxes
-      const mailboxesData = await apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes');
+      const mailboxesData = await apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes?limit=1000');
       setMailboxes(mailboxesData?.data || []);
       toast.success('Mailbox resumed successfully!');
     } catch (err: any) {
@@ -70,9 +70,9 @@ export default function Overview() {
     Promise.all([
       apiClient<DashboardStats>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 } as DashboardStats; }),
       apiClient<{ data: Record<string, unknown>[] }>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { data: [] }; }),
-      apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains').catch((e) => { console.error('Domains fetch failed:', e); return { data: [] }; }),
-      apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { data: [] }; }),
-      apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains?limit=1000').catch((e) => { console.error('Domains fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes?limit=1000').catch((e) => { console.error('Mailboxes fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns?limit=1000').catch((e) => { console.error('Campaigns fetch failed:', e); return { data: [] }; }),
       apiClient<{ findings: OrgFinding[] }>('/api/findings').catch(() => ({ findings: [] }))
     ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData, findingsData]) => {
       setStats(statsData); // statsData is { active: ..., ... } (unwrapped by apiClient)
@@ -105,9 +105,9 @@ export default function Overview() {
     const handler = () => {
       Promise.all([
         apiClient<DashboardStats>('/api/dashboard/stats').catch(() => null),
-        apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains').catch(() => null),
-        apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes').catch(() => null),
-        apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns').catch(() => null),
+        apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains?limit=1000').catch(() => null),
+        apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes?limit=1000').catch(() => null),
+        apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns?limit=1000').catch(() => null),
       ]).then(([statsData, domainsData, mailboxesData, campaignsData]) => {
         if (statsData) setStats(statsData);
         if (domainsData?.data) setDomains(domainsData.data);
