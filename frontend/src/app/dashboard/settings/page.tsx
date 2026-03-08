@@ -34,6 +34,7 @@ export default function Settings() {
     // Sync Progress Modal
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
+    const [syncError, setSyncError] = useState<string | null>(null);
 
     // Settings array shared with child cards to avoid duplicate fetches
     const [settingsData, setSettingsData] = useState<SettingEntry[]>([]);
@@ -108,6 +109,7 @@ export default function Settings() {
     const handleTriggerSync = async () => {
         const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
         setSyncSessionId(sessionId);
+        setSyncError(null);
         setShowSyncModal(true);
         await new Promise(resolve => setTimeout(resolve, 500));
         try {
@@ -116,12 +118,7 @@ export default function Settings() {
                 timeout: 600_000
             });
         } catch (e: any) {
-            console.error('[Sync] API call error:', {
-                message: e.message,
-                name: e.name,
-                stack: e.stack,
-                isTimeout: e.message?.includes('timeout')
-            });
+            setSyncError(e.message || 'Sync failed. Check your API key and try again.');
         }
     };
 
@@ -185,6 +182,7 @@ export default function Settings() {
             <SyncProgressModal
                 isOpen={showSyncModal}
                 sessionId={syncSessionId}
+                externalError={syncError}
                 onClose={() => {
                     setShowSyncModal(false);
                     setSyncSessionId(null);

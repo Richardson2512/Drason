@@ -29,6 +29,7 @@ interface SyncProgressModalProps {
     onClose: () => void;
     onPauseCampaigns?: () => Promise<void>;
     onViewHealthReport?: () => void;
+    externalError?: string | null;
 }
 
 const STEP_LABELS = {
@@ -44,7 +45,8 @@ export default function SyncProgressModal({
     sessionId,
     onClose,
     onPauseCampaigns,
-    onViewHealthReport
+    onViewHealthReport,
+    externalError
 }: SyncProgressModalProps) {
     const [progress, setProgress] = useState<Record<string, SyncProgress>>({
         campaigns: { step: 'campaigns', status: 'pending' },
@@ -56,6 +58,14 @@ export default function SyncProgressModal({
     const [error, setError] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
     const [pausingCampaigns, setPausingCampaigns] = useState(false);
+
+    // Pick up errors from the parent sync call
+    useEffect(() => {
+        if (externalError) {
+            setError(externalError);
+            setIsComplete(true);
+        }
+    }, [externalError]);
 
     useEffect(() => {
         if (!isOpen || !sessionId) return;
