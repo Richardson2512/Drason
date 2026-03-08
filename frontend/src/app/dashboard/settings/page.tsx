@@ -36,7 +36,7 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
     const [syncError, setSyncError] = useState<string | null>(null);
-    const [syncResult, setSyncResult] = useState<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any } | null>(null);
+    const [syncResult, setSyncResult] = useState<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any; post_sync_summary?: { mailboxes: Record<string, number>; domains: Record<string, number>; leads: Record<string, number> } } | null>(null);
 
     // Settings array shared with child cards to avoid duplicate fetches
     const [settingsData, setSettingsData] = useState<SettingEntry[]>([]);
@@ -115,7 +115,7 @@ export default function Settings() {
         setSyncResult(null);
         setShowSyncModal(true);
         try {
-            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any }>(`/api/sync?session=${session}`, {
+            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any; post_sync_summary?: any }>(`/api/sync?session=${session}`, {
                 method: 'POST',
                 timeout: 600_000
             });

@@ -3,6 +3,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { X, CheckCircle, AlertTriangle, XCircle, Loader2 } from 'lucide-react';
 
+interface PostSyncSummary {
+    mailboxes: Record<string, number>;
+    domains: Record<string, number>;
+    leads: Record<string, number>;
+}
+
 interface SyncResult {
     campaigns_synced: number;
     mailboxes_synced: number;
@@ -12,6 +18,7 @@ interface SyncResult {
         critical_findings: any[];
         has_critical_issues: boolean;
     };
+    post_sync_summary?: PostSyncSummary;
 }
 
 interface SyncProgressModalProps {
@@ -155,7 +162,10 @@ export default function SyncProgressModal({
             case 'campaigns': return `${result.campaigns_synced} synced`;
             case 'mailboxes': return `${result.mailboxes_synced} synced`;
             case 'leads': return `${result.leads_synced} synced`;
-            case 'health_check': return 'Done';
+            case 'health_check': {
+                const score = result.health_check?.overall_score;
+                return score ? `Score: ${score}/100` : 'Done';
+            }
         }
     };
 
@@ -273,6 +283,82 @@ export default function SyncProgressModal({
                                     </div>
                                 </div>
                             )}
+
+                            {/* Post-Sync Entity Status Breakdown */}
+                            {isComplete && result?.post_sync_summary && (() => {
+                                const summary = result.post_sync_summary;
+                                const score = result.health_check?.overall_score ?? 0;
+                                const scoreColor = score >= 80 ? '#16A34A' : score >= 60 ? '#D97706' : '#DC2626';
+
+                                const StatusBar = ({ label, data, colors }: { label: string; data: Record<string, number>; colors: Record<string, string> }) => {
+                                    const total = Object.values(data).reduce((a, b) => a + b, 0);
+                                    if (total === 0) return null;
+                                    return (
+                                        <div className="mb-4">
+                                            <div className="flex items-center justify-between mb-1.5">
+                                                <span className="text-sm font-medium text-gray-700">{label}</span>
+                                                <span className="text-xs text-gray-500">{total} total</span>
+                                            </div>
+                                            <div className="flex h-5 rounded-full overflow-hidden bg-gray-100">
+                                                {Object.entries(data).map(([key, count]) => {
+                                                    if (count === 0) return null;
+                                                    const pct = (count / total) * 100;
+                                                    return (
+                                                        <div
+                                                            key={key}
+                                                            className="flex items-center justify-center text-[10px] font-bold text-white"
+                                                            style={{ width: `${pct}%`, backgroundColor: colors[key] || '#9CA3AF', minWidth: count > 0 ? '24px' : 0 }}
+                                                            title={`${key}: ${count}`}
+                                                        >
+                                                            {count}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            <div className="flex gap-3 mt-1.5">
+                                                {Object.entries(data).map(([key, count]) => (
+                                                    <span key={key} className="flex items-center gap-1 text-[11px] text-gray-500">
+                                                        <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: colors[key] || '#9CA3AF' }} />
+                                                        {key}: {count}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                };
+
+                                return (
+                                    <div className="bg-gray-50 rounded-xl p-6 mb-6">
+                                        <h3 className="font-bold text-gray-900 mb-4">Infrastructure Status</h3>
+                                        {score > 0 && (
+                                            <div className="mb-5">
+                                                <div className="flex items-center justify-between mb-1.5">
+                                                    <span className="text-sm font-medium text-gray-700">Health Score</span>
+                                                    <span className="text-sm font-bold" style={{ color: scoreColor }}>{score}/100</span>
+                                                </div>
+                                                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                                    <div className="h-3 rounded-full transition-all" style={{ width: `${score}%`, backgroundColor: scoreColor }} />
+                                                </div>
+                                            </div>
+                                        )}
+                                        <StatusBar
+                                            label="Mailboxes"
+                                            data={summary.mailboxes}
+                                            colors={{ healthy: '#16A34A', warning: '#D97706', paused: '#DC2626' }}
+                                        />
+                                        <StatusBar
+                                            label="Domains"
+                                            data={summary.domains}
+                                            colors={{ healthy: '#16A34A', warning: '#D97706', paused: '#DC2626' }}
+                                        />
+                                        <StatusBar
+                                            label="Leads"
+                                            data={summary.leads}
+                                            colors={{ active: '#16A34A', held: '#D97706', blocked: '#DC2626' }}
+                                        />
+                                    </div>
+                                );
+                            })()}
 
                             {/* Health Warning */}
                             {isComplete && hasCriticalHealthIssues && (
