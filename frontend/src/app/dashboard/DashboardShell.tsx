@@ -397,7 +397,7 @@ export default function DashboardShell({
 
                 {/* Trial Countdown Floating Popup */}
                 {subscription?.status === 'trialing' && daysRemaining !== null && !trialBannerDismissed && (
-                    <div className="fixed top-4 right-4 border-2 border-yellow-400 rounded-2xl p-4 px-5 flex items-center gap-4 z-50 max-w-[400px]" style={{
+                    <div className="fixed top-16 right-4 border-2 border-yellow-400 rounded-2xl p-4 px-5 flex items-center gap-4 z-50 max-w-[400px]" style={{
                         background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE047 100%)',
                         boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
                         animation: 'slideIn 0.3s ease-out'
