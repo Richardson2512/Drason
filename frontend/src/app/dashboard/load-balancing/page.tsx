@@ -1,7 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import { PaginationControls } from '@/components/ui/PaginationControls';
+import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import type { MailboxLoad, LoadBalancingSuggestion, LoadBalancingReport } from '@/types/api';
 
 export default function LoadBalancingPage() {
@@ -9,6 +11,8 @@ export default function LoadBalancingPage() {
     const [loading, setLoading] = useState(true);
     const [applying, setApplying] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(20);
 
     const fetchReport = async () => {
         setLoading(true);
@@ -236,71 +240,91 @@ export default function LoadBalancingPage() {
 
             {/* Mailbox Distribution Table */}
             <div>
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                    📊 Mailbox Distribution
-                </h2>
-                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-                    <table className="w-full border-collapse">
-                        <thead>
-                            <tr className="bg-gray-50 border-b border-gray-200">
-                                <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Mailbox</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Campaigns</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Total Sent</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Bounce Rate</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Engagement</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Load Category</th>
-                                <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Health Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {report.mailbox_distribution
-                                .sort((a, b) => b.campaign_count - a.campaign_count)
-                                .map((mb, idx) => (
-                                    <tr key={mb.id} style={{ borderBottom: idx < report.mailbox_distribution.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
-                                        <td className="p-4 text-sm text-gray-900">{mb.email}</td>
-                                        <td className="p-4 text-center">
-                                            <span
-                                                className={`py-1 px-3 text-xs font-semibold rounded-xl ${
-                                                    mb.status === 'healthy'
-                                                        ? 'bg-green-100 text-green-600'
-                                                        : 'bg-red-100 text-red-600'
-                                                }`}
-                                            >
-                                                {mb.status}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-center text-sm font-semibold text-gray-900">
-                                            {mb.campaign_count}
-                                        </td>
-                                        <td className="p-4 text-center text-sm text-gray-500">
-                                            {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '—'}
-                                        </td>
-                                        <td className="p-4 text-center text-sm" style={{ color: mb.bounce_rate >= 3 ? '#DC2626' : mb.bounce_rate >= 2 ? '#D97706' : '#6B7280' }}>
-                                            {mb.total_sent > 0 ? `${mb.bounce_rate}%` : '—'}
-                                        </td>
-                                        <td className="p-4 text-center text-sm" style={{ color: mb.engagement_rate < 2 ? '#DC2626' : mb.engagement_rate < 5 ? '#D97706' : '#6B7280' }}>
-                                            {mb.total_sent > 0 ? `${mb.engagement_rate}%` : '—'}
-                                        </td>
-                                        <td className="p-4 text-center">
-                                            <span
-                                                className="py-1 px-3 text-xs font-semibold rounded-xl capitalize"
-                                                style={{
-                                                    background: getCategoryBg(mb.load_category),
-                                                    color: getCategoryColor(mb.load_category)
-                                                }}
-                                            >
-                                                {mb.load_category}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-center text-sm text-gray-500">
-                                            {mb.health_score.toFixed(0)}
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">
+                        📊 Mailbox Distribution
+                    </h2>
+                    <RowLimitSelector limit={limit} onLimitChange={(l) => { setLimit(l); setPage(1); }} />
                 </div>
+                {(() => {
+                    const sorted = [...report.mailbox_distribution].sort((a, b) => b.campaign_count - a.campaign_count);
+                    const totalPages = Math.ceil(sorted.length / limit);
+                    const paginated = sorted.slice((page - 1) * limit, page * limit);
+
+                    return (
+                        <>
+                            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                                <table className="w-full border-collapse">
+                                    <thead>
+                                        <tr className="bg-gray-50 border-b border-gray-200">
+                                            <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Mailbox</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Campaigns</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Total Sent</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Bounce Rate</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Engagement</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Load Category</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Health Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {paginated.map((mb, idx) => (
+                                            <tr key={mb.id} style={{ borderBottom: idx < paginated.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
+                                                <td className="p-4 text-sm text-gray-900">{mb.email}</td>
+                                                <td className="p-4 text-center">
+                                                    <span
+                                                        className={`py-1 px-3 text-xs font-semibold rounded-xl ${
+                                                            mb.status === 'healthy'
+                                                                ? 'bg-green-100 text-green-600'
+                                                                : 'bg-red-100 text-red-600'
+                                                        }`}
+                                                    >
+                                                        {mb.status}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-center text-sm font-semibold text-gray-900">
+                                                    {mb.campaign_count}
+                                                </td>
+                                                <td className="p-4 text-center text-sm text-gray-500">
+                                                    {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '—'}
+                                                </td>
+                                                <td className="p-4 text-center text-sm" style={{ color: mb.bounce_rate >= 3 ? '#DC2626' : mb.bounce_rate >= 2 ? '#D97706' : '#6B7280' }}>
+                                                    {mb.total_sent > 0 ? `${mb.bounce_rate}%` : '—'}
+                                                </td>
+                                                <td className="p-4 text-center text-sm" style={{ color: mb.engagement_rate < 2 ? '#DC2626' : mb.engagement_rate < 5 ? '#D97706' : '#6B7280' }}>
+                                                    {mb.total_sent > 0 ? `${mb.engagement_rate}%` : '—'}
+                                                </td>
+                                                <td className="p-4 text-center">
+                                                    <span
+                                                        className="py-1 px-3 text-xs font-semibold rounded-xl capitalize"
+                                                        style={{
+                                                            background: getCategoryBg(mb.load_category),
+                                                            color: getCategoryColor(mb.load_category)
+                                                        }}
+                                                    >
+                                                        {mb.load_category}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-center text-sm text-gray-500">
+                                                    {mb.health_score.toFixed(0)}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {totalPages > 1 && (
+                                <div className="mt-4">
+                                    <PaginationControls
+                                        currentPage={page}
+                                        totalPages={totalPages}
+                                        onPageChange={setPage}
+                                    />
+                                </div>
+                            )}
+                        </>
+                    );
+                })()}
             </div>
         </div>
     );
