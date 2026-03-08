@@ -35,6 +35,7 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
     const [syncError, setSyncError] = useState<string | null>(null);
+    const [syncResult, setSyncResult] = useState<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any } | null>(null);
     const [backendBase, setBackendBase] = useState('');
 
     // Settings array shared with child cards to avoid duplicate fetches
@@ -112,13 +113,18 @@ export default function Settings() {
         const sessionId = `sync-${Date.now()}-${Math.random().toString(36).substring(7)}`;
         setSyncSessionId(sessionId);
         setSyncError(null);
+        setSyncResult(null);
         setShowSyncModal(true);
         await new Promise(resolve => setTimeout(resolve, 500));
         try {
-            await apiClient<SyncResponse>(`/api/sync?session=${sessionId}`, {
+            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any }>(`/api/sync?session=${sessionId}`, {
                 method: 'POST',
                 timeout: 600_000
             });
+            // HTTP response as fallback — if SSE didn't deliver 'complete', this will
+            if (result) {
+                setSyncResult(result);
+            }
         } catch (e: any) {
             setSyncError(e.message || 'Sync failed. Check your API key and try again.');
         }
@@ -185,7 +191,7 @@ export default function Settings() {
                 isOpen={showSyncModal}
                 sessionId={syncSessionId}
                 externalError={syncError}
-                backendUrl={backendBase}
+                externalResult={syncResult}
                 onClose={() => {
                     setShowSyncModal(false);
                     setSyncSessionId(null);

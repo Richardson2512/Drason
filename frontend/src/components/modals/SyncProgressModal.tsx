@@ -30,7 +30,7 @@ interface SyncProgressModalProps {
     onPauseCampaigns?: () => Promise<void>;
     onViewHealthReport?: () => void;
     externalError?: string | null;
-    backendUrl?: string;
+    externalResult?: SyncResult | null;
 }
 
 const STEP_LABELS = {
@@ -48,7 +48,7 @@ export default function SyncProgressModal({
     onPauseCampaigns,
     onViewHealthReport,
     externalError,
-    backendUrl
+    externalResult
 }: SyncProgressModalProps) {
     const [progress, setProgress] = useState<Record<string, SyncProgress>>({
         campaigns: { step: 'campaigns', status: 'pending' },
@@ -69,6 +69,23 @@ export default function SyncProgressModal({
         }
     }, [externalError]);
 
+    // Fallback: if the HTTP response arrives before SSE delivers 'complete',
+    // use it to close the modal. This ensures the modal never hangs.
+    useEffect(() => {
+        if (externalResult && !isComplete) {
+            setResult(externalResult);
+            setIsComplete(true);
+            // Mark all steps as completed
+            setProgress(prev => {
+                const updated = { ...prev };
+                for (const key of Object.keys(updated)) {
+                    updated[key] = { ...updated[key], status: 'completed' };
+                }
+                return updated;
+            });
+        }
+    }, [externalResult, isComplete]);
+
     useEffect(() => {
         if (!isOpen || !sessionId) return;
 
@@ -83,14 +100,12 @@ export default function SyncProgressModal({
         setError(null);
         setIsComplete(false);
 
-        // Connect to SSE endpoint directly on backend (bypasses Next.js rewrite proxy
-        // which buffers responses and breaks SSE streaming)
+        // Connect to SSE endpoint via relative URL (goes through Next.js rewrite proxy)
         let retryCount = 0;
         const MAX_RETRIES = 3;
         let completed = false;
 
-        const sseBase = backendUrl || '';
-        const eventSource = new EventSource(`${sseBase}/api/sync-progress/${sessionId}`);
+        const eventSource = new EventSource(`/api/sync-progress/${sessionId}`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
