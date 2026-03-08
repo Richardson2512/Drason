@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
-import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
 import { apiClient } from '@/lib/api';
 import type { Domain, Mailbox, Campaign, PaginatedResponse, AuditLog } from '@/types/api';
 import { getStatusColors } from '@/lib/statusColors';
@@ -429,9 +428,6 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                     </div>
                 </div>
             </div>
-
-            {/* Detailed Bounce Events for this Domain */}
-            <BounceAnalytics domainId={selectedDomain.id} />
 
             {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
             <div className="premium-card mb-8">
