@@ -33,7 +33,7 @@ export default function OverviewEmptyState({ stats }: { stats: any }) {
                             <Settings size={24} className="text-blue-600" />
                         </div>
                         <h3 className="font-bold text-xl mb-3 text-gray-900">1. Connect Integrations</h3>
-                        <p className="text-gray-500 mb-6 leading-relaxed">Link your Clay and Smartlead accounts to ingest leads and campaigns automatically.</p>
+                        <p className="text-gray-500 mb-6 leading-relaxed">Link your sending platforms to ingest leads and campaigns automatically.</p>
                         <div className="flex items-center text-blue-600 font-bold text-sm group-hover:translate-x-2 transition-transform">
                             Go to Settings <ArrowRight size={16} className="ml-2" />
                         </div>

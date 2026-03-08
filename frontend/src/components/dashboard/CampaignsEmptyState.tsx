@@ -42,7 +42,7 @@ export default function CampaignsEmptyState() {
                     className="flex items-center justify-center px-8 py-4 bg-white border border-gray-200 text-gray-700 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 rounded-xl font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                     {loading ? <Loader2 size={20} className="mr-3 animate-spin" /> : <Import size={20} className="mr-3" />}
-                    {loading ? 'Importing...' : 'Import from Smartlead'}
+                    {loading ? 'Importing...' : 'Import Campaigns'}
                 </button>
             </div>
             {msg && (
