@@ -406,13 +406,6 @@ export interface PredictiveReport {
 // Health / Status endpoints
 // ────────────────────────────────────────────────────────────────────
 
-export interface HealthCheckResponse {
-  status: string;
-  version?: string;
-  components?: Record<string, string>;
-  [key: string]: any;
-}
-
 export interface AssessmentStatusResponse {
   status: string;
   inProgress?: boolean;
@@ -522,48 +515,6 @@ export interface TierInfo {
   color: string;
 }
 
-// ────────────────────────────────────────────────────────────────────
-// Status / Diagnostics page
-// ────────────────────────────────────────────────────────────────────
-
-export interface StateTransition {
-  id: string;
-  entity_type: string;
-  entity_id: string;
-  from_status?: string;
-  to_status?: string;
-  from_state?: string;
-  to_state?: string;
-  trigger?: string;
-  triggered_by?: string;
-  reason?: string;
-  details?: string;
-  created_at: string;
-}
-
-export interface RawEvent {
-  id: string;
-  event_type: string;
-  entity_type?: string;
-  entity_id?: string;
-  source?: string;
-  details?: string;
-  processed_at?: string;
-  created_at: string;
-}
-
-export interface CampaignDiagnostic {
-  campaign_id: string;
-  campaign_name: string;
-  status: string;
-  mailbox_count: number;
-  active_mailboxes: number;
-  paused_mailboxes: number;
-  mailbox_email?: string;
-  mailbox_id?: string;
-  mailbox_status?: string;
-  [key: string]: any;
-}
 
 // ────────────────────────────────────────────────────────────────────
 // Lead scoring

@@ -272,14 +272,7 @@ export default function DashboardShell({
                             <span className="text-base min-w-[24px] text-center">📜</span>
                             {!isCollapsed && <span>Audit Log</span>}
                         </Link>
-                        {/* System Status - ADMIN ONLY */}
-                        {userRole === 'admin' && (
-                            <Link href="/dashboard/status" className="nav-link" title={isCollapsed ? "System Status" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                                <span className="text-base min-w-[24px] text-center">🟢</span>
-                                {!isCollapsed && <span>System Status</span>}
-                            </Link>
-                        )}
-                        <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+<Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span className="text-base min-w-[24px] text-center">💳</span>
                             {!isCollapsed && <span>Billing</span>}
                         </Link>
