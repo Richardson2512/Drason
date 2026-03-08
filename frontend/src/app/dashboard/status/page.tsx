@@ -2,20 +2,20 @@
 import { useEffect, useState } from 'react';
 
 import { apiClient } from '@/lib/api';
+import type { HealthCheckResponse, StateTransition, RawEvent, CampaignDiagnostic } from '@/types/api';
 
 export default function StatusPage() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [health, setHealth] = useState<Record<string, any> | null>(null);
-    const [stateTransitions, setStateTransitions] = useState<any[]>([]);
-    const [rawEvents, setRawEvents] = useState<any[]>([]);
-    const [diagnostics, setDiagnostics] = useState<any[]>([]);
+    const [health, setHealth] = useState<HealthCheckResponse | null>(null);
+    const [stateTransitions, setStateTransitions] = useState<StateTransition[]>([]);
+    const [rawEvents, setRawEvents] = useState<RawEvent[]>([]);
+    const [diagnostics, setDiagnostics] = useState<CampaignDiagnostic[]>([]);
     const [activeTab, setActiveTab] = useState<'health' | 'transitions' | 'events' | 'diagnostics'>('health');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchAll();
-        // Auto-refresh every 30 seconds
-        const interval = setInterval(fetchAll, 30000);
+        // Auto-refresh every 60 seconds
+        const interval = setInterval(fetchAll, 60000);
         return () => clearInterval(interval);
     }, []);
 
@@ -30,10 +30,10 @@ export default function StatusPage() {
             // So apiClient will return the full object as `data.success` is undefined.
 
             const [healthRes, transitionsRes, eventsRes, diagRes] = await Promise.all([
-                apiClient<any>('/api/health').catch(() => null),
-                apiClient<any>('/api/dashboard/state-transitions?limit=50').catch(() => []),
-                apiClient<any>('/api/dashboard/events?limit=50').catch(() => []),
-                apiClient<any>('/api/diagnostics/campaign-mailboxes').catch(() => [])
+                apiClient<HealthCheckResponse>('/api/health').catch(() => null),
+                apiClient<StateTransition[] | { data: StateTransition[] }>('/api/dashboard/state-transitions?limit=50').catch(() => []),
+                apiClient<RawEvent[] | { data: RawEvent[] }>('/api/dashboard/events?limit=50').catch(() => []),
+                apiClient<CampaignDiagnostic[] | { data: CampaignDiagnostic[] }>('/api/diagnostics/campaign-mailboxes').catch(() => [])
             ]);
 
             setHealth(healthRes);
@@ -54,39 +54,31 @@ export default function StatusPage() {
             unhealthy: '#dc2626'
         };
         return (
-            <span style={{
-                display: 'inline-block',
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                background: colors[status] || '#525252',
-                marginRight: '0.5rem'
-            }} />
+            <span
+                className="inline-block w-2.5 h-2.5 rounded-full mr-2"
+                style={{ background: colors[status] || '#525252' }}
+            />
         );
     };
 
     return (
-        <div style={{ height: 'calc(100vh - 4rem)', display: 'flex', flexDirection: 'column' }}>
+        <div className="h-[calc(100vh-4rem)] flex flex-col">
             <div className="page-header">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="flex justify-between items-center">
                     <div>
-                        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>System Status</h1>
-                        <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Real-time usage & health monitoring</div>
+                        <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">System Status</h1>
+                        <div className="text-gray-500 text-[1.1rem]">Real-time usage & health monitoring</div>
                     </div>
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.875rem', color: '#64748B', fontWeight: 500 }}>Auto-refresh: 30s</span>
+                    <div className="flex gap-4 items-center">
+                        <span className="text-sm text-slate-500 font-medium">Auto-refresh: 60s</span>
                         <button
                             onClick={fetchAll}
                             disabled={loading}
-                            className="premium-btn"
-                            style={{
-                                padding: '0.6rem 1.25rem',
-                                fontSize: '0.875rem'
-                            }}
+                            className="premium-btn py-2.5 px-5 text-sm"
                         >
                             {loading ? (
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <svg className="animate-spin" style={{ width: '1rem', height: '1rem' }} viewBox="0 0 24 24">
+                                <span className="flex items-center gap-2">
+                                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
@@ -99,55 +91,49 @@ export default function StatusPage() {
             </div>
 
             {/* Health Overview Cards */}
-            <div className="grid grid-cols-4 gap-6" style={{ marginBottom: '2rem', flexShrink: 0 }}>
-                <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Overall Status</div>
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5rem', fontWeight: 800, color: '#1E293B', gap: '0.75rem' }}>
+            <div className="grid grid-cols-4 gap-6 mb-8 shrink-0">
+                <div className="premium-card flex flex-col gap-2">
+                    <div className="text-slate-500 text-sm font-bold uppercase tracking-wide">Overall Status</div>
+                    <div className="flex items-center text-2xl font-extrabold text-slate-800 gap-3">
                         <StatusIndicator status={health?.status || 'unknown'} />
                         {health?.status?.toUpperCase() || 'CHECKING...'}
                     </div>
                 </div>
-                <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Database</div>
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5rem', fontWeight: 800, color: '#1E293B', gap: '0.75rem' }}>
+                <div className="premium-card flex flex-col gap-2">
+                    <div className="text-slate-500 text-sm font-bold uppercase tracking-wide">Database</div>
+                    <div className="flex items-center text-2xl font-extrabold text-slate-800 gap-3">
                         <StatusIndicator status={health?.components?.database || 'unknown'} />
                         {health?.components?.database?.toUpperCase() || '-'}
                     </div>
                 </div>
-                <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>API</div>
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '1.5rem', fontWeight: 800, color: '#1E293B', gap: '0.75rem' }}>
+                <div className="premium-card flex flex-col gap-2">
+                    <div className="text-slate-500 text-sm font-bold uppercase tracking-wide">API</div>
+                    <div className="flex items-center text-2xl font-extrabold text-slate-800 gap-3">
                         <StatusIndicator status={health?.components?.api || 'unknown'} />
                         {health?.components?.api?.toUpperCase() || '-'}
                     </div>
                 </div>
-                <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Version</div>
-                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1E293B' }}>
+                <div className="premium-card flex flex-col gap-2">
+                    <div className="text-slate-500 text-sm font-bold uppercase tracking-wide">Version</div>
+                    <div className="text-2xl font-extrabold text-slate-800">
                         {health?.version || '-'}
                     </div>
                 </div>
             </div>
 
             {/* Tabs & Content */}
-            <div className="premium-card" style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '0', borderRadius: '24px' }}>
-                <div style={{ padding: '1.5rem 1.5rem 0 1.5rem', borderBottom: '1px solid #F1F5F9', background: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', gap: '2rem' }}>
-                        {[{ id: 'health', label: 'System Health' }, { id: 'transitions', label: 'State Transitions' }, { id: 'events', label: 'Raw Events' }, { id: 'diagnostics', label: 'Campaign Diagnostics' }].map(t => (
+            <div className="premium-card flex-1 overflow-hidden flex flex-col p-0 rounded-3xl">
+                <div className="px-6 pt-6 pb-0 border-b border-slate-100 bg-white">
+                    <div className="flex gap-8">
+                        {([{ id: 'health', label: 'System Health' }, { id: 'transitions', label: 'State Transitions' }, { id: 'events', label: 'Raw Events' }, { id: 'diagnostics', label: 'Campaign Diagnostics' }] as const).map(t => (
                             <button
                                 key={t.id}
-                                onClick={() => setActiveTab(t.id as any)}
+                                onClick={() => setActiveTab(t.id)}
+                                className="pb-4 bg-transparent border-none cursor-pointer text-base transition-all duration-200 -mb-px"
                                 style={{
-                                    paddingBottom: '1rem',
-                                    background: 'transparent',
                                     color: activeTab === t.id ? '#2563EB' : '#64748B',
-                                    border: 'none',
                                     borderBottom: activeTab === t.id ? '2px solid #2563EB' : '2px solid transparent',
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    fontWeight: activeTab === t.id ? 700 : 500,
-                                    transition: 'all 0.2s',
-                                    marginBottom: '-1px'
+                                    fontWeight: activeTab === t.id ? 700 : 500
                                 }}
                             >
                                 {t.label}
@@ -156,37 +142,37 @@ export default function StatusPage() {
                     </div>
                 </div>
 
-                <div style={{ flex: 1, overflow: 'hidden', padding: '1.5rem', background: '#FAFAFA' }}>
+                <div className="flex-1 overflow-hidden p-6 bg-gray-50">
                     {activeTab === 'health' && (
-                        <div style={{ overflowY: 'auto', height: '100%', paddingRight: '0.5rem' }}>
-                            <div className="grid grid-cols-2 gap-6" style={{ marginBottom: '2rem' }}>
-                                <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                                    <h3 style={{ fontWeight: 700, marginBottom: '0.5rem', fontSize: '1.125rem', color: '#1E293B' }}>Database</h3>
-                                    <div style={{ fontSize: '0.875rem', color: '#64748B' }}>PostgreSQL connection status</div>
-                                    <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: health?.components?.database === 'healthy' ? '#15803d' : '#b91c1c' }}>
+                        <div className="overflow-y-auto h-full pr-2">
+                            <div className="grid grid-cols-2 gap-6 mb-8">
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                                    <h3 className="font-bold mb-2 text-lg text-slate-800">Database</h3>
+                                    <div className="text-sm text-slate-500">PostgreSQL connection status</div>
+                                    <div className="mt-4 flex items-center gap-2 font-semibold" style={{ color: health?.components?.database === 'healthy' ? '#15803d' : '#b91c1c' }}>
                                         {health?.components?.database === 'healthy' ? (
-                                            <><span style={{ fontSize: '1.25rem' }}>✓</span> Connected & Operational</>
+                                            <><span className="text-xl">✓</span> Connected & Operational</>
                                         ) : (
-                                            <><span style={{ fontSize: '1.25rem' }}>✗</span> Connection Failed</>
+                                            <><span className="text-xl">✗</span> Connection Failed</>
                                         )}
                                     </div>
                                 </div>
-                                <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                                    <h3 style={{ fontWeight: 700, marginBottom: '0.5rem', fontSize: '1.125rem', color: '#1E293B' }}>API Server</h3>
-                                    <div style={{ fontSize: '0.875rem', color: '#64748B' }}>Express server status</div>
-                                    <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: health?.components?.api === 'healthy' ? '#15803d' : '#b91c1c' }}>
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                                    <h3 className="font-bold mb-2 text-lg text-slate-800">API Server</h3>
+                                    <div className="text-sm text-slate-500">Express server status</div>
+                                    <div className="mt-4 flex items-center gap-2 font-semibold" style={{ color: health?.components?.api === 'healthy' ? '#15803d' : '#b91c1c' }}>
                                         {health?.components?.api === 'healthy' ? (
-                                            <><span style={{ fontSize: '1.25rem' }}>✓</span> Running Smoothly</>
+                                            <><span className="text-xl">✓</span> Running Smoothly</>
                                         ) : (
-                                            <><span style={{ fontSize: '1.25rem' }}>✗</span> Not Responding</>
+                                            <><span className="text-xl">✗</span> Not Responding</>
                                         )}
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <h3 style={{ fontWeight: 700, marginBottom: '1rem', fontSize: '1.125rem', color: '#1E293B' }}>System Capabilities (Phases 1-8)</h3>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                                <h3 className="font-bold mb-4 text-lg text-slate-800">System Capabilities (Phases 1-8)</h3>
+                                <div className="grid grid-cols-4 gap-4">
                                     {[
                                         { name: 'Multi-Tenancy', phase: 1, status: 'active' },
                                         { name: 'Event Sourcing', phase: 2, status: 'active' },
@@ -197,15 +183,9 @@ export default function StatusPage() {
                                         { name: 'Observability', phase: 7, status: 'active' },
                                         { name: 'Compliance', phase: 8, status: 'active' }
                                     ].map(cap => (
-                                        <div key={cap.phase} style={{
-                                            background: '#ECFDF5',
-                                            border: '1px solid #A7F3D0',
-                                            padding: '1rem',
-                                            borderRadius: '12px',
-                                            fontSize: '0.875rem'
-                                        }}>
-                                            <div style={{ color: '#047857', fontWeight: 700, marginBottom: '0.25rem' }}>PHASE {cap.phase}</div>
-                                            <div style={{ color: '#064E3B', fontWeight: 600 }}>{cap.name}</div>
+                                        <div key={cap.phase} className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-sm">
+                                            <div className="text-emerald-700 font-bold mb-1">PHASE {cap.phase}</div>
+                                            <div className="text-emerald-900 font-semibold">{cap.name}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -214,51 +194,43 @@ export default function StatusPage() {
                     )}
 
                     {activeTab === 'transitions' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1E293B' }}>State Transitions (Phase 3)</h2>
-                                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>History of all state changes for mailboxes, domains, and leads.</p>
+                        <div className="flex flex-col h-full">
+                            <div className="mb-4">
+                                <h2 className="text-xl font-semibold text-slate-800">State Transitions (Phase 3)</h2>
+                                <p className="text-slate-500 text-sm">History of all state changes for mailboxes, domains, and leads.</p>
                             </div>
-                            <div style={{ overflowY: 'auto', flex: 1, borderRadius: '12px', border: '1px solid #E2E8F0', background: '#FFFFFF' }}>
-                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                    <thead style={{ position: 'sticky', top: 0, background: '#F8FAFC', zIndex: 10 }}>
+                            <div className="overflow-y-auto flex-1 rounded-xl border border-slate-200 bg-white">
+                                <table className="w-full border-separate" style={{ borderSpacing: '0' }}>
+                                    <thead className="sticky top-0 bg-slate-50 z-10">
                                         <tr>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Time</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Entity</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Transition</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Trigger</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Reason</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Time</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Entity</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Transition</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Trigger</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Reason</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {stateTransitions.length > 0 ? stateTransitions.map((t: any) => (
+                                        {stateTransitions.length > 0 ? stateTransitions.map((t: StateTransition) => (
                                             <tr key={t.id} className="hover:bg-gray-50 transition-colors">
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569' }}>
+                                                <td className="p-4 border-b border-slate-100 text-sm text-slate-600">
                                                     {new Date(t.created_at).toLocaleString()}
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
-                                                    <span style={{
-                                                        background: '#F1F5F9',
-                                                        padding: '0.25rem 0.5rem',
-                                                        borderRadius: '6px',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: 600,
-                                                        color: '#475569',
-                                                        textTransform: 'uppercase'
-                                                    }}>
+                                                <td className="p-4 border-b border-slate-100">
+                                                    <span className="bg-slate-100 px-2 py-1 rounded-md text-xs font-semibold text-slate-600 uppercase">
                                                         {t.entity_type}
                                                     </span>
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600 }}>
-                                                    <span style={{ color: '#EF4444' }}>{t.from_state}</span>
-                                                    <span style={{ color: '#94A3B8', margin: '0 0.5rem' }}>→</span>
-                                                    <span style={{ color: '#10B981' }}>{t.to_state}</span>
+                                                <td className="p-4 border-b border-slate-100 font-semibold">
+                                                    <span className="text-red-500">{t.from_state}</span>
+                                                    <span className="text-slate-400 mx-2">→</span>
+                                                    <span className="text-emerald-500">{t.to_state}</span>
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B', fontSize: '0.875rem' }}>{t.triggered_by}</td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B', fontSize: '0.875rem' }}>{t.reason}</td>
+                                                <td className="p-4 border-b border-slate-100 text-slate-500 text-sm">{t.triggered_by}</td>
+                                                <td className="p-4 border-b border-slate-100 text-slate-500 text-sm">{t.reason}</td>
                                             </tr>
                                         )) : (
-                                            <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No transitions recorded.</td></tr>
+                                            <tr><td colSpan={5} className="text-center p-12 text-gray-400 italic">No transitions recorded.</td></tr>
                                         )}
                                     </tbody>
                                 </table>
@@ -267,44 +239,44 @@ export default function StatusPage() {
                     )}
 
                     {activeTab === 'events' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1E293B' }}>Raw Events (Phase 2)</h2>
-                                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>Immutable event-sourced log of all system activities.</p>
+                        <div className="flex flex-col h-full">
+                            <div className="mb-4">
+                                <h2 className="text-xl font-semibold text-slate-800">Raw Events (Phase 2)</h2>
+                                <p className="text-slate-500 text-sm">Immutable event-sourced log of all system activities.</p>
                             </div>
-                            <div style={{ overflowY: 'auto', flex: 1, borderRadius: '12px', border: '1px solid #E2E8F0', background: '#FFFFFF' }}>
-                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                    <thead style={{ position: 'sticky', top: 0, background: '#F8FAFC', zIndex: 10 }}>
+                            <div className="overflow-y-auto flex-1 rounded-xl border border-slate-200 bg-white">
+                                <table className="w-full border-separate" style={{ borderSpacing: '0' }}>
+                                    <thead className="sticky top-0 bg-slate-50 z-10">
                                         <tr>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Time</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Event</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Entity</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Source</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>State</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Time</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Event</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Entity</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Source</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">State</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {rawEvents.length > 0 ? rawEvents.map((e: any) => (
+                                        {rawEvents.length > 0 ? rawEvents.map((e: RawEvent) => (
                                             <tr key={e.id} className="hover:bg-gray-50 transition-colors">
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569' }}>
+                                                <td className="p-4 border-b border-slate-100 text-sm text-slate-600">
                                                     {new Date(e.created_at).toLocaleString()}
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600, color: '#1E293B' }}>{e.event_type}</td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
-                                                    <span style={{ color: '#64748B', fontSize: '0.75rem', fontWeight: 500, marginRight: '0.25rem' }}>{e.entity_type}:</span>
-                                                    <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', background: '#F1F5F9', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>{e.entity_id?.substring(0, 8)}...</span>
+                                                <td className="p-4 border-b border-slate-100 font-semibold text-slate-800">{e.event_type}</td>
+                                                <td className="p-4 border-b border-slate-100">
+                                                    <span className="text-slate-500 text-xs font-medium mr-1">{e.entity_type}:</span>
+                                                    <span className="text-[0.8rem] font-mono bg-slate-100 px-1 py-0.5 rounded">{e.entity_id?.substring(0, 8)}...</span>
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B', fontSize: '0.875rem' }}>{e.source}</td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
+                                                <td className="p-4 border-b border-slate-100 text-slate-500 text-sm">{e.source}</td>
+                                                <td className="p-4 border-b border-slate-100">
                                                     {e.processed_at ? (
-                                                        <span style={{ color: '#166534', background: '#DCFCE7', padding: '0.1rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>PROCESSED</span>
+                                                        <span className="text-green-800 bg-green-100 px-2 py-0.5 rounded text-xs font-semibold">PROCESSED</span>
                                                     ) : (
-                                                        <span style={{ color: '#854D0E', background: '#FEF9C3', padding: '0.1rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>PENDING</span>
+                                                        <span className="text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded text-xs font-semibold">PENDING</span>
                                                     )}
                                                 </td>
                                             </tr>
                                         )) : (
-                                            <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No events recorded.</td></tr>
+                                            <tr><td colSpan={5} className="text-center p-12 text-gray-400 italic">No events recorded.</td></tr>
                                         )}
                                     </tbody>
                                 </table>
@@ -313,45 +285,43 @@ export default function StatusPage() {
                     )}
 
                     {activeTab === 'diagnostics' && (
-                        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1E293B' }}>Campaign-Mailbox Mappings</h2>
-                                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>Diagnostic view of campaign-to-mailbox relationships.</p>
+                        <div className="flex flex-col h-full">
+                            <div className="mb-4">
+                                <h2 className="text-xl font-semibold text-slate-800">Campaign-Mailbox Mappings</h2>
+                                <p className="text-slate-500 text-sm">Diagnostic view of campaign-to-mailbox relationships.</p>
                             </div>
-                            <div style={{ overflowY: 'auto', flex: 1, borderRadius: '12px', border: '1px solid #E2E8F0', background: '#FFFFFF' }}>
-                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                                    <thead style={{ position: 'sticky', top: 0, background: '#F8FAFC', zIndex: 10 }}>
+                            <div className="overflow-y-auto flex-1 rounded-xl border border-slate-200 bg-white">
+                                <table className="w-full border-separate" style={{ borderSpacing: '0' }}>
+                                    <thead className="sticky top-0 bg-slate-50 z-10">
                                         <tr>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Campaign</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Mailbox</th>
-                                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Status</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Campaign</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Mailbox</th>
+                                            <th className="p-4 text-left border-b border-slate-200 text-xs font-bold text-slate-500 uppercase">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {diagnostics.length > 0 ? diagnostics.map((d: any, i: number) => (
+                                        {diagnostics.length > 0 ? diagnostics.map((d: CampaignDiagnostic, i: number) => (
                                             <tr key={i} className="hover:bg-gray-50 transition-colors">
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', fontWeight: 600, color: '#1E293B' }}>
+                                                <td className="p-4 border-b border-slate-100 text-sm font-semibold text-slate-800">
                                                     {d.campaign_name || d.campaign_id}
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569' }}>
+                                                <td className="p-4 border-b border-slate-100 text-sm text-slate-600">
                                                     {d.mailbox_email || d.mailbox_id}
                                                 </td>
-                                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
-                                                    <span style={{
-                                                        padding: '0.15rem 0.5rem',
-                                                        borderRadius: '999px',
-                                                        fontSize: '0.7rem',
-                                                        fontWeight: 600,
-                                                        background: d.mailbox_status === 'healthy' ? '#DCFCE7' : d.mailbox_status === 'paused' ? '#FEE2E2' : '#FEF3C7',
-                                                        color: d.mailbox_status === 'healthy' ? '#166534' : d.mailbox_status === 'paused' ? '#991B1B' : '#92400E',
-                                                        textTransform: 'uppercase'
-                                                    }}>
+                                                <td className="p-4 border-b border-slate-100">
+                                                    <span
+                                                        className="px-2 py-0.5 rounded-full text-[0.7rem] font-semibold uppercase"
+                                                        style={{
+                                                            background: d.mailbox_status === 'healthy' ? '#DCFCE7' : d.mailbox_status === 'paused' ? '#FEE2E2' : '#FEF3C7',
+                                                            color: d.mailbox_status === 'healthy' ? '#166534' : d.mailbox_status === 'paused' ? '#991B1B' : '#92400E'
+                                                        }}
+                                                    >
                                                         {d.mailbox_status || 'unknown'}
                                                     </span>
                                                 </td>
                                             </tr>
                                         )) : (
-                                            <tr><td colSpan={3} style={{ textAlign: 'center', padding: '3rem', color: '#9CA3AF', fontStyle: 'italic' }}>No campaign-mailbox data available.</td></tr>
+                                            <tr><td colSpan={3} className="text-center p-12 text-gray-400 italic">No campaign-mailbox data available.</td></tr>
                                         )}
                                     </tbody>
                                 </table>

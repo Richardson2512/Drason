@@ -94,7 +94,7 @@ function SignupContent() {
         setLoading(true);
 
         try {
-            const data = await apiClient<any>('/api/auth/register', {
+            const data = await apiClient<{ token?: string }>('/api/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,

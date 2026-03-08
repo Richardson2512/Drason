@@ -198,6 +198,9 @@ export default function SyncProgressModal({
             <div
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
                 onClick={onClose}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="sync-progress-modal-title"
             >
                 <div
                     className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
@@ -205,13 +208,14 @@ export default function SyncProgressModal({
                 >
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 id="sync-progress-modal-title" className="text-2xl font-bold text-gray-900">
                             {isComplete ? 'Sync Complete' : 'Syncing Smartlead Data'}
                         </h2>
                         <button
                             onClick={onClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
                             title="Close"
+                            aria-label="Close"
                         >
                             <X size={24} />
                         </button>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Rocket, Import, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
+import type { SyncResponse } from '@/types/api';
 
 export default function CampaignsEmptyState() {
     const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ export default function CampaignsEmptyState() {
         setLoading(true);
         setMsg('');
         try {
-            const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
+            const data = await apiClient<SyncResponse>('/api/sync', { method: 'POST', timeout: 120_000 });
             setMsg(`Success! Synced ${data.campaigns_synced} campaigns. Refreshing...`);
             setTimeout(() => window.location.reload(), 1500);
         } catch (error: any) {

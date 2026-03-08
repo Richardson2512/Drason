@@ -42,7 +42,6 @@ interface BounceReason {
 
 export default function BounceAnalytics({ mailboxId, domainId, campaignId, showFilters = false }: BounceAnalyticsProps) {
     const [loading, setLoading] = useState(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [summary, setSummary] = useState<Record<string, any> | null>(null);
     const [mailboxBreakdown, setMailboxBreakdown] = useState<MailboxBreakdown[]>([]);
     const [campaignBreakdown, setCampaignBreakdown] = useState<CampaignBreakdown[]>([]);
@@ -68,7 +67,7 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                 if (endDate) params.append('end_date', endDate);
                 params.append('limit', '50');
 
-                const data = await apiClient<any>(`/api/analytics/bounces?${params}`);
+                const data = await apiClient<Record<string, any>>(`/api/analytics/bounces?${params}`);
                 if (data?.data) {
                     setSummary(data.data.summary);
                     setMailboxBreakdown(data.data.mailbox_breakdown || []);
@@ -89,10 +88,10 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     if (loading) {
         return (
             <div className="premium-card">
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>
+                <h2 className="text-xl font-bold mb-6 text-gray-900">
                     Bounce Analytics
                 </h2>
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
+                <div className="p-8 text-center text-gray-400">
                     Loading analytics...
                 </div>
             </div>
@@ -102,10 +101,10 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     if (!summary) {
         return (
             <div className="premium-card">
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>
+                <h2 className="text-xl font-bold mb-6 text-gray-900">
                     Bounce Analytics
                 </h2>
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
+                <div className="p-8 text-center text-gray-400">
                     No bounce data available
                 </div>
             </div>
@@ -113,38 +112,38 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div className="flex flex-col gap-8">
             {/* Summary Cards */}
             <div className="grid grid-cols-3 gap-6">
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#6B7280', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <h3 className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
                         Total Bounces
                     </h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#EF4444' }}>
+                    <div className="text-4xl font-extrabold text-red-500">
                         {summary.total_bounces}
                     </div>
                 </div>
 
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#6B7280', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <h3 className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
                         Hard Bounces
                     </h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#DC2626' }}>
+                    <div className="text-4xl font-extrabold text-red-600">
                         {summary.hard_bounces}
                     </div>
-                    <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+                    <div className="text-sm text-gray-400 mt-1">
                         {summary.hard_bounce_rate}
                     </div>
                 </div>
 
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#6B7280', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <h3 className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
                         Soft Bounces
                     </h3>
-                    <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#F59E0B' }}>
+                    <div className="text-4xl font-extrabold text-amber-500">
                         {summary.soft_bounces}
                     </div>
-                    <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+                    <div className="text-sm text-gray-400 mt-1">
                         {summary.soft_bounce_rate}
                     </div>
                 </div>
@@ -153,24 +152,16 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
             {/* Filters (if enabled) */}
             {showFilters && (
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', color: '#111827' }}>Filters</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                    <h3 className="text-base font-bold mb-4 text-gray-900">Filters</h3>
+                    <div className="grid grid-cols-3 gap-4">
                         <div>
-                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: '#6B7280', display: 'block', marginBottom: '0.5rem' }}>
+                            <label className="text-sm font-medium text-gray-500 block mb-2">
                                 Bounce Type
                             </label>
                             <select
                                 value={bounceTypeFilter}
                                 onChange={(e) => setBounceTypeFilter(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.625rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #E5E7EB',
-                                    background: '#FFFFFF',
-                                    fontSize: '0.875rem',
-                                    cursor: 'pointer'
-                                }}
+                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm cursor-pointer"
                             >
                                 <option value="all">All Types</option>
                                 <option value="hard_bounce">Hard Bounce</option>
@@ -178,39 +169,25 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                             </select>
                         </div>
                         <div>
-                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: '#6B7280', display: 'block', marginBottom: '0.5rem' }}>
+                            <label className="text-sm font-medium text-gray-500 block mb-2">
                                 Start Date
                             </label>
                             <input
                                 type="date"
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.625rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #E5E7EB',
-                                    background: '#FFFFFF',
-                                    fontSize: '0.875rem'
-                                }}
+                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm"
                             />
                         </div>
                         <div>
-                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: '#6B7280', display: 'block', marginBottom: '0.5rem' }}>
+                            <label className="text-sm font-medium text-gray-500 block mb-2">
                                 End Date
                             </label>
                             <input
                                 type="date"
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.625rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #E5E7EB',
-                                    background: '#FFFFFF',
-                                    fontSize: '0.875rem'
-                                }}
+                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm"
                             />
                         </div>
                     </div>
@@ -222,36 +199,24 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                 {/* Mailbox Breakdown */}
                 {!mailboxId && mailboxBreakdown.length > 0 && (
                     <div className="premium-card">
-                        <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', color: '#111827' }}>
+                        <h3 className="text-base font-bold mb-4 text-gray-900">
                             Top Mailboxes by Bounces
                         </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div className="flex flex-col gap-3">
                             {mailboxBreakdown.slice(0, 5).map((mb) => (
                                 <div
                                     key={mb.mailbox_id}
-                                    style={{
-                                        padding: '0.75rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '8px',
-                                        border: '1px solid #E2E8F0',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center'
-                                    }}
+                                    className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center"
                                 >
                                     <div>
-                                        <div style={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+                                        <div className="font-semibold text-slate-800 text-sm">
                                             {mb.mailbox_email}
                                         </div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '0.25rem' }}>
+                                        <div className="text-xs text-slate-500 mt-1">
                                             Status: {mb.mailbox_status}
                                         </div>
                                     </div>
-                                    <div style={{
-                                        fontWeight: 700,
-                                        fontSize: '1.25rem',
-                                        color: '#EF4444'
-                                    }}>
+                                    <div className="font-bold text-xl text-red-500">
                                         {mb.bounce_count}
                                     </div>
                                 </div>
@@ -263,36 +228,24 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                 {/* Campaign Breakdown */}
                 {!campaignId && campaignBreakdown.length > 0 && (
                     <div className="premium-card">
-                        <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', color: '#111827' }}>
+                        <h3 className="text-base font-bold mb-4 text-gray-900">
                             Top Campaigns by Bounces
                         </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div className="flex flex-col gap-3">
                             {campaignBreakdown.slice(0, 5).map((c) => (
                                 <div
                                     key={c.campaign_id}
-                                    style={{
-                                        padding: '0.75rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '8px',
-                                        border: '1px solid #E2E8F0',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center'
-                                    }}
+                                    className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center"
                                 >
                                     <div>
-                                        <div style={{ fontWeight: 600, color: '#1E293B', fontSize: '0.875rem' }}>
+                                        <div className="font-semibold text-slate-800 text-sm">
                                             {c.campaign_name}
                                         </div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '0.25rem' }}>
+                                        <div className="text-xs text-slate-500 mt-1">
                                             Bounce Rate: {c.campaign_bounce_rate.toFixed(2)}%
                                         </div>
                                     </div>
-                                    <div style={{
-                                        fontWeight: 700,
-                                        fontSize: '1.25rem',
-                                        color: '#EF4444'
-                                    }}>
+                                    <div className="font-bold text-xl text-red-500">
                                         {c.bounce_count}
                                     </div>
                                 </div>
@@ -305,24 +258,19 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
             {/* Bounce Reasons */}
             {bounceReasons.length > 0 && (
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', color: '#111827' }}>
+                    <h3 className="text-base font-bold mb-4 text-gray-900">
                         Top Bounce Reasons
                     </h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+                    <div className="grid grid-cols-2 gap-3">
                         {bounceReasons.slice(0, 6).map((reason, idx) => (
                             <div
                                 key={idx}
-                                style={{
-                                    padding: '0.75rem',
-                                    background: '#FEF2F2',
-                                    borderRadius: '8px',
-                                    border: '1px solid #FEE2E2'
-                                }}
+                                className="p-3 bg-red-50 rounded-lg border border-red-100"
                             >
-                                <div style={{ fontSize: '0.875rem', color: '#7F1D1D', marginBottom: '0.25rem' }}>
+                                <div className="text-sm text-red-900 mb-1">
                                     {reason.reason}
                                 </div>
-                                <div style={{ fontWeight: 700, fontSize: '1.125rem', color: '#DC2626' }}>
+                                <div className="font-bold text-lg text-red-600">
                                     {reason.count} bounces
                                 </div>
                             </div>
@@ -334,41 +282,37 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
             {/* Recent Bounces */}
             {recentBounces.length > 0 && (
                 <div className="premium-card">
-                    <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1rem', color: '#111827' }}>
+                    <h3 className="text-base font-bold mb-4 text-gray-900">
                         Recent Bounce Events
                     </h3>
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
+                    <div className="overflow-x-auto">
+                        <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0' }}>
                             <thead>
                                 <tr>
-                                    <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Email</th>
-                                    <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Type</th>
-                                    <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Reason</th>
-                                    <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase' }}>Bounced At</th>
+                                    <th className="p-3 text-left border-b-2 border-slate-200 text-xs font-bold text-slate-500 uppercase">Email</th>
+                                    <th className="p-3 text-left border-b-2 border-slate-200 text-xs font-bold text-slate-500 uppercase">Type</th>
+                                    <th className="p-3 text-left border-b-2 border-slate-200 text-xs font-bold text-slate-500 uppercase">Reason</th>
+                                    <th className="p-3 text-left border-b-2 border-slate-200 text-xs font-bold text-slate-500 uppercase">Bounced At</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {recentBounces.slice(0, 10).map((bounce) => (
                                     <tr key={bounce.id} className="hover:bg-gray-50 transition-colors">
-                                        <td style={{ padding: '0.75rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#1E293B', fontWeight: 500 }}>
+                                        <td className="p-3 border-b border-slate-100 text-sm text-slate-800 font-medium">
                                             {bounce.email_address}
                                         </td>
-                                        <td style={{ padding: '0.75rem', borderBottom: '1px solid #F1F5F9' }}>
-                                            <span style={{
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '999px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 600,
+                                        <td className="p-3 border-b border-slate-100">
+                                            <span className="py-1 px-3 rounded-full text-xs font-semibold" style={{
                                                 background: bounce.bounce_type === 'hard_bounce' ? '#FEE2E2' : '#FEF3C7',
                                                 color: bounce.bounce_type === 'hard_bounce' ? '#991B1B' : '#B45309'
                                             }}>
                                                 {bounce.bounce_type.replace('_', ' ').toUpperCase()}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '0.75rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#64748B', maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        <td className="p-3 border-b border-slate-100 text-sm text-slate-500 max-w-[250px] truncate">
                                             {bounce.bounce_reason || 'N/A'}
                                         </td>
-                                        <td style={{ padding: '0.75rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#64748B', whiteSpace: 'nowrap' }}>
+                                        <td className="p-3 border-b border-slate-100 text-sm text-slate-500 whitespace-nowrap">
                                             {new Date(bounce.bounced_at).toLocaleString()}
                                         </td>
                                     </tr>

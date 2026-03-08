@@ -14,6 +14,8 @@ export function RowLimitSelector({ limit, onLimitChange }: RowLimitSelectorProps
             <select
                 value={limit}
                 onChange={(e) => onLimitChange(Number(e.target.value))}
+                aria-label="Rows per page"
+                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 style={{
                     padding: '0.25rem 0.5rem',
                     borderRadius: '0.375rem',
@@ -21,8 +23,7 @@ export function RowLimitSelector({ limit, onLimitChange }: RowLimitSelectorProps
                     fontSize: '0.875rem',
                     color: '#374151',
                     background: '#FFFFFF',
-                    cursor: 'pointer',
-                    outline: 'none'
+                    cursor: 'pointer'
                 }}
             >
                 <option value={20}>20</option>

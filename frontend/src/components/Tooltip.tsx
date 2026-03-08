@@ -10,6 +10,7 @@ interface TooltipProps {
     maxWidth?: string;
     showIcon?: boolean;
     iconSize?: number;
+    id?: string;
 }
 
 /**
@@ -32,7 +33,8 @@ export function Tooltip({
     position = 'top',
     maxWidth = '280px',
     showIcon = false,
-    iconSize = 16
+    iconSize = 16,
+    id
 }: TooltipProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [adjustedPosition, setAdjustedPosition] = useState(position);
@@ -97,6 +99,8 @@ export function Tooltip({
             {isVisible && (
                 <div
                     ref={tooltipRef}
+                    role="tooltip"
+                    id={id}
                     className={`
                         absolute z-50 px-3 py-2 text-xs text-white bg-gray-900 rounded-lg
                         shadow-lg shadow-gray-900/30 pointer-events-none

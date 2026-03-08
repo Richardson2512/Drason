@@ -1,38 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
-
-interface SubscriptionData {
-    subscription: {
-        tier: string;
-        status: string;
-        trialStartedAt: string | null;
-        trialEndsAt: string | null;
-        subscriptionStartedAt: string | null;
-        nextBillingDate: string | null;
-    };
-    usage: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-    limits: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-}
-
-interface TierInfo {
-    name: string;
-    price: string;
-    limits: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-    color: string;
-}
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import type { SubscriptionData, TierInfo } from '@/types/api';
 
 const TIER_INFO: Record<string, TierInfo> = {
     trial: {
@@ -143,13 +113,9 @@ export default function BillingSection() {
 
         const config = statusColors[status] || statusColors.active;
         return (
-            <span style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '9999px',
+            <span className="py-2 px-4 rounded-full text-sm font-semibold" style={{
                 background: config.bg,
-                color: config.text,
-                fontSize: '0.875rem',
-                fontWeight: 600
+                color: config.text
             }}>
                 {config.label}
             </span>
@@ -158,16 +124,16 @@ export default function BillingSection() {
 
     if (loading) {
         return (
-            <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>Loading billing information...</div>
+            <div className="premium-card mb-10">
+                <LoadingSkeleton type="card" rows={2} />
             </div>
         );
     }
 
     if (error && !data) {
         return (
-            <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#EF4444' }}>{error}</div>
+            <div className="premium-card mb-10">
+                <div className="p-8 text-center text-red-500">{error}</div>
             </div>
         );
     }
@@ -177,35 +143,26 @@ export default function BillingSection() {
     const daysRemaining = getDaysRemaining();
 
     return (
-        <div className="premium-card" style={{ marginBottom: '2.5rem', borderLeft: `6px solid ${tierInfo.color}` }}>
+        <div className="premium-card mb-10" style={{ borderLeft: `6px solid ${tierInfo.color}` }}>
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+            <div className="flex justify-between items-start mb-8">
                 <div>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>Subscription & Billing</h2>
-                    <p style={{ color: '#64748B', fontSize: '1rem', lineHeight: '1.5' }}>
+                    <h2 className="text-2xl font-bold mb-2 text-gray-900">Subscription & Billing</h2>
+                    <p className="text-slate-500 text-base leading-relaxed">
                         Manage your subscription, view usage, and upgrade your plan.
                     </p>
                 </div>
-                <div style={{ textAlign: 'right' }}>
+                <div className="text-right">
                     {getStatusBadge(data?.subscription.status || 'trialing')}
                 </div>
             </div>
 
             {/* Trial Warning */}
             {data?.subscription.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
-                <div style={{
-                    padding: '1rem 1.5rem',
-                    background: '#FEF3C7',
-                    borderRadius: '12px',
-                    border: '1px solid #FDE047',
-                    marginBottom: '1.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem'
-                }}>
-                    <span style={{ fontSize: '1.5rem' }}>⏰</span>
+                <div className="py-4 px-6 bg-amber-50 rounded-xl border border-yellow-300 mb-6 flex items-center gap-4">
+                    <span className="text-2xl">⏰</span>
                     <div>
-                        <p style={{ color: '#92400E', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
+                        <p className="text-amber-800 text-[0.9rem] m-0 font-semibold">
                             Your trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Upgrade now to continue using Superkabe.
                         </p>
                     </div>
@@ -214,44 +171,30 @@ export default function BillingSection() {
 
             {/* Error Message */}
             {error && (
-                <div style={{
-                    padding: '1rem 1.5rem',
-                    background: '#FEE2E2',
-                    borderRadius: '12px',
-                    border: '1px solid #FCA5A5',
-                    marginBottom: '1.5rem',
-                    color: '#991B1B',
-                    fontSize: '0.9rem'
-                }}>
+                <div className="py-4 px-6 bg-red-100 rounded-xl border border-red-300 mb-6 text-red-800 text-[0.9rem]">
                     {error}
                 </div>
             )}
 
             {/* Current Plan */}
-            <div style={{
-                padding: '1.5rem',
-                background: '#F8FAFC',
-                borderRadius: '16px',
-                border: '1px solid #F1F5F9',
-                marginBottom: '2rem'
-            }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
+                <div className="flex justify-between items-center mb-4">
                     <div>
-                        <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>Current Plan</div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 800, color: tierInfo.color }}>{tierInfo.name}</div>
+                        <div className="text-xs text-slate-400 font-semibold uppercase mb-1">Current Plan</div>
+                        <div className="text-2xl font-extrabold" style={{ color: tierInfo.color }}>{tierInfo.name}</div>
                     </div>
-                    <div style={{ fontSize: '2rem', fontWeight: 800, color: '#111827' }}>{tierInfo.price}<span style={{ fontSize: '1rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
+                    <div className="text-[2rem] font-extrabold text-gray-900">{tierInfo.price}<span className="text-base text-slate-500 font-normal">/mo</span></div>
                 </div>
                 {data?.subscription.nextBillingDate && (
-                    <div style={{ fontSize: '0.875rem', color: '#64748B' }}>
+                    <div className="text-sm text-slate-500">
                         Next billing date: <strong>{new Date(data.subscription.nextBillingDate).toLocaleDateString()}</strong>
                     </div>
                 )}
             </div>
 
             {/* Usage Metrics */}
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1rem', color: '#1E293B' }}>Resource Usage</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginBottom: '2rem' }}>
+            <h3 className="text-lg font-bold mb-4 text-slate-800">Resource Usage</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {[
                     { label: 'Active Leads', current: data?.usage.leads || 0, limit: data?.limits.leads || 0, icon: '📧' },
                     { label: 'Domains', current: data?.usage.domains || 0, limit: data?.limits.domains || 0, icon: '🌐' },
@@ -261,35 +204,23 @@ export default function BillingSection() {
                     const isNearLimit = percentage > 80;
 
                     return (
-                        <div key={label} style={{
-                            padding: '1.5rem',
-                            background: '#FFFFFF',
-                            borderRadius: '12px',
+                        <div key={label} className="p-6 bg-white rounded-xl" style={{
                             border: isNearLimit ? '2px solid #F59E0B' : '1px solid #E2E8F0',
                             boxShadow: isNearLimit ? '0 4px 12px rgba(245, 158, 11, 0.15)' : 'none'
                         }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="text-2xl">{icon}</span>
                                 <div>
-                                    <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>{label}</div>
-                                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827' }}>
-                                        {current.toLocaleString()} <span style={{ fontSize: '0.875rem', color: '#94A3B8', fontWeight: 400 }}>/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
+                                    <div className="text-xs text-slate-400 font-semibold uppercase">{label}</div>
+                                    <div className="text-2xl font-extrabold text-gray-900">
+                                        {current.toLocaleString()} <span className="text-sm text-slate-400 font-normal">/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div style={{
-                                width: '100%',
-                                height: '8px',
-                                background: '#F1F5F9',
-                                borderRadius: '9999px',
-                                overflow: 'hidden'
-                            }}>
-                                <div style={{
+                            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div className="h-full rounded-full transition-all duration-300" style={{
                                     width: `${percentage}%`,
-                                    height: '100%',
-                                    background: isNearLimit ? '#F59E0B' : tierInfo.color,
-                                    borderRadius: '9999px',
-                                    transition: 'width 0.3s ease'
+                                    background: isNearLimit ? '#F59E0B' : tierInfo.color
                                 }}></div>
                             </div>
                         </div>
@@ -300,25 +231,20 @@ export default function BillingSection() {
             {/* Upgrade Options */}
             {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && (
                 <>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1rem', color: '#1E293B' }}>Upgrade Your Plan</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginBottom: '2rem' }}>
+                    <h3 className="text-lg font-bold mb-4 text-slate-800">Upgrade Your Plan</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         {Object.entries(TIER_INFO)
                             .filter(([key]) => !['trial', 'enterprise'].includes(key) && key !== currentTier)
                             .map(([key, info]) => (
                                 <div
                                     key={key}
-                                    style={{
-                                        padding: '1.5rem',
-                                        borderRadius: '16px',
-                                        border: `1px solid #E2E8F0`,
-                                        background: '#FFFFFF'
-                                    }}
+                                    className="p-6 rounded-2xl border border-slate-200 bg-white"
                                 >
-                                    <div style={{ marginBottom: '1rem' }}>
-                                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: info.color, marginBottom: '0.25rem' }}>{info.name}</div>
-                                        <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827' }}>{info.price}<span style={{ fontSize: '0.875rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
+                                    <div className="mb-4">
+                                        <div className="text-xl font-extrabold mb-1" style={{ color: info.color }}>{info.name}</div>
+                                        <div className="text-[1.75rem] font-extrabold text-gray-900">{info.price}<span className="text-sm text-slate-500 font-normal">/mo</span></div>
                                     </div>
-                                    <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6' }}>
+                                    <div className="mb-6 text-sm text-slate-500 leading-relaxed">
                                         <div>✓ {info.limits.leads.toLocaleString()} leads</div>
                                         <div>✓ {info.limits.domains} domains</div>
                                         <div>✓ {info.limits.mailboxes} mailboxes</div>
@@ -326,21 +252,12 @@ export default function BillingSection() {
                                     <button
                                         onClick={() => handleUpgrade(key)}
                                         disabled={actionLoading}
+                                        className="btn-hover-scale w-full p-3 text-white border-none rounded-lg text-sm font-bold transition-all duration-200"
                                         style={{
-                                            width: '100%',
-                                            padding: '0.75rem',
                                             background: info.color,
-                                            color: '#FFFFFF',
-                                            border: 'none',
-                                            borderRadius: '8px',
-                                            fontSize: '0.875rem',
-                                            fontWeight: 700,
                                             cursor: actionLoading ? 'not-allowed' : 'pointer',
-                                            opacity: actionLoading ? 0.6 : 1,
-                                            transition: 'all 0.2s'
+                                            opacity: actionLoading ? 0.6 : 1
                                         }}
-                                        onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.transform = 'scale(1.02)')}
-                                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                                     >
                                         {actionLoading ? 'Processing...' : `Upgrade to ${info.name}`}
                                     </button>
@@ -352,24 +269,15 @@ export default function BillingSection() {
 
             {/* Cancel Subscription */}
             {data?.subscription.status === 'active' && (
-                <div style={{ paddingTop: '2rem', borderTop: '1px solid #E2E8F0' }}>
+                <div className="pt-8 border-t border-slate-200">
                     <button
                         onClick={handleCancel}
                         disabled={actionLoading}
+                        className="btn-hover-red py-3 px-6 bg-white text-red-500 border border-red-300 rounded-lg text-sm font-semibold transition-all duration-200"
                         style={{
-                            padding: '0.75rem 1.5rem',
-                            background: '#FFFFFF',
-                            color: '#EF4444',
-                            border: '1px solid #FCA5A5',
-                            borderRadius: '8px',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
                             cursor: actionLoading ? 'not-allowed' : 'pointer',
-                            opacity: actionLoading ? 0.6 : 1,
-                            transition: 'all 0.2s'
+                            opacity: actionLoading ? 0.6 : 1
                         }}
-                        onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.background = '#FEE2E2')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
                     >
                         Cancel Subscription
                     </button>

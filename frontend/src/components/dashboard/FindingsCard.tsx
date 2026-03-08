@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
-
 interface FindingsCardProps {
     entityType: 'mailbox' | 'domain' | 'campaign';
     entityId: string;
@@ -31,7 +30,7 @@ export default function FindingsCard({ entityType, entityId }: FindingsCardProps
                     entity_id: entityId
                 });
 
-                const data = await apiClient<any>(`/api/findings/entity?${params}`);
+                const data = await apiClient<{ findings: Finding[]; reportAge?: string }>(`/api/findings/entity?${params}`);
                 // apiClient already unwraps { success: true, data: X } -> X
                 // so 'data' here is { findings: [...], reportAge: '...' }
                 setFindings(data?.findings || []);

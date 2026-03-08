@@ -78,7 +78,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const data = await apiClient<any>('/api/auth/login', {
+            const data = await apiClient<{ token?: string }>('/api/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
             });

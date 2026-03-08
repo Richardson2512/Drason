@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Settings, RefreshCw } from 'lucide-react';
 import { apiClient } from '@/lib/api';
+import type { SyncResponse } from '@/types/api';
 
 export default function MailboxesEmptyState() {
     const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ export default function MailboxesEmptyState() {
         setLoading(true);
         setMsg('');
         try {
-            const data = await apiClient<any>('/api/sync', { method: 'POST', timeout: 120_000 });
+            const data = await apiClient<SyncResponse>('/api/sync', { method: 'POST', timeout: 120_000 });
             setMsg(`Success! Synced ${data.mailboxes_synced} mailboxes. Refreshing...`);
             setTimeout(() => window.location.reload(), 1500);
         } catch (error: any) {

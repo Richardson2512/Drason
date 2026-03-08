@@ -43,7 +43,7 @@ export default function BatchRecommendationsModal({ isOpen, onClose, leadIds, le
         setError(null);
         setReports([]);
 
-        apiClient<any>('/api/dashboard/leads/campaign-recommendations', {
+        apiClient<{ success: boolean; reports: LeadReport[] }>('/api/dashboard/leads/campaign-recommendations', {
             method: 'POST',
             body: JSON.stringify({
                 leadIds,
@@ -62,12 +62,12 @@ export default function BatchRecommendationsModal({ isOpen, onClose, leadIds, le
     if (!isOpen) return null;
 
     return (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }} role="dialog" aria-modal="true" aria-labelledby="batch-recommendations-modal-title">
             <div style={{ background: '#FFFFFF', borderRadius: '24px', maxWidth: '700px', width: '90%', maxHeight: '80vh', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
                 {/* Header */}
                 <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #F3F4F6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
-                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Campaign Recommendations</h2>
+                        <h2 id="batch-recommendations-modal-title" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Campaign Recommendations</h2>
                         <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Best-matched campaigns for {leadIds.length} selected leads</p>
                     </div>
                     <button

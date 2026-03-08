@@ -2,26 +2,12 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
-
-interface Campaign {
-    id: string;
-    name: string;
-    status: string;
-    source_platform: string;
-}
-
-interface RoutingRule {
-    id: string;
-    persona: string;
-    min_score: number;
-    target_campaign_id: string;
-    priority: number;
-    campaign?: Campaign;
-}
+import type { CampaignSummary, RoutingRule } from '@/types/api';
+import { useCampaignList } from '@/hooks/useCampaignList';
 
 export default function Configuration() {
     const [rules, setRules] = useState<RoutingRule[]>([]);
-    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const { campaigns } = useCampaignList();
     const [formData, setFormData] = useState({
         persona: '',
         min_score: 0,
@@ -32,39 +18,29 @@ export default function Configuration() {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const fetchRules = () => {
-        apiClient<any>('/api/dashboard/routing-rules')
-            .then(data => setRules(Array.isArray(data) ? data : (data?.data || [])))
+        apiClient<RoutingRule[] | { data: RoutingRule[] }>('/api/dashboard/routing-rules')
+            .then(data => setRules(Array.isArray(data) ? data : (data as { data: RoutingRule[] })?.data ?? []))
             .catch(() => setRules([]));
-    };
-
-    const fetchCampaigns = () => {
-        apiClient<any>('/api/dashboard/campaigns?limit=1000')
-            .then(data => {
-                const campaignList = Array.isArray(data) ? data : (data?.data || []);
-                setCampaigns(campaignList);
-            })
-            .catch(() => setCampaigns([]));
     };
 
     useEffect(() => {
         fetchRules();
-        fetchCampaigns();
     }, []);
 
     // Build a campaign lookup map for the rules list
-    const campaignMap = new Map<string, Campaign>();
+    const campaignMap = new Map<string, CampaignSummary>();
     campaigns.forEach(c => campaignMap.set(c.id, c));
 
     // Filter campaigns based on search input
     const filteredCampaigns = campaigns.filter(c => {
         const term = campaignSearch.toLowerCase();
         return c.name.toLowerCase().includes(term) ||
-            c.source_platform.toLowerCase().includes(term) ||
+            (c.source_platform || '').toLowerCase().includes(term) ||
             c.id.toLowerCase().includes(term);
     });
 
     // Group filtered campaigns by platform
-    const groupedCampaigns = filteredCampaigns.reduce<Record<string, Campaign[]>>((acc, c) => {
+    const groupedCampaigns = filteredCampaigns.reduce<Record<string, CampaignSummary[]>>((acc, c) => {
         const platform = c.source_platform || 'unknown';
         if (!acc[platform]) acc[platform] = [];
         acc[platform].push(c);
@@ -76,7 +52,7 @@ export default function Configuration() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.target_campaign_id) return;
-        await apiClient<any>('/api/dashboard/routing-rules', {
+        await apiClient<{ success: boolean }>('/api/dashboard/routing-rules', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
@@ -87,19 +63,19 @@ export default function Configuration() {
     };
 
     return (
-        <div style={{ height: 'calc(100vh - 4rem)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div className="h-[calc(100vh-4rem)] overflow-hidden flex flex-col">
             <div className="page-header">
-                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>Routing Configuration</h1>
-                <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Route leads to campaigns across platforms</div>
+                <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">Routing Configuration</h1>
+                <div className="text-gray-500 text-lg">Route leads to campaigns across platforms</div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8" style={{ flex: 1, minHeight: 0 }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-0">
                 {/* Form */}
                 <div className="premium-card">
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1E293B' }}>Add New Rule</h2>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                    <h2 className="text-xl font-bold mb-6 text-slate-800">Add New Rule</h2>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
+                            <label className="block mb-2 text-sm font-semibold text-gray-700">
                                 ICP Persona
                             </label>
                             <input
@@ -109,13 +85,12 @@ export default function Configuration() {
                                 onChange={e => setFormData({ ...formData, persona: e.target.value })}
                                 placeholder="e.g. CEO, Founder, Marketing Director"
                                 required
-                                style={{ width: '100%' }}
                             />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
+                                <label className="block mb-2 text-sm font-semibold text-gray-700">
                                     Min Score
                                 </label>
                                 <input
@@ -125,11 +100,10 @@ export default function Configuration() {
                                     onChange={e => setFormData({ ...formData, min_score: parseInt(e.target.value) })}
                                     placeholder="0-100"
                                     required
-                                    style={{ width: '100%' }}
                                 />
                             </div>
                             <div>
-                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
+                                <label className="block mb-2 text-sm font-semibold text-gray-700">
                                     Priority
                                 </label>
                                 <input
@@ -139,14 +113,13 @@ export default function Configuration() {
                                     onChange={e => setFormData({ ...formData, priority: parseInt(e.target.value) })}
                                     placeholder="Order"
                                     required
-                                    style={{ width: '100%' }}
                                 />
                             </div>
                         </div>
 
                         {/* Campaign Selector with Platform Badges */}
-                        <div style={{ position: 'relative' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600, color: '#374151' }}>
+                        <div className="relative">
+                            <label className="block mb-2 text-sm font-semibold text-gray-700">
                                 Target Campaign
                             </label>
 
@@ -154,24 +127,11 @@ export default function Configuration() {
                             {selectedCampaign && !showDropdown ? (
                                 <div
                                     onClick={() => setShowDropdown(true)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.625rem 0.875rem',
-                                        borderRadius: '10px',
-                                        border: '1px solid #E2E8F0',
-                                        background: '#FFFFFF',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        gap: '0.5rem',
-                                        transition: 'border-color 0.2s',
-                                    }}
-                                    className="hover:border-blue-300"
+                                    className="w-full px-3.5 py-2.5 rounded-[10px] border border-slate-200 bg-white cursor-pointer flex items-center justify-between gap-2 transition-colors hover:border-blue-300"
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
-                                        <PlatformBadge platform={selectedCampaign.source_platform} />
-                                        <span style={{ fontSize: '0.875rem', color: '#1E293B', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <PlatformBadge platform={selectedCampaign.source_platform || 'unknown'} />
+                                        <span className="text-sm text-slate-800 font-medium truncate">
                                             {selectedCampaign.name}
                                         </span>
                                     </div>
@@ -190,7 +150,6 @@ export default function Configuration() {
                                     }}
                                     onFocus={() => setShowDropdown(true)}
                                     placeholder="Search campaigns by name or platform..."
-                                    style={{ width: '100%' }}
                                 />
                             )}
 
@@ -199,45 +158,22 @@ export default function Configuration() {
                                 <>
                                     {/* Backdrop to close dropdown */}
                                     <div
-                                        style={{ position: 'fixed', inset: 0, zIndex: 40 }}
+                                        className="fixed inset-0 z-40"
                                         onClick={() => setShowDropdown(false)}
                                     />
 
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: '100%',
-                                        left: 0,
-                                        right: 0,
-                                        marginTop: '4px',
-                                        background: '#FFFFFF',
-                                        borderRadius: '12px',
-                                        border: '1px solid #E2E8F0',
-                                        boxShadow: '0 10px 25px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05)',
-                                        maxHeight: '280px',
-                                        overflowY: 'auto',
-                                        zIndex: 50,
-                                    }}>
+                                    <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-200 shadow-lg max-h-[280px] overflow-y-auto z-50">
                                         {Object.keys(groupedCampaigns).length === 0 ? (
-                                            <div style={{ padding: '1.5rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.875rem' }}>
+                                            <div className="p-6 text-center text-gray-400 text-sm">
                                                 {campaigns.length === 0 ? 'No campaigns synced yet' : 'No campaigns match your search'}
                                             </div>
                                         ) : (
                                             Object.entries(groupedCampaigns).map(([platform, platformCampaigns]) => (
                                                 <div key={platform}>
                                                     {/* Platform group header */}
-                                                    <div style={{
-                                                        padding: '0.5rem 0.875rem',
-                                                        background: '#F8FAFC',
-                                                        borderBottom: '1px solid #F1F5F9',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.5rem',
-                                                        position: 'sticky',
-                                                        top: 0,
-                                                        zIndex: 1,
-                                                    }}>
+                                                    <div className="px-3.5 py-2 bg-slate-50 border-b border-slate-100 flex items-center gap-2 sticky top-0 z-[1]">
                                                         <PlatformBadge platform={platform} />
-                                                        <span style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 500 }}>
+                                                        <span className="text-[0.7rem] text-slate-400 font-medium">
                                                             {platformCampaigns.length} campaign{platformCampaigns.length !== 1 ? 's' : ''}
                                                         </span>
                                                     </div>
@@ -251,34 +187,19 @@ export default function Configuration() {
                                                                 setCampaignSearch('');
                                                                 setShowDropdown(false);
                                                             }}
-                                                            style={{
-                                                                padding: '0.625rem 0.875rem',
-                                                                cursor: 'pointer',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'space-between',
-                                                                gap: '0.5rem',
-                                                                borderBottom: '1px solid #F8FAFC',
-                                                                transition: 'background 0.15s',
-                                                            }}
-                                                            className="hover:bg-blue-50"
+                                                            className="px-3.5 py-2.5 cursor-pointer flex items-center justify-between gap-2 border-b border-slate-50 transition-colors hover:bg-blue-50"
                                                         >
-                                                            <div style={{ minWidth: 0 }}>
-                                                                <div style={{ fontSize: '0.875rem', fontWeight: 500, color: '#1E293B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                            <div className="min-w-0">
+                                                                <div className="text-sm font-medium text-slate-800 truncate">
                                                                     {campaign.name}
                                                                 </div>
-                                                                <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontFamily: 'monospace' }}>
+                                                                <div className="text-[0.7rem] text-slate-400 font-mono">
                                                                     {campaign.id.substring(0, 12)}...
                                                                 </div>
                                                             </div>
-                                                            <span style={{
-                                                                fontSize: '0.7rem',
-                                                                padding: '2px 6px',
-                                                                borderRadius: '4px',
-                                                                fontWeight: 600,
+                                                            <span className="text-[0.7rem] px-1.5 py-0.5 rounded font-semibold shrink-0" style={{
                                                                 background: campaign.status === 'active' ? '#ECFDF5' : campaign.status === 'paused' ? '#FEF2F2' : campaign.status === 'completed' ? '#FFF7ED' : '#FEF3C7',
                                                                 color: campaign.status === 'active' ? '#059669' : campaign.status === 'paused' ? '#DC2626' : campaign.status === 'completed' ? '#C2410C' : '#D97706',
-                                                                flexShrink: 0,
                                                             }}>
                                                                 {campaign.status}
                                                             </span>
@@ -294,8 +215,7 @@ export default function Configuration() {
 
                         <button
                             type="submit"
-                            className="premium-btn"
-                            style={{ marginTop: '1rem', width: '100%' }}
+                            className="premium-btn mt-4 w-full"
                             disabled={!formData.target_campaign_id}
                         >
                             Create Rule
@@ -304,61 +224,41 @@ export default function Configuration() {
                 </div>
 
                 {/* Active Rules List */}
-                <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1E293B', flexShrink: 0 }}>Active Rules</h2>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
+                <div className="premium-card flex flex-col h-full overflow-hidden">
+                    <h2 className="text-xl font-bold mb-6 text-slate-800 shrink-0">Active Rules</h2>
+                    <div className="flex flex-col gap-3 overflow-y-auto flex-1 pr-2">
                         {rules.map((rule) => {
                             const campaign = campaignMap.get(rule.target_campaign_id);
                             return (
-                                <div key={rule.id} style={{
-                                    padding: '1.25rem',
-                                    background: '#FFFFFF',
-                                    borderRadius: '12px',
-                                    border: '1px solid #F1F5F9',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    flexShrink: 0,
-                                    transition: 'all 0.2s',
-                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-                                }} className="hover:shadow-md hover:border-blue-100">
-                                    <div style={{ minWidth: 0, flex: 1 }}>
-                                        <div style={{ fontWeight: 600, color: '#1E293B', marginBottom: '0.375rem' }}>{rule.persona}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                            <span style={{ fontWeight: 500, color: '#2563EB', background: '#EFF6FF', padding: '2px 8px', borderRadius: '4px' }}>
+                                <div key={rule.id} className="p-5 bg-white rounded-xl border border-slate-100 flex justify-between items-center shrink-0 transition-all duration-200 shadow-sm hover:shadow-md hover:border-blue-100">
+                                    <div className="min-w-0 flex-1">
+                                        <div className="font-semibold text-slate-800 mb-1.5">{rule.persona}</div>
+                                        <div className="text-[0.8rem] text-slate-500 flex items-center gap-2 flex-wrap">
+                                            <span className="font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
                                                 Min Score: {rule.min_score}
                                             </span>
                                             <span>&rarr;</span>
                                             {campaign ? (
-                                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
-                                                    <PlatformBadge platform={campaign.source_platform} />
-                                                    <span style={{ fontWeight: 500, color: '#374151', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                                                <span className="inline-flex items-center gap-1.5">
+                                                    <PlatformBadge platform={campaign.source_platform || 'unknown'} />
+                                                    <span className="font-medium text-gray-700 truncate max-w-[200px]">
                                                         {campaign.name}
                                                     </span>
                                                 </span>
                                             ) : (
-                                                <span style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#94A3B8' }}>
+                                                <span className="font-mono text-xs text-slate-400">
                                                     {rule.target_campaign_id.substring(0, 16)}...
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div style={{
-                                        background: '#F3F4F6',
-                                        color: '#4B5563',
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: '700',
-                                        textTransform: 'uppercase',
-                                        flexShrink: 0,
-                                    }}>
+                                    <div className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase shrink-0">
                                         Pri: {rule.priority}
                                     </div>
                                 </div>
                             );
                         })}
-                        {rules.length === 0 && <div style={{ color: '#9CA3AF', textAlign: 'center', padding: '3rem', fontStyle: 'italic', border: '1px dashed #E2E8F0', borderRadius: '12px' }}>No rules defined.</div>}
+                        {rules.length === 0 && <div className="text-gray-400 text-center p-12 italic border border-dashed border-slate-200 rounded-xl">No rules defined.</div>}
                     </div>
                 </div>
             </div>

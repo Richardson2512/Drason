@@ -286,6 +286,7 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        aria-label="Close help panel"
                     >
                         <X size={20} className="text-gray-500" />
                     </button>
@@ -422,6 +423,7 @@ export function HelpPanelTrigger({ onClick }: { onClick: () => void }) {
                 group
             "
             title="Open Help Center"
+            aria-label="Open help center"
         >
             <BookOpen size={24} className="group-hover:scale-110 transition-transform" />
         </button>

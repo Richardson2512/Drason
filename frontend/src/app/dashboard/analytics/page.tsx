@@ -2,22 +2,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { apiClient } from '@/lib/api';
-
-interface DailyData {
-    date: string;
-    campaign_id: string | null;
-    sent_count: number;
-    open_count: number;
-    click_count: number;
-    reply_count: number;
-    bounce_count: number;
-    unsubscribe_count: number;
-}
-
-interface Campaign {
-    id: string;
-    name: string;
-}
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import type { DailyData } from '@/types/api';
+import { useCampaignList } from '@/hooks/useCampaignList';
 
 function formatShortDate(dateStr: string): string {
     const d = new Date(dateStr);
@@ -36,21 +23,12 @@ function getDefaultDates() {
 
 export default function AnalyticsPage() {
     const defaults = getDefaultDates();
-    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const { campaigns } = useCampaignList();
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>('');
     const [startDate, setStartDate] = useState(defaults.startDate);
     const [endDate, setEndDate] = useState(defaults.endDate);
     const [data, setData] = useState<DailyData[]>([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        apiClient<any>('/api/dashboard/campaigns?limit=1000')
-            .then(res => {
-                const list = res?.data || res || [];
-                setCampaigns(Array.isArray(list) ? list : []);
-            })
-            .catch(err => console.error('[Analytics] Failed to fetch campaigns', err));
-    }, []);
 
     const fetchAnalytics = useCallback(async () => {
         if (!selectedCampaignId) return;
@@ -93,17 +71,17 @@ export default function AnalyticsPage() {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className="flex flex-col gap-6">
             {/* Page Header */}
             <div>
-                <h1 style={{ fontSize: '2.25rem', fontWeight: 700, color: '#111827', letterSpacing: '-0.025em' }}>Analytics</h1>
-                <p style={{ fontSize: '1.125rem', color: '#6B7280', marginTop: '0.25rem' }}>Campaign performance trends</p>
+                <h1 className="text-[2.25rem] font-bold text-gray-900 tracking-tight">Analytics</h1>
+                <p className="text-lg text-gray-500 mt-1">Campaign performance trends</p>
             </div>
 
             {/* Filters */}
-            <div className="premium-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Campaign</label>
+            <div className="premium-card flex items-center gap-4 flex-wrap">
+                <div className="flex-1 min-w-[200px]">
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Campaign</label>
                     <select
                         value={selectedCampaignId}
                         onChange={(e) => setSelectedCampaignId(e.target.value)}
@@ -116,11 +94,11 @@ export default function AnalyticsPage() {
                     </select>
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Start Date</label>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Start Date</label>
                     <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={inputStyle} />
                 </div>
                 <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>End Date</label>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">End Date</label>
                     <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={inputStyle} />
                 </div>
             </div>
@@ -128,19 +106,17 @@ export default function AnalyticsPage() {
             {/* Main Chart */}
             <div className="premium-card">
                 {!selectedCampaignId ? (
-                    <div style={{ height: '360px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '1rem' }}>
+                    <div className="h-[360px] flex items-center justify-center text-gray-400 text-base">
                         Select a campaign to view analytics
                     </div>
                 ) : loading ? (
-                    <div style={{ height: '360px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B7280' }}>
-                        Loading analytics...
-                    </div>
+                    <LoadingSkeleton type="chart" />
                 ) : data.length === 0 ? (
-                    <div style={{ height: '360px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontStyle: 'italic' }}>
+                    <div className="h-[360px] flex items-center justify-center text-gray-400 italic">
                         No data available for this period
                     </div>
                 ) : (
-                    <div style={{ height: '360px' }}>
+                    <div className="h-[360px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                                 <defs>
@@ -200,35 +176,35 @@ export default function AnalyticsPage() {
             {/* Summary Stats */}
             {selectedCampaignId && data.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div style={{ padding: '1.25rem', background: '#F9FAFB', borderRadius: '16px', border: '1px solid #E5E7EB' }}>
-                        <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-5 bg-gray-50 rounded-2xl border border-gray-200">
+                        <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">
                             Total Sent
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                        <div className="text-[1.75rem] font-bold text-gray-900">
                             {totalSent.toLocaleString()}
                         </div>
                     </div>
-                    <div style={{ padding: '1.25rem', background: '#EFF6FF', borderRadius: '16px', border: '1px solid #BFDBFE' }}>
-                        <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-5 bg-blue-50 rounded-2xl border border-blue-200">
+                        <div className="text-blue-800 text-xs font-semibold uppercase tracking-wide mb-2">
                             Avg Open Rate
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                        <div className="text-[1.75rem] font-bold text-blue-900">
                             {avgOpenRate}%
                         </div>
                     </div>
-                    <div style={{ padding: '1.25rem', background: '#F0FDF4', borderRadius: '16px', border: '1px solid #BBF7D0' }}>
-                        <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-5 bg-green-50 rounded-2xl border border-green-200">
+                        <div className="text-green-800 text-xs font-semibold uppercase tracking-wide mb-2">
                             Avg Reply Rate
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                        <div className="text-[1.75rem] font-bold text-green-700">
                             {avgReplyRate}%
                         </div>
                     </div>
-                    <div style={{ padding: '1.25rem', background: '#FEF2F2', borderRadius: '16px', border: '1px solid #FECACA' }}>
-                        <div style={{ color: '#991B1B', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-5 bg-red-50 rounded-2xl border border-red-200">
+                        <div className="text-red-800 text-xs font-semibold uppercase tracking-wide mb-2">
                             Total Bounces
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#DC2626' }}>
+                        <div className="text-[1.75rem] font-bold text-red-600">
                             {totalBounces.toLocaleString()}
                         </div>
                     </div>

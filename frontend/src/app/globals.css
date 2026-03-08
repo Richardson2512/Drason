@@ -415,3 +415,319 @@ body {
   animation: col-train 12s ease-in-out infinite;
   will-change: transform;
 }
+
+/* ============================================================================
+   DASHBOARD TABLE STYLES
+   Eliminates repeated inline styles across campaigns, leads, mailboxes,
+   audit, and status pages.
+   ============================================================================ */
+
+.tbl-header {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #E2E8F0;
+  color: #64748B;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #F8FAFC;
+}
+
+.tbl-cell {
+  padding: 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.tbl-row {
+  transition: background 0.1s;
+}
+.tbl-row:hover {
+  background: #F8FAFC;
+}
+
+/* ============================================================================
+   STATUS BADGES
+   Replaces inline style objects returned by getStatusColors + manual padding.
+   Use with data-status attribute:  <span class="status-badge" data-status="healthy">
+   ============================================================================ */
+
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* ============================================================================
+   FORM CONTROLS — search inputs, selects, filter buttons
+   ============================================================================ */
+
+.dash-input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #FFFFFF;
+}
+.dash-input:focus {
+  border-color: #3B82F6;
+}
+
+.dash-select {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+  background: white;
+}
+.dash-select:focus {
+  border-color: #3B82F6;
+}
+
+/* ============================================================================
+   HOVER BUTTON VARIANTS
+   Replaces inline onMouseEnter/onMouseLeave handlers.
+   ============================================================================ */
+
+.btn-hover-blue {
+  transition: all 0.2s;
+}
+.btn-hover-blue:hover {
+  background: #EFF6FF !important;
+  text-decoration: underline;
+}
+
+.btn-hover-red {
+  transition: all 0.2s;
+}
+.btn-hover-red:hover {
+  background: #FEE2E2 !important;
+}
+
+.btn-hover-scale {
+  transition: transform 0.2s;
+}
+.btn-hover-scale:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.profile-card-hover {
+  transition: all 0.3s;
+}
+.profile-card-hover:hover {
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+  border-color: #93C5FD;
+}
+
+.banner-link-hover {
+  transition: color 0.2s;
+}
+.banner-link-hover:hover {
+  color: #451A03 !important;
+}
+
+.banner-dismiss-hover {
+  transition: all 0.2s;
+}
+.banner-dismiss-hover:hover {
+  background: #FDE047;
+}
+
+.btn-hover-lift {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-hover-lift:hover {
+  transform: translateY(-1px);
+}
+
+.btn-hover-lift-blue:hover {
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.btn-hover-lift-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.help-link-hover {
+  transition: all 0.2s;
+}
+.help-link-hover:hover {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+.btn-hover-lift-g2 {
+  transition: all 0.2s;
+}
+.btn-hover-lift-g2:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 8px -1px rgba(255, 73, 44, 0.3);
+}
+
+.btn-hover-lift-sm {
+  transition: transform 0.2s;
+}
+.btn-hover-lift-sm:hover {
+  transform: translateY(-1px);
+}
+
+.profile-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #D1D5DB;
+  outline: none;
+  transition: all 0.2s;
+  background: #FAFBFC;
+  color: #111827;
+  font-family: inherit;
+}
+.profile-input:focus {
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.profile-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.stat-badge-hover { background: white; padding: 0.75rem; border-radius: 10px; border: 1px solid #E2E8F0; transition: all 0.2s; cursor: default; }
+.stat-badge-hover:hover { border-color: #BFDBFE; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+
+.btn-hover-ghost { transition: all 0.2s; }
+.btn-hover-ghost:hover { border-color: #CBD5E1; background: #F8FAFC; }
+
+/* ============================================================================
+   SORT/FILTER MODAL OVERLAY
+   Shared across campaigns, leads, mailboxes pages.
+   ============================================================================ */
+
+.filter-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(4px);
+}
+
+.filter-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 480px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.filter-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.filter-range {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.filter-range input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  outline: none;
+}
+.filter-range input:focus {
+  border-color: #3B82F6;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.filter-btn-apply {
+  flex: 1;
+  padding: 0.75rem;
+  background: #111827;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.filter-btn-apply:hover {
+  background: #1F2937;
+}
+
+.filter-btn-clear {
+  padding: 0.75rem 1.25rem;
+  background: #F3F4F6;
+  color: #374151;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.filter-btn-clear:hover {
+  background: #E5E7EB;
+}
+
+/* ============================================================================
+   CLICKABLE STAT CARDS — hover lift + border highlight
+   ============================================================================ */
+
+.stat-card-clickable {
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.stat-card-clickable:hover {
+  border-color: #BFDBFE;
+  transform: translateY(-2px);
+}
+.stat-card-clickable[data-variant="green"]:hover {
+  border-color: #BBF7D0;
+}
+.stat-card-clickable[data-variant="red"]:hover {
+  border-color: #FECACA;
+}

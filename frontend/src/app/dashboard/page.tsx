@@ -6,22 +6,17 @@ import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 import LeadHealthChart from '@/components/dashboard/LeadHealthChart';
 import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
 import SemiCircleGauge from '@/components/dashboard/SemiCircleGauge';
-
-interface DashboardStats { active: number; held: number; paused: number }
-interface DomainSummary { id: string; domain: string; status: string; paused_reason?: string }
-interface MailboxSummary { id: string; email: string; status: string; paused_reason?: string }
-interface CampaignSummary { id: string; name: string; status: string }
-interface ChartEntry { name: string; count: number }
-interface OrgFinding { category: string; severity: string; title: string; details: string; entity?: string; entityName?: string }
+import { useDashboard } from '@/contexts/DashboardContext';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import type { DashboardStats, DomainSummary, MailboxSummary, CampaignSummary, ChartEntry, OrgFinding } from '@/types/api';
 
 export default function Overview() {
+  const { user, subscription } = useDashboard();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [leads, setLeads] = useState<Record<string, unknown>[]>([]);
   const [domains, setDomains] = useState<DomainSummary[]>([]);
   const [mailboxes, setMailboxes] = useState<MailboxSummary[]>([]);
   const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
-  const [userName, setUserName] = useState<string>('');
-  const [subscription, setSubscription] = useState<{ subscription_status?: string; trial_ends_at?: string } | null>(null);
 
   // Chart Data State
   const [campaignData, setCampaignData] = useState<ChartEntry[]>([]);
@@ -40,7 +35,7 @@ export default function Overview() {
         body: JSON.stringify({ domainId })
       });
       // Refresh domains
-      const domainsData = await apiClient<any>('/api/dashboard/domains');
+      const domainsData = await apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains');
       setDomains(domainsData?.data || []);
       toast.success('Domain resumed successfully!');
     } catch (err: any) {
@@ -59,7 +54,7 @@ export default function Overview() {
         body: JSON.stringify({ mailboxId })
       });
       // Refresh mailboxes
-      const mailboxesData = await apiClient<any>('/api/dashboard/mailboxes');
+      const mailboxesData = await apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes');
       setMailboxes(mailboxesData?.data || []);
       toast.success('Mailbox resumed successfully!');
     } catch (err: any) {
@@ -71,27 +66,14 @@ export default function Overview() {
   };
 
   useEffect(() => {
-    // Fetch user info for welcome message
-    apiClient<any>('/api/user/me').then((response) => {
-      const user = response.data || response;
-      if (user?.name) setUserName(user.name);
-    }).catch(err => console.error('[Overview] Failed to fetch user info', err));
-
-    // Fetch subscription data
-    apiClient<any>('/api/billing/subscription').then((data) => {
-      if (data?.success && data.data) {
-        setSubscription(data.data);
-      }
-    }).catch(err => console.error('[Overview] Failed to fetch subscription data', err));
-
     // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
     Promise.all([
-      apiClient<any>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 }; }),
-      apiClient<any>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { leads: [], meta: {} }; }),
-      apiClient<any>('/api/dashboard/domains').catch((e) => { console.error('Domains fetch failed:', e); return { domains: [], meta: {} }; }),
-      apiClient<any>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { mailboxes: [], meta: {} }; }),
-      apiClient<any>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { campaigns: [], meta: {} }; }),
-      apiClient<any>('/api/findings').catch(() => ({ findings: [] }))
+      apiClient<DashboardStats>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 } as DashboardStats; }),
+      apiClient<{ data: Record<string, unknown>[] }>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains').catch((e) => { console.error('Domains fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes').catch((e) => { console.error('Mailboxes fetch failed:', e); return { data: [] }; }),
+      apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns').catch((e) => { console.error('Campaigns fetch failed:', e); return { data: [] }; }),
+      apiClient<{ findings: OrgFinding[] }>('/api/findings').catch(() => ({ findings: [] }))
     ]).then(([statsData, leadsData, domainsData, mailboxesData, campaignsData, findingsData]) => {
       setStats(statsData); // statsData is { active: ..., ... } (unwrapped by apiClient)
       setLeads(leadsData?.data || []);      // { data: [], meta: {} }
@@ -102,9 +84,9 @@ export default function Overview() {
       // Process Campaigns Distribution — map IDs to readable names
       const cmap: Record<string, number> = {};
       const campaignsList = campaignsData?.data || [];
-      const cNameMap = new Map(campaignsList.map((c: any) => [c.id, c.name || c.id]));
-      (leadsData?.data || []).forEach((l: any) => {
-        const cid = l.assigned_campaign_id || 'Unassigned';
+      const cNameMap = new Map(campaignsList.map((c: CampaignSummary) => [c.id, c.name || c.id]));
+      (leadsData?.data || []).forEach((l: Record<string, any>) => {
+        const cid = (l.assigned_campaign_id || 'Unassigned') as string;
         const displayName = cNameMap.get(cid) || cid;
         cmap[displayName] = (cmap[displayName] || 0) + 1;
       });
@@ -122,10 +104,10 @@ export default function Overview() {
   useEffect(() => {
     const handler = () => {
       Promise.all([
-        apiClient<any>('/api/dashboard/stats').catch(() => null),
-        apiClient<any>('/api/dashboard/domains').catch(() => null),
-        apiClient<any>('/api/dashboard/mailboxes').catch(() => null),
-        apiClient<any>('/api/dashboard/campaigns').catch(() => null),
+        apiClient<DashboardStats>('/api/dashboard/stats').catch(() => null),
+        apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains').catch(() => null),
+        apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes').catch(() => null),
+        apiClient<{ data: CampaignSummary[] }>('/api/dashboard/campaigns').catch(() => null),
       ]).then(([statsData, domainsData, mailboxesData, campaignsData]) => {
         if (statsData) setStats(statsData);
         if (domainsData?.data) setDomains(domainsData.data);
@@ -137,21 +119,16 @@ export default function Overview() {
     return () => window.removeEventListener('assessment-complete', handler);
   }, []);
 
-  if (error) return <div style={{ padding: '2rem', color: '#EF4444' }}>Error: {error}</div>;
-  if (!stats) return <div style={{ padding: '2rem' }}>Loading Control Plane...</div>;
+  if (error) return <div className="p-8 text-red-500">Error: {error}</div>;
+  if (!stats) return <div className="p-8"><LoadingSkeleton type="stat" rows={4} /></div>;
 
-  // Calculate trial days remaining
-  const calculateDaysRemaining = () => {
-    if (!subscription?.trial_ends_at) return null;
-    const now = new Date();
-    const trialEnd = new Date(subscription.trial_ends_at);
-    const diffTime = trialEnd.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 0;
-  };
-
-  const daysRemaining = calculateDaysRemaining();
-  const isTrialing = subscription?.subscription_status === 'trialing';
+  // Calculate trial days remaining from context subscription
+  const daysRemaining = (() => {
+    if (!subscription?.trialEndsAt) return null;
+    const diff = new Date(subscription.trialEndsAt).getTime() - Date.now();
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  })();
+  const isTrialing = subscription?.status === 'trialing';
 
   // Domain and Mailbox alerts
   const pausedDomains = domains.filter(d => d.status === 'paused');
@@ -197,23 +174,18 @@ export default function Overview() {
   }
 
   return (
-    <div className="grid gap-6" style={{ paddingBottom: '2rem' }}>
+    <div className="grid gap-6 pb-8">
       {/* Welcome Section */}
-      <div style={{ paddingBottom: '0.25rem' }}>
-        <h2 style={{
-          fontSize: '1.1rem',
-          fontWeight: '600',
-          color: '#4F46E5',
-          marginBottom: '0.125rem'
-        }}>
-          Welcome back, {userName || 'User'} 👋
+      <div className="pb-1">
+        <h2 className="text-[1.1rem] font-semibold text-indigo-600 mb-[0.125rem]">
+          Welcome back, {user?.name?.split(' ')[0] || 'User'} 👋
         </h2>
-        <p style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>
+        <p className="text-[0.8rem] text-gray-400">
           Here's your system overview and health status.
         </p>
       </div>
 
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className="page-header flex justify-between items-start">
         <div>
           <h1 className="page-title">System Overview</h1>
           <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
@@ -221,38 +193,29 @@ export default function Overview() {
 
         {/* Trial Countdown */}
         {isTrialing && daysRemaining !== null && (
-          <div style={{
-            padding: '1rem 1.5rem',
-            background: daysRemaining <= 3 ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)' : 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%)',
-            border: `2px solid ${daysRemaining <= 3 ? '#F59E0B' : '#3B82F6'}`,
-            borderRadius: '12px',
-            minWidth: '200px',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              color: daysRemaining <= 3 ? '#92400E' : '#1E40AF',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              marginBottom: '0.25rem'
-            }}>
+          <div
+            className="px-6 py-4 rounded-xl min-w-[200px] text-center"
+            style={{
+              background: daysRemaining <= 3 ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)' : 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%)',
+              border: `2px solid ${daysRemaining <= 3 ? '#F59E0B' : '#3B82F6'}`,
+            }}
+          >
+            <div
+              className="text-xs font-bold uppercase tracking-wide mb-1"
+              style={{ color: daysRemaining <= 3 ? '#92400E' : '#1E40AF' }}
+            >
               Trial Period
             </div>
-            <div style={{
-              fontSize: '1.75rem',
-              fontWeight: 800,
-              color: daysRemaining <= 3 ? '#B45309' : '#1D4ED8',
-              lineHeight: 1.2,
-              marginBottom: '0.25rem'
-            }}>
+            <div
+              className="text-[1.75rem] font-extrabold leading-tight mb-1"
+              style={{ color: daysRemaining <= 3 ? '#B45309' : '#1D4ED8' }}
+            >
               {daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'}
             </div>
-            <div style={{
-              fontSize: '0.7rem',
-              color: daysRemaining <= 3 ? '#78350F' : '#1E40AF',
-              fontWeight: 600
-            }}>
+            <div
+              className="text-[0.7rem] font-semibold"
+              style={{ color: daysRemaining <= 3 ? '#78350F' : '#1E40AF' }}
+            >
               {daysRemaining <= 3 ? '⚠️ Ending Soon' : 'Remaining'}
             </div>
           </div>
@@ -261,47 +224,37 @@ export default function Overview() {
 
       {/* Infrastructure Stat Boxes */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+        <div className="premium-card p-5 text-center">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
             Mailboxes
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563EB', lineHeight: 1.2 }}>
+          <div className="text-[2rem] font-extrabold text-blue-600 leading-tight">
             {mailboxes.length}
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+          <div className="text-[0.7rem] text-gray-400 mt-1">
             {mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length} healthy
           </div>
         </div>
-        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+        <div className="premium-card p-5 text-center">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
             Leads
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#7C3AED', lineHeight: 1.2 }}>
+          <div className="text-[2rem] font-extrabold text-violet-600 leading-tight">
             {stats.active + stats.held + stats.paused}
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+          <div className="text-[0.7rem] text-gray-400 mt-1">
             {stats.active} active
           </div>
         </div>
-        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center', position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div className="premium-card p-5 text-center relative">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
               Campaigns
             </span>
             <select
               value={campaignStatusFilter}
               onChange={(e) => setCampaignStatusFilter(e.target.value)}
-              style={{
-                fontSize: '0.65rem',
-                padding: '0.125rem 0.375rem',
-                borderRadius: '6px',
-                border: '1px solid #E5E7EB',
-                background: '#F9FAFB',
-                color: '#374151',
-                fontWeight: 600,
-                cursor: 'pointer',
-                outline: 'none',
-              }}
+              className="text-[0.65rem] px-1.5 py-0.5 rounded-md border border-gray-200 bg-gray-50 text-gray-700 font-semibold cursor-pointer outline-none"
             >
               <option value="all">All</option>
               <option value="active">Active</option>
@@ -309,81 +262,54 @@ export default function Overview() {
               <option value="completed">Completed</option>
             </select>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#059669', lineHeight: 1.2 }}>
+          <div className="text-[2rem] font-extrabold text-emerald-600 leading-tight">
             {filteredCampaignCount}
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+          <div className="text-[0.7rem] text-gray-400 mt-1">
             {campaignStatusFilter === 'all' ? `${campaigns.filter(c => c.status === 'active').length} active` : campaignStatusFilter}
           </div>
         </div>
-        <div className="premium-card" style={{ padding: '1.25rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+        <div className="premium-card p-5 text-center">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
             Domains
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: '#F59E0B', lineHeight: 1.2 }}>
+          <div className="text-[2rem] font-extrabold text-amber-500 leading-tight">
             {domains.length}
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#9CA3AF', marginTop: '0.25rem' }}>
+          <div className="text-[0.7rem] text-gray-400 mt-1">
             {domains.filter(d => d.status === 'healthy').length} healthy
           </div>
         </div>
       </div>
 
       {/* 24/7 Monitoring Status */}
-      <div className="premium-card" style={{
-        background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
-        border: '2px solid #22C55E',
-        padding: '1rem 1.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        borderRadius: '12px'
-      }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '10px',
-          background: '#22C55E',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '1.25rem',
-          flexShrink: 0
-        }}>
+      <div
+        className="premium-card flex items-center gap-4 rounded-xl px-6 py-4"
+        style={{
+          background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
+          border: '2px solid #22C55E',
+        }}
+      >
+        <div className="w-10 h-10 rounded-[10px] bg-green-500 flex items-center justify-center text-xl shrink-0">
           ⚡
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-            <span style={{ fontWeight: 800, color: '#166534', fontSize: '0.9rem' }}>
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="font-extrabold text-green-800 text-[0.9rem]">
               24/7 Monitoring Active
             </span>
-            <span style={{
-              padding: '0.125rem 0.5rem',
-              background: '#22C55E',
-              color: 'white',
-              borderRadius: '999px',
-              fontSize: '0.625rem',
-              fontWeight: 700,
-              letterSpacing: '0.05em'
-            }}>
+            <span className="py-0.5 px-2 bg-green-500 text-white rounded-full text-[0.625rem] font-bold tracking-wide">
               LIVE
             </span>
           </div>
-          <p style={{ fontSize: '0.75rem', color: '#15803D', margin: 0, lineHeight: 1.5 }}>
+          <p className="text-xs text-green-700 m-0 leading-normal">
             Auto-syncing all connected platforms every 20 minutes • Real-time health detection • Instant protection
           </p>
         </div>
         <a
           href="/docs/help/24-7-monitoring"
           target="_blank"
-          style={{
-            fontSize: '0.75rem',
-            color: '#16A34A',
-            fontWeight: 700,
-            textDecoration: 'underline',
-            whiteSpace: 'nowrap',
-            flexShrink: 0
-          }}
+          className="text-xs text-green-600 font-bold underline whitespace-nowrap shrink-0"
         >
           Learn more →
         </a>
@@ -391,27 +317,25 @@ export default function Overview() {
 
       {/* 1. Critical Alerts Section */}
       {(pausedDomains.length > 0 || warningDomains.length > 0 || pausedMailboxes.length > 0) && (
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', color: '#EF4444', marginBottom: '1rem', fontWeight: '700', paddingLeft: '0.5rem' }}>
+        <div className="mb-8">
+          <h2 className="text-xl text-red-500 mb-4 font-bold pl-2">
             ⚠️ Critical Attention Needed
           </h2>
-          <div style={{ maxHeight: '240px', overflowY: 'auto', borderRadius: '12px' }}>
+          <div className="max-h-60 overflow-y-auto rounded-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {pausedDomains.map(d => (
-                <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                <div key={d.id} className="premium-card border-l-[6px] border-l-red-500 bg-red-50">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Paused</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{d.domain}</div>
-                      <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
+                      <div className="font-extrabold text-red-700 text-sm uppercase mb-1">Domain Paused</div>
+                      <div className="text-xl font-semibold text-red-900">{d.domain}</div>
+                      <div className="text-[0.9rem] text-red-800 mt-2">Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
                     </div>
                     <button
                       onClick={() => handleResumeDomain(d.id)}
                       disabled={resuming === d.id}
-                      className="premium-btn"
+                      className="premium-btn text-[0.8rem] py-2 px-4"
                       style={{
-                        fontSize: '0.8rem',
-                        padding: '0.5rem 1rem',
                         background: resuming === d.id ? '#9CA3AF' : '#EF4444',
                         cursor: resuming === d.id ? 'not-allowed' : 'pointer'
                       }}
@@ -422,20 +346,18 @@ export default function Overview() {
                 </div>
               ))}
               {pausedMailboxes.map(m => (
-                <div key={m.id} className="premium-card" style={{ borderLeft: '6px solid #EF4444', background: '#FEF2F2' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                <div key={m.id} className="premium-card border-l-[6px] border-l-red-500 bg-red-50">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <div style={{ fontWeight: '800', color: '#B91C1C', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Mailbox Paused</div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#7F1D1D' }}>{m.email}</div>
-                      <div style={{ fontSize: '0.9rem', color: '#991B1B', marginTop: '0.5rem' }}>Reason: {m.paused_reason || 'Health degradation detected'}</div>
+                      <div className="font-extrabold text-red-700 text-sm uppercase mb-1">Mailbox Paused</div>
+                      <div className="text-xl font-semibold text-red-900">{m.email}</div>
+                      <div className="text-[0.9rem] text-red-800 mt-2">Reason: {m.paused_reason || 'Health degradation detected'}</div>
                     </div>
                     <button
                       onClick={() => handleResumeMailbox(m.id)}
                       disabled={resuming === m.id}
-                      className="premium-btn"
+                      className="premium-btn text-[0.8rem] py-2 px-4"
                       style={{
-                        fontSize: '0.8rem',
-                        padding: '0.5rem 1rem',
                         background: resuming === m.id ? '#9CA3AF' : '#EF4444',
                         cursor: resuming === m.id ? 'not-allowed' : 'pointer'
                       }}
@@ -446,10 +368,10 @@ export default function Overview() {
                 </div>
               ))}
               {warningDomains.map(d => (
-                <div key={d.id} className="premium-card" style={{ borderLeft: '6px solid #EAB308', background: '#FFFBEB' }}>
-                  <div style={{ fontWeight: '800', color: '#B45309', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Domain Warning</div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#78350F' }}>{d.domain}</div>
-                  <div style={{ fontSize: '0.9rem', color: '#92400E', marginTop: '0.5rem' }}>High bounce rate detected</div>
+                <div key={d.id} className="premium-card border-l-[6px] border-l-yellow-500 bg-amber-50">
+                  <div className="font-extrabold text-amber-700 text-sm uppercase mb-1">Domain Warning</div>
+                  <div className="text-xl font-semibold text-amber-900">{d.domain}</div>
+                  <div className="text-[0.9rem] text-amber-800 mt-2">High bounce rate detected</div>
                 </div>
               ))}
             </div>
@@ -459,10 +381,10 @@ export default function Overview() {
 
       {/* 2. Visual Analytics (Gauges) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Lead Status</h2>
-            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Active vs. Paused leads</p>
+        <div className="premium-card flex flex-col items-center pt-6 pb-4">
+          <div className="text-center mb-3">
+            <h2 className="text-lg font-bold text-gray-900">Lead Status</h2>
+            <p className="text-sm text-gray-500">Active vs. Paused leads</p>
           </div>
           <SemiCircleGauge
             data={leadChartData}
@@ -471,10 +393,10 @@ export default function Overview() {
           />
         </div>
 
-        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Domain Health</h2>
-            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Infrastructure reputation</p>
+        <div className="premium-card flex flex-col items-center pt-6 pb-4">
+          <div className="text-center mb-3">
+            <h2 className="text-lg font-bold text-gray-900">Domain Health</h2>
+            <p className="text-sm text-gray-500">Infrastructure reputation</p>
           </div>
           <SemiCircleGauge
             data={domainChartData}
@@ -483,10 +405,10 @@ export default function Overview() {
           />
         </div>
 
-        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Mailbox Health</h2>
-            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Sending capacity status</p>
+        <div className="premium-card flex flex-col items-center pt-6 pb-4">
+          <div className="text-center mb-3">
+            <h2 className="text-lg font-bold text-gray-900">Mailbox Health</h2>
+            <p className="text-sm text-gray-500">Sending capacity status</p>
           </div>
           <SemiCircleGauge
             data={mailboxChartData}
@@ -498,10 +420,10 @@ export default function Overview() {
 
       {/* Campaign Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="premium-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '1.5rem', paddingBottom: '1rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: '700', color: '#111827' }}>Active Campaigns</h2>
-            <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Lead distribution by campaign</p>
+        <div className="premium-card flex flex-col items-center pt-6 pb-4">
+          <div className="text-center mb-3">
+            <h2 className="text-lg font-bold text-gray-900">Active Campaigns</h2>
+            <p className="text-sm text-gray-500">Lead distribution by campaign</p>
           </div>
           <SemiCircleGauge
             data={campaignData.map((c, i) => ({
@@ -523,14 +445,14 @@ export default function Overview() {
 
       {/* Infrastructure Findings Summary */}
       {orgFindings.length > 0 && (
-        <div className="premium-card" style={{ borderRadius: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>Infrastructure Findings</h2>
-            <a href="/dashboard/infrastructure" style={{ fontSize: '0.875rem', color: '#3B82F6', fontWeight: 600, textDecoration: 'none' }}>
+        <div className="premium-card rounded-[20px]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Infrastructure Findings</h2>
+            <a href="/dashboard/infrastructure" className="text-sm text-blue-500 font-semibold no-underline">
               View Details →
             </a>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="flex gap-3 flex-wrap">
             {(() => {
               const critical = orgFindings.filter(f => f.severity === 'critical').length;
               const warning = orgFindings.filter(f => f.severity === 'warning').length;
@@ -538,17 +460,17 @@ export default function Overview() {
               return (
                 <>
                   {critical > 0 && (
-                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#FEE2E2', color: '#DC2626', border: '1px solid #FCA5A5' }}>
+                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-red-100 text-red-600 border border-red-300">
                       {critical} critical
                     </span>
                   )}
                   {warning > 0 && (
-                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A' }}>
+                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-amber-100 text-amber-600 border border-amber-200">
                       {warning} warnings
                     </span>
                   )}
                   {info > 0 && (
-                    <span style={{ padding: '0.4rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 600, background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE' }}>
+                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-blue-50 text-blue-600 border border-blue-200">
                       {info} info
                     </span>
                   )}
@@ -556,9 +478,9 @@ export default function Overview() {
               );
             })()}
           </div>
-          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div className="mt-3 flex flex-col gap-2">
             {orgFindings.filter(f => f.severity === 'critical').slice(0, 3).map((f, i) => (
-              <div key={i} style={{ padding: '0.5rem 0.75rem', background: '#FEF2F2', borderRadius: '8px', fontSize: '0.875rem', color: '#991B1B', fontWeight: 500 }}>
+              <div key={i} className="py-2 px-3 bg-red-50 rounded-lg text-sm text-red-800 font-medium">
                 {f.title}
               </div>
             ))}

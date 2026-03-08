@@ -52,72 +52,28 @@ export default function HealthEnforcementModal({
 
     return (
         <div
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 9999,
-                padding: '1rem'
-            }}
+            className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+            style={{ background: 'rgba(0, 0, 0, 0.5)' }}
             onClick={handleBackdropClick}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="health-enforcement-modal-title"
         >
             <div
                 ref={modalRef}
-                style={{
-                    background: '#FFFFFF',
-                    borderRadius: '16px',
-                    maxWidth: '600px',
-                    width: '100%',
-                    maxHeight: '90vh',
-                    overflow: 'auto',
-                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                }}
-                className="animate-fade-in"
+                className="animate-fade-in bg-white rounded-2xl max-w-[600px] w-full max-h-[90vh] overflow-auto shadow-xl"
             >
                 {/* Header */}
-                <div style={{
-                    padding: '2rem',
-                    borderBottom: '1px solid #F3F4F6',
-                    background: 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)',
-                    borderTopLeftRadius: '16px',
-                    borderTopRightRadius: '16px'
-                }}>
-                    <div style={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
-                        <div style={{
-                            width: '48px',
-                            height: '48px',
-                            borderRadius: '12px',
-                            background: '#EF4444',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '1.5rem',
-                            flexShrink: 0
-                        }}>
+                <div className="p-8 border-b border-gray-100 rounded-t-2xl" style={{ background: 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)' }}>
+                    <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center text-2xl shrink-0">
                             ⚠️
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <h2 style={{
-                                fontSize: '1.5rem',
-                                fontWeight: '800',
-                                color: '#991B1B',
-                                marginBottom: '0.5rem',
-                                letterSpacing: '-0.025em'
-                            }}>
+                        <div className="flex-1">
+                            <h2 id="health-enforcement-modal-title" className="text-2xl font-extrabold text-red-800 mb-2 tracking-tight">
                                 Critical Infrastructure Issues Detected
                             </h2>
-                            <p style={{
-                                color: '#7F1D1D',
-                                fontSize: '0.95rem',
-                                lineHeight: '1.6',
-                                margin: 0
-                            }}>
+                            <p className="text-red-900 text-[0.95rem] leading-relaxed m-0">
                                 We found <strong>{criticalCount} critical {criticalCount === 1 ? 'issue' : 'issues'}</strong> that may harm your email deliverability and sender reputation.
                             </p>
                         </div>
@@ -125,89 +81,51 @@ export default function HealthEnforcementModal({
                 </div>
 
                 {/* Body */}
-                <div style={{ padding: '2rem' }}>
+                <div className="p-8">
                     {overallScore !== null && overallScore !== undefined && (
-                        <div style={{
+                        <div className="rounded-xl p-4 mb-6 flex items-center gap-4" style={{
                             background: overallScore < 50 ? '#FEF2F2' : overallScore < 70 ? '#FFFBEB' : '#F0FDF4',
-                            border: `2px solid ${overallScore < 50 ? '#FCA5A5' : overallScore < 70 ? '#FCD34D' : '#BBF7D0'}`,
-                            borderRadius: '12px',
-                            padding: '1rem',
-                            marginBottom: '1.5rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '1rem'
+                            border: `2px solid ${overallScore < 50 ? '#FCA5A5' : overallScore < 70 ? '#FCD34D' : '#BBF7D0'}`
                         }}>
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{
-                                    fontSize: '2rem',
-                                    fontWeight: '800',
+                            <div className="text-center">
+                                <div className="text-[2rem] font-extrabold" style={{
                                     color: overallScore < 50 ? '#991B1B' : overallScore < 70 ? '#B45309' : '#166534'
                                 }}>
                                     {overallScore}
                                 </div>
-                                <div style={{
-                                    fontSize: '0.7rem',
-                                    color: overallScore < 50 ? '#7F1D1D' : overallScore < 70 ? '#92400E' : '#14532D',
-                                    textTransform: 'uppercase',
-                                    fontWeight: '700',
-                                    letterSpacing: '0.05em'
+                                <div className="text-[0.7rem] uppercase font-bold tracking-wide" style={{
+                                    color: overallScore < 50 ? '#7F1D1D' : overallScore < 70 ? '#92400E' : '#14532D'
                                 }}>
                                     Health Score
                                 </div>
                             </div>
-                            <div style={{ flex: 1, fontSize: '0.875rem', lineHeight: '1.5' }}>
-                                <strong style={{ color: '#111827' }}>
+                            <div className="flex-1 text-sm leading-relaxed">
+                                <strong className="text-gray-900">
                                     {overallScore < 50 ? 'Poor Health' : overallScore < 70 ? 'Fair Health' : 'Good Health'}
                                 </strong>
-                                <p style={{
-                                    margin: '0.25rem 0 0 0',
-                                    color: '#6B7280'
-                                }}>
+                                <p className="text-gray-500 mt-1 mb-0">
                                     Your infrastructure health score is based on bounce rates, domain reputation, and mailbox configuration.
                                 </p>
                             </div>
                         </div>
                     )}
 
-                    <h3 style={{
-                        fontSize: '0.875rem',
-                        fontWeight: '700',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        color: '#6B7280',
-                        marginBottom: '1rem'
-                    }}>
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">
                         Top Issues
                     </h3>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
+                    <div className="flex flex-col gap-3 mb-8">
                         {findings.map((finding, index) => (
                             <div
                                 key={index}
-                                style={{
-                                    background: '#FEF2F2',
-                                    border: '1px solid #FCA5A5',
-                                    borderRadius: '8px',
-                                    padding: '1rem',
-                                    display: 'flex',
-                                    gap: '0.75rem'
-                                }}
+                                className="bg-red-50 border border-red-300 rounded-lg p-4 flex gap-3"
                             >
-                                <div style={{ fontSize: '1.25rem', flexShrink: 0 }}>🔴</div>
-                                <div style={{ flex: 1 }}>
-                                    <div style={{
-                                        fontWeight: '700',
-                                        color: '#991B1B',
-                                        marginBottom: '0.25rem',
-                                        fontSize: '0.9rem'
-                                    }}>
+                                <div className="text-xl shrink-0">🔴</div>
+                                <div className="flex-1">
+                                    <div className="font-bold text-red-800 mb-1 text-[0.9rem]">
                                         {finding.title}
                                     </div>
-                                    <div style={{
-                                        color: '#7F1D1D',
-                                        fontSize: '0.85rem',
-                                        lineHeight: '1.5'
-                                    }}>
+                                    <div className="text-red-900 text-[0.85rem] leading-relaxed">
                                         {finding.description || finding.details || finding.message}
                                     </div>
                                 </div>
@@ -215,30 +133,14 @@ export default function HealthEnforcementModal({
                         ))}
                     </div>
 
-                    <div style={{
-                        background: '#FFFBEB',
-                        border: '1px solid #FDE68A',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        marginBottom: '2rem'
-                    }}>
-                        <div style={{ display: 'flex', gap: '0.75rem' }}>
-                            <div style={{ fontSize: '1.25rem', flexShrink: 0 }}>💡</div>
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+                        <div className="flex gap-3">
+                            <div className="text-xl shrink-0">💡</div>
                             <div>
-                                <h4 style={{
-                                    fontSize: '0.875rem',
-                                    fontWeight: '700',
-                                    color: '#92400E',
-                                    marginBottom: '0.5rem'
-                                }}>
+                                <h4 className="text-sm font-bold text-amber-800 mb-2">
                                     Recommended Action
                                 </h4>
-                                <p style={{
-                                    fontSize: '0.875rem',
-                                    color: '#78350F',
-                                    lineHeight: '1.6',
-                                    margin: 0
-                                }}>
+                                <p className="text-sm text-amber-900 leading-relaxed m-0">
                                     We recommend <strong>pausing your campaigns immediately</strong> to prevent further damage to your sender reputation. Once paused, you can review the issues and take corrective action.
                                 </p>
                             </div>
@@ -246,32 +148,16 @@ export default function HealthEnforcementModal({
                     </div>
 
                     {/* Action Buttons */}
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div className="flex gap-4">
                         <button
                             onClick={onPauseCampaigns}
-                            className="premium-btn"
-                            style={{
-                                flex: 1,
-                                background: '#EF4444',
-                                color: '#FFFFFF',
-                                border: 'none',
-                                padding: '0.875rem 1.5rem',
-                                fontWeight: '700'
-                            }}
+                            className="premium-btn flex-1 bg-red-500 text-white border-none py-3.5 px-6 font-bold"
                         >
                             ⏸️ Pause Campaigns Now
                         </button>
                         <button
                             onClick={onViewDetails}
-                            className="premium-btn"
-                            style={{
-                                flex: 1,
-                                background: '#FFFFFF',
-                                color: '#1E293B',
-                                border: '1px solid #E2E8F0',
-                                padding: '0.875rem 1.5rem',
-                                fontWeight: '600'
-                            }}
+                            className="premium-btn flex-1 bg-white text-slate-800 border border-slate-200 py-3.5 px-6 font-semibold"
                         >
                             View Full Report
                         </button>
@@ -279,19 +165,7 @@ export default function HealthEnforcementModal({
 
                     <button
                         onClick={onClose}
-                        style={{
-                            width: '100%',
-                            marginTop: '1rem',
-                            padding: '0.75rem',
-                            background: 'transparent',
-                            border: 'none',
-                            color: '#6B7280',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            transition: 'color 0.2s'
-                        }}
-                        className="hover:text-gray-900"
+                        className="hover:text-gray-900 w-full mt-4 p-3 bg-transparent border-none text-gray-500 text-sm font-semibold cursor-pointer transition-colors duration-200"
                     >
                         Dismiss
                     </button>

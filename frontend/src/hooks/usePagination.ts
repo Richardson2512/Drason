@@ -15,7 +15,7 @@ export interface PaginationMeta {
 
 export interface UsePaginationResult {
     meta: PaginationMeta;
-    setMeta: (meta: PaginationMeta) => void;
+    setMeta: (meta: PaginationMeta | ((prev: PaginationMeta) => PaginationMeta)) => void;
     selectedIds: Set<string>;
     setSelectedIds: (ids: Set<string>) => void;
     toggleSelection: (e: React.MouseEvent, id: string) => void;

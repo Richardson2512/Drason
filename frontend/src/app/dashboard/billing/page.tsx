@@ -3,47 +3,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
-
-interface SubscriptionData {
-    subscription: {
-        tier: string;
-        status: string;
-        trialStartedAt: string | null;
-        trialEndsAt: string | null;
-        subscriptionStartedAt: string | null;
-        nextBillingDate: string | null;
-    };
-    usage: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-    limits: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-}
-
-interface Invoice {
-    id: string;
-    date: string;
-    amount: number;
-    currency: string;
-    status: string;
-    url?: string;
-}
-
-interface TierInfo {
-    name: string;
-    price: string;
-    limits: {
-        leads: number;
-        domains: number;
-        mailboxes: number;
-    };
-    color: string;
-}
+import type { SubscriptionData, Invoice, TierInfo } from '@/types/api';
 
 const TIER_INFO: Record<string, TierInfo> = {
     trial: {
@@ -207,14 +167,10 @@ function BillingContent() {
         };
         const config = statusColors[status] || statusColors.active;
         return (
-            <span style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '9999px',
-                background: config.bg,
-                color: config.text,
-                fontSize: '0.875rem',
-                fontWeight: 600
-            }}>
+            <span
+                className="px-4 py-2 rounded-full text-sm font-semibold"
+                style={{ background: config.bg, color: config.text }}
+            >
                 {config.label}
             </span>
         );
@@ -231,7 +187,7 @@ function BillingContent() {
 
     if (loading) {
         return (
-            <div style={{ padding: '2rem' }}>
+            <div className="p-8">
                 <LoadingSkeleton type="stat" rows={3} />
             </div>
         );
@@ -240,7 +196,7 @@ function BillingContent() {
     if (error && !data) {
         return (
             <div className="premium-card">
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#EF4444' }}>{error}</div>
+                <div className="p-8 text-center text-red-500">{error}</div>
             </div>
         );
     }
@@ -250,35 +206,21 @@ function BillingContent() {
     const daysRemaining = getDaysRemaining();
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div className="p-8">
             {/* Page Header */}
-            <div style={{ marginBottom: '1.5rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Billing & Usage</h1>
-                <p style={{ color: '#64748B', fontSize: '1rem' }}>Manage your subscription, view usage, and download invoices.</p>
+            <div className="mb-6">
+                <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Billing & Usage</h1>
+                <p className="text-base text-slate-500">Manage your subscription, view usage, and download invoices.</p>
             </div>
 
             {/* Tab Bar */}
-            <div style={{
-                display: 'flex',
-                gap: '0.25rem',
-                background: '#F1F5F9',
-                padding: '0.25rem',
-                borderRadius: '12px',
-                marginBottom: '1.5rem',
-                width: 'fit-content'
-            }}>
+            <div className="flex gap-1 p-1 rounded-xl mb-6 w-fit bg-slate-100">
                 {(['usage', 'billing'] as const).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
+                        className="rounded-[10px] border-none text-sm font-semibold cursor-pointer transition-all duration-200 px-6 py-2.5"
                         style={{
-                            padding: '0.625rem 1.5rem',
-                            borderRadius: '10px',
-                            border: 'none',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
                             background: activeTab === tab ? '#FFFFFF' : 'transparent',
                             color: activeTab === tab ? '#111827' : '#64748B',
                             boxShadow: activeTab === tab ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
@@ -291,49 +233,23 @@ function BillingContent() {
 
             {/* Warnings (shown on both tabs) */}
             {data?.subscription.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
-                <div style={{
-                    padding: '1rem 1.5rem',
-                    background: '#FEF3C7',
-                    borderRadius: '12px',
-                    border: '1px solid #FDE047',
-                    marginBottom: '1.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem'
-                }}>
-                    <span style={{ fontSize: '1.5rem' }}>⏰</span>
-                    <p style={{ color: '#92400E', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
+                <div className="px-6 py-4 rounded-xl border mb-6 flex items-center gap-4 bg-amber-50 border-yellow-300">
+                    <span className="text-2xl">⏰</span>
+                    <p className="m-0 font-semibold text-[#92400E] text-[0.9rem]">
                         Your free trial ends in <strong>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>. Add payment details to continue with the {tierInfo.name} plan ({tierInfo.price}/mo).
                     </p>
                 </div>
             )}
             {data?.subscription.status === 'expired' && (
-                <div style={{
-                    padding: '1rem 1.5rem',
-                    background: '#FEE2E2',
-                    borderRadius: '12px',
-                    border: '1px solid #FCA5A5',
-                    marginBottom: '1.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem'
-                }}>
-                    <span style={{ fontSize: '1.5rem' }}>⛔</span>
-                    <p style={{ color: '#991B1B', fontSize: '0.9rem', margin: 0, fontWeight: 600 }}>
+                <div className="px-6 py-4 rounded-xl border mb-6 flex items-center gap-4 bg-red-100 border-red-300">
+                    <span className="text-2xl">⛔</span>
+                    <p className="m-0 font-semibold text-[#991B1B] text-[0.9rem]">
                         Your trial has expired. Subscribe to a plan below to restore access to your account.
                     </p>
                 </div>
             )}
             {error && (
-                <div style={{
-                    padding: '1rem 1.5rem',
-                    background: '#FEE2E2',
-                    borderRadius: '12px',
-                    border: '1px solid #FCA5A5',
-                    marginBottom: '1.5rem',
-                    color: '#991B1B',
-                    fontSize: '0.9rem'
-                }}>
+                <div className="px-6 py-4 rounded-xl border mb-6 bg-red-100 border-red-300 text-[#991B1B] text-[0.9rem]">
                     {error}
                 </div>
             )}
@@ -343,48 +259,41 @@ function BillingContent() {
                 <div className="grid gap-6">
                     {/* Current Plan Card */}
                     <div className="premium-card" style={{ borderLeft: `6px solid ${tierInfo.color}` }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <div className="flex justify-between items-center mb-4">
                             <div>
-                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>Current Plan</div>
-                                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: tierInfo.color }}>
+                                <div className="text-xs font-semibold uppercase mb-1 text-[#94A3B8]">Current Plan</div>
+                                <div className="text-2xl font-extrabold" style={{ color: tierInfo.color }}>
                                     {tierInfo.name}
                                     {data?.subscription.status === 'trialing' && currentTier !== 'trial' && (
-                                        <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#10B981', marginLeft: '0.5rem' }}>
+                                        <span className="text-sm font-semibold ml-2 text-emerald-500">
                                             (Free Trial)
                                         </span>
                                     )}
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <div className="flex items-center gap-4">
                                 {getStatusBadge(data?.subscription.status || 'trialing')}
-                                <div style={{ textAlign: 'right' }}>
+                                <div className="text-right">
                                     {data?.subscription.status === 'trialing' ? (
                                         <>
-                                            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#10B981' }}>$0</div>
-                                            <div style={{ fontSize: '0.75rem', color: '#64748B' }}>Then {tierInfo.price}/mo</div>
+                                            <div className="text-3xl font-extrabold text-emerald-500">$0</div>
+                                            <div className="text-xs text-slate-500">Then {tierInfo.price}/mo</div>
                                         </>
                                     ) : (
-                                        <div style={{ fontSize: '2rem', fontWeight: 800, color: '#111827' }}>
-                                            {tierInfo.price}<span style={{ fontSize: '1rem', color: '#64748B', fontWeight: 400 }}>/mo</span>
+                                        <div className="text-3xl font-extrabold text-gray-900">
+                                            {tierInfo.price}<span className="text-base font-normal text-slate-500">/mo</span>
                                         </div>
                                     )}
                                 </div>
                             </div>
                         </div>
                         {data?.subscription.status === 'trialing' && daysRemaining !== null && (
-                            <div style={{
-                                fontSize: '0.875rem',
-                                color: '#10B981',
-                                background: '#D1FAE5',
-                                padding: '0.75rem',
-                                borderRadius: '8px',
-                                fontWeight: 600
-                            }}>
+                            <div className="text-sm font-semibold p-3 rounded-lg text-emerald-500 bg-emerald-100">
                                 ✓ {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining in your free trial
                             </div>
                         )}
                         {data?.subscription.status === 'active' && (
-                            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', fontSize: '0.875rem', color: '#64748B' }}>
+                            <div className="flex gap-6 flex-wrap text-sm text-slate-500">
                                 {data.subscription.subscriptionStartedAt && (
                                     <div>Billing started: <strong>{new Date(data.subscription.subscriptionStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</strong></div>
                                 )}
@@ -397,21 +306,15 @@ function BillingContent() {
 
                     {/* Resource Usage */}
                     <div className="premium-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-                            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1E293B' }}>Resource Usage</h3>
+                        <div className="flex justify-between items-center mb-5">
+                            <h3 className="text-lg font-bold text-slate-800">Resource Usage</h3>
                             <button
                                 onClick={handleRefreshUsage}
                                 disabled={refreshingUsage}
+                                className="text-xs font-semibold rounded-lg border transition-all duration-200 px-3 py-1.5 text-[#475569] border-[#E2E8F0]"
                                 style={{
-                                    padding: '0.4rem 0.75rem',
                                     background: refreshingUsage ? '#E5E7EB' : '#F8FAFC',
-                                    color: '#475569',
-                                    border: '1px solid #E2E8F0',
-                                    borderRadius: '8px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
                                     cursor: refreshingUsage ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.2s'
                                 }}
                             >
                                 {refreshingUsage ? 'Refreshing...' : 'Refresh Usage'}
@@ -426,29 +329,23 @@ function BillingContent() {
                                 const percentage = getUsagePercentage(current, limit);
                                 const isNearLimit = percentage > 80;
                                 return (
-                                    <div key={label} style={{
-                                        padding: '1.5rem',
-                                        background: '#FFFFFF',
-                                        borderRadius: '12px',
+                                    <div key={label} className="p-6 bg-white rounded-xl" style={{
                                         border: isNearLimit ? '2px solid #F59E0B' : '1px solid #E2E8F0',
                                         boxShadow: isNearLimit ? '0 4px 12px rgba(245, 158, 11, 0.15)' : 'none'
                                     }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                            <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="text-2xl">{icon}</span>
                                             <div>
-                                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>{label}</div>
-                                                <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827' }}>
-                                                    {current.toLocaleString()} <span style={{ fontSize: '0.875rem', color: '#94A3B8', fontWeight: 400 }}>/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
+                                                <div className="text-xs font-semibold uppercase text-[#94A3B8]">{label}</div>
+                                                <div className="text-2xl font-extrabold text-gray-900">
+                                                    {current.toLocaleString()} <span className="text-sm font-normal text-[#94A3B8]">/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style={{ width: '100%', height: '8px', background: '#F1F5F9', borderRadius: '9999px', overflow: 'hidden' }}>
-                                            <div style={{
+                                        <div className="w-full h-2 rounded-full overflow-hidden bg-slate-100">
+                                            <div className="h-full rounded-full transition-all duration-300" style={{
                                                 width: `${percentage}%`,
-                                                height: '100%',
                                                 background: isNearLimit ? '#F59E0B' : tierInfo.color,
-                                                borderRadius: '9999px',
-                                                transition: 'width 0.3s ease'
                                             }} />
                                         </div>
                                     </div>
@@ -460,7 +357,7 @@ function BillingContent() {
                     {/* Upgrade Options */}
                     {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && (
                         <div className="premium-card">
-                            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1.25rem', color: '#1E293B' }}>
+                            <h3 className="text-lg font-bold mb-5 text-slate-800">
                                 {data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : data?.subscription.status === 'active' ? 'Upgrade Your Plan' : 'Choose a Plan'}
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -481,34 +378,20 @@ function BillingContent() {
                                                 : `Subscribe to ${info.name}`;
 
                                         return (
-                                            <div key={key} style={{
-                                                padding: '1.5rem',
-                                                borderRadius: '16px',
+                                            <div key={key} className="p-6 rounded-2xl relative" style={{
                                                 border: isCurrentTier ? `2px solid ${info.color}` : '1px solid #E2E8F0',
                                                 background: isCurrentTier ? `${info.color}10` : '#FFFFFF',
-                                                position: 'relative'
                                             }}>
                                                 {isCurrentTier && data?.subscription.status === 'trialing' && (
-                                                    <div style={{
-                                                        position: 'absolute',
-                                                        top: '-10px',
-                                                        left: '50%',
-                                                        transform: 'translateX(-50%)',
-                                                        background: info.color,
-                                                        color: '#FFFFFF',
-                                                        padding: '0.25rem 1rem',
-                                                        borderRadius: '9999px',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: 700
-                                                    }}>
+                                                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-white px-4 py-1 rounded-full text-xs font-bold" style={{ background: info.color }}>
                                                         CURRENT TRIAL
                                                     </div>
                                                 )}
-                                                <div style={{ marginBottom: '1rem', marginTop: isCurrentTier && data?.subscription.status === 'trialing' ? '0.5rem' : '0' }}>
-                                                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: info.color, marginBottom: '0.25rem' }}>{info.name}</div>
-                                                    <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827' }}>{info.price}<span style={{ fontSize: '0.875rem', color: '#64748B', fontWeight: 400 }}>/mo</span></div>
+                                                <div className={`mb-4 ${isCurrentTier && data?.subscription.status === 'trialing' ? 'mt-2' : 'mt-0'}`}>
+                                                    <div className="text-xl font-extrabold mb-1" style={{ color: info.color }}>{info.name}</div>
+                                                    <div className="font-extrabold text-gray-900 text-[1.75rem]">{info.price}<span className="text-sm font-normal text-slate-500">/mo</span></div>
                                                 </div>
-                                                <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem', color: '#64748B', lineHeight: '1.6' }}>
+                                                <div className="mb-6 text-sm leading-relaxed text-slate-500">
                                                     <div>✓ {info.limits.leads.toLocaleString()} leads</div>
                                                     <div>✓ {info.limits.domains} domains</div>
                                                     <div>✓ {info.limits.mailboxes} mailboxes</div>
@@ -516,21 +399,12 @@ function BillingContent() {
                                                 <button
                                                     onClick={() => handleUpgrade(key)}
                                                     disabled={actionLoading || (data?.subscription.status === 'active' && isCurrentTier)}
+                                                    className="btn-hover-scale w-full p-3 text-white border-none rounded-lg text-sm font-bold transition-all duration-200"
                                                     style={{
-                                                        width: '100%',
-                                                        padding: '0.75rem',
                                                         background: info.color,
-                                                        color: '#FFFFFF',
-                                                        border: 'none',
-                                                        borderRadius: '8px',
-                                                        fontSize: '0.875rem',
-                                                        fontWeight: 700,
                                                         cursor: (actionLoading || (data?.subscription.status === 'active' && isCurrentTier)) ? 'not-allowed' : 'pointer',
                                                         opacity: (actionLoading || (data?.subscription.status === 'active' && isCurrentTier)) ? 0.6 : 1,
-                                                        transition: 'all 0.2s'
                                                     }}
-                                                    onMouseEnter={(e) => !actionLoading && !(data?.subscription.status === 'active' && isCurrentTier) && (e.currentTarget.style.transform = 'scale(1.02)')}
-                                                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                                                 >
                                                     {actionLoading ? 'Processing...' : (data?.subscription.status === 'active' && isCurrentTier) ? 'Current Plan' : buttonText}
                                                 </button>
@@ -548,40 +422,40 @@ function BillingContent() {
                 <div className="grid gap-6">
                     {/* Payment Overview */}
                     <div className="premium-card" style={{ borderLeft: `6px solid ${tierInfo.color}` }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                        <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Payment Status</h2>
-                                <p style={{ color: '#64748B', fontSize: '0.875rem' }}>Your current subscription and billing details.</p>
+                                <h2 className="text-xl font-bold text-gray-900 mb-1">Payment Status</h2>
+                                <p className="text-sm text-slate-500">Your current subscription and billing details.</p>
                             </div>
                             {getStatusBadge(data?.subscription.status || 'trialing')}
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div style={{ padding: '1.25rem', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
-                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Plan</div>
-                                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: tierInfo.color }}>{tierInfo.name}</div>
-                                <div style={{ fontSize: '0.875rem', color: '#64748B', marginTop: '0.25rem' }}>{tierInfo.price}/mo</div>
+                            <div className="p-5 rounded-xl border bg-slate-50 border-slate-100">
+                                <div className="text-xs font-semibold uppercase mb-2 text-[#94A3B8]">Plan</div>
+                                <div className="text-xl font-extrabold" style={{ color: tierInfo.color }}>{tierInfo.name}</div>
+                                <div className="text-sm mt-1 text-slate-500">{tierInfo.price}/mo</div>
                             </div>
-                            <div style={{ padding: '1.25rem', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
-                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Next Payment</div>
-                                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827' }}>
+                            <div className="p-5 rounded-xl border bg-slate-50 border-slate-100">
+                                <div className="text-xs font-semibold uppercase mb-2 text-[#94A3B8]">Next Payment</div>
+                                <div className="text-xl font-extrabold text-gray-900">
                                     {data?.subscription.nextBillingDate
                                         ? new Date(data.subscription.nextBillingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                         : '—'}
                                 </div>
-                                <div style={{ fontSize: '0.875rem', color: '#64748B', marginTop: '0.25rem' }}>
+                                <div className="text-sm mt-1 text-slate-500">
                                     {data?.subscription.status === 'trialing' ? 'After trial ends' : 'Recurring'}
                                 </div>
                             </div>
-                            <div style={{ padding: '1.25rem', background: '#F8FAFC', borderRadius: '12px', border: '1px solid #F1F5F9' }}>
-                                <div style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Billing Started</div>
-                                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827' }}>
+                            <div className="p-5 rounded-xl border bg-slate-50 border-slate-100">
+                                <div className="text-xs font-semibold uppercase mb-2 text-[#94A3B8]">Billing Started</div>
+                                <div className="text-xl font-extrabold text-gray-900">
                                     {data?.subscription.subscriptionStartedAt
                                         ? new Date(data.subscription.subscriptionStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                         : data?.subscription.trialStartedAt
                                             ? new Date(data.subscription.trialStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                             : '—'}
                                 </div>
-                                <div style={{ fontSize: '0.875rem', color: '#64748B', marginTop: '0.25rem' }}>
+                                <div className="text-sm mt-1 text-slate-500">
                                     {data?.subscription.subscriptionStartedAt ? 'Subscription start' : 'Trial start'}
                                 </div>
                             </div>
@@ -590,75 +464,57 @@ function BillingContent() {
 
                     {/* Invoices */}
                     <div className="premium-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                        <div className="flex justify-between items-center mb-5">
                             <div>
-                                <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.25rem' }}>Invoices</h3>
-                                <p style={{ fontSize: '0.875rem', color: '#64748B' }}>View and download your payment history.</p>
+                                <h3 className="text-lg font-bold mb-1 text-slate-800">Invoices</h3>
+                                <p className="text-sm text-slate-500">View and download your payment history.</p>
                             </div>
                         </div>
 
                         {invoicesLoading ? (
-                            <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>Loading invoices...</div>
+                            <LoadingSkeleton type="list" rows={4} />
                         ) : invoices.length > 0 ? (
-                            <div style={{ overflowX: 'auto' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <div className="overflow-x-auto">
+                                <table className="w-full border-collapse">
                                     <thead>
-                                        <tr style={{ borderBottom: '2px solid #F1F5F9' }}>
-                                            <th style={{ textAlign: 'left', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Date</th>
-                                            <th style={{ textAlign: 'left', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Amount</th>
-                                            <th style={{ textAlign: 'left', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                                            <th style={{ textAlign: 'right', padding: '0.75rem 1rem', fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Invoice</th>
+                                        <tr className="border-b-2 border-slate-100">
+                                            <th className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">Date</th>
+                                            <th className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">Amount</th>
+                                            <th className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">Status</th>
+                                            <th className="text-right px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">Invoice</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {invoices.map((invoice) => {
                                             const statusStyle = getInvoiceStatusStyle(invoice.status);
                                             return (
-                                                <tr key={invoice.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
-                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#374151', fontWeight: 500 }}>
+                                                <tr key={invoice.id} className="border-b border-slate-100">
+                                                    <td className="p-4 text-sm font-medium text-gray-700">
                                                         {new Date(invoice.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                                     </td>
-                                                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: '#111827', fontWeight: 700 }}>
+                                                    <td className="p-4 text-sm font-bold text-gray-900">
                                                         ${(invoice.amount / 100).toFixed(2)} {invoice.currency?.toUpperCase() || 'USD'}
                                                     </td>
-                                                    <td style={{ padding: '1rem' }}>
-                                                        <span style={{
-                                                            padding: '0.25rem 0.75rem',
-                                                            borderRadius: '9999px',
-                                                            background: statusStyle.bg,
-                                                            color: statusStyle.text,
-                                                            fontSize: '0.75rem',
-                                                            fontWeight: 600,
-                                                            textTransform: 'capitalize'
-                                                        }}>
+                                                    <td className="p-4">
+                                                        <span
+                                                            className="px-3 py-1 rounded-full text-xs font-semibold capitalize"
+                                                            style={{ background: statusStyle.bg, color: statusStyle.text }}
+                                                        >
                                                             {invoice.status}
                                                         </span>
                                                     </td>
-                                                    <td style={{ padding: '1rem', textAlign: 'right' }}>
+                                                    <td className="p-4 text-right">
                                                         {(invoice.url || invoice.id) ? (
                                                             <a
                                                                 href={invoice.url || `/api/billing/invoices/${invoice.id}/pdf`}
                                                                 download
-                                                                style={{
-                                                                    display: 'inline-flex',
-                                                                    alignItems: 'center',
-                                                                    gap: '0.375rem',
-                                                                    fontSize: '0.875rem',
-                                                                    color: '#3B82F6',
-                                                                    fontWeight: 600,
-                                                                    textDecoration: 'none',
-                                                                    padding: '0.375rem 0.75rem',
-                                                                    borderRadius: '6px',
-                                                                    transition: 'all 0.2s',
-                                                                }}
-                                                                onMouseEnter={(e) => { e.currentTarget.style.background = '#EFF6FF'; e.currentTarget.style.textDecoration = 'underline'; }}
-                                                                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.textDecoration = 'none'; }}
+                                                                className="btn-hover-blue inline-flex items-center gap-1.5 text-sm font-semibold no-underline px-3 py-1.5 rounded-md transition-all duration-200 text-blue-500"
                                                             >
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                                                 PDF
                                                             </a>
                                                         ) : (
-                                                            <span style={{ fontSize: '0.875rem', color: '#94A3B8' }}>—</span>
+                                                            <span className="text-sm text-[#94A3B8]">—</span>
                                                         )}
                                                     </td>
                                                 </tr>
@@ -668,16 +524,10 @@ function BillingContent() {
                                 </table>
                             </div>
                         ) : (
-                            <div style={{
-                                padding: '3rem 2rem',
-                                textAlign: 'center',
-                                background: '#F8FAFC',
-                                borderRadius: '12px',
-                                border: '1px solid #F1F5F9'
-                            }}>
-                                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>📄</div>
-                                <div style={{ fontSize: '1rem', fontWeight: 600, color: '#374151', marginBottom: '0.25rem' }}>No invoices yet</div>
-                                <p style={{ fontSize: '0.875rem', color: '#94A3B8', margin: 0 }}>
+                            <div className="py-12 px-8 text-center rounded-xl border bg-slate-50 border-slate-100">
+                                <div className="text-3xl mb-3">📄</div>
+                                <div className="text-base font-semibold text-gray-700 mb-1">No invoices yet</div>
+                                <p className="text-sm m-0 text-[#94A3B8]">
                                     Invoices will appear here once you subscribe to a paid plan.
                                 </p>
                             </div>
@@ -686,32 +536,22 @@ function BillingContent() {
 
                     {/* Cancel Subscription */}
                     {data?.subscription.status === 'active' && (
-                        <div className="premium-card" style={{ border: '1px solid #FEE2E2' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div className="premium-card border border-red-100">
+                            <div className="flex justify-between items-center">
                                 <div>
-                                    <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#991B1B', marginBottom: '0.25rem' }}>Cancel Subscription</h3>
-                                    <p style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
+                                    <h3 className="text-base font-bold mb-1 text-[#991B1B]">Cancel Subscription</h3>
+                                    <p className="text-sm m-0 text-slate-500">
                                         You'll retain access until the end of your current billing period.
                                     </p>
                                 </div>
                                 <button
                                     onClick={handleCancel}
                                     disabled={actionLoading}
+                                    className="btn-hover-red bg-white text-red-500 border rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 px-5 py-2.5 border-red-300"
                                     style={{
-                                        padding: '0.625rem 1.25rem',
-                                        background: '#FFFFFF',
-                                        color: '#EF4444',
-                                        border: '1px solid #FCA5A5',
-                                        borderRadius: '8px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: 600,
                                         cursor: actionLoading ? 'not-allowed' : 'pointer',
                                         opacity: actionLoading ? 0.6 : 1,
-                                        transition: 'all 0.2s',
-                                        whiteSpace: 'nowrap'
                                     }}
-                                    onMouseEnter={(e) => !actionLoading && (e.currentTarget.style.background = '#FEE2E2')}
-                                    onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
                                 >
                                     Cancel Subscription
                                 </button>
@@ -727,8 +567,8 @@ function BillingContent() {
 export default function BillingPage() {
     return (
         <Suspense fallback={
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF' }}>
-                Loading billing information...
+            <div className="p-8">
+                <LoadingSkeleton type="card" rows={2} />
             </div>
         }>
             <BillingContent />

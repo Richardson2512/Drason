@@ -18,6 +18,8 @@ export function PaginationControls({ currentPage, totalPages, onPageChange }: Pa
                 <button
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage <= 1}
+                    aria-label="Previous page"
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     style={{
                         padding: '0.5rem',
                         borderRadius: '0.375rem',
@@ -37,6 +39,8 @@ export function PaginationControls({ currentPage, totalPages, onPageChange }: Pa
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage >= totalPages}
+                    aria-label="Next page"
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     style={{
                         padding: '0.5rem',
                         borderRadius: '0.375rem',

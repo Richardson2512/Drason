@@ -7,76 +7,57 @@ import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
 import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampaignResolutionModal';
 import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
 import { apiClient } from '@/lib/api';
+import type { Campaign, Mailbox, DashboardStats, PaginatedResponse } from '@/types/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import { useSortFilterModal } from '@/hooks/useSortFilterModal';
+import { usePagination } from '@/hooks/usePagination';
 
 export default function CampaignsPage() {
     const router = useRouter();
-    const [campaigns, setCampaigns] = useState<any[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [selectedCampaign, setSelectedCampaign] = useState<Record<string, any> | null>(null);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [stats, setStats] = useState<Record<string, any> | null>(null);
+    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
+    const [stats, setStats] = useState<Record<string, number> | null>(null);
     const [loading, setLoading] = useState(true);
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
 
-    const [selectedCampaignIds, setSelectedCampaignIds] = useState<Set<string>>(new Set());
+    const { selectedIds: selectedCampaignIds, toggleSelection: toggleCampaignSelection, toggleSelectAll, isAllSelected } = usePagination();
 
     // Filter states
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
-    // Sorting & Filtering State
-    const [sortBy, setSortBy] = useState('name_asc');
-    const [minSent, setMinSent] = useState<string>('');
-    const [maxSent, setMaxSent] = useState<string>('');
-    const [minOpenRate, setMinOpenRate] = useState<string>('');
-    const [maxOpenRate, setMaxOpenRate] = useState<string>('');
+    // Sort & Filter via shared hook
+    const sortFilter = useSortFilterModal({
+        sortBy: 'name_asc',
+        minSent: '',
+        maxSent: '',
+        minOpenRate: '',
+        maxOpenRate: '',
+    });
 
     // Modal state
     const [showResolveModal, setShowResolveModal] = useState(false);
     const [campaignActionLoading, setCampaignActionLoading] = useState(false);
 
-    // Modal State
-    const [showSortModal, setShowSortModal] = useState(false);
-    const [tempSortBy, setTempSortBy] = useState(sortBy);
-    const [tempMinSent, setTempMinSent] = useState(minSent);
-    const [tempMaxSent, setTempMaxSent] = useState(maxSent);
-    const [tempMinOpenRate, setTempMinOpenRate] = useState(minOpenRate);
-    const [tempMaxOpenRate, setTempMaxOpenRate] = useState(maxOpenRate);
-
     const fetchCampaigns = useCallback(async () => {
         setLoading(true);
         try {
+            const { sortBy, minSent, maxSent, minOpenRate, maxOpenRate } = sortFilter.values;
             const params = new URLSearchParams({
                 page: meta.page.toString(),
                 limit: meta.limit.toString(),
                 sortBy
             });
 
-            if (statusFilter !== 'all') {
-                params.append('status', statusFilter);
-            }
+            if (statusFilter !== 'all') params.append('status', statusFilter);
+            if (searchQuery.trim()) params.append('search', searchQuery.trim());
+            if (minSent) params.append('minSent', minSent);
+            if (maxSent) params.append('maxSent', maxSent);
+            if (minOpenRate) params.append('minOpenRate', minOpenRate);
+            if (maxOpenRate) params.append('maxOpenRate', maxOpenRate);
 
-            if (searchQuery.trim()) {
-                params.append('search', searchQuery.trim());
-            }
-
-            // Add filter parameters
-            if (minSent) {
-                params.append('minSent', minSent);
-            }
-            if (maxSent) {
-                params.append('maxSent', maxSent);
-            }
-            if (minOpenRate) {
-                params.append('minOpenRate', minOpenRate);
-            }
-            if (maxOpenRate) {
-                params.append('maxOpenRate', maxOpenRate);
-            }
-
-            const data = await apiClient<any>(`/api/dashboard/campaigns?${params}`);
+            const data = await apiClient<PaginatedResponse<Campaign>>(`/api/dashboard/campaigns?${params}`);
             if (data?.data) {
                 setCampaigns(data.data);
                 setMeta(data.meta);
@@ -92,7 +73,7 @@ export default function CampaignsPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, statusFilter, searchQuery, sortBy, minSent, maxSent, minOpenRate, maxOpenRate, selectedCampaign]);
+    }, [meta.page, meta.limit, statusFilter, searchQuery, sortFilter.values, selectedCampaign]);
 
     useEffect(() => {
         fetchCampaigns();
@@ -100,7 +81,7 @@ export default function CampaignsPage() {
 
     useEffect(() => {
         if (selectedCampaign) {
-            apiClient<any>(`/api/dashboard/stats?campaignId=${selectedCampaign.id}`)
+            apiClient<Record<string, number>>(`/api/dashboard/stats?campaignId=${selectedCampaign.id}`)
                 .then(setStats)
                 .catch(err => {
                     console.error('Failed to fetch stats:', err);
@@ -110,32 +91,6 @@ export default function CampaignsPage() {
             setStats(null);
         }
     }, [selectedCampaign]);
-
-    // Selection Logic
-    const toggleCampaignSelection = (e: React.MouseEvent, id: string) => {
-        e.stopPropagation();
-        const newSet = new Set(selectedCampaignIds);
-        if (newSet.has(id)) {
-            newSet.delete(id);
-        } else {
-            newSet.add(id);
-        }
-        setSelectedCampaignIds(newSet);
-    };
-
-    const toggleSelectAll = () => {
-        const allPageIds = campaigns.map(c => c.id);
-        const allSelected = allPageIds.every(id => selectedCampaignIds.has(id));
-        const newSet = new Set(selectedCampaignIds);
-        if (allSelected) {
-            allPageIds.forEach(id => newSet.delete(id));
-        } else {
-            allPageIds.forEach(id => newSet.add(id));
-        }
-        setSelectedCampaignIds(newSet);
-    };
-
-    const isAllSelected = campaigns.length > 0 && campaigns.every(c => selectedCampaignIds.has(c.id));
 
     const handlePageChange = (newPage: number) => {
         setMeta(prev => ({ ...prev, page: newPage }));
@@ -184,7 +139,7 @@ export default function CampaignsPage() {
                 method: 'POST',
                 body: JSON.stringify({ campaignId: selectedCampaign.id })
             });
-            setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: null, paused_at: null, paused_by: null });
+            setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: undefined, paused_at: undefined, paused_by: undefined });
             fetchCampaigns();
         } catch (err: any) {
             console.error('Failed to resume campaign:', err);
@@ -193,43 +148,19 @@ export default function CampaignsPage() {
         }
     };
 
-    // Sort & Filter Modal Handlers
-    const handleOpenSortModal = () => {
-        setTempSortBy(sortBy);
-        setTempMinSent(minSent);
-        setTempMaxSent(maxSent);
-        setTempMinOpenRate(minOpenRate);
-        setTempMaxOpenRate(maxOpenRate);
-        setShowSortModal(true);
-    };
-
+    // Sort & Filter Modal Handlers (delegated to useSortFilterModal hook)
     const handleApplySortFilter = () => {
-        setSortBy(tempSortBy);
-        setMinSent(tempMinSent);
-        setMaxSent(tempMaxSent);
-        setMinOpenRate(tempMinOpenRate);
-        setMaxOpenRate(tempMaxOpenRate);
+        sortFilter.apply();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     const handleClearFilters = () => {
-        setTempSortBy('name_asc');
-        setTempMinSent('');
-        setTempMaxSent('');
-        setTempMinOpenRate('');
-        setTempMaxOpenRate('');
-        setSortBy('name_asc');
-        setMinSent('');
-        setMaxSent('');
-        setMinOpenRate('');
-        setMaxOpenRate('');
+        sortFilter.clear();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     if (loading && campaigns.length === 0) {
-        return <div style={{ padding: '2rem' }}><LoadingSkeleton type="table" rows={8} /></div>;
+        return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
     if (!loading && (!campaigns || campaigns.length === 0)) {
@@ -237,11 +168,11 @@ export default function CampaignsPage() {
     }
 
     return (
-        <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
+        <div className="flex h-full gap-8">
             {/* Left: Campaign List */}
-            <div className="premium-card" style={{ width: '400px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <div style={{ marginBottom: '1.5rem', flexShrink: 0 }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Campaigns</h2>
+            <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '400px' }}>
+                <div className="mb-6 shrink-0">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-3">Campaigns</h2>
 
                     {/* Search Input */}
                     <input
@@ -249,35 +180,14 @@ export default function CampaignsPage() {
                         placeholder="🔍 Search campaigns..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            border: '2px solid #E5E7EB',
-                            borderRadius: '12px',
-                            fontSize: '0.875rem',
-                            outline: 'none',
-                            transition: 'all 0.2s',
-                            marginBottom: '0.75rem'
-                        }}
-                        onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
-                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
+                        className="dash-input mb-3"
                     />
 
                     {/* Status Filter */}
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            border: '2px solid #E5E7EB',
-                            borderRadius: '12px',
-                            fontSize: '0.875rem',
-                            outline: 'none',
-                            cursor: 'pointer',
-                            background: 'white',
-                            marginBottom: '0.75rem'
-                        }}
+                        className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm outline-none cursor-pointer bg-white mb-3"
                     >
                         <option value="all">All Statuses</option>
                         <option value="active">Active</option>
@@ -287,95 +197,57 @@ export default function CampaignsPage() {
 
                     {/* Sort & Filter Button */}
                     <button
-                        onClick={handleOpenSortModal}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            color: '#111827',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.5rem',
-                            transition: 'all 0.2s'
-                        }}
-                        className="hover:bg-gray-50 hover:border-blue-300"
+                        onClick={sortFilter.open}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm font-semibold cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:bg-gray-50 hover:border-blue-300"
                     >
-                        <span style={{ fontSize: '1rem' }}>⚙️</span>
+                        <span className="text-base">⚙️</span>
                         Sort & Filter
-                        {(sortBy !== 'name_asc' || minSent || maxSent || minOpenRate || maxOpenRate) && (
-                            <span style={{
-                                background: '#3B82F6',
-                                color: 'white',
-                                fontSize: '0.65rem',
-                                padding: '0.125rem 0.375rem',
-                                borderRadius: '999px',
-                                fontWeight: 700
-                            }}>
+                        {sortFilter.hasActiveFilters && (
+                            <span className="bg-blue-500 text-white text-[0.65rem] px-1.5 py-0.5 rounded-full font-bold">
                                 Active
                             </span>
                         )}
                     </button>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
+                <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-100 mb-3">
                     <input
                         type="checkbox"
-                        checked={isAllSelected}
-                        onChange={toggleSelectAll}
-                        style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                        checked={isAllSelected(campaigns)}
+                        onChange={() => toggleSelectAll(campaigns)}
+                        className="w-4 h-4 cursor-pointer accent-blue-600"
                     />
-                    <span style={{ fontSize: '0.8rem', color: '#6B7280', fontWeight: 500 }}>Select All ({campaigns.length})</span>
+                    <span className="text-[0.8rem] text-gray-500 font-medium">Select All ({campaigns.length})</span>
                 </div>
 
-                <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingRight: '0.5rem' }} className="scrollbar-hide">
+                <div className="overflow-y-auto flex-1 flex flex-col gap-3 pr-2 scrollbar-hide">
                     {campaigns.map(c => (
                         <div
                             key={c.id}
                             onClick={() => setSelectedCampaign(c)}
+                            className="p-5 rounded-2xl cursor-pointer border shrink-0 flex items-center gap-3 transition-all duration-200 hover:shadow-md hover:border-blue-100"
                             style={{
-                                padding: '1.25rem',
-                                borderRadius: '16px',
                                 background: selectedCampaign?.id === c.id ? '#EFF6FF' : '#FFFFFF',
-                                cursor: 'pointer',
-                                border: '1px solid',
                                 borderColor: selectedCampaign?.id === c.id ? '#BFDBFE' : '#F3F4F6',
-                                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                flexShrink: 0,
                                 boxShadow: selectedCampaign?.id === c.id ? '0 4px 6px -1px rgba(37, 99, 235, 0.1)' : 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.75rem'
                             }}
-                            className="hover:shadow-md hover:border-blue-100"
                         >
                             <input
                                 type="checkbox"
                                 checked={selectedCampaignIds.has(c.id)}
                                 onClick={(e) => toggleCampaignSelection(e, c.id)}
                                 onChange={() => { }}
-                                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                                className="w-4 h-4 cursor-pointer accent-blue-600"
                             />
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                                    <span style={{ fontWeight: 600, color: '#1E293B' }}>{c.name}</span>
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-semibold text-slate-800">{c.name}</span>
                                     {c.source_platform && <PlatformBadge platform={c.source_platform} />}
                                 </div>
-                                <div style={{ fontSize: '0.75rem', color: '#64748B', fontFamily: 'monospace' }}>ID: {c.id}</div>
-                                <div style={{
-                                    fontSize: '0.7rem',
-                                    marginTop: '0.75rem',
-                                    display: 'inline-block',
-                                    padding: '0.25rem 0.75rem',
-                                    borderRadius: '999px',
+                                <div className="text-xs text-slate-500 font-mono">ID: {c.id}</div>
+                                <div className="text-[0.7rem] mt-3 inline-block px-3 py-1 rounded-full font-semibold" style={{
                                     background: c.status === 'active' ? '#DCFCE7' : c.status === 'paused' ? '#FEE2E2' : c.status === 'completed' ? '#FFF7ED' : c.status === 'warning' ? '#FEF3C7' : '#F3F4F6',
                                     color: c.status === 'active' ? '#166534' : c.status === 'paused' ? '#991B1B' : c.status === 'completed' ? '#C2410C' : c.status === 'warning' ? '#B45309' : '#6B7280',
-                                    fontWeight: 600
                                 }}>
                                     {c.status.toUpperCase()}
                                 </div>
@@ -384,40 +256,29 @@ export default function CampaignsPage() {
                     ))}
                 </div>
 
-                <div style={{ paddingTop: '1rem', borderTop: '1px solid #F3F4F6', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
                     <RowLimitSelector limit={meta.limit} onLimitChange={handleLimitChange} />
                     <PaginationControls currentPage={meta.page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
                 </div>
             </div>
 
             {/* Right: Details View */}
-            <div style={{ flex: 1, overflowY: 'auto' }} className="scrollbar-hide">
+            <div className="flex-1 overflow-y-auto scrollbar-hide">
                 {selectedCampaign ? (
                     <div className="animate-fade-in">
-                        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div className="page-header flex justify-between items-start">
                             <div>
-                                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedCampaign.name}</h1>
-                                <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Campaign Performance Details</div>
+                                <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">{selectedCampaign.name}</h1>
+                                <div className="text-gray-500 text-[1.1rem]">Campaign Performance Details</div>
                             </div>
                             {selectedCampaign.status === 'active' ? (
                                 <button
                                     onClick={handlePauseCampaign}
                                     disabled={campaignActionLoading}
+                                    className="px-5 py-2.5 bg-white text-red-500 border border-red-300 rounded-[10px] text-sm font-semibold flex items-center gap-2 transition-all duration-200 whitespace-nowrap"
                                     style={{
-                                        padding: '0.625rem 1.25rem',
-                                        background: '#FFFFFF',
-                                        color: '#EF4444',
-                                        border: '1px solid #FCA5A5',
-                                        borderRadius: '10px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: 600,
                                         cursor: campaignActionLoading ? 'not-allowed' : 'pointer',
                                         opacity: campaignActionLoading ? 0.6 : 1,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        transition: 'all 0.2s',
-                                        whiteSpace: 'nowrap'
                                     }}
                                 >
                                     {campaignActionLoading ? 'Pausing...' : '⏸ Pause Campaign'}
@@ -426,17 +287,10 @@ export default function CampaignsPage() {
                                 <button
                                     onClick={handleResumeCampaign}
                                     disabled={campaignActionLoading}
-                                    className="premium-btn"
+                                    className="premium-btn px-5 py-2.5 text-sm font-semibold flex items-center gap-2 whitespace-nowrap"
                                     style={{
-                                        padding: '0.625rem 1.25rem',
-                                        fontSize: '0.875rem',
-                                        fontWeight: 600,
                                         opacity: campaignActionLoading ? 0.6 : 1,
                                         cursor: campaignActionLoading ? 'not-allowed' : 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        whiteSpace: 'nowrap'
                                     }}
                                 >
                                     {campaignActionLoading ? 'Resuming...' : '▶ Resume Campaign'}
@@ -446,35 +300,25 @@ export default function CampaignsPage() {
 
                         {/* Pause Reason Banner */}
                         {selectedCampaign.status === 'paused' && selectedCampaign.paused_reason && (
-                            <div style={{
-                                padding: '1rem',
-                                background: '#FEF2F2',
-                                border: '1px solid #FCA5A5',
-                                borderRadius: '8px',
-                                marginBottom: '1.5rem'
-                            }}>
-                                <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
-                                    <span style={{ fontSize: '1.25rem' }}>⏸️</span>
-                                    <div style={{ flex: 1 }}>
-                                        <div style={{ fontWeight: 700, color: '#991B1B', marginBottom: '0.25rem' }}>
+                            <div className="p-4 bg-red-50 border border-red-300 rounded-lg mb-6">
+                                <div className="flex items-start gap-3">
+                                    <span className="text-xl">⏸️</span>
+                                    <div className="flex-1">
+                                        <div className="font-bold text-red-900 mb-1">
                                             Campaign Paused
                                         </div>
-                                        <div style={{ fontSize: '0.875rem', color: '#7F1D1D', lineHeight: '1.5' }}>
+                                        <div className="text-sm text-red-950 leading-relaxed">
                                             {selectedCampaign.paused_reason}
                                         </div>
                                         {selectedCampaign.paused_at && (
-                                            <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
+                                            <div className="text-xs text-gray-400 mt-2">
                                                 Paused {new Date(selectedCampaign.paused_at).toLocaleString()} by {selectedCampaign.paused_by || 'system'}
                                             </div>
                                         )}
                                         {selectedCampaign.paused_reason === 'Infrastructure health enforcement' && (
                                             <button
                                                 onClick={() => setShowResolveModal(true)}
-                                                style={{
-                                                    marginTop: '1rem', padding: '0.5rem 1rem', background: '#991B1B',
-                                                    color: 'white', border: 'none', borderRadius: '6px',
-                                                    fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer'
-                                                }}
+                                                className="mt-4 px-4 py-2 bg-red-900 text-white border-none rounded-md text-sm font-semibold cursor-pointer"
                                             >
                                                 Resolve Issue
                                             </button>
@@ -485,155 +329,116 @@ export default function CampaignsPage() {
                         )}
 
                         {/* Top Stats - SPECIFIC TO CAMPAIGN (Clickable) */}
-                        <div className="grid grid-cols-3 gap-6" style={{ marginBottom: '2.5rem' }}>
+                        <div className="grid grid-cols-3 gap-6 mb-10">
                             <div
-                                className="premium-card hover:shadow-lg"
+                                className="premium-card hover:shadow-lg stat-card-clickable"
                                 onClick={() => navigateToLeads()}
-                                style={{
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s',
-                                    border: '1px solid transparent'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor = '#BFDBFE';
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor = 'transparent';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                }}
                             >
-                                <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Total Leads</div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#111827' }}>{stats ? stats.total : '-'}</div>
-                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view all leads →</div>
+                                <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Total Leads</div>
+                                <div className="text-4xl font-extrabold text-gray-900">{stats ? stats.total : '-'}</div>
+                                <div className="text-xs text-gray-400 mt-2 font-medium">Click to view all leads →</div>
                             </div>
                             <div
-                                className="premium-card hover:shadow-lg"
+                                className="premium-card hover:shadow-lg stat-card-clickable" data-variant="green"
                                 onClick={() => navigateToLeads('active')}
-                                style={{
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s',
-                                    border: '1px solid transparent'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor = '#BBF7D0';
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor = 'transparent';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                }}
                             >
-                                <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Active Execution</div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#16A34A' }}>{stats ? stats.active : '-'}</div>
-                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view active leads →</div>
+                                <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Active Execution</div>
+                                <div className="text-4xl font-extrabold text-green-600">{stats ? stats.active : '-'}</div>
+                                <div className="text-xs text-gray-400 mt-2 font-medium">Click to view active leads →</div>
                             </div>
                             <div
-                                className="premium-card hover:shadow-lg"
+                                className="premium-card hover:shadow-lg stat-card-clickable" data-variant="red"
                                 onClick={() => navigateToLeads('paused')}
-                                style={{
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s',
-                                    border: '1px solid transparent'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor = '#FECACA';
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor = 'transparent';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                }}
                             >
-                                <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Paused</div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#EF4444' }}>{stats ? stats.paused : '-'}</div>
-                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem', fontWeight: 500 }}>Click to view paused leads →</div>
+                                <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Paused</div>
+                                <div className="text-4xl font-extrabold text-red-500">{stats ? stats.paused : '-'}</div>
+                                <div className="text-xs text-gray-400 mt-2 font-medium">Click to view paused leads →</div>
                             </div>
                         </div>
 
                         {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
-                        <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                        <div className="premium-card mb-10">
+                            <div className="mb-6">
+                                <h2 className="text-xl font-bold text-gray-900 mb-1">
                                     Engagement Metrics
                                 </h2>
-                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                                <p className="text-sm text-gray-500">
                                     Campaign-level analytics (informational only, does not affect automated decisions)
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-4 gap-4">
                                 {/* Total Sent */}
-                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
-                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Total Sent
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                                    <div className="text-[1.75rem] font-bold text-gray-900">
                                         {selectedCampaign.total_sent?.toLocaleString() || '0'}
                                     </div>
                                 </div>
 
                                 {/* Opens */}
-                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
-                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                                    <div className="text-blue-800 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Opens
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                                    <div className="text-[1.75rem] font-bold text-blue-900">
                                         {selectedCampaign.open_count?.toLocaleString() || '0'}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
+                                    <div className="text-xs text-blue-500 mt-1 font-semibold">
                                         {selectedCampaign.open_rate ? `${selectedCampaign.open_rate.toFixed(1)}%` : '0%'} rate
                                     </div>
                                 </div>
 
                                 {/* Clicks */}
-                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
-                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                                    <div className="text-green-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Clicks
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                                    <div className="text-[1.75rem] font-bold text-green-700">
                                         {selectedCampaign.click_count?.toLocaleString() || '0'}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
+                                    <div className="text-xs text-green-500 mt-1 font-semibold">
                                         {selectedCampaign.click_rate ? `${selectedCampaign.click_rate.toFixed(1)}%` : '0%'} rate
                                     </div>
                                 </div>
 
                                 {/* Replies */}
-                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
-                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-fuchsia-50 rounded-xl border border-fuchsia-300">
+                                    <div className="text-fuchsia-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Replies
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                                    <div className="text-[1.75rem] font-bold text-fuchsia-700">
                                         {selectedCampaign.reply_count?.toLocaleString() || '0'}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
+                                    <div className="text-xs text-fuchsia-500 mt-1 font-semibold">
                                         {selectedCampaign.reply_rate ? `${selectedCampaign.reply_rate.toFixed(1)}%` : '0%'} rate
                                     </div>
                                 </div>
                             </div>
 
                             {/* Bounce & Unsubscribe Row */}
-                            <div className="grid grid-cols-2 gap-4" style={{ marginTop: '1rem' }}>
+                            <div className="grid grid-cols-2 gap-4 mt-4">
                                 {/* Bounces */}
-                                <div style={{ padding: '1rem', background: '#FEF2F2', borderRadius: '12px', border: '1px solid #FECACA' }}>
-                                    <div style={{ color: '#991B1B', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-red-50 rounded-xl border border-red-200">
+                                    <div className="text-red-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Bounces (HARD SIGNAL)
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#DC2626' }}>
+                                    <div className="text-[1.75rem] font-bold text-red-600">
                                         {selectedCampaign.total_bounced?.toLocaleString() || '0'}
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#EF4444', marginTop: '0.25rem', fontWeight: 600 }}>
+                                    <div className="text-xs text-red-500 mt-1 font-semibold">
                                         {selectedCampaign.bounce_rate ? `${selectedCampaign.bounce_rate.toFixed(1)}%` : '0%'} rate
                                     </div>
                                 </div>
 
                                 {/* Unsubscribes */}
-                                <div style={{ padding: '1rem', background: '#FFFBEB', borderRadius: '12px', border: '1px solid #FDE68A' }}>
-                                    <div style={{ color: '#92400E', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                                    <div className="text-amber-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Unsubscribes
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#B45309' }}>
+                                    <div className="text-[1.75rem] font-bold text-amber-700">
                                         {selectedCampaign.unsubscribed_count?.toLocaleString() || '0'}
                                     </div>
                                 </div>
@@ -645,55 +450,50 @@ export default function CampaignsPage() {
 
                         {/* Mailboxes Section */}
                         <div className="premium-card">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>Connected Mailboxes & Domains</h2>
-                                <div style={{ background: '#F3F4F6', color: '#4B5563', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '600' }}>
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-bold text-gray-900">Connected Mailboxes & Domains</h2>
+                                <div className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-semibold">
                                     {selectedCampaign.mailboxes?.length || 0} Connected
                                 </div>
                             </div>
 
                             {(!selectedCampaign.mailboxes || selectedCampaign.mailboxes.length === 0) ? (
-                                <div style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF', fontStyle: 'italic', fontSize: '0.875rem' }}>
+                                <div className="text-center p-8 text-gray-400 italic text-sm">
                                     No mailboxes linked.
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '420px', overflowY: 'auto' }}>
+                                <div className="flex flex-col gap-2 max-h-[420px] overflow-y-auto">
                                     {/* Column headers */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', padding: '0.5rem 0.75rem', borderBottom: '2px solid #E2E8F0' }}>
-                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Mailbox</span>
-                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '90px' }}>Domain</span>
-                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '72px' }}>Status</span>
-                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', minWidth: '48px', textAlign: 'right' }}>Sent</span>
+                                    <div className="grid gap-3 px-3 py-2 border-b-2 border-slate-200" style={{ gridTemplateColumns: '1fr auto auto auto' }}>
+                                        <span className="text-[0.7rem] font-bold text-slate-400 uppercase">Mailbox</span>
+                                        <span className="text-[0.7rem] font-bold text-slate-400 uppercase min-w-[90px]">Domain</span>
+                                        <span className="text-[0.7rem] font-bold text-slate-400 uppercase min-w-[72px]">Status</span>
+                                        <span className="text-[0.7rem] font-bold text-slate-400 uppercase min-w-[48px] text-right">Sent</span>
                                     </div>
-                                    {selectedCampaign.mailboxes.map((mb: any) => (
-                                        <div key={mb.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', padding: '0.625rem 0.75rem', borderRadius: '8px', background: '#FAFAFA', border: '1px solid #F1F5F9', alignItems: 'center' }}>
+                                    {selectedCampaign.mailboxes.map((mb: Mailbox) => (
+                                        <div key={mb.id} className="grid gap-3 px-3 py-2.5 rounded-lg bg-neutral-50 border border-slate-100 items-center" style={{ gridTemplateColumns: '1fr auto auto auto' }}>
                                             {/* Email — truncated */}
-                                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.8rem', fontWeight: 500, color: '#1E293B' }} title={mb.email}>
+                                            <div className="truncate text-[0.8rem] font-medium text-slate-800" title={mb.email}>
                                                 {mb.email}
                                             </div>
                                             {/* Domain */}
-                                            <div style={{ minWidth: '90px', fontSize: '0.8rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0 }}>
-                                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80px' }} title={mb.domain?.domain}>{mb.domain?.domain}</span>
+                                            <div className="min-w-[90px] text-[0.8rem] text-slate-500 flex items-center gap-1 shrink-0">
+                                                <span className="truncate max-w-[80px]" title={mb.domain?.domain}>{mb.domain?.domain}</span>
                                                 {mb.domain?.status === 'paused' && (
-                                                    <span style={{ color: '#EF4444', fontWeight: 700, fontSize: '0.6rem', background: '#FEF2F2', padding: '1px 5px', borderRadius: '4px', flexShrink: 0 }}>PAUSED</span>
+                                                    <span className="text-red-500 font-bold text-[0.6rem] bg-red-50 px-1.5 py-px rounded shrink-0">PAUSED</span>
                                                 )}
                                             </div>
                                             {/* Status badge */}
-                                            <div style={{ minWidth: '72px', flexShrink: 0 }}>
-                                                <span style={{
-                                                    display: 'inline-block',
+                                            <div className="min-w-[72px] shrink-0">
+                                                <span className="inline-block px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold" style={{
                                                     color: (mb.status === 'active' || mb.status === 'healthy') ? '#166534' : (mb.status === 'warning' ? '#B45309' : '#991B1B'),
                                                     background: (mb.status === 'active' || mb.status === 'healthy') ? '#DCFCE7' : (mb.status === 'warning' ? '#FEF3C7' : '#FEE2E2'),
-                                                    padding: '0.2rem 0.6rem',
-                                                    borderRadius: '999px',
-                                                    fontSize: '0.65rem',
-                                                    fontWeight: 700,
                                                 }}>
                                                     {mb.status?.toUpperCase()}
                                                 </span>
                                             </div>
                                             {/* Sent count */}
-                                            <div style={{ minWidth: '48px', textAlign: 'right', fontSize: '0.8rem', color: '#475569', fontFamily: 'monospace', flexShrink: 0 }}>
+                                            <div className="min-w-[48px] text-right text-[0.8rem] text-slate-600 font-mono shrink-0">
                                                 {mb.window_sent_count ?? 0}
                                             </div>
                                         </div>
@@ -704,9 +504,9 @@ export default function CampaignsPage() {
 
                     </div>
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
-                        <div style={{ fontSize: '3rem' }}>👈</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: '500' }}>Select a campaign to view performance</div>
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4">
+                        <div className="text-5xl">👈</div>
+                        <div className="text-xl font-medium">Select a campaign to view performance</div>
                     </div>
                 )}
             </div>
@@ -725,96 +525,40 @@ export default function CampaignsPage() {
             )}
 
             {/* Sort & Filter Modal */}
-            {showSortModal && (
+            {sortFilter.isOpen && (
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 1000,
-                        padding: '1rem'
-                    }}
-                    onClick={() => setShowSortModal(false)}
+                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-4"
+                    onClick={() => sortFilter.close()}
                 >
                     <div
-                        style={{
-                            background: '#FFFFFF',
-                            borderRadius: '24px',
-                            maxWidth: '500px',
-                            width: '100%',
-                            maxHeight: '90vh',
-                            overflow: 'hidden',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                        }}
+                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderBottom: '1px solid #E5E7EB',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-gray-900 m-0">
                                 ⚙️ Sort & Filter Campaigns
                             </h2>
                             <button
-                                onClick={() => setShowSortModal(false)}
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    fontSize: '1.5rem',
-                                    color: '#9CA3AF',
-                                    cursor: 'pointer',
-                                    padding: '0.25rem',
-                                    lineHeight: 1
-                                }}
+                                onClick={() => sortFilter.close()}
+                                className="bg-transparent border-none text-2xl text-gray-400 cursor-pointer p-1 leading-none"
                             >
                                 ×
                             </button>
                         </div>
 
                         {/* Modal Body */}
-                        <div style={{
-                            padding: '1.5rem',
-                            overflowY: 'auto',
-                            flex: 1
-                        }}>
+                        <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label htmlFor="modal-sort-by" style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
                                 <select
                                     id="modal-sort-by"
-                                    value={tempSortBy}
-                                    onChange={(e) => setTempSortBy(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem 1rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #D1D5DB',
-                                        background: '#FFFFFF',
-                                        color: '#111827',
-                                        fontSize: '0.875rem',
-                                        cursor: 'pointer',
-                                        outline: 'none'
-                                    }}
+                                    value={sortFilter.temp.sortBy}
+                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
                                 >
                                     <option value="name_asc">Name (A-Z)</option>
                                     <option value="name_desc">Name (Z-A)</option>
@@ -830,148 +574,71 @@ export default function CampaignsPage() {
                             </div>
 
                             {/* Total Sent Range */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Total Sent Range
                                 </label>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="number"
                                         placeholder="Min"
-                                        value={tempMinSent}
-                                        onChange={(e) => setTempMinSent(e.target.value)}
+                                        value={sortFilter.temp.minSent}
+                                        onChange={(e) => sortFilter.setTempValue('minSent', e.target.value)}
                                         min="0"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
-                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <span className="text-gray-500 text-base font-medium">→</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
-                                        value={tempMaxSent}
-                                        onChange={(e) => setTempMaxSent(e.target.value)}
+                                        value={sortFilter.temp.maxSent}
+                                        onChange={(e) => sortFilter.setTempValue('maxSent', e.target.value)}
                                         min="0"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
                                 </div>
                             </div>
 
                             {/* Open Rate Range */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Open Rate Range (%)
                                 </label>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="number"
                                         placeholder="Min"
-                                        value={tempMinOpenRate}
-                                        onChange={(e) => setTempMinOpenRate(e.target.value)}
+                                        value={sortFilter.temp.minOpenRate}
+                                        onChange={(e) => sortFilter.setTempValue('minOpenRate', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
-                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <span className="text-gray-500 text-base font-medium">→</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
-                                        value={tempMaxOpenRate}
-                                        onChange={(e) => setTempMaxOpenRate(e.target.value)}
+                                        value={sortFilter.temp.maxOpenRate}
+                                        onChange={(e) => sortFilter.setTempValue('maxOpenRate', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderTop: '1px solid #E5E7EB',
-                            display: 'flex',
-                            gap: '0.75rem'
-                        }}>
+                        <div className="p-6 border-t border-gray-200 flex gap-3">
                             <button
                                 onClick={handleClearFilters}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #D1D5DB',
-                                    background: '#FFFFFF',
-                                    color: '#374151',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-gray-50"
+                                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-gray-50"
                             >
                                 Clear All
                             </button>
                             <button
                                 onClick={handleApplySortFilter}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    background: '#3B82F6',
-                                    color: '#FFFFFF',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-blue-600"
+                                className="flex-1 px-4 py-3 rounded-xl border-none bg-blue-500 text-white text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-600"
                             >
                                 Done
                             </button>

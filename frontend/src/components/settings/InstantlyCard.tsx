@@ -1,14 +1,17 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
+import type { SettingEntry } from '@/types/api';
 import CopyButton from '@/components/CopyButton';
 
 export default function InstantlyCard({
     webhookUrl,
     onTriggerSync,
+    settings,
 }: {
     webhookUrl?: string;
     onTriggerSync?: () => Promise<void>;
+    settings?: SettingEntry[];
 }) {
     const [apiKey, setApiKey] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,16 +19,21 @@ export default function InstantlyCard({
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
-        apiClient<any>('/api/settings')
+        if (settings) {
+            const keySetting = settings.find(s => s.key === 'INSTANTLY_API_KEY');
+            if (keySetting) setApiKey(keySetting.value);
+            return;
+        }
+        apiClient<SettingEntry[]>('/api/settings')
             .then(data => {
                 if (data) {
-                    const settings = Array.isArray(data) ? data : [];
-                    const keySetting = settings.find((s: any) => s.key === 'INSTANTLY_API_KEY');
+                    const arr = Array.isArray(data) ? data : [];
+                    const keySetting = arr.find((s: SettingEntry) => s.key === 'INSTANTLY_API_KEY');
                     if (keySetting) setApiKey(keySetting.value);
                 }
             })
             .catch(err => console.error('[InstantlyCard] Failed to fetch settings', err));
-    }, []);
+    }, [settings]);
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -48,19 +56,15 @@ export default function InstantlyCard({
     return (
         <div>
             {/* Header */}
-            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{
-                    width: '40px', height: '40px', background: '#fff', borderRadius: '10px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9',
-                }}>
+            <div className="mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 bg-white rounded-[10px] flex items-center justify-center shadow-sm border border-slate-100">
                     <img src="/instantly.png" alt="Instantly" width={24} height={24} />
                 </div>
-                <div style={{ flex: 1 }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1E293B' }}>
+                <div className="flex-1">
+                    <h2 className="text-xl font-bold text-slate-800">
                         Instantly Integration
                     </h2>
-                    <p style={{ fontSize: '0.875rem', color: '#64748B' }}>
+                    <p className="text-sm text-slate-500">
                         Connect your Instantly account to sync campaigns, monitor deliverability, and auto-heal infrastructure.
                     </p>
                 </div>
@@ -68,48 +72,30 @@ export default function InstantlyCard({
                     href="/docs/instantly-integration"
                     target="_blank"
                     title="View integration guide"
-                    style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        background: '#F1F5F9',
-                        color: '#64748B',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textDecoration: 'none',
-                        flexShrink: 0,
-                        transition: 'background 0.15s, color 0.15s',
-                    }}
-                    onMouseOver={(e) => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#FFFFFF'; }}
-                    onMouseOut={(e) => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#64748B'; }}
+                    className="help-link-hover w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 no-underline shrink-0"
                 >
-                    <span style={{ fontSize: '1rem' }}>❓</span>
+                    <span className="text-base">❓</span>
                 </a>
             </div>
 
             {/* Status message */}
             {msg && (
-                <div style={{
-                    padding: '1rem', marginBottom: '1.5rem', borderRadius: '12px', fontSize: '0.9rem',
+                <div className="p-4 mb-6 rounded-xl text-[0.9rem]" style={{
                     background: isError ? '#FEF2F2' : '#F0FDF4',
                     color: isError ? '#991B1B' : '#166534',
-                    border: `1px solid ${isError ? '#FECACA' : '#BBF7D0'}`,
+                    border: `1px solid ${isError ? '#FECACA' : '#BBF7D0'}`
                 }}>
                     {msg}
                 </div>
             )}
 
             {/* API Key form */}
-            <form onSubmit={handleSave} style={{ marginBottom: '2rem' }}>
-                <div style={{ marginBottom: '1rem' }}>
-                    <label style={{
-                        display: 'block', marginBottom: '0.5rem',
-                        fontSize: '0.875rem', fontWeight: 600, color: '#374151',
-                    }}>
+            <form onSubmit={handleSave} className="mb-8">
+                <div className="mb-4">
+                    <label className="block mb-2 text-sm font-semibold text-gray-700">
                         Instantly API V2 Key
                     </label>
-                    <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '0.5rem' }}>
+                    <p className="text-xs text-slate-400 mb-2">
                         Generate at Instantly → Settings → API Keys. Requires Growth plan or above.
                     </p>
                     <input
@@ -118,7 +104,6 @@ export default function InstantlyCard({
                         value={apiKey}
                         onChange={e => setApiKey(e.target.value)}
                         className="premium-input w-full"
-                        style={{ width: '100%' }}
                     />
                 </div>
                 <button type="submit" className="premium-btn w-full" disabled={loading}>
@@ -127,12 +112,9 @@ export default function InstantlyCard({
             </form>
 
             {/* Webhook Endpoint */}
-            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '1.5rem' }}>
+            <div className="border-t border-slate-100 pt-6">
                 <div className="flex justify-between items-center mb-2">
-                    <h3 style={{
-                        fontSize: '0.875rem', fontWeight: 700,
-                        color: '#64748B', textTransform: 'uppercase',
-                    }}>
+                    <h3 className="text-sm font-bold text-slate-500 uppercase">
                         Webhook Endpoint
                     </h3>
                     {webhookUrl && (
@@ -144,18 +126,14 @@ export default function InstantlyCard({
                     )}
                 </div>
 
-                <div style={{
-                    background: '#F8FAFC', padding: '1rem', borderRadius: '8px',
-                    border: '1px solid #E2E8F0', wordBreak: 'break-all',
-                    fontFamily: 'monospace', fontSize: '0.8rem', color: '#2563EB',
-                }}>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 break-all font-mono text-[0.8rem] text-blue-600">
                     {webhookUrl || 'Loading...'}
                 </div>
 
-                <p style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.5rem', lineHeight: 1.5 }}>
+                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                     Paste this URL in Instantly → Settings → Integrations → Webhooks.
                     Select all events: email sent, opened, clicked, bounced, replied, unsubscribed.
-                    Include the <code style={{ fontFamily: 'monospace', fontWeight: 600 }}>x-organization-id</code> header.
+                    Include the <code className="font-mono font-semibold">x-organization-id</code> header.
                 </p>
 
                 {/* Manual sync button */}
@@ -170,45 +148,28 @@ export default function InstantlyCard({
                             }
                         }}
                         disabled={loading || syncing}
-                        className="premium-btn"
-                        style={{
-                            width: '100%', marginTop: '1rem',
-                            background: '#FFFFFF', color: '#1E293B',
-                            border: '1px solid #E2E8F0',
-                        }}
+                        className="premium-btn w-full mt-4 bg-white text-slate-800 border border-slate-200"
                     >
                         {syncing ? 'Syncing...' : 'Trigger Manual Sync'}
                     </button>
                 )}
 
                 {/* 24/7 monitoring info */}
-                <div style={{
-                    marginTop: '1.5rem', padding: '1rem',
-                    background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
-                    border: '2px solid #2563EB', borderRadius: '10px',
-                }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                        <div style={{
-                            width: '32px', height: '32px', borderRadius: '8px',
-                            background: '#2563EB', display: 'flex', alignItems: 'center',
-                            justifyContent: 'center', fontSize: '1rem', flexShrink: 0,
-                        }}>
+                <div className="mt-6 p-4 rounded-[10px] border-2 border-blue-600" style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)' }}>
+                    <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-base shrink-0">
                             ⚡
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem' }}>
-                                <h4 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#1E40AF', margin: 0 }}>
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1.5">
+                                <h4 className="text-sm font-extrabold text-blue-800 m-0">
                                     24/7 Auto-Sync Active
                                 </h4>
-                                <span style={{
-                                    padding: '0.125rem 0.5rem', background: '#2563EB',
-                                    color: 'white', borderRadius: '999px', fontSize: '0.5rem',
-                                    fontWeight: 700, letterSpacing: '0.05em',
-                                }}>
+                                <span className="py-0.5 px-2 bg-blue-600 text-white rounded-full text-[0.5rem] font-bold tracking-wide">
                                     LIVE
                                 </span>
                             </div>
-                            <p style={{ fontSize: '0.75rem', color: '#1D4ED8', margin: 0, lineHeight: 1.6 }}>
+                            <p className="text-xs text-blue-700 m-0 leading-relaxed">
                                 Your Instantly data syncs automatically every <strong>20 minutes</strong>.
                                 Manual sync is available for immediate updates after changes.
                             </p>

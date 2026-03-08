@@ -8,6 +8,8 @@ import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { useDashboard } from '@/contexts/DashboardContext';
+import type { AssessmentStatusResponse, Organization, UnreadCountResponse } from '@/types/api';
 
 export default function DashboardShell({
     children,
@@ -16,14 +18,10 @@ export default function DashboardShell({
 }) {
     const router = useRouter();
     const pathname = usePathname();
+    const { user, subscription } = useDashboard();
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [userName, setUserName] = useState<string>('');
-    const [userEmail, setUserEmail] = useState<string>('');
-    const [userRole, setUserRole] = useState<string>('');
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
-    const [subscription, setSubscription] = useState<{ status?: string; trialEndsAt?: string } | null>(null);
-    const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
@@ -36,15 +34,15 @@ export default function DashboardShell({
     const [ticketSubmitting, setTicketSubmitting] = useState(false);
     const [ticketResult, setTicketResult] = useState<{ success: boolean; ticketId?: string; error?: string } | null>(null);
 
-    // Poll assessment status every 5 seconds
+    // Poll assessment status every 15 seconds
     useEffect(() => {
         let interval: NodeJS.Timeout;
         let wasInProgress = false;
 
         const checkAssessment = () => {
-            apiClient<any>('/api/assessment/status')
+            apiClient<AssessmentStatusResponse>('/api/assessment/status')
                 .then(data => {
-                    const inProgress = data?.data?.inProgress ?? false;
+                    const inProgress = Boolean(data?.inProgress);
                     setAssessmentInProgress(inProgress);
 
                     // If assessment just finished, trigger a full data refresh
@@ -63,63 +61,49 @@ export default function DashboardShell({
         };
 
         checkAssessment();
-        interval = setInterval(checkAssessment, 5000);
+        interval = setInterval(checkAssessment, 15000);
 
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        // Fetch current user info including role
-        apiClient<any>('/api/user/me')
-            .then(data => {
-                if (data?.success && data.data) {
-                    // Extract first name from full name, or use email if no name
-                    const fullName = data.data.name || data.data.email;
-                    const firstName = fullName.split(' ')[0];
-                    setUserName(firstName);
-                    setUserEmail(data.data.email);
-                    setUserRole(data.data.role);
-                }
-            })
-            .catch(err => console.error('[Layout] Failed to fetch user info', err));
+    // Derive user fields from context
+    const userName = user ? user.name.split(' ')[0] : '';
+    const userEmail = user?.email || '';
+    const userRole = user?.role || '';
 
+    // Derive trial days remaining from context subscription
+    const daysRemaining = (() => {
+        if (!subscription?.trialEndsAt) return null;
+        const diff = new Date(subscription.trialEndsAt).getTime() - Date.now();
+        return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+    })();
+
+    // Show upgrade modal for expired/past_due/canceled subscriptions
+    useEffect(() => {
+        if (subscription && ['expired', 'past_due', 'canceled'].includes(subscription.status)) {
+            setShowUpgradeModal(true);
+        }
+    }, [subscription]);
+
+    useEffect(() => {
         // Fetch organization info including system_mode
-        apiClient<any>('/api/organization').then((response) => {
-            const org = response.data || response; // Handle wrapped response
+        apiClient<Organization & { data?: Organization }>('/api/organization').then((response) => {
+            const org = response.data || response;
             if (org?.system_mode) setSystemMode(org.system_mode);
             if (org?.name) setOrgName(org.name);
         }).catch(err => console.error('[Layout] Failed to fetch organization info', err));
 
-
-
         // Fetch unread notification count
         const fetchUnreadCount = () => {
-            apiClient<any>('/api/dashboard/notifications/unread-count')
+            apiClient<UnreadCountResponse & { data?: UnreadCountResponse }>('/api/dashboard/notifications/unread-count')
                 .then(data => {
-                    if (data?.data?.count !== undefined) setUnreadCount(data.data.count);
+                    const count = data?.data?.count ?? data?.count;
+                    if (count !== undefined) setUnreadCount(count);
                 })
                 .catch(err => console.error('[Layout] Failed to fetch unread count', err));
         };
         fetchUnreadCount();
-        const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30s
-
-        // Fetch subscription status for trial banner
-        apiClient<any>('/api/billing/subscription')
-            .then(data => {
-                setSubscription(data.subscription);
-                if (data.subscription?.status === 'trialing' && data.subscription?.trialEndsAt) {
-                    const endDate = new Date(data.subscription.trialEndsAt);
-                    const now = new Date();
-                    const diff = endDate.getTime() - now.getTime();
-                    const days = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-                    setDaysRemaining(days);
-                }
-                // Show upgrade modal for expired/past_due/canceled subscriptions
-                if (['expired', 'past_due', 'canceled'].includes(data.subscription?.status)) {
-                    setShowUpgradeModal(true);
-                }
-            })
-            .catch(err => console.error('[Layout] Failed to fetch subscription status', err));
+        const interval = setInterval(fetchUnreadCount, 30000);
 
         return () => clearInterval(interval);
     }, []);
@@ -140,12 +124,12 @@ export default function DashboardShell({
         setTicketSubmitting(true);
         setTicketResult(null);
         try {
-            const data = await apiClient<any>('/api/dashboard/tickets', {
+            const data = await apiClient<{ success?: boolean; data?: { ticket_id: string }; error?: string }>('/api/dashboard/tickets', {
                 method: 'POST',
                 body: JSON.stringify(ticketForm),
             });
             if (data?.success) {
-                setTicketResult({ success: true, ticketId: data.data.ticket_id });
+                setTicketResult({ success: true, ticketId: data.data?.ticket_id });
                 setTicketForm({ subject: '', description: '', category: 'general' });
             } else {
                 setTicketResult({ success: false, error: data?.error || 'Failed to submit ticket' });
@@ -158,129 +142,72 @@ export default function DashboardShell({
     };
 
     return (
-        <div className="light-theme" style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#F5F8FF' }}>
+        <div className="light-theme flex h-screen overflow-hidden bg-[#F5F8FF]">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">Skip to main content</a>
             {/* Ambient Background Effects */}
-            <div className="hero-blur pointer-events-none" style={{ opacity: 0.3, zIndex: 0 }}>
-                <div className="blur-blob blur-purple" style={{ width: '400px', height: '400px', top: '-10%', left: '-10%' }}></div>
-                <div className="blur-blob blur-blue" style={{ width: '400px', height: '400px', bottom: '-10%', right: '-10%' }}></div>
+            <div className="hero-blur pointer-events-none opacity-30 z-0">
+                <div className="blur-blob blur-purple w-[400px] h-[400px] -top-[10%] -left-[10%]"></div>
+                <div className="blur-blob blur-blue w-[400px] h-[400px] -bottom-[10%] -right-[10%]"></div>
             </div>
 
 
             {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
-            <div style={{
-                position: 'relative',
-                flexShrink: 0,
+            <div className="relative shrink-0 m-2 z-20" style={{
                 width: isCollapsed ? '70px' : '210px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                margin: '0.5rem',
-                zIndex: 20
             }}>
                 {/* Toggle Button — positioned on wrapper edge, outside aside */}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="absolute -right-[14px] top-[48px] border-2 border-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer text-white z-40 hover:scale-110"
                     style={{
-                        position: 'absolute',
-                        right: '-14px',
-                        top: '48px',
                         background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                        border: '2px solid #fff',
-                        borderRadius: '50%',
-                        width: '28px',
-                        height: '28px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
                         boxShadow: '0 2px 8px rgba(99, 102, 241, 0.4)',
-                        color: '#fff',
-                        zIndex: 40,
                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
-                    className="hover:scale-110"
                 >
                     {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
                 </button>
 
-                <aside style={{
-                    width: '100%',
-                    height: '100%',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    backdropFilter: 'blur(12px)',
-                    borderRight: '1px solid var(--border)',
-                    padding: '1.5rem 1rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                    overflowY: 'auto',
-                    borderRadius: '24px',
-                    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.05)',
+                <aside className="w-full h-full bg-white/80 backdrop-blur-[12px] border-r border-[var(--border)] py-6 px-4 flex flex-col gap-4 overflow-y-auto rounded-3xl shadow-md relative" style={{
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    position: 'relative'
                 }}>
 
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
+                    <div className="flex items-center text-xl font-extrabold -tracking-[0.025em] text-gray-900 overflow-hidden whitespace-nowrap min-h-[40px] py-1" style={{
                         gap: isCollapsed ? 0 : '12px',
-                        fontSize: '1.25rem',
-                        fontWeight: '800',
-                        letterSpacing: '-0.025em',
-                        color: '#111827',
                         justifyContent: isCollapsed ? 'center' : 'flex-start',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        minHeight: '40px',
-                        padding: '0.25rem 0'
                     }}>
-                        <div style={{ flexShrink: 0, width: '32px', height: '32px' }}>
+                        <div className="shrink-0 w-8 h-8">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} style={{ display: 'block' }} onError={(e) => {
+                            <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} className="block" onError={(e) => {
                                 // Fallback: show a branded icon if image fails to load
                                 const target = e.currentTarget;
                                 target.style.display = 'none';
                                 if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
                             }} />
-                            <div style={{ display: 'none', width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem', fontWeight: '900' }}>S</div>
+                            <div className="hidden w-8 h-8 rounded-lg items-center justify-center text-white text-[1.1rem] font-black" style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)' }}>S</div>
                         </div>
-                        <span style={{
+                        <span className="overflow-hidden transition-opacity duration-200 bg-clip-text" style={{
                             opacity: isCollapsed ? 0 : 1,
                             width: isCollapsed ? 0 : 'auto',
-                            transition: 'opacity 0.2s',
-                            overflow: 'hidden',
                             background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
                         }}>
                             Superkabe
                         </span>
                     </div>
 
-                    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <nav className="flex flex-col gap-2">
                         <Link href="/dashboard" className="nav-link" title={isCollapsed ? "Overview" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📊</span>
+                            <span className="text-base min-w-[24px] text-center">📊</span>
                             {!isCollapsed && <span>Overview</span>}
                         </Link>
-                        <Link href="/dashboard/notifications" className="nav-link" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', position: 'relative' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center', position: 'relative' }}>
+                        <Link href="/dashboard/notifications" className="nav-link relative" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span className="text-base min-w-[24px] text-center relative">
                                 🔔
                                 {unreadCount > 0 && (
-                                    <span style={{
-                                        position: 'absolute',
-                                        top: '-4px',
-                                        right: '-6px',
-                                        background: '#EF4444',
-                                        color: '#FFFFFF',
-                                        fontSize: '0.6rem',
-                                        fontWeight: 700,
-                                        minWidth: '16px',
-                                        height: '16px',
-                                        borderRadius: '999px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: '0 4px',
-                                        lineHeight: 1,
+                                    <span className="absolute -top-1 -right-1.5 bg-red-500 text-white text-[0.6rem] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-1 leading-none" style={{
                                         boxShadow: '0 1px 3px rgba(239,68,68,0.4)'
                                     }}>
                                         {unreadCount > 99 ? '99+' : unreadCount}
@@ -291,91 +218,88 @@ export default function DashboardShell({
                         </Link>
 
                         {!isCollapsed && (
-                            <div style={{ paddingLeft: '1rem', marginTop: '0.75rem', marginBottom: '0.25rem', fontSize: '0.65rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                            <div className="pl-4 mt-3 mb-1 text-[0.65rem] text-gray-400 uppercase tracking-[0.1em] font-bold whitespace-nowrap">
                                 Monitoring
                             </div>
                         )}
-                        {isCollapsed && <div style={{ height: '0.75rem' }} />}
+                        {isCollapsed && <div className="h-3" />}
 
                         <Link href="/dashboard/leads" className="nav-link" title={isCollapsed ? "Leads" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>👥</span>
+                            <span className="text-base min-w-[24px] text-center">👥</span>
                             {!isCollapsed && <span>Leads</span>}
                         </Link>
                         <Link href="/dashboard/campaigns" className="nav-link" title={isCollapsed ? "Campaigns" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🚀</span>
+                            <span className="text-base min-w-[24px] text-center">🚀</span>
                             {!isCollapsed && <span>Campaigns</span>}
                         </Link>
                         <Link href="/dashboard/mailboxes" className="nav-link" title={isCollapsed ? "Mailboxes" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📫</span>
+                            <span className="text-base min-w-[24px] text-center">📫</span>
                             {!isCollapsed && <span>Mailboxes</span>}
                         </Link>
                         <Link href="/dashboard/domains" className="nav-link" title={isCollapsed ? "Domains" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🌐</span>
+                            <span className="text-base min-w-[24px] text-center">🌐</span>
                             {!isCollapsed && <span>Domains</span>}
                         </Link>
                         <Link href="/dashboard/infrastructure" className="nav-link" title={isCollapsed ? "Infra Health" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🛡️</span>
+                            <span className="text-base min-w-[24px] text-center">🛡️</span>
                             {!isCollapsed && <span>Infra Health</span>}
                         </Link>
                         <Link href="/dashboard/analytics" className="nav-link" title={isCollapsed ? "Analytics" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📈</span>
+                            <span className="text-base min-w-[24px] text-center">📈</span>
                             {!isCollapsed && <span>Analytics</span>}
                         </Link>
                         <Link href="/dashboard/load-balancing" className="nav-link" title={isCollapsed ? "Load Balancing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>⚖️</span>
+                            <span className="text-base min-w-[24px] text-center">⚖️</span>
                             {!isCollapsed && <span>Load Balancing</span>}
                         </Link>
                         <Link href="/dashboard/predictive-risks" className="nav-link" title={isCollapsed ? "Predictive Risks" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🔮</span>
+                            <span className="text-base min-w-[24px] text-center">🔮</span>
                             {!isCollapsed && <span>Predictive Risks</span>}
                         </Link>
 
                         {!isCollapsed && (
-                            <div style={{ paddingLeft: '1rem', marginTop: '0.75rem', marginBottom: '0.25rem', fontSize: '0.65rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', whiteSpace: 'nowrap' }}>
+                            <div className="pl-4 mt-3 mb-1 text-[0.65rem] text-gray-400 uppercase tracking-[0.1em] font-bold whitespace-nowrap">
                                 System
                             </div>
                         )}
-                        {isCollapsed && <div style={{ height: '0.75rem' }} />}
+                        {isCollapsed && <div className="h-3" />}
 
                         <Link href="/dashboard/configuration" className="nav-link" title={isCollapsed ? "Routing Config" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>⚙️</span>
+                            <span className="text-base min-w-[24px] text-center">⚙️</span>
                             {!isCollapsed && <span>Routing Config</span>}
                         </Link>
                         <Link href="/dashboard/audit" className="nav-link" title={isCollapsed ? "Audit Log" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>📜</span>
+                            <span className="text-base min-w-[24px] text-center">📜</span>
                             {!isCollapsed && <span>Audit Log</span>}
                         </Link>
                         {/* System Status - ADMIN ONLY */}
                         {userRole === 'admin' && (
                             <Link href="/dashboard/status" className="nav-link" title={isCollapsed ? "System Status" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                                <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🟢</span>
+                                <span className="text-base min-w-[24px] text-center">🟢</span>
                                 {!isCollapsed && <span>System Status</span>}
                             </Link>
                         )}
                         <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>💳</span>
+                            <span className="text-base min-w-[24px] text-center">💳</span>
                             {!isCollapsed && <span>Billing</span>}
                         </Link>
                         <Link href="/dashboard/settings" className="nav-link" title={isCollapsed ? "Settings" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span style={{ fontSize: '1rem', minWidth: '24px', textAlign: 'center' }}>🔧</span>
+                            <span className="text-base min-w-[24px] text-center">🔧</span>
                             {!isCollapsed && <span>Settings</span>}
                         </Link>
                     </nav>
 
-                    <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div className="mt-auto flex flex-col gap-2">
                         {!isCollapsed && (
-                            <Link href="/dashboard/profile" style={{ textDecoration: 'none' }}>
-                                <div style={{ padding: '0.75rem', background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)', borderRadius: '12px', border: '1px solid #DBEAFE', transition: 'all 0.3s', cursor: 'pointer' }}
-                                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.15)'; e.currentTarget.style.borderColor = '#93C5FD'; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#DBEAFE'; }}
-                                >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <Link href="/dashboard/profile" className="no-underline">
+                                <div className="profile-card-hover p-3 rounded-xl border border-blue-200 cursor-pointer" style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)' }}>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}>
                                             <User size={16} color="#fff" />
                                         </div>
-                                        <div style={{ overflow: 'hidden' }}>
-                                            <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1E40AF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{orgName || 'My Organization'}</div>
-                                            <div style={{ fontSize: '0.7rem', color: '#60A5FA', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>
+                                        <div className="overflow-hidden">
+                                            <div className="text-sm font-semibold text-blue-800 truncate">{orgName || 'My Organization'}</div>
+                                            <div className="text-[0.7rem] text-blue-400 truncate">{userEmail}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -384,23 +308,13 @@ export default function DashboardShell({
 
                         <button
                             onClick={handleLogout}
-                            className="nav-link"
+                            className="nav-link bg-red-50 border border-red-200 w-full text-left cursor-pointer text-red-600 text-[0.8rem] flex items-center gap-3"
                             style={{
-                                background: '#FEF2F2',
-                                border: '1px solid #FECACA',
-                                width: '100%',
-                                textAlign: 'left',
-                                cursor: 'pointer',
-                                color: '#DC2626',
-                                fontSize: '0.8rem',
-                                display: 'flex',
-                                alignItems: 'center',
                                 justifyContent: isCollapsed ? 'center' : 'flex-start',
-                                gap: '0.75rem'
                             }}
                             title={isCollapsed ? "Log Out" : ""}
                         >
-                            <div style={{ minWidth: '24px', display: 'flex', justifyContent: 'center' }}>
+                            <div className="min-w-[24px] flex justify-center">
                                 <LogOut size={20} />
                             </div>
                             {!isCollapsed && <span>Log Out</span>}
@@ -409,45 +323,23 @@ export default function DashboardShell({
                 </aside>
             </div>
 
-            <main className="scrollbar-hide" style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                overflowY: 'auto',
-                zIndex: 10
-            }}>
+            <main id="main-content" className="scrollbar-hide flex-1 flex flex-col overflow-y-auto z-10">
                 {/* Observe Mode Warning Banner */}
                 {systemMode === 'observe' && !observeBannerDismissed && (
-                    <div style={{
+                    <div className="flex items-center justify-between gap-4 sticky top-0 z-30 shadow-md" style={{
                         background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
                         borderBottom: '3px solid #F59E0B',
                         padding: '1rem 1.5rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '1rem',
-                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                        position: 'sticky',
-                        top: 0,
-                        zIndex: 30
                     }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
-                            <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+                        <div className="flex items-center gap-4 flex-1">
+                            <span className="text-2xl">⚠️</span>
                             <div>
-                                <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 700, marginBottom: '0.25rem' }}>
+                                <p className="m-0 text-[0.9rem] text-[#92400E] font-bold mb-1">
                                     Observe Mode Active - Limited Protection
                                 </p>
-                                <p style={{ margin: 0, fontSize: '0.8rem', color: '#78350F', lineHeight: '1.4' }}>
+                                <p className="m-0 text-[0.8rem] text-[#78350F] leading-[1.4]">
                                     Infrastructure pausing is active, but the execution gate allows new leads through even with issues.{' '}
-                                    <Link href="/dashboard/settings" style={{
-                                        color: '#78350F',
-                                        textDecoration: 'underline',
-                                        fontWeight: 700,
-                                        transition: 'color 0.2s'
-                                    }}
-                                        onMouseEnter={(e) => e.currentTarget.style.color = '#451A03'}
-                                        onMouseLeave={(e) => e.currentTarget.style.color = '#78350F'}
-                                    >
+                                    <Link href="/dashboard/settings" className="banner-link-hover text-[#78350F] underline font-bold">
                                         Switch to Enforce Mode for full protection →
                                     </Link>
                                 </p>
@@ -455,28 +347,7 @@ export default function DashboardShell({
                         </div>
                         <button
                             onClick={() => setObserveBannerDismissed(true)}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#92400E',
-                                cursor: 'pointer',
-                                fontSize: '1.25rem',
-                                padding: '0.25rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRadius: '4px',
-                                transition: 'all 0.2s',
-                                width: '28px',
-                                height: '28px',
-                                flexShrink: 0
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#FDE047';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                            }}
+                            className="banner-dismiss-hover bg-transparent border-none text-[#92400E] cursor-pointer text-xl p-1 flex items-center justify-center rounded w-7 h-7 shrink-0"
                             title="Dismiss (session only)"
                         >
                             ✕
@@ -486,76 +357,25 @@ export default function DashboardShell({
 
                 {/* Infrastructure Assessment Progress Overlay */}
                 {assessmentInProgress && (
-                    <div style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        backdropFilter: 'blur(4px)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 100
-                    }}>
-                        <div style={{
-                            background: 'white',
-                            borderRadius: '20px',
-                            padding: '2.5rem 3rem',
-                            maxWidth: '440px',
-                            width: '90%',
-                            textAlign: 'center',
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[100]">
+                        <div className="bg-white rounded-[20px] px-12 py-10 max-w-[440px] w-[90%] text-center" style={{
                             boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
                             animation: 'slideIn 0.3s ease-out'
                         }}>
-                            <div style={{
-                                width: '64px',
-                                height: '64px',
-                                margin: '0 auto 1.5rem',
-                                borderRadius: '50%',
+                            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{
                                 background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
                             }}>
-                                <div style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    border: '4px solid #E0E7FF',
-                                    borderTop: '4px solid #6366F1',
-                                    borderRadius: '50%',
+                                <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-500 rounded-full" style={{
                                     animation: 'spin 1s linear infinite'
                                 }} />
                             </div>
-                            <h3 style={{
-                                margin: '0 0 0.5rem',
-                                fontSize: '1.25rem',
-                                fontWeight: 700,
-                                color: '#1E1B4B'
-                            }}>
+                            <h3 className="m-0 mb-2 text-xl font-bold text-[#1E1B4B]">
                                 Infrastructure Assessment Running
                             </h3>
-                            <p style={{
-                                margin: '0 0 1.5rem',
-                                fontSize: '0.9rem',
-                                color: '#6B7280',
-                                lineHeight: 1.5
-                            }}>
+                            <p className="m-0 mb-6 text-[0.9rem] text-gray-500 leading-normal">
                                 Checking DNS records, bounce rates, and mailbox health across all domains. This takes a moment — data will refresh automatically when complete.
                             </p>
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '0.5rem',
-                                padding: '0.75rem 1rem',
-                                background: '#F5F3FF',
-                                borderRadius: '12px',
-                                fontSize: '0.8rem',
-                                color: '#7C3AED',
-                                fontWeight: 600
-                            }}>
+                            <div className="flex items-center justify-center gap-2 p-3 px-4 bg-[#F5F3FF] rounded-xl text-[0.8rem] text-[#7C3AED] font-semibold">
                                 <span style={{ animation: 'pulse 1.5s infinite' }}>●</span>
                                 Assessment in progress...
                             </div>
@@ -565,87 +385,35 @@ export default function DashboardShell({
 
                 {/* Assessment Complete Flash */}
                 {assessmentJustFinished && !assessmentInProgress && (
-                    <div style={{
-                        position: 'fixed',
-                        top: '1rem',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                    <div className="fixed top-4 left-1/2 -translate-x-1/2 border-2 border-emerald-400 rounded-2xl p-4 px-6 flex items-center gap-3 z-[100]" style={{
                         background: 'linear-gradient(135deg, #ECFDF5, #D1FAE5)',
-                        border: '2px solid #34D399',
-                        borderRadius: '16px',
-                        padding: '1rem 1.5rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
                         boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                        zIndex: 100,
                         animation: 'slideIn 0.3s ease-out'
                     }}>
-                        <span style={{ fontSize: '1.25rem' }}>✓</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#065F46' }}>Assessment complete — data refreshed</span>
+                        <span className="text-xl">✓</span>
+                        <span className="text-[0.9rem] font-semibold text-[#065F46]">Assessment complete — data refreshed</span>
                     </div>
                 )}
 
                 {/* Trial Countdown Floating Popup */}
                 {subscription?.status === 'trialing' && daysRemaining !== null && !trialBannerDismissed && (
-                    <div style={{
-                        position: 'fixed',
-                        top: '1rem',
-                        right: '1rem',
+                    <div className="fixed top-4 right-4 border-2 border-yellow-400 rounded-2xl p-4 px-5 flex items-center gap-4 z-50 max-w-[400px]" style={{
                         background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE047 100%)',
-                        border: '2px solid #FACC15',
-                        borderRadius: '16px',
-                        padding: '1rem 1.25rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
                         boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                        zIndex: 50,
-                        maxWidth: '400px',
                         animation: 'slideIn 0.3s ease-out'
                     }}>
-                        <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>⏰</span>
-                        <div style={{ flex: 1 }}>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400E', fontWeight: 600, marginBottom: '0.25rem' }}>
-                                Trial ends in <strong style={{ fontSize: '1rem', color: '#78350F' }}>{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>
+                        <span className="text-2xl shrink-0">⏰</span>
+                        <div className="flex-1">
+                            <p className="m-0 text-[0.9rem] text-[#92400E] font-semibold mb-1">
+                                Trial ends in <strong className="text-base text-[#78350F]">{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>
                             </p>
-                            <Link href="/dashboard/billing" style={{
-                                fontSize: '0.8rem',
-                                color: '#78350F',
-                                textDecoration: 'underline',
-                                fontWeight: 700,
-                                transition: 'color 0.2s'
-                            }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = '#451A03'}
-                                onMouseLeave={(e) => e.currentTarget.style.color = '#78350F'}
-                            >
+                            <Link href="/dashboard/billing" className="banner-link-hover text-[0.8rem] text-[#78350F] underline font-bold">
                                 Upgrade now →
                             </Link>
                         </div>
                         <button
                             onClick={() => setTrialBannerDismissed(true)}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#92400E',
-                                cursor: 'pointer',
-                                fontSize: '1.25rem',
-                                padding: '0.25rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRadius: '50%',
-                                transition: 'all 0.2s',
-                                width: '28px',
-                                height: '28px',
-                                flexShrink: 0
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#FDE047';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                            }}
+                            className="banner-dismiss-hover bg-transparent border-none text-[#92400E] cursor-pointer text-xl p-1 flex items-center justify-center rounded-full w-7 h-7 shrink-0"
                             title="Dismiss"
                         >
                             ✕
@@ -653,7 +421,7 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                <div className="container" style={{ minHeight: '100%', paddingBottom: '4rem', padding: '0.5rem 1rem 0 1.5rem' }}>
+                <div className="container min-h-full pt-2 pr-4 pb-0 pl-6">
                     <ErrorBoundary>
                         {children}
                     </ErrorBoundary>
@@ -667,84 +435,52 @@ export default function DashboardShell({
             {/* Raise a Ticket Button — fixed top-right */}
             <button
                 onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
+                className="btn-hover-lift btn-hover-lift-blue fixed top-4 right-[4.5rem] text-white border-none rounded-xl p-2 px-4 text-[0.8rem] font-semibold cursor-pointer z-[45] flex items-center gap-[0.4rem]"
                 style={{
-                    position: 'fixed',
-                    top: '1rem',
-                    right: '4.5rem',
                     background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '12px',
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
                     boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
-                    zIndex: 45,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(99, 102, 241, 0.4)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(99, 102, 241, 0.3)'; }}
             >
-                <span style={{ fontSize: '0.9rem' }}>🎫</span>
+                <span className="text-[0.9rem]">🎫</span>
                 Raise a Ticket
             </button>
 
             {/* Support Ticket Modal */}
             {showTicketModal && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9998,
-                }} onClick={() => { if (!ticketSubmitting) setShowTicketModal(false); }}>
-                    <div style={{
-                        background: '#fff', borderRadius: '20px', maxWidth: '520px', width: '90%',
-                        padding: '2rem', boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[9998]" onClick={() => { if (!ticketSubmitting) setShowTicketModal(false); }}>
+                    <div className="bg-white rounded-[20px] max-w-[520px] w-[90%] p-8" style={{
+                        boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
                         animation: 'slideIn 0.3s ease-out',
                     }} onClick={(e) => e.stopPropagation()}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>
-                                <span style={{ marginRight: '0.5rem' }}>🎫</span>Raise a Support Ticket
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="m-0 text-xl font-bold text-gray-900">
+                                <span className="mr-2">🎫</span>Raise a Support Ticket
                             </h2>
-                            <button onClick={() => setShowTicketModal(false)} style={{
-                                background: 'none', border: 'none', fontSize: '1.25rem', cursor: 'pointer', color: '#9CA3AF',
-                                width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%',
-                            }}>✕</button>
+                            <button onClick={() => setShowTicketModal(false)} className="bg-transparent border-none text-xl cursor-pointer text-gray-400 w-7 h-7 flex items-center justify-center rounded-full">✕</button>
                         </div>
 
                         {ticketResult?.success ? (
-                            <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
-                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-                                <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem', fontWeight: 700, color: '#065F46' }}>Ticket Submitted!</h3>
-                                <p style={{ margin: '0 0 0.5rem', color: '#6B7280', fontSize: '0.9rem' }}>Your ticket ID is:</p>
-                                <p style={{
-                                    margin: '0 0 1.5rem', fontSize: '1.1rem', fontWeight: 700, color: '#4F46E5',
-                                    background: '#EEF2FF', padding: '0.5rem 1rem', borderRadius: '8px', display: 'inline-block',
-                                }}>{ticketResult.ticketId}</p>
-                                <p style={{ margin: '0 0 1.5rem', color: '#6B7280', fontSize: '0.85rem' }}>
+                            <div className="text-center py-6">
+                                <div className="text-[3rem] mb-4">✅</div>
+                                <h3 className="m-0 mb-2 text-[1.1rem] font-bold text-[#065F46]">Ticket Submitted!</h3>
+                                <p className="m-0 mb-2 text-gray-500 text-[0.9rem]">Your ticket ID is:</p>
+                                <p className="m-0 mb-6 text-[1.1rem] font-bold text-indigo-700 bg-indigo-50 p-2 px-4 rounded-lg inline-block">{ticketResult.ticketId}</p>
+                                <p className="m-0 mb-6 text-gray-500 text-[0.85rem]">
                                     We&apos;ll get back to you as soon as possible.
                                 </p>
-                                <button onClick={() => setShowTicketModal(false)} style={{
-                                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', color: '#fff', border: 'none',
-                                    borderRadius: '10px', padding: '0.625rem 1.5rem', fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer',
+                                <button onClick={() => setShowTicketModal(false)} className="text-white border-none rounded-[10px] py-2.5 px-6 text-[0.9rem] font-semibold cursor-pointer" style={{
+                                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
                                 }}>Close</button>
                             </div>
                         ) : (
                             <>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div className="flex flex-col gap-4">
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Category</label>
+                                        <label className="block text-[0.8rem] font-semibold text-gray-700 mb-1.5">Category</label>
                                         <select
                                             value={ticketForm.category}
                                             onChange={(e) => setTicketForm(f => ({ ...f, category: e.target.value }))}
-                                            style={{
-                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
-                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
-                                                background: '#F9FAFB', outline: 'none',
-                                            }}
+                                            className="w-full py-2.5 px-3 rounded-[10px] border border-gray-300 text-sm text-gray-900 bg-gray-50 outline-none"
                                         >
                                             <option value="general">General</option>
                                             <option value="bug">Bug Report</option>
@@ -754,54 +490,41 @@ export default function DashboardShell({
                                         </select>
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Subject *</label>
+                                        <label className="block text-[0.8rem] font-semibold text-gray-700 mb-1.5">Subject *</label>
                                         <input
                                             type="text"
                                             value={ticketForm.subject}
                                             onChange={(e) => setTicketForm(f => ({ ...f, subject: e.target.value }))}
                                             placeholder="Brief summary of your issue"
-                                            style={{
-                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
-                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
-                                                background: '#F9FAFB', outline: 'none', boxSizing: 'border-box',
-                                            }}
+                                            className="w-full py-2.5 px-3 rounded-[10px] border border-gray-300 text-sm text-gray-900 bg-gray-50 outline-none box-border"
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.375rem' }}>Description *</label>
+                                        <label className="block text-[0.8rem] font-semibold text-gray-700 mb-1.5">Description *</label>
                                         <textarea
                                             value={ticketForm.description}
                                             onChange={(e) => setTicketForm(f => ({ ...f, description: e.target.value }))}
                                             placeholder="Describe your issue in detail..."
                                             rows={5}
-                                            style={{
-                                                width: '100%', padding: '0.625rem 0.75rem', borderRadius: '10px',
-                                                border: '1px solid #D1D5DB', fontSize: '0.875rem', color: '#111827',
-                                                background: '#F9FAFB', outline: 'none', resize: 'vertical',
-                                                fontFamily: 'inherit', boxSizing: 'border-box',
-                                            }}
+                                            className="w-full py-2.5 px-3 rounded-[10px] border border-gray-300 text-sm text-gray-900 bg-gray-50 outline-none resize-y font-[inherit] box-border"
                                         />
                                     </div>
                                 </div>
 
                                 {ticketResult?.error && (
-                                    <p style={{ color: '#DC2626', fontSize: '0.8rem', margin: '0.75rem 0 0', fontWeight: 500 }}>
+                                    <p className="text-red-600 text-[0.8rem] mt-3 mb-0 font-medium">
                                         {ticketResult.error}
                                     </p>
                                 )}
 
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
-                                    <button onClick={() => setShowTicketModal(false)} disabled={ticketSubmitting} style={{
-                                        background: '#F3F4F6', color: '#374151', border: '1px solid #D1D5DB',
-                                        borderRadius: '10px', padding: '0.625rem 1.25rem', fontSize: '0.875rem', fontWeight: 500, cursor: 'pointer',
-                                    }}>Cancel</button>
+                                <div className="flex justify-end gap-3 mt-5">
+                                    <button onClick={() => setShowTicketModal(false)} disabled={ticketSubmitting} className="bg-gray-100 text-gray-700 border border-gray-300 rounded-[10px] py-2.5 px-5 text-sm font-medium cursor-pointer">Cancel</button>
                                     <button
                                         onClick={handleTicketSubmit}
                                         disabled={ticketSubmitting || !ticketForm.subject.trim() || !ticketForm.description.trim()}
+                                        className="text-white border-none rounded-[10px] py-2.5 px-5 text-sm font-semibold"
                                         style={{
                                             background: ticketSubmitting ? '#9CA3AF' : 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                                            color: '#fff', border: 'none', borderRadius: '10px',
-                                            padding: '0.625rem 1.25rem', fontSize: '0.875rem', fontWeight: 600,
                                             cursor: ticketSubmitting ? 'not-allowed' : 'pointer',
                                             opacity: (!ticketForm.subject.trim() || !ticketForm.description.trim()) ? 0.5 : 1,
                                         }}
@@ -815,58 +538,27 @@ export default function DashboardShell({
 
             {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
             {showUpgradeModal && pathname !== '/dashboard/billing' && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    background: 'rgba(0, 0, 0, 0.6)',
-                    backdropFilter: 'blur(4px)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 9999,
-                }}>
-                    <div style={{
-                        background: '#FFFFFF',
-                        borderRadius: '24px',
-                        maxWidth: '480px',
-                        width: '90%',
-                        padding: '3rem 2.5rem',
-                        textAlign: 'center',
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9999]">
+                    <div className="bg-white rounded-3xl max-w-[480px] w-[90%] py-12 px-10 text-center" style={{
                         boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
                     }}>
-                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏰</div>
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.75rem' }}>
+                        <div className="text-[3rem] mb-4">⏰</div>
+                        <h2 className="text-2xl font-extrabold text-gray-900 mb-3">
                             {subscription?.status === 'past_due' ? 'Payment Past Due' :
                              subscription?.status === 'canceled' ? 'Subscription Canceled' :
                              'Your Trial Has Ended'}
                         </h2>
-                        <p style={{ color: '#6B7280', fontSize: '1rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+                        <p className="text-gray-500 text-base leading-relaxed mb-8">
                             {subscription?.status === 'past_due'
                                 ? 'Your payment method failed. Please update your payment details to continue using Superkabe.'
                                 : subscription?.status === 'canceled'
                                 ? 'Your subscription has been canceled. Resubscribe to a plan to regain access to Superkabe.'
                                 : 'Your 14-day free trial has expired. Upgrade to a paid plan to continue using Superkabe and protect your outbound infrastructure.'}
                         </p>
-                        <Link href="/dashboard/billing" style={{
-                            display: 'inline-block',
-                            padding: '0.875rem 2.5rem',
+                        <Link href="/dashboard/billing" className="btn-hover-lift btn-hover-lift-cta inline-block py-3.5 px-10 text-white rounded-xl font-bold text-base no-underline" style={{
                             background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
-                            color: '#FFFFFF',
-                            borderRadius: '12px',
-                            fontWeight: 700,
-                            fontSize: '1rem',
-                            textDecoration: 'none',
                             boxShadow: '0 4px 14px rgba(59,130,246,0.4)',
-                            transition: 'transform 0.2s, box-shadow 0.2s',
                         }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                e.currentTarget.style.boxShadow = '0 6px 20px rgba(59,130,246,0.5)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 4px 14px rgba(59,130,246,0.4)';
-                            }}
                         >
                             Upgrade Now
                         </Link>

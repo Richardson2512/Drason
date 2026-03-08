@@ -3,60 +3,23 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
+import type { InfraFinding, InfraRecommendation, InfraSummaryData, InfraReport } from '@/types/api';
 import { HelpLink } from '@/components/HelpLink';
 import { Tooltip } from '@/components/Tooltip';
 import { getScoreColor, getScoreLabel, getScoreEmoji } from '@/lib/statusHelpers';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import AssessmentConfirmationModal from '@/components/AssessmentConfirmationModal';
 import AssessmentProgressOverlay from '@/components/AssessmentProgressOverlay';
 
+import TransitionGateBanner from './TransitionGateBanner';
+import RecoveryStatusPanel from './RecoveryStatusPanel';
+import WarmupProgressPanel from './WarmupProgressPanel';
+import FindingsSection from './FindingsSection';
+import RecommendationsList from './RecommendationsList';
+
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
-const FindingsChart = dynamic(() => import('./Charts').then(mod => ({ default: mod.FindingsChart })), { ssr: false });
 const ScoreHistory = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreHistory })), { ssr: false });
 
-interface Finding {
-    category: string;
-    severity: 'critical' | 'warning' | 'info';
-    title: string;
-    details: string;
-    entity?: string;
-    entityId?: string;
-    entityName?: string;
-    message?: string;
-    remediation?: string;
-}
-
-interface Recommendation {
-    priority: number;
-    action: string;
-    reason: string;
-    details?: string;
-    link?: string;
-    entity?: string;
-    entityId?: string;
-}
-
-interface SummaryData {
-    domains: { total: number; healthy: number; warning: number; paused: number };
-    mailboxes: { total: number; healthy: number; warning: number; paused: number };
-    campaigns: { total: number; active: number; warning: number; paused: number };
-}
-
-interface InfraReport {
-    id: string;
-    report_type: string;
-    assessment_version: string;
-    overall_score: number;
-    summary: SummaryData;
-    findings: Finding[];
-    recommendations: Recommendation[];
-    created_at: string;
-}
-
-const SEVERITY_CONFIG = {
-    critical: { bg: '#FEF2F2', border: '#FECACA', text: '#991B1B', accent: '#EF4444', icon: '🔴', label: 'Critical' },
-    warning: { bg: '#FFFBEB', border: '#FDE68A', text: '#92400E', accent: '#F59E0B', icon: '🟡', label: 'Warning' },
-    info: { bg: '#EFF6FF', border: '#BFDBFE', text: '#1E40AF', accent: '#3B82F6', icon: '🔵', label: 'Info' },
-};
 
 export default function InfrastructureHealthPage() {
     const [report, setReport] = useState<InfraReport | null>(null);
@@ -67,18 +30,16 @@ export default function InfrastructureHealthPage() {
     const [assessmentStage, setAssessmentStage] = useState<'syncing' | 'assessing' | 'finalizing'>('syncing');
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
-    const [dnsDetails, setDnsDetails] = useState<Record<string, any>>({});
+    const [dnsDetails, setDnsDetails] = useState<Record<string, Record<string, any>>>({});
     const [dnsLoading, setDnsLoading] = useState<string | null>(null);
 
     // ── Transition Gate State ──
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [gateData, setGateData] = useState<Record<string, any> | null>(null);
     const [gateLoading, setGateLoading] = useState(false);
     const [acknowledging, setAcknowledging] = useState(false);
     const [ackResult, setAckResult] = useState<string | null>(null);
 
     // ── Recovery Status State ──
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [recoveryData, setRecoveryData] = useState<Record<string, any> | null>(null);
     const [recoveryLoading, setRecoveryLoading] = useState(false);
 
@@ -86,21 +47,14 @@ export default function InfrastructureHealthPage() {
     const [scoreHistory, setScoreHistory] = useState<Array<{ date: string; score: number }>>([]);
 
     // ── Warmup Status ──
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
     const [warmupLoading, setWarmupLoading] = useState(false);
     const [warmupChecking, setWarmupChecking] = useState(false);
 
-    // ── Expanded Finding (for collapsible remediation) ──
-    const [expandedFinding, setExpandedFinding] = useState<string | null>(null);
-
-    // ── Expanded DNS Domain (for consolidated DNS findings) ──
-    const [expandedDNSDomain, setExpandedDNSDomain] = useState<string | null>(null);
-
     const fetchReport = useCallback(() => {
         setLoading(true);
         setError(null);
-        apiClient<any>('/api/assessment/report')
+        apiClient<InfraReport>('/api/assessment/report')
             .then(data => {
                 if (data) {
                     setReport(data);
@@ -139,11 +93,11 @@ export default function InfrastructureHealthPage() {
 
     const fetchScoreHistory = async () => {
         try {
-            const data = await apiClient<any[]>('/api/assessment/reports');
+            const data = await apiClient<InfraReport[]>('/api/assessment/reports');
             if (data && Array.isArray(data)) {
                 // Deduplicate by day — keep only the latest assessment per day
                 const byDay = new Map<string, number>();
-                data.reverse().forEach((r: any) => {
+                data.reverse().forEach((r: { created_at: string; overall_score?: number }) => {
                     const dayKey = new Date(r.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
                     byDay.set(dayKey, r.overall_score ?? 0); // later entries overwrite earlier ones
                 });
@@ -159,7 +113,7 @@ export default function InfrastructureHealthPage() {
     const fetchTransitionGate = async () => {
         setGateLoading(true);
         try {
-            const data = await apiClient<any>('/api/healing/transition-gate');
+            const data = await apiClient<Record<string, any>>('/api/healing/transition-gate');
             if (data) {
                 setGateData(data);
             }
@@ -173,7 +127,7 @@ export default function InfrastructureHealthPage() {
     const fetchRecoveryStatus = async () => {
         setRecoveryLoading(true);
         try {
-            const data = await apiClient<any>('/api/healing/recovery-status');
+            const data = await apiClient<Record<string, any>>('/api/healing/recovery-status');
             if (data) {
                 setRecoveryData(data);
             }
@@ -187,7 +141,7 @@ export default function InfrastructureHealthPage() {
     const fetchWarmupStatus = async () => {
         setWarmupLoading(true);
         try {
-            const data = await apiClient<any>('/api/dashboard/warmup-status');
+            const data = await apiClient<Record<string, any>>('/api/dashboard/warmup-status');
             if (data) setWarmupData(data);
         } catch (err) {
             console.error('Failed to fetch warmup status:', err);
@@ -235,8 +189,8 @@ export default function InfrastructureHealthPage() {
             setTimeout(fetchReport, 1000);
 
             // Show confirmation modal if there are critical findings
-            const findingsData = await apiClient<any>('/api/findings').catch(() => null);
-            const criticalFindings = (findingsData?.findings || []).filter((f: any) => f.severity === 'critical' || f.severity === 'warning');
+            const findingsData = await apiClient<{ findings: InfraFinding[] }>('/api/findings').catch(() => null);
+            const criticalFindings = (findingsData?.findings || []).filter((f: InfraFinding) => f.severity === 'critical' || f.severity === 'warning');
             if (criticalFindings.length > 0) {
                 setShowConfirmModal(true);
             }
@@ -257,7 +211,7 @@ export default function InfrastructureHealthPage() {
 
         setDnsLoading(domainId);
         try {
-            const data = await apiClient<any>(`/api/assessment/domain/${domainId}/dns`);
+            const data = await apiClient<Record<string, any>>(`/api/assessment/domain/${domainId}/dns`);
             if (data) {
                 setDnsDetails(prev => ({ ...prev, [domainId]: data }));
             }
@@ -270,24 +224,18 @@ export default function InfrastructureHealthPage() {
 
     if (loading) {
         return (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '1rem' }}>
-                <div style={{
-                    width: '32px', height: '32px', borderRadius: '50%',
-                    border: '3px solid #E5E7EB', borderTopColor: '#2563EB',
-                    animation: 'spin 0.8s linear infinite'
-                }} />
-                <span style={{ color: '#6B7280', fontSize: '1.1rem' }}>Loading Infrastructure Health...</span>
-                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <div className="p-8">
+                <LoadingSkeleton type="card" rows={3} />
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="premium-card" style={{ maxWidth: '600px', margin: '4rem auto', textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem' }}>Failed to Load Report</h2>
-                <p style={{ color: '#6B7280', marginBottom: '1.5rem' }}>{error}</p>
+            <div className="premium-card max-w-[600px] mx-auto mt-16 text-center">
+                <div className="text-[3rem] mb-4">⚠️</div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">Failed to Load Report</h2>
+                <p className="text-gray-500 mb-6">{error}</p>
                 <button onClick={fetchReport} className="premium-btn">Retry</button>
             </div>
         );
@@ -295,54 +243,40 @@ export default function InfrastructureHealthPage() {
 
     if (!report) {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80%', gap: '2rem' }}>
-                <div style={{
-                    width: '120px', height: '120px', borderRadius: '50%',
+            <div className="flex flex-col items-center justify-center h-[80%] gap-8">
+                <div className="w-[120px] h-[120px] rounded-full flex items-center justify-center shadow-xl" style={{
                     background: 'linear-gradient(135deg, #EFF6FF, #F5F3FF)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
                 }}>
-                    <span style={{ fontSize: '3rem' }}>🏗️</span>
+                    <span className="text-[3rem]">🏗️</span>
                 </div>
-                <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.025em' }}>
+                <h2 className="text-[1.75rem] font-extrabold text-gray-900 tracking-tight">
                     No Infrastructure Assessment Yet
                 </h2>
-                <p style={{ color: '#6B7280', fontSize: '1rem', maxWidth: '600px', textAlign: 'center', lineHeight: '1.6' }}>
+                <p className="text-gray-500 text-base max-w-[600px] text-center leading-relaxed">
                     Run your first assessment to get a complete health report. Here&apos;s what we&apos;ll check:
                 </p>
 
                 {/* 3-step guide */}
-                <div style={{ display: 'flex', gap: '1.5rem', maxWidth: '750px', width: '100%' }}>
+                <div className="flex gap-6 max-w-[750px] w-full">
                     {[
                         { icon: '🔍', title: 'Scan', desc: 'Check your domains for SPF, DKIM, DMARC records and blacklist status' },
                         { icon: '📊', title: 'Analyze', desc: 'Review mailbox bounce rates and campaign send performance metrics' },
                         { icon: '📋', title: 'Report', desc: 'Get a scored report with specific findings and remediation steps' },
                     ].map((step, i) => (
-                        <div key={step.title} style={{
-                            flex: 1, padding: '1.5rem', borderRadius: '20px',
-                            background: '#fff', border: '1px solid #E5E7EB',
-                            textAlign: 'center', position: 'relative',
-                            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
-                        }}>
-                            <div style={{
-                                position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)',
-                                width: '24px', height: '24px', borderRadius: '50%',
-                                background: '#2563EB', color: '#fff', fontSize: '0.75rem',
-                                fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            }}>{i + 1}</div>
-                            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{step.icon}</div>
-                            <div style={{ fontWeight: 800, color: '#111827', marginBottom: '0.35rem' }}>{step.title}</div>
-                            <div style={{ color: '#6B7280', fontSize: '0.825rem', lineHeight: 1.5 }}>{step.desc}</div>
+                        <div key={step.title} className="flex-1 p-6 rounded-[20px] bg-white border border-gray-200 text-center relative shadow-sm">
+                            <div className="absolute top-[-12px] left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-extrabold flex items-center justify-center">{i + 1}</div>
+                            <div className="text-[2rem] mb-2">{step.icon}</div>
+                            <div className="font-extrabold text-gray-900 mb-[0.35rem]">{step.title}</div>
+                            <div className="text-gray-500 text-[0.825rem] leading-normal">{step.desc}</div>
                         </div>
                     ))}
                 </div>
 
-                <button onClick={handleReassess} className="premium-btn" disabled={reassessing}
-                    style={{ padding: '1rem 2rem', fontSize: '1rem', background: '#2563EB', borderRadius: '16px' }}>
+                <button onClick={handleReassess} className="premium-btn px-8 py-4 text-base bg-[#2563EB] rounded-2xl" disabled={reassessing}>
                     {reassessing ? 'Running Assessment...' : '🔍 Run Infrastructure Assessment'}
                 </button>
                 {reassessResult && (
-                    <div className="premium-card" style={{ padding: '1rem 1.5rem', maxWidth: '500px', textAlign: 'center' }}>
+                    <div className="premium-card px-6 py-4 max-w-[500px] text-center">
                         {reassessResult}
                     </div>
                 )}
@@ -350,41 +284,8 @@ export default function InfrastructureHealthPage() {
         );
     }
 
-    // Build chart data
     const findings = report.findings || [];
     const recommendations = report.recommendations || [];
-    const criticalCount = findings.filter(f => f.severity === 'critical').length;
-    const warningCount = findings.filter(f => f.severity === 'warning').length;
-    const infoCount = findings.filter(f => f.severity === 'info').length;
-
-    const findingsChartData = [
-        { name: 'Critical', value: criticalCount, color: '#EF4444' },
-        { name: 'Warning', value: warningCount, color: '#F59E0B' },
-        { name: 'Info', value: infoCount, color: '#3B82F6' },
-    ].filter(d => d.value > 0);
-
-    // Group findings by category
-    const findingsByCategory = findings.reduce<Record<string, Finding[]>>((acc, f) => {
-        const cat = f.category || 'general';
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(f);
-        return acc;
-    }, {});
-
-    // Group DNS findings by domain for consolidated display
-    const dnsFindingsByDomain = findings
-        .filter(f => f.category === 'domain_dns' && f.entityId)
-        .reduce<Record<string, Finding[]>>((acc, f) => {
-            const domainId = f.entityId!;
-            if (!acc[domainId]) acc[domainId] = [];
-            acc[domainId].push(f);
-            return acc;
-        }, {});
-
-    // Extract unique domain findings for DNS drill-down
-    const domainFindings = findings.filter(f => f.category === 'domain_dns' && f.entityId);
-    const uniqueDomainIds = [...new Set(domainFindings.map(f => f.entityId).filter(Boolean))] as string[];
-
     const scoreColor = getScoreColor(report.overall_score);
 
     return (
@@ -392,7 +293,7 @@ export default function InfrastructureHealthPage() {
             <AssessmentProgressOverlay isVisible={reassessing} stage={assessmentStage} />
             <AssessmentConfirmationModal
                 isOpen={showConfirmModal}
-                findings={(report?.findings || []).filter((f: any) => f.severity === 'critical' || f.severity === 'warning').map((f: any) => ({
+                findings={(report?.findings || []).filter((f: InfraFinding) => f.severity === 'critical' || f.severity === 'warning').map((f: InfraFinding) => ({
                     severity: f.severity,
                     title: f.title,
                     entity: f.entity || f.category || '',
@@ -401,9 +302,9 @@ export default function InfrastructureHealthPage() {
                 onConfirm={() => { setShowConfirmModal(false); }}
                 onReview={() => { setShowConfirmModal(false); }}
             />
-            <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div className="page-header flex justify-between items-start">
                 <div>
-                    <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <h1 className="page-title flex items-center gap-3">
                         <span>Infrastructure Health</span>
                         <HelpLink href="/docs/help/infrastructure-score-explained" size="sm" />
                     </h1>
@@ -411,28 +312,21 @@ export default function InfrastructureHealthPage() {
                         Assessment report from {new Date(report.created_at).toLocaleDateString(undefined, { dateStyle: 'long' })} at {new Date(report.created_at).toLocaleTimeString(undefined, { timeStyle: 'short' })}
                     </p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    <span style={{
-                        background: '#F3F4F6', padding: '0.4rem 1rem', borderRadius: '999px',
-                        fontSize: '0.75rem', fontWeight: 600, color: '#6B7280'
-                    }}>
+                <div className="flex gap-3 items-center">
+                    <span className="bg-gray-100 px-4 py-[0.4rem] rounded-full text-xs font-semibold text-gray-500">
                         v{report.assessment_version} • {report.report_type.replace(/_/g, ' ')}
                     </span>
                     <button
                         onClick={handleReassess}
                         disabled={reassessing}
-                        className="premium-btn"
+                        className="premium-btn bg-[#2563EB] text-sm px-5 py-[0.6rem] rounded-xl flex items-center gap-2"
                         style={{
-                            background: '#2563EB', fontSize: '0.875rem', padding: '0.6rem 1.25rem',
-                            borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.5rem',
                             opacity: reassessing ? 0.6 : 1
                         }}
                     >
                         {reassessing ? (
                             <>
-                                <div style={{
-                                    width: '16px', height: '16px', borderRadius: '50%',
-                                    border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
+                                <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white" style={{
                                     animation: 'spin 0.8s linear infinite'
                                 }} />
                                 Re-assessing...
@@ -445,72 +339,56 @@ export default function InfrastructureHealthPage() {
             </div>
 
             {reassessResult && (
-                <div className="premium-card" style={{
-                    padding: '1rem 1.5rem',
+                <div className="premium-card px-6 py-4 flex items-center gap-3" style={{
                     background: reassessResult.includes('success') ? '#F0FDF4' : '#FEF2F2',
                     border: `1px solid ${reassessResult.includes('success') ? '#BBF7D0' : '#FECACA'}`,
-                    display: 'flex', alignItems: 'center', gap: '0.75rem'
                 }}>
                     <span>{reassessResult.includes('success') ? '✅' : '❌'}</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{reassessResult}</span>
+                    <span className="text-[0.9rem] font-medium">{reassessResult}</span>
                 </div>
             )}
 
             {/* 24/7 Monitoring Banner */}
-            <div className="premium-card" style={{
+            <div className="premium-card p-6 rounded-2xl relative overflow-hidden" style={{
                 background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
                 border: '2px solid #10B981',
-                padding: '1.5rem',
-                borderRadius: '16px',
-                position: 'relative',
-                overflow: 'hidden'
             }}>
-                <div style={{ position: 'absolute', top: '-10px', right: '-10px', fontSize: '4rem', opacity: 0.1 }}>🔄</div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', position: 'relative', zIndex: 1 }}>
-                    <div style={{
-                        width: '48px', height: '48px', borderRadius: '12px',
-                        background: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '1.5rem', flexShrink: 0
-                    }}>
+                <div className="absolute top-[-10px] right-[-10px] text-[4rem] opacity-10">🔄</div>
+                <div className="flex items-start gap-4 relative z-10">
+                    <div className="w-12 h-12 rounded-xl bg-[#10B981] flex items-center justify-center text-2xl shrink-0">
                         ⚡
                     </div>
-                    <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-                            <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#065F46', margin: 0 }}>
+                    <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-extrabold text-[#065F46] m-0">
                                 24/7 Automated Monitoring Active
                             </h3>
-                            <span style={{
-                                padding: '0.25rem 0.75rem', background: '#10B981', color: 'white',
-                                borderRadius: '999px', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.05em'
-                            }}>
+                            <span className="py-1 px-3 bg-[#10B981] text-white rounded-full text-[0.625rem] font-bold tracking-wide">
                                 LIVE
                             </span>
                         </div>
-                        <p style={{ fontSize: '0.875rem', color: '#047857', marginBottom: '1rem', lineHeight: 1.6 }}>
+                        <p className="text-sm text-[#047857] mb-4 leading-relaxed">
                             Your infrastructure is being automatically synced every <strong>20 minutes</strong> from all connected platforms.
                             Health assessments run automatically, and campaigns/mailboxes are paused instantly when thresholds are crossed.
                             No manual monitoring needed - the system protects your reputation 24/7, even while you sleep.
                         </p>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
-                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Auto-sync every 20min</span>
+                        <div className="flex items-center gap-4 flex-wrap">
+                            <div className="flex items-center gap-2">
+                                <span className="text-[#10B981] font-bold">✓</span>
+                                <span className="text-xs text-[#065F46] font-semibold">Auto-sync every 20min</span>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
-                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Real-time health detection</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[#10B981] font-bold">✓</span>
+                                <span className="text-xs text-[#065F46] font-semibold">Real-time health detection</span>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span style={{ color: '#10B981', fontWeight: 700 }}>✓</span>
-                                <span style={{ fontSize: '0.75rem', color: '#065F46', fontWeight: 600 }}>Instant auto-pause protection</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-[#10B981] font-bold">✓</span>
+                                <span className="text-xs text-[#065F46] font-semibold">Instant auto-pause protection</span>
                             </div>
                             <Link
                                 href="/docs/help/24-7-monitoring"
                                 target="_blank"
-                                style={{
-                                    fontSize: '0.75rem', color: '#059669', fontWeight: 700,
-                                    textDecoration: 'underline', marginLeft: 'auto'
-                                }}
+                                className="text-xs text-[#059669] font-bold underline ml-auto"
                             >
                                 Learn how it works →
                             </Link>
@@ -522,307 +400,42 @@ export default function InfrastructureHealthPage() {
             {/* Score + Summary Row */}
 
             {/* ── TRANSITION GATE BANNER ── */}
-            {gateData && !gateData.canProceed && gateData.score !== undefined && (
-                <div className="premium-card" style={{
-                    background: 'linear-gradient(135deg, #FEF3C7, #FFFBEB)',
-                    border: '2px solid #F59E0B',
-                    borderRadius: '20px',
-                    padding: '1.75rem 2rem',
-                    position: 'relative',
-                    overflow: 'hidden',
-                }}>
-                    <div style={{
-                        position: 'absolute', top: '-20px', right: '-20px',
-                        width: '120px', height: '120px', borderRadius: '50%',
-                        background: 'rgba(245, 158, 11, 0.08)',
-                    }} />
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem' }}>
-                        <div style={{
-                            width: '56px', height: '56px', borderRadius: '16px',
-                            background: '#FEF3C7', border: '2px solid #FDE68A',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '1.75rem', flexShrink: 0,
-                        }}>
-                            ⚠️
-                        </div>
-                        <div style={{ flex: 1 }}>
-                            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#92400E', marginBottom: '0.5rem' }}>
-                                Infrastructure Score Below Threshold
-                            </h3>
-                            <p style={{ color: '#78350F', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '0.75rem' }}>
-                                Your infrastructure scored <strong>{gateData.score}/100</strong>.
-                                {gateData.pausedCount !== undefined && (
-                                    <> <strong>{gateData.pausedCount}</strong> of <strong>{gateData.totalCount}</strong> entities are paused.</>)}
-                                {' '}The system requires your acknowledgment before allowing email operations on this infrastructure.
-                            </p>
-                            <p style={{ color: '#92400E', fontSize: '0.8rem', lineHeight: 1.5, marginBottom: '1rem', fontStyle: 'italic' }}>
-                                By acknowledging, you confirm awareness that sending through degraded infrastructure may impact your email reputation.
-                            </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <button
-                                    onClick={handleAcknowledge}
-                                    disabled={acknowledging || gateData.score === 0}
-                                    style={{
-                                        padding: '0.75rem 1.5rem', borderRadius: '14px',
-                                        background: gateData.score === 0 ? '#D1D5DB' : 'linear-gradient(135deg, #F59E0B, #D97706)',
-                                        color: '#fff', fontWeight: 700, fontSize: '0.9rem',
-                                        border: 'none', cursor: gateData.score === 0 ? 'not-allowed' : 'pointer',
-                                        boxShadow: gateData.score === 0 ? 'none' : '0 4px 14px rgba(245, 158, 11, 0.4)',
-                                        transition: 'all 0.2s',
-                                        opacity: acknowledging ? 0.6 : 1,
-                                    }}
-                                >
-                                    {acknowledging ? 'Acknowledging...' : gateData.score === 0
-                                        ? '🔒 All Entities Paused — Manual Healing Required'
-                                        : '✅ I Understand the Risks — Proceed'
-                                    }
-                                </button>
-                                <span style={{ fontSize: '0.75rem', color: '#92400E' }}>
-                                    Score must be above 0 to proceed
-                                </span>
-                            </div>
-                            {ackResult && (
-                                <div style={{
-                                    marginTop: '0.75rem', padding: '0.6rem 1rem', borderRadius: '10px',
-                                    background: ackResult.includes('acknowledged') ? '#DCFCE7' : '#FEF2F2',
-                                    border: `1px solid ${ackResult.includes('acknowledged') ? '#BBF7D0' : '#FECACA'}`,
-                                    fontSize: '0.85rem', fontWeight: 500,
-                                    color: ackResult.includes('acknowledged') ? '#166534' : '#991B1B',
-                                }}>
-                                    {ackResult}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
+            <TransitionGateBanner
+                gateData={gateData}
+                onAcknowledge={handleAcknowledge}
+                acknowledging={acknowledging}
+                ackResult={ackResult}
+            />
 
             {/* ── RECOVERY STATUS PANEL ── */}
-            {recoveryData && recoveryData.summary && recoveryData.summary.totalRecovering > 0 && (
-                <div className="premium-card" style={{ borderRadius: '20px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            🩺 Recovery Status
-                        </h2>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <span style={{
-                                padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600,
-                                background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE',
-                            }}>
-                                {recoveryData.summary.mailboxCount} mailboxes
-                            </span>
-                            <span style={{
-                                padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600,
-                                background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE',
-                            }}>
-                                {recoveryData.summary.domainCount} domains
-                            </span>
-                        </div>
-                    </div>
+            <RecoveryStatusPanel recoveryData={recoveryData} />
 
-                    {/* Mailbox Recovery Items */}
-                    {recoveryData.mailboxes && recoveryData.mailboxes.length > 0 && (
-                        <div style={{ marginBottom: '1rem' }}>
-                            <div style={{
-                                fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
-                                textTransform: 'uppercase', letterSpacing: '0.1em',
-                                marginBottom: '0.5rem', paddingLeft: '0.25rem',
-                            }}>
-                                Mailboxes
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {recoveryData.mailboxes.map((mb: any) => {
-                                    const bounceRate = mb.total_sent_count > 0
-                                        ? mb.hard_bounce_count / mb.total_sent_count
-                                        : undefined;
-                                    return (
-                                        <RecoveryEntityRow
-                                            key={mb.id}
-                                            label={mb.email}
-                                            phase={mb.recovery_phase}
-                                            resilience={mb.resilience_score}
-                                            volumeLimit={mb.volumeLimit}
-                                            phaseEnteredAt={mb.phase_entered_at}
-                                            cleanSends={mb.clean_sends_since_phase}
-                                            cooldownUntil={mb.cooldown_until}
-                                            bounceRate={bounceRate}
-                                            relapseCount={mb.relapse_count}
-                                            consecutivePauses={mb.consecutive_pauses}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Domain Recovery Items */}
-                    {recoveryData.domains && recoveryData.domains.length > 0 && (
-                        <div>
-                            <div style={{
-                                fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
-                                textTransform: 'uppercase', letterSpacing: '0.1em',
-                                marginBottom: '0.5rem', paddingLeft: '0.25rem',
-                            }}>
-                                Domains
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {recoveryData.domains.map((d: any) => (
-                                    <RecoveryEntityRow
-                                        key={d.id}
-                                        label={d.domain}
-                                        phase={d.recovery_phase}
-                                        resilience={d.resilience_score}
-                                        volumeLimit={d.volumeLimit}
-                                        phaseEnteredAt={d.phase_entered_at}
-                                        cleanSends={d.clean_sends_since_phase}
-                                        cooldownUntil={d.cooldown_until}
-                                        relapseCount={d.relapse_count}
-                                        consecutivePauses={d.consecutive_pauses}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
             {/* ── WARMUP STATUS PANEL ── */}
-            {warmupData && warmupData.totalRecovering > 0 && (
-                <div className="premium-card" style={{ borderRadius: '20px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            🔥 Warmup Progress
-                        </h2>
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                {warmupData.quarantine > 0 && (
-                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5' }}>
-                                        {warmupData.quarantine} quarantine
-                                    </span>
-                                )}
-                                {warmupData.restrictedSend > 0 && (
-                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#FEF3C7', color: '#D97706', border: '1px solid #FDE68A' }}>
-                                        {warmupData.restrictedSend} restricted
-                                    </span>
-                                )}
-                                {warmupData.warmRecovery > 0 && (
-                                    <span style={{ padding: '0.3rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE' }}>
-                                        {warmupData.warmRecovery} warm recovery
-                                    </span>
-                                )}
-                            </div>
-                            <button
-                                onClick={handleWarmupCheck}
-                                disabled={warmupChecking}
-                                style={{
-                                    padding: '0.4rem 0.75rem',
-                                    background: warmupChecking ? '#E5E7EB' : '#F8FAFC',
-                                    color: '#475569',
-                                    border: '1px solid #E2E8F0',
-                                    borderRadius: '8px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
-                                    cursor: warmupChecking ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                            >
-                                {warmupChecking ? 'Checking...' : 'Check Now'}
-                            </button>
-                        </div>
-                    </div>
-
-                    {warmupData.avgDaysInRecovery > 0 && (
-                        <div style={{ fontSize: '0.875rem', color: '#64748B', marginBottom: '1rem' }}>
-                            Average time in recovery: <strong>{warmupData.avgDaysInRecovery} days</strong>
-                        </div>
-                    )}
-
-                    {warmupData.estimatedGraduations && warmupData.estimatedGraduations.length > 0 && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            {warmupData.estimatedGraduations.map((est: any) => {
-                                const progress = est.targetProgress > 0 ? Math.min(100, (est.currentProgress / est.targetProgress) * 100) : 0;
-                                const phaseLabel = est.recoveryPhase === 'quarantine' ? 'Quarantine' :
-                                    est.recoveryPhase === 'restricted_send' ? 'Restricted Send' : 'Warm Recovery';
-                                const phaseColor = est.recoveryPhase === 'quarantine' ? '#DC2626' :
-                                    est.recoveryPhase === 'restricted_send' ? '#D97706' : '#2563EB';
-                                return (
-                                    <div key={est.mailboxId} style={{
-                                        padding: '0.75rem 1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9'
-                                    }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1E293B' }}>
-                                                {est.mailboxEmail}
-                                            </div>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: phaseColor, textTransform: 'uppercase' }}>
-                                                    {phaseLabel}
-                                                </span>
-                                                {est.estimatedDays > 0 && (
-                                                    <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-                                                        ~{est.estimatedDays}d left
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        {est.recoveryPhase !== 'quarantine' && (
-                                            <div style={{ width: '100%', height: '6px', background: '#E2E8F0', borderRadius: '999px', overflow: 'hidden' }}>
-                                                <div style={{
-                                                    width: `${progress}%`,
-                                                    height: '100%',
-                                                    background: phaseColor,
-                                                    borderRadius: '999px',
-                                                    transition: 'width 0.3s ease'
-                                                }} />
-                                            </div>
-                                        )}
-                                        {est.recoveryPhase === 'quarantine' && (
-                                            <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-                                                Waiting for DNS/blacklist checks to pass
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            )}
+            <WarmupProgressPanel
+                warmupData={warmupData}
+                onCheckNow={handleWarmupCheck}
+                warmupChecking={warmupChecking}
+            />
 
             {/* Info Banner: Score vs Status Explanation */}
-            <div className="premium-card" style={{
+            <div className="premium-card px-6 py-4 flex items-start gap-4" style={{
                 background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
                 border: '1px solid #BFDBFE',
-                padding: '1rem 1.5rem',
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1rem'
             }}>
-                <div style={{
-                    flexShrink: 0,
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '12px',
-                    background: '#3B82F6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.25rem'
-                }}>
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-[#3B82F6] flex items-center justify-center text-xl">
                     💡
                 </div>
-                <div style={{ flex: 1 }}>
-                    <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1E40AF', marginBottom: '0.5rem' }}>
+                <div className="flex-1">
+                    <h3 className="text-[0.9rem] font-bold text-[#1E40AF] mb-2">
                         Understanding Your Health Scores
                     </h3>
-                    <p style={{ fontSize: '0.8rem', color: '#1E3A8A', lineHeight: 1.6, marginBottom: '0.5rem' }}>
+                    <p className="text-[0.8rem] text-[#1E3A8A] leading-relaxed mb-2">
                         <Tooltip content="Infrastructure score measures DNS health (SPF/DKIM/DMARC) and blacklist status. It's a one-time snapshot taken at sync.">
-                            <strong style={{ borderBottom: '2px dotted #3B82F6', cursor: 'help' }}>Infrastructure Score</strong>
+                            <strong className="border-b-2 border-dotted border-[#3B82F6] cursor-help">Infrastructure Score</strong>
                         </Tooltip>
                         {' '}is different from{' '}
                         <Tooltip content="Entity status shows real-time operational health based on bounce rates. Updates continuously during sending.">
-                            <strong style={{ borderBottom: '2px dotted #3B82F6', cursor: 'help' }}>Entity Status</strong>
+                            <strong className="border-b-2 border-dotted border-[#3B82F6] cursor-help">Entity Status</strong>
                         </Tooltip>
                         . Your entities can show "healthy" even with a low infrastructure score because they measure different things.
                     </p>
@@ -837,31 +450,25 @@ export default function InfrastructureHealthPage() {
             {/* Score Row: Gauge + Entity Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* Overall Score with Explainer */}
-                <div className="premium-card" style={{ textAlign: 'center', position: 'relative' }}>
-                    <div style={{ height: '180px', position: 'relative' }}>
+                <div className="premium-card text-center relative">
+                    <div className="h-[180px] relative">
                         <ScoreGauge score={report.overall_score} scoreColor={scoreColor} />
-                        <div style={{
-                            position: 'absolute', top: '50%', left: '50%',
-                            transform: 'translate(-50%, -50%)', textAlign: 'center'
-                        }}>
-                            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: scoreColor, lineHeight: 1 }}>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <div className="text-4xl font-extrabold leading-none" style={{ color: scoreColor }}>
                                 {report.overall_score}
                             </div>
-                            <div style={{ fontSize: '0.75rem', color: '#6B7280', fontWeight: 600, marginTop: '2px' }}>
+                            <div className="text-xs text-gray-500 font-semibold mt-[2px]">
                                 / 100
                             </div>
                         </div>
                     </div>
-                    <span style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                    <span className="inline-flex items-center gap-2 px-4 py-[0.4rem] rounded-full text-sm font-bold" style={{
                         background: `${scoreColor}15`, color: scoreColor,
-                        padding: '0.4rem 1rem', borderRadius: '999px',
-                        fontSize: '0.875rem', fontWeight: 700
                     }}>
                         {getScoreEmoji(report.overall_score)} {getScoreLabel(report.overall_score)}
                     </span>
                     {/* Score Explainer */}
-                    <p style={{ color: '#6B7280', fontSize: '0.75rem', marginTop: '0.75rem', lineHeight: 1.5 }}>
+                    <p className="text-gray-500 text-xs mt-3 leading-normal">
                         {(() => {
                             const issues: string[] = [];
                             if (report.summary.domains?.warning > 0) issues.push(`${report.summary.domains.warning} domain warning(s)`);
@@ -875,7 +482,7 @@ export default function InfrastructureHealthPage() {
                                 : 'All entities are healthy!';
                         })()}
                     </p>
-                    <div style={{ color: '#9CA3AF', fontSize: '0.65rem', marginTop: '0.35rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+                    <div className="text-gray-400 text-[0.65rem] mt-[0.35rem] flex items-center justify-center gap-1">
                         ℹ️ Score = healthy entities ÷ total entities × 100
                     </div>
                 </div>
@@ -891,35 +498,35 @@ export default function InfrastructureHealthPage() {
                     const slot2 = card.data?.[card.states[1] as keyof typeof card.data] || 0;
                     const slot3 = card.data?.[card.states[2] as keyof typeof card.data] || 0;
                     return (
-                        <div key={card.label} className="premium-card" style={{ position: 'relative' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                                <span style={{ fontSize: '1.25rem' }}>{card.icon}</span>
-                                <span style={{ fontWeight: 700, color: '#111827', fontSize: '1rem' }}>{card.label}</span>
-                                <span style={{ marginLeft: 'auto', fontWeight: 800, color: '#111827', fontSize: '1.5rem' }}>{total}</span>
+                        <div key={card.label} className="premium-card relative">
+                            <div className="flex items-center gap-2 mb-4">
+                                <span className="text-xl">{card.icon}</span>
+                                <span className="font-bold text-gray-900 text-base">{card.label}</span>
+                                <span className="ml-auto font-extrabold text-gray-900 text-2xl">{total}</span>
                             </div>
                             {/* Stacked Status Bar */}
-                            <div style={{ height: '8px', borderRadius: '4px', background: '#F3F4F6', overflow: 'hidden', display: 'flex' }}>
+                            <div className="h-2 rounded bg-gray-100 overflow-hidden flex">
                                 {total > 0 && (
                                     <>
-                                        <div style={{ width: `${(slot1 / total) * 100}%`, background: '#16A34A', transition: 'width 0.6s ease' }} />
-                                        <div style={{ width: `${(slot2 / total) * 100}%`, background: '#F59E0B', transition: 'width 0.6s ease' }} />
-                                        <div style={{ width: `${(slot3 / total) * 100}%`, background: '#EF4444', transition: 'width 0.6s ease' }} />
+                                        <div className="bg-[#16A34A] transition-[width] duration-[600ms] ease-in-out" style={{ width: `${(slot1 / total) * 100}%` }} />
+                                        <div className="bg-[#F59E0B] transition-[width] duration-[600ms] ease-in-out" style={{ width: `${(slot2 / total) * 100}%` }} />
+                                        <div className="bg-[#EF4444] transition-[width] duration-[600ms] ease-in-out" style={{ width: `${(slot3 / total) * 100}%` }} />
                                     </>
                                 )}
                             </div>
                             {/* Legend */}
-                            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem', fontSize: '0.75rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#16A34A' }} />
-                                    <span style={{ color: '#6B7280' }}>{card.states[0].charAt(0).toUpperCase() + card.states[0].slice(1)}: <strong>{slot1}</strong></span>
+                            <div className="flex gap-3 mt-3 text-xs">
+                                <div className="flex items-center gap-1">
+                                    <div className="w-2 h-2 rounded-full bg-[#16A34A]" />
+                                    <span className="text-gray-500">{card.states[0].charAt(0).toUpperCase() + card.states[0].slice(1)}: <strong>{slot1}</strong></span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F59E0B' }} />
-                                    <span style={{ color: '#6B7280' }}>Warning: <strong>{slot2}</strong></span>
+                                <div className="flex items-center gap-1">
+                                    <div className="w-2 h-2 rounded-full bg-[#F59E0B]" />
+                                    <span className="text-gray-500">Warning: <strong>{slot2}</strong></span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#EF4444' }} />
-                                    <span style={{ color: '#6B7280' }}>Paused: <strong>{slot3}</strong></span>
+                                <div className="flex items-center gap-1">
+                                    <div className="w-2 h-2 rounded-full bg-[#EF4444]" />
+                                    <span className="text-gray-500">Paused: <strong>{slot3}</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -930,649 +537,28 @@ export default function InfrastructureHealthPage() {
             {/* Score History */}
             {scoreHistory.length > 0 && (
                 <div className="premium-card">
-                    <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
                         📈 Score History
                     </h2>
-                    <div style={{ height: '200px' }}>
+                    <div className="h-[200px]">
                         <ScoreHistory data={scoreHistory} />
                     </div>
                 </div>
             )}
 
             {/* Findings Distribution + Findings List */}
-            {findings.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Distribution Chart */}
-                    <div className="premium-card">
-                        <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>
-                            Findings Breakdown
-                        </h2>
-                        <div style={{ height: '200px' }}>
-                            <FindingsChart data={findingsChartData} />
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-                            {findingsChartData.map(d => (
-                                <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', color: '#6B7280' }}>
-                                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: d.color }} />
-                                    {d.name} ({d.value})
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Findings List */}
-                    <div className="premium-card" style={{ gridColumn: 'span 2' }}>
-                        <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>
-                            All Findings
-                        </h2>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '500px', overflowY: 'auto' }} className="scrollbar-hide">
-                            {Object.entries(findingsByCategory).map(([category, catFindings]) => {
-                                const CATEGORY_LABELS: Record<string, string> = {
-                                    domain_dns: '🌐 Domain DNS',
-                                    mailbox_health: '📬 Mailbox Health',
-                                    campaign_health: '📣 Campaign Health',
-                                };
-
-                                // Special handling for DNS findings - consolidate by domain
-                                if (category === 'domain_dns') {
-                                    return (
-                                        <div key={category}>
-                                            <div style={{
-                                                fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
-                                                textTransform: 'uppercase', letterSpacing: '0.1em',
-                                                marginBottom: '0.5rem', paddingLeft: '0.25rem'
-                                            }}>
-                                                {CATEGORY_LABELS[category]}
-                                            </div>
-                                            {Object.entries(dnsFindingsByDomain).map(([domainId, domainFindings]) => {
-                                                const firstFinding = domainFindings[0];
-                                                const domainName = firstFinding.entityName || domainId;
-                                                const isExpanded = expandedDNSDomain === domainId;
-                                                const highestSeverity = domainFindings.some(f => f.severity === 'critical') ? 'critical'
-                                                    : domainFindings.some(f => f.severity === 'warning') ? 'warning'
-                                                        : 'info';
-                                                const sev = SEVERITY_CONFIG[highestSeverity];
-
-                                                return (
-                                                    <div key={domainId} style={{
-                                                        padding: '0.875rem 1rem',
-                                                        borderRadius: '12px',
-                                                        background: sev.bg,
-                                                        border: `1px solid ${sev.border}`,
-                                                        borderLeft: `4px solid ${sev.accent}`,
-                                                        marginBottom: '0.5rem',
-                                                        transition: 'all 0.2s',
-                                                    }}>
-                                                        <div
-                                                            onClick={() => setExpandedDNSDomain(isExpanded ? null : domainId)}
-                                                            style={{ cursor: 'pointer' }}
-                                                        >
-                                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                                    <span>{sev.icon}</span>
-                                                                    <span style={{ fontWeight: 700, color: sev.text, fontSize: '0.9rem' }}>
-                                                                        DNS Configuration Issues: {domainName}
-                                                                    </span>
-                                                                </div>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                                                    <span style={{
-                                                                        fontSize: '0.75rem', fontWeight: 700, color: sev.text,
-                                                                        background: `${sev.accent}15`, padding: '0.3rem 0.7rem',
-                                                                        borderRadius: '999px'
-                                                                    }}>
-                                                                        {domainFindings.length} {domainFindings.length === 1 ? 'issue' : 'issues'}
-                                                                    </span>
-                                                                    <span style={{ fontSize: '0.875rem', color: sev.text }}>
-                                                                        {isExpanded ? '▲' : '▼'}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <div style={{ color: sev.text, fontSize: '0.825rem', marginTop: '0.35rem', opacity: 0.85 }}>
-                                                                {isExpanded ? 'Click to collapse' : 'Click to view details'}
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Expanded DNS Findings */}
-                                                        {isExpanded && (
-                                                            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px solid ${sev.border}` }}>
-                                                                {domainFindings.map((finding, idx) => {
-                                                                    const findingSev = SEVERITY_CONFIG[finding.severity];
-                                                                    const findingKey = `${domainId}-${idx}`;
-                                                                    const isFindingExpanded = expandedFinding === findingKey;
-
-                                                                    return (
-                                                                        <div key={findingKey} style={{
-                                                                            padding: '0.75rem',
-                                                                            marginBottom: idx < domainFindings.length - 1 ? '0.75rem' : 0,
-                                                                            borderRadius: '8px',
-                                                                            background: 'rgba(255, 255, 255, 0.5)',
-                                                                            border: `1px solid ${findingSev.border}`,
-                                                                        }}>
-                                                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                                                    <span style={{ fontSize: '0.9rem' }}>{findingSev.icon}</span>
-                                                                                    <span style={{ fontWeight: 600, color: findingSev.text, fontSize: '0.875rem' }}>
-                                                                                        {finding.title.replace(`: ${domainName}`, '')}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <span style={{
-                                                                                    fontSize: '0.65rem', fontWeight: 700, color: findingSev.text,
-                                                                                    background: `${findingSev.accent}15`, padding: '0.2rem 0.6rem',
-                                                                                    borderRadius: '999px', textTransform: 'uppercase'
-                                                                                }}>
-                                                                                    {findingSev.label}
-                                                                                </span>
-                                                                            </div>
-                                                                            <div style={{ color: findingSev.text, fontSize: '0.8rem', opacity: 0.85, lineHeight: 1.5 }}>
-                                                                                {finding.details}
-                                                                            </div>
-
-                                                                            {/* Remediation */}
-                                                                            {finding.remediation && (
-                                                                                <div style={{ marginTop: '0.5rem' }}>
-                                                                                    <button
-                                                                                        onClick={(e) => { e.stopPropagation(); setExpandedFinding(isFindingExpanded ? null : findingKey); }}
-                                                                                        style={{
-                                                                                            background: 'none', border: 'none', cursor: 'pointer',
-                                                                                            fontSize: '0.75rem', fontWeight: 700, color: findingSev.accent,
-                                                                                            padding: '0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem',
-                                                                                        }}
-                                                                                    >
-                                                                                        🔧 {isFindingExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
-                                                                                    </button>
-                                                                                    {isFindingExpanded && (
-                                                                                        <div style={{
-                                                                                            marginTop: '0.35rem', padding: '0.6rem 0.75rem',
-                                                                                            borderRadius: '8px', background: `${findingSev.accent}08`,
-                                                                                            border: `1px dashed ${findingSev.border}`,
-                                                                                            fontSize: '0.8rem', color: findingSev.text, lineHeight: 1.6,
-                                                                                        }}>
-                                                                                            {finding.remediation}
-                                                                                        </div>
-                                                                                    )}
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    );
-                                                                })}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    );
-                                }
-
-                                // Regular rendering for non-DNS findings
-                                return (
-                                    <div key={category}>
-                                        <div style={{
-                                            fontSize: '0.7rem', fontWeight: 700, color: '#9CA3AF',
-                                            textTransform: 'uppercase', letterSpacing: '0.1em',
-                                            marginBottom: '0.5rem', paddingLeft: '0.25rem'
-                                        }}>
-                                            {CATEGORY_LABELS[category] || category.replace(/_/g, ' ')}
-                                        </div>
-                                        {catFindings.map((finding, idx) => {
-                                            const sev = SEVERITY_CONFIG[finding.severity] || SEVERITY_CONFIG.info;
-                                            const findingKey = `${category}-${idx}`;
-                                            const isExpanded = expandedFinding === findingKey;
-                                            return (
-                                                <div key={findingKey} style={{
-                                                    padding: '0.875rem 1rem',
-                                                    borderRadius: '12px',
-                                                    background: sev.bg,
-                                                    border: `1px solid ${sev.border}`,
-                                                    borderLeft: `4px solid ${sev.accent}`,
-                                                    marginBottom: '0.5rem',
-                                                    transition: 'all 0.2s',
-                                                }}>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                            <span>{sev.icon}</span>
-                                                            <span style={{ fontWeight: 700, color: sev.text, fontSize: '0.9rem' }}>
-                                                                {finding.title}
-                                                            </span>
-                                                        </div>
-                                                        <span style={{
-                                                            fontSize: '0.65rem', fontWeight: 700, color: sev.text,
-                                                            background: `${sev.accent}15`, padding: '0.2rem 0.6rem',
-                                                            borderRadius: '999px', textTransform: 'uppercase'
-                                                        }}>
-                                                            {sev.label}
-                                                        </span>
-                                                    </div>
-                                                    <div style={{ color: sev.text, fontSize: '0.825rem', marginTop: '0.35rem', opacity: 0.85, lineHeight: 1.5 }}>
-                                                        {finding.details}
-                                                    </div>
-                                                    {/* Entity Name (human-readable) */}
-                                                    {finding.entity && (
-                                                        <div style={{ fontSize: '0.75rem', color: sev.text, opacity: 0.7, marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                                            <span style={{ fontWeight: 600 }}>{finding.entity}:</span>
-                                                            <span>{finding.entityName || finding.entityId}</span>
-                                                            {finding.category === 'domain_dns' && (
-                                                                <span
-                                                                    style={{ fontSize: '0.7rem', marginLeft: 'auto', cursor: 'pointer', textDecoration: 'underline' }}
-                                                                    onClick={(e) => { e.stopPropagation(); finding.entityId && fetchDNSDetails(finding.entityId); }}
-                                                                >
-                                                                    {expandedDomain === finding.entityId ? '▲ Hide DNS' : '▼ View DNS'}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    )}
-
-                                                    {/* Collapsible Remediation */}
-                                                    {finding.remediation && (
-                                                        <div style={{ marginTop: '0.5rem' }}>
-                                                            <button
-                                                                onClick={(e) => { e.stopPropagation(); setExpandedFinding(isExpanded ? null : findingKey); }}
-                                                                style={{
-                                                                    background: 'none', border: 'none', cursor: 'pointer',
-                                                                    fontSize: '0.75rem', fontWeight: 700, color: sev.accent,
-                                                                    padding: '0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem',
-                                                                }}
-                                                            >
-                                                                🔧 {isExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
-                                                            </button>
-                                                            {isExpanded && (
-                                                                <div style={{
-                                                                    marginTop: '0.35rem', padding: '0.6rem 0.75rem',
-                                                                    borderRadius: '8px', background: `${sev.accent}08`,
-                                                                    border: `1px dashed ${sev.border}`,
-                                                                    fontSize: '0.8rem', color: sev.text, lineHeight: 1.6,
-                                                                }}>
-                                                                    {finding.remediation}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )}
-
-                                                    {/* Expandable DNS Details */}
-                                                    {expandedDomain === finding.entityId && finding.category === 'domain_dns' && (
-                                                        <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: `1px solid ${sev.border}` }}>
-                                                            {dnsLoading === finding.entityId ? (
-                                                                <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
-                                                                    Checking DNS records...
-                                                                </div>
-                                                            ) : dnsDetails[finding.entityId!] ? (
-                                                                <DNSDetailPanel dns={dnsDetails[finding.entityId!].dns} domain={dnsDetails[finding.entityId!].domain} />
-                                                            ) : (
-                                                                <div style={{ textAlign: 'center', padding: '0.5rem', color: sev.text, fontSize: '0.8rem' }}>
-                                                                    Click to load DNS details
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-            )}
+            <FindingsSection
+                findings={findings}
+                expandedDomain={expandedDomain}
+                onToggleDomain={fetchDNSDetails}
+                dnsDetails={dnsDetails}
+                dnsLoading={dnsLoading}
+            />
 
             {/* Recommendations */}
-            {recommendations.length > 0 && (
-                <div className="premium-card">
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        💡 Recommendations
-                    </h2>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        {recommendations.sort((a, b) => a.priority - b.priority).map((rec, idx) => (
-                            <div key={idx} style={{
-                                display: 'flex', gap: '1rem', alignItems: 'flex-start',
-                                padding: '1rem 1.25rem', borderRadius: '16px',
-                                background: '#F8FAFC', border: '1px solid #E2E8F0',
-                                transition: 'all 0.2s'
-                            }} className="hover:shadow-md">
-                                <div style={{
-                                    width: '32px', height: '32px', borderRadius: '50%',
-                                    background: rec.priority <= 2 ? '#FEF2F2' : rec.priority <= 4 ? '#FFFBEB' : '#EFF6FF',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '0.8rem', fontWeight: 800, flexShrink: 0,
-                                    color: rec.priority <= 2 ? '#EF4444' : rec.priority <= 4 ? '#F59E0B' : '#3B82F6',
-                                    border: `1px solid ${rec.priority <= 2 ? '#FECACA' : rec.priority <= 4 ? '#FDE68A' : '#BFDBFE'}`
-                                }}>
-                                    {rec.priority}
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ fontWeight: 700, color: '#1E293B', fontSize: '0.9rem', marginBottom: '0.25rem' }}>
-                                        {rec.action}
-                                    </div>
-                                    <div style={{ color: '#64748B', fontSize: '0.825rem', lineHeight: 1.5 }}>
-                                        {rec.reason}
-                                    </div>
-                                </div>
-                                {rec.link && (
-                                    <Link
-                                        href={rec.link}
-                                        style={{
-                                            padding: '0.4rem 1rem', borderRadius: '10px',
-                                            background: '#2563EB', color: '#fff',
-                                            fontSize: '0.75rem', fontWeight: 700,
-                                            textDecoration: 'none', whiteSpace: 'nowrap',
-                                            display: 'flex', alignItems: 'center', gap: '0.25rem',
-                                            flexShrink: 0, alignSelf: 'center',
-                                        }}
-                                    >
-                                        View →
-                                    </Link>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+            <RecommendationsList recommendations={recommendations} />
 
             <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
     );
-}
-
-// ── DNS Detail Panel (inline) ──
-function DNSDetailPanel({ dns, domain }: { dns: any; domain: string }) {
-    if (!dns) return null;
-
-    const records = [
-        { label: 'SPF', valid: dns.spfValid, icon: dns.spfValid ? '✅' : '❌' },
-        { label: 'DKIM', valid: dns.dkimValid, icon: dns.dkimValid ? '✅' : '❌' },
-        { label: 'DMARC', policy: dns.dmarcPolicy, icon: dns.dmarcPolicy && dns.dmarcPolicy !== 'none' ? '✅' : '⚠️' },
-    ];
-
-    return (
-        <div>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#374151', marginBottom: '0.5rem' }}>
-                DNS Records for {domain}
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                {records.map(r => (
-                    <div key={r.label} style={{
-                        padding: '0.5rem', borderRadius: '8px', background: '#fff',
-                        border: '1px solid #E5E7EB', textAlign: 'center',
-                        fontSize: '0.75rem'
-                    }}>
-                        <div style={{ fontSize: '1.25rem', marginBottom: '0.15rem' }}>{r.icon}</div>
-                        <div style={{ fontWeight: 700, color: '#374151' }}>{r.label}</div>
-                        {'policy' in r && <div style={{ color: '#6B7280', fontSize: '0.7rem' }}>{r.policy || 'none'}</div>}
-                    </div>
-                ))}
-            </div>
-
-            {/* Blacklist Results */}
-            {dns.blacklistResults && Object.keys(dns.blacklistResults).length > 0 && (
-                <div>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#374151', marginBottom: '0.35rem' }}>Blacklist Check</div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                        {Object.entries(dns.blacklistResults).map(([bl, status]) => (
-                            <span key={bl} style={{
-                                padding: '0.15rem 0.5rem', borderRadius: '999px',
-                                fontSize: '0.65rem', fontWeight: 600,
-                                background: status === 'CONFIRMED' ? '#FEE2E2' : status === 'NOT_LISTED' ? '#DCFCE7' : '#FEF3C7',
-                                color: status === 'CONFIRMED' ? '#991B1B' : status === 'NOT_LISTED' ? '#166534' : '#92400E',
-                                border: `1px solid ${status === 'CONFIRMED' ? '#FECACA' : status === 'NOT_LISTED' ? '#BBF7D0' : '#FDE68A'}`
-                            }}>
-                                {bl}: {status as string}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: '#6B7280' }}>
-                Score: <span style={{ fontWeight: 700, color: getScoreColor(dns.score) }}>{dns.score}/100</span>
-            </div>
-        </div>
-    );
-}
-
-// ── Recovery Entity Row ──
-const PHASE_CONFIG: Record<string, { label: string; color: string; bg: string; border: string; progress: number }> = {
-    paused: { label: 'Paused', color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', progress: 0 },
-    quarantine: { label: 'Quarantine', color: '#92400E', bg: '#FFFBEB', border: '#FDE68A', progress: 25 },
-    restricted_send: { label: 'Restricted Send', color: '#1E40AF', bg: '#EFF6FF', border: '#BFDBFE', progress: 50 },
-    warm_recovery: { label: 'Warm Recovery', color: '#065F46', bg: '#ECFDF5', border: '#A7F3D0', progress: 75 },
-    healthy: { label: 'Healthy', color: '#166534', bg: '#F0FDF4', border: '#BBF7D0', progress: 100 },
-};
-
-function RecoveryEntityRow({
-    label, phase, resilience, volumeLimit, phaseEnteredAt, cleanSends,
-    cooldownUntil, bounceRate, relapseCount, consecutivePauses,
-}: {
-    label: string;
-    phase: string;
-    resilience?: number;
-    volumeLimit?: number;
-    phaseEnteredAt?: string;
-    cleanSends?: number;
-    cooldownUntil?: string;
-    bounceRate?: number;
-    relapseCount?: number;
-    consecutivePauses?: number;
-}) {
-    const cfg = PHASE_CONFIG[phase] || PHASE_CONFIG.paused;
-    const timeInPhase = phaseEnteredAt
-        ? formatDuration(Date.now() - new Date(phaseEnteredAt).getTime())
-        : null;
-
-    // Calculate graduation requirements based on phase
-    const getGraduationInfo = () => {
-        if (cleanSends === undefined) return null;
-
-        switch (phase) {
-            case 'paused':
-                return null; // Show cooldown timer instead
-            case 'quarantine':
-                return { label: 'Status', value: 'DNS Check Needed' };
-            case 'restricted_send':
-                const needed = (consecutivePauses || 0) > 1 ? 25 : 15;
-                return { label: 'Progress', value: `${cleanSends}/${needed}`, isProgress: true };
-            case 'warm_recovery':
-                return { label: 'Progress', value: `${cleanSends}/50`, isProgress: true };
-            default:
-                return null;
-        }
-    };
-
-    // Get next phase preview
-    const getNextPhaseInfo = () => {
-        switch (phase) {
-            case 'paused':
-                return cooldownRemaining === 'Ready' ? 'Next: Quarantine' : null;
-            case 'quarantine':
-                return 'Next: Restricted Send (DNS check required)';
-            case 'restricted_send':
-                const needed = (consecutivePauses || 0) > 1 ? 25 : 15;
-                const remaining = needed - (cleanSends || 0);
-                return remaining > 0
-                    ? `Next: Warm Recovery (need ${remaining} more clean sends)`
-                    : 'Next: Warm Recovery';
-            case 'warm_recovery':
-                const warmRemaining = 50 - (cleanSends || 0);
-                return warmRemaining > 0
-                    ? `Next: Healthy (need ${warmRemaining} more sends, 3+ days, <2% bounce)`
-                    : 'Next: Healthy (3+ days required, <2% bounce)';
-            default:
-                return null;
-        }
-    };
-
-    const graduationInfo = getGraduationInfo();
-    const nextPhaseInfo = getNextPhaseInfo();
-
-    // Cooldown countdown (for PAUSED phase)
-    const [cooldownRemaining, setCooldownRemaining] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (phase === 'paused' && cooldownUntil) {
-            const updateCooldown = () => {
-                const now = Date.now();
-                const until = new Date(cooldownUntil).getTime();
-                const diff = until - now;
-
-                if (diff <= 0) {
-                    setCooldownRemaining('Ready');
-                } else {
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    setCooldownRemaining(`${hours}h ${minutes}m`);
-                }
-            };
-
-            updateCooldown();
-            const interval = setInterval(updateCooldown, 60000); // Update every minute
-            return () => clearInterval(interval);
-        }
-    }, [phase, cooldownUntil]);
-
-    return (
-        <div style={{
-            padding: '0.875rem 1.25rem', borderRadius: '14px',
-            background: cfg.bg, border: `1px solid ${cfg.border}`,
-            transition: 'all 0.2s',
-        }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                {/* Phase badge */}
-                <div style={{
-                    padding: '0.25rem 0.7rem', borderRadius: '999px',
-                    background: `${cfg.color}12`, border: `1px solid ${cfg.color}30`,
-                    color: cfg.color, fontSize: '0.7rem', fontWeight: 700,
-                    textTransform: 'uppercase', letterSpacing: '0.05em',
-                    whiteSpace: 'nowrap',
-                }}>
-                    {cfg.label}
-                </div>
-
-                {/* Entity name */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{
-                        fontWeight: 700, color: '#1E293B', fontSize: '0.85rem',
-                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                    }}>
-                        {label}
-                        {/* Relapse count badge */}
-                        {relapseCount !== undefined && relapseCount > 0 && (
-                            <span style={{
-                                padding: '0.125rem 0.4rem', borderRadius: '999px',
-                                background: '#FEF2F2', border: '1px solid #FEE2E2',
-                                color: '#DC2626', fontSize: '0.65rem', fontWeight: 700,
-                            }}>
-                                {relapseCount} relapse{relapseCount > 1 ? 's' : ''}
-                            </span>
-                        )}
-                    </div>
-                    {/* Progress bar */}
-                    <div style={{
-                        marginTop: '0.35rem', height: '4px', borderRadius: '2px',
-                        background: '#E5E7EB', overflow: 'hidden',
-                    }}>
-                        <div style={{
-                            width: `${cfg.progress}%`, height: '100%',
-                            background: `linear-gradient(90deg, ${cfg.color}80, ${cfg.color})`,
-                            borderRadius: '2px', transition: 'width 0.6s ease',
-                        }} />
-                    </div>
-                </div>
-
-                {/* Stats */}
-                <div style={{ display: 'flex', gap: '0.75rem', flexShrink: 0 }}>
-                    {/* Cooldown timer (PAUSED phase only) */}
-                    {phase === 'paused' && cooldownRemaining && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Cooldown</div>
-                            <div style={{
-                                fontSize: '0.85rem', fontWeight: 800,
-                                color: cooldownRemaining === 'Ready' ? '#16A34A' : '#DC2626',
-                            }}>
-                                {cooldownRemaining}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Graduation progress */}
-                    {graduationInfo && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>
-                                {graduationInfo.label}
-                            </div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
-                                {graduationInfo.value}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Bounce rate (if available) */}
-                    {bounceRate !== undefined && bounceRate !== null && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Bounce</div>
-                            <div style={{
-                                fontSize: '0.85rem', fontWeight: 800,
-                                color: bounceRate < 0.02 ? '#16A34A' : bounceRate < 0.03 ? '#F59E0B' : '#EF4444',
-                            }}>
-                                {(bounceRate * 100).toFixed(1)}%
-                            </div>
-                        </div>
-                    )}
-
-                    {resilience !== undefined && resilience !== null && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
-                            <div style={{
-                                fontSize: '0.85rem', fontWeight: 800,
-                                color: resilience >= 70 ? '#16A34A' : resilience >= 30 ? '#F59E0B' : '#EF4444',
-                            }}>
-                                {resilience}
-                            </div>
-                        </div>
-                    )}
-
-                    {volumeLimit !== undefined && volumeLimit !== null && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>Vol. Limit</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#374151' }}>
-                                {volumeLimit}%
-                            </div>
-                        </div>
-                    )}
-
-                    {timeInPhase && (
-                        <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '0.6rem', color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase' }}>In Phase</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6B7280' }}>
-                                {timeInPhase}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Next Phase Preview */}
-            {nextPhaseInfo && (
-                <div style={{
-                    marginTop: '0.75rem', paddingTop: '0.75rem',
-                    borderTop: `1px solid ${cfg.border}`,
-                }}>
-                    <div style={{
-                        fontSize: '0.7rem', color: '#6B7280',
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                    }}>
-                        <span style={{ opacity: 0.7 }}>→</span>
-                        <span style={{ fontWeight: 600 }}>{nextPhaseInfo}</span>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-}
-
-function formatDuration(ms: number): string {
-    const hours = Math.floor(ms / (1000 * 60 * 60));
-    if (hours < 1) return '<1h';
-    if (hours < 24) return `${hours}h`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ${hours % 24}h`;
 }

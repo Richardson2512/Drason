@@ -5,39 +5,35 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
 import { apiClient } from '@/lib/api';
+import type { Domain, Mailbox, Campaign, PaginatedResponse, AuditLog } from '@/types/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
+import { useSortFilterModal } from '@/hooks/useSortFilterModal';
+import { usePagination } from '@/hooks/usePagination';
 
 export default function DomainsPage() {
-    const [domains, setDomains] = useState<any[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [selectedDomain, setSelectedDomain] = useState<Record<string, any> | null>(null);
-    const [auditLogs, setAuditLogs] = useState<any[]>([]);
+    const [domains, setDomains] = useState<Domain[]>([]);
+    const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+    const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
 
     // Filters
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
 
-    // Sorting & Filtering State
-    const [sortBy, setSortBy] = useState('domain_asc');
-    const [minEngagement, setMinEngagement] = useState<string>('');
-    const [maxEngagement, setMaxEngagement] = useState<string>('');
-    const [minBounceRate, setMinBounceRate] = useState<string>('');
-    const [maxBounceRate, setMaxBounceRate] = useState<string>('');
+    // Sorting & Filtering (delegated to useSortFilterModal hook)
+    const sortFilter = useSortFilterModal({
+        sortBy: 'domain_asc',
+        minEngagement: '',
+        maxEngagement: '',
+        minBounceRate: '',
+        maxBounceRate: '',
+    });
 
-    // Modal State
-    const [showSortModal, setShowSortModal] = useState(false);
-    const [tempSortBy, setTempSortBy] = useState(sortBy);
-    const [tempMinEngagement, setTempMinEngagement] = useState(minEngagement);
-    const [tempMaxEngagement, setTempMaxEngagement] = useState(maxEngagement);
-    const [tempMinBounceRate, setTempMinBounceRate] = useState(minBounceRate);
-    const [tempMaxBounceRate, setTempMaxBounceRate] = useState(maxBounceRate);
-
-    // Pagination & Selection
-    const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
-    const [selectedDomainIds, setSelectedDomainIds] = useState<Set<string>>(new Set());
+    // Pagination & Selection (delegated to usePagination hook)
+    const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     const fetchDomains = useCallback(async () => {
+        const { sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate } = sortFilter.values;
         try {
             const params = new URLSearchParams({
                 page: meta.page.toString(),
@@ -55,7 +51,7 @@ export default function DomainsPage() {
             if (minBounceRate) params.append('minBounceRate', minBounceRate);
             if (maxBounceRate) params.append('maxBounceRate', maxBounceRate);
 
-            const data = await apiClient<any>(`/api/dashboard/domains?${params}`);
+            const data = await apiClient<PaginatedResponse<Domain>>(`/api/dashboard/domains?${params}`);
             if (data?.data) {
                 setDomains(data.data);
                 setMeta(data.meta);
@@ -69,7 +65,7 @@ export default function DomainsPage() {
             console.error('Failed to fetch domains:', err);
             setDomains([]);
         }
-    }, [meta.page, meta.limit, selectedStatus, searchQuery, sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate, selectedDomain]);
+    }, [meta.page, meta.limit, selectedStatus, searchQuery, sortFilter.values, selectedDomain]);
 
     useEffect(() => {
         fetchDomains();
@@ -84,7 +80,7 @@ export default function DomainsPage() {
 
     useEffect(() => {
         if (selectedDomain) {
-            apiClient<any[]>(`/api/dashboard/audit-logs?entity=domain&entity_id=${selectedDomain.id}`)
+            apiClient<AuditLog[]>(`/api/dashboard/audit-logs?entity=domain&entity_id=${selectedDomain.id}`)
                 .then(setAuditLogs)
                 .catch(err => {
                     console.error('Failed to fetch logs:', err);
@@ -95,32 +91,6 @@ export default function DomainsPage() {
         }
     }, [selectedDomain]);
 
-    // Selection Logic
-    const toggleDomainSelection = (e: React.MouseEvent, id: string) => {
-        e.stopPropagation();
-        const newSet = new Set(selectedDomainIds);
-        if (newSet.has(id)) {
-            newSet.delete(id);
-        } else {
-            newSet.add(id);
-        }
-        setSelectedDomainIds(newSet);
-    };
-
-    const toggleSelectAll = () => {
-        const allPageIds = domains.map(d => d.id);
-        const allSelected = allPageIds.every(id => selectedDomainIds.has(id));
-        const newSet = new Set(selectedDomainIds);
-        if (allSelected) {
-            allPageIds.forEach(id => newSet.delete(id));
-        } else {
-            allPageIds.forEach(id => newSet.add(id));
-        }
-        setSelectedDomainIds(newSet);
-    };
-
-    const isAllSelected = domains.length > 0 && domains.every(d => selectedDomainIds.has(d.id));
-
     const handlePageChange = (newPage: number) => {
         setMeta(prev => ({ ...prev, page: newPage }));
     };
@@ -129,49 +99,24 @@ export default function DomainsPage() {
         setMeta(prev => ({ ...prev, limit: newLimit, page: 1 }));
     };
 
-    // Sort & Filter Modal Handlers
-    const handleOpenSortModal = () => {
-        setTempSortBy(sortBy);
-        setTempMinEngagement(minEngagement);
-        setTempMaxEngagement(maxEngagement);
-        setTempMinBounceRate(minBounceRate);
-        setTempMaxBounceRate(maxBounceRate);
-        setShowSortModal(true);
-    };
-
     const handleApplySortFilter = () => {
-        setSortBy(tempSortBy);
-        setMinEngagement(tempMinEngagement);
-        setMaxEngagement(tempMaxEngagement);
-        setMinBounceRate(tempMinBounceRate);
-        setMaxBounceRate(tempMaxBounceRate);
+        sortFilter.apply();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     const handleClearFilters = () => {
-        setTempSortBy('domain_asc');
-        setTempMinEngagement('');
-        setTempMaxEngagement('');
-        setTempMinBounceRate('');
-        setTempMaxBounceRate('');
-        setSortBy('domain_asc');
-        setMinEngagement('');
-        setMaxEngagement('');
-        setMinBounceRate('');
-        setMaxBounceRate('');
+        sortFilter.clear();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     return (
-        <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
+        <div className="flex h-full gap-8">
             {/* Left: List */}
-            <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', flexShrink: 0, color: '#111827' }}>Domains</h2>
+            <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '420px' }}>
+                <h2 className="text-2xl font-bold mb-4 shrink-0 text-gray-900">Domains</h2>
 
                 {/* Filters */}
-                <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="mb-4 flex flex-col gap-3">
                     {/* Search */}
                     <input
                         type="text"
@@ -181,15 +126,8 @@ export default function DomainsPage() {
                             setSearchQuery(e.target.value);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            fontSize: '0.875rem',
-                            outline: 'none'
-                        }}
+                        className="w-full rounded-xl border border-gray-200 bg-white text-sm outline-none"
+                        style={{ padding: '0.625rem 1rem' }}
                     />
 
                     {/* Status Filter */}
@@ -199,16 +137,8 @@ export default function DomainsPage() {
                             setSelectedStatus(e.target.value);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            outline: 'none'
-                        }}
+                        className="w-full rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
+                        style={{ padding: '0.625rem 1rem' }}
                     >
                         <option value="all">All Status</option>
                         <option value="healthy">Healthy</option>
@@ -218,208 +148,122 @@ export default function DomainsPage() {
 
                     {/* Sort & Filter Button */}
                     <button
-                        onClick={handleOpenSortModal}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            color: '#111827',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.5rem',
-                            transition: 'all 0.2s'
-                        }}
-                        className="hover:bg-gray-50 hover:border-blue-300"
+                        onClick={sortFilter.open}
+                        className="w-full rounded-xl border border-gray-200 bg-white text-gray-900 text-sm font-semibold cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:bg-gray-50 hover:border-blue-300"
+                        style={{ padding: '0.75rem 1rem' }}
                     >
-                        <span style={{ fontSize: '1rem' }}>⚙️</span>
+                        <span className="text-base">⚙️</span>
                         Sort & Filter
-                        {(sortBy !== 'domain_asc' || minEngagement || maxEngagement || minBounceRate || maxBounceRate) && (
-                            <span style={{
-                                background: '#3B82F6',
-                                color: 'white',
-                                fontSize: '0.65rem',
-                                padding: '0.125rem 0.375rem',
-                                borderRadius: '999px',
-                                fontWeight: 700
-                            }}>
+                        {sortFilter.hasActiveFilters && (
+                            <span className="bg-blue-500 text-white text-[0.65rem] rounded-full font-bold" style={{ padding: '0.125rem 0.375rem' }}>
                                 Active
                             </span>
                         )}
                     </button>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
+                <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-100 mb-3">
                     <input
                         type="checkbox"
-                        checked={isAllSelected}
-                        onChange={toggleSelectAll}
-                        style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                        checked={isAllSelected(domains)}
+                        onChange={() => toggleSelectAll(domains)}
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: '#2563EB' }}
                     />
-                    <span style={{ fontSize: '0.8rem', color: '#6B7280', fontWeight: 500 }}>Select All ({domains.length})</span>
+                    <span className="text-[0.8rem] text-gray-500 font-medium">Select All ({domains.length})</span>
                 </div>
 
-                <div className="scrollbar-hide" style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingRight: '0.5rem' }}>
+                <div className="scrollbar-hide overflow-y-auto flex-1 flex flex-col gap-3 pr-2">
                     {domains.map(d => (
                         <div
                             key={d.id}
                             onClick={() => setSelectedDomain(d)}
+                            className="p-4 rounded-2xl cursor-pointer border shrink-0 flex items-center gap-3 hover:shadow-md"
                             style={{
-                                padding: '1rem',
-                                borderRadius: '16px',
                                 background: selectedDomain?.id === d.id ? '#EFF6FF' : '#FFFFFF',
-                                cursor: 'pointer',
-                                border: '1px solid',
                                 borderColor: selectedDomain?.id === d.id ? '#BFDBFE' : '#F3F4F6',
                                 borderLeft: d.status === 'paused' ? '4px solid #EF4444' : (selectedDomain?.id === d.id ? '1px solid #BFDBFE' : '1px solid #F3F4F6'),
                                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                flexShrink: 0,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.75rem'
                             }}
-                            className="hover:shadow-md"
                         >
                             <input
                                 type="checkbox"
-                                checked={selectedDomainIds.has(d.id)}
-                                onClick={(e) => toggleDomainSelection(e, d.id)}
+                                checked={isSelected(d.id)}
+                                onClick={(e) => toggleSelection(e, d.id)}
                                 onChange={() => { }}
-                                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                                className="w-4 h-4 cursor-pointer"
+                                style={{ accentColor: '#2563EB' }}
                             />
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                                    <span style={{ fontWeight: 600, color: '#1E293B', fontSize: '0.9rem' }}>{d.domain}</span>
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-semibold text-slate-800 text-[0.9rem]">{d.domain}</span>
                                     {d.source_platform && <PlatformBadge platform={d.source_platform} />}
                                 </div>
-                                <div style={{
-                                    fontSize: '0.7rem',
-                                    fontWeight: 600,
+                                <div className="text-[0.7rem] font-semibold rounded-full inline-block" style={{
                                     padding: '2px 8px',
-                                    borderRadius: '999px',
-                                    display: 'inline-block',
                                     ...getStatusColors(d.status)
                                 }}>{d.status.toUpperCase()}</div>
                             </div>
                         </div>
                     ))}
-                    {domains.length === 0 && <div style={{ color: '#9CA3AF', textAlign: 'center', padding: '2rem', fontStyle: 'italic' }}>No domains.</div>}
+                    {domains.length === 0 && <div className="text-gray-400 text-center p-8 italic">No domains.</div>}
                 </div>
 
-                <div style={{ paddingTop: '1rem', borderTop: '1px solid #F3F4F6', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
                     <RowLimitSelector limit={meta.limit} onLimitChange={handleLimitChange} />
                     <PaginationControls currentPage={meta.page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
                 </div>
             </div>
 
             {/* Right: Details (Unchanged mostly) */}
-            <div style={{ flex: 1, overflowY: 'auto' }} className="scrollbar-hide">
+            <div className="flex-1 overflow-y-auto scrollbar-hide">
                 {selectedDomain ? (
                     <DomainDetailsView selectedDomain={selectedDomain} auditLogs={auditLogs} />
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
-                        <div style={{ fontSize: '3rem' }}>👈</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: '500' }}>Select a domain to view details</div>
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4">
+                        <div className="text-5xl">👈</div>
+                        <div className="text-xl font-medium">Select a domain to view details</div>
                     </div>
                 )}
             </div>
 
             {/* Sort & Filter Modal */}
-            {showSortModal && (
+            {sortFilter.isOpen && (
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 1000,
-                        padding: '1rem'
-                    }}
-                    onClick={() => setShowSortModal(false)}
+                    className="fixed inset-0 flex items-center justify-center z-[1000] p-4"
+                    style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+                    onClick={() => sortFilter.close()}
                 >
                     <div
-                        style={{
-                            background: '#FFFFFF',
-                            borderRadius: '24px',
-                            maxWidth: '500px',
-                            width: '100%',
-                            maxHeight: '90vh',
-                            overflow: 'hidden',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                        }}
+                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderBottom: '1px solid #E5E7EB',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-gray-900 m-0">
                                 ⚙️ Sort & Filter Domains
                             </h2>
                             <button
-                                onClick={() => setShowSortModal(false)}
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    fontSize: '1.5rem',
-                                    color: '#9CA3AF',
-                                    cursor: 'pointer',
-                                    padding: '0.25rem',
-                                    lineHeight: 1
-                                }}
+                                onClick={() => sortFilter.close()}
+                                className="bg-transparent border-none text-2xl text-gray-400 cursor-pointer p-1 leading-none"
                             >
                                 ×
                             </button>
                         </div>
 
                         {/* Modal Body */}
-                        <div style={{
-                            padding: '1.5rem',
-                            overflowY: 'auto',
-                            flex: 1
-                        }}>
+                        <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label htmlFor="modal-sort-by" style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
                                 <select
                                     id="modal-sort-by"
-                                    value={tempSortBy}
-                                    onChange={(e) => setTempSortBy(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem 1rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #D1D5DB',
-                                        background: '#FFFFFF',
-                                        color: '#111827',
-                                        fontSize: '0.875rem',
-                                        cursor: 'pointer',
-                                        outline: 'none'
-                                    }}
+                                    value={sortFilter.temp.sortBy}
+                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
+                                    className="w-full rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
+                                    style={{ padding: '0.75rem 1rem' }}
                                 >
                                     <option value="domain_asc">Domain (A-Z)</option>
                                     <option value="domain_desc">Domain (Z-A)</option>
@@ -433,150 +277,79 @@ export default function DomainsPage() {
                             </div>
 
                             {/* Engagement Rate Range */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Engagement Rate Range (%)
                                 </label>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="number"
                                         placeholder="Min"
-                                        value={tempMinEngagement}
-                                        onChange={(e) => setTempMinEngagement(e.target.value)}
+                                        value={sortFilter.temp.minEngagement}
+                                        onChange={(e) => sortFilter.setTempValue('minEngagement', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
+                                        style={{ padding: '0.75rem 1rem' }}
                                     />
-                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <span className="text-gray-500 text-base font-medium">→</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
-                                        value={tempMaxEngagement}
-                                        onChange={(e) => setTempMaxEngagement(e.target.value)}
+                                        value={sortFilter.temp.maxEngagement}
+                                        onChange={(e) => sortFilter.setTempValue('maxEngagement', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
+                                        style={{ padding: '0.75rem 1rem' }}
                                     />
                                 </div>
                             </div>
 
                             {/* Bounce Rate Range */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Bounce Rate Range (%)
                                 </label>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="number"
                                         placeholder="Min"
-                                        value={tempMinBounceRate}
-                                        onChange={(e) => setTempMinBounceRate(e.target.value)}
+                                        value={sortFilter.temp.minBounceRate}
+                                        onChange={(e) => sortFilter.setTempValue('minBounceRate', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
+                                        style={{ padding: '0.75rem 1rem' }}
                                     />
-                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <span className="text-gray-500 text-base font-medium">→</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
-                                        value={tempMaxBounceRate}
-                                        onChange={(e) => setTempMaxBounceRate(e.target.value)}
+                                        value={sortFilter.temp.maxBounceRate}
+                                        onChange={(e) => sortFilter.setTempValue('maxBounceRate', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
+                                        style={{ padding: '0.75rem 1rem' }}
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderTop: '1px solid #E5E7EB',
-                            display: 'flex',
-                            gap: '0.75rem'
-                        }}>
+                        <div className="p-6 border-t border-gray-200 flex gap-3">
                             <button
                                 onClick={handleClearFilters}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #D1D5DB',
-                                    background: '#FFFFFF',
-                                    color: '#374151',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-gray-50"
+                                className="flex-1 rounded-xl border border-gray-300 bg-white text-gray-700 text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-gray-50"
+                                style={{ padding: '0.75rem 1rem' }}
                             >
                                 Clear All
                             </button>
                             <button
                                 onClick={handleApplySortFilter}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    background: '#3B82F6',
-                                    color: '#FFFFFF',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-blue-600"
+                                className="flex-1 rounded-xl border-none bg-blue-500 text-white text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-600"
+                                style={{ padding: '0.75rem 1rem' }}
                             >
                                 Done
                             </button>
@@ -589,49 +362,48 @@ export default function DomainsPage() {
 }
 
 // Memoized component for better Safari performance
-function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any; auditLogs: any[] }) {
+function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Domain; auditLogs: AuditLog[] }) {
     // Memoize engagement rate calculations to prevent re-calculation on every render
     const openRate = useMemo(() => {
-        return selectedDomain.total_sent_lifetime > 0
-            ? ((selectedDomain.total_opens / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+        return (selectedDomain.total_sent_lifetime || 0) > 0
+            ? (((selectedDomain.total_opens || 0) / (selectedDomain.total_sent_lifetime || 1)) * 100).toFixed(1)
             : '0';
     }, [selectedDomain.total_sent_lifetime, selectedDomain.total_opens]);
 
     const clickRate = useMemo(() => {
-        return selectedDomain.total_sent_lifetime > 0
-            ? ((selectedDomain.total_clicks / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+        return (selectedDomain.total_sent_lifetime || 0) > 0
+            ? (((selectedDomain.total_clicks || 0) / (selectedDomain.total_sent_lifetime || 1)) * 100).toFixed(1)
             : '0';
     }, [selectedDomain.total_sent_lifetime, selectedDomain.total_clicks]);
 
     const replyRate = useMemo(() => {
-        return selectedDomain.total_sent_lifetime > 0
-            ? ((selectedDomain.total_replies / selectedDomain.total_sent_lifetime) * 100).toFixed(1)
+        return (selectedDomain.total_sent_lifetime || 0) > 0
+            ? (((selectedDomain.total_replies || 0) / (selectedDomain.total_sent_lifetime || 1)) * 100).toFixed(1)
             : '0';
     }, [selectedDomain.total_sent_lifetime, selectedDomain.total_replies]);
 
     return (
         <div className="animate-fade-in">
             <div className="page-header">
-                <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedDomain.domain}</h1>
-                <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Reputation & Usage</div>
+                <h1 className="font-extrabold mb-2 text-gray-900 tracking-tight" style={{ fontSize: '2.25rem' }}>{selectedDomain.domain}</h1>
+                <div className="text-gray-500" style={{ fontSize: '1.1rem' }}>Reputation & Usage</div>
             </div>
 
             {selectedDomain.status === 'paused' && (
-                <div className="premium-card" style={{
+                <div className="premium-card mb-8" style={{
                     background: '#FEF2F2',
                     border: '1px solid #FECACA',
                     borderLeft: '6px solid #EF4444',
-                    marginBottom: '2rem'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
-                        <span style={{ fontSize: '1.5rem' }}>⚠️</span>
-                        <div style={{ flex: 1 }}>
-                            <h3 style={{ color: '#B91C1C', fontWeight: '800', fontSize: '1.25rem', letterSpacing: '-0.025em', marginBottom: '0.5rem' }}>DOMAIN PAUSED</h3>
-                            <p style={{ color: '#7F1D1D', fontSize: '1rem', lineHeight: '1.5', marginBottom: '0.5rem' }}>
+                    <div className="flex items-start gap-3">
+                        <span className="text-2xl">⚠️</span>
+                        <div className="flex-1">
+                            <h3 className="font-extrabold text-xl tracking-tight mb-2" style={{ color: '#B91C1C' }}>DOMAIN PAUSED</h3>
+                            <p className="text-base leading-relaxed mb-2" style={{ color: '#7F1D1D' }}>
                                 {selectedDomain.paused_reason || 'No reason provided'}
                             </p>
                             {selectedDomain.last_pause_at && (
-                                <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '0.5rem' }}>
+                                <div className="text-xs text-gray-400 mt-2">
                                     Paused {new Date(selectedDomain.last_pause_at).toLocaleString()} by {selectedDomain.paused_by || 'system'}
                                 </div>
                             )}
@@ -640,20 +412,20 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                 </div>
             )}
 
-            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Bounce Analytics</h2>
+            <div className="premium-card mb-8">
+                <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Analytics</h2>
                 <div className="grid grid-cols-2 gap-8">
                     <div>
-                        <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Bounce Rate Trend</div>
-                        <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.aggregated_bounce_rate_trend > 2 ? '#EF4444' : '#16A34A' }}>
-                            {selectedDomain.aggregated_bounce_rate_trend.toFixed(2)}<span style={{ fontSize: '1.5rem' }}>%</span>
+                        <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Bounce Rate Trend</div>
+                        <div className="text-4xl font-extrabold" style={{ color: (selectedDomain.aggregated_bounce_rate_trend || 0) > 2 ? '#EF4444' : '#16A34A' }}>
+                            {(selectedDomain.aggregated_bounce_rate_trend || 0).toFixed(2)}<span className="text-2xl">%</span>
                         </div>
-                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Lifetime aggregate across all mailboxes</div>
+                        <div className="text-sm text-gray-400 mt-1">Lifetime aggregate across all mailboxes</div>
                     </div>
                     <div>
-                        <div style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Warnings Triggered</div>
-                        <div style={{ fontSize: '2.5rem', fontWeight: '800', color: selectedDomain.warning_count > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count}</div>
-                        <div style={{ fontSize: '0.875rem', color: '#9CA3AF', marginTop: '0.25rem' }}>Lifetime incidents</div>
+                        <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Warnings Triggered</div>
+                        <div className="text-4xl font-extrabold" style={{ color: (selectedDomain.warning_count || 0) > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count || 0}</div>
+                        <div className="text-sm text-gray-400 mt-1">Lifetime incidents</div>
                     </div>
                 </div>
             </div>
@@ -662,62 +434,62 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
             <BounceAnalytics domainId={selectedDomain.id} />
 
             {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
-            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                <div style={{ marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+            <div className="premium-card mb-8">
+                <div className="mb-6">
+                    <h2 className="text-xl font-bold text-gray-900 mb-1">
                         Domain-Wide Engagement
                     </h2>
-                    <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                    <p className="text-sm text-gray-500">
                         Aggregated metrics across all mailboxes on this domain (informational only)
                     </p>
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
                     {/* Total Sent */}
-                    <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
-                        <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">
                             Total Sent
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827' }}>
+                        <div className="font-bold text-gray-900" style={{ fontSize: '1.75rem' }}>
                             {selectedDomain.total_sent_lifetime?.toLocaleString() || '0'}
                         </div>
                     </div>
 
                     {/* Opens */}
-                    <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
-                        <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#1E40AF' }}>
                             Opens
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#1E3A8A' }}>
                             {selectedDomain.total_opens?.toLocaleString() || '0'}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#3B82F6', marginTop: '0.25rem', fontWeight: 600 }}>
+                        <div className="text-xs text-blue-500 mt-1 font-semibold">
                             {openRate}% rate
                         </div>
                     </div>
 
                     {/* Clicks */}
-                    <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
-                        <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#166534' }}>
                             Clicks
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#15803D' }}>
                             {selectedDomain.total_clicks?.toLocaleString() || '0'}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#22C55E', marginTop: '0.25rem', fontWeight: 600 }}>
+                        <div className="text-xs text-green-500 mt-1 font-semibold">
                             {clickRate}% rate
                         </div>
                     </div>
 
                     {/* Replies */}
-                    <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
-                        <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <div className="p-4 rounded-xl border" style={{ background: '#FDF4FF', borderColor: '#F0ABFC' }}>
+                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#86198F' }}>
                             Replies
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#A21CAF' }}>
                             {selectedDomain.total_replies?.toLocaleString() || '0'}
                         </div>
-                        <div style={{ fontSize: '0.75rem', color: '#C026D3', marginTop: '0.25rem', fontWeight: 600 }}>
+                        <div className="text-xs mt-1 font-semibold" style={{ color: '#C026D3' }}>
                             {replyRate}% rate
                         </div>
                     </div>
@@ -726,16 +498,11 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
 
             {/* Recovery Status */}
             {selectedDomain.recovery_phase && selectedDomain.recovery_phase !== 'healthy' && (
-                <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div className="premium-card mb-8">
+                    <h2 className="text-xl font-bold mb-6 text-gray-900 flex items-center gap-3">
                         🔄 Recovery Status
-                        <span style={{
+                        <span className="rounded-full text-xs font-semibold uppercase tracking-wide" style={{
                             padding: '0.25rem 0.75rem',
-                            borderRadius: '999px',
-                            fontSize: '0.75rem',
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
                             background: selectedDomain.recovery_phase === 'paused' ? '#FEF2F2' :
                                 selectedDomain.recovery_phase === 'quarantine' ? '#FEF2F2' :
                                     selectedDomain.recovery_phase === 'restricted_send' ? '#FFF7ED' :
@@ -754,18 +521,12 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                         </span>
                     </h2>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
                         {/* Resilience Score */}
-                        <div style={{
-                            padding: '1rem',
-                            background: '#F8FAFC',
-                            borderRadius: '12px',
-                            border: '1px solid #F1F5F9',
-                        }}>
-                            <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
-                            <div style={{
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Resilience</div>
+                            <div className="font-extrabold" style={{
                                 fontSize: '1.75rem',
-                                fontWeight: 800,
                                 color: (selectedDomain.resilience_score || 0) >= 70 ? '#16A34A' :
                                     (selectedDomain.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
                             }}>
@@ -774,16 +535,11 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                         </div>
 
                         {/* Clean Sends / Graduation Progress */}
-                        <div style={{
-                            padding: '1rem',
-                            background: '#F8FAFC',
-                            borderRadius: '12px',
-                            border: '1px solid #F1F5F9',
-                        }}>
-                            <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">
                                 {selectedDomain.recovery_phase === 'restricted_send' || selectedDomain.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
                             </div>
-                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1E293B' }}>
+                            <div className="text-slate-800 font-extrabold" style={{ fontSize: '1.75rem' }}>
                                 {selectedDomain.clean_sends_since_phase || 0}
                                 {selectedDomain.recovery_phase === 'restricted_send' && `/${(selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15}`}
                                 {selectedDomain.recovery_phase === 'warm_recovery' && `/50`}
@@ -792,14 +548,9 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
 
                         {/* Relapse Count */}
                         {(selectedDomain.relapse_count || 0) > 0 && (
-                            <div style={{
-                                padding: '1rem',
-                                background: '#FEF2F2',
-                                borderRadius: '12px',
-                                border: '1px solid #FEE2E2',
-                            }}>
-                                <div style={{ fontSize: '0.75rem', color: '#DC2626', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Relapses</div>
-                                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#DC2626' }}>
+                            <div className="p-4 bg-red-50 rounded-xl border border-red-100">
+                                <div className="text-xs mb-2 font-semibold uppercase" style={{ color: '#DC2626' }}>Relapses</div>
+                                <div className="font-extrabold" style={{ fontSize: '1.75rem', color: '#DC2626' }}>
                                     {selectedDomain.relapse_count}
                                 </div>
                             </div>
@@ -808,17 +559,9 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
 
                     {/* Next Phase Preview */}
                     {selectedDomain.recovery_phase !== 'healthy' && (
-                        <div style={{
-                            padding: '0.875rem 1rem',
-                            background: '#EFF6FF',
-                            borderRadius: '12px',
-                            border: '1px solid #BFDBFE',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                        }}>
-                            <span style={{ fontSize: '1rem', opacity: 0.7 }}>→</span>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1E40AF' }}>
+                        <div className="bg-blue-50 rounded-xl border border-blue-200 flex items-center gap-2" style={{ padding: '0.875rem 1rem' }}>
+                            <span className="text-base opacity-70">→</span>
+                            <div className="font-semibold" style={{ fontSize: '0.85rem', color: '#1E40AF' }}>
                                 {selectedDomain.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}
                                 {selectedDomain.recovery_phase === 'quarantine' && 'Next: Restricted Send (DNS check required)'}
                                 {selectedDomain.recovery_phase === 'restricted_send' && `Next: Warm Recovery (need ${Math.max(0, ((selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15) - (selectedDomain.clean_sends_since_phase || 0))} more clean sends)`}
@@ -829,70 +572,67 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: any;
                 </div>
             )}
 
-            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Domain Events Log</h2>
+            <div className="premium-card mb-8">
+                <h2 className="text-xl font-bold mb-6 text-gray-900">Domain Events Log</h2>
                 {auditLogs.length > 0 ? (
-                    <div style={{ maxHeight: '300px', overflowY: 'auto', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
-                        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                            <thead style={{ position: 'sticky', top: 0, zIndex: 1, background: '#F8FAFC' }}>
+                    <div className="max-h-[300px] overflow-y-auto rounded-lg border border-slate-200">
+                        <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0' }}>
+                            <thead className="sticky top-0 z-[1] bg-slate-50">
                                 <tr>
-                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</th>
-                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Trigger</th>
-                                    <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</th>
+                                    <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Time</th>
+                                    <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Trigger</th>
+                                    <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {auditLogs.map(log => (
-                                    <tr key={log.id} style={{ transition: 'background 0.2s' }} className="hover:bg-gray-50">
-                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.875rem', color: '#475569', whiteSpace: 'nowrap' }}>
+                                    <tr key={log.id} className="transition-colors duration-200 hover:bg-gray-50">
+                                        <td className="p-4 border-b border-slate-100 text-sm whitespace-nowrap" style={{ color: '#475569' }}>
                                             {new Date(log.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
                                         </td>
-                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontSize: '0.9rem', fontWeight: '500', color: '#1E293B' }}>{log.trigger}</td>
-                                        <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', fontWeight: 600, color: '#2563EB' }}>{log.action}</td>
+                                        <td className="p-4 border-b border-slate-100 font-medium text-slate-800" style={{ fontSize: '0.9rem' }}>{log.trigger}</td>
+                                        <td className="p-4 border-b border-slate-100 font-semibold" style={{ color: '#2563EB' }}>{log.action}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 ) : (
-                    <div style={{ padding: '3rem', textAlign: 'center', color: '#9CA3AF', background: '#F8FAFC', borderRadius: '12px', border: '1px dashed #E2E8F0', fontStyle: 'italic' }}>
+                    <div className="p-12 text-center text-gray-400 bg-slate-50 rounded-xl italic" style={{ border: '1px dashed #E2E8F0' }}>
                         No events recorded.
                     </div>
                 )}
             </div>
 
-            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Child Mailboxes</h2>
-                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
+            <div className="premium-card mb-8">
+                <h2 className="text-xl font-bold mb-6 text-gray-900">Child Mailboxes</h2>
+                <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0' }}>
                     <thead>
                         <tr>
-                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email</th>
-                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                            <th style={{ padding: '1rem', textAlign: 'left', borderBottom: '2px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Campaigns</th>
+                            <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Email</th>
+                            <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Status</th>
+                            <th className="p-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wide" style={{ borderBottom: '2px solid #E2E8F0' }}>Campaigns</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {selectedDomain.mailboxes && selectedDomain.mailboxes.map((mb: any) => (
+                        {selectedDomain.mailboxes && selectedDomain.mailboxes.map((mb: Mailbox) => (
                             <tr key={mb.id} className="hover:bg-gray-50 transition-colors">
-                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#1E293B', fontWeight: 500 }}>{mb.email}</td>
-                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9' }}>
-                                    <span style={{
+                                <td className="p-4 border-b border-slate-100 text-slate-800 font-medium">{mb.email}</td>
+                                <td className="p-4 border-b border-slate-100">
+                                    <span className="rounded-full text-xs font-semibold" style={{
                                         padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 600,
                                         ...getStatusColors(mb.status)
                                     }}>
                                         {mb.status.toUpperCase()}
                                     </span>
                                 </td>
-                                <td style={{ padding: '1rem', borderBottom: '1px solid #F1F5F9', color: '#64748B' }}>
-                                    {mb.campaigns?.map((c: any) => c.name).join(', ') || '-'}
+                                <td className="p-4 border-b border-slate-100 text-slate-500">
+                                    {mb.campaigns?.map((c: Pick<Campaign, 'id' | 'name' | 'status'>) => c.name).join(', ') || '-'}
                                 </td>
                             </tr>
                         ))}
                         {(!selectedDomain.mailboxes || selectedDomain.mailboxes.length === 0) && (
-                            <tr><td colSpan={3} style={{ textAlign: 'center', padding: '2rem', color: '#9CA3AF', fontStyle: 'italic' }}>No mailboxes found.</td></tr>
+                            <tr><td colSpan={3} className="text-center p-8 text-gray-400 italic">No mailboxes found.</td></tr>
                         )}
                     </tbody>
                 </table>

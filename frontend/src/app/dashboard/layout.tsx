@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import DashboardShell from './DashboardShell';
+import { DashboardProvider } from '@/contexts/DashboardContext';
 
 export const metadata: Metadata = {
     title: 'Dashboard | Superkabe',
@@ -11,5 +12,9 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <DashboardShell>{children}</DashboardShell>;
+    return (
+        <DashboardProvider>
+            <DashboardShell>{children}</DashboardShell>
+        </DashboardProvider>
+    );
 }

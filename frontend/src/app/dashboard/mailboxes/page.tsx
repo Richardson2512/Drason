@@ -5,9 +5,14 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
+import type { Mailbox, Campaign, Domain, PaginatedResponse } from '@/types/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge, getPlatformLabel } from '@/components/ui/PlatformBadge';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
+import { useSortFilterModal } from '@/hooks/useSortFilterModal';
+import { usePagination } from '@/hooks/usePagination';
+import { useCampaignList } from '@/hooks/useCampaignList';
 
 // Map raw connection errors to user-friendly resolution guidance (platform-aware)
 function getConnectionResolution(error: string | null | undefined, platform?: string): { cause: string; resolution: string } {
@@ -51,38 +56,31 @@ function getConnectionResolution(error: string | null | undefined, platform?: st
 }
 
 export default function MailboxesPage() {
-    const [mailboxes, setMailboxes] = useState<any[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [selectedMailbox, setSelectedMailbox] = useState<Record<string, any> | null>(null);
+    const [mailboxes, setMailboxes] = useState<Mailbox[]>([]);
+    const [selectedMailbox, setSelectedMailbox] = useState<Mailbox | null>(null);
     const [loading, setLoading] = useState(true);
 
     // Filters
-    const [campaigns, setCampaigns] = useState<any[]>([]);
-    const [domains, setDomains] = useState<any[]>([]);
+    const { campaigns } = useCampaignList();
+    const [domains, setDomains] = useState<Domain[]>([]);
     const [selectedCampaign, setSelectedCampaign] = useState<string>('all');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
 
-    // Sorting & Filtering State
-    const [sortBy, setSortBy] = useState('email_asc');
-    const [domainId, setDomainId] = useState<string>('all');
-    const [warmupStatus, setWarmupStatus] = useState<string>('all');
-    const [minEngagement, setMinEngagement] = useState<string>('');
-    const [maxEngagement, setMaxEngagement] = useState<string>('');
+    // Sorting & Filtering (delegated to useSortFilterModal hook)
+    const sortFilter = useSortFilterModal({
+        sortBy: 'email_asc',
+        domainId: 'all',
+        warmupStatus: 'all',
+        minEngagement: '',
+        maxEngagement: '',
+    });
 
-    // Modal State
-    const [showSortModal, setShowSortModal] = useState(false);
-    const [tempSortBy, setTempSortBy] = useState(sortBy);
-    const [tempDomainId, setTempDomainId] = useState(domainId);
-    const [tempWarmupStatus, setTempWarmupStatus] = useState(warmupStatus);
-    const [tempMinEngagement, setTempMinEngagement] = useState(minEngagement);
-    const [tempMaxEngagement, setTempMaxEngagement] = useState(maxEngagement);
-
-    // Pagination & Selection
-    const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
-    const [selectedMailboxIds, setSelectedMailboxIds] = useState<Set<string>>(new Set());
+    // Pagination & Selection (delegated to usePagination hook)
+    const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     const fetchMailboxes = useCallback(async () => {
+        const { sortBy, domainId, warmupStatus, minEngagement, maxEngagement } = sortFilter.values;
         setLoading(true);
         try {
             const params = new URLSearchParams({
@@ -102,7 +100,7 @@ export default function MailboxesPage() {
             if (minEngagement) params.append('minEngagement', minEngagement);
             if (maxEngagement) params.append('maxEngagement', maxEngagement);
 
-            const data = await apiClient<any>(`/api/dashboard/mailboxes?${params}`);
+            const data = await apiClient<PaginatedResponse<Mailbox>>(`/api/dashboard/mailboxes?${params}`);
             if (data?.data) {
                 setMailboxes(data.data);
                 setMeta(data.meta);
@@ -118,7 +116,7 @@ export default function MailboxesPage() {
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, sortBy, domainId, warmupStatus, minEngagement, maxEngagement, selectedMailbox]);
+    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, sortFilter.values, selectedMailbox]);
 
     useEffect(() => {
         fetchMailboxes();
@@ -131,17 +129,9 @@ export default function MailboxesPage() {
         return () => window.removeEventListener('assessment-complete', handler);
     }, [fetchMailboxes]);
 
-    // Fetch campaigns and domains for filter dropdowns
+    // Fetch domains for filter dropdown
     useEffect(() => {
-        apiClient<any>('/api/dashboard/campaigns?limit=1000')
-            .then(data => {
-                if (data?.data) {
-                    setCampaigns(data.data);
-                }
-            })
-            .catch(err => console.error('Failed to fetch campaigns:', err));
-
-        apiClient<any>('/api/dashboard/domains?limit=1000')
+        apiClient<{ data: Domain[] }>('/api/dashboard/domains?limit=1000')
             .then(data => {
                 if (data?.data) {
                     setDomains(data.data);
@@ -149,32 +139,6 @@ export default function MailboxesPage() {
             })
             .catch(err => console.error('Failed to fetch domains:', err));
     }, []);
-
-    // Selection Logic
-    const toggleMailboxSelection = (e: React.MouseEvent, id: string) => {
-        e.stopPropagation();
-        const newSet = new Set(selectedMailboxIds);
-        if (newSet.has(id)) {
-            newSet.delete(id);
-        } else {
-            newSet.add(id);
-        }
-        setSelectedMailboxIds(newSet);
-    };
-
-    const toggleSelectAll = () => {
-        const allPageIds = mailboxes.map(mb => mb.id);
-        const allSelected = allPageIds.every(id => selectedMailboxIds.has(id));
-        const newSet = new Set(selectedMailboxIds);
-        if (allSelected) {
-            allPageIds.forEach(id => newSet.delete(id));
-        } else {
-            allPageIds.forEach(id => newSet.add(id));
-        }
-        setSelectedMailboxIds(newSet);
-    };
-
-    const isAllSelected = mailboxes.length > 0 && mailboxes.every(mb => selectedMailboxIds.has(mb.id));
 
     const handlePageChange = (newPage: number) => {
         setMeta(prev => ({ ...prev, page: newPage }));
@@ -184,43 +148,18 @@ export default function MailboxesPage() {
         setMeta(prev => ({ ...prev, limit: newLimit, page: 1 }));
     };
 
-    // Sort & Filter Modal Handlers
-    const handleOpenSortModal = () => {
-        setTempSortBy(sortBy);
-        setTempDomainId(domainId);
-        setTempWarmupStatus(warmupStatus);
-        setTempMinEngagement(minEngagement);
-        setTempMaxEngagement(maxEngagement);
-        setShowSortModal(true);
-    };
-
     const handleApplySortFilter = () => {
-        setSortBy(tempSortBy);
-        setDomainId(tempDomainId);
-        setWarmupStatus(tempWarmupStatus);
-        setMinEngagement(tempMinEngagement);
-        setMaxEngagement(tempMaxEngagement);
+        sortFilter.apply();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     const handleClearFilters = () => {
-        setTempSortBy('email_asc');
-        setTempDomainId('all');
-        setTempWarmupStatus('all');
-        setTempMinEngagement('');
-        setTempMaxEngagement('');
-        setSortBy('email_asc');
-        setDomainId('all');
-        setWarmupStatus('all');
-        setMinEngagement('');
-        setMaxEngagement('');
+        sortFilter.clear();
         setMeta(prev => ({ ...prev, page: 1 }));
-        setShowSortModal(false);
     };
 
     if (loading && mailboxes.length === 0) {
-        return <div className="flex items-center justify-center h-full text-gray-500">Loading Mailboxes...</div>;
+        return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
     if (!loading && (!mailboxes || mailboxes.length === 0)) {
@@ -228,13 +167,13 @@ export default function MailboxesPage() {
     }
 
     return (
-        <div style={{ display: 'flex', height: '100%', gap: '2rem' }}>
+        <div className="flex h-full gap-8">
             {/* Left: List */}
-            <div className="premium-card" style={{ width: '420px', display: 'flex', flexDirection: 'column', padding: '1.5rem', height: '100%', overflow: 'hidden', borderRadius: '24px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', flexShrink: 0, color: '#111827' }}>Mailboxes</h2>
+            <div className="premium-card w-[420px] flex flex-col p-6 h-full overflow-hidden rounded-3xl">
+                <h2 className="text-2xl font-bold mb-4 shrink-0 text-gray-900">Mailboxes</h2>
 
                 {/* Filters */}
-                <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="mb-4 flex flex-col gap-3">
                     {/* Search */}
                     <input
                         type="text"
@@ -244,15 +183,7 @@ export default function MailboxesPage() {
                             setSearchQuery(e.target.value);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            fontSize: '0.875rem',
-                            outline: 'none'
-                        }}
+                        className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm outline-none"
                     />
 
                     {/* Status Filter */}
@@ -262,16 +193,7 @@ export default function MailboxesPage() {
                             setSelectedStatus(e.target.value);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            outline: 'none'
-                        }}
+                        className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
                     >
                         <option value="all">All Status</option>
                         <option value="healthy">Healthy</option>
@@ -286,16 +208,7 @@ export default function MailboxesPage() {
                             setSelectedCampaign(e.target.value);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        style={{
-                            width: '100%',
-                            padding: '0.625rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            outline: 'none'
-                        }}
+                        className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
                     >
                         <option value="all">All Campaigns</option>
                         {campaigns.map(c => (
@@ -305,132 +218,99 @@ export default function MailboxesPage() {
 
                     {/* Sort & Filter Button */}
                     <button
-                        onClick={handleOpenSortModal}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1rem',
-                            borderRadius: '12px',
-                            border: '1px solid #E5E7EB',
-                            background: '#FFFFFF',
-                            color: '#111827',
-                            fontSize: '0.875rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.5rem',
-                            transition: 'all 0.2s'
-                        }}
-                        className="hover:bg-gray-50 hover:border-blue-300"
+                        onClick={sortFilter.open}
+                        className="w-full py-3 px-4 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm font-semibold cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:bg-gray-50 hover:border-blue-300"
                     >
-                        <span style={{ fontSize: '1rem' }}>⚙️</span>
+                        <span className="text-base">⚙️</span>
                         Sort & Filter
-                        {(sortBy !== 'email_asc' || domainId !== 'all' || warmupStatus !== 'all' || minEngagement || maxEngagement) && (
-                            <span style={{
-                                background: '#3B82F6',
-                                color: 'white',
-                                fontSize: '0.65rem',
-                                padding: '0.125rem 0.375rem',
-                                borderRadius: '999px',
-                                fontWeight: 700
-                            }}>
+                        {sortFilter.hasActiveFilters && (
+                            <span className="bg-blue-500 text-white text-[0.65rem] px-1.5 py-0.5 rounded-full font-bold">
                                 Active
                             </span>
                         )}
                     </button>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0 0.5rem 0.75rem 0.5rem', borderBottom: '1px solid #F3F4F6', marginBottom: '0.75rem' }}>
+                <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-100 mb-3">
                     <input
                         type="checkbox"
-                        checked={isAllSelected}
-                        onChange={toggleSelectAll}
-                        style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                        checked={isAllSelected(mailboxes)}
+                        onChange={() => toggleSelectAll(mailboxes)}
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: '#2563EB' }}
                     />
-                    <span style={{ fontSize: '0.8rem', color: '#6B7280', fontWeight: 500 }}>Select All ({mailboxes.length})</span>
+                    <span className="text-[0.8rem] text-gray-500 font-medium">Select All ({mailboxes.length})</span>
                 </div>
 
-                <div className="scrollbar-hide" style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingRight: '0.5rem' }}>
+                <div className="scrollbar-hide overflow-y-auto flex-1 flex flex-col gap-3 pr-2">
                     {mailboxes.map(mb => (
                         <div
                             key={mb.id}
                             onClick={() => setSelectedMailbox(mb)}
+                            className="p-4 rounded-2xl cursor-pointer border shrink-0 flex items-center gap-3 hover:shadow-md"
                             style={{
-                                padding: '1rem',
-                                borderRadius: '16px',
                                 background: selectedMailbox?.id === mb.id ? '#EFF6FF' : '#FFFFFF',
-                                cursor: 'pointer',
-                                border: '1px solid',
                                 borderColor: selectedMailbox?.id === mb.id ? '#BFDBFE' : '#F3F4F6',
                                 transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                flexShrink: 0,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.75rem'
                             }}
-                            className="hover:shadow-md"
                         >
                             <input
                                 type="checkbox"
-                                checked={selectedMailboxIds.has(mb.id)}
-                                onClick={(e) => toggleMailboxSelection(e, mb.id)}
+                                checked={isSelected(mb.id)}
+                                onClick={(e) => toggleSelection(e, mb.id)}
                                 onChange={() => { }}
-                                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#2563EB' }}
+                                className="w-4 h-4 cursor-pointer"
+                                style={{ accentColor: '#2563EB' }}
                             />
                             {/* Status dot */}
-                            <span style={{
-                                width: '10px', height: '10px', borderRadius: '50%', flexShrink: 0,
+                            <span className="w-[10px] h-[10px] rounded-full shrink-0" style={{
                                 background: mb.status === 'healthy' ? '#22C55E' : mb.status === 'warning' ? '#F59E0B' : '#EF4444',
                                 boxShadow: mb.status === 'healthy' ? '0 0 6px rgba(34,197,94,0.4)' : mb.status === 'paused' ? '0 0 6px rgba(239,68,68,0.4)' : 'none'
                             }} title={mb.status === 'healthy' ? 'Connected' : mb.status === 'paused' ? 'Disconnected' : mb.status} />
-                            <div style={{ flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                                    <span style={{ fontWeight: 600, wordBreak: 'break-all', color: '#1E293B', fontSize: '0.9rem' }}>{mb.email}</span>
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-semibold break-all text-slate-800 text-[0.9rem]">{mb.email}</span>
                                     {mb.source_platform && <PlatformBadge platform={mb.source_platform} />}
                                 </div>
-                                <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <span style={{ opacity: 0.7 }}>Domain:</span>
-                                    <span style={{ fontWeight: 500 }}>{mb.domain?.domain}</span>
+                                <div className="text-xs text-slate-500 flex items-center gap-1">
+                                    <span className="opacity-70">Domain:</span>
+                                    <span className="font-medium">{mb.domain?.domain}</span>
                                 </div>
                             </div>
                         </div>
                     ))}
-                    {mailboxes.length === 0 && <div style={{ color: '#9CA3AF', textAlign: 'center', padding: '2rem', fontStyle: 'italic' }}>No mailboxes found.</div>}
+                    {mailboxes.length === 0 && <div className="text-gray-400 text-center p-8 italic">No mailboxes found.</div>}
                 </div>
 
-                <div style={{ paddingTop: '1rem', borderTop: '1px solid #F3F4F6', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
                     <RowLimitSelector limit={meta.limit} onLimitChange={handleLimitChange} />
                     <PaginationControls currentPage={meta.page} totalPages={meta.totalPages} onPageChange={handlePageChange} />
                 </div>
             </div>
 
             {/* Right: Details */}
-            <div style={{ flex: 1, overflowY: 'auto' }} className="scrollbar-hide">
+            <div className="flex-1 overflow-y-auto scrollbar-hide">
                 {selectedMailbox ? (
                     <div className="animate-fade-in">
                         <div className="page-header">
-                            <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111827', letterSpacing: '-0.025em' }}>{selectedMailbox.email}</h1>
-                            <div style={{ color: '#6B7280', fontSize: '1.1rem' }}>Mailbox Health & Usage</div>
+                            <h1 className="text-4xl font-extrabold mb-2 text-gray-900" style={{ letterSpacing: '-0.025em' }}>{selectedMailbox.email}</h1>
+                            <div className="text-gray-500 text-[1.1rem]">Mailbox Health & Usage</div>
                         </div>
 
                         {/* Pause Reason Banner — shown when Drason's automation paused the mailbox */}
                         {selectedMailbox.status === 'paused' && selectedMailbox.paused_reason && (
-                            <div style={{
-                                margin: '0 0 2rem 0',
+                            <div className="mb-8 rounded-2xl border border-yellow-300" style={{
                                 padding: '1.25rem 1.5rem',
-                                borderRadius: '16px',
                                 background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)',
-                                border: '1px solid #FCD34D',
                             }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                                    <span style={{ fontSize: '1.5rem' }}>⏸</span>
-                                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#92400E', margin: 0 }}>Paused by Drason</h3>
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className="text-2xl">⏸</span>
+                                    <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#92400E' }}>Paused by Drason</h3>
                                 </div>
-                                <div style={{ display: 'grid', gap: '0.5rem', fontSize: '0.9rem' }}>
-                                    <div style={{ color: '#78350F', lineHeight: 1.5 }}>{selectedMailbox.paused_reason}</div>
+                                <div className="grid gap-2 text-[0.9rem]">
+                                    <div className="leading-normal" style={{ color: '#78350F' }}>{selectedMailbox.paused_reason}</div>
                                     {selectedMailbox.paused_at && (
-                                        <div style={{ color: '#92400E', fontSize: '0.8rem' }}>
+                                        <div className="text-[0.8rem]" style={{ color: '#92400E' }}>
                                             Paused: {new Date(selectedMailbox.paused_at).toLocaleString()}
                                             {selectedMailbox.paused_by && ` · By: ${selectedMailbox.paused_by}`}
                                         </div>
@@ -443,23 +323,21 @@ export default function MailboxesPage() {
                         {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
                             const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error, selectedMailbox.source_platform);
                             return (
-                                <div style={{
-                                    margin: '0 0 2rem 0',
+                                <div className="mb-8 rounded-2xl" style={{
                                     padding: '1.25rem 1.5rem',
-                                    borderRadius: '16px',
                                     background: 'linear-gradient(135deg, #FEF2F2, #FFF1F2)',
                                     border: '1px solid #FECACA',
                                 }}
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                        <span style={{ fontSize: '1.5rem' }}>⚠️</span>
-                                        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#991B1B', margin: 0 }}>Connection Failed</h3>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <span className="text-2xl">⚠️</span>
+                                        <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#991B1B' }}>Connection Failed</h3>
                                     </div>
 
-                                    <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.9rem' }}>
+                                    <div className="grid gap-3 text-[0.9rem]">
                                         {/* What happened */}
                                         <div>
-                                            <div style={{ fontWeight: 600, color: '#7F1D1D', marginBottom: '0.25rem' }}>
+                                            <div className="font-semibold mb-1" style={{ color: '#7F1D1D' }}>
                                                 {!selectedMailbox.smtp_status && !selectedMailbox.imap_status ? 'SMTP & IMAP failed' :
                                                     !selectedMailbox.smtp_status ? 'SMTP connection failed' : 'IMAP connection failed'}
                                             </div>
@@ -467,17 +345,17 @@ export default function MailboxesPage() {
                                         </div>
 
                                         {/* Impact */}
-                                        <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
-                                            <div style={{ fontWeight: 600, color: '#92400E', marginBottom: '0.25rem' }}>📋 Impact</div>
-                                            <div style={{ color: '#78350F', lineHeight: 1.5 }}>
+                                        <div className="p-3 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                                            <div className="font-semibold mb-1" style={{ color: '#92400E' }}>📋 Impact</div>
+                                            <div className="leading-normal" style={{ color: '#78350F' }}>
                                                 This mailbox is paused inside its campaigns. Leads assigned to this mailbox are being rotated to other active mailboxes in the campaign.
                                             </div>
                                         </div>
 
                                         {/* How to fix */}
-                                        <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
-                                            <div style={{ fontWeight: 600, color: '#166534', marginBottom: '0.5rem' }}>✅ Quick Fix</div>
-                                            <div style={{ color: '#14532D', lineHeight: 1.5, marginBottom: '0.75rem' }}>
+                                        <div className="p-3 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                                            <div className="font-semibold mb-2" style={{ color: '#166534' }}>✅ Quick Fix</div>
+                                            <div className="leading-normal mb-3" style={{ color: '#14532D' }}>
                                                 Reconnect this email account in {getPlatformLabel(selectedMailbox.source_platform)}, then trigger a Manual Sync in Drason.
                                             </div>
                                             <a
@@ -490,19 +368,12 @@ export default function MailboxesPage() {
                                                     }`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 text-sm font-semibold no-underline rounded-[10px] transition-all duration-200"
                                                 style={{
-                                                    display: 'inline-flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.5rem',
                                                     padding: '0.625rem 1.25rem',
                                                     background: 'linear-gradient(135deg, #166534, #15803D)',
                                                     color: '#FFFFFF',
-                                                    borderRadius: '10px',
-                                                    fontSize: '0.875rem',
-                                                    fontWeight: 600,
-                                                    textDecoration: 'none',
                                                     boxShadow: '0 2px 8px rgba(22, 101, 52, 0.3)',
-                                                    transition: 'all 0.2s ease',
                                                 }}
                                             >
                                                 How to Fix →
@@ -511,15 +382,11 @@ export default function MailboxesPage() {
 
                                         {/* Affected campaigns */}
                                         {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 && (
-                                            <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.6)', borderRadius: '10px' }}>
-                                                <div style={{ fontWeight: 600, color: '#1E40AF', marginBottom: '0.5rem' }}>🎯 Affected Campaigns</div>
-                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                                    {selectedMailbox.campaigns.map((c: any) => (
-                                                        <span key={c.id} style={{
-                                                            padding: '0.25rem 0.75rem',
-                                                            borderRadius: '999px',
-                                                            fontSize: '0.8rem',
-                                                            fontWeight: 500,
+                                            <div className="p-3 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                                                <div className="font-semibold mb-2" style={{ color: '#1E40AF' }}>🎯 Affected Campaigns</div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {selectedMailbox.campaigns.map((c: Pick<Campaign, 'id' | 'name' | 'status'>) => (
+                                                        <span key={c.id} className="py-1 px-3 rounded-full text-[0.8rem] font-medium" style={{
                                                             background: '#EFF6FF',
                                                             color: '#1E40AF',
                                                             border: '1px solid #BFDBFE'
@@ -533,69 +400,55 @@ export default function MailboxesPage() {
                             );
                         })()}
 
-                        <div className="grid grid-cols-2 gap-6" style={{ marginBottom: '2rem' }}>
+                        <div className="grid grid-cols-2 gap-6 mb-8">
                             <div className="premium-card">
-                                <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Associated Domain</h3>
-                                <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1E293B', marginBottom: '0.5rem' }}>{selectedMailbox.domain?.domain}</div>
-                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">Associated Domain</h3>
+                                <div className="text-2xl font-bold text-slate-800 mb-2">{selectedMailbox.domain?.domain}</div>
+                                <div className="flex gap-2 flex-wrap">
                                     {/* Domain status badge */}
-                                    <div style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.8rem',
-                                        fontWeight: '600',
+                                    <div className="inline-flex items-center gap-2 py-1 px-3 rounded-full text-[0.8rem] font-semibold" style={{
                                         ...getStatusColors(selectedMailbox.domain?.status || 'unknown')
                                     }}>
-                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
+                                        <span className="w-2 h-2 rounded-full" style={{ background: 'currentColor' }}></span>
                                         Domain: {selectedMailbox.domain?.status?.toUpperCase()}
                                     </div>
                                     {/* Mailbox connection status badge */}
-                                    <div style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.8rem',
-                                        fontWeight: '600',
+                                    <div className="inline-flex items-center gap-2 py-1 px-3 rounded-full text-[0.8rem] font-semibold" style={{
                                         ...getStatusColors(selectedMailbox.status || 'unknown')
                                     }}>
-                                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }}></span>
+                                        <span className="w-2 h-2 rounded-full" style={{ background: 'currentColor' }}></span>
                                         {selectedMailbox.status === 'healthy' ? 'CONNECTED' : 'DISCONNECTED'}
                                     </div>
                                 </div>
                             </div>
                             <div className="premium-card">
-                                <h3 style={{ fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6B7280', marginBottom: '1rem' }}>Activity Stats</h3>
-                                <div style={{ display: 'grid', gap: '0.75rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Total Sent</span>
-                                        <span style={{ fontWeight: '600', color: '#1E293B' }}>{(selectedMailbox.total_sent_count || 0).toLocaleString()}</span>
+                                <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">Activity Stats</h3>
+                                <div className="grid gap-3">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-slate-500">Total Sent</span>
+                                        <span className="font-semibold text-slate-800">{(selectedMailbox.total_sent_count || 0).toLocaleString()}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Sent (Window)</span>
-                                        <span style={{ fontWeight: '600', color: '#1E293B' }}>{selectedMailbox.window_sent_count ?? 0}</span>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-slate-500">Sent (Window)</span>
+                                        <span className="font-semibold text-slate-800">{selectedMailbox.window_sent_count ?? 0}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Bounces</span>
-                                        <span style={{ fontWeight: '600', color: '#EF4444' }}>{selectedMailbox.hard_bounce_count ?? 0}</span>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-slate-500">Bounces</span>
+                                        <span className="font-semibold text-red-500">{selectedMailbox.hard_bounce_count ?? 0}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Failures</span>
-                                        <span style={{ fontWeight: '600', color: '#F59E0B' }}>{selectedMailbox.delivery_failure_count ?? 0}</span>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-slate-500">Failures</span>
+                                        <span className="font-semibold text-amber-500">{selectedMailbox.delivery_failure_count ?? 0}</span>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid #F1F5F9' }}>
-                                        <span style={{ color: '#64748B' }}>Bounce Rate</span>
+                                    <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                                        <span className="text-slate-500">Bounce Rate</span>
                                         <span style={{
-                                            fontWeight: '700',
-                                            color: (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) < 0.02 ? '#16A34A' :
-                                                (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) < 0.03 ? '#F59E0B' : '#EF4444',
+                                            fontWeight: 700,
+                                            color: (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.02 ? '#16A34A' :
+                                                (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.03 ? '#F59E0B' : '#EF4444',
                                         }}>
                                             {(selectedMailbox.total_sent_count || 0) > 0
-                                                ? (((selectedMailbox.hard_bounce_count || 0) / selectedMailbox.total_sent_count) * 100).toFixed(1)
+                                                ? (((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) * 100).toFixed(1)
                                                 : '0.0'}%
                                         </span>
                                     </div>
@@ -604,70 +457,70 @@ export default function MailboxesPage() {
                         </div>
 
                         {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
+                        <div className="premium-card mb-8">
+                            <div className="mb-6">
+                                <h2 className="text-xl font-bold text-gray-900 mb-1">
                                     Engagement Metrics
                                 </h2>
-                                <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>
+                                <p className="text-sm text-gray-500">
                                     Lifetime engagement from emails sent via this mailbox (informational only)
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-3 gap-4">
                                 {/* Opens */}
-                                <div style={{ padding: '1rem', background: '#EFF6FF', borderRadius: '12px', border: '1px solid #BFDBFE' }}>
-                                    <div style={{ color: '#1E40AF', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 rounded-xl" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#1E40AF' }}>
                                         Total Opens
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#1E3A8A' }}>
+                                    <div className="text-[1.75rem] font-bold" style={{ color: '#1E3A8A' }}>
                                         {selectedMailbox.open_count_lifetime?.toLocaleString() || '0'}
                                     </div>
                                 </div>
 
                                 {/* Clicks */}
-                                <div style={{ padding: '1rem', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #BBF7D0' }}>
-                                    <div style={{ color: '#166534', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 rounded-xl" style={{ background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#166534' }}>
                                         Total Clicks
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#15803D' }}>
+                                    <div className="text-[1.75rem] font-bold" style={{ color: '#15803D' }}>
                                         {selectedMailbox.click_count_lifetime?.toLocaleString() || '0'}
                                     </div>
                                 </div>
 
                                 {/* Replies */}
-                                <div style={{ padding: '1rem', background: '#FDF4FF', borderRadius: '12px', border: '1px solid #F0ABFC' }}>
-                                    <div style={{ color: '#86198F', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 rounded-xl" style={{ background: '#FDF4FF', border: '1px solid #F0ABFC' }}>
+                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#86198F' }}>
                                         Total Replies
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#A21CAF' }}>
+                                    <div className="text-[1.75rem] font-bold" style={{ color: '#A21CAF' }}>
                                         {selectedMailbox.reply_count_lifetime?.toLocaleString() || '0'}
                                     </div>
                                 </div>
                             </div>
 
                             {/* Spam & Warmup Row */}
-                            <div className="grid grid-cols-2 gap-4" style={{ marginTop: '1rem' }}>
+                            <div className="grid grid-cols-2 gap-4 mt-4">
                                 {/* Spam Count */}
-                                <div style={{ padding: '1rem', background: '#FEF2F2', borderRadius: '12px', border: '1px solid #FECACA' }}>
-                                    <div style={{ color: '#991B1B', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 rounded-xl" style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}>
+                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#991B1B' }}>
                                         Spam Reports
                                     </div>
-                                    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#DC2626' }}>
+                                    <div className="text-[1.75rem] font-bold" style={{ color: '#DC2626' }}>
                                         {selectedMailbox.spam_count?.toLocaleString() || '0'}
                                     </div>
                                 </div>
 
                                 {/* Warmup Status */}
-                                <div style={{ padding: '1rem', background: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
-                                    <div style={{ color: '#6B7280', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                                <div className="p-4 rounded-xl border border-gray-200" style={{ background: '#F9FAFB' }}>
+                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2 text-gray-500">
                                         Warmup Status
                                     </div>
-                                    <div style={{ fontSize: '1rem', fontWeight: 600, color: '#111827', marginBottom: '0.25rem' }}>
+                                    <div className="text-base font-semibold text-gray-900 mb-1">
                                         {selectedMailbox.warmup_status || 'Not configured'}
                                     </div>
                                     {selectedMailbox.warmup_reputation && (
-                                        <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                                        <div className="text-xs text-gray-500">
                                             Reputation: {selectedMailbox.warmup_reputation}
                                         </div>
                                     )}
@@ -677,16 +530,10 @@ export default function MailboxesPage() {
 
                         {/* Recovery Status */}
                         {selectedMailbox.recovery_phase && selectedMailbox.recovery_phase !== 'healthy' && (
-                            <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div className="premium-card mb-8">
+                                <h2 className="text-xl font-bold mb-6 text-gray-900 flex items-center gap-3">
                                     🔄 Recovery Status
-                                    <span style={{
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 600,
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.05em',
+                                    <span className="py-1 px-3 rounded-full text-xs font-semibold uppercase tracking-wide border" style={{
                                         background: selectedMailbox.recovery_phase === 'paused' ? '#FEF2F2' :
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#FEF2F2' :
                                                 selectedMailbox.recovery_phase === 'restricted_send' ? '#FFF7ED' :
@@ -695,7 +542,6 @@ export default function MailboxesPage() {
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#DC2626' :
                                                 selectedMailbox.recovery_phase === 'restricted_send' ? '#F59E0B' :
                                                     '#16A34A',
-                                        border: '1px solid',
                                         borderColor: selectedMailbox.recovery_phase === 'paused' ? '#FEE2E2' :
                                             selectedMailbox.recovery_phase === 'quarantine' ? '#FEE2E2' :
                                                 selectedMailbox.recovery_phase === 'restricted_send' ? '#FED7AA' :
@@ -705,18 +551,11 @@ export default function MailboxesPage() {
                                     </span>
                                 </h2>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+                                <div className="grid grid-cols-2 gap-4 mb-4">
                                     {/* Resilience Score */}
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9',
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Resilience</div>
-                                        <div style={{
-                                            fontSize: '1.75rem',
-                                            fontWeight: 800,
+                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Resilience</div>
+                                        <div className="text-[1.75rem] font-extrabold" style={{
                                             color: (selectedMailbox.resilience_score || 0) >= 70 ? '#16A34A' :
                                                 (selectedMailbox.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
                                         }}>
@@ -725,36 +564,24 @@ export default function MailboxesPage() {
                                     </div>
 
                                     {/* Bounce Rate */}
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9',
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Bounce Rate</div>
-                                        <div style={{
-                                            fontSize: '1.75rem',
-                                            fontWeight: 800,
-                                            color: selectedMailbox.total_sent_count > 0 && (selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) < 0.02 ? '#16A34A' :
-                                                selectedMailbox.total_sent_count > 0 && (selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) < 0.03 ? '#F59E0B' : '#EF4444',
+                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Bounce Rate</div>
+                                        <div className="text-[1.75rem] font-extrabold" style={{
+                                            color: (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.02 ? '#16A34A' :
+                                                (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.03 ? '#F59E0B' : '#EF4444',
                                         }}>
-                                            {selectedMailbox.total_sent_count > 0
-                                                ? ((selectedMailbox.hard_bounce_count / selectedMailbox.total_sent_count) * 100).toFixed(1)
+                                            {(selectedMailbox.total_sent_count || 0) > 0
+                                                ? (((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) * 100).toFixed(1)
                                                 : '0.0'}%
                                         </div>
                                     </div>
 
                                     {/* Clean Sends / Graduation Progress */}
-                                    <div style={{
-                                        padding: '1rem',
-                                        background: '#F8FAFC',
-                                        borderRadius: '12px',
-                                        border: '1px solid #F1F5F9',
-                                    }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748B', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">
                                             {selectedMailbox.recovery_phase === 'restricted_send' || selectedMailbox.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
                                         </div>
-                                        <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1E293B' }}>
+                                        <div className="text-[1.75rem] font-extrabold text-slate-800">
                                             {selectedMailbox.clean_sends_since_phase || 0}
                                             {selectedMailbox.recovery_phase === 'restricted_send' && `/${(selectedMailbox.consecutive_pauses || 0) > 1 ? 25 : 15}`}
                                             {selectedMailbox.recovery_phase === 'warm_recovery' && `/50`}
@@ -763,14 +590,9 @@ export default function MailboxesPage() {
 
                                     {/* Relapse Count */}
                                     {(selectedMailbox.relapse_count || 0) > 0 && (
-                                        <div style={{
-                                            padding: '1rem',
-                                            background: '#FEF2F2',
-                                            borderRadius: '12px',
-                                            border: '1px solid #FEE2E2',
-                                        }}>
-                                            <div style={{ fontSize: '0.75rem', color: '#DC2626', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase' }}>Relapses</div>
-                                            <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#DC2626' }}>
+                                        <div className="p-4 rounded-xl" style={{ background: '#FEF2F2', border: '1px solid #FEE2E2' }}>
+                                            <div className="text-xs mb-2 font-semibold uppercase" style={{ color: '#DC2626' }}>Relapses</div>
+                                            <div className="text-[1.75rem] font-extrabold" style={{ color: '#DC2626' }}>
                                                 {selectedMailbox.relapse_count}
                                             </div>
                                         </div>
@@ -779,20 +601,18 @@ export default function MailboxesPage() {
 
                                 {/* Automated Warmup Banner */}
                                 {(selectedMailbox.recovery_phase === 'restricted_send' || selectedMailbox.recovery_phase === 'warm_recovery') && (
-                                    <div style={{
+                                    <div className="rounded-xl mb-4" style={{
                                         padding: '0.875rem 1rem',
                                         background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
-                                        borderRadius: '12px',
                                         border: '1px solid #7DD3FC',
-                                        marginBottom: '1rem',
                                     }}>
-                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                                            <span style={{ fontSize: '1.25rem' }}>🤖</span>
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-xl">🤖</span>
                                             <div>
-                                                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0369A1', marginBottom: '0.25rem' }}>
+                                                <div className="text-sm font-semibold mb-1" style={{ color: '#0369A1' }}>
                                                     Automated Warmup Active
                                                 </div>
-                                                <div style={{ fontSize: '0.75rem', color: '#075985', lineHeight: '1.5' }}>
+                                                <div className="text-xs leading-normal" style={{ color: '#075985' }}>
                                                     {selectedMailbox.recovery_phase === 'restricted_send' &&
                                                         `${getPlatformLabel(selectedMailbox.source_platform)} is sending 10 warmup emails/day. System will auto-graduate after 15-25 clean sends (zero bounces).`}
                                                     {selectedMailbox.recovery_phase === 'warm_recovery' &&
@@ -805,17 +625,13 @@ export default function MailboxesPage() {
 
                                 {/* Next Phase Preview */}
                                 {selectedMailbox.recovery_phase !== 'healthy' && (
-                                    <div style={{
+                                    <div className="rounded-xl flex items-center gap-2" style={{
                                         padding: '0.875rem 1rem',
                                         background: '#EFF6FF',
-                                        borderRadius: '12px',
                                         border: '1px solid #BFDBFE',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
                                     }}>
-                                        <span style={{ fontSize: '1rem', opacity: 0.7 }}>→</span>
-                                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1E40AF' }}>
+                                        <span className="text-base opacity-70">→</span>
+                                        <div className="text-[0.85rem] font-semibold" style={{ color: '#1E40AF' }}>
                                             {selectedMailbox.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}
                                             {selectedMailbox.recovery_phase === 'quarantine' && 'Next: Restricted Send (DNS check required)'}
                                             {selectedMailbox.recovery_phase === 'restricted_send' && `Next: Warm Recovery (need ${Math.max(0, ((selectedMailbox.consecutive_pauses || 0) > 1 ? 25 : 15) - (selectedMailbox.clean_sends_since_phase || 0))} more clean sends)`}
@@ -826,27 +642,19 @@ export default function MailboxesPage() {
                             </div>
                         )}
 
-                        <div className="premium-card" style={{ marginBottom: '2rem' }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>Active Campaigns</h2>
+                        <div className="premium-card mb-8">
+                            <h2 className="text-xl font-bold mb-6 text-gray-900">Active Campaigns</h2>
                             {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 ? (
-                                <div style={{ display: 'grid', gap: '0.5rem' }}>
-                                    {selectedMailbox.campaigns.map((c: any) => (
-                                        <div key={c.id} style={{
-                                            padding: '1rem',
-                                            border: '1px solid #F1F5F9',
-                                            borderRadius: '12px',
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            background: '#F8FAFC'
-                                        }}>
-                                            <span style={{ fontWeight: '600', color: '#1E293B' }}>{c.name}</span>
-                                            <span style={{ color: '#9CA3AF', fontSize: '0.75rem', fontFamily: 'monospace', background: '#FFFFFF', padding: '0.25rem 0.5rem', borderRadius: '4px', border: '1px solid #E2E8F0' }}>ID: {c.id}</span>
+                                <div className="grid gap-2">
+                                    {selectedMailbox.campaigns.map((c: Pick<Campaign, 'id' | 'name' | 'status'>) => (
+                                        <div key={c.id} className="p-4 border border-slate-100 rounded-xl flex justify-between items-center bg-slate-50">
+                                            <span className="font-semibold text-slate-800">{c.name}</span>
+                                            <span className="text-gray-400 text-xs font-mono bg-white py-1 px-2 rounded border border-slate-200">ID: {c.id}</span>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div style={{ padding: '2rem', textAlign: 'center', color: '#9CA3AF', fontStyle: 'italic', background: '#F9FAFB', borderRadius: '12px', border: '1px dashed #E5E7EB' }}>
+                                <div className="p-8 text-center text-gray-400 italic rounded-xl" style={{ background: '#F9FAFB', border: '1px dashed #E5E7EB' }}>
                                     No campaigns assigned.
                                 </div>
                             )}
@@ -859,104 +667,50 @@ export default function MailboxesPage() {
                         <FindingsCard entityType="mailbox" entityId={selectedMailbox.id} />
                     </div>
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: '1rem' }}>
-                        <div style={{ fontSize: '3rem' }}>👈</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: '500' }}>Select a mailbox to view details</div>
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4">
+                        <div className="text-5xl">👈</div>
+                        <div className="text-xl font-medium">Select a mailbox to view details</div>
                     </div>
                 )}
             </div>
 
             {/* Sort & Filter Modal */}
-            {showSortModal && (
+            {sortFilter.isOpen && (
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 1000,
-                        padding: '1rem'
-                    }}
-                    onClick={() => setShowSortModal(false)}
+                    className="fixed inset-0 flex items-center justify-center z-[1000] p-4"
+                    style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+                    onClick={() => sortFilter.close()}
                 >
                     <div
-                        style={{
-                            background: '#FFFFFF',
-                            borderRadius: '24px',
-                            maxWidth: '500px',
-                            width: '100%',
-                            maxHeight: '90vh',
-                            overflow: 'hidden',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-                        }}
+                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col"
+                        style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderBottom: '1px solid #E5E7EB',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}>
-                            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+                        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-gray-900 m-0">
                                 ⚙️ Sort & Filter Mailboxes
                             </h2>
                             <button
-                                onClick={() => setShowSortModal(false)}
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    fontSize: '1.5rem',
-                                    color: '#9CA3AF',
-                                    cursor: 'pointer',
-                                    padding: '0.25rem',
-                                    lineHeight: 1
-                                }}
+                                onClick={() => sortFilter.close()}
+                                className="bg-transparent border-none text-2xl text-gray-400 cursor-pointer p-1 leading-none"
                             >
                                 ×
                             </button>
                         </div>
 
                         {/* Modal Body */}
-                        <div style={{
-                            padding: '1.5rem',
-                            overflowY: 'auto',
-                            flex: 1
-                        }}>
+                        <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label htmlFor="modal-sort-by" style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
                                 <select
                                     id="modal-sort-by"
-                                    value={tempSortBy}
-                                    onChange={(e) => setTempSortBy(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem 1rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #D1D5DB',
-                                        background: '#FFFFFF',
-                                        color: '#111827',
-                                        fontSize: '0.875rem',
-                                        cursor: 'pointer',
-                                        outline: 'none'
-                                    }}
+                                    value={sortFilter.temp.sortBy}
+                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
+                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
                                 >
                                     <option value="email_asc">Email (A-Z)</option>
                                     <option value="email_desc">Email (Z-A)</option>
@@ -970,31 +724,15 @@ export default function MailboxesPage() {
                             </div>
 
                             {/* Domain Filter */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label htmlFor="modal-domain" style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label htmlFor="modal-domain" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Domain
                                 </label>
                                 <select
                                     id="modal-domain"
-                                    value={tempDomainId}
-                                    onChange={(e) => setTempDomainId(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem 1rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #D1D5DB',
-                                        background: '#FFFFFF',
-                                        color: '#111827',
-                                        fontSize: '0.875rem',
-                                        cursor: 'pointer',
-                                        outline: 'none'
-                                    }}
+                                    value={sortFilter.temp.domainId}
+                                    onChange={(e) => sortFilter.setTempValue('domainId', e.target.value)}
+                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
                                 >
                                     <option value="all">All Domains</option>
                                     {domains.map(d => (
@@ -1004,31 +742,15 @@ export default function MailboxesPage() {
                             </div>
 
                             {/* Warmup Status Filter */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label htmlFor="modal-warmup" style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label htmlFor="modal-warmup" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Warmup Status
                                 </label>
                                 <select
                                     id="modal-warmup"
-                                    value={tempWarmupStatus}
-                                    onChange={(e) => setTempWarmupStatus(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        padding: '0.75rem 1rem',
-                                        borderRadius: '12px',
-                                        border: '1px solid #D1D5DB',
-                                        background: '#FFFFFF',
-                                        color: '#111827',
-                                        fontSize: '0.875rem',
-                                        cursor: 'pointer',
-                                        outline: 'none'
-                                    }}
+                                    value={sortFilter.temp.warmupStatus}
+                                    onChange={(e) => sortFilter.setTempValue('warmupStatus', e.target.value)}
+                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
                                 >
                                     <option value="all">All Warmup Status</option>
                                     <option value="enabled">Enabled</option>
@@ -1037,98 +759,45 @@ export default function MailboxesPage() {
                             </div>
 
                             {/* Engagement Rate Range */}
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{
-                                    display: 'block',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    color: '#374151',
-                                    marginBottom: '0.5rem'
-                                }}>
+                            <div className="mb-6">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Engagement Rate Range (%)
                                 </label>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                                <div className="flex gap-3 items-center">
                                     <input
                                         type="number"
                                         placeholder="Min"
-                                        value={tempMinEngagement}
-                                        onChange={(e) => setTempMinEngagement(e.target.value)}
+                                        value={sortFilter.temp.minEngagement}
+                                        onChange={(e) => sortFilter.setTempValue('minEngagement', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
-                                    <span style={{ color: '#6B7280', fontSize: '1rem', fontWeight: 500 }}>→</span>
+                                    <span className="text-gray-500 text-base font-medium">→</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
-                                        value={tempMaxEngagement}
-                                        onChange={(e) => setTempMaxEngagement(e.target.value)}
+                                        value={sortFilter.temp.maxEngagement}
+                                        onChange={(e) => sortFilter.setTempValue('maxEngagement', e.target.value)}
                                         min="0"
                                         max="100"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.75rem 1rem',
-                                            borderRadius: '12px',
-                                            border: '1px solid #D1D5DB',
-                                            background: '#FFFFFF',
-                                            color: '#111827',
-                                            fontSize: '0.875rem',
-                                            outline: 'none'
-                                        }}
+                                        className="flex-1 py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div style={{
-                            padding: '1.5rem',
-                            borderTop: '1px solid #E5E7EB',
-                            display: 'flex',
-                            gap: '0.75rem'
-                        }}>
+                        <div className="p-6 border-t border-gray-200 flex gap-3">
                             <button
                                 onClick={handleClearFilters}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid #D1D5DB',
-                                    background: '#FFFFFF',
-                                    color: '#374151',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-gray-50"
+                                className="flex-1 py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-700 text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-gray-50"
                             >
                                 Clear All
                             </button>
                             <button
                                 onClick={handleApplySortFilter}
-                                style={{
-                                    flex: 1,
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '12px',
-                                    border: 'none',
-                                    background: '#3B82F6',
-                                    color: '#FFFFFF',
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s'
-                                }}
-                                className="hover:bg-blue-600"
+                                className="flex-1 py-3 px-4 rounded-xl border-none bg-blue-500 text-white text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-600"
                             >
                                 Done
                             </button>
