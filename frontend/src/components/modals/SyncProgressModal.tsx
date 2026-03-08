@@ -1,16 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { X, CheckCircle, AlertTriangle, XCircle, Loader2, RefreshCw } from 'lucide-react';
-
-interface SyncProgress {
-    step: 'campaigns' | 'mailboxes' | 'leads' | 'health_check' | 'complete';
-    status: 'pending' | 'in_progress' | 'completed' | 'failed';
-    current?: number;
-    total?: number;
-    count?: number;
-    error?: string;
-}
+import { useEffect, useState, useRef } from 'react';
+import { X, CheckCircle, AlertTriangle, XCircle, Loader2 } from 'lucide-react';
 
 interface SyncResult {
     campaigns_synced: number;
@@ -33,12 +24,22 @@ interface SyncProgressModalProps {
     externalResult?: SyncResult | null;
 }
 
-const STEP_LABELS = {
-    campaigns: 'Syncing Campaigns',
-    mailboxes: 'Syncing Mailboxes',
-    leads: 'Syncing Leads',
-    health_check: 'Running Health Check',
-    complete: 'Sync Complete'
+const STEPS = ['campaigns', 'mailboxes', 'leads', 'health_check'] as const;
+type Step = typeof STEPS[number];
+
+const STEP_CONFIG: Record<Step, { label: string; activeLabel: string; icon: string }> = {
+    campaigns: { label: 'Campaigns', activeLabel: 'Syncing Campaigns...', icon: '📊' },
+    mailboxes: { label: 'Mailboxes', activeLabel: 'Syncing Mailboxes...', icon: '📬' },
+    leads: { label: 'Leads', activeLabel: 'Syncing Leads...', icon: '👥' },
+    health_check: { label: 'Health Check', activeLabel: 'Running Health Check...', icon: '🔍' },
+};
+
+// Estimated duration per step in ms (campaigns take longest due to analytics fetch)
+const STEP_DURATIONS: Record<Step, number> = {
+    campaigns: 25000,
+    mailboxes: 20000,
+    leads: 30000,
+    health_check: 15000,
 };
 
 export default function SyncProgressModal({
@@ -50,126 +51,74 @@ export default function SyncProgressModal({
     externalError,
     externalResult
 }: SyncProgressModalProps) {
-    const [progress, setProgress] = useState<Record<string, SyncProgress>>({
-        campaigns: { step: 'campaigns', status: 'pending' },
-        mailboxes: { step: 'mailboxes', status: 'pending' },
-        leads: { step: 'leads', status: 'pending' },
-        health_check: { step: 'health_check', status: 'pending' }
-    });
+    const [activeStepIndex, setActiveStepIndex] = useState(0);
+    const [stepProgress, setStepProgress] = useState(0); // 0-100 for current step
     const [result, setResult] = useState<SyncResult | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isComplete, setIsComplete] = useState(false);
     const [pausingCampaigns, setPausingCampaigns] = useState(false);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const startTimeRef = useRef<number>(0);
 
-    // Pick up errors from the parent sync call
+    // Reset state when modal opens
+    useEffect(() => {
+        if (isOpen && sessionId) {
+            setActiveStepIndex(0);
+            setStepProgress(0);
+            setResult(null);
+            setError(null);
+            setIsComplete(false);
+            startTimeRef.current = Date.now();
+
+            // Start the simulated progress timer
+            timerRef.current = setInterval(() => {
+                const elapsed = Date.now() - startTimeRef.current;
+                let cumulative = 0;
+
+                // Find which step we should be on based on elapsed time
+                for (let i = 0; i < STEPS.length; i++) {
+                    const duration = STEP_DURATIONS[STEPS[i]];
+                    if (elapsed < cumulative + duration) {
+                        const stepElapsed = elapsed - cumulative;
+                        const pct = Math.min(95, (stepElapsed / duration) * 100);
+                        setActiveStepIndex(i);
+                        setStepProgress(pct);
+                        return;
+                    }
+                    cumulative += duration;
+                }
+
+                // If we've exceeded all estimated durations, stay on last step at 95%
+                setActiveStepIndex(STEPS.length - 1);
+                setStepProgress(95);
+            }, 200);
+
+            return () => {
+                if (timerRef.current) clearInterval(timerRef.current);
+            };
+        }
+    }, [isOpen, sessionId]);
+
+    // Handle external error
     useEffect(() => {
         if (externalError) {
+            if (timerRef.current) clearInterval(timerRef.current);
             setError(externalError);
             setIsComplete(true);
         }
     }, [externalError]);
 
-    // Fallback: if the HTTP response arrives before SSE delivers 'complete',
-    // use it to close the modal. This ensures the modal never hangs.
+    // Handle external result (HTTP response)
     useEffect(() => {
         if (externalResult && !isComplete) {
+            if (timerRef.current) clearInterval(timerRef.current);
+            // Snap all steps to complete
+            setActiveStepIndex(STEPS.length);
+            setStepProgress(100);
             setResult(externalResult);
             setIsComplete(true);
-            // Mark all steps as completed
-            setProgress(prev => {
-                const updated = { ...prev };
-                for (const key of Object.keys(updated)) {
-                    updated[key] = { ...updated[key], status: 'completed' };
-                }
-                return updated;
-            });
         }
     }, [externalResult, isComplete]);
-
-    useEffect(() => {
-        if (!isOpen || !sessionId) return;
-
-        // Reset state when modal opens
-        setProgress({
-            campaigns: { step: 'campaigns', status: 'pending' },
-            mailboxes: { step: 'mailboxes', status: 'pending' },
-            leads: { step: 'leads', status: 'pending' },
-            health_check: { step: 'health_check', status: 'pending' }
-        });
-        setResult(null);
-        setError(null);
-        setIsComplete(false);
-
-        // Connect to SSE endpoint via relative URL (goes through Next.js rewrite proxy)
-        let retryCount = 0;
-        const MAX_RETRIES = 3;
-        let completed = false;
-
-        const eventSource = new EventSource(`/api/sync-progress/${sessionId}`);
-
-        eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-
-            if (data.type === 'progress') {
-                retryCount = 0; // Reset on successful message
-
-                if (data.status === 'in_progress') {
-                    setProgress(prev => ({
-                        ...prev,
-                        [data.step]: {
-                            step: data.step,
-                            status: data.status,
-                            current: data.current,
-                            total: data.total,
-                            count: data.count
-                        }
-                    }));
-                } else {
-                    setProgress(prev => ({
-                        ...prev,
-                        [data.step]: {
-                            step: data.step,
-                            status: data.status,
-                            current: data.current,
-                            total: data.total,
-                            count: data.count
-                        }
-                    }));
-                }
-            } else if (data.type === 'complete') {
-                completed = true;
-                setResult(data.result);
-                setIsComplete(true);
-                eventSource.close();
-            } else if (data.type === 'error') {
-                completed = true;
-                setError(data.error);
-                setIsComplete(true);
-                eventSource.close();
-            }
-        };
-
-        eventSource.onerror = () => {
-            // Don't show error if sync already completed
-            if (completed) {
-                eventSource.close();
-                return;
-            }
-
-            retryCount++;
-            if (retryCount >= MAX_RETRIES) {
-                setError('Connection lost. Please refresh to see latest status.');
-                setIsComplete(true);
-                eventSource.close();
-            }
-            // Otherwise, EventSource will auto-reconnect
-        };
-
-        return () => {
-            completed = true;
-            eventSource.close();
-        };
-    }, [isOpen, sessionId]);
 
     const handlePauseCampaigns = async () => {
         if (!onPauseCampaigns) return;
@@ -181,33 +130,33 @@ export default function SyncProgressModal({
         }
     };
 
-    const getStepIcon = (stepProgress: SyncProgress) => {
-        switch (stepProgress.status) {
+    const getStepStatus = (index: number): 'completed' | 'in_progress' | 'pending' => {
+        if (isComplete && !error) return 'completed';
+        if (index < activeStepIndex) return 'completed';
+        if (index === activeStepIndex) return 'in_progress';
+        return 'pending';
+    };
+
+    const getStepIcon = (index: number) => {
+        const status = getStepStatus(index);
+        switch (status) {
             case 'completed':
-                return <CheckCircle className="text-green-600" size={20} />;
+                return <CheckCircle className="text-green-600" size={22} />;
             case 'in_progress':
-                return <Loader2 className="text-blue-600 animate-spin" size={20} />;
-            case 'failed':
-                return <XCircle className="text-red-600" size={20} />;
+                return <Loader2 className="text-blue-600 animate-spin" size={22} />;
             default:
-                return <div className="w-5 h-5 rounded-full border-2 border-gray-300" />;
+                return <div className="w-[22px] h-[22px] rounded-full border-2 border-gray-300" />;
         }
     };
 
-    const getProgressText = (stepProgress: SyncProgress) => {
-        if (stepProgress.status === 'completed' && stepProgress.count !== undefined) {
-            return `${stepProgress.count} synced`;
+    const getResultCount = (step: Step): string | null => {
+        if (!result) return null;
+        switch (step) {
+            case 'campaigns': return `${result.campaigns_synced} synced`;
+            case 'mailboxes': return `${result.mailboxes_synced} synced`;
+            case 'leads': return `${result.leads_synced} synced`;
+            case 'health_check': return 'Done';
         }
-        if (stepProgress.status === 'completed' && stepProgress.step === 'health_check') {
-            return 'Done';
-        }
-        if (stepProgress.status === 'in_progress' && stepProgress.current && stepProgress.total) {
-            return `${stepProgress.current}/${stepProgress.total}`;
-        }
-        if (stepProgress.status === 'in_progress' && stepProgress.step === 'health_check') {
-            return 'Analyzing...';
-        }
-        return '';
     };
 
     const hasCriticalHealthIssues = result?.health_check?.has_critical_issues;
@@ -216,191 +165,187 @@ export default function SyncProgressModal({
     if (!isOpen) return null;
 
     return (
-        <>
-            <style>{`
-            @keyframes indeterminate {
-                0% { transform: translateX(-100%); }
-                50% { transform: translateX(150%); }
-                100% { transform: translateX(-100%); }
-            }
-        `}</style>
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            onClick={isComplete ? onClose : undefined}
+            role="dialog"
+            aria-modal="true"
+        >
             <div
-                className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-                onClick={onClose}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="sync-progress-modal-title"
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
             >
-                <div
-                    className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    {/* Header */}
-                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 id="sync-progress-modal-title" className="text-2xl font-bold text-gray-900">
-                            {isComplete ? 'Sync Complete' : 'Syncing Platform Data'}
-                        </h2>
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                        {error ? 'Sync Failed' : isComplete ? 'Sync Complete' : 'Syncing Platform Data'}
+                    </h2>
+                    {isComplete && (
                         <button
                             onClick={onClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
-                            title="Close"
                             aria-label="Close"
                         >
                             <X size={24} />
                         </button>
-                    </div>
+                    )}
+                </div>
 
-                    {/* Content */}
-                    <div className="p-6">
-                        {error ? (
-                            <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-                                <XCircle className="mx-auto text-red-600 mb-4" size={48} />
-                                <h3 className="text-xl font-bold text-red-900 mb-2">Sync Failed</h3>
-                                <p className="text-red-700">{error}</p>
-                            </div>
-                        ) : (
-                            <>
-                                {/* Progress Steps */}
-                                <div className="space-y-4 mb-6">
-                                    {Object.entries(progress).map(([key, stepProgress]) => (
-                                        <div key={key} className="flex items-center gap-4">
-                                            {getStepIcon(stepProgress)}
+                {/* Content */}
+                <div className="p-6">
+                    {error ? (
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                            <XCircle className="mx-auto text-red-600 mb-4" size={48} />
+                            <h3 className="text-xl font-bold text-red-900 mb-2">Sync Failed</h3>
+                            <p className="text-red-700">{error}</p>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Progress Steps */}
+                            <div className="space-y-3 mb-6">
+                                {STEPS.map((step, index) => {
+                                    const status = getStepStatus(index);
+                                    const config = STEP_CONFIG[step];
+                                    const resultCount = isComplete ? getResultCount(step) : null;
+
+                                    return (
+                                        <div key={step} className="flex items-center gap-4">
+                                            {getStepIcon(index)}
                                             <div className="flex-1">
                                                 <div className="flex items-center justify-between mb-1">
-                                                    <span className={`font-medium ${stepProgress.status === 'in_progress' ? 'text-blue-600' :
-                                                        stepProgress.status === 'completed' ? 'text-gray-900' :
-                                                            'text-gray-400'
-                                                        }`}>
-                                                        {STEP_LABELS[stepProgress.step]}
+                                                    <span className={`font-medium text-sm ${
+                                                        status === 'in_progress' ? 'text-blue-700' :
+                                                        status === 'completed' ? 'text-gray-900' :
+                                                        'text-gray-400'
+                                                    }`}>
+                                                        {status === 'in_progress' ? config.activeLabel : config.label}
                                                     </span>
-                                                    <span className="text-sm text-gray-500">
-                                                        {getProgressText(stepProgress)}
-                                                    </span>
+                                                    {resultCount && (
+                                                        <span className="text-sm font-medium text-green-600">
+                                                            {resultCount}
+                                                        </span>
+                                                    )}
                                                 </div>
-                                                {stepProgress.status === 'in_progress' && (
+                                                {/* Progress bar for active step */}
+                                                {status === 'in_progress' && (
                                                     <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                        {stepProgress.total ? (
-                                                            <div
-                                                                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                                                style={{ width: `${(stepProgress.current! / stepProgress.total) * 100}%` }}
-                                                            />
-                                                        ) : (
-                                                            <div
-                                                                className="bg-blue-600 h-2 rounded-full"
-                                                                style={{
-                                                                    width: '40%',
-                                                                    animation: 'indeterminate 1.5s ease-in-out infinite'
-                                                                }}
-                                                            />
-                                                        )}
+                                                        <div
+                                                            className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                                                            style={{ width: `${stepProgress}%` }}
+                                                        />
+                                                    </div>
+                                                )}
+                                                {/* Completed bar */}
+                                                {status === 'completed' && (
+                                                    <div className="w-full bg-green-100 rounded-full h-2">
+                                                        <div className="bg-green-500 h-2 rounded-full w-full" />
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
-                                    ))}
+                                    );
+                                })}
+                            </div>
+
+                            {/* Results Summary */}
+                            {isComplete && result && (
+                                <div className="bg-gray-50 rounded-xl p-6 mb-6">
+                                    <h3 className="font-bold text-gray-900 mb-4">Sync Summary</h3>
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="text-center">
+                                            <div className="text-3xl font-bold text-purple-600">
+                                                {result.campaigns_synced}
+                                            </div>
+                                            <div className="text-sm text-gray-600">Campaigns</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-3xl font-bold text-blue-600">
+                                                {result.mailboxes_synced}
+                                            </div>
+                                            <div className="text-sm text-gray-600">Mailboxes</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-3xl font-bold text-green-600">
+                                                {result.leads_synced}
+                                            </div>
+                                            <div className="text-sm text-gray-600">Leads</div>
+                                        </div>
+                                    </div>
                                 </div>
+                            )}
 
-                                {/* Results Summary */}
-                                {isComplete && result && (
-                                    <div className="bg-gray-50 rounded-xl p-6 mb-6">
-                                        <h3 className="font-bold text-gray-900 mb-4">Sync Summary</h3>
-                                        <div className="grid grid-cols-3 gap-4">
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-purple-600">
-                                                    {result.campaigns_synced}
-                                                </div>
-                                                <div className="text-sm text-gray-600">Campaigns</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-blue-600">
-                                                    {result.mailboxes_synced}
-                                                </div>
-                                                <div className="text-sm text-gray-600">Mailboxes</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-3xl font-bold text-green-600">
-                                                    {result.leads_synced}
-                                                </div>
-                                                <div className="text-sm text-gray-600">Leads</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Health Warning */}
-                                {isComplete && hasCriticalHealthIssues && (
-                                    <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 mb-6">
-                                        <div className="flex items-start gap-4">
-                                            <AlertTriangle className="text-red-600 flex-shrink-0" size={32} />
-                                            <div className="flex-1">
-                                                <h3 className="text-xl font-bold text-red-900 mb-2">
-                                                    Critical Health Issues Detected
-                                                </h3>
-                                                <p className="text-red-700 mb-4">
-                                                    Infrastructure score: <span className="font-bold">{overallScore}/100</span>
-                                                </p>
-                                                <p className="text-red-700 mb-4">
-                                                    We detected {result.health_check?.critical_findings?.length || 0} critical issue(s)
-                                                    that could impact your email deliverability. Consider pausing campaigns until these are resolved.
-                                                </p>
-                                                <div className="flex gap-3">
-                                                    {onPauseCampaigns && (
-                                                        <button
-                                                            onClick={handlePauseCampaigns}
-                                                            disabled={pausingCampaigns}
-                                                            className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                                                        >
-                                                            {pausingCampaigns ? (
-                                                                <>
-                                                                    <Loader2 className="animate-spin" size={16} />
-                                                                    Pausing...
-                                                                </>
-                                                            ) : (
-                                                                'Pause All Campaigns'
-                                                            )}
-                                                        </button>
-                                                    )}
-                                                    {onViewHealthReport && (
-                                                        <button
-                                                            onClick={onViewHealthReport}
-                                                            className="px-4 py-2 bg-white border border-red-300 text-red-700 rounded-lg font-medium hover:bg-red-50 transition-colors"
-                                                        >
-                                                            View Health Report
-                                                        </button>
-                                                    )}
-                                                </div>
+                            {/* Health Warning */}
+                            {isComplete && hasCriticalHealthIssues && (
+                                <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 mb-6">
+                                    <div className="flex items-start gap-4">
+                                        <AlertTriangle className="text-red-600 flex-shrink-0" size={32} />
+                                        <div className="flex-1">
+                                            <h3 className="text-xl font-bold text-red-900 mb-2">
+                                                Critical Health Issues Detected
+                                            </h3>
+                                            <p className="text-red-700 mb-4">
+                                                Infrastructure score: <span className="font-bold">{overallScore}/100</span>
+                                            </p>
+                                            <div className="flex gap-3">
+                                                {onPauseCampaigns && (
+                                                    <button
+                                                        onClick={handlePauseCampaigns}
+                                                        disabled={pausingCampaigns}
+                                                        className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                                                    >
+                                                        {pausingCampaigns ? (
+                                                            <>
+                                                                <Loader2 className="animate-spin" size={16} />
+                                                                Pausing...
+                                                            </>
+                                                        ) : (
+                                                            'Pause All Campaigns'
+                                                        )}
+                                                    </button>
+                                                )}
+                                                {onViewHealthReport && (
+                                                    <button
+                                                        onClick={onViewHealthReport}
+                                                        className="px-4 py-2 bg-white border border-red-300 text-red-700 rounded-lg font-medium hover:bg-red-50 transition-colors"
+                                                    >
+                                                        View Health Report
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                )}
+                                </div>
+                            )}
 
-                                {/* Success Message */}
-                                {isComplete && !hasCriticalHealthIssues && result && (
-                                    <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-                                        <CheckCircle className="mx-auto text-green-600 mb-4" size={48} />
-                                        <h3 className="text-xl font-bold text-green-900 mb-2">Sync Successful!</h3>
-                                        <p className="text-green-700">
-                                            All data synced successfully. Infrastructure health score: <span className="font-bold">{overallScore}/100</span>
-                                        </p>
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-
-                    {/* Footer */}
-                    {isComplete && (
-                        <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
-                            <button
-                                onClick={onClose}
-                                className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
-                            >
-                                Done
-                            </button>
-                        </div>
+                            {/* Success Message */}
+                            {isComplete && !hasCriticalHealthIssues && result && (
+                                <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+                                    <CheckCircle className="mx-auto text-green-600 mb-4" size={48} />
+                                    <h3 className="text-xl font-bold text-green-900 mb-2">Sync Successful!</h3>
+                                    <p className="text-green-700">
+                                        All data synced successfully.
+                                        {overallScore > 0 && (
+                                            <> Infrastructure health score: <span className="font-bold">{overallScore}/100</span></>
+                                        )}
+                                    </p>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
+
+                {/* Footer */}
+                {isComplete && (
+                    <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
+                        <button
+                            onClick={onClose}
+                            className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
+                        >
+                            Done
+                        </button>
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 }
