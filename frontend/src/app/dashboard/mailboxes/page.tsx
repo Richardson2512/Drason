@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
@@ -59,6 +59,7 @@ export default function MailboxesPage() {
     const [mailboxes, setMailboxes] = useState<Mailbox[]>([]);
     const [selectedMailbox, setSelectedMailbox] = useState<Mailbox | null>(null);
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState<string | null>(null);
 
     // Filters
     const { campaigns } = useCampaignList();
@@ -80,9 +81,14 @@ export default function MailboxesPage() {
     // Pagination & Selection (delegated to usePagination hook)
     const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
+    // Use ref to avoid selectedMailbox triggering refetches
+    const selectedMailboxRef = useRef(selectedMailbox);
+    selectedMailboxRef.current = selectedMailbox;
+
     const fetchMailboxes = useCallback(async () => {
         const { sortBy, domainId, warmupStatus, minEngagement, maxEngagement, platform } = sortFilter.values;
         setLoading(true);
+        setFetchError(null);
         try {
             const params = new URLSearchParams({
                 page: meta.page.toString(),
@@ -106,19 +112,20 @@ export default function MailboxesPage() {
             if (data?.data) {
                 setMailboxes(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedMailbox) {
+                if (data.data.length > 0 && !selectedMailboxRef.current) {
                     setSelectedMailbox(data.data[0]);
                 }
             } else {
                 setMailboxes(Array.isArray(data) ? data : []);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Failed to fetch mailboxes:', err);
-            setMailboxes([]);
+            setFetchError(err.message || 'Failed to load mailboxes');
+            // Don't wipe existing mailboxes on error — keep stale data visible
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, sortFilter.values, selectedMailbox]);
+    }, [meta.page, meta.limit, selectedCampaign, selectedStatus, searchQuery, sortFilter.values]);
 
     useEffect(() => {
         fetchMailboxes();
@@ -164,8 +171,24 @@ export default function MailboxesPage() {
         return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
-    if (!loading && (!mailboxes || mailboxes.length === 0)) {
+    if (!loading && (!mailboxes || mailboxes.length === 0) && !fetchError) {
         return <MailboxesEmptyState />;
+    }
+
+    if (!loading && mailboxes.length === 0 && fetchError) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
+                <div className="text-5xl mb-6">⚠️</div>
+                <h2 className="text-2xl font-bold mb-3 text-gray-900">Failed to Load Mailboxes</h2>
+                <p className="text-gray-500 mb-6">{fetchError}</p>
+                <button
+                    onClick={fetchMailboxes}
+                    className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-all"
+                >
+                    Retry
+                </button>
+            </div>
+        );
     }
 
     return (
