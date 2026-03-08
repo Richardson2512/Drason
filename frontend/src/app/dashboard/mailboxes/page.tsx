@@ -430,15 +430,15 @@ export default function MailboxesPage() {
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-slate-500">Sent (Window)</span>
-                                        <span className="font-semibold text-slate-800">{selectedMailbox.window_sent_count ?? 0}</span>
+                                        <span className="font-semibold text-slate-800">{selectedMailbox.window_sent_count || 0}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-slate-500">Bounces</span>
-                                        <span className="font-semibold text-red-500">{selectedMailbox.hard_bounce_count ?? 0}</span>
+                                        <span className="font-semibold text-red-500">{selectedMailbox.hard_bounce_count || 0}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-slate-500">Failures</span>
-                                        <span className="font-semibold text-amber-500">{selectedMailbox.delivery_failure_count ?? 0}</span>
+                                        <span className="font-semibold text-amber-500">{selectedMailbox.delivery_failure_count || 0}</span>
                                     </div>
                                     <div className="flex justify-between items-center pt-2 border-t border-slate-100">
                                         <span className="text-slate-500">Bounce Rate</span>
