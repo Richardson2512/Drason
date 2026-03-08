@@ -219,7 +219,7 @@ export default function SyncProgressModal({
                     {/* Header */}
                     <div className="flex items-center justify-between p-6 border-b border-gray-200">
                         <h2 id="sync-progress-modal-title" className="text-2xl font-bold text-gray-900">
-                            {isComplete ? 'Sync Complete' : 'Syncing Smartlead Data'}
+                            {isComplete ? 'Sync Complete' : 'Syncing Platform Data'}
                         </h2>
                         <button
                             onClick={onClose}

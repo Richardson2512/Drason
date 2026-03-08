@@ -345,8 +345,8 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                {/* Infrastructure Assessment Progress Overlay */}
-                {assessmentInProgress && (
+                {/* Infrastructure Assessment Progress Overlay — hidden on settings page where sync modal already shows health check progress */}
+                {assessmentInProgress && pathname !== '/dashboard/settings' && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[100]">
                         <div className="bg-white rounded-[20px] px-12 py-10 max-w-[440px] w-[90%] text-center" style={{
                             boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
