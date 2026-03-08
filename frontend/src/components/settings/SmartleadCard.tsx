@@ -43,9 +43,9 @@ export default function SmartleadCard({
                 method: 'POST',
                 body: JSON.stringify({ SMARTLEAD_API_KEY: apiKey }),
             });
-            setMsg('Settings saved successfully.');
+            setMsg('success:Settings saved successfully.');
         } catch (err: any) {
-            setMsg(err.message || 'Error saving settings.');
+            setMsg('error:' + (err.message || 'Error saving settings.'));
         } finally {
             setLoading(false);
         }
@@ -88,7 +88,7 @@ export default function SmartleadCard({
                 <button type="submit" className="premium-btn w-full" disabled={loading}>
                     {loading ? 'Saving...' : 'Save Configuration'}
                 </button>
-                {msg && <div className={`text-center mt-4 text-sm font-medium ${msg.includes('Error') ? 'text-red-500' : 'text-emerald-500'}`}>{msg}</div>}
+                {msg && <div className={`text-center mt-4 text-sm font-medium ${msg.startsWith('error:') ? 'text-red-500' : 'text-emerald-500'}`}>{msg.replace(/^(success:|error:)/, '')}</div>}
             </form>
 
             <div className="border-t border-slate-100 pt-6">

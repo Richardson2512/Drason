@@ -35,9 +35,9 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync, settings }: 
                 method: 'POST',
                 body: JSON.stringify({ EMAILBISON_API_KEY: ebApiKey })
             });
-            setMsg('EmailBison API key saved successfully.');
+            setMsg('success:EmailBison API key saved successfully.');
         } catch (err: any) {
-            setMsg(err.message || 'Error saving EmailBison settings.');
+            setMsg('error:' + (err.message || 'Error saving EmailBison settings.'));
         } finally {
             setLoading(false);
         }
@@ -65,11 +65,11 @@ export default function EmailBisonCard({ webhookUrl, onTriggerSync, settings }: 
 
             {msg && (
                 <div className="p-4 mb-6 rounded-xl text-[0.9rem]" style={{
-                    background: msg.includes('Error') || msg.includes('Failed') ? '#FEF2F2' : '#F0FDF4',
-                    color: msg.includes('Error') || msg.includes('Failed') ? '#991B1B' : '#166534',
-                    border: `1px solid ${msg.includes('Error') || msg.includes('Failed') ? '#FECACA' : '#BBF7D0'}`
+                    background: msg.startsWith('error:') ? '#FEF2F2' : '#F0FDF4',
+                    color: msg.startsWith('error:') ? '#991B1B' : '#166534',
+                    border: `1px solid ${msg.startsWith('error:') ? '#FECACA' : '#BBF7D0'}`
                 }}>
-                    {msg}
+                    {msg.replace(/^(success:|error:)/, '')}
                 </div>
             )}
 

@@ -43,15 +43,15 @@ export default function InstantlyCard({
                 method: 'POST',
                 body: JSON.stringify({ INSTANTLY_API_KEY: apiKey }),
             });
-            setMsg('Instantly API key saved successfully.');
+            setMsg('success:Instantly API key saved successfully.');
         } catch (err: any) {
-            setMsg(err.message || 'Error saving Instantly settings.');
+            setMsg('error:' + (err.message || 'Error saving Instantly settings.'));
         } finally {
             setLoading(false);
         }
     };
 
-    const isError = msg.includes('Error') || msg.includes('Failed');
+    const isError = msg.startsWith('error:');
 
     return (
         <div>
@@ -85,7 +85,7 @@ export default function InstantlyCard({
                     color: isError ? '#991B1B' : '#166534',
                     border: `1px solid ${isError ? '#FECACA' : '#BBF7D0'}`
                 }}>
-                    {msg}
+                    {msg.replace(/^(success:|error:)/, '')}
                 </div>
             )}
 
