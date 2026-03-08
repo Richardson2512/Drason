@@ -35,6 +35,7 @@ export default function Settings() {
     const [showSyncModal, setShowSyncModal] = useState(false);
     const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
     const [syncError, setSyncError] = useState<string | null>(null);
+    const [backendBase, setBackendBase] = useState('');
 
     // Settings array shared with child cards to avoid duplicate fetches
     const [settingsData, setSettingsData] = useState<SettingEntry[]>([]);
@@ -100,10 +101,11 @@ export default function Settings() {
                 setWebhookUrl(`${backendUrl}/api/ingest/clay`);
             });
 
-        const backendBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}`;
-        setSmartleadWebhookUrl(`${backendBase}/api/monitor/smartlead-webhook`);
-        setEmailBisonWebhookUrl(`${backendBase}/api/monitor/emailbison-webhook`);
-        setInstantlyWebhookUrl(`${backendBase}/api/monitor/instantly-webhook`);
+        const computedBackendBase = process.env.NEXT_PUBLIC_API_URL || `${window.location.protocol}//${window.location.hostname}`;
+        setBackendBase(computedBackendBase);
+        setSmartleadWebhookUrl(`${computedBackendBase}/api/monitor/smartlead-webhook`);
+        setEmailBisonWebhookUrl(`${computedBackendBase}/api/monitor/emailbison-webhook`);
+        setInstantlyWebhookUrl(`${computedBackendBase}/api/monitor/instantly-webhook`);
     }, []);
 
     const handleTriggerSync = async () => {
@@ -183,6 +185,7 @@ export default function Settings() {
                 isOpen={showSyncModal}
                 sessionId={syncSessionId}
                 externalError={syncError}
+                backendUrl={backendBase}
                 onClose={() => {
                     setShowSyncModal(false);
                     setSyncSessionId(null);

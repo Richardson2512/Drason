@@ -30,6 +30,7 @@ interface SyncProgressModalProps {
     onPauseCampaigns?: () => Promise<void>;
     onViewHealthReport?: () => void;
     externalError?: string | null;
+    backendUrl?: string;
 }
 
 const STEP_LABELS = {
@@ -46,7 +47,8 @@ export default function SyncProgressModal({
     onClose,
     onPauseCampaigns,
     onViewHealthReport,
-    externalError
+    externalError,
+    backendUrl
 }: SyncProgressModalProps) {
     const [progress, setProgress] = useState<Record<string, SyncProgress>>({
         campaigns: { step: 'campaigns', status: 'pending' },
@@ -81,12 +83,14 @@ export default function SyncProgressModal({
         setError(null);
         setIsComplete(false);
 
-        // Connect to SSE endpoint (use relative URL like apiClient does)
+        // Connect to SSE endpoint directly on backend (bypasses Next.js rewrite proxy
+        // which buffers responses and breaks SSE streaming)
         let retryCount = 0;
         const MAX_RETRIES = 3;
         let completed = false;
 
-        const eventSource = new EventSource(`/api/sync-progress/${sessionId}`);
+        const sseBase = backendUrl || '';
+        const eventSource = new EventSource(`${sseBase}/api/sync-progress/${sessionId}`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
