@@ -124,16 +124,13 @@ export default function DashboardShell({
         setTicketSubmitting(true);
         setTicketResult(null);
         try {
-            const data = await apiClient<{ success?: boolean; data?: { ticket_id: string }; error?: string }>('/api/dashboard/tickets', {
+            // apiClient unwraps { success, data } → returns the inner data object directly
+            const ticket = await apiClient<{ ticket_id: string }>('/api/dashboard/tickets', {
                 method: 'POST',
                 body: JSON.stringify(ticketForm),
             });
-            if (data?.success) {
-                setTicketResult({ success: true, ticketId: data.data?.ticket_id });
-                setTicketForm({ subject: '', description: '', category: 'general' });
-            } else {
-                setTicketResult({ success: false, error: data?.error || 'Failed to submit ticket' });
-            }
+            setTicketResult({ success: true, ticketId: ticket?.ticket_id });
+            setTicketForm({ subject: '', description: '', category: 'general' });
         } catch (err: any) {
             setTicketResult({ success: false, error: err.message || 'Failed to submit ticket' });
         } finally {

@@ -16,6 +16,7 @@ export default function SmartleadCard({
 }) {
     const [apiKey, setApiKey] = useState('');
     const [loading, setLoading] = useState(false);
+    const [syncing, setSyncing] = useState(false);
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
@@ -109,12 +110,17 @@ export default function SmartleadCard({
                 {onTriggerSync && (
                     <button
                         onClick={async () => {
-                            await onTriggerSync();
+                            setSyncing(true);
+                            try {
+                                await onTriggerSync();
+                            } finally {
+                                setSyncing(false);
+                            }
                         }}
-                        disabled={loading}
+                        disabled={loading || syncing}
                         className="premium-btn w-full mt-4 !bg-white !text-slate-800 !border !border-slate-200"
                     >
-                        Trigger Manual Sync
+                        {syncing ? 'Syncing...' : 'Trigger Manual Sync'}
                     </button>
                 )}
 
