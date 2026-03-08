@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 import type { SettingEntry, Organization, ClayWebhookResponse, SyncResponse } from '@/types/api';
 import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import SyncProgressModal from '@/components/modals/SyncProgressModal';
 import { useRouter } from 'next/navigation';
 import SystemModeCard from '@/components/settings/SystemModeCard';
 import SlackIntegrationCard from '@/components/settings/SlackIntegrationCard';
@@ -31,8 +32,9 @@ export default function Settings() {
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [healthCheckData, setHealthCheckData] = useState<{ critical_count?: number; findings?: { category: string; severity: string; title: string; details: string }[]; overall_score?: number } | null>(null);
 
-    // Sync Modal
+    // Sync Modal (step-by-step progress via SSE + HTTP fallback)
     const [showSyncModal, setShowSyncModal] = useState(false);
+    const [syncSessionId, setSyncSessionId] = useState<string | null>(null);
     const [syncError, setSyncError] = useState<string | null>(null);
     const [syncResult, setSyncResult] = useState<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any } | null>(null);
 
@@ -107,11 +109,13 @@ export default function Settings() {
     }, []);
 
     const handleTriggerSync = async () => {
+        const session = `sync_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        setSyncSessionId(session);
         setSyncError(null);
         setSyncResult(null);
         setShowSyncModal(true);
         try {
-            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any }>('/api/sync', {
+            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any }>(`/api/sync?session=${session}`, {
                 method: 'POST',
                 timeout: 600_000
             });
@@ -179,52 +183,15 @@ export default function Settings() {
                 </div>
             </div>
 
-            {/* Simple Sync Modal */}
-            {showSyncModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center">
-                        {syncError ? (
-                            <>
-                                <XCircle className="mx-auto text-red-500 mb-4" size={48} />
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">Sync Failed</h3>
-                                <p className="text-gray-600 mb-6">{syncError}</p>
-                                <button onClick={() => { setShowSyncModal(false); }} className="premium-btn px-8">
-                                    Close
-                                </button>
-                            </>
-                        ) : syncResult ? (
-                            <>
-                                <CheckCircle className="mx-auto text-emerald-500 mb-4" size={48} />
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">Sync Complete</h3>
-                                <div className="grid grid-cols-3 gap-4 mb-6">
-                                    <div>
-                                        <div className="text-3xl font-bold text-purple-600">{syncResult.campaigns_synced}</div>
-                                        <div className="text-sm text-gray-500">Campaigns</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-3xl font-bold text-blue-600">{syncResult.mailboxes_synced}</div>
-                                        <div className="text-sm text-gray-500">Mailboxes</div>
-                                    </div>
-                                    <div>
-                                        <div className="text-3xl font-bold text-emerald-600">{syncResult.leads_synced}</div>
-                                        <div className="text-sm text-gray-500">Leads</div>
-                                    </div>
-                                </div>
-                                <button onClick={() => { setShowSyncModal(false); window.location.reload(); }} className="premium-btn px-8">
-                                    Done
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <Loader2 className="mx-auto text-blue-600 animate-spin mb-4" size={48} />
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">Syncing Platform Data</h3>
-                                <p className="text-gray-500 mb-2">Fetching campaigns, mailboxes, and leads from your connected platforms...</p>
-                                <p className="text-sm text-gray-400">This may take 1-2 minutes</p>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
+            {/* Step-by-step Sync Progress Modal (SSE live progress + HTTP fallback) */}
+            <SyncProgressModal
+                isOpen={showSyncModal}
+                sessionId={syncSessionId}
+                onClose={() => { setShowSyncModal(false); if (syncResult) window.location.reload(); }}
+                externalError={syncError}
+                externalResult={syncResult}
+                onViewHealthReport={() => { setShowSyncModal(false); router.push('/dashboard/infrastructure'); }}
+            />
 
             {/* Health Enforcement Modal */}
             {healthCheckData && (
