@@ -413,7 +413,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
             )}
 
             <div className="premium-card mb-8">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Analytics</h2>
+                <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Overview</h2>
                 <div className="grid grid-cols-2 gap-8">
                     <div>
                         <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Bounce Rate Trend</div>
