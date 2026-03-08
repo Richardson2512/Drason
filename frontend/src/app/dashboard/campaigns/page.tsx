@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
@@ -40,9 +40,15 @@ export default function CampaignsPage() {
     // Modal state
     const [showResolveModal, setShowResolveModal] = useState(false);
     const [campaignActionLoading, setCampaignActionLoading] = useState(false);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+
+    // Use ref for selectedCampaign to avoid triggering refetches on selection change
+    const selectedCampaignRef = useRef(selectedCampaign);
+    selectedCampaignRef.current = selectedCampaign;
 
     const fetchCampaigns = useCallback(async () => {
         setLoading(true);
+        setFetchError(null);
         try {
             const { sortBy, minSent, maxSent, minOpenRate, maxOpenRate, platform } = sortFilter.values;
             const params = new URLSearchParams({
@@ -63,19 +69,20 @@ export default function CampaignsPage() {
             if (data?.data) {
                 setCampaigns(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedCampaign) {
+                if (data.data.length > 0 && !selectedCampaignRef.current) {
                     setSelectedCampaign(data.data[0]);
                 }
             } else {
                 setCampaigns(Array.isArray(data) ? data : []);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Failed to fetch campaigns:', err);
-            setCampaigns([]);
+            setFetchError(err.message || 'Failed to load campaigns');
+            // Don't wipe existing campaigns on error — keep stale data visible
         } finally {
             setLoading(false);
         }
-    }, [meta.page, meta.limit, statusFilter, searchQuery, sortFilter.values, selectedCampaign]);
+    }, [meta.page, meta.limit, statusFilter, searchQuery, sortFilter.values]);
 
     useEffect(() => {
         fetchCampaigns();
@@ -165,8 +172,24 @@ export default function CampaignsPage() {
         return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
-    if (!loading && (!campaigns || campaigns.length === 0)) {
+    if (!loading && (!campaigns || campaigns.length === 0) && !fetchError) {
         return <CampaignsEmptyState />;
+    }
+
+    if (!loading && campaigns.length === 0 && fetchError) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
+                <div className="text-5xl mb-6">⚠️</div>
+                <h2 className="text-2xl font-bold mb-3 text-gray-900">Failed to Load Campaigns</h2>
+                <p className="text-gray-500 mb-6">{fetchError}</p>
+                <button
+                    onClick={fetchCampaigns}
+                    className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-all"
+                >
+                    Retry
+                </button>
+            </div>
+        );
     }
 
     return (
