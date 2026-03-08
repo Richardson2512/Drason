@@ -34,6 +34,7 @@ export default function CampaignsPage() {
         maxSent: '',
         minOpenRate: '',
         maxOpenRate: '',
+        platform: 'all',
     });
 
     // Modal state
@@ -43,7 +44,7 @@ export default function CampaignsPage() {
     const fetchCampaigns = useCallback(async () => {
         setLoading(true);
         try {
-            const { sortBy, minSent, maxSent, minOpenRate, maxOpenRate } = sortFilter.values;
+            const { sortBy, minSent, maxSent, minOpenRate, maxOpenRate, platform } = sortFilter.values;
             const params = new URLSearchParams({
                 page: meta.page.toString(),
                 limit: meta.limit.toString(),
@@ -56,6 +57,7 @@ export default function CampaignsPage() {
             if (maxSent) params.append('maxSent', maxSent);
             if (minOpenRate) params.append('minOpenRate', minOpenRate);
             if (maxOpenRate) params.append('maxOpenRate', maxOpenRate);
+            if (platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Campaign>>(`/api/dashboard/campaigns?${params}`);
             if (data?.data) {
@@ -625,6 +627,24 @@ export default function CampaignsPage() {
                                         className="flex-1 px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
                                 </div>
+                            </div>
+
+                            {/* Platform Filter */}
+                            <div className="mb-6">
+                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Platform
+                                </label>
+                                <select
+                                    id="modal-platform"
+                                    value={sortFilter.temp.platform}
+                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
+                                >
+                                    <option value="all">All Platforms</option>
+                                    <option value="smartlead">Smartlead</option>
+                                    <option value="instantly">Instantly</option>
+                                    <option value="emailbison">EmailBison</option>
+                                </select>
                             </div>
                         </div>
 

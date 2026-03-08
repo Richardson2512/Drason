@@ -26,13 +26,14 @@ export default function DomainsPage() {
         maxEngagement: '',
         minBounceRate: '',
         maxBounceRate: '',
+        platform: 'all',
     });
 
     // Pagination & Selection (delegated to usePagination hook)
     const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     const fetchDomains = useCallback(async () => {
-        const { sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate } = sortFilter.values;
+        const { sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate, platform } = sortFilter.values;
         try {
             const params = new URLSearchParams({
                 page: meta.page.toString(),
@@ -49,6 +50,7 @@ export default function DomainsPage() {
             if (maxEngagement) params.append('maxEngagement', maxEngagement);
             if (minBounceRate) params.append('minBounceRate', minBounceRate);
             if (maxBounceRate) params.append('maxBounceRate', maxBounceRate);
+            if (platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Domain>>(`/api/dashboard/domains?${params}`);
             if (data?.data) {
@@ -333,6 +335,25 @@ export default function DomainsPage() {
                                         style={{ padding: '0.75rem 1rem' }}
                                     />
                                 </div>
+                            </div>
+
+                            {/* Platform Filter */}
+                            <div className="mb-6">
+                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Platform
+                                </label>
+                                <select
+                                    id="modal-platform"
+                                    value={sortFilter.temp.platform}
+                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
+                                    className="w-full rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
+                                    style={{ padding: '0.75rem 1rem' }}
+                                >
+                                    <option value="all">All Platforms</option>
+                                    <option value="smartlead">Smartlead</option>
+                                    <option value="instantly">Instantly</option>
+                                    <option value="emailbison">EmailBison</option>
+                                </select>
                             </div>
                         </div>
 

@@ -74,13 +74,14 @@ export default function MailboxesPage() {
         warmupStatus: 'all',
         minEngagement: '',
         maxEngagement: '',
+        platform: 'all',
     });
 
     // Pagination & Selection (delegated to usePagination hook)
     const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     const fetchMailboxes = useCallback(async () => {
-        const { sortBy, domainId, warmupStatus, minEngagement, maxEngagement } = sortFilter.values;
+        const { sortBy, domainId, warmupStatus, minEngagement, maxEngagement, platform } = sortFilter.values;
         setLoading(true);
         try {
             const params = new URLSearchParams({
@@ -99,6 +100,7 @@ export default function MailboxesPage() {
             if (warmupStatus !== 'all') params.append('warmupStatus', warmupStatus);
             if (minEngagement) params.append('minEngagement', minEngagement);
             if (maxEngagement) params.append('maxEngagement', maxEngagement);
+            if (platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Mailbox>>(`/api/dashboard/mailboxes?${params}`);
             if (data?.data) {
@@ -784,6 +786,24 @@ export default function MailboxesPage() {
                                         className="flex-1 py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm outline-none"
                                     />
                                 </div>
+                            </div>
+
+                            {/* Platform Filter */}
+                            <div className="mb-6">
+                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Platform
+                                </label>
+                                <select
+                                    id="modal-platform"
+                                    value={sortFilter.temp.platform}
+                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
+                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
+                                >
+                                    <option value="all">All Platforms</option>
+                                    <option value="smartlead">Smartlead</option>
+                                    <option value="instantly">Instantly</option>
+                                    <option value="emailbison">EmailBison</option>
+                                </select>
                             </div>
                         </div>
 

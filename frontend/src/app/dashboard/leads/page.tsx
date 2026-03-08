@@ -28,6 +28,7 @@ function LeadsPageContent() {
         minScore: '',
         maxScore: '',
         hasEngagement: 'all',
+        platform: 'all',
     });
 
     // Pagination & Selection via shared hook
@@ -58,7 +59,7 @@ function LeadsPageContent() {
     }, [searchParams]);
 
     const fetchLeads = useCallback(async () => {
-        const { sortBy, minScore, maxScore, hasEngagement } = sortFilter.values;
+        const { sortBy, minScore, maxScore, hasEngagement, platform } = sortFilter.values;
         const queryParams: Record<string, string> = {
             page: meta.page.toString(),
             limit: meta.limit.toString(),
@@ -71,6 +72,7 @@ function LeadsPageContent() {
         if (minScore) queryParams.minScore = minScore;
         if (maxScore) queryParams.maxScore = maxScore;
         if (hasEngagement !== 'all') queryParams.hasEngagement = hasEngagement;
+        if (platform !== 'all') queryParams.platform = platform;
 
         const query = new URLSearchParams(queryParams);
 
