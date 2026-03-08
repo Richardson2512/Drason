@@ -48,6 +48,13 @@ export default function AnalyticsPage() {
         }
     }, [selectedCampaignId, startDate, endDate]);
 
+    // Auto-select first campaign when list loads
+    useEffect(() => {
+        if (!selectedCampaignId && campaigns.length > 0) {
+            setSelectedCampaignId(campaigns[0].id);
+        }
+    }, [campaigns, selectedCampaignId]);
+
     useEffect(() => {
         fetchAnalytics();
     }, [fetchAnalytics]);
