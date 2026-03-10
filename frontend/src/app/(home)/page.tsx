@@ -52,11 +52,11 @@ export default function LandingPage() {
     ];
 
     const techSpecs = [
-        { label: "Integrations", value: "Smartlead, Clay, Instantly, Custom Webhooks" },
-        { label: "Monitoring Frequency", value: "Real-time (High Latency Blocking)" },
-        { label: "Infrastructure Type", value: "Deliverability Protection Layer (DPL)" },
-        { label: "Scaling Limit", value: "Unlimited Domains & Mailboxes" },
-        { label: "Response Delay", value: "< 50ms (Gate Check)" }
+        { label: "Integrations", value: "Smartlead, Clay, Instantly, EmailBison, and Custom Webhooks" },
+        { label: "Monitoring Frequency", value: "Real-time monitoring with high-latency blocking of risky traffic" },
+        { label: "Infrastructure Type", value: "Deliverability Protection Layer (DPL) for outbound email" },
+        { label: "Scaling Limit", value: "Unlimited domains and mailboxes with no increase in risk profile" },
+        { label: "Response Delay", value: "Under 50ms per execution gate check" }
     ];
 
     const faqSchema = {
@@ -548,8 +548,8 @@ export default function LandingPage() {
             <section className="py-10 lg:py-16 px-6 relative z-10">
                 <div className="max-w-5xl mx-auto">
                     <div className="text-center mb-10">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">Superkabe Technical Specifications</h2>
-                        <p className="text-gray-500 text-lg">Deterministic signals for high-volume outbound engineering teams.</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">Superkabe Technical Specifications for Outbound Email Deliverability</h2>
+                        <p className="text-gray-500 text-lg max-w-3xl mx-auto">These are the core technical characteristics of the Superkabe Deliverability Protection Layer (DPL) for high-volume outbound email teams.</p>
                     </div>
                     <div className="bg-white rounded-[2rem] border border-gray-200 shadow-sm overflow-hidden">
                         <table className="w-full text-left border-collapse">
