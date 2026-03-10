@@ -26,23 +26,28 @@ export default function LandingPage() {
     const features = [
         {
             title: "Superkabe Integration & Monitoring",
-            desc: "Native webhooks synchronize with Smartlead and Clay in real-time. We capture every bounce event and delivery block instantly to maintain 99%+ infrastructure health."
+            desc: "Native webhooks synchronize with Smartlead and Clay in real-time. We capture every bounce event and delivery block instantly to maintain 99%+ infrastructure health.",
+            link: "/product/outbound-email-infrastructure-monitoring"
         },
         {
             title: "Domain Health Execution Gate",
-            desc: "Our intelligent protection layer stops outgoing SMTP traffic to damaged domains. Every email is validated against current domain reputation scores before execution."
+            desc: "Our intelligent protection layer stops outgoing SMTP traffic to damaged domains. Every email is validated against current domain reputation scores before execution.",
+            link: "/product/domain-burnout-prevention-tool"
         },
         {
             title: "Auto-Healing Infrastructure",
-            desc: "Superkabe algorithms automatically detect mailbox fatigue. When a mailbox underperforms, it is instantly paused and traffic is weight-balanced toward healthy assets."
+            desc: "Superkabe algorithms automatically detect mailbox fatigue. When a mailbox underperforms, it is instantly paused and traffic is weight-balanced toward healthy assets.",
+            link: "/product/automated-domain-healing"
         },
         {
             title: "Multi-Entity Scaling",
-            desc: "Supporting unlimited mailboxes and unique domains. Superkabe scales your outbound operations without increasing the risk profile of your primary sender profiles."
+            desc: "Supporting unlimited mailboxes and unique domains. Superkabe scales your outbound operations without increasing the risk profile of your primary sender profiles.",
+            link: "/product/multi-platform-outbound-protection"
         },
         {
             title: "Infrastructure Analytics Engine",
-            desc: "Convert raw monitoring signals into actionable deliverability metrics. Visualize your bounce trends and domain health history in one centralized dashboard."
+            desc: "Convert raw monitoring signals into actionable deliverability metrics. Visualize your bounce trends and domain health history in one centralized dashboard.",
+            link: "/product/email-infrastructure-health-check"
         }
     ];
 
@@ -445,7 +450,7 @@ export default function LandingPage() {
 
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                         {features.map((item, i) => (
-                            <div key={i} className="soft-card bg-white p-10 md:p-12 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 group">
+                            <Link key={i} href={item.link} className="soft-card bg-white p-10 md:p-12 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 group block">
                                 <div className="w-14 h-14 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                     <div className="w-7 h-7 bg-blue-600 rounded-lg opacity-20 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </div>
@@ -453,7 +458,10 @@ export default function LandingPage() {
                                 <p className="text-gray-500 text-base leading-relaxed">
                                     {item.desc}
                                 </p>
-                            </div>
+                                <span className="inline-flex items-center mt-4 text-blue-600 text-sm font-semibold group-hover:translate-x-1 transition-transform duration-300">
+                                    Learn more &rarr;
+                                </span>
+                            </Link>
                         ))}
 
                         <div className="rounded-[2rem] flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white p-10 md:p-12 shadow-2xl relative overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
