@@ -66,6 +66,69 @@ export default function MonitoringPage() {
                 </p>
             </div>
 
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">1b. Minimum Volume Requirement</h2>
+            <p className="text-gray-600 mb-6">
+                Enforcement thresholds only activate after a mailbox reaches a <strong>minimum send volume</strong>.
+                This prevents the system from overreacting to statistically insignificant data.
+            </p>
+
+            <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl">📊</span>
+                    <h3 className="text-xl font-bold text-orange-700">Why minimum volume matters</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                    A mailbox that sent <strong>4 emails</strong> and received <strong>1 bounce</strong> has a <strong>25% bounce rate</strong> — but
+                    this is not statistically meaningful. One bounce at low volume does not indicate a deliverability problem.
+                    Pausing mailboxes based on tiny sample sizes would constantly churn accounts during early warmup.
+                </p>
+                <div className="bg-white/80 rounded-xl p-4">
+                    <p className="text-gray-700 text-sm font-semibold mb-2">The three enforcement triggers:</p>
+                    <table className="w-full text-left text-sm">
+                        <thead className="border-b border-orange-200">
+                            <tr>
+                                <th className="pb-2 text-gray-700">Trigger</th>
+                                <th className="pb-2 text-gray-700">Condition</th>
+                                <th className="pb-2 text-gray-700">Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            <tr>
+                                <td className="py-2 text-orange-600 font-semibold">Percentage</td>
+                                <td className="py-2 text-gray-600">3%+ bounce rate <strong>AND</strong> 60+ sends</td>
+                                <td className="py-2 text-gray-500">Catches sustained problems after sufficient data</td>
+                            </tr>
+                            <tr>
+                                <td className="py-2 text-orange-600 font-semibold">Absolute</td>
+                                <td className="py-2 text-gray-600">5+ bounces in sliding window</td>
+                                <td className="py-2 text-gray-500">Safety net regardless of send volume</td>
+                            </tr>
+                            <tr>
+                                <td className="py-2 text-orange-600 font-semibold">Early warning</td>
+                                <td className="py-2 text-gray-600">3+ bounces within first 60 sends</td>
+                                <td className="py-2 text-gray-500">Flags risk before percentage trigger activates</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">Example: Low Volume vs High Volume</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-green-50 rounded-xl p-4">
+                        <p className="text-sm font-bold text-green-700 mb-2">4 sends, 1 bounce (25%)</p>
+                        <p className="text-gray-600 text-sm">Below 60-send minimum. No enforcement action. The system monitors but waits for more data before making decisions.</p>
+                        <p className="text-green-600 text-xs mt-2 font-semibold">Result: Mailbox stays active</p>
+                    </div>
+                    <div className="bg-red-50 rounded-xl p-4">
+                        <p className="text-sm font-bold text-red-700 mb-2">80 sends, 3 bounces (3.75%)</p>
+                        <p className="text-gray-600 text-sm">Above 60-send minimum and above 3% threshold. The bounce pattern is statistically significant.</p>
+                        <p className="text-red-600 text-xs mt-2 font-semibold">Result: Mailbox paused, removed from campaigns, enters healing</p>
+                    </div>
+                </div>
+            </div>
+
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Sliding Window Logic</h2>
             <p className="text-gray-600 mb-6">
                 Instead of hard resetting stats to 0/0 after 100 sends, we use a <strong>sliding window</strong> that keeps 50% of past data.
