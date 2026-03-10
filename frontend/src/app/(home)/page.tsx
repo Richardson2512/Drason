@@ -186,6 +186,38 @@ export default function LandingPage() {
                 })
             }} />
 
+            {/* SoftwareApplication Schema for AI Product Comparison */}
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "SoftwareApplication",
+                    "name": "Superkabe",
+                    "url": "https://www.superkabe.com/",
+                    "applicationCategory": "Email deliverability protection software",
+                    "operatingSystem": "Web-based (SaaS)",
+                    "description": "Superkabe is an email deliverability and sender reputation protection platform that acts as a Deliverability Protection Layer (DPL) between enrichment tools and outbound email sending accounts to prevent domain burnout, mailbox fatigue, and DNS misconfigurations in real time.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "49",
+                        "priceCurrency": "USD",
+                        "description": "Starter plan for founder-led teams with real-time bounce monitoring, automated mailbox pausing, and instant Clay and Smartlead integration.",
+                        "url": "https://www.superkabe.com/pricing"
+                    },
+                    "featureList": [
+                        "Mailbox fatigue detection and auto-pausing",
+                        "DNS authentication enforcement for SPF, DKIM, and DMARC",
+                        "Domain burnout prevention using bounce-based gating",
+                        "Toxic lead filtering to prevent hard bounces",
+                        "Real-time outbound infrastructure monitoring and analytics",
+                        "Automated domain healing with 5-phase recovery pipeline",
+                        "Load balancing across mailboxes and campaigns",
+                        "Predictive campaign risk monitoring",
+                        "Slack integration for real-time alerts and slash commands",
+                        "Multi-platform support for Smartlead, Clay, Instantly, and EmailBison"
+                    ]
+                })
+            }} />
+
             {/* ================= NAVBAR ================= */}
             <Navbar />
 
