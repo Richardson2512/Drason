@@ -3,12 +3,19 @@ export interface ContentSection {
     paragraphs: string[];
 }
 
+export interface RelatedBlogLink {
+    slug: string;
+    title: string;
+    description: string;
+}
+
 export interface ProductPageData {
     slug: string;
     title: string;
     description: string;
     intro: string;
     sections: ContentSection[];
+    relatedBlog?: RelatedBlogLink[];
 }
 
 export const productPages: Record<string, ProductPageData> = {
@@ -46,6 +53,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "For agencies managing hundreds of client domains, Superkabe's automated bounce management eliminates the single largest operational risk in outbound: undetected bounce spikes burning through expensive secondary domains. By deploying Superkabe across your entire infrastructure tree, every domain and every mailbox is governed by the same mathematical safety rules, ensuring consistent deliverability regardless of campaign volume or lead list quality."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "bounce-rate-deliverability", title: "How Bounce Rates Damage Sender Reputation", description: "Understanding the math behind bounce thresholds and ISP penalties" },
+            { slug: "domain-warming-methodology", title: "Domain Warming Methodology", description: "Volume ramp schedules and warming signals for new domains" }
         ]
     },
     "automated-domain-healing": {
@@ -76,6 +87,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "Superkabe watches every domain, every mailbox, every minute. It catches the 0.5% deferral increase that a human would never notice, and it acts immediately. This mathematically precise intervention is why Superkabe-protected infrastructure experiences near-zero domain burnout."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "bounce-rate-deliverability", title: "How Bounce Rates Damage Sender Reputation", description: "The math behind ISP bounce thresholds and reputation penalties" },
+            { slug: "domain-warming-methodology", title: "Domain Warming Methodology", description: "Volume ramp schedules and warming signals for new domains" }
         ]
     },
     "b2b-sender-reputation-management": {
@@ -105,6 +120,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "A burned domain takes 30-45 days of algorithmic rehab to recover, during which it is effectively dead — generating zero revenue. For agencies running 50-100 secondary domains, a single week of unmanaged bounces can simultaneously damage 10+ domains, collapsing the entire outbound pipeline. Superkabe eliminates this existential risk entirely by enforcing mathematical reputation floors that domains can never breach."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-reputation-lifecycle", title: "The Email Reputation Lifecycle", description: "How reputation is built, damaged, and recovered over time" },
+            { slug: "how-spam-filters-work", title: "How Spam Filters Work", description: "Four layers of spam filtering and how to avoid them" }
         ]
     },
     "bounce-rate-protection-system": {
@@ -278,6 +297,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "Beyond reactive bounce interception, Superkabe uses predictive analysis to detect domains showing early fatigue patterns. Subtle increases in soft bounces, gradual deferral rate elevation, and declining engagement ratios are all early warning signs that Superkabe catches before they escalate. By proactively routing traffic away from fatiguing domains, Superkabe prevents the conditions that lead to burnout from developing in the first place."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "domain-warming-methodology", title: "Domain Warming Methodology", description: "How to safely warm up new outbound email domains" },
+            { slug: "email-reputation-lifecycle", title: "The Email Reputation Lifecycle", description: "How reputation is built, damaged, and recovered" }
         ]
     },
     "email-deliverability-protection": {
@@ -306,6 +329,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "Without a DPL, your outbound infrastructure is unprotected. You are relying on human operators to manually catch problems, which is inherently unreliable at scale. Superkabe replaces hope with mathematics. Every domain has a defined safety floor. Every mailbox is governed by autonomous rules. Your infrastructure becomes self-defending."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-deliverability-guide", title: "The Ultimate Deliverability Guide", description: "Complete guide to outbound email deliverability" },
+            { slug: "email-deliverability-tools-compared", title: "Deliverability Tools Compared", description: "Monitoring, reputation, and protection software compared" }
         ]
     },
     "email-infrastructure-health-check": {
@@ -362,6 +389,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "For organizations managing hundreds of domains across multiple sending platforms, Superkabe provides the unified protection layer that makes enterprise-scale outbound operationally viable. Without it, managing deliverability at scale requires teams of specialized operators. With Superkabe, a single platform governs the entire infrastructure autonomously."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "introducing-infrastructure-assessment", title: "Infrastructure Assessment Guide", description: "How to assess your email infrastructure before sending" },
+            { slug: "spf-dkim-dmarc-explained", title: "SPF, DKIM, and DMARC Explained", description: "DNS authentication protocols for outbound email" }
         ]
     },
     "emailbison-infrastructure-protection": {
@@ -616,6 +647,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "The true power of Superkabe's monitoring is not visibility — it is action. When our monitoring engine detects that a domain's reputation is at risk, it does not just raise a flag. It autonomously deploys protective measures, pausing the vulnerable mailbox and redistributing traffic. This transforms monitoring from a passive activity into an active defense mechanism."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-reputation-lifecycle", title: "The Email Reputation Lifecycle", description: "How ISP reputation scoring works and how to recover" },
+            { slug: "how-spam-filters-work", title: "How Spam Filters Work", description: "Understanding the four layers of spam filtering" }
         ]
     },
     "sender-reputation-protection-tool": {
@@ -644,6 +679,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "Human judgment is unreliable at scale. An operator managing 200 mailboxes will miss the subtle bounce increase on Mailbox #143. Superkabe does not miss anything. It evaluates every event, maintains every profile, and enforces every threshold without fatigue, bias, or oversight gaps. This is what it means to replace hope with mathematics."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-reputation-lifecycle", title: "The Email Reputation Lifecycle", description: "How reputation is built, damaged, and recovered over time" },
+            { slug: "bounce-rate-deliverability", title: "Bounce Rate & Deliverability", description: "How bounces destroy sender reputation" }
         ]
     },
     "smartlead-deliverability-protection": {
@@ -672,6 +711,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "Smartlead's built-in analytics are useful for campaign optimization but insufficient for infrastructure protection. They lack real-time intervention capabilities, autonomous pausing, and predictive fatigue detection. Superkabe fills this gap entirely, transforming Smartlead from a powerful sending tool into a fully governed, self-protecting infrastructure."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-deliverability-tools-compared", title: "Deliverability Tools Compared", description: "How Smartlead fits into a complete deliverability stack" },
+            { slug: "bounce-rate-deliverability", title: "How Bounce Rates Damage Reputation", description: "ISP thresholds and tiered bounce protection" }
         ]
     },
     "smartlead-infrastructure-protection": {
@@ -729,6 +772,10 @@ export const productPages: Record<string, ProductPageData> = {
                     "If you send cold email at scale, you need a Deliverability Protection Layer. Without one, your infrastructure is unprotected against the inevitable: bad lead data, unexpected bounce spikes, and the silent accumulation of negative signals that eventually burn your domains. Superkabe provides the DPL that makes scalable outbound operationally safe and financially predictable."
                 ]
             }
+        ],
+        relatedBlog: [
+            { slug: "email-deliverability-guide", title: "The Ultimate Deliverability Guide", description: "Complete guide to outbound email deliverability" },
+            { slug: "email-deliverability-tools-compared", title: "Deliverability Tools Compared", description: "Monitoring, reputation, and protection software compared" }
         ]
     }
 };

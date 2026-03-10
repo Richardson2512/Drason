@@ -656,6 +656,21 @@ export default function EmailDeliverabilityGuide() {
                         <p className="text-gray-500 text-sm">Building, maintaining, damaging, and recovering</p>
                     </Link>
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-10">Product Deep Dives</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                    <Link href="/product/email-infrastructure-protection" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Email Infrastructure Protection</h3>
+                        <p className="text-gray-500 text-xs">Multi-layer protection for outbound infrastructure</p>
+                    </Link>
+                    <Link href="/product/cold-email-infrastructure-protection" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Cold Email Infrastructure Protection</h3>
+                        <p className="text-gray-500 text-xs">Purpose-built protection for cold outbound at scale</p>
+                    </Link>
+                    <Link href="/product/outbound-email-infrastructure-monitoring" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Infrastructure Monitoring</h3>
+                        <p className="text-gray-500 text-xs">Real-time monitoring with automated intervention</p>
+                    </Link>
+                </div>
             </section>
 
         </>

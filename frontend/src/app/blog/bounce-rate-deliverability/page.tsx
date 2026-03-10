@@ -275,6 +275,21 @@ export default function BounceRateArticle() {
                         <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
                     </Link>
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-10">Product Deep Dives</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                    <Link href="/product/bounce-rate-protection-system" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Bounce Rate Protection System</h3>
+                        <p className="text-gray-500 text-xs">Real-time bounce interception and threshold enforcement</p>
+                    </Link>
+                    <Link href="/product/automated-bounce-management" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Automated Bounce Management</h3>
+                        <p className="text-gray-500 text-xs">How Superkabe automates bounce handling for cold email</p>
+                    </Link>
+                    <Link href="/product/case-study-bounce-reduction" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Case Study: Bounce Reduction</h3>
+                        <p className="text-gray-500 text-xs">How Superkabe reduced bounce rates to 0.1%</p>
+                    </Link>
+                </div>
                 <div className="mt-6">
                     <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
                 </div>

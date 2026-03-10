@@ -109,6 +109,20 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                     ))}
                 </div>
 
+                {data.relatedBlog && data.relatedBlog.length > 0 && (
+                    <div className="mt-16">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            {data.relatedBlog.map((blog, i) => (
+                                <Link key={i} href={`/blog/${blog.slug}`} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+                                    <h4 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-blue-600 transition-colors">{blog.title}</h4>
+                                    <p className="text-gray-500 text-xs">{blog.description}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <div className="mt-20 p-10 md:p-14 bg-white rounded-[2rem] border border-gray-100 shadow-xl text-center">
                     <h3 className="text-2xl font-bold mb-4">Ready to implement {data.title}?</h3>
                     <p className="text-gray-500 mb-8">Join the modern outbound teams using Superkabe to protect their revenue.</p>

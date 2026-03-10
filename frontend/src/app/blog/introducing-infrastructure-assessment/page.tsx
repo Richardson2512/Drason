@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Assess Your Email Infrastructure Before Your First Campaign',
@@ -167,6 +168,37 @@ export default function InfrastructureAssessmentPost() {
                 </p>
             </div>
         </article>
+
+            {/* Internal Link Mesh */}
+            <section className="pb-12 mt-16">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                    <Link href="/blog/spf-dkim-dmarc-explained" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">SPF, DKIM, and DMARC</h3>
+                        <p className="text-gray-500 text-xs">DNS authentication protocols explained</p>
+                    </Link>
+                    <Link href="/blog/domain-warming-methodology" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Domain Warming Methodology</h3>
+                        <p className="text-gray-500 text-xs">How to safely warm up new outbound domains</p>
+                    </Link>
+                    <Link href="/blog/bounce-rate-deliverability" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Bounce Rate & Deliverability</h3>
+                        <p className="text-gray-500 text-xs">How bounces destroy sender reputation</p>
+                    </Link>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-10">Product Deep Dives</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <Link href="/product/email-infrastructure-health-check" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Email Infrastructure Health Check</h3>
+                        <p className="text-gray-500 text-xs">Automated DNS validation and infrastructure scoring</p>
+                    </Link>
+                    <Link href="/product/automated-domain-healing" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Automated Domain Healing</h3>
+                        <p className="text-gray-500 text-xs">5-phase recovery pipeline for damaged domains</p>
+                    </Link>
+                </div>
+            </section>
+
         </>
     );
 }

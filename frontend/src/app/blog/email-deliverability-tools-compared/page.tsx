@@ -563,6 +563,21 @@ export default function DeliverabilityToolsComparedArticle() {
                         <p className="text-gray-500 text-xs">How reputation is built, damaged, and recovered</p>
                     </Link>
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-10">Product Deep Dives</h2>
+                <div className="grid md:grid-cols-3 gap-4">
+                    <Link href="/product/what-is-email-deliverability-protection" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">What is Email Deliverability Protection?</h3>
+                        <p className="text-gray-500 text-xs">How a DPL differs from traditional monitoring tools</p>
+                    </Link>
+                    <Link href="/product/smartlead-deliverability-protection" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Smartlead Deliverability Protection</h3>
+                        <p className="text-gray-500 text-xs">Native Smartlead webhook interception and campaign pausing</p>
+                    </Link>
+                    <Link href="/product/instantly-infrastructure-protection" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Instantly Infrastructure Protection</h3>
+                        <p className="text-gray-500 text-xs">Dedicated protection for Instantly.ai operators</p>
+                    </Link>
+                </div>
                 <div className="mt-6">
                     <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">&larr; See how Superkabe protects your infrastructure</Link>
                 </div>

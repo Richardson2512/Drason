@@ -21,9 +21,35 @@ export const metadata: Metadata = {
 export default function InfrastructurePlaybookPage() {
     const playbookSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "The Outbound Email Infrastructure Playbook",
-        "description": "The authoritative, highly detailed A-Z guide on setting up, protecting, and scaling outbound deliverability using Superkabe.",
+        "@type": "HowTo",
+        "name": "How to Set Up and Protect Outbound Email Infrastructure Using the Superkabe Deliverability Protection Layer (DPL)",
+        "description": "The authoritative, step-by-step guide on setting up, protecting, and scaling outbound email deliverability using Superkabe's Deliverability Protection Layer (DPL) for high-volume B2B teams.",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Understand Outbound Infrastructure Scaling",
+                "text": "Learn how to horizontalize your email infrastructure with secondary domains and multiple mailboxes per domain to distribute sending volume and isolate risk. Understand the threat of domain burnout when bounce rates exceed 2.5-3% thresholds.",
+                "url": "https://www.superkabe.com/infrastructure-playbook#1"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Deploy the Deliverability Protection Layer (DPL)",
+                "text": "Install Superkabe as active middleware between your enrichment providers (Clay, Apollo) and your sending engine (Smartlead, Instantly). Configure webhook integrations to capture SMTP bounce codes in real time and enable autonomous mailbox pausing when safety thresholds are breached.",
+                "url": "https://www.superkabe.com/infrastructure-playbook#2"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Configure Structural Governance and Validation",
+                "text": "Enable DNS authentication monitoring for SPF, DKIM, and DMARC records. Configure mailbox fatigue auto-healing to detect soft bounce spikes and automatically load-balance traffic away from fatigued mailboxes toward healthy assets.",
+                "url": "https://www.superkabe.com/infrastructure-playbook#3"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Review Documentation and Next Steps",
+                "text": "Explore focused technical resources including the deliverability guide, DNS authentication setup, domain burnout prevention suite, and auto-healing architecture documentation to fully secure your outbound revenue stream.",
+                "url": "https://www.superkabe.com/infrastructure-playbook#4"
+            }
+        ],
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

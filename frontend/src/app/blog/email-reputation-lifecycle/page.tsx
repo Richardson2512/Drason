@@ -287,6 +287,17 @@ export default function EmailReputationArticle() {
                         <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
                     </Link>
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-10">Product Deep Dives</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <Link href="/product/sender-reputation-monitoring" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Sender Reputation Monitoring</h3>
+                        <p className="text-gray-500 text-xs">Real-time tracking of ISP reputation signals</p>
+                    </Link>
+                    <Link href="/product/case-study-domain-recovery" className="bg-blue-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Case Study: Domain Recovery</h3>
+                        <p className="text-gray-500 text-xs">How Superkabe recovered 40 burned domains</p>
+                    </Link>
+                </div>
                 <div className="mt-6">
                     <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">← See how Superkabe protects your infrastructure</Link>
                 </div>
