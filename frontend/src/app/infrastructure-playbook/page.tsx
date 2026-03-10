@@ -63,7 +63,7 @@ export default function InfrastructurePlaybookPage() {
 
             <article className="relative pt-32 md:pt-36 pb-40 px-6 max-w-4xl mx-auto z-10">
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-10 text-center leading-[0.95] uppercase">
-                    The Outbound Infrastructure Playbook
+                    The Outbound Email Infrastructure Playbook
                 </h1>
 
                 <div className="bg-blue-50 p-10 rounded-[2rem] border border-blue-100 shadow-sm mb-20">
