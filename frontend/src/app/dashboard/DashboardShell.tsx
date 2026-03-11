@@ -422,10 +422,10 @@ export default function DashboardShell({
             <HelpPanel isOpen={helpPanelOpen} onClose={() => setHelpPanelOpen(false)} />
             <HelpPanelTrigger onClick={() => setHelpPanelOpen(true)} />
 
-            {/* Raise a Ticket Button — fixed top-right */}
+            {/* Raise a Ticket Button — fixed bottom-right, above Help Panel trigger */}
             <button
                 onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
-                className="btn-hover-lift btn-hover-lift-blue fixed top-4 right-[4.5rem] text-white border-none rounded-xl p-2 px-4 text-[0.8rem] font-semibold cursor-pointer z-[45] flex items-center gap-[0.4rem]"
+                className="btn-hover-lift btn-hover-lift-blue fixed bottom-[6.5rem] right-6 text-white border-none rounded-xl p-2 px-4 text-[0.8rem] font-semibold cursor-pointer z-30 flex items-center gap-[0.4rem]"
                 style={{
                     background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
                     boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
