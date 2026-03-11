@@ -9,6 +9,14 @@ export const metadata: Metadata = {
         description: 'Superkabe is an email deliverability and sender reputation protection platform — infrastructure armor between your enrichment data and sending accounts.',
         url: '/',
         siteName: 'Superkabe',
+        images: [
+            {
+                url: '/image/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Superkabe - Infrastructure Protection',
+            },
+        ],
         type: 'website',
     },
 };
