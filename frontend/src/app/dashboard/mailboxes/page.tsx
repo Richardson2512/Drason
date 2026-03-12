@@ -171,7 +171,12 @@ export default function MailboxesPage() {
         return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
-    if (!loading && (!mailboxes || mailboxes.length === 0) && !fetchError) {
+    const hasActiveFilters = selectedStatus !== 'all' || selectedCampaign !== 'all' || searchQuery.trim() !== '' ||
+        sortFilter.values.domainId !== 'all' || sortFilter.values.warmupStatus !== 'all' ||
+        sortFilter.values.minEngagement !== '' || sortFilter.values.maxEngagement !== '' ||
+        sortFilter.values.platform !== 'all';
+
+    if (!loading && (!mailboxes || mailboxes.length === 0) && !fetchError && !hasActiveFilters) {
         return <MailboxesEmptyState />;
     }
 

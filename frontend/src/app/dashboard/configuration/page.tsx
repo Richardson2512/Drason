@@ -16,6 +16,10 @@ export default function Configuration() {
     });
     const [campaignSearch, setCampaignSearch] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
+    const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
+
+    // Derive unique platforms from synced campaigns
+    const platforms = Array.from(new Set(campaigns.map(c => c.source_platform || 'unknown').filter(Boolean)));
 
     const fetchRules = () => {
         apiClient<RoutingRule[] | { data: RoutingRule[] }>('/api/dashboard/routing-rules')
@@ -31,8 +35,10 @@ export default function Configuration() {
     const campaignMap = new Map<string, CampaignSummary>();
     campaigns.forEach(c => campaignMap.set(c.id, c));
 
-    // Filter campaigns based on search input
+    // Filter campaigns based on platform selection and search input
     const filteredCampaigns = campaigns.filter(c => {
+        const platformMatch = selectedPlatform === 'all' || (c.source_platform || 'unknown') === selectedPlatform;
+        if (!platformMatch) return false;
         const term = campaignSearch.toLowerCase();
         return c.name.toLowerCase().includes(term) ||
             (c.source_platform || '').toLowerCase().includes(term) ||
@@ -60,6 +66,7 @@ export default function Configuration() {
         fetchRules();
         setFormData({ persona: '', min_score: 0, target_campaign_id: '', priority: 0 });
         setCampaignSearch('');
+        setSelectedPlatform('all');
     };
 
     return (
@@ -115,6 +122,30 @@ export default function Configuration() {
                                     required
                                 />
                             </div>
+                        </div>
+
+                        {/* Platform Selector */}
+                        <div>
+                            <label className="block mb-2 text-sm font-semibold text-gray-700">
+                                Platform
+                            </label>
+                            <select
+                                className="premium-input w-full"
+                                value={selectedPlatform}
+                                onChange={e => {
+                                    setSelectedPlatform(e.target.value);
+                                    // Clear campaign selection when platform changes
+                                    setFormData({ ...formData, target_campaign_id: '' });
+                                    setCampaignSearch('');
+                                }}
+                            >
+                                <option value="all">All Platforms</option>
+                                {platforms.map(p => (
+                                    <option key={p} value={p}>
+                                        {p.charAt(0).toUpperCase() + p.slice(1)}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         {/* Campaign Selector with Platform Badges */}

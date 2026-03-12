@@ -519,7 +519,7 @@ export default function CampaignsPage() {
                                             </div>
                                             {/* Sent count */}
                                             <div className="min-w-[48px] text-right text-[0.8rem] text-slate-600 font-mono shrink-0">
-                                                {mb.window_sent_count ?? 0}
+                                                {mb.total_sent_count ?? 0}
                                             </div>
                                         </div>
                                     ))}
