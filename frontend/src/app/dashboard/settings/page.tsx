@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
 import type { SettingEntry, Organization, ClayWebhookResponse, SyncResponse } from '@/types/api';
 import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
-import { Loader2 } from 'lucide-react';
+import { Loader2, RefreshCw } from 'lucide-react';
 import SyncProgressModal from '@/components/modals/SyncProgressModal';
 import { useRouter } from 'next/navigation';
 import SystemModeCard from '@/components/settings/SystemModeCard';
@@ -108,14 +108,16 @@ export default function Settings() {
         setInstantlyWebhookUrl(`${backendBase}/api/monitor/instantly-webhook`);
     }, []);
 
-    const handleTriggerSync = async () => {
+    const handleTriggerSync = async (platform?: string) => {
         const session = `sync_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
         setSyncSessionId(session);
         setSyncError(null);
         setSyncResult(null);
         setShowSyncModal(true);
         try {
-            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any; post_sync_summary?: any }>(`/api/sync?session=${session}`, {
+            const params = new URLSearchParams({ session });
+            if (platform) params.set('platform', platform);
+            const result = await apiClient<{ campaigns_synced: number; mailboxes_synced: number; leads_synced: number; health_check?: any; post_sync_summary?: any }>(`/api/sync?${params.toString()}`, {
                 method: 'POST',
                 timeout: 600_000
             });
@@ -141,25 +143,34 @@ export default function Settings() {
                 <OrganizationDetailsCard org={org} />
 
                 {/* Integration Provider Selector — below Org Details, above the 2-column grid */}
-                <IntegrationSelector
-                    activeIntegration={activeIntegration}
-                    onSelect={(key) => setActiveIntegration(key as typeof activeIntegration)}
-                />
+                <div className="flex items-center gap-3 mb-4">
+                    <IntegrationSelector
+                        activeIntegration={activeIntegration}
+                        onSelect={(key) => setActiveIntegration(key as typeof activeIntegration)}
+                    />
+                    <button
+                        onClick={() => handleTriggerSync()}
+                        className="flex items-center gap-2 px-4 py-2 rounded-[10px] text-sm font-bold cursor-pointer transition-all duration-200 border-2 border-emerald-500 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 whitespace-nowrap"
+                    >
+                        <RefreshCw size={16} />
+                        Sync All Platforms
+                    </button>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Integration Slide Box */}
                     <div className="premium-card relative overflow-hidden">
                         {/* Smartlead Content */}
                         {activeIntegration === 'smartlead' && (
-                            <SmartleadCard webhookUrl={smartleadWebhookUrl} onTriggerSync={handleTriggerSync} settings={settingsData} />
+                            <SmartleadCard webhookUrl={smartleadWebhookUrl} onTriggerSync={() => handleTriggerSync('smartlead')} settings={settingsData} />
                         )}
 
                         {/* Instantly */}
                         {activeIntegration === 'instantly' && (
-                            <InstantlyCard webhookUrl={instantlyWebhookUrl} onTriggerSync={handleTriggerSync} settings={settingsData} />
+                            <InstantlyCard webhookUrl={instantlyWebhookUrl} onTriggerSync={() => handleTriggerSync('instantly')} settings={settingsData} />
                         )}
 
-                        {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} onTriggerSync={handleTriggerSync} settings={settingsData} />}
+                        {activeIntegration === "emailbison" && <EmailBisonCard webhookUrl={emailBisonWebhookUrl} onTriggerSync={() => handleTriggerSync('emailbison')} settings={settingsData} />}
 
                         {/* Reply.io — Coming Soon */}
                         {activeIntegration === 'replyio' && (

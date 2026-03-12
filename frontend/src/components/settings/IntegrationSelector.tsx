@@ -16,7 +16,7 @@ export default function IntegrationSelector({
     onSelect: (key: string) => void;
 }) {
     return (
-        <div className="flex gap-2 mb-4 flex-wrap">
+        <div className="flex gap-2 flex-wrap">
             {PROVIDERS.map(provider => {
                 const isActive = activeIntegration === provider.key;
                 return (
