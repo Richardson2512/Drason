@@ -6,6 +6,7 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import CampaignsEmptyState from '@/components/dashboard/CampaignsEmptyState';
 import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampaignResolutionModal';
 import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import { apiClient } from '@/lib/api';
 import type { Campaign, Mailbox, DashboardStats, PaginatedResponse } from '@/types/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
@@ -41,6 +42,7 @@ export default function CampaignsPage() {
     const [showResolveModal, setShowResolveModal] = useState(false);
     const [campaignActionLoading, setCampaignActionLoading] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
+    const [confirmAction, setConfirmAction] = useState<'pause' | 'resume' | null>(null);
 
     // Use ref for selectedCampaign to avoid triggering refetches on selection change
     const selectedCampaignRef = useRef(selectedCampaign);
@@ -123,37 +125,39 @@ export default function CampaignsPage() {
         router.push(`/dashboard/leads?${params.toString()}`);
     };
 
-    const handlePauseCampaign = async () => {
+    const handlePauseCampaign = () => {
         if (!selectedCampaign || campaignActionLoading) return;
-        setCampaignActionLoading(true);
-        try {
-            await apiClient('/api/dashboard/campaign/pause', {
-                method: 'POST',
-                body: JSON.stringify({ campaignId: selectedCampaign.id, reason: 'Manual pause from dashboard' })
-            });
-            setSelectedCampaign({ ...selectedCampaign, status: 'paused', paused_reason: 'Manual pause from dashboard', paused_at: new Date().toISOString(), paused_by: 'user' });
-            fetchCampaigns();
-        } catch (err: any) {
-            console.error('Failed to pause campaign:', err);
-        } finally {
-            setCampaignActionLoading(false);
-        }
+        setConfirmAction('pause');
     };
 
-    const handleResumeCampaign = async () => {
+    const handleResumeCampaign = () => {
         if (!selectedCampaign || campaignActionLoading) return;
+        setConfirmAction('resume');
+    };
+
+    const executeConfirmedAction = async () => {
+        if (!selectedCampaign || !confirmAction) return;
         setCampaignActionLoading(true);
         try {
-            await apiClient('/api/dashboard/campaign/resume', {
-                method: 'POST',
-                body: JSON.stringify({ campaignId: selectedCampaign.id })
-            });
-            setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: undefined, paused_at: undefined, paused_by: undefined });
+            if (confirmAction === 'pause') {
+                await apiClient('/api/dashboard/campaign/pause', {
+                    method: 'POST',
+                    body: JSON.stringify({ campaignId: selectedCampaign.id, reason: 'Manual pause from dashboard' })
+                });
+                setSelectedCampaign({ ...selectedCampaign, status: 'paused', paused_reason: 'Manual pause from dashboard', paused_at: new Date().toISOString(), paused_by: 'user' });
+            } else {
+                await apiClient('/api/dashboard/campaign/resume', {
+                    method: 'POST',
+                    body: JSON.stringify({ campaignId: selectedCampaign.id })
+                });
+                setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: undefined, paused_at: undefined, paused_by: undefined });
+            }
             fetchCampaigns();
         } catch (err: any) {
-            console.error('Failed to resume campaign:', err);
+            console.error(`Failed to ${confirmAction} campaign:`, err);
         } finally {
             setCampaignActionLoading(false);
+            setConfirmAction(null);
         }
     };
 
@@ -546,6 +550,47 @@ export default function CampaignsPage() {
                         fetchCampaigns();
                         setShowResolveModal(false);
                     }}
+                />
+            )}
+
+            {/* Pause / Resume Confirmation Modal */}
+            {selectedCampaign && confirmAction && (
+                <ConfirmActionModal
+                    isOpen={true}
+                    title={confirmAction === 'pause' ? 'Pause Campaign' : 'Resume Campaign'}
+                    icon={confirmAction === 'pause' ? '⏸️' : '▶️'}
+                    message={
+                        confirmAction === 'pause'
+                            ? `Are you sure you want to pause "${selectedCampaign.name}"? This will stop all email sending for this campaign on the platform.`
+                            : `Are you sure you want to resume "${selectedCampaign.name}"? This will reactivate email sending on the platform.`
+                    }
+                    detail={
+                        confirmAction === 'resume' && selectedCampaign.paused_reason
+                            ? selectedCampaign.paused_reason
+                            : undefined
+                    }
+                    consequences={
+                        confirmAction === 'pause'
+                            ? [
+                                'Campaign will be paused on the email platform (Smartlead, etc.)',
+                                'No new emails will be sent from this campaign',
+                                'Leads already in sequence will be paused mid-sequence',
+                                'You can resume anytime from this page',
+                            ]
+                            : [
+                                'Campaign will be reactivated on the email platform',
+                                'Emails will start sending again immediately',
+                                selectedCampaign.paused_by === 'system'
+                                    ? 'This campaign was paused by Drason due to health issues — the underlying issue may not be resolved'
+                                    : 'Leads in sequence will continue where they left off',
+                            ]
+                    }
+                    variant={confirmAction === 'resume' && selectedCampaign.paused_by === 'system' ? 'danger' : 'warning'}
+                    confirmLabel={confirmAction === 'pause' ? 'Pause Campaign' : 'Resume Campaign'}
+                    cancelLabel="Cancel"
+                    loading={campaignActionLoading}
+                    onConfirm={executeConfirmedAction}
+                    onCancel={() => setConfirmAction(null)}
                 />
             )}
 

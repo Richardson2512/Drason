@@ -8,6 +8,7 @@ import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
 import SemiCircleGauge from '@/components/dashboard/SemiCircleGauge';
 import { useDashboard } from '@/contexts/DashboardContext';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import type { DashboardStats, DomainSummary, MailboxSummary, CampaignSummary, ChartEntry, OrgFinding } from '@/types/api';
 
 export default function Overview() {
@@ -26,42 +27,54 @@ export default function Overview() {
   const [error, setError] = useState<string | null>(null);
   const [resuming, setResuming] = useState<string | null>(null);
   const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
+  const [confirmResume, setConfirmResume] = useState<{ type: 'domain' | 'mailbox'; id: string; name: string; reason: string } | null>(null);
 
-  const handleResumeDomain = async (domainId: string) => {
-    setResuming(domainId);
-    try {
-      await apiClient('/api/infrastructure/domain/resume', {
-        method: 'POST',
-        body: JSON.stringify({ domainId })
-      });
-      // Refresh domains
-      const domainsData = await apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains?limit=1000');
-      setDomains(domainsData?.data || []);
-      toast.success('Domain resumed successfully!');
-    } catch (err: any) {
-      console.error('Failed to resume domain', err);
-      toast.error(`Failed to resume domain: ${err.message}`);
-    } finally {
-      setResuming(null);
-    }
+  const handleResumeDomainClick = (d: DomainSummary) => {
+    setConfirmResume({
+      type: 'domain',
+      id: d.id,
+      name: d.domain,
+      reason: d.paused_reason || 'Infrastructure health issue',
+    });
   };
 
-  const handleResumeMailbox = async (mailboxId: string) => {
-    setResuming(mailboxId);
+  const handleResumeMailboxClick = (m: MailboxSummary) => {
+    setConfirmResume({
+      type: 'mailbox',
+      id: m.id,
+      name: m.email,
+      reason: m.paused_reason || 'Health degradation detected',
+    });
+  };
+
+  const executeResume = async () => {
+    if (!confirmResume) return;
+    const { type, id } = confirmResume;
+    setResuming(id);
     try {
-      await apiClient('/api/infrastructure/mailbox/resume', {
-        method: 'POST',
-        body: JSON.stringify({ mailboxId })
-      });
-      // Refresh mailboxes
-      const mailboxesData = await apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes?limit=1000');
-      setMailboxes(mailboxesData?.data || []);
-      toast.success('Mailbox resumed successfully!');
+      if (type === 'domain') {
+        await apiClient('/api/infrastructure/domain/resume', {
+          method: 'POST',
+          body: JSON.stringify({ domainId: id })
+        });
+        const domainsData = await apiClient<{ data: DomainSummary[] }>('/api/dashboard/domains?limit=1000');
+        setDomains(domainsData?.data || []);
+        toast.success('Domain resumed and re-added to campaigns on platform');
+      } else {
+        await apiClient('/api/infrastructure/mailbox/resume', {
+          method: 'POST',
+          body: JSON.stringify({ mailboxId: id })
+        });
+        const mailboxesData = await apiClient<{ data: MailboxSummary[] }>('/api/dashboard/mailboxes?limit=1000');
+        setMailboxes(mailboxesData?.data || []);
+        toast.success('Mailbox resumed and re-added to campaigns on platform');
+      }
     } catch (err: any) {
-      console.error('Failed to resume mailbox', err);
-      toast.error(`Failed to resume mailbox: ${err.message}`);
+      console.error(`Failed to resume ${type}`, err);
+      toast.error(`Failed to resume ${type}: ${err.message}`);
     } finally {
       setResuming(null);
+      setConfirmResume(null);
     }
   };
 
@@ -332,7 +345,7 @@ export default function Overview() {
                       <div className="text-[0.9rem] text-red-800 mt-2">Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
                     </div>
                     <button
-                      onClick={() => handleResumeDomain(d.id)}
+                      onClick={() => handleResumeDomainClick(d)}
                       disabled={resuming === d.id}
                       className="premium-btn text-[0.8rem] py-2 px-4"
                       style={{
@@ -354,7 +367,7 @@ export default function Overview() {
                       <div className="text-[0.9rem] text-red-800 mt-2">Reason: {m.paused_reason || 'Health degradation detected'}</div>
                     </div>
                     <button
-                      onClick={() => handleResumeMailbox(m.id)}
+                      onClick={() => handleResumeMailboxClick(m)}
                       disabled={resuming === m.id}
                       className="premium-btn text-[0.8rem] py-2 px-4"
                       style={{
@@ -486,6 +499,39 @@ export default function Overview() {
             ))}
           </div>
         </div>
+      )}
+      {/* Resume Confirmation Modal */}
+      {confirmResume && (
+        <ConfirmActionModal
+          isOpen={true}
+          title={confirmResume.type === 'domain' ? 'Resume Domain' : 'Resume Mailbox'}
+          icon="⚠️"
+          message={
+            confirmResume.type === 'domain'
+              ? `Are you sure you want to resume domain "${confirmResume.name}"? This will re-add its mailboxes to campaigns on the email platform.`
+              : `Are you sure you want to resume mailbox "${confirmResume.name}"? This will re-add it to campaigns on the email platform.`
+          }
+          detail={confirmResume.reason}
+          consequences={
+            confirmResume.type === 'domain'
+              ? [
+                  'Domain will be marked as healthy in Drason',
+                  'All healthy mailboxes under this domain will be re-added to their campaigns on the platform',
+                  'If the underlying issue (blacklist, DNS) is not resolved, the domain will be paused again at the next assessment',
+                ]
+              : [
+                  'Mailbox will be marked as healthy in Drason',
+                  'Mailbox will be re-added to its campaigns on the platform',
+                  'If the underlying issue (bounce rate, connectivity) is not resolved, the mailbox will be paused again at the next assessment',
+                ]
+          }
+          variant="danger"
+          confirmLabel={`Resume ${confirmResume.type === 'domain' ? 'Domain' : 'Mailbox'}`}
+          cancelLabel="Cancel"
+          loading={resuming === confirmResume.id}
+          onConfirm={executeResume}
+          onCancel={() => setConfirmResume(null)}
+        />
       )}
     </div>
   );
