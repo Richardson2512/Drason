@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen } from 'lucide-react';
+import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen, Users, AlertTriangle, DollarSign, Monitor } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -49,6 +49,26 @@ const blogArticles = [
         title: 'How Spam Filters Work',
         href: '/blog/how-spam-filters-work',
         icon: Shield,
+    },
+    {
+        title: 'Infrastructure Protection for Agencies',
+        href: '/blog/cold-email-infrastructure-protection-for-agencies',
+        icon: Users,
+    },
+    {
+        title: 'Deliverability Troubleshooting',
+        href: '/blog/cold-email-deliverability-troubleshooting',
+        icon: AlertTriangle,
+    },
+    {
+        title: 'Cost of Unmonitored Infrastructure',
+        href: '/blog/cost-of-unmonitored-cold-email-infrastructure',
+        icon: DollarSign,
+    },
+    {
+        title: 'Real-Time Monitoring',
+        href: '/blog/real-time-email-infrastructure-monitoring',
+        icon: Monitor,
     },
 ];
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3 } from 'lucide-react';
+import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3, Users, AlertTriangle, DollarSign, Monitor } from 'lucide-react';
 import type { Metadata } from 'next';
 
 
@@ -46,10 +46,10 @@ const articles = [
     },
     {
         slug: 'email-deliverability-tools-compared',
-        title: 'Email deliverability tools compared: monitoring, reputation, and protection software',
-        description: 'Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software for outbound email teams.',
+        title: 'Email deliverability tools compared: testing vs protection for cold email teams',
+        description: 'Side-by-side comparison of deliverability monitoring, testing, and infrastructure protection tools. GlockApps vs MailReach vs Folderly vs Superkabe.',
         icon: BarChart3,
-        readTime: '14 min read',
+        readTime: '16 min read',
         tag: 'Comparison',
     },
     {
@@ -83,6 +83,38 @@ const articles = [
         icon: Mail,
         readTime: '11 min read',
         tag: 'Deep Dive',
+    },
+    {
+        slug: 'cold-email-infrastructure-protection-for-agencies',
+        title: 'Automated cold email infrastructure protection for lead generation agencies',
+        description: 'How lead gen agencies protect domains, mailboxes, and deliverability across Smartlead, Instantly, and Reply.io with automated infrastructure monitoring.',
+        icon: Users,
+        readTime: '10 min read',
+        tag: 'Agencies',
+    },
+    {
+        slug: 'cold-email-deliverability-troubleshooting',
+        title: 'Cold email deliverability problems: how to diagnose and fix infrastructure failures',
+        description: 'Troubleshooting guide for bounce rate spikes, blacklisted domains, spam folder routing, DNS authentication failures, and cross-platform deliverability issues.',
+        icon: AlertTriangle,
+        readTime: '12 min read',
+        tag: 'Troubleshooting',
+    },
+    {
+        slug: 'cost-of-unmonitored-cold-email-infrastructure',
+        title: 'The real cost of unmonitored cold email infrastructure',
+        description: 'How burned domains, replacement costs, and lost pipeline add up. ROI analysis of proactive deliverability protection vs reactive testing for outbound agencies.',
+        icon: DollarSign,
+        readTime: '9 min read',
+        tag: 'ROI',
+    },
+    {
+        slug: 'real-time-email-infrastructure-monitoring',
+        title: 'Real-time domain and mailbox health monitoring for cold email',
+        description: 'Why periodic inbox placement testing misses rapid reputation degradation, and how continuous real-time monitoring prevents domain burnout before it happens.',
+        icon: Monitor,
+        readTime: '10 min read',
+        tag: 'Monitoring',
     },
 ];
 
