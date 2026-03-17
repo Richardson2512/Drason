@@ -78,8 +78,38 @@ export default function ProductIndexPage() {
         }
     ];
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Superkabe Product Hub – Deliverability Protection Platform",
+        "description": "Explore the complete Superkabe deliverability protection platform, covering infrastructure monitoring, DNS healing, and domain recovery.",
+        "url": "https://www.superkabe.com/product",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.superkabe.com/image/logo-v2.png"
+            }
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": categories.flatMap((category) =>
+                category.links.map((link, index) => ({
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "url": `https://www.superkabe.com${link.href}`,
+                    "name": link.title,
+                    "description": link.desc
+                }))
+            )
+        }
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />

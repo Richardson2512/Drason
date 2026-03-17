@@ -87,8 +87,36 @@ const articles = [
 ];
 
 export default function BlogPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Superkabe Blog – Email Infrastructure Intelligence",
+        "description": "Deep technical guides on email deliverability, sender reputation, domain warming, and infrastructure protection for outbound teams.",
+        "url": "https://www.superkabe.com/blog",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Superkabe",
+            "url": "https://www.superkabe.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.superkabe.com/image/logo-v2.png"
+            }
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": articles.map((article, index) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "url": `https://www.superkabe.com/blog/${article.slug}`,
+                "name": article.title,
+                "description": article.description
+            }))
+        }
+    };
+
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />

@@ -43,25 +43,26 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
 
     const jsonLd = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": data.title,
+        "@type": "WebPage",
+        "name": data.title,
         "description": data.description,
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "url": `https://www.superkabe.com/product/${slug}`,
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",
+            "url": "https://www.superkabe.com",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://www.superkabe.com/image/logo-v2.png"
             }
         },
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": `https://www.superkabe.com/product/${slug}`
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Superkabe",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "url": "https://www.superkabe.com",
+            "featureList": data.title
         }
     };
 
