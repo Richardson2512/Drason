@@ -12,6 +12,55 @@ const SEVERITY_CONFIG = {
     info: { bg: '#EFF6FF', border: '#BFDBFE', text: '#1E40AF', accent: '#3B82F6', icon: '🔵', label: 'Info' },
 };
 
+/** Maps finding title prefixes to official external help documentation */
+function getHelpLink(title: string): { url: string; label: string } | null {
+    const t = title.toLowerCase();
+
+    // DNS authentication findings
+    if (t.startsWith('missing spf'))
+        return { url: 'https://support.google.com/a/answer/33786', label: 'Google: Set up SPF' };
+    if (t.startsWith('spf check failed'))
+        return { url: 'https://support.google.com/a/answer/33786', label: 'Google: SPF troubleshooting' };
+    if (t.startsWith('missing dkim'))
+        return { url: 'https://support.google.com/a/answer/174124', label: 'Google: Turn on DKIM signing' };
+    if (t.startsWith('missing dmarc'))
+        return { url: 'https://support.google.com/a/answer/2466580', label: 'Google: Set up DMARC' };
+    if (t.startsWith('weak dmarc'))
+        return { url: 'https://support.google.com/a/answer/2466580', label: 'Google: DMARC enforcement guide' };
+
+    // Blacklist findings
+    if (t.startsWith('blacklisted'))
+        return { url: 'https://www.spamhaus.org/lookup/', label: 'Spamhaus: Check & request delisting' };
+    if (t.startsWith('blacklist check unreachable'))
+        return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Blacklist checker' };
+
+    // DNS assessment failure
+    if (t.startsWith('dns assessment failed'))
+        return { url: 'https://mxtoolbox.com/SuperTool.aspx', label: 'MxToolbox: DNS diagnostics' };
+
+    // Mailbox connection failures
+    if (t.startsWith('connection failed'))
+        return { url: 'https://support.google.com/mail/answer/7126229', label: 'Google: IMAP/SMTP settings' };
+
+    // Bounce rate findings
+    if (t.startsWith('high bounce rate'))
+        return { url: 'https://support.google.com/a/answer/81126', label: 'Google: Sender guidelines & bounce prevention' };
+    if (t.startsWith('elevated bounce rate'))
+        return { url: 'https://support.google.com/a/answer/81126', label: 'Google: Email sender guidelines' };
+    if (t.startsWith('early bounce signal'))
+        return { url: 'https://support.google.com/a/answer/81126', label: 'Google: Email sender guidelines' };
+
+    // Campaign health findings
+    if (t.startsWith('no mailboxes'))
+        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Assign mailboxes to campaigns' };
+    if (t.startsWith('all mailboxes paused'))
+        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Resolve mailbox issues' };
+    if (t.startsWith('degraded infrastructure'))
+        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Mailbox health management' };
+
+    return null;
+}
+
 function DNSDetailPanel({ dns, domain }: { dns: any; domain: string }) {
     if (!dns) return null;
 
@@ -213,26 +262,43 @@ export default function FindingsSection({ findings, expandedDomain, onToggleDoma
                                                                         {finding.details}
                                                                     </div>
 
-                                                                    {finding.remediation && (
-                                                                        <div className="mt-2">
-                                                                            <button
-                                                                                onClick={(e) => { e.stopPropagation(); setExpandedFinding(isFindingExpanded ? null : findingKey); }}
-                                                                                className="bg-transparent border-none cursor-pointer text-xs font-bold py-1 px-0 flex items-center gap-[0.35rem]"
-                                                                                style={{ color: findingSev.accent }}
-                                                                            >
-                                                                                🔧 {isFindingExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
-                                                                            </button>
-                                                                            {isFindingExpanded && (
-                                                                                <div className="mt-[0.35rem] px-3 py-[0.6rem] rounded-lg text-[0.8rem] leading-relaxed" style={{
-                                                                                    background: `${findingSev.accent}08`,
-                                                                                    border: `1px dashed ${findingSev.border}`,
-                                                                                    color: findingSev.text,
-                                                                                }}>
-                                                                                    {finding.remediation}
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    )}
+                                                                    {finding.remediation && (() => {
+                                                                        const helpLink = getHelpLink(finding.title);
+                                                                        return (
+                                                                            <div className="mt-2">
+                                                                                <button
+                                                                                    onClick={(e) => { e.stopPropagation(); setExpandedFinding(isFindingExpanded ? null : findingKey); }}
+                                                                                    className="bg-transparent border-none cursor-pointer text-xs font-bold py-1 px-0 flex items-center gap-[0.35rem]"
+                                                                                    style={{ color: findingSev.accent }}
+                                                                                >
+                                                                                    🔧 {isFindingExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
+                                                                                </button>
+                                                                                {isFindingExpanded && (
+                                                                                    <div className="mt-[0.35rem] px-3 py-[0.6rem] rounded-lg text-[0.8rem] leading-relaxed" style={{
+                                                                                        background: `${findingSev.accent}08`,
+                                                                                        border: `1px dashed ${findingSev.border}`,
+                                                                                        color: findingSev.text,
+                                                                                    }}>
+                                                                                        {finding.remediation}
+                                                                                        {helpLink && (
+                                                                                            <div className="mt-2 pt-2" style={{ borderTop: `1px dashed ${findingSev.border}` }}>
+                                                                                                <a
+                                                                                                    href={helpLink.url}
+                                                                                                    target="_blank"
+                                                                                                    rel="noopener noreferrer"
+                                                                                                    className="inline-flex items-center gap-1 text-xs font-semibold no-underline hover:underline"
+                                                                                                    style={{ color: findingSev.accent }}
+                                                                                                    onClick={(e) => e.stopPropagation()}
+                                                                                                >
+                                                                                                    📖 {helpLink.label} ↗
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        );
+                                                                    })()}
                                                                 </div>
                                                             );
                                                         })}
@@ -293,26 +359,43 @@ export default function FindingsSection({ findings, expandedDomain, onToggleDoma
                                                 </div>
                                             )}
 
-                                            {finding.remediation && (
-                                                <div className="mt-2">
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); setExpandedFinding(isExpanded ? null : findingKey); }}
-                                                        className="bg-transparent border-none cursor-pointer text-xs font-bold py-1 px-0 flex items-center gap-[0.35rem]"
-                                                        style={{ color: sev.accent }}
-                                                    >
-                                                        🔧 {isExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
-                                                    </button>
-                                                    {isExpanded && (
-                                                        <div className="mt-[0.35rem] px-3 py-[0.6rem] rounded-lg text-[0.8rem] leading-relaxed" style={{
-                                                            background: `${sev.accent}08`,
-                                                            border: `1px dashed ${sev.border}`,
-                                                            color: sev.text,
-                                                        }}>
-                                                            {finding.remediation}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
+                                            {finding.remediation && (() => {
+                                                const helpLink = getHelpLink(finding.title);
+                                                return (
+                                                    <div className="mt-2">
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); setExpandedFinding(isExpanded ? null : findingKey); }}
+                                                            className="bg-transparent border-none cursor-pointer text-xs font-bold py-1 px-0 flex items-center gap-[0.35rem]"
+                                                            style={{ color: sev.accent }}
+                                                        >
+                                                            🔧 {isExpanded ? 'Hide fix ▲' : 'How to fix ▼'}
+                                                        </button>
+                                                        {isExpanded && (
+                                                            <div className="mt-[0.35rem] px-3 py-[0.6rem] rounded-lg text-[0.8rem] leading-relaxed" style={{
+                                                                background: `${sev.accent}08`,
+                                                                border: `1px dashed ${sev.border}`,
+                                                                color: sev.text,
+                                                            }}>
+                                                                {finding.remediation}
+                                                                {helpLink && (
+                                                                    <div className="mt-2 pt-2" style={{ borderTop: `1px dashed ${sev.border}` }}>
+                                                                        <a
+                                                                            href={helpLink.url}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="inline-flex items-center gap-1 text-xs font-semibold no-underline hover:underline"
+                                                                            style={{ color: sev.accent }}
+                                                                            onClick={(e) => e.stopPropagation()}
+                                                                        >
+                                                                            📖 {helpLink.label} ↗
+                                                                        </a>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })()}
 
                                             {expandedDomain === finding.entityId && finding.category === 'domain_dns' && (
                                                 <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${sev.border}` }}>
