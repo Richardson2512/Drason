@@ -217,27 +217,19 @@ export default function MailboxesPage() {
                                 { label: 'Paused', value: entityStats.mailboxes.paused, color: '#ef4444' },
                             ]}
                         />
-                        {/* Healing Pipeline Stats */}
-                        {entityStats.mailboxes.in_recovery > 0 && (
-                            <div className="flex items-center gap-2 mt-2">
-                                <span className="text-[0.65rem] font-semibold text-gray-400 uppercase tracking-wide">Healing:</span>
-                                {entityStats.mailboxes.quarantine > 0 && (
-                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
-                                        {entityStats.mailboxes.quarantine} quarantine
-                                    </span>
-                                )}
-                                {entityStats.mailboxes.restricted_send > 0 && (
-                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
-                                        {entityStats.mailboxes.restricted_send} restricted
-                                    </span>
-                                )}
-                                {entityStats.mailboxes.warm_recovery > 0 && (
-                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200">
-                                        {entityStats.mailboxes.warm_recovery} warming
-                                    </span>
-                                )}
-                            </div>
-                        )}
+                        {/* Healing Pipeline Stats — always visible */}
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
+                            <span className="text-[0.65rem] font-semibold text-gray-400 uppercase tracking-wide">Healing:</span>
+                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
+                                {entityStats.mailboxes.quarantine} quarantine
+                            </span>
+                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
+                                {entityStats.mailboxes.restricted_send} restricted
+                            </span>
+                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200">
+                                {entityStats.mailboxes.warm_recovery} warming
+                            </span>
+                        </div>
                     </div>
                 )}
 
@@ -332,14 +324,30 @@ export default function MailboxesPage() {
                                 background: mb.status === 'healthy' ? '#22C55E' : mb.status === 'warning' ? '#F59E0B' : '#EF4444',
                                 boxShadow: mb.status === 'healthy' ? '0 0 6px rgba(34,197,94,0.4)' : mb.status === 'paused' ? '0 0 6px rgba(239,68,68,0.4)' : 'none'
                             }} title={mb.status === 'healthy' ? 'Connected' : mb.status === 'paused' ? 'Disconnected' : mb.status} />
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="font-semibold break-all text-slate-800 text-[0.9rem]">{mb.email}</span>
                                     {mb.source_platform && <PlatformBadge platform={mb.source_platform} />}
                                 </div>
-                                <div className="text-xs text-slate-500 flex items-center gap-1">
-                                    <span className="opacity-70">Domain:</span>
-                                    <span className="font-medium">{mb.domain?.domain}</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="text-xs text-slate-500 flex items-center gap-1">
+                                        <span className="opacity-70">Domain:</span>
+                                        <span className="font-medium">{mb.domain?.domain}</span>
+                                    </div>
+                                    {mb.recovery_phase && mb.recovery_phase !== 'healthy' && (
+                                        <span className="text-[0.6rem] font-bold uppercase px-1.5 py-0.5 rounded-full" style={{
+                                            background: mb.recovery_phase === 'paused' ? '#FEE2E2' :
+                                                mb.recovery_phase === 'quarantine' ? '#F3E8FF' :
+                                                    mb.recovery_phase === 'restricted_send' ? '#FFF7ED' :
+                                                        mb.recovery_phase === 'warm_recovery' ? '#ECFEFF' : '#F3F4F6',
+                                            color: mb.recovery_phase === 'paused' ? '#DC2626' :
+                                                mb.recovery_phase === 'quarantine' ? '#7C3AED' :
+                                                    mb.recovery_phase === 'restricted_send' ? '#EA580C' :
+                                                        mb.recovery_phase === 'warm_recovery' ? '#0891B2' : '#6B7280',
+                                        }}>
+                                            {mb.recovery_phase.replace('_', ' ')}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -466,9 +474,9 @@ export default function MailboxesPage() {
                         })()}
 
                         <div className="grid grid-cols-2 gap-6 mb-8">
-                            <div className="premium-card">
+                            <div className="premium-card overflow-hidden">
                                 <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">Associated Domain</h3>
-                                <div className="text-2xl font-bold text-slate-800 mb-2">{selectedMailbox.domain?.domain}</div>
+                                <div className="text-lg font-bold text-slate-800 mb-2 truncate" title={selectedMailbox.domain?.domain}>{selectedMailbox.domain?.domain}</div>
                                 <div className="flex gap-2 flex-wrap">
                                     {/* Domain status badge */}
                                     <div className="inline-flex items-center gap-2 py-1 px-3 rounded-full text-[0.8rem] font-semibold" style={{
