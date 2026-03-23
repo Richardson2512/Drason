@@ -26,6 +26,10 @@ export function getStatusColors(status: string): StatusStyle {
         completed: { bg: '#FFF7ED', color: '#C2410C' },
         done: { bg: '#FFF7ED', color: '#C2410C' },
 
+        // Validation states
+        invalid: { bg: '#F3F4F6', color: '#6B7280' },
+        failed: { bg: '#FEE2E2', color: '#991B1B' },
+
         // Inactive/Neutral states - Gray
         inactive: { bg: '#F3F4F6', color: '#6B7280' },
         idle: { bg: '#F3F4F6', color: '#6B7280' },

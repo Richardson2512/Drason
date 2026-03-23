@@ -7,6 +7,7 @@ interface LeadStats {
     held: number;
     paused: number;
     bounced: number;
+    invalid: number;
 }
 
 interface CampaignStats {

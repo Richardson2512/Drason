@@ -27,7 +27,7 @@ interface LeadListPanelProps {
     meta: PaginationMeta;
     onPageChange: (page: number) => void;
     onLimitChange: (limit: number) => void;
-    entityStats?: { total: number; active: number; held: number; paused: number; bounced: number } | null;
+    entityStats?: { total: number; active: number; held: number; paused: number; bounced: number; invalid: number } | null;
 }
 
 export default function LeadListPanel({
@@ -67,6 +67,7 @@ export default function LeadListPanel({
                                 { label: 'Held', value: entityStats.held, color: '#3b82f6' },
                                 { label: 'Paused', value: entityStats.paused, color: '#f59e0b' },
                                 { label: 'Bounced', value: entityStats.bounced, color: '#ef4444' },
+                                { label: 'Invalid', value: entityStats.invalid, color: '#6b7280' },
                             ]}
                         />
                     </div>
@@ -75,7 +76,7 @@ export default function LeadListPanel({
                 {/* Status Filter Tabs */}
                 <div className="shrink-0 mb-4">
                     <div className="flex bg-gray-100 p-1 rounded-xl">
-                        {['all', 'held', 'active', 'paused', 'bounced'].map(t => (
+                        {['all', 'held', 'active', 'paused', 'bounced', 'invalid'].map(t => (
                             <button
                                 key={t}
                                 onClick={() => onTabChange(t)}

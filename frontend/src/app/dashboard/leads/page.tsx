@@ -11,6 +11,7 @@ import LeadSortFilterModal from '@/components/dashboard/leads/LeadSortFilterModa
 import LeadBulkActionBar from '@/components/dashboard/leads/LeadBulkActionBar';
 import LeadListPanel from '@/components/dashboard/leads/LeadListPanel';
 import LeadDetailPanel from '@/components/dashboard/leads/LeadDetailPanel';
+import ValidationActivityPanel from '@/components/dashboard/leads/ValidationActivityPanel';
 import { useEntityStats } from '@/hooks/useEntityStats';
 
 function LeadsPageContent() {
@@ -46,6 +47,7 @@ function LeadsPageContent() {
 
     // Search state
     const [searchQuery, setSearchQuery] = useState('');
+    const [validationExpanded, setValidationExpanded] = useState(false);
 
     // Read URL parameters on mount
     useEffect(() => {
@@ -207,7 +209,17 @@ function LeadsPageContent() {
     };
 
     return (
-        <div className="flex h-full gap-4">
+        <div className="flex flex-col h-full gap-4">
+            {/* Validation Activity Panel */}
+            <div className="shrink-0">
+                <ValidationActivityPanel
+                    isExpanded={validationExpanded}
+                    onToggle={() => setValidationExpanded(!validationExpanded)}
+                />
+            </div>
+
+            {/* Lead List + Detail */}
+            <div className="flex flex-1 gap-4 min-h-0">
             {/* Left: Lead List */}
             <LeadListPanel
                 leads={leads}
@@ -256,6 +268,7 @@ function LeadsPageContent() {
                 leads={leads}
                 onClearSelection={() => setSelectedLeadIds(new Set())}
             />
+            </div>
         </div>
     );
 }

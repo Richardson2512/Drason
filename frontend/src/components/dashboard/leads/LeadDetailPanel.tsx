@@ -31,6 +31,12 @@ function formatRelativeTime(dateString: string | null) {
 }
 
 function getSystemNotice(lead: Lead) {
+    if (lead.validation_status && lead.validation_status === 'invalid') {
+        return { type: 'danger', title: 'Invalid Email', msg: lead.is_disposable ? 'This lead was blocked because the email address uses a disposable/temporary domain.' : 'This lead was blocked because email validation determined the address is invalid (no MX records or failed verification). It will not be routed to any campaign.' };
+    }
+    if (lead.status === 'blocked' || lead.status === 'failed') {
+        return { type: 'danger', title: 'Blocked', msg: 'This lead has been blocked by the health gate or email validation. It will not be routed to any campaign.' };
+    }
     if (lead.status === 'paused') {
         return { type: 'danger', title: 'System Pause', msg: 'Lead processing has been halted. This typically occurs when the associated mailbox or domain triggers a "Warning" or "Paused" health state due to bounce rates exceeding 2%.' };
     }
@@ -240,6 +246,60 @@ export default function LeadDetailPanel({
                                 ))}
                             </div>
                         </div>
+                    )}
+
+                    {/* Email Validation Card — only shown for validated leads */}
+                    {lead.validation_status && (
+                    <div className="premium-card mb-8">
+                        <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">
+                            Email Validation
+                        </h3>
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-semibold text-sm" style={{
+                                background: lead.validation_status === 'valid' ? '#DCFCE7' :
+                                    lead.validation_status === 'risky' ? '#FEF3C7' :
+                                    lead.validation_status === 'invalid' ? '#FEE2E2' :
+                                    lead.validation_status === 'unknown' ? '#FFF7ED' : '#F3F4F6',
+                                color: lead.validation_status === 'valid' ? '#166534' :
+                                    lead.validation_status === 'risky' ? '#92400E' :
+                                    lead.validation_status === 'invalid' ? '#991B1B' :
+                                    lead.validation_status === 'unknown' ? '#C2410C' : '#6B7280',
+                            }}>
+                                {(lead.validation_status || 'pending').toUpperCase()}
+                            </span>
+                            {lead.validation_score !== undefined && lead.validation_score >= 0 && (
+                                <span className="text-sm font-bold text-gray-700">
+                                    {lead.validation_score}/100
+                                </span>
+                            )}
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div className="flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg">
+                                <span className="text-gray-500">Catch-All</span>
+                                <span className={`font-semibold ${lead.is_catch_all ? 'text-amber-600' : 'text-green-600'}`}>
+                                    {lead.is_catch_all ? 'Yes' : 'No'}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg">
+                                <span className="text-gray-500">Disposable</span>
+                                <span className={`font-semibold ${lead.is_disposable ? 'text-red-600' : 'text-green-600'}`}>
+                                    {lead.is_disposable ? 'Yes' : 'No'}
+                                </span>
+                            </div>
+                            {lead.validation_source && (
+                                <div className="flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg">
+                                    <span className="text-gray-500">Source</span>
+                                    <span className="font-semibold text-gray-700 capitalize">{lead.validation_source}</span>
+                                </div>
+                            )}
+                            {lead.validated_at && (
+                                <div className="flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg">
+                                    <span className="text-gray-500">Validated</span>
+                                    <span className="font-semibold text-gray-700">{formatRelativeTime(lead.validated_at)}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     )}
 
                     {/* Score Breakdown Section */}

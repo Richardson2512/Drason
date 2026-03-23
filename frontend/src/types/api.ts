@@ -151,6 +151,7 @@ export interface Lead {
   source_platform?: string;
   lead_score: number;
   health_state?: string;
+  health_classification?: string;
   assigned_campaign_id?: string;
 
   // Engagement counters
@@ -160,6 +161,14 @@ export interface Lead {
   emails_replied?: number;
 
   last_activity_at?: string;
+
+  // Email Validation
+  validation_status?: string;     // pending, valid, risky, invalid, unknown
+  validation_score?: number;      // 0-100
+  validation_source?: string;     // internal, millionverifier
+  validated_at?: string;
+  is_catch_all?: boolean;
+  is_disposable?: boolean;
 
   // Nested relations
   campaign?: Pick<Campaign, 'id' | 'name' | 'status'>;
