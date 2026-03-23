@@ -34,7 +34,7 @@ export default function MultiPlatformSyncPage() {
                             You are not restricted to one data source. Superkabe allows concurrent parallel integrations between Smartlead, EmailBison, and Clay.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe runs independent <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">sync workers</a> every <strong>20 minutes</strong> for each platform. Because they run in isolation via distinct queue processors, if one platform API goes down, it will not affect your other warm-up health checks and vice-versa. Data is aggregated seamlessly back into the unified Drason database schemas.
+                            Superkabe runs independent <a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">sync workers</a> every <strong>20 minutes</strong> for each platform. Because they run in isolation via distinct queue processors, if one platform API goes down, it will not affect your other warm-up health checks and vice-versa. Data is aggregated seamlessly back into the unified Superkabe database schemas.
                         </p>
                     </div>
                 </div>

@@ -14,6 +14,8 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
+import { useEntityStats } from '@/hooks/useEntityStats';
+import EntityStatsBar from '@/components/ui/EntityStatsBar';
 
 export default function CampaignsPage() {
     const router = useRouter();
@@ -24,6 +26,7 @@ export default function CampaignsPage() {
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
 
     const { selectedIds: selectedCampaignIds, toggleSelection: toggleCampaignSelection, toggleSelectAll, isAllSelected } = usePagination();
+    const entityStats = useEntityStats();
 
     // Filter states
     const [searchQuery, setSearchQuery] = useState('');
@@ -203,6 +206,20 @@ export default function CampaignsPage() {
             <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '400px' }}>
                 <div className="mb-6 shrink-0">
                     <h2 className="text-2xl font-bold text-gray-900 mb-3">Campaigns</h2>
+
+                    {/* Stats Breakdown */}
+                    {entityStats?.campaigns && (
+                        <div className="mb-3">
+                            <EntityStatsBar
+                                total={entityStats.campaigns.total}
+                                stats={[
+                                    { label: 'Active', value: entityStats.campaigns.active, color: '#22c55e' },
+                                    { label: 'Paused', value: entityStats.campaigns.paused, color: '#ef4444' },
+                                    { label: 'Completed', value: entityStats.campaigns.completed, color: '#6b7280' },
+                                ]}
+                            />
+                        </div>
+                    )}
 
                     {/* Search Input */}
                     <input
@@ -583,7 +600,7 @@ export default function CampaignsPage() {
                                 'Campaign will be reactivated on the email platform',
                                 'Emails will start sending again immediately',
                                 selectedCampaign.paused_by === 'system'
-                                    ? 'This campaign was paused by Drason due to health issues — the underlying issue may not be resolved'
+                                    ? 'This campaign was paused by Superkabe due to health issues — the underlying issue may not be resolved'
                                     : 'Leads in sequence will continue where they left off',
                             ]
                     }

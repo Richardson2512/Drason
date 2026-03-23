@@ -11,6 +11,7 @@ import LeadSortFilterModal from '@/components/dashboard/leads/LeadSortFilterModa
 import LeadBulkActionBar from '@/components/dashboard/leads/LeadBulkActionBar';
 import LeadListPanel from '@/components/dashboard/leads/LeadListPanel';
 import LeadDetailPanel from '@/components/dashboard/leads/LeadDetailPanel';
+import { useEntityStats } from '@/hooks/useEntityStats';
 
 function LeadsPageContent() {
     const searchParams = useSearchParams();
@@ -19,6 +20,7 @@ function LeadsPageContent() {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [leadTab, setLeadTab] = useState('all');
     const { campaigns } = useCampaignList();
+    const entityStats = useEntityStats();
     const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string[]>([]);
     const [leadCampaigns, setLeadCampaigns] = useState<CampaignSummary[]>([]);
 
@@ -227,6 +229,7 @@ function LeadsPageContent() {
                 meta={meta}
                 onPageChange={handlePageChange}
                 onLimitChange={handleLimitChange}
+                entityStats={entityStats?.leads}
             />
 
             {/* Right: Details */}

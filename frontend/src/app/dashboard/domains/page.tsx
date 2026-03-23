@@ -10,6 +10,8 @@ import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import { useEntityStats } from '@/hooks/useEntityStats';
+import EntityStatsBar from '@/components/ui/EntityStatsBar';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<Domain[]>([]);
@@ -19,6 +21,7 @@ export default function DomainsPage() {
     // Filters
     const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const entityStats = useEntityStats();
 
     // Sorting & Filtering (delegated to useSortFilterModal hook)
     const sortFilter = useSortFilterModal({
@@ -115,7 +118,21 @@ export default function DomainsPage() {
         <div className="flex h-full gap-8">
             {/* Left: List */}
             <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '420px' }}>
-                <h2 className="text-2xl font-bold mb-4 shrink-0 text-gray-900">Domains</h2>
+                <h2 className="text-2xl font-bold mb-3 shrink-0 text-gray-900">Domains</h2>
+
+                {/* Stats Breakdown */}
+                {entityStats?.domains && (
+                    <div className="mb-4">
+                        <EntityStatsBar
+                            total={entityStats.domains.total}
+                            stats={[
+                                { label: 'Healthy', value: entityStats.domains.healthy, color: '#22c55e' },
+                                { label: 'Warning', value: entityStats.domains.warning, color: '#f59e0b' },
+                                { label: 'Paused', value: entityStats.domains.paused, color: '#ef4444' },
+                            ]}
+                        />
+                    </div>
+                )}
 
                 {/* Filters */}
                 <div className="mb-4 flex flex-col gap-3">

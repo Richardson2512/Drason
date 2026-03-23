@@ -328,66 +328,92 @@ export default function Overview() {
         </a>
       </div>
 
-      {/* 1. Critical Alerts Section */}
+      {/* 1. Attention Needed Section */}
       {(pausedDomains.length > 0 || warningDomains.length > 0 || pausedMailboxes.length > 0) && (
-        <div className="mb-8">
-          <h2 className="text-xl text-red-500 mb-4 font-bold pl-2">
-            ⚠️ Critical Attention Needed
-          </h2>
-          <div className="max-h-60 overflow-y-auto rounded-xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {pausedDomains.map(d => (
-                <div key={d.id} className="premium-card border-l-[6px] border-l-red-500 bg-red-50">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="font-extrabold text-red-700 text-sm uppercase mb-1">Domain Paused</div>
-                      <div className="text-xl font-semibold text-red-900">{d.domain}</div>
-                      <div className="text-[0.9rem] text-red-800 mt-2">Reason: {d.paused_reason || 'Infrastructure health issue'}</div>
-                    </div>
-                    <button
-                      onClick={() => handleResumeDomainClick(d)}
-                      disabled={resuming === d.id}
-                      className="premium-btn text-[0.8rem] py-2 px-4"
-                      style={{
-                        background: resuming === d.id ? '#9CA3AF' : '#EF4444',
-                        cursor: resuming === d.id ? 'not-allowed' : 'pointer'
-                      }}
-                    >
-                      {resuming === d.id ? 'Resuming...' : 'Fix Now'}
-                    </button>
-                  </div>
-                </div>
-              ))}
-              {pausedMailboxes.map(m => (
-                <div key={m.id} className="premium-card border-l-[6px] border-l-red-500 bg-red-50">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="font-extrabold text-red-700 text-sm uppercase mb-1">Mailbox Paused</div>
-                      <div className="text-xl font-semibold text-red-900">{m.email}</div>
-                      <div className="text-[0.9rem] text-red-800 mt-2">Reason: {m.paused_reason || 'Health degradation detected'}</div>
-                    </div>
-                    <button
-                      onClick={() => handleResumeMailboxClick(m)}
-                      disabled={resuming === m.id}
-                      className="premium-btn text-[0.8rem] py-2 px-4"
-                      style={{
-                        background: resuming === m.id ? '#9CA3AF' : '#EF4444',
-                        cursor: resuming === m.id ? 'not-allowed' : 'pointer'
-                      }}
-                    >
-                      {resuming === m.id ? 'Resuming...' : 'Fix Now'}
-                    </button>
-                  </div>
-                </div>
-              ))}
-              {warningDomains.map(d => (
-                <div key={d.id} className="premium-card border-l-[6px] border-l-yellow-500 bg-amber-50">
-                  <div className="font-extrabold text-amber-700 text-sm uppercase mb-1">Domain Warning</div>
-                  <div className="text-xl font-semibold text-amber-900">{d.domain}</div>
-                  <div className="text-[0.9rem] text-amber-800 mt-2">High bounce rate detected</div>
-                </div>
-              ))}
+        <div className="mb-8 bg-white border border-gray-200 rounded-2xl overflow-hidden">
+          {/* Header bar with count summary */}
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <h2 className="text-base font-bold text-gray-900 m-0">Attention Needed</h2>
             </div>
+            <div className="flex items-center gap-2">
+              {pausedDomains.length > 0 && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
+                  {pausedDomains.length} domain{pausedDomains.length > 1 ? 's' : ''} paused
+                </span>
+              )}
+              {pausedMailboxes.length > 0 && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
+                  {pausedMailboxes.length} mailbox{pausedMailboxes.length > 1 ? 'es' : ''} paused
+                </span>
+              )}
+              {warningDomains.length > 0 && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
+                  {warningDomains.length} warning{warningDomains.length > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Items list */}
+          <div className="divide-y divide-gray-50 max-h-[320px] overflow-y-auto">
+            {pausedDomains.map(d => (
+              <div key={d.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
+                  <span className="text-red-500 text-sm font-bold">D</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-gray-900 truncate">{d.domain}</div>
+                  <div className="text-xs text-gray-500 truncate">{d.paused_reason || 'Infrastructure health issue'}</div>
+                </div>
+                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-red-500 shrink-0">Paused</span>
+                <button
+                  onClick={() => handleResumeDomainClick(d)}
+                  disabled={resuming === d.id}
+                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {resuming === d.id ? 'Resuming...' : 'Resume'}
+                </button>
+              </div>
+            ))}
+            {pausedMailboxes.map(m => (
+              <div key={m.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
+                  <span className="text-red-500 text-sm font-bold">M</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-gray-900 truncate">{m.email}</div>
+                  <div className="text-xs text-gray-500 truncate">{m.paused_reason || 'Health degradation detected'}</div>
+                </div>
+                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-red-500 shrink-0">Paused</span>
+                <button
+                  onClick={() => handleResumeMailboxClick(m)}
+                  disabled={resuming === m.id}
+                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {resuming === m.id ? 'Resuming...' : 'Resume'}
+                </button>
+              </div>
+            ))}
+            {warningDomains.map(d => (
+              <div key={d.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
+                  <span className="text-amber-500 text-sm font-bold">D</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-gray-900 truncate">{d.domain}</div>
+                  <div className="text-xs text-gray-500 truncate">High bounce rate detected</div>
+                </div>
+                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-amber-500 shrink-0">Warning</span>
+                <a
+                  href="/dashboard/domains"
+                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 no-underline cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all"
+                >
+                  View
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -515,12 +541,12 @@ export default function Overview() {
           consequences={
             confirmResume.type === 'domain'
               ? [
-                  'Domain will be marked as healthy in Drason',
+                  'Domain will be marked as healthy in Superkabe',
                   'All healthy mailboxes under this domain will be re-added to their campaigns on the platform',
                   'If the underlying issue (blacklist, DNS) is not resolved, the domain will be paused again at the next assessment',
                 ]
               : [
-                  'Mailbox will be marked as healthy in Drason',
+                  'Mailbox will be marked as healthy in Superkabe',
                   'Mailbox will be re-added to its campaigns on the platform',
                   'If the underlying issue (bounce rate, connectivity) is not resolved, the mailbox will be paused again at the next assessment',
                 ]

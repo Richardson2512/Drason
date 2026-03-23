@@ -5,6 +5,7 @@ import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import { getStatusColors } from '@/lib/statusColors';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import EntityStatsBar from '@/components/ui/EntityStatsBar';
 
 interface LeadListPanelProps {
     leads: Lead[];
@@ -26,6 +27,7 @@ interface LeadListPanelProps {
     meta: PaginationMeta;
     onPageChange: (page: number) => void;
     onLimitChange: (limit: number) => void;
+    entityStats?: { total: number; active: number; held: number; paused: number; bounced: number } | null;
 }
 
 export default function LeadListPanel({
@@ -48,11 +50,27 @@ export default function LeadListPanel({
     meta,
     onPageChange,
     onLimitChange,
+    entityStats,
 }: LeadListPanelProps) {
     return (
         <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '420px' }}>
             <div className="mb-6 shrink-0">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Leads</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">Leads</h2>
+
+                {/* Stats Breakdown */}
+                {entityStats && (
+                    <div className="mb-4">
+                        <EntityStatsBar
+                            total={entityStats.total}
+                            stats={[
+                                { label: 'Active', value: entityStats.active, color: '#22c55e' },
+                                { label: 'Held', value: entityStats.held, color: '#3b82f6' },
+                                { label: 'Paused', value: entityStats.paused, color: '#f59e0b' },
+                                { label: 'Bounced', value: entityStats.bounced, color: '#ef4444' },
+                            ]}
+                        />
+                    </div>
+                )}
 
                 {/* Status Filter Tabs */}
                 <div className="shrink-0 mb-4">

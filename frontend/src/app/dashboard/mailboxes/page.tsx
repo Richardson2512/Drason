@@ -14,6 +14,8 @@ import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useCampaignList } from '@/hooks/useCampaignList';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import { useEntityStats } from '@/hooks/useEntityStats';
+import EntityStatsBar from '@/components/ui/EntityStatsBar';
 
 // Map raw connection errors to user-friendly resolution guidance (platform-aware)
 function getConnectionResolution(error: string | null | undefined, platform?: string): { cause: string; resolution: string } {
@@ -64,6 +66,7 @@ export default function MailboxesPage() {
 
     // Filters
     const { campaigns } = useCampaignList();
+    const entityStats = useEntityStats();
     const [domains, setDomains] = useState<Domain[]>([]);
     const [selectedCampaign, setSelectedCampaign] = useState<string[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
@@ -201,7 +204,21 @@ export default function MailboxesPage() {
         <div className="flex h-full gap-8">
             {/* Left: List */}
             <div className="premium-card w-[420px] flex flex-col p-6 h-full overflow-hidden rounded-3xl">
-                <h2 className="text-2xl font-bold mb-4 shrink-0 text-gray-900">Mailboxes</h2>
+                <h2 className="text-2xl font-bold mb-3 shrink-0 text-gray-900">Mailboxes</h2>
+
+                {/* Stats Breakdown */}
+                {entityStats?.mailboxes && (
+                    <div className="mb-4">
+                        <EntityStatsBar
+                            total={entityStats.mailboxes.total}
+                            stats={[
+                                { label: 'Healthy', value: entityStats.mailboxes.healthy, color: '#22c55e' },
+                                { label: 'Warning', value: entityStats.mailboxes.warning, color: '#f59e0b' },
+                                { label: 'Paused', value: entityStats.mailboxes.paused, color: '#ef4444' },
+                            ]}
+                        />
+                    </div>
+                )}
 
                 {/* Filters */}
                 <div className="mb-4 flex flex-col gap-3">
@@ -324,7 +341,7 @@ export default function MailboxesPage() {
                             <div className="text-gray-500 text-[1.1rem]">Mailbox Health & Usage</div>
                         </div>
 
-                        {/* Pause Reason Banner — shown when Drason's automation paused the mailbox */}
+                        {/* Pause Reason Banner — shown when Superkabe's automation paused the mailbox */}
                         {selectedMailbox.status === 'paused' && selectedMailbox.paused_reason && (
                             <div className="mb-8 rounded-2xl border border-yellow-300" style={{
                                 padding: '1.25rem 1.5rem',
@@ -332,7 +349,7 @@ export default function MailboxesPage() {
                             }}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <span className="text-2xl">⏸</span>
-                                    <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#92400E' }}>Paused by Drason</h3>
+                                    <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#92400E' }}>Paused by Superkabe</h3>
                                 </div>
                                 <div className="grid gap-2 text-[0.9rem]">
                                     <div className="leading-normal" style={{ color: '#78350F' }}>{selectedMailbox.paused_reason}</div>
@@ -383,7 +400,7 @@ export default function MailboxesPage() {
                                         <div className="p-3 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.6)' }}>
                                             <div className="font-semibold mb-2" style={{ color: '#166534' }}>✅ Quick Fix</div>
                                             <div className="leading-normal mb-3" style={{ color: '#14532D' }}>
-                                                Reconnect this email account in {getPlatformLabel(selectedMailbox.source_platform)}, then trigger a Manual Sync in Drason.
+                                                Reconnect this email account in {getPlatformLabel(selectedMailbox.source_platform)}, then trigger a Manual Sync in Superkabe.
                                             </div>
                                             <a
                                                 href={`/docs/help/connection-errors${selectedMailbox.connection_error?.includes('invalid_grant') || selectedMailbox.connection_error?.includes('refresh') ? '#google-oauth' :

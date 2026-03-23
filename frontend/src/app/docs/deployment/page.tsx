@@ -20,7 +20,7 @@ export default function DeploymentPage() {
                 Deployment Checklist
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Production deployment steps for Drason billing integration and infrastructure
+                Production deployment steps for Superkabe billing integration and infrastructure
             </p>
 
             <div className="bg-green-50 border-2 border-green-300 rounded-2xl p-6 mb-12">
