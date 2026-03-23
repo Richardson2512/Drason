@@ -84,6 +84,7 @@ export interface Mailbox {
   total_sent_count?: number;
   window_sent_count?: number;
   hard_bounce_count?: number;
+  window_bounce_count?: number;
   delivery_failure_count?: number;
 
   // Lifetime engagement

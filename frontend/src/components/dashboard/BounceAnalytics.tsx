@@ -7,6 +7,12 @@ interface BounceAnalyticsProps {
     domainId?: string;
     campaignId?: string;
     showFilters?: boolean;
+    /** Fallback stats from the mailbox model when BounceEvent records are sparse */
+    mailboxStats?: {
+        hard_bounce_count?: number;
+        total_sent_count?: number;
+        window_bounce_count?: number;
+    };
 }
 
 interface BounceEvent {
@@ -40,7 +46,7 @@ interface BounceReason {
     count: number;
 }
 
-export default function BounceAnalytics({ mailboxId, domainId, campaignId, showFilters = false }: BounceAnalyticsProps) {
+export default function BounceAnalytics({ mailboxId, domainId, campaignId, showFilters = false, mailboxStats }: BounceAnalyticsProps) {
     const [loading, setLoading] = useState(true);
     const [summary, setSummary] = useState<Record<string, any> | null>(null);
     const [mailboxBreakdown, setMailboxBreakdown] = useState<MailboxBreakdown[]>([]);
@@ -102,6 +108,36 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     }
 
     if (!summary) {
+        // Show mailbox-level stats as fallback when BounceEvent records don't exist
+        if (mailboxStats && (mailboxStats.hard_bounce_count || 0) > 0) {
+            const totalSent = mailboxStats.total_sent_count || 1;
+            const bounceRate = ((mailboxStats.hard_bounce_count || 0) / totalSent * 100).toFixed(2);
+            return (
+                <div className="premium-card">
+                    <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Analytics</h2>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="p-4 bg-red-50 rounded-xl border border-red-100">
+                            <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Hard Bounces</div>
+                            <div className="text-2xl font-bold text-red-600">{(mailboxStats.hard_bounce_count || 0).toLocaleString()}</div>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Bounce Rate</div>
+                            <div className="text-2xl font-bold" style={{ color: parseFloat(bounceRate) >= 3 ? '#DC2626' : parseFloat(bounceRate) >= 2 ? '#D97706' : '#6B7280' }}>
+                                {bounceRate}%
+                            </div>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Window Bounces</div>
+                            <div className="text-2xl font-bold text-gray-900">{mailboxStats.window_bounce_count || 0}</div>
+                        </div>
+                    </div>
+                    <div className="mt-4 text-xs text-gray-400 text-center">
+                        Detailed bounce event breakdown will appear after the next sync
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="premium-card">
                 <h2 className="text-xl font-bold mb-6 text-gray-900">

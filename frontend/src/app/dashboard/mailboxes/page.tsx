@@ -762,7 +762,14 @@ export default function MailboxesPage() {
 
                         {/* Bounce Event Details */}
                         <div className="mb-8">
-                            <BounceAnalytics mailboxId={selectedMailbox.id} />
+                            <BounceAnalytics
+                                mailboxId={selectedMailbox.id}
+                                mailboxStats={{
+                                    hard_bounce_count: selectedMailbox.hard_bounce_count,
+                                    total_sent_count: selectedMailbox.total_sent_count,
+                                    window_bounce_count: selectedMailbox.window_bounce_count,
+                                }}
+                            />
                         </div>
 
                         {/* Infrastructure Health Issues */}
