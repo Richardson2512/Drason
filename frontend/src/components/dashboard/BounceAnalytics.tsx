@@ -68,12 +68,15 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                 params.append('limit', '50');
 
                 const data = await apiClient<Record<string, any>>(`/api/analytics/bounces?${params}`);
-                if (data?.data) {
-                    setSummary(data.data.summary);
-                    setMailboxBreakdown(data.data.mailbox_breakdown || []);
-                    setCampaignBreakdown(data.data.campaign_breakdown || []);
-                    setBounceReasons(data.data.bounce_reasons || []);
-                    setRecentBounces(data.data.recent_bounces || []);
+                // apiClient unwraps { success, data } → data is already the inner object
+                // But handle both cases for safety
+                const result = data?.data || data;
+                if (result?.summary) {
+                    setSummary(result.summary);
+                    setMailboxBreakdown(result.mailbox_breakdown || []);
+                    setCampaignBreakdown(result.campaign_breakdown || []);
+                    setBounceReasons(result.bounce_reasons || []);
+                    setRecentBounces(result.recent_bounces || []);
                 }
             } catch (err) {
                 console.error('Failed to fetch bounce analytics:', err);

@@ -761,7 +761,9 @@ export default function MailboxesPage() {
                         })()}
 
                         {/* Bounce Event Details */}
-                        <BounceAnalytics mailboxId={selectedMailbox.id} />
+                        <div className="mb-8">
+                            <BounceAnalytics mailboxId={selectedMailbox.id} />
+                        </div>
 
                         {/* Infrastructure Health Issues */}
                         <FindingsCard entityType="mailbox" entityId={selectedMailbox.id} />
