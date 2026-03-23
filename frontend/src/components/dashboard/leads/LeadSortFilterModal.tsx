@@ -1,4 +1,5 @@
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 interface LeadSortFilterModalProps {
     sortFilter: ReturnType<typeof useSortFilterModal>;
@@ -103,20 +104,19 @@ export default function LeadSortFilterModal({ sortFilter, onApply, onClear }: Le
 
                     {/* Platform Filter */}
                     <div className="mb-6">
-                        <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Platform
                         </label>
-                        <select
-                            id="modal-platform"
-                            value={sortFilter.temp.platform}
-                            onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                        >
-                            <option value="all">All Platforms</option>
-                            <option value="smartlead">Smartlead</option>
-                            <option value="instantly">Instantly</option>
-                            <option value="emailbison">EmailBison</option>
-                        </select>
+                        <MultiSelectDropdown
+                            options={[
+                                { value: 'smartlead', label: 'Smartlead' },
+                                { value: 'instantly', label: 'Instantly' },
+                                { value: 'emailbison', label: 'EmailBison' },
+                            ]}
+                            selected={sortFilter.temp.platform === 'all' ? [] : sortFilter.temp.platform.split(',')}
+                            onChange={(vals) => sortFilter.setTempValue('platform', vals.length === 0 ? 'all' : vals.join(','))}
+                            placeholder="All Platforms"
+                        />
                     </div>
                 </div>
 

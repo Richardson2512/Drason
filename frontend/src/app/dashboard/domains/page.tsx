@@ -9,6 +9,7 @@ import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<Domain[]>([]);
@@ -16,7 +17,7 @@ export default function DomainsPage() {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
 
     // Filters
-    const [selectedStatus, setSelectedStatus] = useState<string>('all');
+    const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Sorting & Filtering (delegated to useSortFilterModal hook)
@@ -42,7 +43,7 @@ export default function DomainsPage() {
             });
 
             // Add filters
-            if (selectedStatus !== 'all') params.append('status', selectedStatus);
+            if (selectedStatus.length > 0) params.append('status', selectedStatus.join(','));
             if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
             // Add sort & filter parameters
@@ -50,7 +51,7 @@ export default function DomainsPage() {
             if (maxEngagement) params.append('maxEngagement', maxEngagement);
             if (minBounceRate) params.append('minBounceRate', minBounceRate);
             if (maxBounceRate) params.append('maxBounceRate', maxBounceRate);
-            if (platform !== 'all') params.append('platform', platform);
+            if (platform && platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Domain>>(`/api/dashboard/domains?${params}`);
             if (data?.data) {
@@ -132,20 +133,19 @@ export default function DomainsPage() {
                     />
 
                     {/* Status Filter */}
-                    <select
-                        value={selectedStatus}
-                        onChange={(e) => {
-                            setSelectedStatus(e.target.value);
+                    <MultiSelectDropdown
+                        options={[
+                            { value: 'healthy', label: 'Healthy' },
+                            { value: 'warning', label: 'Warning' },
+                            { value: 'paused', label: 'Paused' },
+                        ]}
+                        selected={selectedStatus}
+                        onChange={(vals) => {
+                            setSelectedStatus(vals);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        className="w-full rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
-                        style={{ padding: '0.625rem 1rem' }}
-                    >
-                        <option value="all">All Status</option>
-                        <option value="healthy">Healthy</option>
-                        <option value="warning">Warning</option>
-                        <option value="paused">Paused</option>
-                    </select>
+                        placeholder="All Status"
+                    />
 
                     {/* Sort & Filter Button */}
                     <button
@@ -339,21 +339,19 @@ export default function DomainsPage() {
 
                             {/* Platform Filter */}
                             <div className="mb-6">
-                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>
-                                <select
-                                    id="modal-platform"
-                                    value={sortFilter.temp.platform}
-                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
-                                    className="w-full rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                    style={{ padding: '0.75rem 1rem' }}
-                                >
-                                    <option value="all">All Platforms</option>
-                                    <option value="smartlead">Smartlead</option>
-                                    <option value="instantly">Instantly</option>
-                                    <option value="emailbison">EmailBison</option>
-                                </select>
+                                <MultiSelectDropdown
+                                    options={[
+                                        { value: 'smartlead', label: 'Smartlead' },
+                                        { value: 'instantly', label: 'Instantly' },
+                                        { value: 'emailbison', label: 'EmailBison' },
+                                    ]}
+                                    selected={sortFilter.temp.platform === 'all' ? [] : sortFilter.temp.platform.split(',')}
+                                    onChange={(vals) => sortFilter.setTempValue('platform', vals.length === 0 ? 'all' : vals.join(','))}
+                                    placeholder="All Platforms"
+                                />
                             </div>
                         </div>
 

@@ -346,16 +346,24 @@ body {
    UTILITIES
    ============================================================================ */
 
-/* Utility to hide scrollbar but allow scrolling */
+/* Hide scrollbar globally on all elements while preserving scroll */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Keep the utility class for backward compatibility */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
 .scrollbar-hide {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
 /* Logo Ticker Animation */

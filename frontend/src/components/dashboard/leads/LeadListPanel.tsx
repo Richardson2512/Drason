@@ -4,6 +4,7 @@ import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import { getStatusColors } from '@/lib/statusColors';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 interface LeadListPanelProps {
     leads: Lead[];
@@ -15,8 +16,8 @@ interface LeadListPanelProps {
     onSearchChange: (query: string) => void;
     scoreRefreshResult: ScoreRefreshResult | null;
     campaigns: CampaignSummary[];
-    selectedCampaignFilter: string;
-    onCampaignFilterChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    selectedCampaignFilter: string[];
+    onCampaignFilterChange: (selected: string[]) => void;
     sortFilter: ReturnType<typeof useSortFilterModal>;
     selectedLeadIds: Set<string>;
     isAllSelected: boolean;
@@ -98,20 +99,15 @@ export default function LeadListPanel({
 
                 {/* Campaign Filter Dropdown */}
                 <div className="mb-3">
-                    <label htmlFor="campaign-filter" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
                         Filter by Campaign
                     </label>
-                    <select
-                        id="campaign-filter"
-                        value={selectedCampaignFilter}
+                    <MultiSelectDropdown
+                        options={campaigns.map(c => ({ value: c.id, label: c.name }))}
+                        selected={selectedCampaignFilter}
                         onChange={onCampaignFilterChange}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm font-medium cursor-pointer outline-none transition-all duration-200"
-                    >
-                        <option value="all">All Campaigns</option>
-                        {campaigns.map(c => (
-                            <option key={c.id} value={c.id}>{c.name}</option>
-                        ))}
-                    </select>
+                        placeholder="All Campaigns"
+                    />
                 </div>
 
                 {/* Sort & Filter Button */}

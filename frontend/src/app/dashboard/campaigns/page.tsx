@@ -11,6 +11,7 @@ import { apiClient } from '@/lib/api';
 import type { Campaign, Mailbox, DashboardStats, PaginatedResponse } from '@/types/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 
@@ -26,7 +27,7 @@ export default function CampaignsPage() {
 
     // Filter states
     const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');
+    const [statusFilter, setStatusFilter] = useState<string[]>([]);
 
     // Sort & Filter via shared hook
     const sortFilter = useSortFilterModal({
@@ -59,13 +60,13 @@ export default function CampaignsPage() {
                 sortBy
             });
 
-            if (statusFilter !== 'all') params.append('status', statusFilter);
+            if (statusFilter.length > 0) params.append('status', statusFilter.join(','));
             if (searchQuery.trim()) params.append('search', searchQuery.trim());
             if (minSent) params.append('minSent', minSent);
             if (maxSent) params.append('maxSent', maxSent);
             if (minOpenRate) params.append('minOpenRate', minOpenRate);
             if (maxOpenRate) params.append('maxOpenRate', maxOpenRate);
-            if (platform !== 'all') params.append('platform', platform);
+            if (platform && platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Campaign>>(`/api/dashboard/campaigns?${params}`);
             if (data?.data) {
@@ -213,16 +214,17 @@ export default function CampaignsPage() {
                     />
 
                     {/* Status Filter */}
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                        className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm outline-none cursor-pointer bg-white mb-3"
-                    >
-                        <option value="all">All Statuses</option>
-                        <option value="active">Active</option>
-                        <option value="paused">Paused</option>
-                        <option value="completed">Completed</option>
-                    </select>
+                    <MultiSelectDropdown
+                        options={[
+                            { value: 'active', label: 'Active' },
+                            { value: 'paused', label: 'Paused' },
+                            { value: 'completed', label: 'Completed' },
+                        ]}
+                        selected={statusFilter}
+                        onChange={setStatusFilter}
+                        placeholder="All Statuses"
+                        className="mb-3"
+                    />
 
                     {/* Sort & Filter Button */}
                     <button
@@ -699,20 +701,19 @@ export default function CampaignsPage() {
 
                             {/* Platform Filter */}
                             <div className="mb-6">
-                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>
-                                <select
-                                    id="modal-platform"
-                                    value={sortFilter.temp.platform}
-                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="all">All Platforms</option>
-                                    <option value="smartlead">Smartlead</option>
-                                    <option value="instantly">Instantly</option>
-                                    <option value="emailbison">EmailBison</option>
-                                </select>
+                                <MultiSelectDropdown
+                                    options={[
+                                        { value: 'smartlead', label: 'Smartlead' },
+                                        { value: 'instantly', label: 'Instantly' },
+                                        { value: 'emailbison', label: 'EmailBison' },
+                                    ]}
+                                    selected={sortFilter.temp.platform === 'all' ? [] : sortFilter.temp.platform.split(',')}
+                                    onChange={(vals) => sortFilter.setTempValue('platform', vals.length === 0 ? 'all' : vals.join(','))}
+                                    placeholder="All Platforms"
+                                />
                             </div>
                         </div>
 

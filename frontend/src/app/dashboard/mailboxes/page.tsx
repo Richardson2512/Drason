@@ -13,6 +13,7 @@ import BounceAnalytics from '@/components/dashboard/BounceAnalytics';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useCampaignList } from '@/hooks/useCampaignList';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 // Map raw connection errors to user-friendly resolution guidance (platform-aware)
 function getConnectionResolution(error: string | null | undefined, platform?: string): { cause: string; resolution: string } {
@@ -64,8 +65,8 @@ export default function MailboxesPage() {
     // Filters
     const { campaigns } = useCampaignList();
     const [domains, setDomains] = useState<Domain[]>([]);
-    const [selectedCampaign, setSelectedCampaign] = useState<string>('all');
-    const [selectedStatus, setSelectedStatus] = useState<string>('all');
+    const [selectedCampaign, setSelectedCampaign] = useState<string[]>([]);
+    const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Sorting & Filtering (delegated to useSortFilterModal hook)
@@ -96,17 +97,17 @@ export default function MailboxesPage() {
             });
 
             // Add filters
-            if (selectedCampaign !== 'all') params.append('campaignId', selectedCampaign);
-            if (selectedStatus !== 'all') params.append('status', selectedStatus);
+            if (selectedCampaign.length > 0) params.append('campaignId', selectedCampaign.join(','));
+            if (selectedStatus.length > 0) params.append('status', selectedStatus.join(','));
             if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
             // Add sort & filter parameters
             params.append('sortBy', sortBy);
-            if (domainId !== 'all') params.append('domainId', domainId);
-            if (warmupStatus !== 'all') params.append('warmupStatus', warmupStatus);
+            if (domainId && domainId !== 'all') params.append('domainId', domainId);
+            if (warmupStatus && warmupStatus !== 'all') params.append('warmupStatus', warmupStatus);
             if (minEngagement) params.append('minEngagement', minEngagement);
             if (maxEngagement) params.append('maxEngagement', maxEngagement);
-            if (platform !== 'all') params.append('platform', platform);
+            if (platform && platform !== 'all') params.append('platform', platform);
 
             const data = await apiClient<PaginatedResponse<Mailbox>>(`/api/dashboard/mailboxes?${params}`);
             if (data?.data) {
@@ -171,7 +172,7 @@ export default function MailboxesPage() {
         return <div className="p-8"><LoadingSkeleton type="table" rows={8} /></div>;
     }
 
-    const hasActiveFilters = selectedStatus !== 'all' || selectedCampaign !== 'all' || searchQuery.trim() !== '' ||
+    const hasActiveFilters = selectedStatus.length > 0 || selectedCampaign.length > 0 || searchQuery.trim() !== '' ||
         sortFilter.values.domainId !== 'all' || sortFilter.values.warmupStatus !== 'all' ||
         sortFilter.values.minEngagement !== '' || sortFilter.values.maxEngagement !== '' ||
         sortFilter.values.platform !== 'all';
@@ -217,34 +218,30 @@ export default function MailboxesPage() {
                     />
 
                     {/* Status Filter */}
-                    <select
-                        value={selectedStatus}
-                        onChange={(e) => {
-                            setSelectedStatus(e.target.value);
+                    <MultiSelectDropdown
+                        options={[
+                            { value: 'healthy', label: 'Healthy' },
+                            { value: 'warning', label: 'Warning' },
+                            { value: 'paused', label: 'Paused' },
+                        ]}
+                        selected={selectedStatus}
+                        onChange={(vals) => {
+                            setSelectedStatus(vals);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="healthy">Healthy</option>
-                        <option value="warning">Warning</option>
-                        <option value="paused">Paused</option>
-                    </select>
+                        placeholder="All Status"
+                    />
 
                     {/* Campaign Filter */}
-                    <select
-                        value={selectedCampaign}
-                        onChange={(e) => {
-                            setSelectedCampaign(e.target.value);
+                    <MultiSelectDropdown
+                        options={campaigns.map(c => ({ value: c.id, label: c.name }))}
+                        selected={selectedCampaign}
+                        onChange={(vals) => {
+                            setSelectedCampaign(vals);
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
-                        className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm cursor-pointer outline-none"
-                    >
-                        <option value="all">All Campaigns</option>
-                        {campaigns.map(c => (
-                            <option key={c.id} value={c.id}>{c.name}</option>
-                        ))}
-                    </select>
+                        placeholder="All Campaigns"
+                    />
 
                     {/* Sort & Filter Button */}
                     <button
@@ -755,20 +752,15 @@ export default function MailboxesPage() {
 
                             {/* Domain Filter */}
                             <div className="mb-6">
-                                <label htmlFor="modal-domain" className="block text-sm font-semibold text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Domain
                                 </label>
-                                <select
-                                    id="modal-domain"
-                                    value={sortFilter.temp.domainId}
-                                    onChange={(e) => sortFilter.setTempValue('domainId', e.target.value)}
-                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="all">All Domains</option>
-                                    {domains.map(d => (
-                                        <option key={d.id} value={d.id}>{d.domain}</option>
-                                    ))}
-                                </select>
+                                <MultiSelectDropdown
+                                    options={domains.map(d => ({ value: d.id, label: d.domain }))}
+                                    selected={sortFilter.temp.domainId === 'all' ? [] : sortFilter.temp.domainId.split(',')}
+                                    onChange={(vals) => sortFilter.setTempValue('domainId', vals.length === 0 ? 'all' : vals.join(','))}
+                                    placeholder="All Domains"
+                                />
                             </div>
 
                             {/* Warmup Status Filter */}
@@ -818,20 +810,19 @@ export default function MailboxesPage() {
 
                             {/* Platform Filter */}
                             <div className="mb-6">
-                                <label htmlFor="modal-platform" className="block text-sm font-semibold text-gray-700 mb-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>
-                                <select
-                                    id="modal-platform"
-                                    value={sortFilter.temp.platform}
-                                    onChange={(e) => sortFilter.setTempValue('platform', e.target.value)}
-                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="all">All Platforms</option>
-                                    <option value="smartlead">Smartlead</option>
-                                    <option value="instantly">Instantly</option>
-                                    <option value="emailbison">EmailBison</option>
-                                </select>
+                                <MultiSelectDropdown
+                                    options={[
+                                        { value: 'smartlead', label: 'Smartlead' },
+                                        { value: 'instantly', label: 'Instantly' },
+                                        { value: 'emailbison', label: 'EmailBison' },
+                                    ]}
+                                    selected={sortFilter.temp.platform === 'all' ? [] : sortFilter.temp.platform.split(',')}
+                                    onChange={(vals) => sortFilter.setTempValue('platform', vals.length === 0 ? 'all' : vals.join(','))}
+                                    placeholder="All Platforms"
+                                />
                             </div>
                         </div>
 

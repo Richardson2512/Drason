@@ -1,18 +1,31 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import type { MailboxLoad, LoadBalancingSuggestion, LoadBalancingReport } from '@/types/api';
 
+type SortField = 'total_sent' | 'effective_load' | 'campaign_count' | 'bounce_rate' | 'engagement_rate' | 'health_score' | 'email';
+type SortDir = 'asc' | 'desc';
+
 export default function LoadBalancingPage() {
+    const router = useRouter();
     const [report, setReport] = useState<LoadBalancingReport | null>(null);
     const [loading, setLoading] = useState(true);
     const [applying, setApplying] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(20);
+
+    // Distribution table sort & filter
+    const [sortField, setSortField] = useState<SortField>('total_sent');
+    const [sortDir, setSortDir] = useState<SortDir>('desc');
+    const [filterStatus, setFilterStatus] = useState<string[]>([]);
+    const [filterCategory, setFilterCategory] = useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const fetchReport = async () => {
         setLoading(true);
@@ -145,33 +158,44 @@ export default function LoadBalancingPage() {
                 </div>
             </div>
 
-            {/* Health Warnings */}
+            {/* Health Warnings — show top 5, scrollable */}
             {report.health_warnings.length > 0 && (
                 <div className="p-4 bg-amber-100 border border-amber-300 rounded-lg mb-8">
                     <div className="text-sm font-semibold text-amber-800 mb-2">
-                        ⚠️ Health Warnings
+                        ⚠️ Health Warnings ({report.health_warnings.length})
                     </div>
-                    <ul className="m-0 pl-5 text-amber-800 text-sm">
+                    <ul className="m-0 pl-5 text-amber-800 text-sm max-h-[160px] overflow-y-auto">
                         {report.health_warnings.map((warning, idx) => (
-                            <li key={idx}>{warning}</li>
+                            <li key={idx} className="mb-1">{warning}</li>
                         ))}
                     </ul>
                 </div>
             )}
 
-            {/* Suggestions */}
+            {/* Suggestions — show top 3 preview with link to full page */}
             {report.suggestions.length > 0 ? (
                 <div className="mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">
-                        📋 Optimization Suggestions ({report.suggestions.length})
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-bold text-gray-900">
+                            Optimization Suggestions ({report.suggestions.length})
+                        </h2>
+                        {report.suggestions.length > 3 && (
+                            <button
+                                onClick={() => router.push('/dashboard/load-balancing/suggestions')}
+                                className="px-4 py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-100"
+                            >
+                                View All ({report.suggestions.length})
+                            </button>
+                        )}
+                    </div>
                     <div className="flex flex-col gap-4">
-                        {report.suggestions.map((suggestion, idx) => (
+                        {report.suggestions.slice(0, 3).map((suggestion, idx) => (
                             <div
                                 key={idx}
-                                className="p-6 bg-white border border-gray-200 rounded-xl"
+                                className="p-5 bg-white border border-gray-200 rounded-xl cursor-pointer transition-all duration-200 hover:border-blue-300 hover:shadow-md"
+                                onClick={() => router.push(`/dashboard/load-balancing/suggestions?highlight=${idx}`)}
                             >
-                                <div className="flex items-start justify-between mb-4">
+                                <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
                                             <span
@@ -187,50 +211,31 @@ export default function LoadBalancingPage() {
                                                 {suggestion.type.replace('_', ' ').toUpperCase()}
                                             </span>
                                         </div>
-                                        <div className="text-sm text-gray-700 mb-2">
-                                            <strong>Mailbox:</strong> {suggestion.mailbox_email}
+                                        <div className="text-sm text-gray-700">
+                                            <strong>{suggestion.mailbox_email}</strong>
+                                            {suggestion.from_campaign_name && <span className="text-gray-400"> &middot; {suggestion.from_campaign_name}</span>}
                                         </div>
-                                        {suggestion.from_campaign_name && (
-                                            <div className="text-sm text-gray-700 mb-2">
-                                                <strong>From Campaign:</strong> {suggestion.from_campaign_name}
-                                            </div>
-                                        )}
-                                        {suggestion.to_campaign_name && (
-                                            <div className="text-sm text-gray-700 mb-2">
-                                                <strong>To Campaign:</strong> {suggestion.to_campaign_name}
-                                            </div>
-                                        )}
                                     </div>
-                                    {suggestion.type !== 'move_mailbox' && (
-                                        <button
-                                            onClick={() => applySuggestion(suggestion)}
-                                            disabled={applying === suggestion.mailbox_id}
-                                            className={`py-2 px-4 text-white border-none rounded-lg text-sm font-semibold ${
-                                                applying === suggestion.mailbox_id
-                                                    ? 'bg-blue-300 cursor-not-allowed'
-                                                    : 'bg-blue-600 cursor-pointer'
-                                            }`}
-                                        >
-                                            {applying === suggestion.mailbox_id ? 'Applying...' : 'Apply'}
-                                        </button>
-                                    )}
-                                </div>
-                                <div className="p-4 bg-gray-50 rounded-lg mb-3">
-                                    <div className="text-sm text-gray-700 mb-2">
-                                        <strong>Reason:</strong> {suggestion.reason}
-                                    </div>
-                                    <div className="text-sm text-gray-500">
-                                        <strong>Impact:</strong> {suggestion.expected_impact}
-                                    </div>
+                                    <span className="text-gray-400 text-lg ml-3">&rarr;</span>
                                 </div>
                             </div>
                         ))}
                     </div>
+                    {report.suggestions.length <= 3 && (
+                        <div className="mt-3 text-center">
+                            <button
+                                onClick={() => router.push('/dashboard/load-balancing/suggestions')}
+                                className="text-sm text-blue-600 font-semibold bg-transparent border-none cursor-pointer hover:underline"
+                            >
+                                View Details
+                            </button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className="p-8 text-center bg-gray-50 border border-gray-200 rounded-xl mb-8">
                     <div className="text-base text-green-600 font-semibold mb-2">
-                        ✅ No optimization needed
+                        No optimization needed
                     </div>
                     <div className="text-sm text-gray-500">
                         Your mailbox distribution is already well-balanced!
@@ -240,16 +245,120 @@ export default function LoadBalancingPage() {
 
             {/* Mailbox Distribution Table */}
             <div>
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900">
-                        📊 Mailbox Distribution
-                    </h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">
+                    Mailbox Distribution
+                </h2>
+
+                {/* Filters & Sort Controls */}
+                <div className="flex flex-wrap items-end gap-3 mb-4">
+                    <div className="flex-1 min-w-[200px]">
+                        <input
+                            type="text"
+                            placeholder="Search by email..."
+                            value={searchQuery}
+                            onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                            className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm outline-none bg-white"
+                        />
+                    </div>
+                    <div className="min-w-[150px]">
+                        <MultiSelectDropdown
+                            options={[
+                                { value: 'healthy', label: 'Healthy' },
+                                { value: 'warning', label: 'Warning' },
+                                { value: 'paused', label: 'Paused' },
+                            ]}
+                            selected={filterStatus}
+                            onChange={(v) => { setFilterStatus(v); setPage(1); }}
+                            placeholder="All Status"
+                        />
+                    </div>
+                    <div className="min-w-[170px]">
+                        <MultiSelectDropdown
+                            options={[
+                                { value: 'overloaded', label: 'Overloaded' },
+                                { value: 'optimal', label: 'Optimal' },
+                                { value: 'underutilized', label: 'Underutilized' },
+                            ]}
+                            selected={filterCategory}
+                            onChange={(v) => { setFilterCategory(v); setPage(1); }}
+                            placeholder="All Categories"
+                        />
+                    </div>
+                    <div className="min-w-[180px]">
+                        <select
+                            value={`${sortField}_${sortDir}`}
+                            onChange={(e) => {
+                                const [f, d] = e.target.value.split('_') as [SortField, SortDir];
+                                setSortField(f);
+                                setSortDir(d);
+                                setPage(1);
+                            }}
+                            className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm outline-none cursor-pointer bg-white"
+                        >
+                            <option value="total_sent_desc">Total Sent (High-Low)</option>
+                            <option value="total_sent_asc">Total Sent (Low-High)</option>
+                            <option value="effective_load_desc">Effective Load (High-Low)</option>
+                            <option value="effective_load_asc">Effective Load (Low-High)</option>
+                            <option value="campaign_count_desc">Campaigns (High-Low)</option>
+                            <option value="campaign_count_asc">Campaigns (Low-High)</option>
+                            <option value="bounce_rate_desc">Bounce Rate (High-Low)</option>
+                            <option value="bounce_rate_asc">Bounce Rate (Low-High)</option>
+                            <option value="engagement_rate_desc">Engagement (High-Low)</option>
+                            <option value="engagement_rate_asc">Engagement (Low-High)</option>
+                            <option value="health_score_desc">Health Score (High-Low)</option>
+                            <option value="health_score_asc">Health Score (Low-High)</option>
+                            <option value="email_asc">Email (A-Z)</option>
+                            <option value="email_desc">Email (Z-A)</option>
+                        </select>
+                    </div>
                     <RowLimitSelector limit={limit} onLimitChange={(l) => { setLimit(l); setPage(1); }} />
                 </div>
+
                 {(() => {
-                    const sorted = [...report.mailbox_distribution].sort((a, b) => b.campaign_count - a.campaign_count);
+                    // Filter
+                    let filtered = report.mailbox_distribution;
+                    if (searchQuery.trim()) {
+                        const q = searchQuery.trim().toLowerCase();
+                        filtered = filtered.filter(m => m.email.toLowerCase().includes(q));
+                    }
+                    if (filterStatus.length > 0) {
+                        filtered = filtered.filter(m => filterStatus.includes(m.status));
+                    }
+                    if (filterCategory.length > 0) {
+                        filtered = filtered.filter(m => filterCategory.includes(m.load_category));
+                    }
+
+                    // Sort
+                    const sorted = [...filtered].sort((a, b) => {
+                        let valA: number | string, valB: number | string;
+                        if (sortField === 'email') {
+                            valA = a.email.toLowerCase();
+                            valB = b.email.toLowerCase();
+                            return sortDir === 'asc' ? (valA < valB ? -1 : 1) : (valA > valB ? -1 : 1);
+                        }
+                        valA = a[sortField];
+                        valB = b[sortField];
+                        return sortDir === 'asc' ? (valA as number) - (valB as number) : (valB as number) - (valA as number);
+                    });
+
                     const totalPages = Math.ceil(sorted.length / limit);
                     const paginated = sorted.slice((page - 1) * limit, page * limit);
+
+                    const handleHeaderSort = (field: SortField) => {
+                        if (sortField === field) {
+                            setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+                        } else {
+                            setSortField(field);
+                            setSortDir('desc');
+                        }
+                        setPage(1);
+                    };
+
+                    const SortIcon = ({ field }: { field: SortField }) => (
+                        <span className="ml-1 text-[0.6rem] inline-block" style={{ opacity: sortField === field ? 1 : 0.3 }}>
+                            {sortField === field ? (sortDir === 'asc' ? '▲' : '▼') : '▼'}
+                        </span>
+                    );
 
                     return (
                         <>
@@ -257,18 +366,37 @@ export default function LoadBalancingPage() {
                                 <table className="w-full border-collapse">
                                     <thead>
                                         <tr className="bg-gray-50 border-b border-gray-200">
-                                            <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase">Mailbox</th>
+                                            <th className="p-4 text-left text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('email')}>
+                                                Mailbox<SortIcon field="email" />
+                                            </th>
                                             <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Campaigns</th>
-                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Total Sent</th>
-                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Bounce Rate</th>
-                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Engagement</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('campaign_count')}>
+                                                Campaigns<SortIcon field="campaign_count" />
+                                            </th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('effective_load')}>
+                                                Eff. Load<SortIcon field="effective_load" />
+                                            </th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('total_sent')}>
+                                                Total Sent<SortIcon field="total_sent" />
+                                            </th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('bounce_rate')}>
+                                                Bounce Rate<SortIcon field="bounce_rate" />
+                                            </th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('engagement_rate')}>
+                                                Engagement<SortIcon field="engagement_rate" />
+                                            </th>
                                             <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Load Category</th>
-                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase">Health Score</th>
+                                            <th className="p-4 text-center text-xs font-semibold text-gray-500 uppercase cursor-pointer hover:text-gray-700 select-none" onClick={() => handleHeaderSort('health_score')}>
+                                                Health<SortIcon field="health_score" />
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {paginated.map((mb, idx) => (
+                                        {paginated.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={9} className="p-8 text-center text-gray-400 italic">No mailboxes match your filters.</td>
+                                            </tr>
+                                        ) : paginated.map((mb, idx) => (
                                             <tr key={mb.id} style={{ borderBottom: idx < paginated.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
                                                 <td className="p-4 text-sm text-gray-900">{mb.email}</td>
                                                 <td className="p-4 text-center">
@@ -276,7 +404,9 @@ export default function LoadBalancingPage() {
                                                         className={`py-1 px-3 text-xs font-semibold rounded-xl ${
                                                             mb.status === 'healthy'
                                                                 ? 'bg-green-100 text-green-600'
-                                                                : 'bg-red-100 text-red-600'
+                                                                : mb.status === 'warning'
+                                                                    ? 'bg-amber-100 text-amber-600'
+                                                                    : 'bg-red-100 text-red-600'
                                                         }`}
                                                     >
                                                         {mb.status}
@@ -284,6 +414,9 @@ export default function LoadBalancingPage() {
                                                 </td>
                                                 <td className="p-4 text-center text-sm font-semibold text-gray-900">
                                                     {mb.campaign_count}
+                                                </td>
+                                                <td className="p-4 text-center text-sm font-semibold" style={{ color: mb.effective_load >= 3 ? '#DC2626' : mb.effective_load >= 1 ? '#16A34A' : '#F59E0B' }}>
+                                                    {mb.effective_load.toFixed(2)}
                                                 </td>
                                                 <td className="p-4 text-center text-sm text-gray-500">
                                                     {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '—'}

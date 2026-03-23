@@ -19,7 +19,7 @@ function LeadsPageContent() {
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [leadTab, setLeadTab] = useState('all');
     const { campaigns } = useCampaignList();
-    const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string>('all');
+    const [selectedCampaignFilter, setSelectedCampaignFilter] = useState<string[]>([]);
     const [leadCampaigns, setLeadCampaigns] = useState<CampaignSummary[]>([]);
 
     // Sort & Filter via shared hook
@@ -51,7 +51,7 @@ function LeadsPageContent() {
         const status = searchParams.get('status');
 
         if (campaignId) {
-            setSelectedCampaignFilter(campaignId);
+            setSelectedCampaignFilter([campaignId]);
         }
         if (status) {
             setLeadTab(status);
@@ -67,12 +67,12 @@ function LeadsPageContent() {
             sortBy,
         };
 
-        if (selectedCampaignFilter !== 'all') queryParams.campaignId = selectedCampaignFilter;
+        if (selectedCampaignFilter.length > 0) queryParams.campaignId = selectedCampaignFilter.join(',');
         if (searchQuery.trim()) queryParams.search = searchQuery.trim();
         if (minScore) queryParams.minScore = minScore;
         if (maxScore) queryParams.maxScore = maxScore;
         if (hasEngagement !== 'all') queryParams.hasEngagement = hasEngagement;
-        if (platform !== 'all') queryParams.platform = platform;
+        if (platform && platform !== 'all') queryParams.platform = platform;
 
         const query = new URLSearchParams(queryParams);
 
@@ -145,8 +145,8 @@ function LeadsPageContent() {
         setMeta(prev => ({ ...prev, page: 1 }));
     };
 
-    const handleCampaignFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCampaignFilter(e.target.value);
+    const handleCampaignFilterChange = (selected: string[]) => {
+        setSelectedCampaignFilter(selected);
         setMeta(prev => ({ ...prev, page: 1 }));
         setSelectedLead(null);
     };

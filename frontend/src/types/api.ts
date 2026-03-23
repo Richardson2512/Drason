@@ -328,6 +328,7 @@ export interface MailboxLoad {
   email: string;
   status: string;
   campaign_count: number;
+  effective_load: number;
   load_category: 'overloaded' | 'optimal' | 'underutilized';
   health_score: number;
   total_sent: number;
