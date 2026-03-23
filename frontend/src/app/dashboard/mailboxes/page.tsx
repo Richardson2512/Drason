@@ -208,7 +208,7 @@ export default function MailboxesPage() {
 
                 {/* Stats Breakdown */}
                 {entityStats?.mailboxes && (
-                    <div className="mb-4">
+                    <div className="mb-3">
                         <EntityStatsBar
                             total={entityStats.mailboxes.total}
                             stats={[
@@ -217,6 +217,27 @@ export default function MailboxesPage() {
                                 { label: 'Paused', value: entityStats.mailboxes.paused, color: '#ef4444' },
                             ]}
                         />
+                        {/* Healing Pipeline Stats */}
+                        {entityStats.mailboxes.in_recovery > 0 && (
+                            <div className="flex items-center gap-2 mt-2">
+                                <span className="text-[0.65rem] font-semibold text-gray-400 uppercase tracking-wide">Healing:</span>
+                                {entityStats.mailboxes.quarantine > 0 && (
+                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
+                                        {entityStats.mailboxes.quarantine} quarantine
+                                    </span>
+                                )}
+                                {entityStats.mailboxes.restricted_send > 0 && (
+                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
+                                        {entityStats.mailboxes.restricted_send} restricted
+                                    </span>
+                                )}
+                                {entityStats.mailboxes.warm_recovery > 0 && (
+                                    <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200">
+                                        {entityStats.mailboxes.warm_recovery} warming
+                                    </span>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -703,6 +724,33 @@ export default function MailboxesPage() {
                                 </div>
                             )}
                         </div>
+
+                        {/* Rotation History */}
+                        {(() => {
+                            const rotations = (entityStats?.rotations || []).filter(
+                                r => r.entity_id === selectedMailbox.id || r.details?.includes(selectedMailbox.email)
+                            );
+                            if (rotations.length === 0) return null;
+                            return (
+                                <div className="premium-card mb-8">
+                                    <h2 className="text-xl font-bold mb-4 text-gray-900">Rotation History</h2>
+                                    <div className="flex flex-col gap-2">
+                                        {rotations.map(r => (
+                                            <div key={r.id} className="p-3 bg-blue-50 border border-blue-100 rounded-xl">
+                                                <div className="flex items-start justify-between">
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="text-sm text-blue-900 font-medium">{r.details}</div>
+                                                    </div>
+                                                    <div className="text-xs text-blue-400 shrink-0 ml-3">
+                                                        {new Date(r.timestamp).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })()}
 
                         {/* Bounce Event Details */}
                         <BounceAnalytics mailboxId={selectedMailbox.id} />

@@ -21,6 +21,10 @@ interface MailboxStats {
     healthy: number;
     warning: number;
     paused: number;
+    quarantine: number;
+    restricted_send: number;
+    warm_recovery: number;
+    in_recovery: number;
 }
 
 interface DomainStats {
@@ -30,11 +34,21 @@ interface DomainStats {
     paused: number;
 }
 
+interface RotationEvent {
+    id: string;
+    entity: string;
+    entity_id: string;
+    action: string;
+    details: string;
+    timestamp: string;
+}
+
 export interface EntityStats {
     leads: LeadStats;
     campaigns: CampaignStats;
     mailboxes: MailboxStats;
     domains: DomainStats;
+    rotations: RotationEvent[];
 }
 
 export function useEntityStats() {
