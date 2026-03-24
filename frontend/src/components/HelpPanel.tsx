@@ -287,8 +287,61 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
             const query = searchQuery.toLowerCase().trim();
             // Split query into words for flexible matching
             // "why my mailboxes are showing overloaded" → matches articles with "mailbox" OR "overloaded"
-            const stopWords = new Set(['why', 'is', 'my', 'are', 'the', 'a', 'an', 'in', 'on', 'to', 'for', 'of', 'it', 'do', 'does', 'how', 'what', 'when', 'where', 'can', 'i', 'am', 'not', 'showing', 'show', 'mean', 'means']);
-            const words = query.split(/\s+/).filter(w => w.length > 1 && !stopWords.has(w));
+            const stopWords = new Set([
+                'why', 'is', 'my', 'are', 'the', 'a', 'an', 'in', 'on', 'to', 'for', 'of', 'it',
+                'do', 'does', 'how', 'what', 'when', 'where', 'can', 'i', 'am', 'not', 'im', 'its',
+                'showing', 'show', 'shows', 'seeing', 'see', 'mean', 'means', 'getting', 'got',
+                'being', 'been', 'was', 'were', 'has', 'have', 'had', 'this', 'that', 'with',
+                'but', 'and', 'or', 'so', 'if', 'just', 'very', 'too', 'also', 'about', 'some',
+                'there', 'here', 'all', 'any', 'each', 'which', 'their', 'them', 'they',
+            ]);
+
+            // Simple stemming: strip common suffixes to match variations
+            const stem = (word: string): string[] => {
+                const stems = [word];
+                // Strip plural/verb endings
+                if (word.endsWith('es') && word.length > 4) stems.push(word.slice(0, -2));
+                if (word.endsWith('s') && !word.endsWith('ss') && word.length > 3) stems.push(word.slice(0, -1));
+                if (word.endsWith('ed') && word.length > 4) stems.push(word.slice(0, -2), word.slice(0, -1));
+                if (word.endsWith('ing') && word.length > 5) stems.push(word.slice(0, -3), word.slice(0, -3) + 'e');
+                if (word.endsWith('ies') && word.length > 4) stems.push(word.slice(0, -3) + 'y');
+                return [...new Set(stems)];
+            };
+
+            // Synonyms: map common user terms to terms used in our docs
+            const synonyms: Record<string, string[]> = {
+                'overloaded': ['load balancing', 'overloaded', 'effective load', 'capacity', 'too many'],
+                'overload': ['load balancing', 'overloaded', 'effective load'],
+                'burned': ['burned', 'burnout', 'blacklist', 'damaged', 'reputation'],
+                'burn': ['burned', 'burnout', 'blacklist', 'damaged'],
+                'stuck': ['stalled', 'stuck', 'frozen', 'not sending'],
+                'broken': ['connection', 'errors', 'failed', 'disconnected'],
+                'spam': ['deliverability', 'inbox', 'placement', 'reputation', 'spam'],
+                'stop': ['paused', 'stopped', 'inactive'],
+                'stopped': ['paused', 'stopped', 'inactive', 'stalled'],
+                'down': ['paused', 'unhealthy', 'failed', 'disconnected'],
+                'fix': ['recovery', 'healing', 'resume', 'troubleshoot'],
+                'repair': ['recovery', 'healing', 'resume', 'troubleshoot'],
+                'email': ['mailbox', 'email', 'sending', 'smtp'],
+                'emails': ['mailbox', 'email', 'sending', 'smtp'],
+                'send': ['sending', 'volume', 'sends', 'sent'],
+                'cost': ['billing', 'pricing', 'plan', 'payment'],
+                'price': ['billing', 'pricing', 'plan', 'payment'],
+                'money': ['billing', 'pricing', 'plan', 'payment'],
+            };
+
+            const queryWords = query.split(/\s+/).filter(w => w.length > 1 && !stopWords.has(w));
+
+            // Expand query words with stems and synonyms
+            const expandedWords: string[] = [];
+            for (const word of queryWords) {
+                const stemmed = stem(word);
+                expandedWords.push(...stemmed);
+                for (const s of stemmed) {
+                    if (synonyms[s]) expandedWords.push(...synonyms[s]);
+                }
+            }
+            const words = [...new Set(expandedWords)];
 
             const scored = helpArticles.map(article => {
                 const titleLower = article.title.toLowerCase();
@@ -302,7 +355,7 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                 if (descLower.includes(query)) score += 5;
                 if (tagsLower.some(tag => tag.includes(query))) score += 8;
 
-                // Per-word matching
+                // Per-word matching (includes stems + synonyms)
                 for (const word of words) {
                     if (titleLower.includes(word)) score += 3;
                     if (descLower.includes(word)) score += 2;
