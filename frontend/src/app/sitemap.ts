@@ -19,6 +19,8 @@ function getPageMtime(routePath: string): Date {
         '/open-source': 'open-source',
         '/infrastructure-playbook': 'infrastructure-playbook',
         '/product': 'product',
+        '/contact': 'contact',
+        '/release-notes': 'release-notes',
     };
 
     const dir = routeMap[routePath];
@@ -111,6 +113,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: getPageMtime('/pricing'),
             changeFrequency: 'monthly',
             priority: 0.9,
+        },
+
+        // ─── Contact & Release Notes ────────────────────
+        {
+            url: `${BASE_URL}/contact`,
+            lastModified: getPageMtime('/contact'),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${BASE_URL}/release-notes`,
+            lastModified: getPageMtime('/release-notes'),
+            changeFrequency: 'weekly',
+            priority: 0.6,
         },
 
         // ─── Legal ────────────────────────────────────
