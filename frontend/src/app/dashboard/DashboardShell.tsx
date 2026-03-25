@@ -140,7 +140,7 @@ export default function DashboardShell({
     };
 
     return (
-        <div className="dashboard-shell light-theme flex h-screen overflow-hidden bg-[#F5F8FF]">
+        <div className="light-theme flex h-screen overflow-hidden bg-[#F5F8FF]">
             <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">Skip to main content</a>
             {/* Ambient Background Effects */}
             <div className="hero-blur pointer-events-none opacity-30 z-0">

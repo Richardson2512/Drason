@@ -10,11 +10,6 @@
   --border: #E4EAF8;
 }
 
-/* Dashboard zoom — 100% feels too zoomed in, scale to 80% */
-/* Scoped to dashboard shell only — marketing/landing pages stay at 100% */
-.dashboard-shell {
-  zoom: 0.8;
-}
 
 /* Dark theme for authenticated dashboard */
 .dark-theme {
