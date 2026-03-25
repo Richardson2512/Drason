@@ -420,17 +420,6 @@ export default function InfrastructureHealthPage() {
                 ackResult={ackResult}
             />
 
-            {/* ── RECOVERY STATUS PANEL ── */}
-            <RecoveryStatusPanel recoveryData={recoveryData} />
-
-            {/* ── WARMUP STATUS PANEL ── */}
-            <WarmupProgressPanel
-                warmupData={warmupData}
-                onCheckNow={handleWarmupCheck}
-                warmupChecking={warmupChecking}
-                checkResult={warmupCheckResult}
-            />
-
             {/* Info Banner: Score vs Status Explanation */}
             <div className="premium-card px-6 py-4 flex items-start gap-4" style={{
                 background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
@@ -576,6 +565,17 @@ export default function InfrastructureHealthPage() {
                     </div>
                 </div>
             )}
+
+            {/* ── RECOVERY STATUS PANEL ── */}
+            <RecoveryStatusPanel recoveryData={recoveryData} />
+
+            {/* ── WARMUP STATUS PANEL ── */}
+            <WarmupProgressPanel
+                warmupData={warmupData}
+                onCheckNow={handleWarmupCheck}
+                warmupChecking={warmupChecking}
+                checkResult={warmupCheckResult}
+            />
 
             {/* Findings Distribution + Findings List */}
             <FindingsSection
