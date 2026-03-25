@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import ValidationBanner from '@/components/dashboard/ValidationBanner';
 import { useDashboard } from '@/contexts/DashboardContext';
 import type { AssessmentStatusResponse, Organization, UnreadCountResponse } from '@/types/api';
 
@@ -348,6 +349,9 @@ export default function DashboardShell({
                         </button>
                     </div>
                 )}
+
+                {/* Email Validation Activity Banner */}
+                <ValidationBanner />
 
                 {/* Infrastructure Assessment Progress Overlay — hidden on settings page where sync modal already shows health check progress */}
                 {assessmentInProgress && pathname !== '/dashboard/settings' && (
