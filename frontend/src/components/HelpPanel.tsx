@@ -135,6 +135,37 @@ const helpArticles: HelpArticle[] = [
         description: 'A campaign is stalled when it has active leads but no healthy mailboxes to send through. Campaigns never pause on bounce rate alone — only when all mailboxes are paused or removed.',
         tags: ['campaign', 'health', 'stalled', 'stuck', 'no mailboxes', 'sending stopped', 'not sending']
     },
+    // ── New Help Articles ──
+    {
+        title: 'How Does Email Validation Work?',
+        href: '/docs/help/email-validation',
+        description: 'Superkabe validates every incoming email before it reaches your sending platform. Internal checks (syntax, MX, disposable, catch-all) plus MillionVerifier API for risky leads.',
+        tags: ['email validation', 'validation', 'invalid', 'blocked', 'syntax', 'mx', 'disposable', 'catch-all', 'millionverifier', 'risky', 'verified', 'check']
+    },
+    {
+        title: 'Why Is My Mailbox In Quarantine?',
+        href: '/docs/help/quarantine',
+        description: 'Your mailbox is in quarantine because its cooldown expired and the system is checking domain DNS health (SPF, DKIM, blacklists) before allowing any sends.',
+        tags: ['quarantine', 'mailbox', 'dns', 'spf', 'dkim', 'blacklist', 'stuck', 'healing', 'recovery', 'phase']
+    },
+    {
+        title: 'How Does Mailbox Rotation Work?',
+        href: '/docs/help/mailbox-rotation',
+        description: 'When a mailbox is paused, Superkabe automatically swaps in a healthy standby mailbox on the same domain to keep campaigns sending without interruption.',
+        tags: ['rotation', 'rotate', 'standby', 'swap', 'replacement', 'automatic', 'backup', 'mailbox', 'campaign']
+    },
+    {
+        title: 'Understanding Status Labels',
+        href: '/docs/help/entity-statuses',
+        description: 'Comprehensive reference for all status labels: mailbox (healthy, warning, paused, quarantine, restricted, warm recovery), domain, campaign, and lead statuses with colors and actions.',
+        tags: ['status', 'label', 'healthy', 'warning', 'paused', 'quarantine', 'restricted', 'warm recovery', 'active', 'held', 'bounced', 'invalid', 'color', 'meaning']
+    },
+    {
+        title: 'Load Balancing Suggestions Explained',
+        href: '/docs/help/optimization-suggestions',
+        description: 'Superkabe analyzes mailbox distribution and generates specific What/Why/How recommendations to rebalance load and improve deliverability.',
+        tags: ['optimization', 'suggestions', 'recommendations', 'rebalance', 'load balancing', 'effective load', 'overloaded', 'underutilized', 'add mailbox', 'remove mailbox']
+    },
     // ── Core Documentation ──
     {
         title: 'Getting Started',
@@ -328,6 +359,17 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                 'cost': ['billing', 'pricing', 'plan', 'payment'],
                 'price': ['billing', 'pricing', 'plan', 'payment'],
                 'money': ['billing', 'pricing', 'plan', 'payment'],
+                'quarantine': ['quarantine', 'healing', 'recovery', 'phase', 'dns'],
+                'quarantined': ['quarantine', 'healing', 'recovery', 'phase'],
+                'invalid': ['invalid', 'validation', 'blocked', 'rejected', 'bad email'],
+                'validate': ['validation', 'email validation', 'check', 'verify'],
+                'verified': ['validation', 'email validation', 'check', 'verified'],
+                'swap': ['rotation', 'standby', 'swap', 'replacement'],
+                'replace': ['rotation', 'standby', 'replacement', 'swap'],
+                'status': ['status', 'label', 'healthy', 'paused', 'warning', 'state'],
+                'label': ['status', 'label', 'color', 'meaning'],
+                'suggestion': ['optimization', 'suggestions', 'recommendations', 'rebalance'],
+                'recommend': ['optimization', 'suggestions', 'recommendations'],
             };
 
             const queryWords = query.split(/\s+/).filter(w => w.length > 1 && !stopWords.has(w));

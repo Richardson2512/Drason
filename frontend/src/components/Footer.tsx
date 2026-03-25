@@ -62,6 +62,8 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Company</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
+                                    <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact Us</Link>
+                                    <Link href="/release-notes" className="hover:text-blue-600 transition-colors">Release Notes</Link>
                                     <Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
                                     <Link href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
                                 </nav>
