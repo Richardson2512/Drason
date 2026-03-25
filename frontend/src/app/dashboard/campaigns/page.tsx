@@ -12,6 +12,7 @@ import type { Campaign, Mailbox, DashboardStats, PaginatedResponse } from '@/typ
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import BulkActionBar from '@/components/ui/BulkActionBar';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useEntityStats } from '@/hooks/useEntityStats';
@@ -750,6 +751,31 @@ export default function CampaignsPage() {
                             </button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Bulk Action Bar */}
+            {selectedCampaignIds.size > 0 && (
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl shadow-xl" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
+                    <div className="bg-white/20 rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold text-white">{selectedCampaignIds.size}</div>
+                    <span className="text-sm font-semibold text-white">campaign{selectedCampaignIds.size !== 1 ? 's' : ''} selected</span>
+                    <div className="w-px h-6 bg-white/20" />
+                    <button
+                        onClick={() => {
+                            const selected = campaigns.filter(c => selectedCampaignIds.has(c.id));
+                            const headers = ['name', 'status', 'platform', 'total_sent', 'open_count', 'reply_count', 'bounce_rate', 'paused_reason'];
+                            const rows = selected.map(c => headers.map(h => { const v = (c as any)[h]; return v == null ? '' : String(v).includes(',') ? `"${v}"` : String(v); }).join(','));
+                            const csv = [headers.join(','), ...rows].join('\n');
+                            const blob = new Blob([csv], { type: 'text/csv' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a'); a.href = url; a.download = `campaigns-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+                            URL.revokeObjectURL(url);
+                        }}
+                        className="px-3 py-1.5 rounded-lg text-white text-[0.8rem] font-semibold flex items-center gap-1.5" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.12)' }}
+                    >
+                        📥 Export CSV
+                    </button>
+                    <button onClick={() => { selectedCampaignIds.clear(); window.dispatchEvent(new Event('clear-selection')); }} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
                 </div>
             )}
         </div>

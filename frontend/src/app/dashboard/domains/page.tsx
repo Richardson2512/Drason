@@ -34,7 +34,7 @@ export default function DomainsPage() {
     });
 
     // Pagination & Selection (delegated to usePagination hook)
-    const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
+    const { meta, setMeta, selectedIds, setSelectedIds, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     const fetchDomains = useCallback(async () => {
         const { sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate, platform } = sortFilter.values;
@@ -390,6 +390,36 @@ export default function DomainsPage() {
                             </button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Bulk Action Bar */}
+            {selectedIds.size > 0 && (
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl shadow-xl" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
+                    <div className="bg-white/20 rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold text-white">{selectedIds.size}</div>
+                    <span className="text-sm font-semibold text-white">domain{selectedIds.size !== 1 ? 's' : ''} selected</span>
+                    <div className="w-px h-6 bg-white/20" />
+                    <button
+                        onClick={() => {
+                            const selected = domains.filter(d => selectedIds.has(d.id));
+                            const headers = ['domain', 'status', 'mailbox_count', 'bounce_rate', 'engagement_rate', 'spf_valid', 'dkim_valid', 'dmarc_valid'];
+                            const rows = selected.map(d => headers.map(h => {
+                                let v: any;
+                                if (h === 'mailbox_count') v = (d as any).mailboxes?.length || 0;
+                                else v = (d as any)[h];
+                                return v == null ? '' : String(v).includes(',') ? `"${v}"` : String(v);
+                            }).join(','));
+                            const csv = [headers.join(','), ...rows].join('\n');
+                            const blob = new Blob([csv], { type: 'text/csv' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a'); a.href = url; a.download = `domains-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+                            URL.revokeObjectURL(url);
+                        }}
+                        className="px-3 py-1.5 rounded-lg text-white text-[0.8rem] font-semibold flex items-center gap-1.5" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.12)' }}
+                    >
+                        📥 Export CSV
+                    </button>
+                    <button onClick={() => setSelectedIds(new Set())} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
                 </div>
             )}
         </div>

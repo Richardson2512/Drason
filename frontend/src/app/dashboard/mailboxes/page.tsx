@@ -83,7 +83,7 @@ export default function MailboxesPage() {
     });
 
     // Pagination & Selection (delegated to usePagination hook)
-    const { meta, setMeta, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
+    const { meta, setMeta, selectedIds, setSelectedIds, toggleSelection, toggleSelectAll, isSelected, isAllSelected } = usePagination();
 
     // Use ref to avoid selectedMailbox triggering refetches
     const selectedMailboxRef = useRef(selectedMailbox);
@@ -924,6 +924,36 @@ export default function MailboxesPage() {
                             </button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Bulk Action Bar */}
+            {selectedIds.size > 0 && (
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-2xl shadow-xl" style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
+                    <div className="bg-white/20 rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold text-white">{selectedIds.size}</div>
+                    <span className="text-sm font-semibold text-white">mailbox{selectedIds.size !== 1 ? 'es' : ''} selected</span>
+                    <div className="w-px h-6 bg-white/20" />
+                    <button
+                        onClick={() => {
+                            const selected = mailboxes.filter(m => selectedIds.has(m.id));
+                            const headers = ['email', 'status', 'recovery_phase', 'domain', 'bounce_rate', 'resilience_score', 'total_sent_count', 'engagement_rate', 'warmup_status'];
+                            const rows = selected.map(m => headers.map(h => {
+                                let v: any;
+                                if (h === 'domain') v = (m as any).domain?.domain || '';
+                                else v = (m as any)[h];
+                                return v == null ? '' : String(v).includes(',') ? `"${v}"` : String(v);
+                            }).join(','));
+                            const csv = [headers.join(','), ...rows].join('\n');
+                            const blob = new Blob([csv], { type: 'text/csv' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a'); a.href = url; a.download = `mailboxes-export-${new Date().toISOString().split('T')[0]}.csv`; a.click();
+                            URL.revokeObjectURL(url);
+                        }}
+                        className="px-3 py-1.5 rounded-lg text-white text-[0.8rem] font-semibold flex items-center gap-1.5" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.12)' }}
+                    >
+                        📥 Export CSV
+                    </button>
+                    <button onClick={() => setSelectedIds(new Set())} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
                 </div>
             )}
         </div>
