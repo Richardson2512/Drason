@@ -76,6 +76,101 @@ export default function Configuration() {
                 <div className="text-gray-500 text-lg">Route leads to campaigns across platforms</div>
             </div>
 
+            {/* How Routing Works — Collapsible Guide */}
+            <div className="premium-card mb-0">
+                <details className="group">
+                    <summary className="flex items-center justify-between cursor-pointer list-none">
+                        <div className="flex items-center gap-3">
+                            <span className="text-lg">💡</span>
+                            <h2 className="text-base font-bold text-slate-800 m-0">How does routing work? (click to expand)</h2>
+                        </div>
+                        <span className="text-gray-400 group-open:rotate-180 transition-transform text-sm">▼</span>
+                    </summary>
+                    <div className="mt-4 pt-4 border-t border-gray-100">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Flow explanation */}
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-700 mb-3">The Flow</h3>
+                                <div className="flex flex-col gap-2 text-sm text-gray-600">
+                                    <div className="flex items-start gap-2">
+                                        <span className="bg-blue-100 text-blue-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                                        <span>Lead arrives from Clay webhook or API with a <strong>persona</strong> (e.g., "CEO") and a <strong>lead score</strong> (0-100)</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="bg-blue-100 text-blue-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                                        <span>Email gets <strong>validated</strong> (syntax, MX, disposable check)</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="bg-blue-100 text-blue-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                                        <span>Health gate classifies lead as <strong className="text-green-600">GREEN</strong>, <strong className="text-amber-600">YELLOW</strong>, or <strong className="text-red-600">RED</strong></span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="bg-blue-100 text-blue-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                                        <span>Routing engine matches the lead's <strong>persona</strong> against your rules (in priority order)</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="bg-blue-100 text-blue-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</span>
+                                        <span>If persona matches AND lead score ≥ <strong>min_score</strong> → lead is pushed to the <strong>target campaign</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Example rules */}
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-700 mb-3">Example Setup</h3>
+                                <div className="space-y-2">
+                                    <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
+                                        <div className="font-semibold text-slate-800">Rule 1 — Priority 1</div>
+                                        <div className="text-gray-500 mt-1">
+                                            Persona: <strong>CEO</strong> · Min Score: <strong>60</strong> · Campaign: <strong>Enterprise Outreach</strong>
+                                        </div>
+                                        <div className="text-xs text-gray-400 mt-1">CEOs with score 60+ go to your best campaign</div>
+                                    </div>
+                                    <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
+                                        <div className="font-semibold text-slate-800">Rule 2 — Priority 2</div>
+                                        <div className="text-gray-500 mt-1">
+                                            Persona: <strong>VP Marketing</strong> · Min Score: <strong>40</strong> · Campaign: <strong>Marketing Leaders</strong>
+                                        </div>
+                                        <div className="text-xs text-gray-400 mt-1">Marketing VPs with score 40+ go to a targeted campaign</div>
+                                    </div>
+                                    <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
+                                        <div className="font-semibold text-slate-800">Rule 3 — Priority 3</div>
+                                        <div className="text-gray-500 mt-1">
+                                            Persona: <strong>*</strong> · Min Score: <strong>0</strong> · Campaign: <strong>General Outbound</strong>
+                                        </div>
+                                        <div className="text-xs text-gray-400 mt-1">Catch-all: any persona, any score → general campaign</div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+                                    <strong>Tip:</strong> Rules are evaluated in priority order (lowest number = highest priority). The first matching rule wins. Always add a catch-all rule with <strong>priority 99</strong> and <strong>min score 0</strong> to handle unmatched leads.
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Field explanations */}
+                        <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="text-xs">
+                                <div className="font-bold text-slate-700 mb-1">ICP Persona</div>
+                                <div className="text-gray-500">The job title or role from Clay enrichment. Must match exactly (case-insensitive). Use <strong>*</strong> for a catch-all.</div>
+                            </div>
+                            <div className="text-xs">
+                                <div className="font-bold text-slate-700 mb-1">Min Score</div>
+                                <div className="text-gray-500">Minimum lead score (0-100) required. Leads below this score skip this rule and try the next one.</div>
+                            </div>
+                            <div className="text-xs">
+                                <div className="font-bold text-slate-700 mb-1">Priority</div>
+                                <div className="text-gray-500">Evaluation order. Lower number = checked first. Use 1-10 for specific rules, 99 for catch-all.</div>
+                            </div>
+                            <div className="text-xs">
+                                <div className="font-bold text-slate-700 mb-1">Target Campaign</div>
+                                <div className="text-gray-500">The campaign on Smartlead/Instantly/EmailBison where the lead gets pushed after matching.</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-0">
                 {/* Form */}
                 <div className="premium-card">
@@ -90,7 +185,7 @@ export default function Configuration() {
                                 type="text"
                                 value={formData.persona}
                                 onChange={e => setFormData({ ...formData, persona: e.target.value })}
-                                placeholder="e.g. CEO, Founder, Marketing Director"
+                                placeholder="e.g. CEO, VP Marketing, * (catch-all)"
                                 required
                             />
                         </div>
@@ -105,7 +200,7 @@ export default function Configuration() {
                                     type="number"
                                     value={formData.min_score}
                                     onChange={e => setFormData({ ...formData, min_score: parseInt(e.target.value) })}
-                                    placeholder="0-100"
+                                    placeholder="e.g. 60 (0 = accept all)"
                                     required
                                 />
                             </div>
@@ -118,7 +213,7 @@ export default function Configuration() {
                                     type="number"
                                     value={formData.priority}
                                     onChange={e => setFormData({ ...formData, priority: parseInt(e.target.value) })}
-                                    placeholder="Order"
+                                    placeholder="e.g. 1 (lower = first)"
                                     required
                                 />
                             </div>
@@ -289,7 +384,15 @@ export default function Configuration() {
                                 </div>
                             );
                         })}
-                        {rules.length === 0 && <div className="text-gray-400 text-center p-12 italic border border-dashed border-slate-200 rounded-xl">No rules defined.</div>}
+                        {rules.length === 0 && (
+                            <div className="text-center p-10 border border-dashed border-slate-200 rounded-xl">
+                                <div className="text-3xl mb-3">🎯</div>
+                                <div className="text-gray-700 font-semibold mb-2">No routing rules yet</div>
+                                <div className="text-gray-400 text-sm max-w-[280px] mx-auto leading-relaxed">
+                                    Create your first rule to start routing leads to campaigns automatically. Click the guide above for examples.
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
