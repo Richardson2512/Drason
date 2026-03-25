@@ -261,6 +261,10 @@ export default function DashboardShell({
                         )}
                         {isCollapsed && <div className="h-3" />}
 
+                        <Link href="/dashboard/reports" className="nav-link" title={isCollapsed ? "Reports" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span className="text-base min-w-[24px] text-center">📋</span>
+                            {!isCollapsed && <span>Reports</span>}
+                        </Link>
                         <Link href="/dashboard/configuration" className="nav-link" title={isCollapsed ? "Routing Config" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span className="text-base min-w-[24px] text-center">⚙️</span>
                             {!isCollapsed && <span>Routing Config</span>}
