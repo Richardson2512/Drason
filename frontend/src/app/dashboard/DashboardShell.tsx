@@ -151,7 +151,7 @@ export default function DashboardShell({
 
             {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
             <div className="relative shrink-0 m-2 z-20" style={{
-                width: isCollapsed ? '70px' : '210px',
+                width: isCollapsed ? '60px' : '190px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             }}>
                 {/* Toggle Button — positioned on wrapper edge, outside aside */}
@@ -196,7 +196,7 @@ export default function DashboardShell({
                         </span>
                     </div>
 
-                    <nav className="flex flex-col gap-2">
+                    <nav className="flex flex-col gap-1">
                         <Link href="/dashboard" className="nav-link" title={isCollapsed ? "Overview" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                             <span className="text-base min-w-[24px] text-center">📊</span>
                             {!isCollapsed && <span>Overview</span>}
@@ -419,7 +419,7 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                <div className="container min-h-full pt-2 pr-4 pb-0 pl-6">
+                <div className="container min-h-full pt-1 pr-3 pb-0 pl-4">
                     <ErrorBoundary>
                         {children}
                     </ErrorBoundary>
@@ -566,15 +566,15 @@ export default function DashboardShell({
 
             <style jsx>{`
         .nav-link {
-          padding: 0.75rem 1rem;
-          border-radius: 12px;
+          padding: 0.5rem 0.75rem;
+          border-radius: 10px;
           color: #4B5563;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           text-decoration: none;
           display: flex;
           align-items: center;
-          gap: 20px;
-          font-size: 0.95rem;
+          gap: 14px;
+          font-size: 0.82rem;
           font-weight: 500;
           border: 1px solid transparent;
         }
