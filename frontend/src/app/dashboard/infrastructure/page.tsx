@@ -45,6 +45,7 @@ export default function InfrastructureHealthPage() {
 
     // ── Score History ──
     const [scoreHistory, setScoreHistory] = useState<Array<{ date: string; score: number }>>([]);
+    const [scoreRange, setScoreRange] = useState<'7' | '30' | '90'>('30');
 
     // ── Warmup Status ──
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
@@ -91,9 +92,15 @@ export default function InfrastructureHealthPage() {
         return () => window.removeEventListener('assessment-complete', handler);
     }, [fetchReport]);
 
-    const fetchScoreHistory = async () => {
+    // Refetch score history when range changes
+    useEffect(() => {
+        fetchScoreHistory(scoreRange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [scoreRange]);
+
+    const fetchScoreHistory = async (days: string = scoreRange) => {
         try {
-            const data = await apiClient<InfraReport[]>('/api/assessment/reports');
+            const data = await apiClient<InfraReport[]>(`/api/assessment/reports?days=${days}`);
             if (data && Array.isArray(data)) {
                 // Deduplicate by day — keep only the latest assessment per day
                 const byDay = new Map<string, number>();
@@ -537,9 +544,26 @@ export default function InfrastructureHealthPage() {
             {/* Score History */}
             {scoreHistory.length > 0 && (
                 <div className="premium-card">
-                    <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                        📈 Score History
-                    </h2>
+                    <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                            📈 Score History
+                        </h2>
+                        <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
+                            {([['7', '7D'], ['30', '30D'], ['90', '90D']] as const).map(([value, label]) => (
+                                <button
+                                    key={value}
+                                    onClick={() => setScoreRange(value as '7' | '30' | '90')}
+                                    className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                                        scoreRange === value
+                                            ? 'bg-white text-gray-900 shadow-sm'
+                                            : 'text-gray-500 hover:text-gray-700'
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <div className="h-[200px]">
                         <ScoreHistory data={scoreHistory} />
                     </div>
