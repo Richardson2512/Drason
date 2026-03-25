@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/cold-email-infrastructure-protection-for-agencies',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-03-18',
+        publishedTime: '2025-12-15',
     },
     alternates: {
         canonical: '/blog/cold-email-infrastructure-protection-for-agencies',
@@ -37,7 +37,8 @@ export default function ColdEmailInfrastructureProtectionArticle() {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/cold-email-infrastructure-protection-for-agencies"
         },
-        "datePublished": "2026-03-18"
+        "datePublished": "2025-12-15",
+        "dateModified": "2026-03-26"
     };
 
     const faqSchema = {

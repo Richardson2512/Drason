@@ -262,6 +262,17 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
             {/* ================= JSON-LD ================= */}
             <DocJsonLd />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com" },
+                        { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://www.superkabe.com/docs" }
+                    ]
+                }) }}
+            />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />

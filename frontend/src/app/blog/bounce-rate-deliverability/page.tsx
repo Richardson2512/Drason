@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/bounce-rate-deliverability',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-02-01',
+        publishedTime: '2025-11-15',
     },
     alternates: {
         canonical: '/blog/bounce-rate-deliverability',
@@ -33,6 +33,8 @@ export default function BounceRateArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-11-15",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/bounce-rate-deliverability"

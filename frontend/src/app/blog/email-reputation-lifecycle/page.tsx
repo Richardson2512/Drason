@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/email-reputation-lifecycle',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-04-01',
+        publishedTime: '2025-12-10',
     },
     alternates: {
         canonical: '/blog/email-reputation-lifecycle',
@@ -33,6 +33,8 @@ export default function EmailReputationArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-12-10",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/email-reputation-lifecycle"

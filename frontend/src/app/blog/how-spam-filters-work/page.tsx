@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/how-spam-filters-work',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-02-27',
+        publishedTime: '2025-11-25',
     },
     alternates: {
         canonical: '/blog/how-spam-filters-work',
@@ -33,6 +33,8 @@ export default function HowSpamFiltersWorkArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-11-25",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/how-spam-filters-work"

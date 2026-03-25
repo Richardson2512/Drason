@@ -100,17 +100,10 @@ export default function RootLayout({
       priceCurrency: 'USD',
     },
     publisher: {
-      '@type': 'Organization',
-      name: 'Superkabe',
-      url: 'https://www.superkabe.com',
+      '@id': 'https://www.superkabe.com/#organization',
     },
     isPartOf: {
       '@id': 'https://www.superkabe.com/#organization',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '150',
     },
   };
 

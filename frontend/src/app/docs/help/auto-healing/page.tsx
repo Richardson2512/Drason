@@ -14,7 +14,26 @@ export const metadata: Metadata = {
 };
 
 export default function AutoHealingPage() {
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How the 5-Phase Healing Pipeline Works in Superkabe",
+        "description": "Step-by-step guide to how Superkabe automatically recovers paused mailboxes through a graduated 5-phase healing pipeline.",
+        "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Pause", "text": "Mailbox is auto-paused when bounce threshold is exceeded. Removed from all campaigns. Cooldown timer starts (24h first offense, 72h second, 7 days third+)." },
+            { "@type": "HowToStep", "position": 2, "name": "Quarantine", "text": "Cooldown expired. System checks domain DNS health — SPF valid, DKIM valid, not blacklisted. Mailbox stays here until domain is clean." },
+            { "@type": "HowToStep", "position": 3, "name": "Restricted Send", "text": "DNS passed. Warmup re-enabled at 10 emails/day. Must complete 15 clean sends with zero bounces (25 for repeat offenders)." },
+            { "@type": "HowToStep", "position": 4, "name": "Warm Recovery", "text": "Volume increases to 50 emails/day with +5/day ramp. Must sustain 3+ days with bounce rate under 2%." },
+            { "@type": "HowToStep", "position": 5, "name": "Healthy", "text": "Full recovery. Mailbox re-added to all production campaigns. Maintenance warmup continues. Resilience score gets +10 bonus." }
+        ]
+    };
+
     return (
+        <>
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
         <div className="prose prose-lg text-gray-700 max-w-none">
             <h1 className="text-5xl font-bold mb-6 text-gray-900">
                 How Auto-Healing Works
@@ -302,5 +321,6 @@ export default function AutoHealingPage() {
                 </div>
             </div>
         </div>
+        </>
     );
 }

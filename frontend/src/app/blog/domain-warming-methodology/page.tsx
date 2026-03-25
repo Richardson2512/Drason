@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/domain-warming-methodology',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-03-01',
+        publishedTime: '2025-11-20',
     },
     alternates: {
         canonical: '/blog/domain-warming-methodology',
@@ -33,6 +33,8 @@ export default function DomainWarmingArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-11-20",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/domain-warming-methodology"

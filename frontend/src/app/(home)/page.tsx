@@ -180,8 +180,11 @@ export default function LandingPage() {
                     url: "https://www.superkabe.com",
                     description: "Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.",
                     publisher: {
-                        "@type": "Organization",
-                        name: "Superkabe"
+                        "@id": "https://www.superkabe.com/#organization"
+                    },
+                    speakable: {
+                        "@type": "SpeakableSpecification",
+                        cssSelector: ["h1", ".page-subtitle", ".faq-section"]
                     }
                 })
             }} />
@@ -236,9 +239,9 @@ export default function LandingPage() {
             <section className="relative pt-32 md:pt-36 pb-20 text-center z-10">
                 <div className="relative z-10 max-w-5xl mx-auto px-6">
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-extrabold leading-[0.95] tracking-tight text-gray-900 mb-5 max-w-5xl mx-auto uppercase">
-                        Email
+                        Email{' '}
                         <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent block">
-                            Deliverability
+                            Deliverability{' '}
                         </span>
                         Protection
                     </h1>

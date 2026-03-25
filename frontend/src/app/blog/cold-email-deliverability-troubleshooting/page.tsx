@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/cold-email-deliverability-troubleshooting',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-03-18',
+        publishedTime: '2025-12-01',
     },
     alternates: {
         canonical: '/blog/cold-email-deliverability-troubleshooting',
@@ -37,7 +37,8 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/cold-email-deliverability-troubleshooting"
         },
-        "datePublished": "2026-03-18"
+        "datePublished": "2025-12-01",
+        "dateModified": "2026-03-26"
     };
 
     const faqSchema = {

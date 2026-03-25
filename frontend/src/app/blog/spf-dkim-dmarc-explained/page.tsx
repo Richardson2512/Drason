@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/spf-dkim-dmarc-explained',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-02-15',
+        publishedTime: '2025-11-10',
     },
     alternates: {
         canonical: '/blog/spf-dkim-dmarc-explained',
@@ -33,6 +33,8 @@ export default function SpfDkimDmarcArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-11-10",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
@@ -42,12 +44,12 @@ export default function SpfDkimDmarcArticle() {
     const howToSchema = {
         "@context": "https://schema.org",
         "@type": "HowTo",
-        "name": "How to Set Up SPF, DKIM, and DMARC for Email Authentication",
+        "name": "How to Configure SPF, DKIM, and DMARC for Email Authentication",
+        "description": "Step-by-step guide to setting up DNS authentication records for outbound email deliverability.",
         "step": [
-            { "@type": "HowToStep", "name": "Configure SPF", "text": "Publish a DNS TXT record listing all authorized sending IPs. Use -all (hard fail) to reject unauthorized senders." },
-            { "@type": "HowToStep", "name": "Configure DKIM", "text": "Generate a public/private key pair. Publish the public key as a DNS TXT record. Configure your mail server to sign outgoing emails with the private key." },
-            { "@type": "HowToStep", "name": "Configure DMARC", "text": "Publish a DMARC DNS record with policy p=quarantine or p=reject. Set rua to receive aggregate authentication reports." },
-            { "@type": "HowToStep", "name": "Verify alignment", "text": "Ensure the From header domain aligns with both SPF and DKIM domains. Send test emails and verify via authentication headers." }
+            { "@type": "HowToStep", "position": 1, "name": "Configure SPF Record", "text": "Add a TXT record to your domain's DNS. The SPF record specifies which mail servers are authorized to send email on behalf of your domain." },
+            { "@type": "HowToStep", "position": 2, "name": "Set Up DKIM Signing", "text": "Generate a DKIM key pair through your email provider. Add the public key as a TXT record in DNS. Your server signs outgoing emails with the private key." },
+            { "@type": "HowToStep", "position": 3, "name": "Publish DMARC Policy", "text": "Add a DMARC TXT record at _dmarc.yourdomain.com. Start with p=none for monitoring, then move to p=quarantine or p=reject after confirming alignment." }
         ]
     };
 

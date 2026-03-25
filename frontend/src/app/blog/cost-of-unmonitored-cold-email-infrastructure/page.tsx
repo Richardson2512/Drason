@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/cost-of-unmonitored-cold-email-infrastructure',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-03-18',
+        publishedTime: '2026-01-10',
     },
     alternates: {
         canonical: '/blog/cost-of-unmonitored-cold-email-infrastructure',
@@ -37,7 +37,8 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/cost-of-unmonitored-cold-email-infrastructure"
         },
-        "datePublished": "2026-03-18"
+        "datePublished": "2026-01-10",
+        "dateModified": "2026-03-26"
     };
 
     const faqSchema = {

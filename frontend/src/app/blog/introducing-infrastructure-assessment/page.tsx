@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         url: '/blog/introducing-infrastructure-assessment',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-03-20',
+        publishedTime: '2026-02-01',
     },
     alternates: {
         canonical: '/blog/introducing-infrastructure-assessment',
@@ -23,7 +23,8 @@ export default function InfrastructureAssessmentPost() {
         "@type": "BlogPosting",
         "headline": "How to assess your outbound email infrastructure before sending your first campaign",
         "description": "Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.",
-        "datePublished": "2024-03-20",
+        "datePublished": "2026-02-01",
+        "dateModified": "2026-03-26",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"

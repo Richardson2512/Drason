@@ -11,8 +11,8 @@ export const metadata: Metadata = {
         url: '/blog/email-deliverability-tools-compared',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-02-27',
-        modifiedTime: '2026-03-18',
+        publishedTime: '2026-01-15',
+        modifiedTime: '2026-03-26',
     },
     alternates: {
         canonical: '/blog/email-deliverability-tools-compared',
@@ -25,8 +25,8 @@ export default function DeliverabilityToolsComparedArticle() {
         "@type": "BlogPosting",
         "headline": "Email deliverability tools compared: testing vs protection for cold email teams (2026)",
         "description": "Side-by-side comparison of deliverability monitoring, testing, and infrastructure protection tools. GlockApps vs MailReach vs Folderly vs Superkabe.",
-        "datePublished": "2026-02-27",
-        "dateModified": "2026-03-18",
+        "datePublished": "2026-01-15",
+        "dateModified": "2026-03-26",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

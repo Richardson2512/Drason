@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: '/blog/real-time-email-infrastructure-monitoring',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2026-03-18',
+        publishedTime: '2026-01-20',
     },
     alternates: {
         canonical: '/blog/real-time-email-infrastructure-monitoring',
@@ -37,7 +37,8 @@ export default function RealTimeMonitoringArticle() {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/real-time-email-infrastructure-monitoring"
         },
-        "datePublished": "2026-03-18"
+        "datePublished": "2026-01-20",
+        "dateModified": "2026-03-26"
     };
 
     const faqSchema = {

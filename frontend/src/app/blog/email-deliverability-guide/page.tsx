@@ -12,7 +12,7 @@ export const metadata: Metadata = {
         url: '/blog/email-deliverability-guide',
         siteName: 'Superkabe',
         type: 'article',
-        publishedTime: '2024-01-15',
+        publishedTime: '2025-11-01',
     },
     alternates: {
         canonical: '/blog/email-deliverability-guide',
@@ -34,6 +34,8 @@ export default function EmailDeliverabilityGuide() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
+        "datePublished": "2025-11-01",
+        "dateModified": "2026-03-26",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/email-deliverability-guide"

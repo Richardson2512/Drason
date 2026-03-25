@@ -42,7 +42,8 @@ export default function SuperkabeVsManualMonitoringArticle() {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/superkabe-vs-manual-monitoring"
         },
-        "datePublished": "2026-03-25"
+        "datePublished": "2026-03-25",
+        "dateModified": "2026-03-26"
     };
 
     const faqSchema = {

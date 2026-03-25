@@ -217,6 +217,19 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-x-hidden">
 
+            {/* ================= JSON-LD ================= */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com" },
+                        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog" }
+                    ]
+                }) }}
+            />
+
             {/* ================= NAVBAR ================= */}
             <Navbar />
 
