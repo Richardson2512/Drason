@@ -70,14 +70,14 @@ export default function Configuration() {
     };
 
     return (
-        <div className="h-[calc(100vh-4rem)] overflow-hidden flex flex-col">
+        <div className="flex flex-col gap-6 pb-8">
             <div className="page-header">
                 <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">Routing Configuration</h1>
                 <div className="text-gray-500 text-lg">Route leads to campaigns across platforms</div>
             </div>
 
             {/* How Routing Works — Collapsible Guide */}
-            <div className="premium-card mb-0">
+            <div className="premium-card">
                 <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer list-none">
                         <div className="flex items-center gap-3">
@@ -171,7 +171,7 @@ export default function Configuration() {
                 </details>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 min-h-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Form */}
                 <div className="premium-card">
                     <h2 className="text-xl font-bold mb-6 text-slate-800">Add New Rule</h2>
@@ -350,7 +350,7 @@ export default function Configuration() {
                 </div>
 
                 {/* Active Rules List */}
-                <div className="premium-card flex flex-col h-full overflow-hidden">
+                <div className="premium-card flex flex-col">
                     <h2 className="text-xl font-bold mb-6 text-slate-800 shrink-0">Active Rules</h2>
                     <div className="flex flex-col gap-3 overflow-y-auto flex-1 pr-2">
                         {rules.map((rule) => {
