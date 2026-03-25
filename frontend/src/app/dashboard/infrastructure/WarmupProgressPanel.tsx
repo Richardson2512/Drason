@@ -5,9 +5,10 @@ interface WarmupProgressPanelProps {
     warmupData: Record<string, any> | null;
     onCheckNow: () => Promise<void>;
     warmupChecking: boolean;
+    checkResult?: { checked: number; graduated: number; errors: number } | null;
 }
 
-export default function WarmupProgressPanel({ warmupData, onCheckNow, warmupChecking }: WarmupProgressPanelProps) {
+export default function WarmupProgressPanel({ warmupData, onCheckNow, warmupChecking, checkResult }: WarmupProgressPanelProps) {
     if (!warmupData || warmupData.totalRecovering <= 0) return null;
 
     return (
@@ -47,6 +48,36 @@ export default function WarmupProgressPanel({ warmupData, onCheckNow, warmupChec
                     </button>
                 </div>
             </div>
+
+            {/* Check Result Banner */}
+            {checkResult && (
+                <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 ${
+                    checkResult.errors > 0
+                        ? 'bg-red-50 border border-red-200 text-red-800'
+                        : checkResult.graduated > 0
+                        ? 'bg-green-50 border border-green-200 text-green-800'
+                        : 'bg-blue-50 border border-blue-200 text-blue-800'
+                }`}>
+                    <span className="text-lg">
+                        {checkResult.errors > 0 ? '⚠️' : checkResult.graduated > 0 ? '🎓' : 'ℹ️'}
+                    </span>
+                    <div>
+                        <div className="font-bold">
+                            {checkResult.errors > 0
+                                ? 'Check completed with errors'
+                                : checkResult.graduated > 0
+                                ? `${checkResult.graduated} mailbox${checkResult.graduated > 1 ? 'es' : ''} graduated!`
+                                : 'No mailboxes ready to graduate yet'
+                            }
+                        </div>
+                        <div className="text-xs opacity-75 mt-0.5">
+                            Checked {checkResult.checked} mailbox{checkResult.checked !== 1 ? 'es' : ''} in the healing pipeline
+                            {checkResult.graduated > 0 && ` · ${checkResult.graduated} moved to next phase`}
+                            {checkResult.errors > 0 && ` · ${checkResult.errors} error${checkResult.errors > 1 ? 's' : ''}`}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {warmupData.avgDaysInRecovery > 0 && (
                 <div className="text-sm text-slate-500 mb-4">

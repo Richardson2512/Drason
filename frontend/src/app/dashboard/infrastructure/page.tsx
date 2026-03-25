@@ -51,6 +51,7 @@ export default function InfrastructureHealthPage() {
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
     const [warmupLoading, setWarmupLoading] = useState(false);
     const [warmupChecking, setWarmupChecking] = useState(false);
+    const [warmupCheckResult, setWarmupCheckResult] = useState<{ checked: number; graduated: number; errors: number } | null>(null);
 
     const fetchReport = useCallback(() => {
         setLoading(true);
@@ -159,14 +160,19 @@ export default function InfrastructureHealthPage() {
 
     const handleWarmupCheck = async () => {
         setWarmupChecking(true);
+        setWarmupCheckResult(null);
         try {
-            await apiClient('/api/dashboard/warmup/check', { method: 'POST' });
+            const result = await apiClient<{ checked: number; graduated: number; errors: number }>('/api/dashboard/warmup/check', { method: 'POST' });
+            if (result) setWarmupCheckResult(result);
             await fetchWarmupStatus();
             await fetchRecoveryStatus();
         } catch (err) {
             console.error('Failed to run warmup check:', err);
+            setWarmupCheckResult({ checked: 0, graduated: 0, errors: 1 });
         } finally {
             setWarmupChecking(false);
+            // Auto-dismiss result after 8 seconds
+            setTimeout(() => setWarmupCheckResult(null), 8000);
         }
     };
 
@@ -422,6 +428,7 @@ export default function InfrastructureHealthPage() {
                 warmupData={warmupData}
                 onCheckNow={handleWarmupCheck}
                 warmupChecking={warmupChecking}
+                checkResult={warmupCheckResult}
             />
 
             {/* Info Banner: Score vs Status Explanation */}
