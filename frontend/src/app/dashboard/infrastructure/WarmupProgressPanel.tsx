@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 interface WarmupProgressPanelProps {
     warmupData: Record<string, any> | null;
@@ -55,7 +56,7 @@ export default function WarmupProgressPanel({ warmupData, onCheckNow, warmupChec
 
             {warmupData.estimatedGraduations && warmupData.estimatedGraduations.length > 0 && (
                 <div className="flex flex-col gap-2">
-                    {(warmupData.estimatedGraduations as Array<Record<string, any>>).map((est) => {
+                    {(warmupData.estimatedGraduations as Array<Record<string, any>>).slice(0, 5).map((est) => {
                         const progress = est.targetProgress > 0 ? Math.min(100, (est.currentProgress / est.targetProgress) * 100) : 0;
                         const phaseLabel = est.recoveryPhase === 'quarantine' ? 'Quarantine' :
                             est.recoveryPhase === 'restricted_send' ? 'Restricted Send' : 'Warm Recovery';
@@ -94,6 +95,14 @@ export default function WarmupProgressPanel({ warmupData, onCheckNow, warmupChec
                             </div>
                         );
                     })}
+                    {(warmupData.estimatedGraduations as Array<Record<string, any>>).length > 5 && (
+                        <Link
+                            href="/dashboard/mailboxes?status=quarantine,restricted_send,warm_recovery"
+                            className="mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                        >
+                            View all {(warmupData.estimatedGraduations as Array<Record<string, any>>).length} mailboxes in warmup &rarr;
+                        </Link>
+                    )}
                 </div>
             )}
         </div>
