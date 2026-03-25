@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const PHASE_CONFIG: Record<string, { label: string; color: string; bg: string; border: string; progress: number }> = {
     paused: { label: 'Paused', color: '#991B1B', bg: '#FEF2F2', border: '#FECACA', progress: 0 },
@@ -240,7 +241,7 @@ export default function RecoveryStatusPanel({ recoveryData }: RecoveryStatusPane
                         Mailboxes
                     </div>
                     <div className="flex flex-col gap-2">
-                        {(recoveryData.mailboxes as Array<Record<string, any>>).map((mb) => {
+                        {(recoveryData.mailboxes as Array<Record<string, any>>).slice(0, 5).map((mb) => {
                             const bounceRate = mb.total_sent_count > 0
                                 ? mb.hard_bounce_count / mb.total_sent_count
                                 : undefined;
@@ -261,6 +262,14 @@ export default function RecoveryStatusPanel({ recoveryData }: RecoveryStatusPane
                             );
                         })}
                     </div>
+                    {(recoveryData.mailboxes as Array<Record<string, any>>).length > 5 && (
+                        <Link
+                            href="/dashboard/mailboxes?status=quarantine,restricted_send,warm_recovery,paused"
+                            className="mt-3 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                        >
+                            View all {(recoveryData.mailboxes as Array<Record<string, any>>).length} mailboxes in recovery &rarr;
+                        </Link>
+                    )}
                 </div>
             )}
 
@@ -270,7 +279,7 @@ export default function RecoveryStatusPanel({ recoveryData }: RecoveryStatusPane
                         Domains
                     </div>
                     <div className="flex flex-col gap-2">
-                        {(recoveryData.domains as Array<Record<string, any>>).map((d) => (
+                        {(recoveryData.domains as Array<Record<string, any>>).slice(0, 5).map((d) => (
                             <RecoveryEntityRow
                                 key={d.id}
                                 label={d.domain}
@@ -285,6 +294,14 @@ export default function RecoveryStatusPanel({ recoveryData }: RecoveryStatusPane
                             />
                         ))}
                     </div>
+                    {(recoveryData.domains as Array<Record<string, any>>).length > 5 && (
+                        <Link
+                            href="/dashboard/domains?status=quarantine,paused"
+                            className="mt-3 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                        >
+                            View all {(recoveryData.domains as Array<Record<string, any>>).length} domains in recovery &rarr;
+                        </Link>
+                    )}
                 </div>
             )}
         </div>

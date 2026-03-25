@@ -38,7 +38,9 @@ export function middleware(request: NextRequest) {
         pathname.startsWith('/docs') ||
         pathname.startsWith('/product') ||
         pathname === '/infrastructure-playbook' ||
-        pathname === '/open-source';
+        pathname === '/open-source' ||
+        pathname === '/contact' ||
+        pathname === '/release-notes';
 
     // 3. Authenticated users trying to access login/signup -> Redirect to Dashboard
     if (token && (pathname === '/login' || pathname === '/signup')) {
