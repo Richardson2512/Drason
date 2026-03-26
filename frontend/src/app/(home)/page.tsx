@@ -476,6 +476,175 @@ export default function LandingPage() {
                 </div>
             </section>
 
+            {/* ================= INTEGRATIONS SECTION ================= */}
+            <section className="py-10 lg:py-16 px-6 relative z-10">
+                <div className="max-w-6xl mx-auto">
+                    <div className="bg-white/80 backdrop-blur-xl rounded-[2rem] p-10 md:p-16 border border-gray-100 shadow-xl shadow-blue-500/5">
+
+                        {/* Header */}
+                        <div className="text-center mb-12">
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase mb-6 border border-blue-100">
+                                <span>6+ Integrations</span>
+                            </div>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+                                Connects to your entire outbound stack
+                            </h2>
+                            <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                                Superkabe plugs into the tools you already use. No migration, no rip-and-replace. Connect your sending platform, enrich leads from Clay, and get alerts in Slack — all in under 5 minutes.
+                            </p>
+                        </div>
+
+                        {/* Integration Cards Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+
+                            {/* Smartlead */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/smartlead.webp" alt="Smartlead" width={36} height={36} className="object-contain" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Smartlead</div>
+                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Real-time webhook sync for bounces, opens, and replies. Auto-pause campaigns, remove/add mailboxes, and push leads via API.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">Webhook Sync</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">API Mutations</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">CSV Export</span>
+                                </div>
+                            </div>
+
+                            {/* Instantly */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/instantly.png" alt="Instantly" width={36} height={36} className="object-contain" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Instantly</div>
+                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Full campaign sync via API v2 with Bearer auth. Pause/resume campaigns, manage account-campaign mappings, and track per-mailbox analytics.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">API v2</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Bearer Auth</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Analytics</span>
+                                </div>
+                            </div>
+
+                            {/* EmailBison */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-teal-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/emailbison.png" alt="EmailBison" width={36} height={36} className="object-contain" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">EmailBison</div>
+                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Campaign and sender-email sync with warmup control. Attach/remove mailboxes from campaigns and manage leads across sequences.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">REST API</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Warmup Control</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Lead Mgmt</span>
+                                </div>
+                            </div>
+
+                            {/* Clay */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-orange-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/clay.png" alt="Clay" width={36} height={36} className="object-contain" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Clay</div>
+                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Webhook ingestion for enriched leads. Clay pushes leads to Superkabe, where they get validated, health-gated, and routed to the right campaign automatically.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Webhook</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Lead Routing</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Auto-Validation</span>
+                                </div>
+                            </div>
+
+                            {/* Slack */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-yellow-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/slack-icon.svg" alt="Slack" width={36} height={36} className="object-contain" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Slack</div>
+                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Real-time alerts for every infrastructure event. Mailbox paused, domain blacklisted, campaign stopped, healing milestones — all in your Slack channel.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Alerts</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Real-Time</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Configurable</span>
+                                </div>
+                            </div>
+
+                            {/* Reply.io */}
+                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-pink-200 transition-all duration-300">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Image src="/replyio.png" alt="Reply.io" width={36} height={36} className="object-contain bg-white" />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-gray-900">Reply.io</div>
+                                        <div className="text-xs text-blue-600 font-semibold">Coming Soon</div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Campaign and mailbox monitoring for Reply.io users. Same protection layer — different sending platform. Currently in development.
+                                </p>
+                                <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Planned</span>
+                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Q2 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Bottom row: How it connects */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-gray-100">
+                            <div className="text-center">
+                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">1</div>
+                                <div className="font-bold text-gray-900 mb-1 text-sm">Connect in 2 clicks</div>
+                                <p className="text-xs text-gray-500">Paste your API key. Superkabe syncs campaigns, mailboxes, and leads automatically.</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">2</div>
+                                <div className="font-bold text-gray-900 mb-1 text-sm">Bi-directional sync</div>
+                                <p className="text-xs text-gray-500">Webhooks push real-time events to Superkabe. API mutations push actions back to your platform.</p>
+                            </div>
+                            <div className="text-center">
+                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">3</div>
+                                <div className="font-bold text-gray-900 mb-1 text-sm">Zero downtime</div>
+                                <p className="text-xs text-gray-500">Your sending platform keeps working exactly as before. Superkabe adds the protection layer on top.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* ================= FEATURES GRID ================= */}
             <section className="py-10 lg:py-16 px-6 relative z-10">
                 <div className="max-w-6xl mx-auto">
