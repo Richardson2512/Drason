@@ -326,18 +326,17 @@ interface PricingCardProps {
 }
 
 function PricingCard({ tier, tierKey, description, price, period, features, bestFor, ctaText = "Get started", featured = false, isLoggedIn, router }: PricingCardProps) {
+    const [showContactModal, setShowContactModal] = useState(false);
+
     const handleCTAClick = () => {
         if (tierKey === 'enterprise') {
-            // For enterprise, always go to contact/sales page
-            window.location.href = 'mailto:sales@superkabe.com?subject=Enterprise Plan Inquiry';
+            setShowContactModal(true);
             return;
         }
 
         if (isLoggedIn) {
-            // Logged in: go to settings page (where billing section is) with upgrade parameter
             router.push(`/dashboard/settings?upgrade=${tierKey}`);
         } else {
-            // Not logged in: go to signup with plan parameter
             router.push(`/signup?plan=${tierKey}`);
         }
     };
@@ -409,6 +408,49 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
             >
                 {ctaText}
             </button>
+
+            {/* Enterprise Contact Modal */}
+            {showContactModal && (
+                <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center" onClick={() => setShowContactModal(false)}>
+                    <div className="bg-white rounded-2xl p-8 max-w-sm w-[90%] shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <div className="text-center mb-6">
+                            <div className="text-3xl mb-3">🤝</div>
+                            <h3 className="text-xl font-bold text-gray-900">Contact Sales</h3>
+                            <p className="text-sm text-gray-500 mt-2">How would you like to reach us?</p>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <a
+                                href="mailto:richardson@superkabe.com?subject=Enterprise%20Plan%20Inquiry"
+                                className="flex items-center gap-3 w-full px-5 py-4 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors text-left group"
+                            >
+                                <span className="text-2xl">📧</span>
+                                <div>
+                                    <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Send an Email</div>
+                                    <div className="text-xs text-gray-500">richardson@superkabe.com</div>
+                                </div>
+                            </a>
+                            <a
+                                href="https://cal.com/richardson-eugin-simon-qzmevd/30min"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3 w-full px-5 py-4 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors text-left group"
+                            >
+                                <span className="text-2xl">📅</span>
+                                <div>
+                                    <div className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">Book a Meeting</div>
+                                    <div className="text-xs text-gray-500">30-min call via Cal.com</div>
+                                </div>
+                            </a>
+                        </div>
+                        <button
+                            onClick={() => setShowContactModal(false)}
+                            className="w-full mt-4 py-2.5 text-sm text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
