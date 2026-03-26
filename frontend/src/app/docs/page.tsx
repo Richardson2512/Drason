@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { ArrowRight, Shield, Activity, GitBranch, TrendingUp, Settings, Zap, Plug, Database } from 'lucide-react';
+import { Shield, Activity, GitBranch, TrendingUp, Settings, Zap, Plug, Database, BookOpen, AlertTriangle, Heart, BarChart3, Mail, HelpCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Documentation | Superkabe',
@@ -49,99 +49,60 @@ export default function DocsPage() {
                 </p>
             </div>
 
-            {/* Quick Start Grid */}
-            <h2 className="text-3xl font-bold mb-8 text-gray-900">Documentation Topics</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-                <DocCard
-                    href="/docs/getting-started"
-                    icon={<Zap className="text-blue-600" size={24} />}
-                    title="Getting Started"
-                    description="Set up your first campaign and integrate with Clay & your sending platform"
-                />
-                <DocCard
-                    href="/docs/platform-rules"
-                    icon={<Shield className="text-blue-600" size={24} />}
-                    title="Platform Rules"
-                    description="System modes, thresholds, and enforcement mechanisms"
-                />
-                <DocCard
-                    href="/docs/help/24-7-monitoring"
-                    icon={<Zap className="text-green-600" size={24} />}
-                    title="24/7 Monitoring"
-                    description="Automated background syncing and real-time protection running 24/7"
-                />
-                <DocCard
-                    href="/docs/monitoring"
-                    icon={<Activity className="text-blue-600" size={24} />}
-                    title="Monitoring System"
-                    description="Tiered thresholds, sliding windows, and ratio-based domain protection"
-                />
-                <DocCard
-                    href="/docs/execution-gate"
-                    icon={<GitBranch className="text-blue-600" size={24} />}
-                    title="Execution Gate"
-                    description="Gate checks, failure classification, and retry logic"
-                />
-                <DocCard
-                    href="/docs/risk-scoring"
-                    icon={<TrendingUp className="text-blue-600" size={24} />}
-                    title="Risk Scoring"
-                    description="Hard vs soft signals and risk component separation"
-                />
-                <DocCard
-                    href="/docs/state-machine"
-                    icon={<GitBranch className="text-blue-600" size={24} />}
-                    title="State Machine"
-                    description="Mailbox states, domain states, and valid transitions"
-                />
-                <DocCard
-                    href="/docs/configuration"
-                    icon={<Settings className="text-blue-600" size={24} />}
-                    title="Configuration"
-                    description="Threshold tuning and integration setup"
-                />
-                <DocCard
-                    href="/docs/api-integration"
-                    icon={<Plug className="text-blue-600" size={24} />}
-                    title="API Integration"
-                    description="Webhooks, endpoints, and direct ingestion APIs"
-                />
-                <DocCard
-                    href="/docs/clay-integration"
-                    icon={<Database className="text-blue-600" size={24} />}
-                    title="Clay Integration"
-                    description="Connect Clay tables with Superkabe for lead routing"
-                />
-                <DocCard
-                    href="/docs/smartlead-integration"
-                    icon={<Activity className="text-blue-600" size={24} />}
-                    title="Smartlead Integration"
-                    description="Monitor campaigns and sync mailboxes from Smartlead"
-                />
-                <DocCard
-                    href="/docs/instantly-integration"
-                    icon={<Zap className="text-orange-500" size={24} />}
-                    title="Instantly Integration"
-                    description="Sync Instantly campaigns, track per-mailbox stats, and enable real-time bounce protection"
-                />
-                <DocCard
-                    href="/docs/data-sync-coverage"
-                    icon={<Database className="text-blue-600" size={24} />}
-                    title="Data Sync Coverage"
-                    description="What data Superkabe can sync from each platform, what it cannot, and why"
-                />
-                <DocCard
-                    href="/docs/warmup-recovery"
-                    icon={<Activity className="text-green-600" size={24} />}
-                    title="Warmup Recovery System"
-                    description="Automated mailbox healing through graduated recovery phases"
-                />
-                <DocCard
-                    href="/docs/deployment"
-                    icon={<Settings className="text-purple-600" size={24} />}
-                    title="Deployment Checklist"
-                    description="Production deployment steps and verification procedures"
-                />
+            {/* Getting Started */}
+            <h2 className="text-3xl font-bold mb-6 text-gray-900">Getting Started</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+                <DocCard href="/docs/getting-started" icon={<Zap className="text-blue-600" size={24} />} title="Quick Start Guide" description="Set up your account, connect platforms, and start protecting infrastructure" />
+                <DocCard href="/docs/configuration" icon={<Settings className="text-blue-600" size={24} />} title="Configuration" description="Threshold tuning, system modes, and integration setup" />
+                <DocCard href="/docs/infrastructure-assessment" icon={<BarChart3 className="text-blue-600" size={24} />} title="Infrastructure Assessment" description="Automated health check on onboarding — DNS, bounce rate, connection validation" />
+                <DocCard href="/docs/deployment" icon={<Settings className="text-purple-600" size={24} />} title="Deployment Checklist" description="Production deployment steps and verification procedures" />
+            </div>
+
+            {/* Core Systems */}
+            <h2 className="text-3xl font-bold mb-6 text-gray-900">Core Systems</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+                <DocCard href="/docs/monitoring" icon={<Activity className="text-blue-600" size={24} />} title="Monitoring System" description="60-second health checks, tiered thresholds, sliding windows, and auto-pause logic" />
+                <DocCard href="/docs/execution-gate" icon={<GitBranch className="text-blue-600" size={24} />} title="Execution Gate" description="GREEN/YELLOW/RED lead classification and pre-send validation" />
+                <DocCard href="/docs/risk-scoring" icon={<TrendingUp className="text-blue-600" size={24} />} title="Risk Scoring" description="Bounce rate, engagement, and infrastructure signals combined into risk scores" />
+                <DocCard href="/docs/state-machine" icon={<GitBranch className="text-blue-600" size={24} />} title="State Machine" description="Entity lifecycle states and valid transitions for mailboxes, domains, and leads" />
+                <DocCard href="/docs/warmup-recovery" icon={<Heart className="text-green-600" size={24} />} title="Warmup & Recovery" description="5-phase healing pipeline and automated mailbox rehabilitation" />
+                <DocCard href="/docs/platform-rules" icon={<Shield className="text-blue-600" size={24} />} title="Platform Rules" description="System modes (observe/suggest/enforce), thresholds, and enforcement mechanisms" />
+                <DocCard href="/docs/technical-architecture" icon={<Database className="text-blue-600" size={24} />} title="Technical Architecture" description="System design, data flow, and infrastructure overview" />
+                <DocCard href="/docs/data-sync-coverage" icon={<Database className="text-gray-600" size={24} />} title="Data Sync Coverage" description="What data syncs from each platform and what starts at zero" />
+            </div>
+
+            {/* Integrations */}
+            <h2 className="text-3xl font-bold mb-6 text-gray-900">Integrations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+                <DocCard href="/docs/smartlead-integration" icon={<Mail className="text-blue-600" size={24} />} title="Smartlead Integration" description="API key setup, webhook config, campaign sync, and bounce monitoring" />
+                <DocCard href="/docs/instantly-integration" icon={<Zap className="text-orange-500" size={24} />} title="Instantly Integration" description="API v2 sync, campaign management, and per-mailbox analytics" />
+                <DocCard href="/docs/emailbison-integration" icon={<Mail className="text-teal-600" size={24} />} title="EmailBison Integration" description="Campaign sync, sender-email management, and warmup control" />
+                <DocCard href="/docs/clay-integration" icon={<Database className="text-orange-600" size={24} />} title="Clay Integration" description="Webhook ingestion for enriched leads with automatic validation and routing" />
+                <DocCard href="/docs/slack-integration" icon={<AlertTriangle className="text-yellow-600" size={24} />} title="Slack Integration" description="Real-time infrastructure alerts delivered to your Slack workspace" />
+                <DocCard href="/docs/api-integration" icon={<Plug className="text-blue-600" size={24} />} title="API Integration" description="REST API reference for programmatic lead ingestion and platform access" />
+                <DocCard href="/docs/multi-platform-sync" icon={<Activity className="text-purple-600" size={24} />} title="Multi-Platform Sync" description="How Superkabe syncs across Smartlead, Instantly, and EmailBison simultaneously" />
+            </div>
+
+            {/* Help Center */}
+            <h2 className="text-3xl font-bold mb-6 text-gray-900">Help Center</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+                <DocCard href="/docs/help/email-validation" icon={<HelpCircle className="text-green-600" size={20} />} title="Email Validation" description="How the hybrid validation layer works — internal checks + MillionVerifier API" />
+                <DocCard href="/docs/help/auto-healing" icon={<HelpCircle className="text-green-600" size={20} />} title="Auto-Healing Pipeline" description="5-phase recovery: pause → quarantine → restricted → warm → healthy" />
+                <DocCard href="/docs/help/quarantine" icon={<HelpCircle className="text-amber-600" size={20} />} title="Why Is My Mailbox In Quarantine?" description="DNS health check phase — what keeps you stuck and how to fix it" />
+                <DocCard href="/docs/help/mailbox-rotation" icon={<HelpCircle className="text-blue-600" size={20} />} title="Mailbox Rotation" description="Automatic standby mailbox swapping when a sender is paused" />
+                <DocCard href="/docs/help/entity-statuses" icon={<HelpCircle className="text-blue-600" size={20} />} title="Status Labels Explained" description="Every status across mailboxes, domains, campaigns, and leads" />
+                <DocCard href="/docs/help/bounce-classification" icon={<HelpCircle className="text-red-600" size={20} />} title="Bounce Classification" description="Hard, soft, and transient bounces — what each means for your reputation" />
+                <DocCard href="/docs/help/load-balancing" icon={<HelpCircle className="text-blue-600" size={20} />} title="Load Balancing" description="Effective load calculation and mailbox distribution" />
+                <DocCard href="/docs/help/optimization-suggestions" icon={<HelpCircle className="text-blue-600" size={20} />} title="Optimization Suggestions" description="What/Why/How recommendations for rebalancing infrastructure" />
+                <DocCard href="/docs/help/campaign-paused" icon={<HelpCircle className="text-red-600" size={20} />} title="Why Is My Campaign Paused?" description="Auto-pause when all mailboxes are unhealthy — how to resume" />
+                <DocCard href="/docs/help/connection-errors" icon={<HelpCircle className="text-red-600" size={20} />} title="Connection Errors" description="Troubleshoot SMTP/IMAP failures, OAuth expiry, and disconnects" />
+                <DocCard href="/docs/help/infrastructure-score-explained" icon={<HelpCircle className="text-blue-600" size={20} />} title="Infrastructure Score" description="How the composite health score is calculated from DNS, bounces, and engagement" />
+                <DocCard href="/docs/help/24-7-monitoring" icon={<HelpCircle className="text-green-600" size={20} />} title="24/7 Monitoring" description="Automated background syncing and continuous health checks" />
+                <DocCard href="/docs/help/notifications" icon={<HelpCircle className="text-blue-600" size={20} />} title="Notifications" description="Alert types, severity levels, and configuration" />
+                <DocCard href="/docs/help/audit-logs" icon={<HelpCircle className="text-gray-600" size={20} />} title="Audit Logs" description="Full action history — pauses, resumes, rotations, and automated decisions" />
+                <DocCard href="/docs/help/analytics" icon={<HelpCircle className="text-blue-600" size={20} />} title="Analytics" description="Open rate, click rate, reply rate, bounce rate trends" />
+                <DocCard href="/docs/help/billing" icon={<HelpCircle className="text-gray-600" size={20} />} title="Billing" description="Manage your plan, billing, and subscription" />
+                <DocCard href="/docs/help/account-management" icon={<HelpCircle className="text-gray-600" size={20} />} title="Account Management" description="Account settings, team, and organization" />
             </div>
 
             {/* Core Principles - Gradient Card (Matching Landing) */}
