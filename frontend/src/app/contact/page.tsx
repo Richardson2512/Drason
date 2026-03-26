@@ -107,7 +107,7 @@ export default function ContactPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <div className="relative pt-32 md:pt-36 pb-16 md:pb-20 text-center px-4 md:px-6">
+            <div className="relative pt-32 md:pt-36 pb-10 md:pb-12 text-center px-4 md:px-6">
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="cloud-bg">
                         <div className="cloud-shadow" />
