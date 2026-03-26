@@ -204,6 +204,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             'case-study-domain-recovery',
             'case-study-bounce-reduction',
             'case-study-infrastructure-protection',
+            'email-validation-infrastructure-protection',
         ].map(slug => ({
             url: `${BASE_URL}/product/${slug}`,
             lastModified: productMtime,
