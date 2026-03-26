@@ -81,16 +81,14 @@ export default function AdminConsole() {
         setError(null);
         try {
             // apiClient unwraps { success, data } → returns data
-            // But platformStats is a sibling field, so fetch raw
-            const token = document.cookie.split('; ').find(c => c.startsWith('token='))?.split('=')[1];
-            const res = await fetch('/api/admin/organizations', {
-                credentials: 'include',
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
-            });
-            const json = await res.json();
-            if (json.success && Array.isArray(json.data)) {
-                setOrgs(json.data);
-                if (json.platformStats) setPlatformStats(json.platformStats);
+            // data = { organizations: [...], platformStats: {...} }
+            const result = await apiClient<{ organizations: OrgSummary[]; platformStats: PlatformStats }>('/api/admin/organizations');
+            if (result && Array.isArray(result.organizations)) {
+                setOrgs(result.organizations);
+                if (result.platformStats) setPlatformStats(result.platformStats);
+            } else if (Array.isArray(result)) {
+                // Fallback for old response format
+                setOrgs(result as unknown as OrgSummary[]);
             } else {
                 setError('Failed to load organizations');
             }
