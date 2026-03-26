@@ -25,11 +25,13 @@ interface ImpactReport {
         mailboxesPaused: number; mailboxesHealed: number; leadsBlocked: number;
         leadsValidated: number; invalidLeadsBlocked: number; campaignsPaused: number; domainsPaused: number;
     };
-    bounceStats: { totalHardBounces: number; totalSoftBounces: number };
-    inRecovery: number;
-    healthDistribution: { status: string; _count: number }[];
-    domainHealthDistribution: { status: string; _count: number }[];
-    leadDistribution: { status: string; _count: number }[];
+    bounceStats: { totalHardBounces: number; totalWindowBounces: number };
+    healing: { inRecovery: number };
+    healthDistribution: {
+        mailboxes: { status: string; count: number }[];
+        domains: { status: string; count: number }[];
+        leads: { status: string; count: number }[];
+    };
     recentActions: { id: string; entity: string; entity_id: string; action: string; trigger: string; details: string; timestamp: string }[];
 }
 
@@ -122,22 +124,23 @@ export default function AdminConsole() {
     const tierStyle = (tier: string) => TIER_COLORS[tier] || TIER_COLORS.trial;
 
     // Health bar component
-    const HealthBar = ({ data, label }: { data: { status: string; _count: number }[]; label: string }) => {
-        const total = data.reduce((s, d) => s + d._count, 0);
+    const HealthBar = ({ data, label }: { data: { status: string; count: number }[]; label: string }) => {
+        if (!Array.isArray(data) || data.length === 0) return null;
+        const total = data.reduce((s, d) => s + d.count, 0);
         if (total === 0) return null;
         return (
             <div>
                 <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">{label}</div>
                 <div className="flex h-6 rounded-lg overflow-hidden">
                     {data.map(d => (
-                        <div key={d.status} style={{ width: `${(d._count / total) * 100}%`, backgroundColor: STATUS_COLORS[d.status] || '#9ca3af' }} title={`${d.status}: ${d._count}`} />
+                        <div key={d.status} style={{ width: `${(d.count / total) * 100}%`, backgroundColor: STATUS_COLORS[d.status] || '#9ca3af' }} title={`${d.status}: ${d.count}`} />
                     ))}
                 </div>
                 <div className="flex flex-wrap gap-3 mt-2">
                     {data.map(d => (
                         <div key={d.status} className="flex items-center gap-1.5 text-xs text-gray-600">
                             <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: STATUS_COLORS[d.status] || '#9ca3af' }} />
-                            {d.status}: <strong>{d._count}</strong>
+                            {d.status}: <strong>{d.count}</strong>
                         </div>
                     ))}
                 </div>
@@ -308,7 +311,7 @@ export default function AdminConsole() {
                                                 { label: 'Campaigns Paused', value: report.protectionActions.campaignsPaused, icon: '🚫' },
                                                 { label: 'Domains Paused', value: report.protectionActions.domainsPaused, icon: '🌐' },
                                                 { label: 'Leads Blocked', value: report.protectionActions.leadsBlocked, icon: '🛡️' },
-                                                { label: 'Currently In Recovery', value: report.inRecovery, icon: '🔄' },
+                                                { label: 'Currently In Recovery', value: report.healing.inRecovery, icon: '🔄' },
                                             ].map(a => (
                                                 <div key={a.label} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
                                                     <span className="text-sm text-gray-400 flex items-center gap-2"><span>{a.icon}</span>{a.label}</span>
@@ -327,8 +330,8 @@ export default function AdminConsole() {
                                                     <div className="text-xs text-gray-500">Hard Bounces Caught</div>
                                                 </div>
                                                 <div>
-                                                    <div className="text-2xl font-bold text-amber-400">{report.bounceStats.totalSoftBounces}</div>
-                                                    <div className="text-xs text-gray-500">Soft Bounces Detected</div>
+                                                    <div className="text-2xl font-bold text-amber-400">{report.bounceStats.totalWindowBounces}</div>
+                                                    <div className="text-xs text-gray-500">Window Bounces Detected</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -353,13 +356,13 @@ export default function AdminConsole() {
                                 {/* Health Distribution */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5">
-                                        <HealthBar data={report.healthDistribution} label="Mailbox Health" />
+                                        <HealthBar data={report.healthDistribution.mailboxes} label="Mailbox Health" />
                                     </div>
                                     <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5">
-                                        <HealthBar data={report.domainHealthDistribution} label="Domain Health" />
+                                        <HealthBar data={report.healthDistribution.domains} label="Domain Health" />
                                     </div>
                                     <div className="bg-white/[0.03] border border-white/10 rounded-xl p-5">
-                                        <HealthBar data={report.leadDistribution} label="Lead Status" />
+                                        <HealthBar data={report.healthDistribution.leads} label="Lead Status" />
                                     </div>
                                 </div>
 
