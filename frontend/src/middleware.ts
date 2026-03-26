@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
         pathname === '/infrastructure-playbook' ||
         pathname === '/open-source' ||
         pathname === '/contact' ||
-        pathname === '/release-notes';
+        pathname.startsWith('/release-notes');
 
     // Decode role from JWT (without verification — backend handles real auth)
     const jwtPayload = token ? decodeJwtPayload(token) : null;

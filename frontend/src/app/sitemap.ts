@@ -129,6 +129,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.6,
         },
 
+        // ─── Individual Release Notes (auto-generated) ──
+        ...['v1.5.0', 'v1.4.0', 'v1.3.0', 'v1.2.0', 'v1.1.0', 'v1.0.0'].map(slug => ({
+            url: `${BASE_URL}/release-notes/${slug}`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly' as const,
+            priority: 0.5,
+        })),
+
         // ─── Legal ────────────────────────────────────
         {
             url: `${BASE_URL}/privacy`,

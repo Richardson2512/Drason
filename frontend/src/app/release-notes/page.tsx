@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
+import { releaseNotes } from '@/data/releaseNotes';
 
 export const metadata: Metadata = {
     title: 'Release Notes | Superkabe',
@@ -15,76 +16,6 @@ export const metadata: Metadata = {
         type: 'website',
     },
 };
-
-const releases = [
-    {
-        version: '1.5.0',
-        date: 'March 2026',
-        label: 'Latest',
-        features: [
-            'Hybrid email validation layer (syntax, MX, disposable, catch-all + MillionVerifier API)',
-            'Real-time validation activity feed on leads page',
-            'Multi-select filters across all dashboard pages',
-            'Confirmation modals for pause/resume actions',
-            'Load balancing redesign with effective load metric',
-        ],
-    },
-    {
-        version: '1.4.0',
-        date: 'February 2026',
-        label: null,
-        features: [
-            '5-phase healing pipeline (paused \u2192 quarantine \u2192 restricted \u2192 warm \u2192 healthy)',
-            'State machine migration \u2014 single authority for all status changes',
-            'Mailbox rotation with standby mailboxes',
-            'Correlation engine for cross-entity failure detection',
-        ],
-    },
-    {
-        version: '1.3.0',
-        date: 'January 2026',
-        label: null,
-        features: [
-            'Multi-platform support (Smartlead + Instantly + EmailBison)',
-            'Platform adapter pattern',
-            'Risk-aware lead routing (GREEN/YELLOW/RED)',
-            'Slack real-time alerts',
-        ],
-    },
-    {
-        version: '1.2.0',
-        date: 'December 2025',
-        label: null,
-        features: [
-            'Infrastructure assessment on onboarding',
-            'DNS health checks (SPF, DKIM, DMARC)',
-            'Bounce classification (hard/soft/transient)',
-            'Analytics dashboard',
-        ],
-    },
-    {
-        version: '1.1.0',
-        date: 'November 2025',
-        label: null,
-        features: [
-            'Automated bounce management',
-            'Campaign auto-pause when all mailboxes unhealthy',
-            'Audit logging',
-            'Notification system',
-        ],
-    },
-    {
-        version: '1.0.0',
-        date: 'October 2025',
-        label: 'Initial Release',
-        features: [
-            'Initial release',
-            'Smartlead integration',
-            'Real-time monitoring',
-            'Basic bounce tracking',
-        ],
-    },
-];
 
 export default function ReleaseNotesPage() {
     const releaseNotesSchema = {
@@ -104,12 +35,12 @@ export default function ReleaseNotesPage() {
         },
         "mainEntity": {
             "@type": "ItemList",
-            "itemListElement": releases.map((release, index) => ({
+            "itemListElement": releaseNotes.map((release, index) => ({
                 "@type": "ListItem",
                 "position": index + 1,
-                "name": `Superkabe v${release.version} — ${release.date}`,
-                "description": release.features.join('. ') + '.',
-                "url": `https://www.superkabe.com/release-notes#v${release.version}`
+                "name": `Superkabe v${release.version} — ${release.headline}`,
+                "description": release.summary,
+                "url": `https://www.superkabe.com/release-notes/${release.slug}`
             }))
         },
         "mainEntityOfPage": {
@@ -158,15 +89,15 @@ export default function ReleaseNotesPage() {
                         <div className="absolute left-[19px] top-2 bottom-2 w-px bg-gray-200" />
 
                         <div className="space-y-12">
-                            {releases.map((release) => (
-                                <div key={release.version} id={`v${release.version}`} className="relative pl-14">
+                            {releaseNotes.map((release) => (
+                                <div key={release.version} id={release.slug} className="relative pl-14">
                                     {/* Timeline dot */}
                                     <div className="absolute left-[12px] top-1.5 w-[15px] h-[15px] rounded-full border-[3px] border-blue-500 bg-white" />
 
                                     {/* Card */}
-                                    <div className="bg-white rounded-2xl p-8 shadow-sm shadow-gray-200/50 border border-gray-100">
+                                    <div className="bg-white rounded-2xl p-8 shadow-sm shadow-gray-200/50 border border-gray-100 hover:border-blue-200 transition-colors">
                                         {/* Version + Date Row */}
-                                        <div className="flex flex-wrap items-center gap-3 mb-5">
+                                        <div className="flex flex-wrap items-center gap-3 mb-3">
                                             <span className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-600 text-white text-sm font-bold tracking-wide">
                                                 v{release.version}
                                             </span>
@@ -184,15 +115,28 @@ export default function ReleaseNotesPage() {
                                             )}
                                         </div>
 
+                                        {/* Headline */}
+                                        <h2 className="text-xl font-bold text-gray-900 mb-2">{release.headline}</h2>
+                                        <p className="text-sm text-gray-500 mb-5 leading-relaxed">{release.summary}</p>
+
                                         {/* Features */}
-                                        <ul className="space-y-3">
+                                        <ul className="space-y-2 mb-5">
                                             {release.features.map((feature, i) => (
-                                                <li key={i} className="flex items-start gap-3 text-gray-600 leading-relaxed">
-                                                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                                                <li key={i} className="flex items-start gap-3 text-gray-600 text-sm leading-relaxed">
+                                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
                                                     <span>{feature}</span>
                                                 </li>
                                             ))}
                                         </ul>
+
+                                        {/* Read More */}
+                                        <Link
+                                            href={`/release-notes/${release.slug}`}
+                                            className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                                        >
+                                            Read full release notes
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                        </Link>
                                     </div>
                                 </div>
                             ))}
