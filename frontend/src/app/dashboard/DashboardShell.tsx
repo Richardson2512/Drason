@@ -79,12 +79,12 @@ export default function DashboardShell({
         return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
     })();
 
-    // Show upgrade modal for expired/past_due/canceled subscriptions
+    // Show upgrade modal for expired/past_due/canceled subscriptions (skip for super_admin)
     useEffect(() => {
-        if (subscription && ['expired', 'past_due', 'canceled'].includes(subscription.status)) {
+        if (subscription && ['expired', 'past_due', 'canceled'].includes(subscription.status) && userRole !== 'super_admin') {
             setShowUpgradeModal(true);
         }
-    }, [subscription]);
+    }, [subscription, userRole]);
 
     useEffect(() => {
         // Fetch organization info including system_mode
