@@ -157,6 +157,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // ─── Blog (auto-discovered) ───────────────────
         ...discoverRoutes('blog', '/blog', 'weekly', 0.7),
 
+        // ─── Authority Guides (auto-discovered) ──────────
+        ...discoverRoutes('guides', '/guides', 'weekly', 0.9),
+
         // ─── Manifestos & Playbooks ───────────────────
         {
             url: `${BASE_URL}/open-source`,

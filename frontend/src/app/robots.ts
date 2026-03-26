@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const publicAllow = ['/', '/docs/', '/blog/', '/product/', '/infrastructure-playbook', '/pricing', '/open-source', '/privacy', '/terms'];
+const publicAllow = ['/', '/docs/', '/blog/', '/product/', '/guides/', '/infrastructure-playbook', '/pricing', '/open-source', '/privacy', '/terms'];
 const privateDisallow = ['/dashboard/', '/api/', '/login', '/signup', '/onboarding'];
 
 export default function robots(): MetadataRoute.Robots {
