@@ -23,10 +23,17 @@ interface OrgSummary {
 
 interface PlatformStats {
     totalValidations: number;
-    totalApiCalls: number;
+    totalMvApiCalls: number;
     smartleadConnections: number;
     instantlyConnections: number;
     emailbisonConnections: number;
+    apiCalls?: {
+        totalCalls: number;
+        totalLast24h: number;
+        errors: number;
+        byPlatform: Record<string, number>;
+        byPlatformLast24h: Record<string, number>;
+    };
 }
 
 interface ImpactReport {
@@ -349,10 +356,42 @@ export default function AdminConsole() {
                                 <div className="text-[0.6rem] text-gray-500 mt-0.5">Emails Validated</div>
                             </div>
                             <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
-                                <div className="text-xl font-bold text-amber-400">{(platformStats?.totalApiCalls || 0).toLocaleString()}</div>
+                                <div className="text-xl font-bold text-amber-400">{(platformStats?.totalMvApiCalls || 0).toLocaleString()}</div>
                                 <div className="text-[0.6rem] text-gray-500 mt-0.5">MV API Calls</div>
                             </div>
                         </div>
+
+                        {/* Row 5: API Call Tracking */}
+                        {platformStats?.apiCalls && platformStats.apiCalls.totalCalls > 0 && (
+                            <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 mb-6">
+                                <div className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-wide mb-3">Platform API Calls</div>
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                    <div>
+                                        <div className="text-2xl font-bold text-white">{platformStats.apiCalls.totalCalls.toLocaleString()}</div>
+                                        <div className="text-[0.6rem] text-gray-500">Total All-Time</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-bold text-cyan-400">{platformStats.apiCalls.totalLast24h.toLocaleString()}</div>
+                                        <div className="text-[0.6rem] text-gray-500">Last 24 Hours</div>
+                                    </div>
+                                    {Object.entries(platformStats.apiCalls.byPlatform).map(([platform, count]) => (
+                                        <div key={platform}>
+                                            <div className="text-xl font-bold text-gray-300">{count.toLocaleString()}</div>
+                                            <div className="text-[0.6rem] text-gray-500 capitalize">{platform} calls</div>
+                                            {platformStats.apiCalls?.byPlatformLast24h?.[platform] ? (
+                                                <div className="text-[0.5rem] text-cyan-500">{platformStats.apiCalls.byPlatformLast24h[platform]} last 24h</div>
+                                            ) : null}
+                                        </div>
+                                    ))}
+                                    {platformStats.apiCalls.errors > 0 && (
+                                        <div>
+                                            <div className="text-xl font-bold text-red-400">{platformStats.apiCalls.errors.toLocaleString()}</div>
+                                            <div className="text-[0.6rem] text-gray-500">Errors</div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Search + Filters + Sort */}
                         <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 mb-4 flex flex-wrap items-end gap-3">
