@@ -52,7 +52,7 @@ export default function PricingPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <div className="relative pt-32 md:pt-36 pb-24 md:pb-32 text-center px-4 md:px-6">
+            <div className="relative pt-32 md:pt-36 pb-12 text-center px-4 md:px-6">
                 {/* Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="cloud-bg">
@@ -88,7 +88,7 @@ export default function PricingPage() {
             </div>
 
             {/* Pricing Tiers */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 pb-24 md:pb-32 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 pb-10 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     {/* Starter */}
                     <PricingCard

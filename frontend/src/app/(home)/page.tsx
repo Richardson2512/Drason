@@ -669,7 +669,7 @@ export default function LandingPage() {
             </section>
 
             {/* ================= CTA ================= */}
-            <section className="py-16 lg:py-24 px-6 text-center relative z-10">
+            <section className="py-10 lg:py-12 px-6 text-center relative z-10">
                 <div className="relative z-10 container max-w-3xl mx-auto">
                     <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 tracking-tight">
                         Stop Burning Domains. <br />

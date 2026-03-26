@@ -67,7 +67,7 @@ export default function ReleaseNotesPage() {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 pt-32 md:pt-36 pb-24 px-6">
+            <div className="relative z-10 pt-32 md:pt-36 pb-10 px-6">
                 <div className="max-w-3xl mx-auto">
 
                     {/* Page Header */}

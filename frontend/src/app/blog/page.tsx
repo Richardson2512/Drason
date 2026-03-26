@@ -154,7 +154,7 @@ export default function BlogPage() {
             <Navbar />
 
             {/* Hero */}
-            <section className="relative pt-32 md:pt-36 pb-20 text-center">
+            <section className="relative pt-32 md:pt-36 pb-10 text-center">
                 {/* Fixed Background Layer */}
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="cloud-bg">
@@ -180,7 +180,7 @@ export default function BlogPage() {
             </section>
 
             {/* Articles Grid */}
-            <section className="relative z-10 pb-24 px-6">
+            <section className="relative z-10 pb-10 px-6">
                 <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
                     {articles.map((article) => {
                         const Icon = article.icon;

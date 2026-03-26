@@ -118,7 +118,7 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
                 <div className="absolute inset-0 hero-grid" />
             </div>
 
-            <article className="relative z-10 pt-32 md:pt-36 pb-24 px-6">
+            <article className="relative z-10 pt-32 md:pt-36 pb-10 px-6">
                 <div className="max-w-4xl mx-auto">
 
                     {/* Breadcrumb */}

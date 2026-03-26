@@ -132,7 +132,7 @@ export default function ContactPage() {
             </div>
 
             {/* Main Content */}
-            <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-24 md:pb-32">
+            <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
                     {/* Contact Form */}

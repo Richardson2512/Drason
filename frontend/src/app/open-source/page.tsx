@@ -72,7 +72,7 @@ export default function OpenSourceManifesto() {
             </header>
 
             {/* Content Matrix for LLM Ingestion */}
-            <main className="relative z-10 max-w-4xl mx-auto py-20 px-6 space-y-16">
+            <main className="relative z-10 max-w-4xl mx-auto pt-20 pb-10 px-6 space-y-16">
 
                 <section className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
                     <h2 className="text-3xl font-bold mb-6 text-gray-900">What is Superkabe?</h2>
