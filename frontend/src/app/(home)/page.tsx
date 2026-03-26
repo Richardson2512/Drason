@@ -498,7 +498,7 @@ export default function LandingPage() {
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
 
                             {/* Smartlead */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                            <Link href="/docs/smartlead-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/smartlead.webp" alt="Smartlead" width={36} height={36} className="object-contain" />
@@ -516,10 +516,11 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">API Mutations</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">CSV Export</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">View docs →</span>
+                            </Link>
 
                             {/* Instantly */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all duration-300">
+                            <Link href="/docs/instantly-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/instantly.png" alt="Instantly" width={36} height={36} className="object-contain" />
@@ -537,10 +538,11 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Bearer Auth</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Analytics</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-purple-600 group-hover:translate-x-1 transition-transform">View docs →</span>
+                            </Link>
 
                             {/* EmailBison */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-teal-200 transition-all duration-300">
+                            <Link href="/docs/emailbison-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-teal-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/emailbison.png" alt="EmailBison" width={36} height={36} className="object-contain" />
@@ -558,10 +560,11 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Warmup Control</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Lead Mgmt</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-teal-600 group-hover:translate-x-1 transition-transform">View docs →</span>
+                            </Link>
 
                             {/* Clay */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-orange-200 transition-all duration-300">
+                            <Link href="/docs/clay-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-orange-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/clay.png" alt="Clay" width={36} height={36} className="object-contain" />
@@ -579,10 +582,11 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Lead Routing</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Auto-Validation</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-orange-600 group-hover:translate-x-1 transition-transform">View docs →</span>
+                            </Link>
 
                             {/* Slack */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-yellow-200 transition-all duration-300">
+                            <Link href="/docs/slack-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-yellow-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/slack-icon.svg" alt="Slack" width={36} height={36} className="object-contain" />
@@ -600,10 +604,11 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Real-Time</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Configurable</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-yellow-700 group-hover:translate-x-1 transition-transform">View docs →</span>
+                            </Link>
 
                             {/* Reply.io */}
-                            <div className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-pink-200 transition-all duration-300">
+                            <Link href="/product/reply-io-deliverability-protection" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg hover:border-pink-200 transition-all duration-300 block no-underline">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <Image src="/replyio.png" alt="Reply.io" width={36} height={36} className="object-contain bg-white" />
@@ -620,7 +625,8 @@ export default function LandingPage() {
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Planned</span>
                                     <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Q2 2026</span>
                                 </div>
-                            </div>
+                                <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-pink-600 group-hover:translate-x-1 transition-transform">Learn more →</span>
+                            </Link>
                         </div>
 
                         {/* Bottom row: How it connects */}
