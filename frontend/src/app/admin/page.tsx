@@ -16,6 +16,17 @@ interface OrgSummary {
     created_at: string;
     trial_ends_at: string | null;
     _count: { users: number; campaigns: number; mailboxes: number; domains: number; leads: number };
+    platforms: string[];
+    campaignsByPlatform: Record<string, number>;
+    validationStats: { total: number; apiCalls: number };
+}
+
+interface PlatformStats {
+    totalValidations: number;
+    totalApiCalls: number;
+    smartleadConnections: number;
+    instantlyConnections: number;
+    emailbisonConnections: number;
 }
 
 interface ImpactReport {
@@ -59,6 +70,7 @@ export default function AdminConsole() {
     const [reportLoading, setReportLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [csvLoading, setCsvLoading] = useState(false);
+    const [platformStats, setPlatformStats] = useState<PlatformStats | null>(null);
     const [search, setSearch] = useState('');
     const [tierFilter, setTierFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -68,9 +80,20 @@ export default function AdminConsole() {
         setLoading(true);
         setError(null);
         try {
-            const data = await apiClient<OrgSummary[]>('/api/admin/organizations');
-            if (Array.isArray(data)) setOrgs(data);
-            else setError('Failed to load organizations');
+            // apiClient unwraps { success, data } → returns data
+            // But platformStats is a sibling field, so fetch raw
+            const token = document.cookie.split('; ').find(c => c.startsWith('token='))?.split('=')[1];
+            const res = await fetch('/api/admin/organizations', {
+                credentials: 'include',
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+            });
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                setOrgs(json.data);
+                if (json.platformStats) setPlatformStats(json.platformStats);
+            } else {
+                setError('Failed to load organizations');
+            }
         } catch (err: any) {
             if (err?.message?.includes('403') || err?.message?.includes('401')) {
                 setError('Access denied. Super admin role required.');
@@ -281,8 +304,8 @@ export default function AdminConsole() {
                             })}
                         </div>
 
-                        {/* Platform Stats — Row 3: Infrastructure Totals */}
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                        {/* Platform Stats — Row 3: Infrastructure + Platform Connections + Validation */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
                             {[
                                 { label: 'Mailboxes', val: totalMailboxes, color: '#3b82f6' },
                                 { label: 'Domains', val: totalDomains, color: '#8b5cf6' },
@@ -295,6 +318,42 @@ export default function AdminConsole() {
                                     <div className="text-[0.6rem] text-gray-500 mt-0.5">{s.label}</div>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Row 4: Platform Connections + Validation + API */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <img src="/smartlead.webp" alt="" className="w-4 h-4 rounded" />
+                                    <span className="text-[0.6rem] text-gray-500">Smartlead</span>
+                                </div>
+                                <div className="text-xl font-bold text-blue-400">{platformStats?.smartleadConnections || 0}</div>
+                                <div className="text-[0.55rem] text-gray-600">connections</div>
+                            </div>
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <img src="/instantly.png" alt="" className="w-4 h-4 rounded" />
+                                    <span className="text-[0.6rem] text-gray-500">Instantly</span>
+                                </div>
+                                <div className="text-xl font-bold text-purple-400">{platformStats?.instantlyConnections || 0}</div>
+                                <div className="text-[0.55rem] text-gray-600">connections</div>
+                            </div>
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <img src="/emailbison.png" alt="" className="w-4 h-4 rounded" />
+                                    <span className="text-[0.6rem] text-gray-500">EmailBison</span>
+                                </div>
+                                <div className="text-xl font-bold text-teal-400">{platformStats?.emailbisonConnections || 0}</div>
+                                <div className="text-[0.55rem] text-gray-600">connections</div>
+                            </div>
+                            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+                                <div className="text-xl font-bold text-emerald-400">{(platformStats?.totalValidations || 0).toLocaleString()}</div>
+                                <div className="text-[0.6rem] text-gray-500 mt-0.5">Emails Validated</div>
+                            </div>
+                            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                                <div className="text-xl font-bold text-amber-400">{(platformStats?.totalApiCalls || 0).toLocaleString()}</div>
+                                <div className="text-[0.6rem] text-gray-500 mt-0.5">MV API Calls</div>
+                            </div>
                         </div>
 
                         {/* Search + Filters + Sort */}
@@ -383,7 +442,25 @@ export default function AdminConsole() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
+                                        {/* Platform tags */}
+                                        {org.platforms && org.platforms.length > 0 && (
+                                            <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-white/5">
+                                                {org.platforms.map(p => {
+                                                    const pColors: Record<string, string> = { smartlead: '#3b82f6', instantly: '#8b5cf6', emailbison: '#14b8a6' };
+                                                    return (
+                                                        <span key={p} className="px-2 py-0.5 rounded-md text-[0.55rem] font-bold uppercase" style={{ backgroundColor: `${pColors[p] || '#6b7280'}15`, color: pColors[p] || '#6b7280', border: `1px solid ${pColors[p] || '#6b7280'}30` }}>
+                                                            {p}
+                                                        </span>
+                                                    );
+                                                })}
+                                                {org.validationStats.total > 0 && (
+                                                    <span className="px-2 py-0.5 rounded-md text-[0.55rem] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                                        {org.validationStats.total} validated
+                                                    </span>
+                                                )}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
                                             <span className="text-[0.6rem] text-gray-600">Mode: <strong className={org.system_mode === 'enforce' ? 'text-emerald-400' : 'text-amber-400'}>{org.system_mode}</strong></span>
                                             <span className="text-[0.6rem] text-gray-600">Since {new Date(org.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                         </div>
