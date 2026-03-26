@@ -59,6 +59,10 @@ export default function AdminConsole() {
     const [reportLoading, setReportLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [csvLoading, setCsvLoading] = useState(false);
+    const [search, setSearch] = useState('');
+    const [tierFilter, setTierFilter] = useState<string>('all');
+    const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [sortBy, setSortBy] = useState<string>('created_desc');
 
     const fetchOrgs = useCallback(async () => {
         setLoading(true);
@@ -188,51 +192,182 @@ export default function AdminConsole() {
                 )}
 
                 {/* ── ORGANIZATION LIST ── */}
-                {!loading && !error && !selectedOrg && (
+                {!loading && !error && !selectedOrg && (() => {
+                    // Computed stats
+                    const totalOrgs = orgs.length;
+                    const activeTrials = orgs.filter(o => o.subscription_status === 'trialing').length;
+                    const expiredTrials = orgs.filter(o => o.subscription_status === 'expired' || (o.subscription_tier === 'trial' && o.subscription_status !== 'trialing')).length;
+                    const activePaid = orgs.filter(o => o.subscription_status === 'active' && o.subscription_tier !== 'trial').length;
+                    const byTier: Record<string, number> = {};
+                    const byStatus: Record<string, number> = {};
+                    const byMode: Record<string, number> = {};
+                    orgs.forEach(o => {
+                        byTier[o.subscription_tier] = (byTier[o.subscription_tier] || 0) + 1;
+                        byStatus[o.subscription_status] = (byStatus[o.subscription_status] || 0) + 1;
+                        byMode[o.system_mode] = (byMode[o.system_mode] || 0) + 1;
+                    });
+                    const totalMailboxes = orgs.reduce((s, o) => s + o._count.mailboxes, 0);
+                    const totalDomains = orgs.reduce((s, o) => s + o._count.domains, 0);
+                    const totalCampaigns = orgs.reduce((s, o) => s + o._count.campaigns, 0);
+                    const totalLeads = orgs.reduce((s, o) => s + o._count.leads, 0);
+                    const totalUsers = orgs.reduce((s, o) => s + o._count.users, 0);
+
+                    // Filter & sort
+                    const filtered = orgs.filter(o => {
+                        if (tierFilter !== 'all' && o.subscription_tier !== tierFilter) return false;
+                        if (statusFilter !== 'all' && o.subscription_status !== statusFilter) return false;
+                        if (search) {
+                            const q = search.toLowerCase();
+                            return o.name.toLowerCase().includes(q) || o.slug.toLowerCase().includes(q);
+                        }
+                        return true;
+                    }).sort((a, b) => {
+                        switch (sortBy) {
+                            case 'created_desc': return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                            case 'created_asc': return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+                            case 'name_asc': return a.name.localeCompare(b.name);
+                            case 'name_desc': return b.name.localeCompare(a.name);
+                            case 'mailboxes': return b._count.mailboxes - a._count.mailboxes;
+                            case 'leads': return b._count.leads - a._count.leads;
+                            case 'campaigns': return b._count.campaigns - a._count.campaigns;
+                            default: return 0;
+                        }
+                    });
+
+                    const uniqueTiers = [...new Set(orgs.map(o => o.subscription_tier))];
+                    const uniqueStatuses = [...new Set(orgs.map(o => o.subscription_status))];
+
+                    return (
                     <>
                         <div className="mb-6">
-                            <h1 className="text-2xl font-bold text-white">Organizations</h1>
-                            <p className="text-sm text-gray-500 mt-1">{orgs.length} customer{orgs.length !== 1 ? 's' : ''} across the platform</p>
+                            <h1 className="text-2xl font-bold text-white">Admin Console</h1>
+                            <p className="text-sm text-gray-500 mt-1">Internal platform overview and customer management</p>
                         </div>
 
-                        {/* Summary Cards */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        {/* Platform Stats — Row 1: Key Business Metrics */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
                             <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                <div className="text-2xl font-bold text-white">{orgs.length}</div>
-                                <div className="text-xs text-gray-500 mt-1">Organizations</div>
+                                <div className="text-2xl font-bold text-white">{totalOrgs}</div>
+                                <div className="text-[0.65rem] text-gray-500 mt-1">Total Customers</div>
                             </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                <div className="text-2xl font-bold text-white">{orgs.reduce((s, o) => s + o._count.mailboxes, 0)}</div>
-                                <div className="text-xs text-gray-500 mt-1">Total Mailboxes</div>
+                            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
+                                <div className="text-2xl font-bold text-emerald-400">{activeTrials}</div>
+                                <div className="text-[0.65rem] text-gray-500 mt-1">Active Trials</div>
                             </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                <div className="text-2xl font-bold text-white">{orgs.reduce((s, o) => s + o._count.domains, 0)}</div>
-                                <div className="text-xs text-gray-500 mt-1">Total Domains</div>
+                            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+                                <div className="text-2xl font-bold text-red-400">{expiredTrials}</div>
+                                <div className="text-[0.65rem] text-gray-500 mt-1">Expired Trials</div>
                             </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                <div className="text-2xl font-bold text-white">{orgs.reduce((s, o) => s + o._count.leads, 0).toLocaleString()}</div>
-                                <div className="text-xs text-gray-500 mt-1">Total Leads</div>
+                            <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+                                <div className="text-2xl font-bold text-blue-400">{activePaid}</div>
+                                <div className="text-[0.65rem] text-gray-500 mt-1">Paid Active</div>
                             </div>
+                            <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl p-4">
+                                <div className="text-2xl font-bold text-violet-400">{totalUsers}</div>
+                                <div className="text-[0.65rem] text-gray-500 mt-1">Total Users</div>
+                            </div>
+                        </div>
+
+                        {/* Platform Stats — Row 2: Tier Breakdown + Infrastructure */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            {['trial', 'starter', 'growth', 'scale', 'enterprise', 'free'].filter(t => byTier[t]).map(tier => {
+                                const ts = tierStyle(tier);
+                                return (
+                                    <div key={tier} className="bg-white/[0.03] border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                                        <span className="px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase" style={{ backgroundColor: ts.bg, color: ts.text, border: `1px solid ${ts.border}` }}>{tier}</span>
+                                        <span className="text-lg font-bold text-gray-300">{byTier[tier]}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Platform Stats — Row 3: Infrastructure Totals */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                            {[
+                                { label: 'Mailboxes', val: totalMailboxes, color: '#3b82f6' },
+                                { label: 'Domains', val: totalDomains, color: '#8b5cf6' },
+                                { label: 'Campaigns', val: totalCampaigns, color: '#22c55e' },
+                                { label: 'Leads', val: totalLeads, color: '#f59e0b' },
+                                { label: 'Enforce Mode', val: byMode['enforce'] || 0, color: '#10b981' },
+                            ].map(s => (
+                                <div key={s.label} className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                    <div className="text-xl font-bold" style={{ color: s.color }}>{s.val.toLocaleString()}</div>
+                                    <div className="text-[0.6rem] text-gray-500 mt-0.5">{s.label}</div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Search + Filters + Sort */}
+                        <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 mb-4 flex flex-wrap items-end gap-3">
+                            <div className="flex-1 min-w-[200px]">
+                                <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Search</label>
+                                <input
+                                    type="text"
+                                    value={search}
+                                    onChange={e => setSearch(e.target.value)}
+                                    placeholder="Search by name or slug..."
+                                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/50"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Tier</label>
+                                <select value={tierFilter} onChange={e => setTierFilter(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
+                                    <option value="all">All Tiers</option>
+                                    {uniqueTiers.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>
+                                <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
+                                    <option value="all">All Statuses</option>
+                                    {uniqueStatuses.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Sort</label>
+                                <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
+                                    <option value="created_desc">Newest First</option>
+                                    <option value="created_asc">Oldest First</option>
+                                    <option value="name_asc">Name A-Z</option>
+                                    <option value="name_desc">Name Z-A</option>
+                                    <option value="mailboxes">Most Mailboxes</option>
+                                    <option value="leads">Most Leads</option>
+                                    <option value="campaigns">Most Campaigns</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Results count */}
+                        <div className="text-xs text-gray-600 mb-3">
+                            {filtered.length === orgs.length ? `${orgs.length} organizations` : `${filtered.length} of ${orgs.length} organizations`}
                         </div>
 
                         {/* Org Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {orgs.map(org => {
+                            {filtered.map(org => {
                                 const ts = tierStyle(org.subscription_tier);
+                                const isExpired = org.subscription_status === 'expired' || org.subscription_status === 'canceled';
+                                const isTrialing = org.subscription_status === 'trialing';
+                                const trialDays = org.trial_ends_at ? Math.max(0, Math.ceil((new Date(org.trial_ends_at).getTime() - Date.now()) / 86400000)) : null;
                                 return (
                                     <div
                                         key={org.id}
                                         onClick={() => selectOrg(org)}
-                                        className="bg-white/[0.03] border border-white/10 rounded-xl p-5 cursor-pointer hover:bg-white/[0.06] hover:border-violet-500/30 transition-all group"
+                                        className={`bg-white/[0.03] border rounded-xl p-5 cursor-pointer hover:bg-white/[0.06] hover:border-violet-500/30 transition-all group ${isExpired ? 'border-red-500/20' : 'border-white/10'}`}
                                     >
                                         <div className="flex items-start justify-between mb-3">
                                             <div>
                                                 <div className="font-bold text-white group-hover:text-violet-300 transition-colors">{org.name}</div>
                                                 <div className="text-xs text-gray-500">{org.slug}</div>
                                             </div>
-                                            <span className="px-2 py-0.5 rounded-md text-[0.65rem] font-bold uppercase" style={{ backgroundColor: ts.bg, color: ts.text, border: `1px solid ${ts.border}` }}>
-                                                {org.subscription_tier}
-                                            </span>
+                                            <div className="flex flex-col items-end gap-1">
+                                                <span className="px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase" style={{ backgroundColor: ts.bg, color: ts.text, border: `1px solid ${ts.border}` }}>
+                                                    {org.subscription_tier}
+                                                </span>
+                                                <span className={`text-[0.55rem] font-semibold ${isExpired ? 'text-red-400' : isTrialing ? 'text-emerald-400' : 'text-gray-500'}`}>
+                                                    {isTrialing && trialDays !== null ? `Trial: ${trialDays}d left` : org.subscription_status}
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="grid grid-cols-5 gap-2 text-center">
                                             {[
@@ -244,20 +379,24 @@ export default function AdminConsole() {
                                             ].map(s => (
                                                 <div key={s.label}>
                                                     <div className="text-sm font-bold text-gray-300">{s.val}</div>
-                                                    <div className="text-[0.6rem] text-gray-600">{s.label}</div>
+                                                    <div className="text-[0.55rem] text-gray-600">{s.label}</div>
                                                 </div>
                                             ))}
                                         </div>
                                         <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
-                                            <span className="text-[0.65rem] text-gray-600">Mode: <strong className="text-gray-400">{org.system_mode}</strong></span>
-                                            <span className="text-[0.65rem] text-gray-600">Since {new Date(org.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}</span>
+                                            <span className="text-[0.6rem] text-gray-600">Mode: <strong className={org.system_mode === 'enforce' ? 'text-emerald-400' : 'text-amber-400'}>{org.system_mode}</strong></span>
+                                            <span className="text-[0.6rem] text-gray-600">Since {new Date(org.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                         </div>
                                     </div>
                                 );
                             })}
+                            {filtered.length === 0 && (
+                                <div className="col-span-3 text-center py-12 text-gray-600 italic">No organizations match your filters</div>
+                            )}
                         </div>
                     </>
-                )}
+                    );
+                })()}
 
                 {/* ── IMPACT REPORT ── */}
                 {selectedOrg && (
