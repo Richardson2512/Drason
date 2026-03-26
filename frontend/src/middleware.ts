@@ -1,6 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+/**
+ * Decode JWT payload without verification (middleware can't use jsonwebtoken).
+ * We only need the role claim for routing — actual auth is verified by the backend.
+ */
+function decodeJwtPayload(token: string): { role?: string } | null {
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return null;
+        const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString());
+        return payload;
+    } catch {
+        return null;
+    }
+}
+
 export function middleware(request: NextRequest) {
     const host = request.headers.get('host') || '';
 
@@ -42,12 +57,27 @@ export function middleware(request: NextRequest) {
         pathname === '/contact' ||
         pathname === '/release-notes';
 
-    // 3. Authenticated users trying to access login/signup -> Redirect to Dashboard
+    // Decode role from JWT (without verification — backend handles real auth)
+    const jwtPayload = token ? decodeJwtPayload(token) : null;
+    const isSuperAdmin = jwtPayload?.role === 'super_admin';
+
+    // 3. Authenticated users trying to access login/signup -> Redirect
     if (token && (pathname === '/login' || pathname === '/signup')) {
+        // Super admin always goes to /admin, regular users go to /dashboard
+        return NextResponse.redirect(new URL(isSuperAdmin ? '/admin' : '/dashboard', request.url));
+    }
+
+    // 4. Super admin trying to access /dashboard -> Redirect to /admin
+    if (token && isSuperAdmin && pathname.startsWith('/dashboard')) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    // 5. Regular user trying to access /admin -> Redirect to /dashboard
+    if (token && !isSuperAdmin && pathname.startsWith('/admin')) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
-    // 4. Unauthenticated users trying to access restricted areas (like /dashboard) -> Redirect to Landing (/)
+    // 6. Unauthenticated users trying to access restricted areas -> Redirect to Landing (/)
     if (!token && !isPublicPage) {
         return NextResponse.redirect(new URL('/', request.url));
     }
