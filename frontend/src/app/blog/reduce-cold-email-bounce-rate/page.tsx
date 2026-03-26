@@ -29,15 +29,7 @@ export default function ReduceBounceRateArticle() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.superkabe.com/image/logo-v2.png"
-            }
-        },
+        "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
         "mainEntityOfPage": {
