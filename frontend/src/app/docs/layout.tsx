@@ -87,23 +87,31 @@ function DocJsonLd() {
     const section = docSections.find(s => s.items.some(i => i.href === pathname));
     const sectionTitle = section?.title || 'Documentation';
 
+    const isHelpPage = pathname.startsWith('/docs/help');
+
     const jsonLd = {
         '@context': 'https://schema.org',
         '@type': 'TechArticle',
         headline: page.title,
         description: page.description,
         url: `https://www.superkabe.com${pathname}`,
+        datePublished: '2025-11-01',
+        dateModified: '2026-03-27',
+        author: {
+            '@id': 'https://www.superkabe.com/#organization',
+        },
         publisher: {
-            '@type': 'Organization',
-            name: 'Superkabe',
-            url: 'https://www.superkabe.com',
-            logo: 'https://www.superkabe.com/image/logo-v2.png',
+            '@id': 'https://www.superkabe.com/#organization',
+        },
+        about: {
+            '@id': 'https://www.superkabe.com/#software',
         },
         isPartOf: {
             '@type': 'WebSite',
             name: 'Superkabe Documentation',
             url: 'https://www.superkabe.com/docs',
         },
+        articleSection: isHelpPage ? 'Help Center' : sectionTitle,
     };
 
     const breadcrumb = {
@@ -265,19 +273,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     return (
         <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
-            {/* ================= JSON-LD ================= */}
+            {/* ================= JSON-LD (TechArticle + BreadcrumbList per page) ================= */}
             <DocJsonLd />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com" },
-                        { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://www.superkabe.com/docs" }
-                    ]
-                }) }}
-            />
 
             {/* ================= NAVBAR ================= */}
             <Navbar />
