@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3, Users, AlertTriangle, DollarSign, Monitor } from 'lucide-react';
+import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3, Users, AlertTriangle, DollarSign, Monitor, CheckCircle, TrendingUp, Search, GitBranch, Target, Scale, HelpCircle } from 'lucide-react';
 import type { Metadata } from 'next';
 
 
@@ -115,6 +115,129 @@ const articles = [
         icon: Monitor,
         readTime: '10 min read',
         tag: 'Monitoring',
+    },
+    // ── Email Validation Series ──
+    {
+        slug: 'best-email-validation-tools-cold-outreach',
+        title: 'Best email validation tools for cold outreach in 2026',
+        description: 'Ranked comparison of Superkabe, ZeroBounce, NeverBounce, MillionVerifier, Clearout, and DeBounce for cold email infrastructure protection.',
+        icon: CheckCircle,
+        readTime: '14 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'email-validation-vs-verification',
+        title: 'Email validation vs email verification: what is actually different',
+        description: 'The technical distinction between validation (format + DNS) and verification (SMTP probe) — and when you need both plus infrastructure protection.',
+        icon: Search,
+        readTime: '10 min read',
+        tag: 'Educational',
+    },
+    {
+        slug: 'why-verified-emails-still-bounce',
+        title: 'Why your verified emails still bounce (and what to do about it)',
+        description: 'The 6 reasons emails pass verification but still damage your infrastructure: catch-all domains, stale data, greylisting, spam traps, role-based, and accuracy gaps.',
+        icon: AlertTriangle,
+        readTime: '12 min read',
+        tag: 'Technical',
+    },
+    {
+        slug: 'reduce-cold-email-bounce-rate',
+        title: 'How to get your cold email bounce rate below 2% (step by step)',
+        description: '7-step guide from validation through monitoring to healing. The math on 10,000 leads with and without a validation layer.',
+        icon: TrendingUp,
+        readTime: '11 min read',
+        tag: 'Guide',
+    },
+    {
+        slug: 'zerobounce-alternatives-infrastructure-monitoring',
+        title: 'ZeroBounce alternatives that actually protect your infrastructure',
+        description: 'ZeroBounce verifies emails. It does not monitor bounce rates, auto-pause mailboxes, or heal infrastructure. Here is what does.',
+        icon: GitBranch,
+        readTime: '13 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'protect-sender-reputation-scaling-outreach',
+        title: 'How to protect your sender reputation while scaling cold outreach',
+        description: 'The 5 failure modes at scale and the 6-layer infrastructure protection approach. Safe sending volumes per mailbox and per domain.',
+        icon: Shield,
+        readTime: '14 min read',
+        tag: 'Strategy',
+    },
+    // ── Pillar Pages ──
+    {
+        slug: 'email-validation-smartlead-instantly',
+        title: 'Email validation for Smartlead and Instantly users: the missing layer',
+        description: 'Smartlead and Instantly send emails. They do not validate them. Here is the validation layer that works with both platforms.',
+        icon: Zap,
+        readTime: '15 min read',
+        tag: 'Integration',
+    },
+    {
+        slug: 'cold-email-bounce-rate-thresholds',
+        title: 'Cold email bounce rate thresholds: what gets you blacklisted in 2026',
+        description: 'ISP-specific thresholds from Google, Yahoo, and Microsoft. DMARC requirements, penalty escalation, and recovery timelines.',
+        icon: AlertTriangle,
+        readTime: '13 min read',
+        tag: 'Reference',
+    },
+    {
+        slug: 'email-validation-for-agencies',
+        title: 'Email validation for cold email agencies: protect clients without burning domains',
+        description: 'Multi-client validation, ROI math ($20k per burned domain vs $49/month), and how to present infrastructure protection to clients.',
+        icon: Users,
+        readTime: '14 min read',
+        tag: 'Agencies',
+    },
+    {
+        slug: 'catch-all-domains-cold-outreach',
+        title: 'Catch-all domains: the hidden risk destroying your cold email deliverability',
+        description: 'Emails to catch-all domains are 27x more likely to bounce. Verification tools cannot detect them. Here is what to do instead.',
+        icon: Target,
+        readTime: '11 min read',
+        tag: 'Technical',
+    },
+    {
+        slug: 'domain-burned-recovery-prevention',
+        title: 'Domain burned from a bad lead list? Complete recovery and prevention guide',
+        description: '7-step recovery process, the Clay pipeline validation gap, prevention checklist, and why recovery costs 100x more than prevention.',
+        icon: Activity,
+        readTime: '13 min read',
+        tag: 'Recovery',
+    },
+    {
+        slug: 'email-validation-pricing-guide',
+        title: 'Email validation pricing: what it actually costs (and what it saves you)',
+        description: 'Per-email cost comparison across ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe at 10K, 50K, and 100K leads/month.',
+        icon: DollarSign,
+        readTime: '10 min read',
+        tag: 'Pricing',
+    },
+    // ── Comparison Posts ──
+    {
+        slug: 'superkabe-vs-manual-monitoring',
+        title: 'Superkabe vs manual email infrastructure monitoring',
+        description: 'Why spreadsheets do not scale. The overnight bounce spike scenario and time cost at different infrastructure sizes.',
+        icon: BarChart3,
+        readTime: '11 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'superkabe-vs-warmup-tools',
+        title: 'Why email warmup tools alone will not protect your domains',
+        description: 'Warmup handles pre-send reputation. It does not catch bounces, monitor live campaigns, or heal infrastructure after damage.',
+        icon: Scale,
+        readTime: '10 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'superkabe-vs-email-verification-tools',
+        title: 'Email verification vs email infrastructure protection',
+        description: 'Verification checks if an email exists. Superkabe protects the sender. Different layers, complementary tools.',
+        icon: HelpCircle,
+        readTime: '10 min read',
+        tag: 'Comparison',
     },
 ];
 

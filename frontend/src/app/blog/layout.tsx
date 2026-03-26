@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen, Users, AlertTriangle, DollarSign, Monitor } from 'lucide-react';
+import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen, Users, AlertTriangle, DollarSign, Monitor, CheckCircle, TrendingUp, Search, GitBranch, Target, Scale, HelpCircle, Zap } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -69,6 +69,84 @@ const blogArticles = [
         title: 'Real-Time Monitoring',
         href: '/blog/real-time-email-infrastructure-monitoring',
         icon: Monitor,
+    },
+    // ── Email Validation Series ──
+    {
+        title: 'Best Validation Tools 2026',
+        href: '/blog/best-email-validation-tools-cold-outreach',
+        icon: CheckCircle,
+    },
+    {
+        title: 'Validation vs Verification',
+        href: '/blog/email-validation-vs-verification',
+        icon: Search,
+    },
+    {
+        title: 'Why Verified Emails Bounce',
+        href: '/blog/why-verified-emails-still-bounce',
+        icon: AlertTriangle,
+    },
+    {
+        title: 'Reduce Bounce Rate Below 2%',
+        href: '/blog/reduce-cold-email-bounce-rate',
+        icon: TrendingUp,
+    },
+    {
+        title: 'ZeroBounce Alternatives',
+        href: '/blog/zerobounce-alternatives-infrastructure-monitoring',
+        icon: GitBranch,
+    },
+    {
+        title: 'Protect Reputation at Scale',
+        href: '/blog/protect-sender-reputation-scaling-outreach',
+        icon: Shield,
+    },
+    // ── Pillar Pages ──
+    {
+        title: 'Validation for Smartlead & Instantly',
+        href: '/blog/email-validation-smartlead-instantly',
+        icon: Zap,
+    },
+    {
+        title: 'Bounce Rate Thresholds',
+        href: '/blog/cold-email-bounce-rate-thresholds',
+        icon: AlertTriangle,
+    },
+    {
+        title: 'Validation for Agencies',
+        href: '/blog/email-validation-for-agencies',
+        icon: Users,
+    },
+    {
+        title: 'Catch-All Domains Risk',
+        href: '/blog/catch-all-domains-cold-outreach',
+        icon: Target,
+    },
+    {
+        title: 'Domain Burned Recovery',
+        href: '/blog/domain-burned-recovery-prevention',
+        icon: Activity,
+    },
+    {
+        title: 'Validation Pricing Guide',
+        href: '/blog/email-validation-pricing-guide',
+        icon: DollarSign,
+    },
+    // ── Comparisons ──
+    {
+        title: 'vs Manual Monitoring',
+        href: '/blog/superkabe-vs-manual-monitoring',
+        icon: Scale,
+    },
+    {
+        title: 'vs Warmup Tools',
+        href: '/blog/superkabe-vs-warmup-tools',
+        icon: Scale,
+    },
+    {
+        title: 'vs Verification Tools',
+        href: '/blog/superkabe-vs-email-verification-tools',
+        icon: HelpCircle,
     },
 ];
 
