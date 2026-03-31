@@ -1,10 +1,8 @@
-import Link from 'next/link';
-import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { ArrowRight, Shield, Activity, Mail, Globe, Zap, BookOpen, Filter, BarChart3, Users, AlertTriangle, DollarSign, Monitor, CheckCircle, TrendingUp, Search, GitBranch, Target, Scale, HelpCircle } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import BlogArticleGrid from '@/components/BlogArticleGrid';
 import type { Metadata } from 'next';
-
 
 export const metadata: Metadata = {
     title: 'Blog – Superkabe',
@@ -24,7 +22,6 @@ const articles = [
         slug: 'introducing-infrastructure-assessment',
         title: 'How to assess your outbound email infrastructure before sending your first campaign',
         description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
-        icon: Activity,
         readTime: '3 min read',
         tag: 'New Feature',
     },
@@ -32,7 +29,6 @@ const articles = [
         slug: 'email-deliverability-guide',
         title: 'How to protect and master your outbound email deliverability',
         description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
-        icon: BookOpen,
         readTime: '25 min read',
         tag: 'Complete Guide',
     },
@@ -40,7 +36,6 @@ const articles = [
         slug: 'how-spam-filters-work',
         title: 'How spam filters work and how they affect email deliverability',
         description: 'Technical breakdown of how ISP spam filters evaluate outbound emails across four layers, content triggers that cause filtering, and proven strategies for staying in the inbox.',
-        icon: Filter,
         readTime: '12 min read',
         tag: 'Deep Dive',
     },
@@ -48,7 +43,6 @@ const articles = [
         slug: 'email-deliverability-tools-compared',
         title: 'Email deliverability tools compared: testing vs protection for cold email teams',
         description: 'Side-by-side comparison of deliverability monitoring, testing, and infrastructure protection tools. GlockApps vs MailReach vs Folderly vs Superkabe.',
-        icon: BarChart3,
         readTime: '16 min read',
         tag: 'Comparison',
     },
@@ -56,7 +50,6 @@ const articles = [
         slug: 'bounce-rate-deliverability',
         title: 'How bounce rates damage sender reputation (and how to prevent it)',
         description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
-        icon: Activity,
         readTime: '8 min read',
         tag: 'Technical',
     },
@@ -64,7 +57,6 @@ const articles = [
         slug: 'spf-dkim-dmarc-explained',
         title: 'Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams',
         description: 'A technical breakdown of email authentication protocols, how they protect your sender identity, and why misconfiguration leads to inbox placement failure.',
-        icon: Shield,
         readTime: '10 min read',
         tag: 'DNS',
     },
@@ -72,7 +64,6 @@ const articles = [
         slug: 'domain-warming-methodology',
         title: 'How to safely warm up new outbound email domains',
         description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
-        icon: Globe,
         readTime: '9 min read',
         tag: 'Strategy',
     },
@@ -80,7 +71,6 @@ const articles = [
         slug: 'email-reputation-lifecycle',
         title: 'How sender reputation is built, damaged, and repaired over time',
         description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
-        icon: Mail,
         readTime: '11 min read',
         tag: 'Deep Dive',
     },
@@ -88,7 +78,6 @@ const articles = [
         slug: 'cold-email-infrastructure-protection-for-agencies',
         title: 'Automated cold email infrastructure protection for lead generation agencies',
         description: 'How lead gen agencies protect domains, mailboxes, and deliverability across Smartlead, Instantly, and Reply.io with automated infrastructure monitoring.',
-        icon: Users,
         readTime: '10 min read',
         tag: 'Agencies',
     },
@@ -96,7 +85,6 @@ const articles = [
         slug: 'cold-email-deliverability-troubleshooting',
         title: 'Cold email deliverability problems: how to diagnose and fix infrastructure failures',
         description: 'Troubleshooting guide for bounce rate spikes, blacklisted domains, spam folder routing, DNS authentication failures, and cross-platform deliverability issues.',
-        icon: AlertTriangle,
         readTime: '12 min read',
         tag: 'Troubleshooting',
     },
@@ -104,7 +92,6 @@ const articles = [
         slug: 'cost-of-unmonitored-cold-email-infrastructure',
         title: 'The real cost of unmonitored cold email infrastructure',
         description: 'How burned domains, replacement costs, and lost pipeline add up. ROI analysis of proactive deliverability protection vs reactive testing for outbound agencies.',
-        icon: DollarSign,
         readTime: '9 min read',
         tag: 'ROI',
     },
@@ -112,7 +99,6 @@ const articles = [
         slug: 'real-time-email-infrastructure-monitoring',
         title: 'Real-time domain and mailbox health monitoring for cold email',
         description: 'Why periodic inbox placement testing misses rapid reputation degradation, and how continuous real-time monitoring prevents domain burnout before it happens.',
-        icon: Monitor,
         readTime: '10 min read',
         tag: 'Monitoring',
     },
@@ -121,7 +107,6 @@ const articles = [
         slug: 'best-email-validation-tools-cold-outreach',
         title: 'Best email validation tools for cold outreach in 2026',
         description: 'Ranked comparison of Superkabe, ZeroBounce, NeverBounce, MillionVerifier, Clearout, and DeBounce for cold email infrastructure protection.',
-        icon: CheckCircle,
         readTime: '14 min read',
         tag: 'Comparison',
     },
@@ -129,7 +114,6 @@ const articles = [
         slug: 'email-validation-vs-verification',
         title: 'Email validation vs email verification: what is actually different',
         description: 'The technical distinction between validation (format + DNS) and verification (SMTP probe) — and when you need both plus infrastructure protection.',
-        icon: Search,
         readTime: '10 min read',
         tag: 'Educational',
     },
@@ -137,7 +121,6 @@ const articles = [
         slug: 'why-verified-emails-still-bounce',
         title: 'Why your verified emails still bounce (and what to do about it)',
         description: 'The 6 reasons emails pass verification but still damage your infrastructure: catch-all domains, stale data, greylisting, spam traps, role-based, and accuracy gaps.',
-        icon: AlertTriangle,
         readTime: '12 min read',
         tag: 'Technical',
     },
@@ -145,7 +128,6 @@ const articles = [
         slug: 'reduce-cold-email-bounce-rate',
         title: 'How to get your cold email bounce rate below 2% (step by step)',
         description: '7-step guide from validation through monitoring to healing. The math on 10,000 leads with and without a validation layer.',
-        icon: TrendingUp,
         readTime: '11 min read',
         tag: 'Guide',
     },
@@ -153,7 +135,6 @@ const articles = [
         slug: 'zerobounce-alternatives-infrastructure-monitoring',
         title: 'ZeroBounce alternatives that actually protect your infrastructure',
         description: 'ZeroBounce verifies emails. It does not monitor bounce rates, auto-pause mailboxes, or heal infrastructure. Here is what does.',
-        icon: GitBranch,
         readTime: '13 min read',
         tag: 'Comparison',
     },
@@ -161,7 +142,6 @@ const articles = [
         slug: 'protect-sender-reputation-scaling-outreach',
         title: 'How to protect your sender reputation while scaling cold outreach',
         description: 'The 5 failure modes at scale and the 6-layer infrastructure protection approach. Safe sending volumes per mailbox and per domain.',
-        icon: Shield,
         readTime: '14 min read',
         tag: 'Strategy',
     },
@@ -170,7 +150,6 @@ const articles = [
         slug: 'email-validation-smartlead-instantly',
         title: 'Email validation for Smartlead and Instantly users: the missing layer',
         description: 'Smartlead and Instantly send emails. They do not validate them. Here is the validation layer that works with both platforms.',
-        icon: Zap,
         readTime: '15 min read',
         tag: 'Integration',
     },
@@ -178,7 +157,6 @@ const articles = [
         slug: 'cold-email-bounce-rate-thresholds',
         title: 'Cold email bounce rate thresholds: what gets you blacklisted in 2026',
         description: 'ISP-specific thresholds from Google, Yahoo, and Microsoft. DMARC requirements, penalty escalation, and recovery timelines.',
-        icon: AlertTriangle,
         readTime: '13 min read',
         tag: 'Reference',
     },
@@ -186,7 +164,6 @@ const articles = [
         slug: 'email-validation-for-agencies',
         title: 'Email validation for cold email agencies: protect clients without burning domains',
         description: 'Multi-client validation, ROI math ($20k per burned domain vs $49/month), and how to present infrastructure protection to clients.',
-        icon: Users,
         readTime: '14 min read',
         tag: 'Agencies',
     },
@@ -194,7 +171,6 @@ const articles = [
         slug: 'catch-all-domains-cold-outreach',
         title: 'Catch-all domains: the hidden risk destroying your cold email deliverability',
         description: 'Emails to catch-all domains are 27x more likely to bounce. Verification tools cannot detect them. Here is what to do instead.',
-        icon: Target,
         readTime: '11 min read',
         tag: 'Technical',
     },
@@ -202,7 +178,6 @@ const articles = [
         slug: 'domain-burned-recovery-prevention',
         title: 'Domain burned from a bad lead list? Complete recovery and prevention guide',
         description: '7-step recovery process, the Clay pipeline validation gap, prevention checklist, and why recovery costs 100x more than prevention.',
-        icon: Activity,
         readTime: '13 min read',
         tag: 'Recovery',
     },
@@ -210,7 +185,6 @@ const articles = [
         slug: 'email-validation-pricing-guide',
         title: 'Email validation pricing: what it actually costs (and what it saves you)',
         description: 'Per-email cost comparison across ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe at 10K, 50K, and 100K leads/month.',
-        icon: DollarSign,
         readTime: '10 min read',
         tag: 'Pricing',
     },
@@ -219,7 +193,6 @@ const articles = [
         slug: 'superkabe-vs-manual-monitoring',
         title: 'Superkabe vs manual email infrastructure monitoring',
         description: 'Why spreadsheets do not scale. The overnight bounce spike scenario and time cost at different infrastructure sizes.',
-        icon: BarChart3,
         readTime: '11 min read',
         tag: 'Comparison',
     },
@@ -227,7 +200,6 @@ const articles = [
         slug: 'superkabe-vs-warmup-tools',
         title: 'Why email warmup tools alone will not protect your domains',
         description: 'Warmup handles pre-send reputation. It does not catch bounces, monitor live campaigns, or heal infrastructure after damage.',
-        icon: Scale,
         readTime: '10 min read',
         tag: 'Comparison',
     },
@@ -235,9 +207,44 @@ const articles = [
         slug: 'superkabe-vs-email-verification-tools',
         title: 'Email verification vs email infrastructure protection',
         description: 'Verification checks if an email exists. Superkabe protects the sender. Different layers, complementary tools.',
-        icon: HelpCircle,
         readTime: '10 min read',
         tag: 'Comparison',
+    },
+    // ── Domain Reputation Series ──
+    {
+        slug: 'how-to-check-domain-reputation-cold-email',
+        title: 'How to check your domain reputation for cold email (2026 guide)',
+        description: '6-tool comparison: Google Postmaster, SNDS, MXToolbox, Sender Score, Talos, Barracuda. What ISPs score and how to read the results.',
+        readTime: '14 min read',
+        tag: 'Guide',
+    },
+    {
+        slug: 'domain-reputation-recovery-guide',
+        title: 'Domain reputation dropped? The complete recovery playbook',
+        description: '5-phase recovery from diagnosis through graduated re-warming. ISP-specific timelines and the bad lead list deep dive.',
+        readTime: '15 min read',
+        tag: 'Recovery',
+    },
+    {
+        slug: 'protect-domain-reputation-scaling-cold-email',
+        title: 'How to protect your domain reputation while scaling cold email',
+        description: 'Bounce thresholds per ISP, safe sending volumes per mailbox, separate domain strategy, and the 7 protection layers.',
+        readTime: '14 min read',
+        tag: 'Strategy',
+    },
+    {
+        slug: 'best-domain-reputation-monitoring-tools',
+        title: 'Best domain reputation monitoring tools for cold email teams (2026)',
+        description: 'Superkabe vs Google Postmaster vs GlockApps vs Validity Everest vs EasyDMARC vs MXToolbox. Real-time monitoring compared.',
+        readTime: '13 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'domain-reputation-vs-ip-reputation',
+        title: 'Domain reputation vs IP reputation: what matters for cold email in 2026',
+        description: 'Why domain reputation overtook IP reputation, how DMARC sealed the shift, and real data on deliverability impact.',
+        readTime: '13 min read',
+        tag: 'Educational',
     },
 ];
 
@@ -303,33 +310,7 @@ export default function BlogPage() {
             </section>
 
             {/* Articles Grid */}
-            <section className="relative z-10 pb-10 px-6">
-                <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-                    {articles.map((article) => {
-                        const Icon = article.icon;
-                        return (
-                            <Link
-                                key={article.slug}
-                                href={`/blog/${article.slug}`}
-                                className="block bg-white p-8 md:p-10 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 group"
-                            >
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <Icon size={20} className="text-blue-600" />
-                                    </div>
-                                    <span className="text-xs text-gray-400 font-medium">{article.readTime}</span>
-                                    <span className="ml-auto px-2.5 py-1 bg-gray-50 text-gray-500 text-xs font-medium rounded-full">{article.tag}</span>
-                                </div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{article.title}</h2>
-                                <p className="text-gray-500 text-sm leading-relaxed mb-4">{article.description}</p>
-                                <span className="text-blue-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                                    Read Article <ArrowRight size={14} />
-                                </span>
-                            </Link>
-                        );
-                    })}
-                </div>
-            </section>
+            <BlogArticleGrid articles={articles.map(a => ({ slug: a.slug, title: a.title, description: a.description, readTime: a.readTime, tag: a.tag }))} />
 
             <Footer />
         </div>
