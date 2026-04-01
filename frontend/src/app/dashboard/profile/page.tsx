@@ -30,18 +30,14 @@ export default function ProfilePage() {
         setNameLoading(true);
         setNameMessage(null);
         try {
-            const res = await apiClient<{ success: boolean; error?: string }>('/api/user/me', {
+            await apiClient('/api/user/me', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: name.trim() }),
             });
-            if (res?.success) {
-                setOriginalName(name.trim());
-                setNameMessage({ type: 'success', text: 'Name updated successfully' });
-                refetchUser();
-            } else {
-                setNameMessage({ type: 'error', text: res?.error || 'Failed to update name' });
-            }
+            setOriginalName(name.trim());
+            setNameMessage({ type: 'success', text: 'Name updated successfully' });
+            refetchUser();
         } catch {
             setNameMessage({ type: 'error', text: 'Failed to update name' });
         } finally {
@@ -66,19 +62,15 @@ export default function ProfilePage() {
         }
         setPasswordLoading(true);
         try {
-            const res = await apiClient<{ success: boolean; error?: string }>('/api/user/change-password', {
+            await apiClient('/api/user/change-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
-            if (res?.success) {
-                setPasswordMessage({ type: 'success', text: 'Password changed successfully' });
-                setCurrentPassword('');
-                setNewPassword('');
-                setConfirmPassword('');
-            } else {
-                setPasswordMessage({ type: 'error', text: res?.error || 'Failed to change password' });
-            }
+            setPasswordMessage({ type: 'success', text: 'Password changed successfully' });
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
         } catch {
             setPasswordMessage({ type: 'error', text: 'Failed to change password' });
         } finally {

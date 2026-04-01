@@ -100,7 +100,7 @@ function SuggestionsContent() {
         apiClient<{ success: boolean; report: LoadBalancingReport }>(
             '/api/dashboard/campaigns/load-balancing'
         )
-            .then(data => setReport(data.report))
+            .then(data => setReport(data?.report || data as unknown as LoadBalancingReport))
             .catch(err => console.error('Failed to fetch report', err))
             .finally(() => setLoading(false));
     }, []);
@@ -116,7 +116,7 @@ function SuggestionsContent() {
             const data = await apiClient<{ success: boolean; report: LoadBalancingReport }>(
                 '/api/dashboard/campaigns/load-balancing'
             );
-            setReport(data.report);
+            setReport(data?.report || data as unknown as LoadBalancingReport);
         } catch (err: any) {
             console.error('Failed to apply suggestion', err);
             alert(`Failed: ${err.message}`);

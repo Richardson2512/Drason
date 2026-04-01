@@ -75,13 +75,18 @@ export default function InfrastructureHealthPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    useEffect(() => {
+    const fetchAll = useCallback(() => {
         fetchReport();
         fetchTransitionGate();
         fetchRecoveryStatus();
         fetchScoreHistory();
         fetchWarmupStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchReport]);
+
+    useEffect(() => {
+        fetchAll();
+    }, [fetchAll]);
 
     // Auto-refresh when infrastructure assessment completes
     useEffect(() => {

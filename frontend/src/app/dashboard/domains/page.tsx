@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
@@ -12,11 +12,14 @@ import { usePagination } from '@/hooks/usePagination';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import { useEntityStats } from '@/hooks/useEntityStats';
 import EntityStatsBar from '@/components/ui/EntityStatsBar';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 
 export default function DomainsPage() {
     const [domains, setDomains] = useState<Domain[]>([]);
     const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
+    const initialSelectionSetRef = useRef(false);
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+    const [loading, setLoading] = useState(true);
 
     // Filters
     const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
@@ -38,6 +41,7 @@ export default function DomainsPage() {
 
     const fetchDomains = useCallback(async () => {
         const { sortBy, minEngagement, maxEngagement, minBounceRate, maxBounceRate, platform } = sortFilter.values;
+        setLoading(true);
         try {
             const params = new URLSearchParams({
                 page: meta.page.toString(),
@@ -60,7 +64,8 @@ export default function DomainsPage() {
             if (data?.data) {
                 setDomains(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedDomain) {
+                if (data.data.length > 0 && !initialSelectionSetRef.current) {
+                    initialSelectionSetRef.current = true;
                     setSelectedDomain(data.data[0]);
                 }
             } else {
@@ -69,8 +74,10 @@ export default function DomainsPage() {
         } catch (err) {
             console.error('Failed to fetch domains:', err);
             setDomains([]);
+        } finally {
+            setLoading(false);
         }
-    }, [meta.page, meta.limit, selectedStatus, searchQuery, sortFilter.values, selectedDomain]);
+    }, [meta.page, meta.limit, selectedStatus, searchQuery, sortFilter.values]);
 
     useEffect(() => {
         fetchDomains();
@@ -113,6 +120,14 @@ export default function DomainsPage() {
         sortFilter.clear();
         setMeta(prev => ({ ...prev, page: 1 }));
     };
+
+    if (loading && domains.length === 0) {
+        return (
+            <div className="p-8">
+                <LoadingSkeleton type="table" rows={8} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-full gap-8">

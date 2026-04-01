@@ -180,9 +180,10 @@ export default function AdminDashboardPage() {
     // Fetch organizations
     useEffect(() => {
         setOrgsLoading(true);
-        apiClient<OrgSummary[]>('/api/admin/organizations')
+        apiClient<{ organizations: OrgSummary[]; platformStats: any }>('/api/admin/organizations')
             .then(data => {
-                setOrgs(Array.isArray(data) ? data : []);
+                const orgs = Array.isArray(data) ? data : (data?.organizations || []);
+                setOrgs(orgs as OrgSummary[]);
                 setOrgsError('');
             })
             .catch(err => setOrgsError(err.message || 'Failed to load organizations'))

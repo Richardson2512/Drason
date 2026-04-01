@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 import type { Lead, AuditLog, CampaignSummary, ScoreBreakdown, ScoreRefreshResult } from '@/types/api';
@@ -18,6 +18,7 @@ function LeadsPageContent() {
     const searchParams = useSearchParams();
     const [leads, setLeads] = useState<Lead[]>([]);
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+    const initialLeadSelectionRef = useRef(false);
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [leadTab, setLeadTab] = useState('all');
     const { campaigns } = useCampaignList();
@@ -85,7 +86,8 @@ function LeadsPageContent() {
             if (data?.data) {
                 setLeads(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedLead) {
+                if (data.data.length > 0 && !initialLeadSelectionRef.current) {
+                    initialLeadSelectionRef.current = true;
                     setSelectedLead(data.data[0]);
                 }
             } else {
@@ -95,7 +97,7 @@ function LeadsPageContent() {
             console.error('Failed to fetch leads:', err);
             setLeads([]);
         }
-    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, sortFilter.values, selectedLead]);
+    }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, sortFilter.values]);
 
     useEffect(() => {
         fetchLeads();

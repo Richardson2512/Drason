@@ -14,6 +14,7 @@ export default function Audit() {
             page: meta.page.toString(),
             limit: meta.limit.toString(),
         });
+        if (activeTab !== 'all') query.append('entity', activeTab);
         apiClient<{ data: AuditLog[]; meta: { total: number; page: number; limit: number; totalPages: number } }>(`/api/dashboard/audit-logs?${query}`)
             .then(data => {
                 if (data?.data) {
@@ -24,7 +25,7 @@ export default function Audit() {
                 }
             })
             .catch(() => setLogs([]));
-    }, [meta.page, meta.limit, setMeta]);
+    }, [meta.page, meta.limit, activeTab, setMeta]);
 
     useEffect(() => {
         fetchLogs();

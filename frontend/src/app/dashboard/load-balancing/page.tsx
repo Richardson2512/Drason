@@ -34,7 +34,7 @@ export default function LoadBalancingPage() {
             const data = await apiClient<{ success: boolean; report: LoadBalancingReport }>(
                 '/api/dashboard/campaigns/load-balancing'
             );
-            setReport(data.report);
+            setReport(data?.report || data as unknown as LoadBalancingReport);
         } catch (err: any) {
             console.error('Failed to fetch load balancing report', err);
             setError('Failed to load load balancing report.');

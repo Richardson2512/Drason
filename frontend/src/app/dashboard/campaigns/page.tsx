@@ -149,7 +149,7 @@ export default function CampaignsPage() {
                     method: 'POST',
                     body: JSON.stringify({ campaignId: selectedCampaign.id, reason: 'Manual pause from dashboard' })
                 });
-                setSelectedCampaign({ ...selectedCampaign, status: 'paused', paused_reason: 'Manual pause from dashboard', paused_at: new Date().toISOString(), paused_by: 'user' });
+                setSelectedCampaign({ ...selectedCampaign, status: 'paused', paused_reason: 'Manual pause from dashboard', paused_by: 'user' });
             } else {
                 await apiClient('/api/dashboard/campaign/resume', {
                     method: 'POST',
@@ -157,7 +157,7 @@ export default function CampaignsPage() {
                 });
                 setSelectedCampaign({ ...selectedCampaign, status: 'active', paused_reason: undefined, paused_at: undefined, paused_by: undefined });
             }
-            fetchCampaigns();
+            await fetchCampaigns();
         } catch (err: any) {
             console.error(`Failed to ${confirmAction} campaign:`, err);
         } finally {

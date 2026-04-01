@@ -22,13 +22,13 @@ function getConnectionResolution(error: string | null | undefined, platform?: st
     const name = getPlatformLabel(platform);
     if (!error) return { cause: 'Unknown connection issue', resolution: `Check email account settings in ${name}.` };
     const e = error.toLowerCase();
-    if (e.includes('invalid_grant') || e.includes('refresh') && e.includes('token')) {
+    if (e.includes('invalid_grant') || (e.includes('refresh') && e.includes('token'))) {
         return {
             cause: 'Google OAuth token expired or revoked',
             resolution: `Re-authorize this email account in ${name}. The Google account password may have changed or access was revoked.`
         };
     }
-    if (e.includes('authentication') || e.includes('auth') && e.includes('fail')) {
+    if ((e.includes('authentication') || e.includes('auth')) && e.includes('fail')) {
         return {
             cause: 'Email authentication failed',
             resolution: `Check the email password in ${name}. If using an app password, regenerate it.`

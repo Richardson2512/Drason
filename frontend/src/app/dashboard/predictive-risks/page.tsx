@@ -20,7 +20,7 @@ export default function PredictiveRisksPage() {
             const data = await apiClient<{ success: boolean; report: PredictiveReport }>(
                 '/api/dashboard/campaigns/predictive-risks'
             );
-            setReport(data.report);
+            setReport(data?.report || data as unknown as PredictiveReport);
         } catch (err: any) {
             console.error('Failed to fetch predictive risks', err);
             setError('Failed to load predictive risk report.');

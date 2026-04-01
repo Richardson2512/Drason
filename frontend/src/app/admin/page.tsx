@@ -129,9 +129,8 @@ export default function AdminConsole() {
         if (!selectedOrg) return;
         setCsvLoading(true);
         try {
-            const token = document.cookie.split('; ').find(c => c.startsWith('token='))?.split('=')[1];
             const res = await fetch(`/api/admin/organizations/${selectedOrg.id}/impact/csv`, {
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
+                credentials: 'include',
             });
             if (!res.ok) throw new Error('Download failed');
             const blob = await res.blob();

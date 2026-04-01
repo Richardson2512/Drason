@@ -8,6 +8,7 @@ import type { Notification, PaginatedResponse } from '@/types/api';
 export default function NotificationsPage() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [filter, setFilter] = useState<'all' | 'unread'>('all');
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
 
@@ -30,7 +31,7 @@ export default function NotificationsPage() {
                     setNotifications([]);
                 }
             })
-            .catch(err => console.error('Failed to fetch notifications:', err))
+            .catch(err => { setError('Failed to load notifications'); console.error('Failed to fetch notifications:', err); })
             .finally(() => setLoading(false));
     }, [meta.page, meta.limit, filter]);
 
@@ -114,7 +115,11 @@ export default function NotificationsPage() {
 
             <div className="premium-card flex-1 overflow-hidden flex flex-col !p-0">
                 <div className="overflow-y-auto flex-1 scrollbar-hide">
-                    {loading && notifications.length === 0 ? (
+                    {error ? (
+                        <div className="flex items-center justify-center p-8">
+                            <div className="text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm">{error}</div>
+                        </div>
+                    ) : loading && notifications.length === 0 ? (
                         <div className="flex items-center justify-center p-8 text-gray-500">Loading notifications...</div>
                     ) : notifications.length > 0 ? (
                         <div className="grid">

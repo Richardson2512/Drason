@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { releaseNotes } from '@/data/releaseNotes';
 
 const BASE_URL = 'https://www.superkabe.com';
 
@@ -129,10 +130,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.6,
         },
 
-        // ─── Individual Release Notes (auto-generated) ──
-        ...['v1.5.0', 'v1.4.0', 'v1.3.0', 'v1.2.0', 'v1.1.0', 'v1.0.0'].map(slug => ({
-            url: `${BASE_URL}/release-notes/${slug}`,
-            lastModified: new Date(),
+        // ─── Individual Release Notes (auto-generated from data) ──
+        ...releaseNotes.map(note => ({
+            url: `${BASE_URL}/release-notes/${note.slug}`,
+            lastModified: new Date(note.isoDate),
             changeFrequency: 'monthly' as const,
             priority: 0.5,
         })),
