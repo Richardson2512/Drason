@@ -17,7 +17,7 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 export default function DomainsPage() {
     const [domains, setDomains] = useState<Domain[]>([]);
     const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
-    const initialSelectionSetRef = useRef(false);
+    const selectedDomainRef = useRef<Domain | null>(null);
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -64,9 +64,9 @@ export default function DomainsPage() {
             if (data?.data) {
                 setDomains(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !initialSelectionSetRef.current) {
-                    initialSelectionSetRef.current = true;
-                    setSelectedDomain(data.data[0]);
+                if (data.data.length > 0) {
+                    const currentInResults = selectedDomainRef.current && data.data.some((d: Domain) => d.id === selectedDomainRef.current?.id);
+                    if (!currentInResults) setSelectedDomain(data.data[0]);
                 }
             } else {
                 setDomains([]);
@@ -78,6 +78,8 @@ export default function DomainsPage() {
             setLoading(false);
         }
     }, [meta.page, meta.limit, selectedStatus, searchQuery, sortFilter.values]);
+
+    useEffect(() => { selectedDomainRef.current = selectedDomain; }, [selectedDomain]);
 
     useEffect(() => {
         fetchDomains();

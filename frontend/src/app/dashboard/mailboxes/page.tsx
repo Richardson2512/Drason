@@ -116,8 +116,9 @@ export default function MailboxesPage() {
             if (data?.data) {
                 setMailboxes(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedMailboxRef.current) {
-                    setSelectedMailbox(data.data[0]);
+                if (data.data.length > 0) {
+                    const currentInResults = selectedMailboxRef.current && data.data.some((m: any) => m.id === selectedMailboxRef.current?.id);
+                    if (!currentInResults) setSelectedMailbox(data.data[0]);
                 }
             } else {
                 setMailboxes(Array.isArray(data) ? data : []);

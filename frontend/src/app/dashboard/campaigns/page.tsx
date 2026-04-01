@@ -76,8 +76,11 @@ export default function CampaignsPage() {
             if (data?.data) {
                 setCampaigns(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !selectedCampaignRef.current) {
-                    setSelectedCampaign(data.data[0]);
+                if (data.data.length > 0) {
+                    const currentInResults = selectedCampaignRef.current && data.data.some((c: Campaign) => c.id === selectedCampaignRef.current?.id);
+                    if (!currentInResults) {
+                        setSelectedCampaign(data.data[0]);
+                    }
                 }
             } else {
                 setCampaigns(Array.isArray(data) ? data : []);

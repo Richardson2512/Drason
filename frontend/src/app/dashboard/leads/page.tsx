@@ -18,7 +18,7 @@ function LeadsPageContent() {
     const searchParams = useSearchParams();
     const [leads, setLeads] = useState<Lead[]>([]);
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-    const initialLeadSelectionRef = useRef(false);
+    const selectedLeadRef = useRef<Lead | null>(null);
     const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
     const [leadTab, setLeadTab] = useState('all');
     const { campaigns } = useCampaignList();
@@ -86,9 +86,12 @@ function LeadsPageContent() {
             if (data?.data) {
                 setLeads(data.data);
                 setMeta(data.meta);
-                if (data.data.length > 0 && !initialLeadSelectionRef.current) {
-                    initialLeadSelectionRef.current = true;
-                    setSelectedLead(data.data[0]);
+                // Auto-select first item if current selection is not in new results
+                if (data.data.length > 0) {
+                    const currentInResults = selectedLeadRef.current && data.data.some((l: Lead) => l.id === selectedLeadRef.current?.id);
+                    if (!currentInResults) {
+                        setSelectedLead(data.data[0]);
+                    }
                 }
             } else {
                 setLeads(Array.isArray(data) ? data : []);
@@ -98,6 +101,8 @@ function LeadsPageContent() {
             setLeads([]);
         }
     }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, sortFilter.values]);
+
+    useEffect(() => { selectedLeadRef.current = selectedLead; }, [selectedLead]);
 
     useEffect(() => {
         fetchLeads();
