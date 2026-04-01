@@ -436,8 +436,6 @@ export default function Configuration() {
                     </div>
                 </div>
             </div>
-        </div>
-
             {/* Delete Confirmation Modal */}
             {deleteConfirm && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => !deleteLoading && setDeleteConfirm(null)}>
@@ -480,5 +478,6 @@ export default function Configuration() {
                     </div>
                 </div>
             )}
+        </div>
     );
 }
