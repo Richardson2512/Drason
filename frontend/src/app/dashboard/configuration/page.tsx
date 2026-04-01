@@ -17,6 +17,9 @@ export default function Configuration() {
     const [campaignSearch, setCampaignSearch] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
+    const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; persona: string; campaign: string } | null>(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
 
     // Derive unique platforms from synced campaigns
     const platforms = Array.from(new Set(campaigns.map(c => c.source_platform || 'unknown').filter(Boolean)));
@@ -55,13 +58,28 @@ export default function Configuration() {
 
     const selectedCampaign = campaignMap.get(formData.target_campaign_id);
 
-    const handleDelete = async (ruleId: string) => {
-        if (!confirm('Delete this routing rule?')) return;
+    const handleDeleteClick = (rule: RoutingRule) => {
+        const campaign = campaignMap.get(rule.target_campaign_id);
+        setDeleteConfirm({
+            id: rule.id,
+            persona: rule.persona,
+            campaign: campaign?.name || rule.target_campaign_id,
+        });
+        setDeleteError(null);
+    };
+
+    const executeDelete = async () => {
+        if (!deleteConfirm) return;
+        setDeleteLoading(true);
+        setDeleteError(null);
         try {
-            await apiClient(`/api/dashboard/routing-rules/${ruleId}`, { method: 'DELETE' });
+            await apiClient(`/api/dashboard/routing-rules/${deleteConfirm.id}`, { method: 'DELETE' });
+            setDeleteConfirm(null);
             fetchRules();
-        } catch {
-            // Silent — fetchRules will reflect current state
+        } catch (err: any) {
+            setDeleteError(err?.message || 'Failed to delete routing rule');
+        } finally {
+            setDeleteLoading(false);
         }
     };
 
@@ -393,7 +411,7 @@ export default function Configuration() {
                                             Pri: {rule.priority}
                                         </div>
                                         <button
-                                            onClick={() => handleDelete(rule.id)}
+                                            onClick={() => handleDeleteClick(rule)}
                                             className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors border-none bg-transparent cursor-pointer"
                                             title="Delete rule"
                                         >
@@ -419,5 +437,48 @@ export default function Configuration() {
                 </div>
             </div>
         </div>
+
+            {/* Delete Confirmation Modal */}
+            {deleteConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => !deleteLoading && setDeleteConfirm(null)}>
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 border border-gray-100" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-red-600"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-gray-900">Delete Routing Rule</h3>
+                        </div>
+                        <p className="text-gray-600 mb-2">Are you sure you want to delete this routing rule?</p>
+                        <div className="bg-gray-50 rounded-xl p-4 mb-4 text-sm">
+                            <p className="text-gray-700"><span className="font-semibold">Persona:</span> {deleteConfirm.persona}</p>
+                            <p className="text-gray-700"><span className="font-semibold">Target Campaign:</span> {deleteConfirm.campaign}</p>
+                        </div>
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-6">
+                            <p className="text-amber-800 text-sm">Leads matching this persona will no longer be routed to the target campaign. They will stay in the holding pool until a new rule matches.</p>
+                        </div>
+                        {deleteError && (
+                            <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
+                                <p className="text-red-700 text-sm">{deleteError}</p>
+                            </div>
+                        )}
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setDeleteConfirm(null)}
+                                disabled={deleteLoading}
+                                className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={executeDelete}
+                                disabled={deleteLoading}
+                                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+                            >
+                                {deleteLoading ? 'Deleting...' : 'Delete Rule'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
     );
 }
