@@ -145,6 +145,11 @@ export default function ValidationActivityPanel({ isExpanded, onToggle }: Valida
                         </div>
                     </div>
 
+                    {/* Tier-gating info */}
+                    <div className="px-4 py-2 text-xs text-gray-400 leading-relaxed">
+                        Starter plans use internal validation (syntax, MX, disposable checks). Growth and Scale plans additionally use MillionVerifier API for risky leads.
+                    </div>
+
                     {/* Activity feed */}
                     <div className="max-h-[280px] overflow-y-auto divide-y divide-gray-50">
                         {activity.map(a => {

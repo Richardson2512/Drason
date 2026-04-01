@@ -40,8 +40,11 @@ function getSystemNotice(lead: Lead) {
     if (lead.status === 'paused') {
         return { type: 'danger', title: 'System Pause', msg: 'Lead processing has been halted. This typically occurs when the associated mailbox or domain triggers a "Warning" or "Paused" health state due to bounce rates exceeding 2%.' };
     }
-    if (lead.status === 'held') {
-        return { type: 'warning', title: 'Holding Pool', msg: 'Lead is currently in the Holding Pool. It is waiting for the "Execution Gate" to verify mailbox capacity and domain health before transitioning to Active.' };
+    if (lead.status === 'held' && !lead.assigned_campaign_id) {
+        return { type: 'warning', title: 'Unrouted — No Campaign Assigned', msg: 'This lead passed validation but has not been assigned to a campaign. Check your routing rules in Configuration to ensure a rule matches this lead\'s persona.' };
+    }
+    if (lead.status === 'held' && lead.assigned_campaign_id) {
+        return { type: 'warning', title: 'Pending Platform Push', msg: 'This lead is assigned to a campaign but has not been pushed to the sending platform yet.' };
     }
     if (lead.status === 'active') {
         return { type: 'success', title: 'Active Execution', msg: `Lead has passed all health checks and routed to a campaign. It is currently available for outreach by the external sender (${getPlatformLabel(lead.source_platform)}).` };

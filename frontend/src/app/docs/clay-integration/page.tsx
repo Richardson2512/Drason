@@ -130,12 +130,6 @@ export default function ClayIntegrationPage() {
                             <td className="px-6 py-4 text-gray-600">Acme Corp</td>
                             <td className="px-6 py-4 text-gray-400">Optional</td>
                         </tr>
-                        <tr>
-                            <td className="px-6 py-4 font-mono text-blue-600">campaignId</td>
-                            <td className="px-6 py-4 text-gray-600">String</td>
-                            <td className="px-6 py-4 text-gray-600">sl_campaign_xyz</td>
-                            <td className="px-6 py-4 text-gray-400">Optional</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -196,9 +190,11 @@ x-organization-id: YOUR_ORG_ID`}</pre>
   "lastName": {{lastName}},
   "company": {{company}},
   "persona": {{jobTitle}},
-  "lead_score": {{leadScore}},
-  "campaignId": "sl_YOUR_CAMPAIGN_ID"
+  "lead_score": {{leadScore}}
 }`}</pre>
+                            <p className="text-xs text-gray-500 mt-2">
+                                Campaign routing is handled automatically by your routing rules in Configuration. No need to specify a campaign ID here.
+                            </p>
                         </div>
                     </li>
                     <li>
@@ -227,7 +223,7 @@ x-organization-id: YOUR_ORG_ID`}</pre>
                 </div>
                 <ol start={4} className="space-y-3 text-gray-600 mt-4">
                     <li><strong>4.</strong> Repeat for each ICP segment you want to target</li>
-                    <li><strong>5.</strong> Set rule priorities (higher priority rules are checked first)</li>
+                    <li><strong>5.</strong> Set rule priorities (lower number = checked first, e.g. priority 1 before 99)</li>
                 </ol>
             </div>
 
