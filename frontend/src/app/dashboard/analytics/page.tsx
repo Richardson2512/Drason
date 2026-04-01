@@ -57,10 +57,19 @@ export default function AnalyticsPage() {
             });
             const result = await apiClient<any>(`/api/analytics/daily?${params}`);
 
+            // apiClient unwraps { success, data } → returns data directly
+            // For comparison: backend sends { success, comparison: true, data: byCampaign }
+            // apiClient returns byCampaign (an object with campaign IDs as keys)
+            // For single: backend sends { success, data: [...] }
+            // apiClient returns [...] (an array)
             if (result?.comparison) {
+                // Raw response (apiClient didn't unwrap)
                 setComparisonData(result.data || result);
             } else if (Array.isArray(result)) {
                 setData(result);
+            } else if (result && typeof result === 'object' && !Array.isArray(result)) {
+                // apiClient unwrapped — result is byCampaign object (comparison mode)
+                setComparisonData(result);
             } else {
                 setData([]);
             }
