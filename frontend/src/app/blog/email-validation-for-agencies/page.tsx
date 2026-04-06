@@ -236,7 +236,7 @@ export default function EmailValidationForAgenciesArticle() {
                 <section className="mb-10">
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">The Agency Workflow</h2>
                     <p>
-                        Here is what a properly protected agency workflow looks like end to end:
+                        Here is what a properly protected agency workflow looks like end to end. If your agency runs both Smartlead and Instantly, see how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">multi-platform email validation</Link> unifies monitoring across both.
                     </p>
 
                     <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">1. Client Onboarding</h3>
@@ -450,7 +450,7 @@ export default function EmailValidationForAgenciesArticle() {
                         <Link href="/blog/best-email-validation-tools-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">
                             email validation tools comparison
                         </Link>{' '}
-                        to understand how Superkabe fits alongside other tools in your stack.
+                        to understand how Superkabe fits alongside other tools in your stack. For a complete walkthrough of validation strategy tailored to cold outreach, see our <Link href="/guides/email-validation-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">complete guide to email validation for cold outreach</Link>.
                     </p>
                 </section>
 

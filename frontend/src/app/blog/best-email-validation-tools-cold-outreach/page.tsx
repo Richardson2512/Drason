@@ -370,7 +370,7 @@ export default function BestEmailValidationToolsArticle() {
                         What prevents them is an infrastructure protection layer that sits between your team and your sending platform. Something that watches bounce rates across every domain and mailbox, auto-pauses before ISP thresholds are hit, monitors DNS health continuously, and gives damaged domains a structured path to recovery.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        That is what <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Superkabe</Link> does. Validation is one layer. Infrastructure protection is the layer that keeps your domains alive when validation is not enough. For a deeper look at how these layers work together, see our guide on <Link href="/blog/email-validation-vs-verification" className="text-blue-600 hover:text-blue-800 underline">email validation vs verification</Link>.
+                        That is what <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Superkabe</Link> does. Validation is one layer. Infrastructure protection is the layer that keeps your domains alive when validation is not enough. See how the <Link href="/product/email-validation-infrastructure-protection" className="text-blue-600 hover:text-blue-800 underline">email validation infrastructure protection</Link> system works in practice. For a deeper look at how these layers work together, see our guide on <Link href="/blog/email-validation-vs-verification" className="text-blue-600 hover:text-blue-800 underline">email validation vs verification</Link>.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         Already verifying your lists? Good. Now protect the infrastructure that sends to them. Read about <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">how bounce rates damage sender reputation</Link> to understand what happens when validation misses something.
@@ -393,6 +393,10 @@ export default function BestEmailValidationToolsArticle() {
                     <Link href="/blog/superkabe-vs-email-verification-tools" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                         <h3 className="font-bold text-gray-900 text-sm mb-2">Superkabe vs Verification Tools</h3>
                         <p className="text-gray-500 text-xs">Different layers, complementary tools</p>
+                    </Link>
+                    <Link href="/guides/email-validation-cold-outreach" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Complete Guide: Email Validation for Cold Outreach</h3>
+                        <p className="text-gray-500 text-xs">End-to-end walkthrough of validation strategy</p>
                     </Link>
                 </div>
                 <div className="mt-6">

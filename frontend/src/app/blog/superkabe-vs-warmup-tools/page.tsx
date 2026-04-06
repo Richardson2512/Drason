@@ -319,7 +319,11 @@ export default function SuperkabeVsWarmupToolsArticle() {
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        For more on how domain reputation works and why warmup alone is not enough to maintain it, read our guide on the <Link href="/blog/email-reputation-lifecycle" className="text-blue-600 hover:text-blue-800 underline">email reputation lifecycle</Link>. To understand the financial impact of burned domains, see <Link href="/blog/cost-of-unmonitored-cold-email-infrastructure" className="text-blue-600 hover:text-blue-800 underline">the real cost of unmonitored cold email infrastructure</Link>.
+                        For more on how domain reputation works and why warmup alone is not enough to maintain it, read our guide on the <Link href="/blog/email-reputation-lifecycle" className="text-blue-600 hover:text-blue-800 underline">email reputation lifecycle</Link>. To understand the financial impact of burned domains, see <Link href="/blog/cost-of-unmonitored-cold-email-infrastructure" className="text-blue-600 hover:text-blue-800 underline">the real cost of unmonitored cold email infrastructure</Link>. For a deeper look at the warmup process itself, read our <Link href="/blog/complete-email-warmup-guide" className="text-blue-600 hover:text-blue-800 underline">complete email warmup guide</Link>.
+                    </p>
+
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        If you are setting up new domains, our <Link href="/blog/domain-warming-methodology" className="text-blue-600 hover:text-blue-800 underline">domain warming methodology</Link> covers the technical details. When warmup is not enough and a domain needs recovery, see the <Link href="/blog/domain-reputation-recovery-guide" className="text-blue-600 hover:text-blue-800 underline">domain reputation recovery guide</Link>. For the full picture of how warmup, monitoring, and protection fit into a complete stack, check the <Link href="/guides/outbound-email-infrastructure-stack" className="text-blue-600 hover:text-blue-800 underline">complete guide to outbound email infrastructure</Link>.
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">

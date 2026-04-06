@@ -276,6 +276,35 @@ const articles = [
         readTime: '14 min read',
         tag: 'Comparison',
     },
+    // ── Alternatives ──
+    {
+        slug: 'zerobounce-alternatives',
+        title: 'Best ZeroBounce alternatives for cold email teams (2026)',
+        description: 'ZeroBounce verifies emails. These alternatives add monitoring, auto-pause, and healing on top. Full comparison table.',
+        readTime: '13 min read',
+        tag: 'Alternatives',
+    },
+    {
+        slug: 'neverbounce-alternatives',
+        title: 'Best NeverBounce alternatives for email verification (2026)',
+        description: 'NeverBounce is fast and cheap. But catch-all handling and post-send protection are gaps. Here are 6 alternatives.',
+        readTime: '13 min read',
+        tag: 'Alternatives',
+    },
+    {
+        slug: 'millionverifier-alternatives',
+        title: 'Best MillionVerifier alternatives for bulk email verification (2026)',
+        description: 'MillionVerifier is the cheapest per email. But when you need more than verification, here is what to consider.',
+        readTime: '12 min read',
+        tag: 'Alternatives',
+    },
+    {
+        slug: 'email-verification-tool-alternatives',
+        title: 'Beyond email verification: why teams are switching to infrastructure protection (2026)',
+        description: 'The 3 levels of email quality protection. Why verification alone is not enough and what the full lifecycle stack looks like.',
+        readTime: '14 min read',
+        tag: 'Strategy',
+    },
 ];
 
 export default function BlogPage() {

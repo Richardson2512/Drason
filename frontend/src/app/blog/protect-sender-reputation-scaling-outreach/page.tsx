@@ -374,6 +374,10 @@ export default function ProtectSenderReputationArticle() {
                         <h3 className="font-bold text-gray-900 text-sm mb-2">SPF, DKIM, and DMARC</h3>
                         <p className="text-gray-500 text-xs">Email authentication protocols explained</p>
                     </Link>
+                    <Link href="/guides/outbound-email-infrastructure-stack" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Complete Guide: Outbound Email Infrastructure</h3>
+                        <p className="text-gray-500 text-xs">Full stack guide for scaling outbound safely</p>
+                    </Link>
                 </div>
                 <div className="mt-6">
                     <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">See how Superkabe protects your infrastructure</Link>

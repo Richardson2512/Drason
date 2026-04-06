@@ -329,6 +329,10 @@ export default function ReduceBounceRateArticle() {
                         <h3 className="font-bold text-gray-900 text-sm mb-2">The Email Reputation Lifecycle</h3>
                         <p className="text-gray-500 text-xs">How reputation is built, damaged, and recovered</p>
                     </Link>
+                    <Link href="/guides/email-validation-cold-outreach" className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                        <h3 className="font-bold text-gray-900 text-sm mb-2">Complete Guide: Email Validation for Cold Outreach</h3>
+                        <p className="text-gray-500 text-xs">End-to-end walkthrough of validation strategy</p>
+                    </Link>
                 </div>
                 <div className="mt-6">
                     <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">See how Superkabe protects your infrastructure</Link>

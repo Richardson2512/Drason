@@ -373,7 +373,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
                         Without a centralized validation layer, you end up with two separate workflows, two sets of bounce monitoring (if any), and no unified view of your domain health. A domain that is bouncing through Smartlead campaigns is the same domain that is about to bounce through Instantly campaigns. But neither platform tells you that.
                     </p>
                     <p>
-                        Superkabe gives you one dashboard, one set of rules, one health score per domain — regardless of which platform the emails are sent through. When a domain needs healing, it gets paused everywhere. When it recovers, it comes back everywhere.
+                        Superkabe gives you one dashboard, one set of rules, one health score per domain — regardless of which platform the emails are sent through. When a domain needs healing, it gets paused everywhere. When it recovers, it comes back everywhere. See how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">multi-platform email validation</Link> works across Smartlead and Instantly simultaneously.
                     </p>
                     <p>
                         If your agency manages clients across platforms, our guide on{' '}
@@ -410,7 +410,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
                         <li>Leads start flowing through validation before reaching your sender.</li>
                     </ol>
                     <p>
-                        Your sending platform keeps doing what it does best. Superkabe handles what it does not.
+                        Your sending platform keeps doing what it does best. Superkabe handles what it does not. For the full picture of how sending platforms, validation layers, and monitoring tools fit together, see the <Link href="/guides/outbound-email-infrastructure-stack" className="text-blue-600 hover:text-blue-800 underline">complete guide to outbound email infrastructure</Link>.
                     </p>
                 </section>
 

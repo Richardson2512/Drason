@@ -170,6 +170,27 @@ const blogArticles = [
         href: '/blog/catch-all-detection-zerobounce-vs-neverbounce',
         icon: Scale,
     },
+    // ── Alternatives ──
+    {
+        title: 'ZeroBounce Alternatives',
+        href: '/blog/zerobounce-alternatives',
+        icon: GitBranch,
+    },
+    {
+        title: 'NeverBounce Alternatives',
+        href: '/blog/neverbounce-alternatives',
+        icon: GitBranch,
+    },
+    {
+        title: 'MillionVerifier Alternatives',
+        href: '/blog/millionverifier-alternatives',
+        icon: GitBranch,
+    },
+    {
+        title: 'Beyond Verification',
+        href: '/blog/email-verification-tool-alternatives',
+        icon: Shield,
+    },
 ];
 
 interface TocItem {

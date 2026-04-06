@@ -408,7 +408,10 @@ export default function ColdEmailBounceRateThresholdsArticle() {
                         <Link href="/blog/real-time-email-infrastructure-monitoring" className="text-blue-600 hover:text-blue-800 underline">
                             real-time email infrastructure monitoring
                         </Link>{' '}
-                        for implementation details.
+                        for implementation details. For definitions of all the deliverability terms used in this article, see the{' '}
+                        <Link href="/guides/email-deliverability-glossary" className="text-blue-600 hover:text-blue-800 underline">
+                            email deliverability glossary
+                        </Link>.
                     </p>
                 </section>
 

@@ -348,7 +348,11 @@ export default function SuperkabeVsManualMonitoringArticle() {
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        If you want to understand more about how bounce rates affect domain reputation, read our guide on <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">bounce rates and deliverability</Link>. For a deeper look at how Superkabe monitors infrastructure in real-time, see <Link href="/blog/real-time-email-infrastructure-monitoring" className="text-blue-600 hover:text-blue-800 underline">real-time email infrastructure monitoring</Link>.
+                        If you want to understand more about how bounce rates affect domain reputation, read our guide on <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">bounce rates and deliverability</Link>. For a deeper look at how Superkabe monitors infrastructure in real-time, see <Link href="/blog/real-time-email-infrastructure-monitoring" className="text-blue-600 hover:text-blue-800 underline">real-time email infrastructure monitoring</Link>. To explore the monitoring tools landscape, check out our list of the <Link href="/blog/best-domain-reputation-monitoring-tools" className="text-blue-600 hover:text-blue-800 underline">best domain reputation monitoring tools</Link>.
+                    </p>
+
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                        If you are not sure how to check your own domain reputation, start with our guide on <Link href="/blog/how-to-check-domain-reputation-cold-email" className="text-blue-600 hover:text-blue-800 underline">how to check domain reputation for cold email</Link>. For teams that are growing their outbound operation and need to protect reputation at scale, read <Link href="/blog/protect-sender-reputation-scaling-outreach" className="text-blue-600 hover:text-blue-800 underline">how to protect sender reputation while scaling outreach</Link>. For the full picture of how sending platforms, monitoring, and validation fit together, see the <Link href="/guides/outbound-email-infrastructure-stack" className="text-blue-600 hover:text-blue-800 underline">complete guide to outbound email infrastructure</Link>.
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
