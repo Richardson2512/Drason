@@ -148,6 +148,22 @@ const blogArticles = [
         href: '/blog/superkabe-vs-email-verification-tools',
         icon: HelpCircle,
     },
+    // ── Catch-All Branded ──
+    {
+        title: 'ZeroBounce Catch-All',
+        href: '/blog/zerobounce-catch-all-handling',
+        icon: Target,
+    },
+    {
+        title: 'NeverBounce Catch-All',
+        href: '/blog/neverbounce-catch-all-detection',
+        icon: Target,
+    },
+    {
+        title: 'Catch-All Comparison',
+        href: '/blog/catch-all-detection-zerobounce-vs-neverbounce',
+        icon: Scale,
+    },
 ];
 
 interface TocItem {

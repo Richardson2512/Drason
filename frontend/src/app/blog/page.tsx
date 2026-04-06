@@ -246,6 +246,28 @@ const articles = [
         readTime: '13 min read',
         tag: 'Educational',
     },
+    // ── Catch-All + Branded Comparison ──
+    {
+        slug: 'zerobounce-catch-all-handling',
+        title: 'How ZeroBounce handles catch-all domains (and what it misses)',
+        description: 'ZeroBounce labels catch-all emails but leaves the send decision to you. Here is what happens after you click send.',
+        readTime: '12 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'neverbounce-catch-all-detection',
+        title: 'NeverBounce catch-all detection: what it does and what it doesn\'t',
+        description: 'NeverBounce flags catch-all as accept_all and says don\'t send. But 30-40% of B2B leads are catch-all. Here is the practical approach.',
+        readTime: '12 min read',
+        tag: 'Comparison',
+    },
+    {
+        slug: 'catch-all-detection-zerobounce-vs-neverbounce',
+        title: 'Catch-all detection: ZeroBounce vs NeverBounce vs Superkabe (2026)',
+        description: 'Head-to-head comparison on catch-all handling. Detection vs risk scoring vs infrastructure protection. Full feature table.',
+        readTime: '14 min read',
+        tag: 'Comparison',
+    },
 ];
 
 export default function BlogPage() {
