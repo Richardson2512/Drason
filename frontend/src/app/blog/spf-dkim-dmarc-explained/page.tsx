@@ -28,11 +28,7 @@ export default function SpfDkimDmarcArticle() {
             "@type": "Organization",
             "name": "Superkabe"
         },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2025-11-10",
         "dateModified": "2026-03-26",
         "mainEntityOfPage": {
