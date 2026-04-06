@@ -62,8 +62,8 @@ const articles = [
     },
     {
         slug: 'domain-warming-methodology',
-        title: 'How to safely warm up new outbound email domains',
-        description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
+        title: 'How to warmup email domains for cold outreach (2026)',
+        description: 'Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.',
         readTime: '9 min read',
         tag: 'Strategy',
     },
@@ -245,6 +245,14 @@ const articles = [
         description: 'Why domain reputation overtook IP reputation, how DMARC sealed the shift, and real data on deliverability impact.',
         readTime: '13 min read',
         tag: 'Educational',
+    },
+    // ── Warmup Pillar ──
+    {
+        slug: 'complete-email-warmup-guide',
+        title: 'The complete email warmup guide 2026: domains, mailboxes, and what happens after',
+        description: 'Everything about warmup for cold outreach: domain vs mailbox warmup, day-by-day schedule, warmup tools, and why warmup alone is not enough.',
+        readTime: '18 min read',
+        tag: 'Complete Guide',
     },
     // ── Catch-All + Branded Comparison ──
     {

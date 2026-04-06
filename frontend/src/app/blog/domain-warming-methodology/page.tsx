@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to safely warm up new outbound email domains',
-    description: 'Systematic approach to building sender reputation on new domains. Volume ramp schedules, warming signals, and common mistakes that burn domains.',
+    title: 'How to Warmup Email Domains for Cold Outreach (2026)',
+    description: 'Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.',
     openGraph: {
-        title: 'How to safely warm up new outbound email domains',
-        description: 'The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.',
+        title: 'How to Warmup Email Domains for Cold Outreach (2026)',
+        description: 'Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.',
         url: '/blog/domain-warming-methodology',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,8 +22,10 @@ export default function DomainWarmingArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How to safely warm up new outbound email domains",
-        "description": "The systematic approach to building sender reputation on new domains, including volume ramp schedules, warming signals, and common mistakes that burn domains.",
+        "headline": "How to Warmup Email Domains for Cold Outreach (2026)",
+        "description": "Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.",
+        "datePublished": "2025-11-20",
+        "dateModified": "2026-04-07",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"
@@ -117,7 +119,7 @@ export default function DomainWarmingArticle() {
 
             <article>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    How to safely warm up new outbound email domains
+                    How to Warmup Email Domains for Cold Outreach (2026)
                 </h1>
                 <p className="text-gray-400 text-sm mb-8">9 min read · Updated February 2026</p>
 

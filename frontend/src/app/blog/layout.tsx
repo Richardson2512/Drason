@@ -148,6 +148,12 @@ const blogArticles = [
         href: '/blog/superkabe-vs-email-verification-tools',
         icon: HelpCircle,
     },
+    // ── Warmup Pillar ──
+    {
+        title: 'Complete Warmup Guide 2026',
+        href: '/blog/complete-email-warmup-guide',
+        icon: Activity,
+    },
     // ── Catch-All Branded ──
     {
         title: 'ZeroBounce Catch-All',
