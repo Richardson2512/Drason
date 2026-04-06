@@ -46,10 +46,7 @@ export default function InfrastructureHealthPage() {
     const [scoreHistory, setScoreHistory] = useState<Array<{ date: string; score: number }>>([]);
     const [scoreRange, setScoreRange] = useState<'7' | '30' | '90'>('30');
 
-    // ── Warmup Status ──
-    const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
-    const [warmupLoading, setWarmupLoading] = useState(false);
-    // warmup check state moved to /dashboard/healing
+    // Warmup status + check moved to /dashboard/healing
 
     const fetchReport = useCallback(() => {
         setLoading(true);
@@ -78,7 +75,6 @@ export default function InfrastructureHealthPage() {
         fetchTransitionGate();
         fetchRecoveryStatus();
         fetchScoreHistory();
-        fetchWarmupStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchReport]);
 
@@ -146,18 +142,6 @@ export default function InfrastructureHealthPage() {
             console.error('Failed to fetch recovery status:', err);
         } finally {
             setRecoveryLoading(false);
-        }
-    };
-
-    const fetchWarmupStatus = async () => {
-        setWarmupLoading(true);
-        try {
-            const data = await apiClient<Record<string, any>>('/api/dashboard/warmup-status');
-            if (data) setWarmupData(data);
-        } catch (err) {
-            console.error('Failed to fetch warmup status:', err);
-        } finally {
-            setWarmupLoading(false);
         }
     };
 
