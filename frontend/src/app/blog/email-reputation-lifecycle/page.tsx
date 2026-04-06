@@ -26,17 +26,8 @@ export default function EmailReputationArticle() {
         "description": "How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.",
         "datePublished": "2025-12-10",
         "dateModified": "2026-04-07",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
-        "datePublished": "2025-12-10",
-        "dateModified": "2026-03-26",
+        "author": { "@type": "Organization", "name": "Superkabe" },
+        "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/blog/email-reputation-lifecycle"
