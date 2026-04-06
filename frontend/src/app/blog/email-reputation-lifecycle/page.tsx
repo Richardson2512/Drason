@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How sender reputation is built, damaged, and repaired over time',
-    description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+    title: 'How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)',
+    description: 'How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.',
     openGraph: {
-        title: 'How sender reputation is built, damaged, and repaired over time',
-        description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+        title: 'How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)',
+        description: 'How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.',
         url: '/blog/email-reputation-lifecycle',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,8 +22,10 @@ export default function EmailReputationArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How sender reputation is built, damaged, and repaired over time",
-        "description": "How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.",
+        "headline": "How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)",
+        "description": "How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.",
+        "datePublished": "2025-12-10",
+        "dateModified": "2026-04-07",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"
@@ -111,7 +113,7 @@ export default function EmailReputationArticle() {
 
             <article>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    How sender reputation is built, damaged, and repaired over time
+                    How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)
                 </h1>
                 <p className="text-gray-400 text-sm mb-8">11 min read · Updated February 2026</p>
 

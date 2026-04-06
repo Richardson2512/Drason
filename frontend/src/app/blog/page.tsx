@@ -69,8 +69,8 @@ const articles = [
     },
     {
         slug: 'email-reputation-lifecycle',
-        title: 'How sender reputation is built, damaged, and repaired over time',
-        description: 'How email reputation is built, maintained, damaged, and recovered. Covers ISP scoring models, feedback loops, and the point of no return for domain reputation.',
+        title: 'How to repair sender reputation: the complete guide (2026)',
+        description: 'How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.',
         readTime: '11 min read',
         tag: 'Deep Dive',
     },
