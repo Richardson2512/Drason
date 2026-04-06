@@ -142,10 +142,10 @@ export default function ZeroBounceAlternativesPage() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The four reasons teams start looking</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>Per-email pricing adds up fast:</strong> At $0.008 per email, a team verifying 100,000 emails per month spends $800 just on verification. That is before any sending costs. Scale to 200,000 and it is $1,600/month for something that only checks addresses</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>Catch-all addresses remain a problem:</strong> ZeroBounce flags catch-all domains, but roughly 20-30% of B2B domains are catch-all. Flagging them does not solve the problem of what to do with them. Many teams end up sending to catch-all addresses anyway because excluding 25% of their pipeline is not realistic</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>No monitoring after verification:</strong> You verify a list on Monday. You send on Tuesday through Friday. A DNS change breaks your DKIM on Wednesday. Two mailboxes spike to 5% bounce rate on Thursday. ZeroBounce cannot see any of this because its job ended on Monday</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>No integration with sending platforms:</strong> ZeroBounce does not connect to Smartlead or Instantly. You verify, download a CSV, upload it somewhere else. For teams running automated Clay-to-Smartlead pipelines, that manual step is a bottleneck</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Per-email pricing adds up fast:</strong> At $0.008 per email, a team verifying 100,000 emails per month spends $800 just on verification. That is before any sending costs. Scale to 200,000 and it is $1,600/month for something that only checks addresses</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Catch-all addresses remain a problem:</strong> ZeroBounce flags catch-all domains, but roughly 20-30% of B2B domains are catch-all. Flagging them does not solve the problem of what to do with them. Many teams end up sending to catch-all addresses anyway because excluding 25% of their pipeline is not realistic</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No monitoring after verification:</strong> You verify a list on Monday. You send on Tuesday through Friday. A DNS change breaks your DKIM on Wednesday. Two mailboxes spike to 5% bounce rate on Thursday. ZeroBounce cannot see any of this because its job ended on Monday</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No integration with sending platforms:</strong> ZeroBounce does not connect to Smartlead or Instantly. You verify, download a CSV, upload it somewhere else. For teams running automated Clay-to-Smartlead pipelines, that manual step is a bottleneck</li>
                         </ul>
                     </div>
 
@@ -353,10 +353,10 @@ export default function ZeroBounceAlternativesPage() {
                     </p>
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You verify fewer than 20,000 emails per month and the per-email cost is manageable</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You value activity scoring and spam trap detection (features unique to ZeroBounce)</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You already have a separate infrastructure monitoring solution in place</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You run 1-3 domains and can manually monitor bounce rates in your sending platform</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You verify fewer than 20,000 emails per month and the per-email cost is manageable</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You value activity scoring and spam trap detection (features unique to ZeroBounce)</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have a separate infrastructure monitoring solution in place</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You run 1-3 domains and can manually monitor bounce rates in your sending platform</li>
                         </ul>
                     </div>
                     <p className="text-gray-600 leading-relaxed mb-6">
@@ -369,9 +369,9 @@ export default function ZeroBounceAlternativesPage() {
                     </p>
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>You manage 10+ domains:</strong> At this scale, manual bounce monitoring becomes impossible. You need automated threshold detection and auto-pause. ZeroBounce does not do this. <Link href="/blog/best-email-validation-tools-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">See our full validation tool comparison</Link></li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>You have burned a domain despite verified lists:</strong> This happens because verification catches invalid addresses but cannot prevent catch-all bounces, DNS failures, or sending pattern issues. You need the monitoring and healing layer that verification tools lack</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Per-email pricing is eating your budget:</strong> At 100,000 emails per month, ZeroBounce costs $800+. Superkabe costs $49 and includes verification plus everything else. The economics flip hard at scale</li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You manage 10+ domains:</strong> At this scale, manual bounce monitoring becomes impossible. You need automated threshold detection and auto-pause. ZeroBounce does not do this. <Link href="/blog/best-email-validation-tools-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">See our full validation tool comparison</Link></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You have burned a domain despite verified lists:</strong> This happens because verification catches invalid addresses but cannot prevent catch-all bounces, DNS failures, or sending pattern issues. You need the monitoring and healing layer that verification tools lack</li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>Per-email pricing is eating your budget:</strong> At 100,000 emails per month, ZeroBounce costs $800+. Superkabe costs $49 and includes verification plus everything else. The economics flip hard at scale</li>
                         </ul>
                     </div>
 

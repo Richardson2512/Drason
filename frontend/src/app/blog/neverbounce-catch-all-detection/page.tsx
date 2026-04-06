@@ -145,10 +145,10 @@ export default function NeverBounceCatchAllDetectionArticle() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">NeverBounce catch-all classification</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&#9679;</span> <strong>Status label:</strong> &quot;accept_all&quot; (separate from valid, invalid, disposable, and unknown)</li>
-                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&#9679;</span> <strong>Official recommendation:</strong> Do not send to accept_all addresses</li>
-                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&#9679;</span> <strong>No risk differentiation:</strong> All accept_all addresses get the same label. No scoring, no confidence level, no distinction between likely-real and likely-fake</li>
-                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&#9679;</span> <strong>Separate from &quot;unknown&quot;:</strong> accept_all is a definitive classification. NeverBounce confirmed the domain accepts everything. Unknown means it could not determine the status</li>
+                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">▸</span> <strong>Status label:</strong> &quot;accept_all&quot; (separate from valid, invalid, disposable, and unknown)</li>
+                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">▸</span> <strong>Official recommendation:</strong> Do not send to accept_all addresses</li>
+                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">▸</span> <strong>No risk differentiation:</strong> All accept_all addresses get the same label. No scoring, no confidence level, no distinction between likely-real and likely-fake</li>
+                            <li className="flex items-start gap-2"><span className="text-gray-400 mt-0.5">▸</span> <strong>Separate from &quot;unknown&quot;:</strong> accept_all is a definitive classification. NeverBounce confirmed the domain accepts everything. Unknown means it could not determine the status</li>
                         </ul>
                     </div>
 
@@ -165,11 +165,11 @@ export default function NeverBounceCatchAllDetectionArticle() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">NeverBounce strengths</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Fast bulk processing:</strong> Handles large lists quickly. Upload a 50,000-email CSV and get results back in minutes, not hours</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Reliable real-time API:</strong> The API is well-documented and fast. Good for teams integrating verification into automated workflows</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Good accuracy:</strong> Around 96-97% detection rate for invalid addresses on non-catch-all domains. Not quite ZeroBounce level, but close</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Competitive pricing:</strong> Roughly $0.80 per 1,000 at volume. Cheaper than ZeroBounce ($3-4 per 1,000), more expensive than MillionVerifier ($0.50 per 1,000)</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Good integrations:</strong> Native connections with HubSpot, Zapier, and several other platforms. Makes it easy to plug into existing workflows</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Fast bulk processing:</strong> Handles large lists quickly. Upload a 50,000-email CSV and get results back in minutes, not hours</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Reliable real-time API:</strong> The API is well-documented and fast. Good for teams integrating verification into automated workflows</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Good accuracy:</strong> Around 96-97% detection rate for invalid addresses on non-catch-all domains. Not quite ZeroBounce level, but close</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Competitive pricing:</strong> Roughly $0.80 per 1,000 at volume. Cheaper than ZeroBounce ($3-4 per 1,000), more expensive than MillionVerifier ($0.50 per 1,000)</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Good integrations:</strong> Native connections with HubSpot, Zapier, and several other platforms. Makes it easy to plug into existing workflows</li>
                         </ul>
                     </div>
 
@@ -204,11 +204,11 @@ export default function NeverBounceCatchAllDetectionArticle() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">What NeverBounce cannot do after verification</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>No post-send monitoring:</strong> NeverBounce does not watch your bounce rates. If catch-all leads bounce at 8%, you will not hear about it from NeverBounce</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>No infrastructure protection:</strong> If bounces from catch-all leads push a mailbox past its threshold, nothing stops the sending automatically</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>No risk distribution:</strong> NeverBounce does not know which mailbox will send to which lead. It cannot spread catch-all risk across your infrastructure</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>No domain intelligence:</strong> If a particular catch-all domain has historically caused bounces, NeverBounce has no memory of that. It checks the same domain fresh each time</li>
-                            <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no recovery system. You are on your own figuring out when and how to resume sending</li>
+                            <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No post-send monitoring:</strong> NeverBounce does not watch your bounce rates. If catch-all leads bounce at 8%, you will not hear about it from NeverBounce</li>
+                            <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No infrastructure protection:</strong> If bounces from catch-all leads push a mailbox past its threshold, nothing stops the sending automatically</li>
+                            <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No risk distribution:</strong> NeverBounce does not know which mailbox will send to which lead. It cannot spread catch-all risk across your infrastructure</li>
+                            <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No domain intelligence:</strong> If a particular catch-all domain has historically caused bounces, NeverBounce has no memory of that. It checks the same domain fresh each time</li>
+                            <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no recovery system. You are on your own figuring out when and how to resume sending</li>
                         </ul>
                     </div>
 

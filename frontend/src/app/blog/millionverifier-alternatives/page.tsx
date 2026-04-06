@@ -142,9 +142,9 @@ export default function MillionVerifierAlternativesPage() {
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The three gaps</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>Accuracy concerns:</strong> MillionVerifier sits at roughly 95% accuracy. That is 3 percentage points below ZeroBounce and 2 below NeverBounce. On a 10,000 email list, that translates to 200-300 more addresses that slip through as &quot;valid&quot; when they are not. For teams with tight bounce rate budgets, those extra bounces add up</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>Limited features beyond verification:</strong> MillionVerifier returns basic classifications: valid, invalid, risky, unknown, disposable. No activity scoring, no spam trap detection, no data enrichment. The result is a binary clean/dirty output. ZeroBounce and NeverBounce provide richer data that helps prioritize leads beyond just validity</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>No real-time API on lower plans:</strong> MillionVerifier&apos;s real-time API is available but less prominent than competitors. Some teams report slower response times compared to NeverBounce or ZeroBounce. For automated pipelines processing leads in real-time, API speed and reliability matter as much as price</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Accuracy concerns:</strong> MillionVerifier sits at roughly 95% accuracy. That is 3 percentage points below ZeroBounce and 2 below NeverBounce. On a 10,000 email list, that translates to 200-300 more addresses that slip through as &quot;valid&quot; when they are not. For teams with tight bounce rate budgets, those extra bounces add up</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Limited features beyond verification:</strong> MillionVerifier returns basic classifications: valid, invalid, risky, unknown, disposable. No activity scoring, no spam trap detection, no data enrichment. The result is a binary clean/dirty output. ZeroBounce and NeverBounce provide richer data that helps prioritize leads beyond just validity</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No real-time API on lower plans:</strong> MillionVerifier&apos;s real-time API is available but less prominent than competitors. Some teams report slower response times compared to NeverBounce or ZeroBounce. For automated pipelines processing leads in real-time, API speed and reliability matter as much as price</li>
                         </ul>
                     </div>
 
@@ -354,10 +354,10 @@ export default function MillionVerifierAlternativesPage() {
                     </p>
                     <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You run 1-3 domains and can manually monitor bounce rates in your sending platform daily</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> Your monthly verification volume is high enough that per-email cost is the deciding factor</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> You have a separate monitoring solution or your scale is small enough to catch problems manually</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> 95% accuracy is acceptable because your sending volume per domain is low enough that a few extra bounces do not trigger ISP penalties</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You run 1-3 domains and can manually monitor bounce rates in your sending platform daily</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Your monthly verification volume is high enough that per-email cost is the deciding factor</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You have a separate monitoring solution or your scale is small enough to catch problems manually</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> 95% accuracy is acceptable because your sending volume per domain is low enough that a few extra bounces do not trigger ISP penalties</li>
                         </ul>
                     </div>
 
