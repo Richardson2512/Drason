@@ -66,7 +66,9 @@ export default function InfrastructurePlaybookPage() {
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.superkabe.com/infrastructure-playbook"
-        }
+        },
+        "datePublished": "2025-11-01",
+        "dateModified": "2026-04-07"
     };
 
     return (

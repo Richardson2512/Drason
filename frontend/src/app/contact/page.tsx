@@ -40,7 +40,9 @@ export default function ContactPage() {
                 "contactType": "customer support",
                 "availableLanguage": "English"
             }
-        }
+        },
+        "datePublished": "2026-03-25",
+        "dateModified": "2026-04-07"
     };
 
     const faqSchema = {

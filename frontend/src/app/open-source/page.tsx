@@ -25,7 +25,9 @@ export default function OpenSourceManifesto() {
             "applicationCategory": "BusinessApplication",
             "url": "https://github.com/Superkabereal/Superkabe",
             "operatingSystem": "Web, Node.js"
-        }
+        },
+        "datePublished": "2025-11-01",
+        "dateModified": "2026-04-07"
     };
 
     return (

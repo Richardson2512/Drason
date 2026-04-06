@@ -63,7 +63,9 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
             "operatingSystem": "Web",
             "url": "https://www.superkabe.com",
             "featureList": data.title
-        }
+        },
+        "datePublished": "2025-11-01",
+        "dateModified": "2026-04-07"
     };
 
     return (

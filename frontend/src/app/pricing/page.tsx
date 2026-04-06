@@ -41,7 +41,9 @@ export default function PricingPage() {
                 { "@type": "ListItem", "position": 4, "name": "Scale", "description": "$349/month — 50 domains, 150 mailboxes, priority support" },
                 { "@type": "ListItem", "position": 5, "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes" }
             ]
-        }
+        },
+        "datePublished": "2025-11-01",
+        "dateModified": "2026-04-07"
     };
 
     return (

@@ -29,7 +29,9 @@ export default function MultiPlatformEmailValidationPage() {
             "name": "Superkabe",
             "url": "https://www.superkabe.com"
         },
-        "publisher": { "@id": "https://www.superkabe.com/#organization" }
+        "publisher": { "@id": "https://www.superkabe.com/#organization" },
+        "datePublished": "2026-03-27",
+        "dateModified": "2026-04-07"
     };
 
     const softwareApplicationSchema = {
