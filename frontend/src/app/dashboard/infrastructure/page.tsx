@@ -12,8 +12,7 @@ import AssessmentConfirmationModal from '@/components/AssessmentConfirmationModa
 import AssessmentProgressOverlay from '@/components/AssessmentProgressOverlay';
 
 import TransitionGateBanner from './TransitionGateBanner';
-import RecoveryStatusPanel from './RecoveryStatusPanel';
-import WarmupProgressPanel from './WarmupProgressPanel';
+// Recovery and warmup panels moved to /dashboard/healing
 import FindingsSection from './FindingsSection';
 import RecommendationsList from './RecommendationsList';
 
@@ -50,8 +49,7 @@ export default function InfrastructureHealthPage() {
     // ── Warmup Status ──
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
     const [warmupLoading, setWarmupLoading] = useState(false);
-    const [warmupChecking, setWarmupChecking] = useState(false);
-    const [warmupCheckResult, setWarmupCheckResult] = useState<{ checked: number; graduated: number; errors: number } | null>(null);
+    // warmup check state moved to /dashboard/healing
 
     const fetchReport = useCallback(() => {
         setLoading(true);
@@ -160,24 +158,6 @@ export default function InfrastructureHealthPage() {
             console.error('Failed to fetch warmup status:', err);
         } finally {
             setWarmupLoading(false);
-        }
-    };
-
-    const handleWarmupCheck = async () => {
-        setWarmupChecking(true);
-        setWarmupCheckResult(null);
-        try {
-            const result = await apiClient<{ checked: number; graduated: number; errors: number }>('/api/dashboard/warmup/check', { method: 'POST' });
-            if (result) setWarmupCheckResult(result);
-            await fetchWarmupStatus();
-            await fetchRecoveryStatus();
-        } catch (err) {
-            console.error('Failed to run warmup check:', err);
-            setWarmupCheckResult({ checked: 0, graduated: 0, errors: 1 });
-        } finally {
-            setWarmupChecking(false);
-            // Auto-dismiss result after 8 seconds
-            setTimeout(() => setWarmupCheckResult(null), 8000);
         }
     };
 
@@ -571,16 +551,27 @@ export default function InfrastructureHealthPage() {
                 </div>
             )}
 
-            {/* ── RECOVERY STATUS PANEL ── */}
-            <RecoveryStatusPanel recoveryData={recoveryData} />
-
-            {/* ── WARMUP STATUS PANEL ── */}
-            <WarmupProgressPanel
-                warmupData={warmupData}
-                onCheckNow={handleWarmupCheck}
-                warmupChecking={warmupChecking}
-                checkResult={warmupCheckResult}
-            />
+            {/* ── HEALING PIPELINE SUMMARY ── */}
+            {recoveryData && recoveryData.summary && recoveryData.summary.totalRecovering > 0 && (
+                <Link href="/dashboard/healing" className="block premium-card hover:border-blue-200 transition-colors group">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <span className="text-2xl">🏥</span>
+                            <div>
+                                <div className="text-base font-bold text-gray-900">
+                                    {recoveryData.summary.totalRecovering} {recoveryData.summary.totalRecovering === 1 ? 'entity' : 'entities'} in healing pipeline
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                    {recoveryData.summary.mailboxCount > 0 && `${recoveryData.summary.mailboxCount} mailbox${recoveryData.summary.mailboxCount > 1 ? 'es' : ''}`}
+                                    {recoveryData.summary.mailboxCount > 0 && recoveryData.summary.domainCount > 0 && ' · '}
+                                    {recoveryData.summary.domainCount > 0 && `${recoveryData.summary.domainCount} domain${recoveryData.summary.domainCount > 1 ? 's' : ''}`}
+                                </div>
+                            </div>
+                        </div>
+                        <span className="text-sm font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">View Details →</span>
+                    </div>
+                </Link>
+            )}
 
             {/* Findings Distribution + Findings List */}
             <FindingsSection

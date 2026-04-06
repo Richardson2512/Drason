@@ -254,6 +254,10 @@ export default function DashboardShell({
                             <span className="text-base min-w-[24px] text-center">🔮</span>
                             {!isCollapsed && <span>Predictive Risks</span>}
                         </Link>
+                        <Link href="/dashboard/healing" className="nav-link" title={isCollapsed ? "Healing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span className="text-base min-w-[24px] text-center">🏥</span>
+                            {!isCollapsed && <span>Healing</span>}
+                        </Link>
 
                         {!isCollapsed && (
                             <div className="pl-4 mt-3 mb-1 text-[0.65rem] text-gray-400 uppercase tracking-[0.1em] font-bold whitespace-nowrap">
