@@ -30,22 +30,40 @@ export default function DocsPage() {
             {/* Overview Card */}
             <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 mb-16">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">What is Superkabe?</h2>
-                <p className="text-gray-600 mb-6">
-                    Superkabe is a control layer for multi-domain, multi-mailbox outbound email infrastructure.
-                    We don't optimize volume— we prevent irreversible damage.
-                </p>
                 <p className="text-gray-600 mb-4">
-                    Modern outbound teams run:
+                    Superkabe is a Deliverability Protection Layer (DPL) for outbound email infrastructure. It sits between your lead enrichment tools (Clay, Apollo) and your sending platforms (Smartlead, Instantly, EmailBison) to validate leads, protect your domains, and heal your infrastructure when things go wrong.
                 </p>
-                <ul className="mb-6 list-disc pl-5 space-y-2 text-gray-600">
-                    <li>3–10 domains</li>
-                    <li>3+ mailboxes per domain</li>
-                    <li>20–30 emails per mailbox per day</li>
-                    <li>Structured ICP-based campaign routing</li>
-                </ul>
-                <p className="text-gray-600">
-                    Superkabe monitors bounce rates, failure patterns, and domain health to protect your infrastructure
-                    before reputation damage becomes irreversible.
+                <p className="text-gray-600 mb-6">
+                    Every lead that enters Superkabe passes through a multi-stage pipeline before reaching your sender:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">Email Validation</div>
+                        <p className="text-gray-600 text-sm">Syntax, MX records, disposable domains, catch-all detection + MillionVerifier API for risky leads. Invalid emails are blocked before they reach your sender.</p>
+                    </div>
+                    <div className="bg-green-50 border border-green-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">Health Gate (GREEN / YELLOW / RED)</div>
+                        <p className="text-gray-600 text-sm">Every lead is classified by risk. GREEN routes normally, YELLOW distributes with per-mailbox caps, RED is blocked entirely.</p>
+                    </div>
+                    <div className="bg-purple-50 border border-purple-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">Risk-Aware Routing</div>
+                        <p className="text-gray-600 text-sm">Rule-based routing by persona and minimum score. Priority ordering with wildcard catch-all rules. Leads pushed to the right campaign on the right platform.</p>
+                    </div>
+                    <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">Real-Time Monitoring</div>
+                        <p className="text-gray-600 text-sm">Checks mailbox health every 60 seconds. Bounce rates, SMTP/IMAP connectivity, DNS authentication (SPF, DKIM, DMARC).</p>
+                    </div>
+                    <div className="bg-red-50 border border-red-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">Auto-Pause + Correlation</div>
+                        <p className="text-gray-600 text-sm">Auto-pauses on threshold breach. Correlation engine determines if the root cause is the mailbox, domain, or campaign before acting.</p>
+                    </div>
+                    <div className="bg-teal-50 border border-teal-100 rounded-xl p-4">
+                        <div className="font-bold text-gray-900 text-sm mb-1">5-Phase Healing Pipeline</div>
+                        <p className="text-gray-600 text-sm">Pause → Quarantine (DNS check) → Restricted Send → Warm Recovery → Healthy. Fully automated with per-phase graduation criteria.</p>
+                    </div>
+                </div>
+                <p className="text-gray-600 text-sm">
+                    Superkabe supports Smartlead, Instantly, and EmailBison through a unified platform adapter. Mailbox rotation, load balancing, Slack alerts, reports, and CSV export are included across all plans.
                 </p>
             </div>
 
