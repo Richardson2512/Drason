@@ -112,7 +112,7 @@ export default function Navbar() {
                             </button>
 
                             {toolsOpen && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 z-[100] bg-[#111827] border border-white/10 rounded-2xl shadow-2xl shadow-black/40">
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-[#111827] border border-white/10 rounded-2xl shadow-2xl shadow-black/40">
                                     <div className="p-2">
                                         <Link
                                             href="/tools"
