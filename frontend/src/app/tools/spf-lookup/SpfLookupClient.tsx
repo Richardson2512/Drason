@@ -315,9 +315,38 @@ export default function SpfLookupClient() {
                                     <div className="flex-1">
                                         <span className="text-sm font-semibold text-gray-900">All</span>
                                         <span className="ml-2 text-sm text-gray-500">(default for unmatched senders)</span>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            {result.allMechanism === '-all' && 'Hard fail — emails from unlisted servers are rejected. This is the strongest and recommended setting.'}
+                                            {result.allMechanism === '~all' && 'Soft fail — emails from unlisted servers are accepted but marked as suspicious. Consider upgrading to -all for stricter protection.'}
+                                            {result.allMechanism === '?all' && 'Neutral — no opinion on unlisted servers. This provides no protection against spoofing.'}
+                                            {result.allMechanism === '+all' && 'Pass — any server can send as your domain. This is dangerous and should be changed immediately.'}
+                                        </p>
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Qualifier Reference */}
+                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 className="text-sm font-semibold text-gray-700 mb-4">What Do These Results Mean?</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="flex items-start gap-3 p-3 bg-green-50 rounded-xl">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-700 shrink-0">Pass</span>
+                                <p className="text-xs text-gray-600">The server is authorized to send email for this domain.</p>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-red-50 rounded-xl">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-red-100 text-red-700 shrink-0">Fail</span>
+                                <p className="text-xs text-gray-600">The server is explicitly not authorized. Emails should be rejected.</p>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-amber-50 rounded-xl">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-700 shrink-0">SoftFail</span>
+                                <p className="text-xs text-gray-600">The server is probably not authorized. Emails are accepted but flagged.</p>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-600 shrink-0">Neutral</span>
+                                <p className="text-xs text-gray-600">No opinion. The domain makes no assertion about this server.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
