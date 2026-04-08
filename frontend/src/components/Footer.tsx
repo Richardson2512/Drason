@@ -24,7 +24,7 @@ export default function Footer() {
                         </div>
 
                         {/* Right: Navigation Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-12">
 
                             {/* Platform */}
                             <div className="flex flex-col gap-4">
@@ -34,6 +34,19 @@ export default function Footer() {
                                     <Link href="/product" className="hover:text-blue-600 transition-colors">Product Hub</Link>
                                     <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
                                     <Link href="/docs" className="hover:text-blue-600 transition-colors">Documentation</Link>
+                                </nav>
+                            </div>
+
+                            {/* Free Tools */}
+                            <div className="flex flex-col gap-4">
+                                <h4 className="font-bold text-gray-900 mb-2 text-base">Free Tools</h4>
+                                <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
+                                    <Link href="/tools/spf-lookup" className="hover:text-blue-600 transition-colors">SPF Lookup</Link>
+                                    <Link href="/tools/spf-generator" className="hover:text-blue-600 transition-colors">SPF Generator</Link>
+                                    <Link href="/tools/dkim-lookup" className="hover:text-blue-600 transition-colors">DKIM Lookup</Link>
+                                    <Link href="/tools/dkim-generator" className="hover:text-blue-600 transition-colors">DKIM Generator</Link>
+                                    <Link href="/tools/dmarc-lookup" className="hover:text-blue-600 transition-colors">DMARC Lookup</Link>
+                                    <Link href="/tools/dmarc-generator" className="hover:text-blue-600 transition-colors">DMARC Generator</Link>
                                 </nav>
                             </div>
 
@@ -50,7 +63,7 @@ export default function Footer() {
 
                             {/* Case Studies */}
                             <div className="flex flex-col gap-4">
-                                <h4 className="font-bold text-gray-900 mb-2 text-base">Product Case Studies</h4>
+                                <h4 className="font-bold text-gray-900 mb-2 text-base">Case Studies</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
                                     <Link href="/product/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors">Bounce Reduction</Link>
                                     <Link href="/product/case-study-domain-recovery" className="hover:text-blue-600 transition-colors">Domain Recovery</Link>

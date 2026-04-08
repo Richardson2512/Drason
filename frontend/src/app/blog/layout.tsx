@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen, Users, AlertTriangle, DollarSign, Monitor, CheckCircle, TrendingUp, Search, GitBranch, Target, Scale, HelpCircle, Zap } from 'lucide-react';
+import { Menu, X, ChevronUp, List, Activity, Shield, Globe, Mail, BookOpen, Users, AlertTriangle, DollarSign, Monitor, CheckCircle, TrendingUp, Search, GitBranch, Target, Scale, HelpCircle, Zap, Key } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -189,6 +189,53 @@ const blogArticles = [
     {
         title: 'Beyond Verification',
         href: '/blog/email-verification-tool-alternatives',
+        icon: Shield,
+    },
+    // ── Free Tools Guides ──
+    {
+        title: 'Free SPF Lookup Tool',
+        href: '/blog/free-spf-lookup-tool',
+        icon: Search,
+    },
+    {
+        title: 'Free DKIM Lookup Tool',
+        href: '/blog/free-dkim-lookup-tool',
+        icon: Key,
+    },
+    {
+        title: 'Free DMARC Tool Guide',
+        href: '/blog/free-dmarc-lookup-generator-tool',
+        icon: Shield,
+    },
+    {
+        title: 'Email Auth Checker Tools',
+        href: '/blog/email-authentication-checker-tools',
+        icon: CheckCircle,
+    },
+    // ── Domain Reputation ──
+    {
+        title: 'Domain Reputation Monitoring',
+        href: '/blog/best-domain-reputation-monitoring-tools',
+        icon: Monitor,
+    },
+    {
+        title: 'Domain vs IP Reputation',
+        href: '/blog/domain-reputation-vs-ip-reputation',
+        icon: Scale,
+    },
+    {
+        title: 'Check Domain Reputation',
+        href: '/blog/how-to-check-domain-reputation-cold-email',
+        icon: Search,
+    },
+    {
+        title: 'Domain Reputation Recovery',
+        href: '/blog/domain-reputation-recovery-guide',
+        icon: Activity,
+    },
+    {
+        title: 'Protect Domain at Scale',
+        href: '/blog/protect-domain-reputation-scaling-cold-email',
         icon: Shield,
     },
 ];

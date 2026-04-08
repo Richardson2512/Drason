@@ -152,6 +152,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.3,
         },
 
+        // ─── Free Tools (auto-discovered) ────────────
+        ...discoverRoutes('tools', '/tools', 'weekly', 0.8),
+
         // ─── Documentation (auto-discovered) ──────────
         ...discoverRoutes('docs', '/docs', 'weekly', 0.8),
 

@@ -1,13 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
+const toolLinks = [
+    { href: '/tools/spf-lookup', label: 'SPF Record Lookup' },
+    { href: '/tools/spf-generator', label: 'SPF Record Generator' },
+    { href: '/tools/dkim-lookup', label: 'DKIM Record Lookup' },
+    { href: '/tools/dkim-generator', label: 'DKIM Record Generator' },
+    { href: '/tools/dmarc-lookup', label: 'DMARC Record Lookup' },
+    { href: '/tools/dmarc-generator', label: 'DMARC Record Generator' },
+];
+
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [toolsOpen, setToolsOpen] = useState(false);
+    const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+    const toolsRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -17,7 +29,22 @@ export default function Navbar() {
     }, []);
 
     // Close mobile menu when route changes
-    useEffect(() => { setMobileOpen(false); }, [pathname]);
+    useEffect(() => {
+        setMobileOpen(false);
+        setToolsOpen(false);
+        setMobileToolsOpen(false);
+    }, [pathname]);
+
+    // Close tools dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) {
+                setToolsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const navLinks = [
         { href: '/product', label: 'Product' },
@@ -27,6 +54,7 @@ export default function Navbar() {
     ];
 
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+    const isToolsActive = pathname.startsWith('/tools');
 
     return (
         <>
@@ -48,7 +76,7 @@ export default function Navbar() {
                     </Link>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden md:flex gap-7 text-[13px] font-medium">
+                    <nav className="hidden md:flex gap-7 text-[13px] font-medium items-center">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
@@ -61,6 +89,58 @@ export default function Navbar() {
                                 {link.label}
                             </Link>
                         ))}
+
+                        {/* Free Tools Dropdown */}
+                        <div ref={toolsRef} className="relative">
+                            <button
+                                onClick={() => setToolsOpen(!toolsOpen)}
+                                className={`flex items-center gap-1 transition-colors duration-200 ${isToolsActive
+                                    ? 'text-white font-semibold'
+                                    : 'text-gray-400 hover:text-white'
+                                    }`}
+                            >
+                                Free Tools
+                                <svg
+                                    className={`w-3 h-3 transition-transform duration-200 ${toolsOpen ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2.5}
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+
+                            {toolsOpen && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-[#111827]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden">
+                                    <div className="p-2">
+                                        <Link
+                                            href="/tools"
+                                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-blue-400 hover:bg-white/5 transition-colors"
+                                        >
+                                            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                                            View All Tools
+                                        </Link>
+                                        <div className="h-px bg-white/5 my-1" />
+                                        {toolLinks.map((tool) => (
+                                            <Link
+                                                key={tool.href}
+                                                href={tool.href}
+                                                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs transition-colors ${isActive(tool.href)
+                                                    ? 'text-white bg-white/10 font-semibold'
+                                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                    }`}
+                                            >
+                                                <span className={`w-1.5 h-1.5 rounded-full ${tool.href.includes('spf') ? 'bg-blue-500' :
+                                                    tool.href.includes('dkim') ? 'bg-emerald-500' : 'bg-purple-500'
+                                                    }`} />
+                                                {tool.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </nav>
 
                     {/* Desktop CTAs */}
@@ -91,7 +171,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Overlay */}
             {mobileOpen && (
-                <div className="fixed inset-0 z-40 bg-[#111827]/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-6 animate-fadeIn">
+                <div className="fixed inset-0 z-40 bg-[#111827]/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-6 animate-fadeIn overflow-y-auto py-24">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
@@ -103,6 +183,47 @@ export default function Navbar() {
                             {link.label}
                         </Link>
                     ))}
+
+                    {/* Mobile Free Tools Accordion */}
+                    <div className="flex flex-col items-center">
+                        <button
+                            onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
+                            className={`flex items-center gap-2 text-2xl font-semibold transition-colors ${isToolsActive ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Free Tools
+                            <svg
+                                className={`w-5 h-5 transition-transform duration-200 ${mobileToolsOpen ? 'rotate-180' : ''}`}
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2.5}
+                            >
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        </button>
+                        {mobileToolsOpen && (
+                            <div className="flex flex-col items-center gap-3 mt-4">
+                                <Link
+                                    href="/tools"
+                                    className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    View All Tools
+                                </Link>
+                                {toolLinks.map((tool) => (
+                                    <Link
+                                        key={tool.href}
+                                        href={tool.href}
+                                        className={`text-sm transition-colors ${isActive(tool.href) ? 'text-white font-semibold' : 'text-gray-500 hover:text-white'}`}
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        {tool.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <div className="flex flex-col gap-4 mt-6 items-center">
                         <Link href="/login" className="text-gray-400 hover:text-white text-lg font-medium transition-colors" onClick={() => setMobileOpen(false)}>
                             Sign In
