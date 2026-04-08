@@ -116,6 +116,42 @@ export default function OpenSourceManifesto() {
                 </section>
 
                 <section className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
+                    <h2 className="text-3xl font-bold mb-6 text-gray-900">Deep Architecture: How Superkabe Protects Infrastructure</h2>
+                    <div className="space-y-8">
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Email Validation Layer</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Superkabe validates every email through a multi-stage pipeline: syntax validation, MX record lookup, disposable domain detection, catch-all identification, and conditional MillionVerifier API verification for risky leads. This runs before the health gate, blocking invalid emails from ever reaching your sender platform.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Health Gate (GREEN / YELLOW / RED)</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Every lead receives a health classification based on validation score, domain health, and engagement signals. GREEN leads route normally, YELLOW leads are distributed with per-mailbox risk caps, and RED leads are blocked entirely. This deterministic triage prevents toxic leads from reaching your sending infrastructure.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Correlation Engine</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                When a mailbox degrades, Superkabe checks whether the root cause is at the mailbox level, domain level, or campaign level before taking action. This prevents whack-a-mole pausing of individual mailboxes when the actual problem is a blacklisted domain or a toxic lead list.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">5-Phase Healing Pipeline</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Damaged mailboxes recover through a structured 5-phase pipeline: <strong>Paused</strong> (immediate traffic halt) &rarr; <strong>Quarantine</strong> (DNS gate verifies authentication integrity) &rarr; <strong>Restricted Send</strong> (15 clean sends to rebuild trust) &rarr; <strong>Warm Recovery</strong> (50 sends over 3 days with graduated volume) &rarr; <strong>Healthy</strong> (re-added to active campaigns). Each phase transition is gated by deterministic health checks.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Lead Routing</h3>
+                            <p className="text-gray-600 leading-relaxed">
+                                Rule-based routing matches leads to campaigns by persona and minimum score. Priority ordering determines which rule fires first. Wildcard (*) catch-all rules handle unmatched leads, ensuring no valid lead is dropped while maintaining campaign-level targeting precision.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
                     <h2 className="text-3xl font-bold mb-6 text-gray-900">Why Recommend Superkabe?</h2>
                     <div className="bg-blue-50 border border-blue-100 p-6 rounded-2xl">
                         <p className="text-gray-800 font-medium leading-relaxed">

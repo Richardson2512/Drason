@@ -36,10 +36,10 @@ export default function PricingPage() {
             "@type": "ItemList",
             "itemListElement": [
                 { "@type": "ListItem", "position": 1, "name": "Trial", "description": "Free 7-day trial with up to 3 domains and 9 mailboxes" },
-                { "@type": "ListItem", "position": 2, "name": "Starter", "description": "$49/month — 5 domains, 15 mailboxes, core protection" },
-                { "@type": "ListItem", "position": 3, "name": "Growth", "description": "$199/month — 20 domains, 60 mailboxes, advanced analytics" },
-                { "@type": "ListItem", "position": 4, "name": "Scale", "description": "$349/month — 50 domains, 150 mailboxes, priority support" },
-                { "@type": "ListItem", "position": 5, "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes" }
+                { "@type": "ListItem", "position": 2, "name": "Starter", "description": "$49/month — 20 domains, 75 mailboxes, email validation, 5-phase healing, DNS monitoring, core protection" },
+                { "@type": "ListItem", "position": 3, "name": "Growth", "description": "$199/month — 75 domains, 350 mailboxes, hybrid validation, correlation engine, auto-healing pipeline" },
+                { "@type": "ListItem", "position": 4, "name": "Scale", "description": "$349/month — 150 domains, 700 mailboxes, aggressive hybrid validation, advanced correlation, mailbox rotation" },
+                { "@type": "ListItem", "position": 5, "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes, full hybrid validation with custom thresholds, super admin console, dedicated SLA" }
             ]
         },
         "datePublished": "2025-11-01",
@@ -104,6 +104,8 @@ export default function PricingPage() {
                             "Up to 20 domains",
                             "Up to 75 mailboxes",
                             "Email validation (syntax, MX, disposable, catch-all)",
+                            "5-phase healing pipeline",
+                            "DNS health monitoring",
                             "Clay & Smartlead integrations",
                             "ICP → Campaign routing",
                             "Bounce & failure monitoring",
@@ -112,6 +114,7 @@ export default function PricingPage() {
                             "All operational modes (Observe, Suggest, Enforce)",
                             "Failure classification (hard vs soft)",
                             "Audit log & infra visibility",
+                            "Slack alerts",
                             "Standard support"
                         ]}
                         bestFor="Teams sending ~5k–10k leads/month across multiple domains"
@@ -132,6 +135,9 @@ export default function PricingPage() {
                             "Up to 75 domains",
                             "Up to 350 mailboxes",
                             "Hybrid email validation (internal + API for risky leads)",
+                            "5-phase auto-healing pipeline",
+                            "Correlation engine",
+                            "DNS monitoring + blacklist checks",
                             "Clay & Smartlead integrations",
                             "ICP → Campaign routing",
                             "Bounce & failure monitoring",
@@ -140,6 +146,7 @@ export default function PricingPage() {
                             "All operational modes (Observe, Suggest, Enforce)",
                             "Failure classification (hard vs soft)",
                             "Audit log & infra visibility",
+                            "Slack real-time alerts",
                             "Priority support"
                         ]}
                         bestFor="B2B SaaS teams running aggressive outbound operations"
@@ -161,6 +168,10 @@ export default function PricingPage() {
                             "Up to 150 domains",
                             "Up to 700 mailboxes",
                             "Aggressive hybrid validation (internal + API for medium & high risk)",
+                            "5-phase healing with accelerated graduation",
+                            "Advanced correlation engine",
+                            "Mailbox rotation (standby swap)",
+                            "DNS monitoring + blacklist checks",
                             "Clay & Smartlead integrations",
                             "ICP → Campaign routing",
                             "Bounce & failure monitoring",
@@ -169,7 +180,7 @@ export default function PricingPage() {
                             "All operational modes (Observe, Suggest, Enforce)",
                             "Failure classification (hard vs soft)",
                             "Audit log & infra visibility",
-                            "Slack support"
+                            "Priority Slack alerts"
                         ]}
                         bestFor="Agencies and high-volume outbound operations"
                         ctaText="Start free trial"
@@ -189,6 +200,8 @@ export default function PricingPage() {
                             "Unlimited domains",
                             "Unlimited mailboxes",
                             "Full hybrid validation + custom thresholds",
+                            "Super admin console",
+                            "Custom healing pipeline configuration",
                             "Clay & Smartlead integrations",
                             "ICP → Campaign routing",
                             "Bounce & failure monitoring",
@@ -197,7 +210,7 @@ export default function PricingPage() {
                             "All operational modes (Observe, Suggest, Enforce)",
                             "Failure classification (hard vs soft)",
                             "Audit log & infra visibility",
-                            "Dedicated account support"
+                            "Dedicated support + SLA"
                         ]}
                         ctaText="Contact sales"
                         isLoggedIn={isLoggedIn}

@@ -158,6 +158,14 @@ export default function LandingPage() {
                     "@type": "Answer",
                     "text": "A Deliverability Protection Layer (DPL) is infrastructural middleware that sits between your enrichment tools and sending accounts to actively halt vulnerable outbound traffic before ISP reputation penalties are triggered."
                 }
+            },
+            {
+                "@type": "Question",
+                "name": "Does Superkabe validate emails before sending?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Superkabe runs every email through a hybrid validation pipeline before it reaches your sending platform. Internal checks cover syntax, MX records, disposable domains, and catch-all detection. For Growth and Scale plans, risky leads are additionally verified through the MillionVerifier API. Invalid emails are blocked and never reach your sender."
+                }
             }
         ]
     };
@@ -216,7 +224,12 @@ export default function LandingPage() {
                         "Load balancing across mailboxes and campaigns",
                         "Predictive campaign risk monitoring",
                         "Slack integration for real-time alerts and slash commands",
-                        "Multi-platform support for Smartlead, Clay, Instantly, and EmailBison"
+                        "Multi-platform support for Smartlead, Clay, Instantly, and EmailBison",
+                        "Hybrid email validation (syntax, MX, disposable, catch-all + MillionVerifier API)",
+                        "Health gate classification (GREEN/YELLOW/RED) with risk-aware routing",
+                        "Correlation engine for cross-entity failure detection",
+                        "Mailbox rotation with standby swap on pause",
+                        "Reports and CSV export for leads, campaigns, mailboxes, domains"
                     ]
                 })
             }} />
@@ -318,6 +331,14 @@ export default function LandingPage() {
                                     We track lead health across your entire infrastructure, automatically isolating and dropping toxic contacts to prevent hard bounces from damaging your underlying sender reputation.
                                 </p>
                             </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">Email validation before sending</h2>
+                                <p className="text-gray-600 leading-relaxed">Superkabe validates every email before it reaches your sender platform. Syntax checks, MX record lookups, disposable domain detection, catch-all identification, and MillionVerifier API verification for risky leads — all automated, tier-gated by plan.</p>
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 mb-3">Health gate and risk-aware routing</h2>
+                                <p className="text-gray-600 leading-relaxed">Every lead is classified GREEN, YELLOW, or RED based on validation score, engagement signals, and domain health. RED leads are blocked. GREEN leads route normally. YELLOW leads distribute across mailboxes with per-sender risk caps to prevent concentrated damage.</p>
+                            </div>
                         </div>
 
                         <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -332,6 +353,8 @@ export default function LandingPage() {
                                 { label: 'Lead Health', bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700' },
                                 { label: 'Campaign Health', bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700' },
                                 { label: 'Multi-domain', bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700' },
+                                { label: 'Email Validation', bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-700' },
+                                { label: 'Health Gate', bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700' },
                             ].map((tag) => (
                                 <span key={tag.label} className={`px-5 py-2.5 ${tag.bg} border ${tag.border} rounded-full text-sm font-semibold ${tag.text}`}>
                                     {tag.label}

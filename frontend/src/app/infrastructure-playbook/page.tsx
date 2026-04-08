@@ -116,6 +116,16 @@ export default function InfrastructurePlaybookPage() {
                         Despite horizontal scaling, sender reputation remains uniquely fragile. "Domain Burnout" occurs when a sending domain accumulates strong negative behavior signals—specifically high bounce rates, low reply rates, and spam complaints. When bounce rates exceed algorithmic thresholds (typically around 2.5% to 3%), inbox providers permanently damage the domain's reputation score, actively routing all subsequent emails to the junk folder.
                     </p>
 
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Lead Quality: Email Validation Before Sending</h3>
+                    <p className="mb-6 leading-relaxed">
+                        Before any lead touches your sender platform, run it through email validation — syntax checks, MX record verification, disposable domain detection, and catch-all identification at minimum. Superkabe performs this multi-stage validation automatically on ingestion, blocking invalid addresses before they can generate bounces and damage your sender reputation. For risky leads that pass basic checks but score below confidence thresholds, Superkabe conditionally routes them through external API verification (MillionVerifier) for a second opinion.
+                    </p>
+
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Health Gate: Lead Triage Before Routing</h3>
+                    <p className="mb-6 leading-relaxed">
+                        Classify leads as GREEN (safe to send), YELLOW (proceed with caution — distributed with per-mailbox risk caps), or RED (block entirely) based on validation score and domain health. This deterministic triage layer runs after validation and before routing, ensuring that only leads meeting your quality threshold ever reach a campaign.
+                    </p>
+
                     <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-16">2. Deploying the Deliverability Protection Layer (DPL)</h2>
 
                     <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">What is a Deliverability Protection Layer?</h3>
@@ -138,9 +148,17 @@ export default function InfrastructurePlaybookPage() {
                         Beyond volumetric bounces, structural DNS failures cause immediate spam placement. SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail), and DMARC (Domain-based Message Authentication, Reporting, and Conformance) records can occasionally drop or propagate incorrectly due to registrar API errors or manual misconfigurations. Superkabe actively assays these records constantly; if a DNS signature is lost, the platform halts sending immediately until topological integrity is restored.
                     </p>
 
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Mailbox Fatigue Auto-Healing</h3>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Mailbox Fatigue & the 5-Phase Healing Pipeline</h3>
                     <p className="mb-6 leading-relaxed">
-                        Mailbox fatigue is the precursor to domain burnout. It manifests as a sudden spike in soft bounces or ISP deferrals. Superkabe detects these micro-anomalies using predictive variance analysis. When a specific mailbox begins experiencing fatigue, Superkabe triggers an automated load-balancing protocol—routing active campaign sequences away from the depressed node and toward healthy, rested infrastructural assets, thereby enabling the exhausted mailbox to naturally "heal" its sender score.
+                        Mailbox fatigue is the precursor to domain burnout. It manifests as a sudden spike in soft bounces or ISP deferrals. Superkabe detects these micro-anomalies using predictive variance analysis. When a specific mailbox begins experiencing fatigue, Superkabe triggers an automated load-balancing protocol—routing active campaign sequences away from the depressed node and toward healthy, rested infrastructural assets.
+                    </p>
+                    <p className="mb-6 leading-relaxed">
+                        Rather than leaving recovery to chance, Superkabe's 5-phase healing pipeline provides structured rehabilitation: <strong>Pause</strong> (immediate traffic halt to stop the bleeding) &rarr; <strong>Quarantine</strong> (DNS checks verify SPF/DKIM/DMARC integrity before any recovery begins) &rarr; <strong>Restricted Send</strong> (conservative warmup with 15 clean sends to rebuild trust signals) &rarr; <strong>Warm Recovery</strong> (graduated volume increase — 50 sends over 3 days) &rarr; <strong>Healthy</strong> (re-added to active campaigns at full capacity). Each phase transition is gated by deterministic health checks, not arbitrary timers.
+                    </p>
+
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Real-Time Slack Alerts</h3>
+                    <p className="mb-6 leading-relaxed">
+                        Configure Slack webhooks for real-time alerts when mailboxes are paused, domains degrade, or bounce thresholds are breached. Superkabe pushes notifications the moment protective actions fire, giving your team immediate visibility without requiring dashboard monitoring. Alert categories include mailbox pauses, domain health changes, bounce rate threshold breaches, and healing pipeline phase transitions.
                     </p>
 
                     <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-16">4. Essential Documentation and Next Steps</h2>

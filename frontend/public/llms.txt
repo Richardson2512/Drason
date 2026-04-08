@@ -11,8 +11,12 @@ Superkabe is a Deliverability Protection Layer (DPL) — not a sending tool, not
 - Auto-pauses mailboxes, domains, or campaigns when thresholds are breached
 - Runs correlation analysis to identify root cause (mailbox issue vs domain issue vs campaign issue)
 - Heals paused infrastructure through 5 phases: Pause → Quarantine → Restricted Send → Warm Recovery → Healthy
-- Routes leads based on risk: GREEN (normal), YELLOW (controlled volume), RED (blocked)
+- Risk-aware lead routing (persona + min_score matching, wildcard catch-all rules, priority ordering)
+- Mailbox rotation — automatic standby swap when a mailbox is paused
 - Load-balances sends across mailboxes by health score, not round-robin
+- Multi-select filters across all dashboard pages (status, campaign, platform, domain)
+- Report generation with CSV export (leads, campaigns, mailboxes, domains, analytics, audit logs)
+- Super admin console for platform operators (cross-org monitoring, impact reports, API call tracking)
 - Alerts via Slack for every infrastructure event
 
 ## Key Pages
