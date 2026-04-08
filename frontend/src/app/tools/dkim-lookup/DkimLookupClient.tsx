@@ -282,6 +282,49 @@ export default function DkimLookupClient() {
                     {/* Status Message */}
                     <p className="text-sm text-gray-600">{result.message}</p>
 
+                    {/* Not Found Guide */}
+                    {(result.status === 'not_found' || result.status === 'error') && (
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+                            <h3 className="font-semibold text-gray-900">What should you do next?</h3>
+                            <p className="text-sm text-gray-600">
+                                Without a DKIM record, receiving servers cannot verify that emails from your domain are authentic and unaltered. This weakens your sender reputation and hurts inbox placement.
+                            </p>
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
+                                    <span className="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Check your selector is correct</p>
+                                        <p className="text-xs text-gray-500 mt-0.5">DKIM selectors vary by provider. Check your email headers for the <code className="px-1 py-0.5 bg-gray-100 rounded text-xs">s=</code> value in the DKIM-Signature header, or try common selectors like <strong>google</strong>, <strong>s1</strong>, <strong>s2</strong>, or <strong>default</strong>.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
+                                    <span className="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Enable DKIM in your email provider</p>
+                                        <p className="text-xs text-gray-500 mt-0.5">Most providers generate the DKIM key pair for you. Enable DKIM signing in your provider settings and add the DNS record they give you.</p>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            <a href="https://support.google.com/a/answer/174124" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Google Workspace</a>
+                                            <a href="https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/email-authentication-dkim-configure" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Microsoft 365</a>
+                                            <a href="https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">SendGrid</a>
+                                            <a href="https://documentation.mailgun.com/docs/mailgun/user-manual/get-started/#verify-your-domain" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Mailgun</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
+                                    <span className="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900">Or generate a DKIM record manually</p>
+                                        <p className="text-xs text-gray-500 mt-0.5">If you have your own public key, use our generator to create the DNS record.</p>
+                                        <a href="/tools/dkim-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 mt-1">Use DKIM Generator &rarr;</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-3 bg-gray-50 rounded-xl">
+                                <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-emerald-600 font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Raw Record */}
                     {result.rawRecord && (
                         <div>

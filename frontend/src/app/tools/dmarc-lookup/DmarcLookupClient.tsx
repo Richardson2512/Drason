@@ -295,18 +295,72 @@ export default function DmarcLookupClient() {
 
             {/* Error */}
             {error && (
-                <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl p-6">
-                    <div className="flex items-start gap-3">
-                        <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M15 9l-6 6M9 9l6 6" />
-                        </svg>
-                        <div>
-                            <p className="font-semibold text-red-800 text-sm">No DMARC Record Found</p>
-                            <p className="text-red-700 text-sm mt-1">{error}</p>
-                            <p className="text-red-600 text-sm mt-3">
-                                Without a DMARC record, your domain has no policy for handling unauthenticated emails. Attackers can spoof your domain without any reports being generated.
-                            </p>
+                <div className="mt-6 space-y-4">
+                    <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+                        <div className="flex items-start gap-3">
+                            <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M15 9l-6 6M9 9l6 6" />
+                            </svg>
+                            <div>
+                                <p className="font-semibold text-red-800 text-sm">No DMARC Record Found</p>
+                                <p className="text-red-700 text-sm mt-1">{error}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* What to do next */}
+                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 className="font-semibold text-gray-900 mb-3">What should you do next?</h3>
+                        <p className="text-sm text-gray-600 mb-4">
+                            Without a DMARC record, receiving servers have no policy for handling emails that fail SPF or DKIM checks. Attackers can spoof your domain unchallenged, and you receive no reports about authentication failures. Since February 2024, Google and Yahoo require at least <code className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">p=none</code> for all bulk senders.
+                        </p>
+                        <div className="space-y-3 mb-5">
+                            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                                <span className="w-6 h-6 bg-purple-100 text-purple-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900">Generate your DMARC record</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">Start with <code className="px-1 py-0.5 bg-gray-100 rounded text-xs">p=none</code> to monitor authentication without affecting delivery. Add a reporting address to receive aggregate reports.</p>
+                                    <a href="/tools/dmarc-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 hover:text-purple-700 mt-1">Use DMARC Generator &rarr;</a>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                                <span className="w-6 h-6 bg-purple-100 text-purple-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900">Add a TXT record at _dmarc.yourdomain.com</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">In your DNS provider, create a TXT record with the host/name set to <code className="px-1 py-0.5 bg-gray-100 rounded text-xs">_dmarc</code> and paste the generated DMARC value.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                                <span className="w-6 h-6 bg-purple-100 text-purple-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900">Also check SPF and DKIM</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">DMARC builds on SPF and DKIM. All three must be configured for proper email authentication.</p>
+                                    <div className="flex gap-3 mt-1">
+                                        <a href="/tools/spf-lookup" className="text-xs font-semibold text-purple-600 hover:text-purple-700">Check SPF &rarr;</a>
+                                        <a href="/tools/dkim-lookup" className="text-xs font-semibold text-purple-600 hover:text-purple-700">Check DKIM &rarr;</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                                <span className="w-6 h-6 bg-purple-100 text-purple-700 rounded-lg flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900">Verify after DNS propagation</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">Return here after adding the record (allow up to 48 hours for DNS propagation) to confirm your DMARC policy is live.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="border-t border-gray-100 pt-4">
+                            <p className="text-xs font-medium text-gray-500 mb-2">DNS provider guides:</p>
+                            <div className="flex flex-wrap gap-2">
+                                <a href="https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Cloudflare</a>
+                                <a href="https://www.godaddy.com/help/add-a-txt-record-19232" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">GoDaddy</a>
+                                <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdaborpspf-records-for-my-domain/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Namecheap</a>
+                                <a href="https://support.google.com/a/answer/2466563" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs rounded-lg border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Google Domains</a>
+                            </div>
+                        </div>
+                        <div className="mt-4 p-3 bg-gray-50 rounded-xl">
+                            <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-purple-600 font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
                         </div>
                     </div>
                 </div>
