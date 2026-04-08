@@ -142,18 +142,19 @@ export default function ToolsPage() {
 
             <Navbar />
 
-            {/* Hero */}
-            <div className="relative overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none z-0">
-                    <div className="cloud-bg">
-                        <div className="cloud-shadow" />
-                        <div className="cloud-puff-1" />
-                        <div className="cloud-puff-2" />
-                        <div className="cloud-puff-3" />
-                    </div>
-                    <div className="absolute inset-0 hero-grid"></div>
+            {/* Fixed Background Layer */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="cloud-bg">
+                    <div className="cloud-shadow" />
+                    <div className="cloud-puff-1" />
+                    <div className="cloud-puff-2" />
+                    <div className="cloud-puff-3" />
                 </div>
+                <div className="absolute inset-0 hero-grid"></div>
+            </div>
 
+            {/* Hero */}
+            <div className="relative">
                 <div className="relative z-10 pt-36 md:pt-44 pb-16 md:pb-24 px-6">
                     <div className="max-w-4xl mx-auto text-center">
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-xs font-medium text-gray-600 mb-8">
