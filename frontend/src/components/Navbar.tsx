@@ -35,15 +35,15 @@ export default function Navbar() {
         setMobileToolsOpen(false);
     }, [pathname]);
 
-    // Close tools dropdown on outside click
+    // Close tools dropdown on outside click (use 'click' not 'mousedown' to let Link navigate first)
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) {
                 setToolsOpen(false);
             }
         };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
     const navLinks = [
@@ -112,10 +112,11 @@ export default function Navbar() {
                             </button>
 
                             {toolsOpen && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-[#111827] border border-white/10 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden">
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 z-[100] bg-[#111827] border border-white/10 rounded-2xl shadow-2xl shadow-black/40">
                                     <div className="p-2">
                                         <Link
                                             href="/tools"
+                                            onClick={() => setToolsOpen(false)}
                                             className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-blue-400 hover:bg-white/5 transition-colors"
                                         >
                                             <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
@@ -126,6 +127,7 @@ export default function Navbar() {
                                             <Link
                                                 key={tool.href}
                                                 href={tool.href}
+                                                onClick={() => setToolsOpen(false)}
                                                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs transition-colors ${isActive(tool.href)
                                                     ? 'text-white bg-white/10 font-semibold'
                                                     : 'text-gray-400 hover:text-white hover:bg-white/5'
