@@ -31,6 +31,8 @@ function getHelpLink(title: string): { url: string; label: string } | null {
     // Blacklist findings
     if (t.startsWith('blacklisted'))
         return { url: 'https://www.spamhaus.org/lookup/', label: 'Spamhaus: Check & request delisting' };
+    if (t.startsWith('minor blacklist listing'))
+        return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Check blacklist status' };
     if (t.startsWith('blacklist check unreachable'))
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Blacklist checker' };
 
@@ -88,17 +90,51 @@ function DNSDetailPanel({ dns, domain }: { dns: any; domain: string }) {
             {dns.blacklistResults && Object.keys(dns.blacklistResults).length > 0 && (
                 <div>
                     <div className="text-xs font-bold text-gray-700 mb-[0.35rem]">Blacklist Check</div>
-                    <div className="flex flex-wrap gap-[0.35rem]">
-                        {Object.entries(dns.blacklistResults).map(([bl, status]) => (
-                            <span key={bl} className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-semibold" style={{
-                                background: status === 'CONFIRMED' ? '#FEE2E2' : status === 'NOT_LISTED' ? '#DCFCE7' : '#FEF3C7',
-                                color: status === 'CONFIRMED' ? '#991B1B' : status === 'NOT_LISTED' ? '#166534' : '#92400E',
-                                border: `1px solid ${status === 'CONFIRMED' ? '#FECACA' : status === 'NOT_LISTED' ? '#BBF7D0' : '#FDE68A'}`
-                            }}>
-                                {bl}: {status as string}
-                            </span>
-                        ))}
-                    </div>
+                    {'total_checked' in dns.blacklistResults ? (
+                        /* New tiered summary format from dnsblService */
+                        <div className="space-y-2">
+                            {[
+                                { label: 'Critical', listed: dns.blacklistResults.critical_listed, checked: dns.blacklistResults.critical_checked, color: '#EF4444', bg: '#FEE2E2', border: '#FECACA' },
+                                { label: 'Major', listed: dns.blacklistResults.major_listed, checked: dns.blacklistResults.major_checked, color: '#F59E0B', bg: '#FEF3C7', border: '#FDE68A' },
+                                { label: 'Minor', listed: dns.blacklistResults.minor_listed, checked: dns.blacklistResults.minor_checked, color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB' },
+                            ].map(tier => (
+                                <div key={tier.label} className="flex items-center justify-between p-2 rounded-lg bg-white border border-gray-200">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full" style={{ background: tier.listed > 0 ? tier.color : '#22C55E' }} />
+                                        <span className="text-xs font-semibold text-gray-700">{tier.label}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        {tier.listed > 0 ? (
+                                            <span className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-bold" style={{ background: tier.bg, color: tier.color, border: `1px solid ${tier.border}` }}>
+                                                {tier.listed} listed
+                                            </span>
+                                        ) : (
+                                            <span className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-semibold bg-green-50 text-green-700 border border-green-200">
+                                                Clear
+                                            </span>
+                                        )}
+                                        <span className="text-[0.6rem] text-gray-400">{tier.checked} checked</span>
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="text-[0.65rem] text-gray-400 text-right">
+                                {dns.blacklistResults.total_checked} lists checked &middot; {dns.blacklistResults.total_listed} listings found
+                            </div>
+                        </div>
+                    ) : (
+                        /* Legacy flat format: { name: status } */
+                        <div className="flex flex-wrap gap-[0.35rem]">
+                            {Object.entries(dns.blacklistResults).map(([bl, status]) => (
+                                <span key={bl} className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-semibold" style={{
+                                    background: status === 'CONFIRMED' ? '#FEE2E2' : status === 'NOT_LISTED' ? '#DCFCE7' : '#FEF3C7',
+                                    color: status === 'CONFIRMED' ? '#991B1B' : status === 'NOT_LISTED' ? '#166534' : '#92400E',
+                                    border: `1px solid ${status === 'CONFIRMED' ? '#FECACA' : status === 'NOT_LISTED' ? '#BBF7D0' : '#FDE68A'}`
+                                }}>
+                                    {bl}: {status as string}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 
