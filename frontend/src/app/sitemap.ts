@@ -58,7 +58,7 @@ function discoverRoutes(
                 url: `${BASE_URL}${urlPrefix}`,
                 lastModified: stats.mtime,
                 changeFrequency,
-                priority: Math.max(priority - depth * 0.1, 0.5),
+                priority: Math.round(Math.max(priority - depth * 0.1, 0.5) * 10) / 10,
             });
         }
 

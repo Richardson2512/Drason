@@ -252,11 +252,11 @@ export default function LandingPage() {
             <section className="relative pt-32 md:pt-36 pb-10 text-center z-10">
                 <div className="relative z-10 max-w-5xl mx-auto px-6">
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-extrabold leading-[0.95] tracking-tight text-gray-900 mb-5 max-w-5xl mx-auto uppercase">
-                        Email{' '}
+                        Cold Email{' '}
                         <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent block">
                             Deliverability{' '}
                         </span>
-                        Protection
+                        Protection Tool
                     </h1>
 
                     <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-5 leading-relaxed">
