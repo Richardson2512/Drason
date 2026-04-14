@@ -1,0 +1,83 @@
+<svg width="1500" height="750" viewBox="0 0 1500 750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#171717;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1500" height="750" fill="url(#bg)" />
+
+  <!-- Subtle noise texture via dots -->
+  <g opacity="0.03" fill="#ffffff">
+    <circle cx="120" cy="80" r="1" /><circle cx="340" cy="150" r="1" /><circle cx="560" cy="90" r="1" />
+    <circle cx="780" cy="200" r="1" /><circle cx="1000" cy="120" r="1" /><circle cx="1200" cy="180" r="1" />
+    <circle cx="200" cy="400" r="1" /><circle cx="450" cy="500" r="1" /><circle cx="700" cy="600" r="1" />
+    <circle cx="950" cy="450" r="1" /><circle cx="1150" cy="550" r="1" /><circle cx="1350" cy="380" r="1" />
+    <circle cx="80" cy="650" r="1" /><circle cx="600" cy="300" r="1" /><circle cx="1400" cy="680" r="1" />
+  </g>
+
+  <!-- Big "90%" text — the hero element -->
+  <text x="750" y="310" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="220" fill="#ef4444" text-anchor="middle" opacity="0.12">90%</text>
+
+  <!-- Main title line 1 -->
+  <text x="750" y="280" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="62" fill="#fafafa" text-anchor="middle">Why 90% of Cold Outreach Fails</text>
+
+  <!-- Divider line -->
+  <rect x="650" y="305" width="200" height="2" rx="1" fill="#ef4444" opacity="0.6" />
+
+  <!-- Main title line 2 -->
+  <text x="750" y="370" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="36" fill="#a3a3a3" text-anchor="middle">(It's Not Your Copy)</text>
+
+  <!-- Bottom section: Before vs After -->
+  <g transform="translate(0, 440)">
+
+    <!-- Before box -->
+    <rect x="280" y="0" width="400" height="180" rx="12" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1" />
+    <text x="480" y="36" font-family="monospace" font-size="14" fill="#ef4444" text-anchor="middle" opacity="0.7">BEFORE</text>
+
+    <!-- Before stats -->
+    <text x="340" y="80" font-family="monospace" font-size="16" fill="#737373">bounce rate</text>
+    <text x="630" y="80" font-family="monospace" font-size="20" fill="#ef4444" text-anchor="end" font-weight="700">8.4%</text>
+    <line x1="320" y1="95" x2="640" y2="95" stroke="#2a2a2a" stroke-width="1" />
+
+    <text x="340" y="125" font-family="monospace" font-size="16" fill="#737373">inbox placement</text>
+    <text x="630" y="125" font-family="monospace" font-size="20" fill="#ef4444" text-anchor="end" font-weight="700">52%</text>
+    <line x1="320" y1="140" x2="640" y2="140" stroke="#2a2a2a" stroke-width="1" />
+
+    <text x="340" y="168" font-family="monospace" font-size="16" fill="#737373">domains burned</text>
+    <text x="630" y="168" font-family="monospace" font-size="20" fill="#ef4444" text-anchor="end" font-weight="700">14</text>
+
+    <!-- Arrow between boxes -->
+    <line x1="700" y1="90" x2="790" y2="90" stroke="#525252" stroke-width="2" />
+    <polygon points="786,83 800,90 786,97" fill="#525252" />
+
+    <!-- After box -->
+    <rect x="820" y="0" width="400" height="180" rx="12" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1" />
+    <text x="1020" y="36" font-family="monospace" font-size="14" fill="#22c55e" text-anchor="middle" opacity="0.7">AFTER</text>
+
+    <!-- After stats -->
+    <text x="880" y="80" font-family="monospace" font-size="16" fill="#737373">bounce rate</text>
+    <text x="1170" y="80" font-family="monospace" font-size="20" fill="#22c55e" text-anchor="end" font-weight="700">1.2%</text>
+    <line x1="860" y1="95" x2="1180" y2="95" stroke="#2a2a2a" stroke-width="1" />
+
+    <text x="880" y="125" font-family="monospace" font-size="16" fill="#737373">inbox placement</text>
+    <text x="1170" y="125" font-family="monospace" font-size="20" fill="#22c55e" text-anchor="end" font-weight="700">91%</text>
+    <line x1="860" y1="140" x2="1180" y2="140" stroke="#2a2a2a" stroke-width="1" />
+
+    <text x="880" y="168" font-family="monospace" font-size="16" fill="#737373">domains burned</text>
+    <text x="1170" y="168" font-family="monospace" font-size="20" fill="#22c55e" text-anchor="end" font-weight="700">0</text>
+  </g>
+
+  <!-- Bottom branding -->
+  <text x="750" y="710" font-family="monospace" font-size="16" fill="#404040" text-anchor="middle">superkabe.com</text>
+</svg>

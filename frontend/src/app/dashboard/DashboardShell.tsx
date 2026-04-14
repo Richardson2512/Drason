@@ -171,26 +171,22 @@ export default function DashboardShell({
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}>
 
-                    <div className="flex items-center text-xl font-extrabold -tracking-[0.025em] text-gray-900 overflow-hidden whitespace-nowrap min-h-[40px] py-1" style={{
-                        gap: isCollapsed ? 0 : '12px',
+                    <div className="flex items-center text-lg font-bold tracking-tight text-gray-900 overflow-hidden whitespace-nowrap min-h-[40px] py-1" style={{
+                        gap: isCollapsed ? 0 : '10px',
                         justifyContent: isCollapsed ? 'center' : 'flex-start',
                     }}>
                         <div className="shrink-0 w-8 h-8">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} className="block" onError={(e) => {
-                                // Fallback: show a branded icon if image fails to load
                                 const target = e.currentTarget;
                                 target.style.display = 'none';
                                 if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
                             }} />
-                            <div className="hidden w-8 h-8 rounded-lg items-center justify-center text-white text-[1.1rem] font-black" style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)' }}>S</div>
+                            <div className="hidden w-8 h-8 rounded-lg items-center justify-center text-white text-[1.1rem] font-black bg-gray-900">S</div>
                         </div>
-                        <span className="overflow-hidden transition-opacity duration-200 bg-clip-text" style={{
+                        <span className="overflow-hidden transition-opacity duration-200 text-gray-900" style={{
                             opacity: isCollapsed ? 0 : 1,
                             width: isCollapsed ? 0 : 'auto',
-                            background: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
                         }}>
                             Superkabe
                         </span>
@@ -288,17 +284,17 @@ export default function DashboardShell({
                         </Link>
                     </nav>
 
-                    <div className="mt-auto flex flex-col gap-2">
+                    <div className="mt-auto flex flex-col gap-1.5 pt-3 border-t border-gray-100">
                         {!isCollapsed && (
                             <Link href="/dashboard/profile" className="no-underline">
-                                <div className="profile-card-hover p-3 rounded-xl border border-blue-200 cursor-pointer" style={{ background: 'linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%)' }}>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}>
-                                            <User size={16} color="#fff" />
+                                <div className="profile-card-hover p-2.5 rounded-xl border border-gray-200 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-gray-900">
+                                            <User size={14} color="#fff" />
                                         </div>
-                                        <div className="overflow-hidden">
-                                            <div className="text-sm font-semibold text-blue-800 truncate">{orgName || 'My Organization'}</div>
-                                            <div className="text-[0.7rem] text-blue-400 truncate">{userEmail}</div>
+                                        <div className="overflow-hidden min-w-0">
+                                            <div className="text-xs font-semibold text-gray-900 truncate">{orgName || 'My Organization'}</div>
+                                            <div className="text-[10px] text-gray-500 truncate">{userEmail}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -307,15 +303,15 @@ export default function DashboardShell({
 
                         <button
                             onClick={handleLogout}
-                            className="nav-link bg-red-50 border border-red-200 w-full text-left cursor-pointer text-red-600 text-[0.8rem] flex items-center gap-3"
+                            className="nav-link w-full text-left cursor-pointer text-gray-600 hover:text-red-600"
                             style={{
                                 justifyContent: isCollapsed ? 'center' : 'flex-start',
                             }}
                             title={isCollapsed ? "Log Out" : ""}
                         >
-                            <div className="min-w-[24px] flex justify-center">
-                                <LogOut size={20} />
-                            </div>
+                            <span className="min-w-[24px] flex justify-center">
+                                <LogOut size={18} />
+                            </span>
                             {!isCollapsed && <span>Log Out</span>}
                         </button>
                     </div>
@@ -589,10 +585,8 @@ export default function DashboardShell({
           justify-content: center;
         }
         .nav-link:hover {
-          background: #FFFFFF;
+          background: #F3F4F6;
           color: #111827;
-          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-          transform: translateX(4px);
         }
         @keyframes pulse {
           0%, 100% {
