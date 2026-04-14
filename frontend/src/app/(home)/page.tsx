@@ -11,6 +11,7 @@ import Navbar from '@/components/Navbar';
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [heroSlide, setHeroSlide] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -22,6 +23,22 @@ export default function LandingPage() {
         }, {});
         setIsLoggedIn(!!cookies.token);
     }, []);
+
+    // Hero carousel — platform screenshots
+    const heroSlides = [
+        { src: '/Untitled design (7).png', alt: 'System overview dashboard' },
+        { src: '/Untitled design (9).png', alt: 'Health gauges for leads, domains, and mailboxes' },
+        { src: '/Untitled design (8).png', alt: 'Infrastructure health score with trend history' },
+        { src: '/Untitled design (10).png', alt: 'Smartlead and Clay integration configuration' },
+        { src: '/Untitled design (11).png', alt: 'Real-time notifications feed' },
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setHeroSlide((prev) => (prev + 1) % heroSlides.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [heroSlides.length]);
 
     const features = [
         {
@@ -248,32 +265,106 @@ export default function LandingPage() {
                 <div className="absolute inset-0 hero-grid"></div>
             </div>
 
-            {/* ================= HERO ================= */}
-            <section className="relative pt-32 md:pt-36 pb-10 text-center z-10">
-                <div className="relative z-10 max-w-5xl mx-auto px-6">
-                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-extrabold leading-[0.95] tracking-tight text-gray-900 mb-5 max-w-5xl mx-auto uppercase">
-                        Cold Email{' '}
-                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent block">
-                            Deliverability{' '}
-                        </span>
-                        Protection Tool
-                    </h1>
+            {/* ================= HERO (SPLIT LAYOUT) ================= */}
+            <section className="relative pt-32 md:pt-36 pb-10 z-10 px-6">
+                <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-                    <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-5 leading-relaxed">
-                        Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block risks, and auto-heal your infrastructure.
-                    </p>
+                    {/* LEFT — content + CTAs */}
+                    <div className="text-center lg:text-left">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-tight text-gray-900 mb-5 uppercase">
+                            Cold Email{' '}
+                            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent block">
+                                Deliverability{' '}
+                            </span>
+                            Protection Tool
+                        </h1>
 
-                    <p className="text-sm text-gray-400 max-w-xl mx-auto mb-8 leading-relaxed tracking-wide">
-                        Email deliverability · Sender reputation · DNS authentication · Domain health monitoring · Bounce protection
-                    </p>
+                        <p className="text-lg md:text-xl text-gray-500 mb-5 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                            Stop burning domains. Superkabe sits between your enrichment and email layers to monitor health, block risks, and auto-heal your infrastructure.
+                        </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <Link href="/signup" className="px-10 py-4 bg-black text-white rounded-full text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            Start Your Trial
-                        </Link>
-                        <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-white text-gray-900 border border-gray-200 rounded-full text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
-                            Book a Demo
-                        </a>
+                        <p className="text-sm text-gray-400 mb-8 leading-relaxed tracking-wide max-w-xl mx-auto lg:mx-0">
+                            Email deliverability · Sender reputation · DNS authentication · Domain health monitoring · Bounce protection
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 items-center lg:justify-start justify-center">
+                            <Link href="/signup" className="px-10 py-4 bg-black text-white rounded-full text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                                Start Your Trial
+                            </Link>
+                            <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-white text-gray-900 border border-gray-200 rounded-full text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
+                                Book a Demo
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* RIGHT — image carousel with animations */}
+                    <div className="relative">
+                        {/* Gradient glow backdrop */}
+                        <div className="absolute inset-0 -inset-x-4 -inset-y-8 pointer-events-none">
+                            <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-400/30 rounded-full blur-[100px] animate-pulse-slow"></div>
+                            <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-500/30 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+                            <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+                        </div>
+
+                        {/* Carousel card */}
+                        <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
+                            <div className="relative aspect-[16/10] overflow-hidden">
+                                {heroSlides.map((slide, i) => (
+                                    <div
+                                        key={i}
+                                        className={`absolute inset-0 transition-all duration-700 ease-out ${i === heroSlide
+                                            ? 'opacity-100 scale-100'
+                                            : 'opacity-0 scale-[1.03] pointer-events-none'
+                                            }`}
+                                    >
+                                        <Image
+                                            src={slide.src}
+                                            alt={slide.alt}
+                                            fill
+                                            className="object-cover object-top"
+                                            priority={i === 0}
+                                            sizes="(max-width: 1024px) 100vw, 700px"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Floating accent cards */}
+                        <div className="hidden lg:block absolute -top-4 -left-4 bg-white rounded-2xl px-4 py-3 shadow-xl border border-gray-100 animate-float" style={{ animationDelay: '0.5s' }}>
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                                <div>
+                                    <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">Mailboxes</div>
+                                    <div className="text-sm font-bold text-gray-900">100 healthy</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="hidden lg:block absolute -bottom-4 -right-4 bg-white rounded-2xl px-4 py-3 shadow-xl border border-gray-100 animate-float" style={{ animationDelay: '1.2s' }}>
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">73</div>
+                                <div>
+                                    <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">Infra Score</div>
+                                    <div className="text-sm font-bold text-gray-900">Monitoring</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Carousel indicators */}
+                        <div className="flex items-center justify-center gap-2 mt-6">
+                            {heroSlides.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setHeroSlide(i)}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === heroSlide
+                                        ? 'w-8 bg-gradient-to-r from-blue-600 to-purple-600'
+                                        : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                                        }`}
+                                    aria-label={`Slide ${i + 1}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
