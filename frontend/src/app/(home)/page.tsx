@@ -96,7 +96,11 @@ function FeatureRow({ eyebrow, title, body, link, imageOnLeft, mockup }: Feature
                 <div className={`max-w-6xl mx-auto flex flex-col md:flex-row items-stretch ${imageOnLeft ? '' : 'md:flex-row-reverse'}`}>
                     <div
                         className="md:w-1/2 flex items-center justify-center p-8 md:p-12 min-h-[360px]"
-                        style={{ borderLeft: `1px solid ${GRID_LINE}`, borderRight: `1px solid ${GRID_LINE}` }}
+                        style={{
+                            borderLeft: `1px solid ${GRID_LINE}`,
+                            borderRight: `1px solid ${GRID_LINE}`,
+                            background: 'linear-gradient(to top, #D4F0DC 0%, #1C4532 55%, #143325 100%)',
+                        }}
                     >
                         {mockup}
                     </div>
