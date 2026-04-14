@@ -258,107 +258,156 @@ export default function PricingPage() {
                 </div>
             </div>
 
-            {/* Active Leads Explanation */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-gray-900 tracking-tight">
-                    What "Active Leads" Means
-                </h2>
-                <p className="text-gray-500 mb-8 text-center text-lg">
-                    A lead is counted as active when it is:
-                </p>
-                <div className="flex flex-wrap justify-center gap-4 mb-8">
-                    <span className="px-6 py-3 bg-blue-50 border border-blue-200 rounded-full text-blue-700 font-semibold shadow-sm">
-                        Held
-                    </span>
-                    <span className="px-6 py-3 bg-green-50 border border-green-200 rounded-full text-green-700 font-semibold shadow-sm">
-                        Active
-                    </span>
-                    <span className="px-6 py-3 bg-yellow-50 border border-yellow-200 rounded-full text-yellow-700 font-semibold shadow-sm">
-                        Or paused under protection
-                    </span>
+            {/* ─── Pricing Explainer Rows (popl split-row grid style) ─── */}
+            <div className="relative z-10 max-w-6xl mx-auto">
+                {/* Section header */}
+                <div className="text-center mb-10 px-6">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">How pricing works</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+                        Pricing built for how outbound actually works
+                    </h2>
                 </div>
-                <p className="text-gray-500 text-center mb-2">
-                    Completed leads are no longer counted.
-                </p>
-                <div className="text-center space-y-2 mt-6">
-                    <p className="text-gray-700 font-semibold">You can process more leads over time.</p>
-                    <p className="text-gray-700 font-semibold">You are billed based on concurrent exposure.</p>
+
+                {/* ROW 1: Active Leads — visual left, content right */}
+                <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+                        <div
+                            className="flex flex-col items-center justify-center p-10 md:p-14 min-h-[320px]"
+                            style={{ borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}
+                        >
+                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-5">A lead counts when it is</p>
+                            <div className="flex flex-wrap justify-center gap-3 mb-6">
+                                <span className="px-5 py-2 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-semibold">Held</span>
+                                <span className="px-5 py-2 bg-green-50 border border-green-200 rounded-full text-green-700 text-sm font-semibold">Active</span>
+                                <span className="px-5 py-2 bg-yellow-50 border border-yellow-200 rounded-full text-yellow-700 text-sm font-semibold">Paused under protection</span>
+                            </div>
+                            <p className="text-xs text-gray-500">Completed leads are not counted.</p>
+                        </div>
+                        <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderBottom: `1px solid #D1CBC5` }}>
+                            <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">Active leads</p>
+                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 leading-[1.2]">
+                                What &quot;Active Leads&quot; means
+                            </h3>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                                You can process more leads over time — we bill based on <strong className="text-gray-900">concurrent exposure</strong>, not lifetime volume. Leads roll off once completed, freeing capacity for new entries.
+                            </p>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                This aligns pricing with risk: a campaign holding 10k leads in-flight costs the same as a campaign with 10k leads fully processed and archived.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ROW 2: No per-email pricing — content left, big stat right */}
+                <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+                        <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}>
+                            <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">Pricing philosophy</p>
+                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 leading-[1.2]">
+                                Why we don&apos;t charge per email sent
+                            </h3>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                                Superkabe does not send emails. We protect the infrastructure that does. You pay based on <strong className="text-gray-900">risk exposure</strong>, not throughput.
+                            </p>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Per-email pricing penalizes scale. Our tiers match the shape of a healthy outbound operation instead.
+                            </p>
+                        </div>
+                        <div
+                            className="flex flex-col items-center justify-center p-10 md:p-14 text-center min-h-[320px]"
+                            style={{
+                                borderBottom: `1px solid #D1CBC5`,
+                                background: 'linear-gradient(to top, #FFEBC9 0%, #FFAA49 55%, #D4730F 100%)',
+                            }}
+                        >
+                            <div className="text-white">
+                                <p className="text-xs font-bold tracking-widest uppercase opacity-80 mb-2">Superkabe is</p>
+                                <p className="text-3xl md:text-4xl font-bold leading-tight mb-3">Infrastructure armor,</p>
+                                <p className="text-3xl md:text-4xl font-bold leading-tight opacity-90">not a send engine.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ROW 3: 2026 Outbound Context — stats grid left, content right */}
+                <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+                        <div
+                            className="p-10 md:p-14 min-h-[320px] flex items-center"
+                            style={{ borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}
+                        >
+                            <div className="grid grid-cols-2 gap-0 w-full" style={{ border: `1px solid #D1CBC5` }}>
+                                {[
+                                    { v: '3–10', l: 'Domains' },
+                                    { v: '3 / domain', l: 'Mailboxes' },
+                                    { v: '20–30', l: 'Emails / mailbox / day' },
+                                    { v: 'Structured', l: 'ICP campaign routing' },
+                                ].map((s, i) => (
+                                    <div
+                                        key={s.l}
+                                        className="bg-white p-6 text-center"
+                                        style={{
+                                            borderRight: i % 2 === 0 ? `1px solid #D1CBC5` : 'none',
+                                            borderBottom: i < 2 ? `1px solid #D1CBC5` : 'none',
+                                        }}
+                                    >
+                                        <p className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-1">{s.v}</p>
+                                        <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">{s.l}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderBottom: `1px solid #D1CBC5` }}>
+                            <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">2026 outbound</p>
+                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 leading-[1.2]">
+                                Priced to match how modern outbound actually runs
+                            </h3>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                                Modern outbound teams don&apos;t blast from a single domain. They run 3–10 sending domains, 3 mailboxes each, 20–30 emails per mailbox per day, with ICP-based routing.
+                            </p>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Superkabe tiers are built around this operational reality — not around email volume.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ROW 4: ROI Framing — content left, red stat panel right */}
+                <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+                        <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderRight: `1px solid #D1CBC5` }}>
+                            <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">ROI framing</p>
+                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-5 leading-[1.2]">
+                                Superkabe costs less than a single mistake
+                            </h3>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-5">
+                                One burned domain doesn&apos;t just cost a domain — it costs weeks of pipeline. Here&apos;s the math.
+                            </p>
+                            <Link href={isLoggedIn ? '/dashboard' : '/signup'} className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors w-fit">
+                                Start protecting for free
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                            </Link>
+                        </div>
+                        <div className="flex flex-col justify-center p-10 md:p-14 bg-red-50 min-h-[320px]">
+                            <p className="text-[10px] font-bold text-red-700 uppercase tracking-widest mb-4">One burned domain costs</p>
+                            <div className="space-y-5">
+                                {[
+                                    { v: '2–3 weeks', l: 'Of degraded sending' },
+                                    { v: '5,000+', l: 'Lost leads' },
+                                    { v: '$20k–$80k', l: 'In pipeline exposure' },
+                                ].map((item) => (
+                                    <div key={item.l} className="flex items-baseline justify-between gap-4 pb-4 border-b border-red-100 last:border-0 last:pb-0">
+                                        <p className="text-xl md:text-2xl font-bold text-red-700 tracking-tight shrink-0">{item.v}</p>
+                                        <p className="text-xs text-gray-600 text-right font-medium">{item.l}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Why We Don't Charge Per Email */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-gray-900 tracking-tight">
-                    Why We Don't Charge Per Email Sent
-                </h2>
-                <p className="text-xl text-gray-500 mb-4 text-center">
-                    Superkabe does not send emails.
-                </p>
-                <p className="text-xl text-gray-900 mb-4 text-center font-bold">
-                    We protect infrastructure.
-                </p>
-                <p className="text-lg text-gray-500 text-center">
-                    You pay based on risk exposure, not throughput.
-                </p>
-            </div>
-
-            {/* 2026 Outbound Context */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 border-t border-gray-200">
-                <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 tracking-tight">
-                    Why This Pricing Aligns With 2026 Outbound
-                </h2>
-                <p className="text-lg text-gray-500 mb-8 text-center">
-                    Modern outbound teams typically run:
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-sm">
-                        <p className="text-2xl font-bold text-blue-600 mb-2">3–10 domains</p>
-                    </div>
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-sm">
-                        <p className="text-2xl font-bold text-blue-600 mb-2">3 mailboxes per domain</p>
-                    </div>
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-sm">
-                        <p className="text-2xl font-bold text-blue-600 mb-2">20–30 emails</p>
-                        <p className="text-gray-500">per mailbox per day</p>
-                    </div>
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-sm">
-                        <p className="text-2xl font-bold text-blue-600 mb-2">Structured ICP</p>
-                        <p className="text-gray-500">-based campaign routing</p>
-                    </div>
-                </div>
-                <p className="text-gray-700 text-center mt-12 text-lg font-medium">
-                    Superkabe is priced to match this operational reality.
-                </p>
-            </div>
-
-            {/* ROI Framing */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 mb-8 border-t border-gray-200">
-                <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 tracking-tight">
-                    ROI Framing
-                </h2>
-                <div className="bg-red-50 border border-red-100 rounded-[2rem] p-10 md:p-12 shadow-sm">
-                    <p className="text-lg text-gray-700 mb-6 font-medium">
-                        If one burned domain costs:
-                    </p>
-                    <ul className="space-y-4 mb-8 text-gray-600">
-                        <li className="flex items-start">
-                            <span className="text-red-500 mr-3 text-xl">•</span>
-                            <span>2–3 weeks of degraded sending</span>
-                        </li>
-                        <li className="flex items-start">
-                            <span className="text-red-500 mr-3 text-xl">•</span>
-                            <span>5,000+ lost leads</span>
-                        </li>
-                        <li className="flex items-start">
-                            <span className="text-red-500 mr-3 text-xl">•</span>
-                            <span>$20k–$80k in pipeline exposure</span>
-                        </li>
-                    </ul>
-                    <p className="text-2xl font-bold text-center text-blue-600">
-                        Superkabe costs less than a single mistake.
-                    </p>
-                </div>
-            </div>
+            <div className="h-16"></div>
 
             <Footer />
         </div>
