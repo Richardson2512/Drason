@@ -278,7 +278,7 @@ export interface UsageLimits {
 
 export interface SubscriptionData {
   subscription: Subscription;
-  usage: UsageLimits;
+  usage: UsageLimits & { emailsValidated?: number };
   limits: UsageLimits;
 }
 

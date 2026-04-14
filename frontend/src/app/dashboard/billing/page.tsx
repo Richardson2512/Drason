@@ -304,6 +304,22 @@ function BillingContent() {
                         )}
                     </div>
 
+                    {/* Emails Validated */}
+                    <div className="premium-card">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <div className="text-xs font-semibold uppercase mb-1 text-[#94A3B8]">Total Emails Validated</div>
+                                <div className="text-2xl font-extrabold text-gray-900">
+                                    {(data?.usage.emailsValidated ?? 0).toLocaleString()}
+                                </div>
+                                <div className="text-sm mt-1 text-slate-500">
+                                    Lifetime validations across all sources (internal + MillionVerifier)
+                                </div>
+                            </div>
+                            <div className="text-3xl">✉️</div>
+                        </div>
+                    </div>
+
                     {/* Resource Usage */}
                     <div className="premium-card">
                         <div className="flex justify-between items-center mb-5">
