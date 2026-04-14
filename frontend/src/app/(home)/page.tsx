@@ -254,7 +254,7 @@ export default function LandingPage() {
 
                     {/* LEFT — content + CTAs */}
                     <div className="text-center lg:text-left">
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-tight text-gray-900 mb-5 uppercase">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-tight text-gray-900 mb-5">
                             Cold Email{' '}
                             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent block">
                                 Deliverability{' '}
