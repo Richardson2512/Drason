@@ -423,6 +423,38 @@ function AnalyticsMockup() {
     );
 }
 
+function ValidationMockup() {
+    const leads = [
+        { email: 'alex@acme.com', status: 'VALID', badge: 'Syntax + MX', color: 'emerald' },
+        { email: 'priya@temp-mail.io', status: 'BLOCKED', badge: 'Disposable', color: 'red' },
+        { email: 'sam@catchall.dev', status: 'VERIFIED', badge: 'MillionVerifier', color: 'blue' },
+        { email: 'jordan@xyz.', status: 'BLOCKED', badge: 'Invalid syntax', color: 'red' },
+    ];
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <span className="text-xs font-bold text-gray-700">Validation Pipeline</span>
+                <span className="text-[10px] font-mono bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold">4/4 processed</span>
+            </div>
+            <div className="p-4 space-y-2.5">
+                {leads.map((l, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                        <div className="flex-1 min-w-0 mr-2">
+                            <div className="font-mono text-gray-900 text-[11px] truncate">{l.email}</div>
+                            <div className="text-[10px] text-gray-500 mt-0.5">{l.badge}</div>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold bg-${l.color}-100 text-${l.color}-700 shrink-0`}>{l.status}</span>
+                    </div>
+                ))}
+            </div>
+            <div className="px-4 py-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] bg-gray-50">
+                <span className="text-gray-500">2 valid · 2 blocked</span>
+                <span className="text-emerald-700 font-semibold">Hard bounces prevented</span>
+            </div>
+        </div>
+    );
+}
+
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -463,6 +495,11 @@ export default function LandingPage() {
             title: "Infrastructure Analytics Engine",
             desc: "Convert raw monitoring signals into actionable deliverability metrics. Visualize your bounce trends and domain health history in one centralized dashboard.",
             link: "/product/email-infrastructure-health-check"
+        },
+        {
+            title: "Hybrid Email Validation",
+            desc: "Every lead runs through syntax, MX, disposable, and catch-all checks before it reaches your sender. Risky leads get verified via the MillionVerifier API. Invalid emails are blocked and never damage your sender reputation.",
+            link: "/product/email-validation-infrastructure-protection"
         }
     ];
 
@@ -1180,6 +1217,14 @@ export default function LandingPage() {
                     link={features[4].link}
                     imageOnLeft={true}
                     mockup={<AnalyticsMockup />}
+                />
+                <FeatureRow
+                    eyebrow="Email Validation"
+                    title={features[5].title}
+                    body={features[5].desc}
+                    link={features[5].link}
+                    imageOnLeft={false}
+                    mockup={<ValidationMockup />}
                 />
             </section>
 
