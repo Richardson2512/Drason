@@ -11,7 +11,6 @@ import Navbar from '@/components/Navbar';
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [activeSlide, setActiveSlide] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -23,43 +22,6 @@ export default function LandingPage() {
         }, {});
         setIsLoggedIn(!!cookies.token);
     }, []);
-
-    // Dashboard screenshots for carousel
-    const dashboardSlides = [
-        {
-            src: '/Untitled design (7).png',
-            alt: 'Superkabe System Overview dashboard showing mailboxes, leads, campaigns, and domains in real-time',
-            caption: 'Real-time system overview',
-        },
-        {
-            src: '/Untitled design (9).png',
-            alt: 'Lead Status, Domain Health, and Mailbox Health gauges',
-            caption: 'Per-entity health gauges',
-        },
-        {
-            src: '/Untitled design (8).png',
-            alt: 'Infrastructure health score with 90-day trend history',
-            caption: 'Infrastructure score tracking',
-        },
-        {
-            src: '/Untitled design (10).png',
-            alt: 'Smartlead and Clay integration configuration',
-            caption: 'Native Smartlead + Clay integration',
-        },
-        {
-            src: '/Untitled design (11).png',
-            alt: 'Real-time notifications feed showing domain and mailbox events',
-            caption: 'Live notifications & alerts',
-        },
-    ];
-
-    // Auto-advance carousel every 5 seconds
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveSlide((prev) => (prev + 1) % dashboardSlides.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [dashboardSlides.length]);
 
     const features = [
         {
@@ -330,61 +292,6 @@ export default function LandingPage() {
                             <div className="text-sm text-gray-500 mt-1 font-medium">{stat.label}</div>
                         </div>
                     ))}
-                </div>
-            </section>
-
-            {/* ================= PRODUCT DASHBOARD CAROUSEL ================= */}
-            <section className="relative z-10 py-10 lg:py-16 px-6">
-                <div className="max-w-6xl mx-auto">
-                    {/* Gradient glow backdrop */}
-                    <div className="relative">
-                        <div className="absolute inset-0 -inset-x-8 md:-inset-x-20 -inset-y-12 pointer-events-none">
-                            <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-400/25 rounded-full blur-[120px]"></div>
-                            <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/25 rounded-full blur-[120px]"></div>
-                            <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-pink-400/20 rounded-full blur-[120px]"></div>
-                        </div>
-
-                        {/* Carousel Card */}
-                        <div className="relative bg-white/80 backdrop-blur-xl rounded-[2rem] border border-gray-100 shadow-xl shadow-blue-500/10 overflow-hidden">
-                            <div className="relative aspect-[16/10] overflow-hidden">
-                                {dashboardSlides.map((slide, i) => (
-                                    <div
-                                        key={i}
-                                        className={`absolute inset-0 transition-opacity duration-700 ${i === activeSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                                    >
-                                        <Image
-                                            src={slide.src}
-                                            alt={slide.alt}
-                                            fill
-                                            className="object-cover object-top"
-                                            priority={i === 0}
-                                            sizes="(max-width: 768px) 100vw, 1024px"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Indicators + Caption */}
-                        <div className="relative mt-6 flex flex-col items-center gap-3">
-                            <div className="flex items-center justify-center gap-2">
-                                {dashboardSlides.map((_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setActiveSlide(i)}
-                                        className={`h-1.5 rounded-full transition-all duration-300 ${i === activeSlide
-                                            ? 'w-10 bg-gradient-to-r from-blue-600 to-purple-600'
-                                            : 'w-1.5 bg-gray-300 hover:bg-gray-400'
-                                            }`}
-                                        aria-label={`View slide ${i + 1}: ${dashboardSlides[i].caption}`}
-                                    />
-                                ))}
-                            </div>
-                            <p className="text-sm text-gray-500 font-medium">
-                                {dashboardSlides[activeSlide].caption}
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </section>
 
