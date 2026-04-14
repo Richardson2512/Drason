@@ -143,73 +143,69 @@ export default function DashboardShell({
         <div className="light-theme flex h-screen overflow-hidden bg-[#F7F2EB]">
             <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">Skip to main content</a>
 
-            {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
+            {/* Sidebar Wrapper */}
             <div className="relative shrink-0 z-20" style={{
-                width: isCollapsed ? '72px' : '232px',
-                transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                width: isCollapsed ? '56px' : '200px',
+                transition: 'width 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
             }}>
                 {/* Toggle Button */}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="absolute -right-3 top-[48px] rounded-full w-6 h-6 flex items-center justify-center cursor-pointer text-gray-700 z-40 hover:bg-gray-50"
+                    className="absolute -right-2.5 top-[40px] rounded-full w-5 h-5 flex items-center justify-center cursor-pointer text-gray-600 z-40 hover:bg-gray-50"
                     style={{
                         background: '#FFFFFF',
                         border: '1px solid #D1CBC5',
-                        transition: 'all 0.2s ease',
                     }}
                 >
-                    {isCollapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
+                    {isCollapsed ? <ChevronRight size={10} /> : <ChevronLeft size={10} />}
                 </button>
 
-                <aside className="w-full h-full bg-white py-5 px-3 flex flex-col gap-3 overflow-y-auto relative" style={{
+                <aside className="w-full h-full bg-white py-3 px-2 flex flex-col gap-2 overflow-y-auto relative" style={{
                     borderRight: '1px solid #D1CBC5',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}>
-
-                    <div className="flex items-center text-lg font-bold tracking-tight text-gray-900 overflow-hidden whitespace-nowrap min-h-[40px] py-1" style={{
-                        gap: isCollapsed ? 0 : '10px',
+                    <div className="flex items-center overflow-hidden whitespace-nowrap h-9 px-1" style={{
+                        gap: isCollapsed ? 0 : '8px',
                         justifyContent: isCollapsed ? 'center' : 'flex-start',
                     }}>
-                        <div className="shrink-0 w-8 h-8">
+                        <div className="shrink-0 w-6 h-6">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src="/image/logo-v2.png" alt="Superkabe Logo" width={32} height={32} className="block" onError={(e) => {
+                            <img src="/image/logo-v2.png" alt="Superkabe" width={24} height={24} className="block" onError={(e) => {
                                 const target = e.currentTarget;
                                 target.style.display = 'none';
                                 if (target.nextElementSibling) (target.nextElementSibling as HTMLElement).style.display = 'flex';
                             }} />
-                            <div className="hidden w-8 h-8 rounded-lg items-center justify-center text-white text-[1.1rem] font-black bg-gray-900">S</div>
+                            <div className="hidden w-6 h-6 rounded items-center justify-center text-white text-[0.75rem] font-black bg-gray-900">S</div>
                         </div>
-                        <span className="overflow-hidden transition-opacity duration-200 text-gray-900" style={{
-                            opacity: isCollapsed ? 0 : 1,
-                            width: isCollapsed ? 0 : 'auto',
-                        }}>
-                            Superkabe
-                        </span>
+                        {!isCollapsed && (
+                            <span className="text-[0.875rem] font-semibold tracking-tight text-gray-900">
+                                Superkabe
+                            </span>
+                        )}
                     </div>
 
                     {(() => {
                         const sections: Array<{ label?: string; items: Array<{ href: string; label: string; icon: React.ReactNode; badge?: number }> }> = [
                             { items: [
-                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={17} strokeWidth={1.75} />, badge: unreadCount },
+                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={14} strokeWidth={1.75} />, badge: unreadCount },
                             ]},
                             { label: 'Monitoring', items: [
-                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={14} strokeWidth={1.75} /> },
                             ]},
                             { label: 'System', items: [
-                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={17} strokeWidth={1.75} /> },
-                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={14} strokeWidth={1.75} /> },
                             ]},
                         ];
                         const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname?.startsWith(href);
@@ -384,7 +380,7 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                <div className="container min-h-full pt-1 pr-3 pb-0 pl-4">
+                <div className="container min-h-full py-2 px-3">
                     <ErrorBoundary>
                         {children}
                     </ErrorBoundary>
@@ -531,23 +527,23 @@ export default function DashboardShell({
 
             <style jsx>{`
         .nav-link {
-          height: 32px;
-          padding: 0 10px;
-          border-radius: 8px;
+          height: 28px;
+          padding: 0 8px;
+          border-radius: 6px;
           color: #4B5563;
-          transition: background 0.15s ease, color 0.15s ease;
+          transition: background 0.12s ease, color 0.12s ease;
           text-decoration: none !important;
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-size: 0.8125rem;
+          gap: 8px;
+          font-size: 0.75rem;
           font-weight: 500;
           white-space: nowrap;
           line-height: 1;
         }
         .nav-link .nav-icon {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -556,7 +552,7 @@ export default function DashboardShell({
           position: relative;
         }
         .nav-link .nav-label {
-          font-size: 0.8125rem;
+          font-size: 0.75rem;
           color: inherit;
           letter-spacing: -0.005em;
         }
