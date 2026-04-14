@@ -4,10 +4,10 @@ import Image from 'next/image';
 export default function Footer() {
     return (
         <footer className="relative z-10 py-10 md:py-12 px-6">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 {/* White Rounded Card Footer */}
                 <div className="bg-white rounded-[2rem] p-12 md:p-16 shadow-xl shadow-gray-200/50 border border-gray-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_2fr] gap-12 lg:gap-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_2.6fr] gap-12 lg:gap-16">
 
                         {/* Left: Branding */}
                         <div>
@@ -30,10 +30,10 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Platform</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-                                    <Link href="/product" className="hover:text-blue-600 transition-colors">Product Hub</Link>
-                                    <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
-                                    <Link href="/docs" className="hover:text-blue-600 transition-colors">Documentation</Link>
+                                    <Link href="/" className="hover:text-blue-600 transition-colors whitespace-nowrap">Home</Link>
+                                    <Link href="/product" className="hover:text-blue-600 transition-colors whitespace-nowrap">Product Hub</Link>
+                                    <Link href="/pricing" className="hover:text-blue-600 transition-colors whitespace-nowrap">Pricing</Link>
+                                    <Link href="/docs" className="hover:text-blue-600 transition-colors whitespace-nowrap">Documentation</Link>
                                 </nav>
                             </div>
 
@@ -41,12 +41,12 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Free Tools</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/tools/spf-lookup" className="hover:text-blue-600 transition-colors">SPF Lookup</Link>
-                                    <Link href="/tools/spf-generator" className="hover:text-blue-600 transition-colors">SPF Generator</Link>
-                                    <Link href="/tools/dkim-lookup" className="hover:text-blue-600 transition-colors">DKIM Lookup</Link>
-                                    <Link href="/tools/dkim-generator" className="hover:text-blue-600 transition-colors">DKIM Generator</Link>
-                                    <Link href="/tools/dmarc-lookup" className="hover:text-blue-600 transition-colors">DMARC Lookup</Link>
-                                    <Link href="/tools/dmarc-generator" className="hover:text-blue-600 transition-colors">DMARC Generator</Link>
+                                    <Link href="/tools/spf-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">SPF Lookup</Link>
+                                    <Link href="/tools/spf-generator" className="hover:text-blue-600 transition-colors whitespace-nowrap">SPF Generator</Link>
+                                    <Link href="/tools/dkim-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">DKIM Lookup</Link>
+                                    <Link href="/tools/dkim-generator" className="hover:text-blue-600 transition-colors whitespace-nowrap">DKIM Generator</Link>
+                                    <Link href="/tools/dmarc-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">DMARC Lookup</Link>
+                                    <Link href="/tools/dmarc-generator" className="hover:text-blue-600 transition-colors whitespace-nowrap">DMARC Generator</Link>
                                 </nav>
                             </div>
 
@@ -54,10 +54,10 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Product Guides</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/product/email-deliverability-protection" className="hover:text-blue-600 transition-colors">Deliverability Guide</Link>
-                                    <Link href="/product/domain-burnout-prevention-tool" className="hover:text-blue-600 transition-colors">Domain Protection</Link>
-                                    <Link href="/product/sender-reputation-monitoring" className="hover:text-blue-600 transition-colors">Reputation</Link>
-                                    <Link href="/product/automated-domain-healing" className="hover:text-blue-600 transition-colors">Auto-Healing</Link>
+                                    <Link href="/product/email-deliverability-protection" className="hover:text-blue-600 transition-colors whitespace-nowrap">Deliverability Guide</Link>
+                                    <Link href="/product/domain-burnout-prevention-tool" className="hover:text-blue-600 transition-colors whitespace-nowrap">Domain Protection</Link>
+                                    <Link href="/product/sender-reputation-monitoring" className="hover:text-blue-600 transition-colors whitespace-nowrap">Reputation</Link>
+                                    <Link href="/product/automated-domain-healing" className="hover:text-blue-600 transition-colors whitespace-nowrap">Auto-Healing</Link>
                                 </nav>
                             </div>
 
@@ -65,9 +65,9 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Case Studies</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/product/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors">Bounce Reduction</Link>
-                                    <Link href="/product/case-study-domain-recovery" className="hover:text-blue-600 transition-colors">Domain Recovery</Link>
-                                    <Link href="/product/case-study-infrastructure-protection" className="hover:text-blue-600 transition-colors">Infrastructure</Link>
+                                    <Link href="/product/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors whitespace-nowrap">Bounce Reduction</Link>
+                                    <Link href="/product/case-study-domain-recovery" className="hover:text-blue-600 transition-colors whitespace-nowrap">Domain Recovery</Link>
+                                    <Link href="/product/case-study-infrastructure-protection" className="hover:text-blue-600 transition-colors whitespace-nowrap">Infrastructure</Link>
                                 </nav>
                             </div>
 
@@ -75,18 +75,18 @@ export default function Footer() {
                             <div className="flex flex-col gap-4">
                                 <h4 className="font-bold text-gray-900 mb-2 text-base">Company</h4>
                                 <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
-                                    <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact Us</Link>
-                                    <Link href="/release-notes" className="hover:text-blue-600 transition-colors">Release Notes</Link>
-                                    <Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
-                                    <Link href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
+                                    <Link href="/contact" className="hover:text-blue-600 transition-colors whitespace-nowrap">Contact Us</Link>
+                                    <Link href="/release-notes" className="hover:text-blue-600 transition-colors whitespace-nowrap">Release Notes</Link>
+                                    <Link href="/privacy" className="hover:text-blue-600 transition-colors whitespace-nowrap">Privacy Policy</Link>
+                                    <Link href="/terms" className="hover:text-blue-600 transition-colors whitespace-nowrap">Terms of Service</Link>
                                 </nav>
                                 <a
                                     href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 mt-2 bg-[#FF492C] text-white rounded-full text-[11px] font-semibold hover:bg-[#e03d24] transition-colors shadow-sm whitespace-nowrap"
+                                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 mt-3 bg-[#FF492C] text-white rounded-full text-xs font-semibold hover:bg-[#e03d24] transition-colors shadow-sm whitespace-nowrap w-fit"
                                 >
-                                    <span>⭐</span><span>Review on G2</span>
+                                    <span className="text-sm">⭐</span><span>Review on G2</span>
                                 </a>
                             </div>
 
