@@ -186,26 +186,26 @@ export default function DashboardShell({
                     {(() => {
                         const sections: Array<{ label?: string; items: Array<{ href: string; label: string; icon: React.ReactNode; badge?: number }> }> = [
                             { items: [
-                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={14} strokeWidth={1.75} />, badge: unreadCount },
+                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={13} strokeWidth={1.75} />, badge: unreadCount },
                             ]},
                             { label: 'Monitoring', items: [
-                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={13} strokeWidth={1.75} /> },
                             ]},
                             { label: 'System', items: [
-                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={14} strokeWidth={1.75} /> },
-                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={14} strokeWidth={1.75} /> },
+                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={13} strokeWidth={1.75} /> },
                             ]},
                         ];
                         const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname?.startsWith(href);
@@ -526,68 +526,7 @@ export default function DashboardShell({
             )}
 
             <style jsx>{`
-        .nav-link {
-          height: 28px;
-          padding: 0 8px;
-          border-radius: 6px;
-          color: #4B5563;
-          transition: background 0.12s ease, color 0.12s ease;
-          text-decoration: none !important;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.75rem;
-          font-weight: 500;
-          white-space: nowrap;
-          line-height: 1;
-        }
-        .nav-link .nav-icon {
-          width: 16px;
-          height: 16px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          color: #6B7280;
-          position: relative;
-        }
-        .nav-link .nav-label {
-          font-size: 0.75rem;
-          color: inherit;
-          letter-spacing: -0.005em;
-        }
-        .nav-link .nav-badge {
-          position: absolute;
-          top: -4px;
-          right: -8px;
-          background: #EF4444;
-          color: #fff;
-          font-size: 9px;
-          font-weight: 700;
-          min-width: 15px;
-          height: 15px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 4px;
-          line-height: 1;
-        }
-        .nav-link:hover {
-          background: #F5F1EA;
-          color: #111827;
-        }
-        .nav-link:hover .nav-icon {
-          color: #111827;
-        }
-        .nav-link[data-active="true"] {
-          background: #F7F2EB;
-          color: #111827;
-          font-weight: 600;
-        }
-        .nav-link[data-active="true"] .nav-icon {
-          color: #111827;
-        }
+        /* .nav-link styles moved to globals.css for reliable Link child rendering */
         @keyframes pulse {
           0%, 100% {
             opacity: 1;
