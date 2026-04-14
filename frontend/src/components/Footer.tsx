@@ -84,7 +84,7 @@ export default function Footer() {
                                     href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 mt-2 bg-[#FF492C] text-white rounded-full text-xs font-semibold hover:bg-[#e03d24] transition-colors shadow-sm w-full whitespace-nowrap"
+                                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 mt-2 bg-[#FF492C] text-white rounded-full text-[11px] font-semibold hover:bg-[#e03d24] transition-colors shadow-sm whitespace-nowrap"
                                 >
                                     <span>⭐</span><span>Review on G2</span>
                                 </a>

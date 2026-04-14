@@ -11,7 +11,6 @@ import Navbar from '@/components/Navbar';
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [heroSlide, setHeroSlide] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -23,22 +22,6 @@ export default function LandingPage() {
         }, {});
         setIsLoggedIn(!!cookies.token);
     }, []);
-
-    // Hero carousel — platform screenshots
-    const heroSlides = [
-        { src: '/Untitled design (7).png', alt: 'System overview dashboard' },
-        { src: '/Untitled design (9).png', alt: 'Health gauges for leads, domains, and mailboxes' },
-        { src: '/Untitled design (8).png', alt: 'Infrastructure health score with trend history' },
-        { src: '/Untitled design (10).png', alt: 'Smartlead and Clay integration configuration' },
-        { src: '/Untitled design (11).png', alt: 'Real-time notifications feed' },
-    ];
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setHeroSlide((prev) => (prev + 1) % heroSlides.length);
-        }, 4000);
-        return () => clearInterval(interval);
-    }, [heroSlides.length]);
 
     const features = [
         {
@@ -297,7 +280,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    {/* RIGHT — image carousel with animations */}
+                    {/* RIGHT — static dashboard preview with subtle animations */}
                     <div className="relative">
                         {/* Gradient glow backdrop */}
                         <div className="absolute inset-0 -inset-x-4 -inset-y-8 pointer-events-none">
@@ -306,27 +289,17 @@ export default function LandingPage() {
                             <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
                         </div>
 
-                        {/* Carousel card */}
+                        {/* Dashboard card */}
                         <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
                             <div className="relative aspect-[16/10] overflow-hidden">
-                                {heroSlides.map((slide, i) => (
-                                    <div
-                                        key={i}
-                                        className={`absolute inset-0 transition-all duration-700 ease-out ${i === heroSlide
-                                            ? 'opacity-100 scale-100'
-                                            : 'opacity-0 scale-[1.03] pointer-events-none'
-                                            }`}
-                                    >
-                                        <Image
-                                            src={slide.src}
-                                            alt={slide.alt}
-                                            fill
-                                            className="object-cover object-top"
-                                            priority={i === 0}
-                                            sizes="(max-width: 1024px) 100vw, 700px"
-                                        />
-                                    </div>
-                                ))}
+                                <Image
+                                    src="/Untitled design (7).png"
+                                    alt="Superkabe system overview dashboard"
+                                    fill
+                                    className="object-cover object-top"
+                                    priority
+                                    sizes="(max-width: 1024px) 100vw, 700px"
+                                />
                             </div>
                         </div>
 
@@ -349,21 +322,6 @@ export default function LandingPage() {
                                     <div className="text-sm font-bold text-gray-900">Monitoring</div>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Carousel indicators */}
-                        <div className="flex items-center justify-center gap-2 mt-6">
-                            {heroSlides.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setHeroSlide(i)}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === heroSlide
-                                        ? 'w-8 bg-gradient-to-r from-blue-600 to-purple-600'
-                                        : 'w-1.5 bg-gray-300 hover:bg-gray-400'
-                                        }`}
-                                    aria-label={`Slide ${i + 1}`}
-                                />
-                            ))}
                         </div>
                     </div>
                 </div>
