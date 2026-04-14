@@ -261,7 +261,7 @@ export default function EmailDeliverabilityGlossary() {
     const letters = [...new Set(glossaryTerms.map(t => t.letter))];
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
             <Navbar />
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="cloud-bg"><div className="cloud-shadow" /><div className="cloud-puff-1" /><div className="cloud-puff-2" /><div className="cloud-puff-3" /></div>

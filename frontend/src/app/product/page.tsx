@@ -108,7 +108,7 @@ export default function ProductIndexPage() {
     };
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
             {/* ================= NAVBAR ================= */}

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function ArticlePage() {
     return (
-        <div className="bg-[#F5F8FF] text-[#1E1E2F] font-sans min-h-screen">
+        <div className="bg-[#F7F2EB] text-[#1E1E2F] font-sans min-h-screen">
             {/* Minimal Nav */}
             <Navbar />
 

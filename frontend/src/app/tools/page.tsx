@@ -136,7 +136,7 @@ export default function ToolsPage() {
     };
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-x-hidden">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-x-hidden">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 

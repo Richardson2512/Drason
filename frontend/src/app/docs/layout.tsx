@@ -271,7 +271,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     };
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
             {/* ================= JSON-LD (TechArticle + BreadcrumbList per page) ================= */}
             <DocJsonLd />

@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
     };
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacySchema) }} />
             {/* Navbar */}
             <Navbar />

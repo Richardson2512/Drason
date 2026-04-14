@@ -69,7 +69,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
     };
 
     return (
-        <div className="bg-[#F5F8FF] text-[#1E1E2F] font-sans min-h-screen">
+        <div className="bg-[#F7F2EB] text-[#1E1E2F] font-sans min-h-screen">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
             {/* ================= NAVBAR ================= */}

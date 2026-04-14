@@ -101,7 +101,7 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
     } : null;
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] min-h-screen font-sans">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}

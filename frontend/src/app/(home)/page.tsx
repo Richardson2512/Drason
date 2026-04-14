@@ -171,7 +171,7 @@ export default function LandingPage() {
     };
 
     return (
-        <div className="relative bg-[#F5F8FF] text-[#1E1E2F] overflow-hidden font-sans">
+        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] overflow-hidden font-sans">
 
             {/* FAQPage Schema for AI Overviews */}
             <script
@@ -344,55 +344,119 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* ================= WHAT IS SUPERKABE (AEO AUTHORITY) ================= */}
-            <section className="py-10 lg:py-16 px-6 relative z-10">
-                <div className="max-w-5xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-xl rounded-[2rem] p-10 md:p-16 border border-gray-100 shadow-xl shadow-blue-500/5">
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight text-center">
+            {/* ================= WHAT IS SUPERKABE (AEO AUTHORITY - BENTO GRID) ================= */}
+            <section className="py-14 lg:py-20 px-6 relative z-10">
+                <div className="max-w-6xl mx-auto">
+                    {/* Intro */}
+                    <div className="text-center mb-12 md:mb-14">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-semibold text-gray-600 mb-5 tracking-wide">
+                            <span className="w-1.5 h-1.5 bg-gray-900 rounded-full"></span>
+                            Explore the Superkabe platform
+                        </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-5 tracking-tight">
                             What problems does the Superkabe platform solve?
                         </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-14 text-center">
+                        <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
                             Superkabe is an email deliverability and sender reputation protection platform. We act as infrastructure armor, sitting between your enrichment data and your sending accounts to enforce safety protocols across your entire fleet.
                         </p>
+                    </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-4xl mx-auto mb-14">
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">Mailbox fatigue detection</h2>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Superkabe algorithms automatically detect mailbox fatigue and instantly pause underperforming mailboxes, rebalancing traffic to healthy assets to preserve reputation.
-                                </p>
+                    {/* Bento Grid — varied-width cells inspired by popl.co */}
+                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5 mb-14">
+
+                        {/* Row 1: Mailbox fatigue (wide) + DNS auth */}
+                        <div className="md:col-span-4 bg-white border border-gray-200 rounded-3xl p-7 md:p-9 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                    <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                </div>
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Mailbox Health</span>
                             </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">DNS authentication enforcement</h2>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Superkabe continuously monitors SPF, DKIM, and DMARC status on every domain and blocks or gates outbound traffic when misconfigurations threaten deliverability.
-                                </p>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">Domain burnout prevention</h2>
-                                <p className="text-gray-600 leading-relaxed">
-                                    By gating outbound email traffic based on live bounce data, Superkabe halts campaigns before an isolated spike in bounces compounds into permanent domain blocklisting.
-                                </p>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">Toxic lead filtering</h2>
-                                <p className="text-gray-600 leading-relaxed">
-                                    We track lead health across your entire infrastructure, automatically isolating and dropping toxic contacts to prevent hard bounces from damaging your underlying sender reputation.
-                                </p>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">Email validation before sending</h2>
-                                <p className="text-gray-600 leading-relaxed">Superkabe validates every email before it reaches your sender platform. Syntax checks, MX record lookups, disposable domain detection, catch-all identification, and MillionVerifier API verification for risky leads — all automated, tier-gated by plan.</p>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-3">Health gate and risk-aware routing</h2>
-                                <p className="text-gray-600 leading-relaxed">Every lead is classified GREEN, YELLOW, or RED based on validation score, engagement signals, and domain health. RED leads are blocked. GREEN leads route normally. YELLOW leads distribute across mailboxes with per-sender risk caps to prevent concentrated damage.</p>
-                            </div>
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">Mailbox fatigue detection</h3>
+                            <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                                Superkabe algorithms automatically detect mailbox fatigue and instantly pause underperforming mailboxes, rebalancing traffic to healthy assets to preserve reputation.
+                            </p>
                         </div>
 
-                        <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Designed to keep your email deliverability above 99%.
-                        </p>
+                        <div className="md:col-span-2 bg-white border border-gray-200 rounded-3xl p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            </div>
+                            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Authentication</div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">DNS authentication enforcement</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Continuously monitors SPF, DKIM, and DMARC on every domain and blocks outbound traffic when misconfigurations threaten deliverability.
+                            </p>
+                        </div>
+
+                        {/* Row 2: Three equal columns */}
+                        <div className="md:col-span-2 bg-white border border-gray-200 rounded-3xl p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="w-11 h-11 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg className="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.24 17 7.5c.73 1.81 1 4.53 0 6.5-1 2 1.415 1.5 1.5 1.5-.085.5-1.2 1.5-1.843 2z" /></svg>
+                            </div>
+                            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Domain Safety</div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Domain burnout prevention</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Gates outbound email traffic based on live bounce data, halting campaigns before an isolated spike compounds into permanent blocklisting.
+                            </p>
+                        </div>
+
+                        <div className="md:col-span-2 bg-white border border-gray-200 rounded-3xl p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="w-11 h-11 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg className="w-5 h-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            </div>
+                            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Lead Quality</div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Toxic lead filtering</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Tracks lead health across your infrastructure, automatically isolating toxic contacts to prevent hard bounces from damaging sender reputation.
+                            </p>
+                        </div>
+
+                        <div className="md:col-span-2 bg-white border border-gray-200 rounded-3xl p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="w-11 h-11 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg className="w-5 h-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+                            </div>
+                            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Validation</div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Email validation before sending</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                Syntax, MX, disposable domain, and catch-all detection before emails reach your sender. MillionVerifier API verification for risky leads.
+                            </p>
+                        </div>
+
+                        {/* Row 3: Full-width Health Gate */}
+                        <div className="md:col-span-6 bg-white border border-gray-200 rounded-3xl p-7 md:p-10 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
+                            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center">
+                                <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                    <svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Risk-Aware Routing</div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 tracking-tight">Health gate classifies every lead before it ships</h3>
+                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                                        Every lead is classified <span className="font-bold text-emerald-700">GREEN</span>, <span className="font-bold text-amber-700">YELLOW</span>, or <span className="font-bold text-red-700">RED</span> based on validation score, engagement signals, and domain health. RED leads are blocked. GREEN leads route normally. YELLOW leads distribute across mailboxes with per-sender risk caps.
+                                    </p>
+                                </div>
+                                <div className="hidden md:flex items-center gap-3 shrink-0">
+                                    <div className="flex flex-col items-center">
+                                        <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">G</div>
+                                        <span className="text-[10px] text-emerald-700 font-semibold mt-1.5">GREEN</span>
+                                    </div>
+                                    <div className="flex flex-col items-center">
+                                        <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">Y</div>
+                                        <span className="text-[10px] text-amber-700 font-semibold mt-1.5">YELLOW</span>
+                                    </div>
+                                    <div className="flex flex-col items-center">
+                                        <div className="w-12 h-12 rounded-xl bg-red-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">R</div>
+                                        <span className="text-[10px] text-red-700 font-semibold mt-1.5">RED</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Designed to keep your email deliverability above 99%.
+                    </p>
                         <div className="flex flex-wrap justify-center gap-3 mb-10">
                             {[
                                 { label: 'Real-time Monitoring', bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
@@ -417,7 +481,6 @@ export default function LandingPage() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </Link>
                         </div>
-                    </div>
 
 
 

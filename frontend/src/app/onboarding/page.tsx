@@ -49,7 +49,7 @@ export default function OnboardingPage() {
         <div className="min-h-screen w-full flex overflow-hidden font-sans">
 
             {/* LEFT SIDE - FORM */}
-            <div className="w-full lg:w-1/2 relative flex flex-col items-center justify-center p-8 lg:p-12 xl:p-16 bg-[#F5F8FF]">
+            <div className="w-full lg:w-1/2 relative flex flex-col items-center justify-center p-8 lg:p-12 xl:p-16 bg-[#F7F2EB]">
 
                 {/* Background Blobs */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
