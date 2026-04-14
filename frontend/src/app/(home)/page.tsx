@@ -660,7 +660,7 @@ export default function LandingPage() {
 
             {/* ================= HERO (SPLIT LAYOUT) ================= */}
             <section className="relative pt-32 md:pt-36 pb-10 z-10 px-6">
-                <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+                <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
 
                     {/* LEFT — content + CTAs */}
                     <div className="text-center lg:text-left">
@@ -691,7 +691,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* RIGHT — static dashboard preview with subtle animations */}
-                    <div className="relative">
+                    <div className="relative flex">
                         {/* Gradient glow backdrop */}
                         <div className="absolute inset-0 -inset-x-4 -inset-y-8 pointer-events-none">
                             <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-400/30 rounded-full blur-[100px] animate-pulse-slow"></div>
@@ -699,9 +699,9 @@ export default function LandingPage() {
                             <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
                         </div>
 
-                        {/* Superkabe product demo video (looping) */}
-                        <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
-                            <div className="relative aspect-video overflow-hidden">
+                        {/* Superkabe product demo video (looping, fills column height) */}
+                        <div className="relative w-full min-h-[420px] lg:min-h-0 rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
+                            <div className="relative w-full h-full aspect-video lg:aspect-auto overflow-hidden">
                                 <video
                                     src="/Superkabe.mp4"
                                     autoPlay
