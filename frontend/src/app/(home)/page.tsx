@@ -421,7 +421,6 @@ function AnalyticsMockup() {
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [heroSlide, setHeroSlide] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -433,22 +432,6 @@ export default function LandingPage() {
         }, {});
         setIsLoggedIn(!!cookies.token);
     }, []);
-
-    // Hero carousel — cleaned dashboard screenshots (purple gradient removed)
-    const heroSlides = [
-        { src: '/Untitled design (6).png', alt: 'Sign-in experience with automated infrastructure healing preview' },
-        { src: '/Untitled design (8).png', alt: 'Infrastructure health score with 90-day trend' },
-        { src: '/Untitled design (9).png', alt: 'Lead, domain, and mailbox health gauges' },
-        { src: '/Untitled design (10).png', alt: 'Smartlead and Clay integration configuration' },
-        { src: '/Untitled design (11).png', alt: 'Real-time notifications feed' },
-    ];
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setHeroSlide((prev) => (prev + 1) % heroSlides.length);
-        }, 4000);
-        return () => clearInterval(interval);
-    }, [heroSlides.length]);
 
     const features = [
         {
@@ -716,37 +699,22 @@ export default function LandingPage() {
                             <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
                         </div>
 
-                        {/* Dashboard carousel */}
+                        {/* Superkabe product demo video (looping) */}
                         <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
-                            <div className="relative aspect-[16/10] overflow-hidden">
-                                {heroSlides.map((slide, i) => (
-                                    <div
-                                        key={i}
-                                        className={`absolute inset-0 transition-all duration-700 ease-out ${i === heroSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03] pointer-events-none'}`}
-                                    >
-                                        <Image
-                                            src={slide.src}
-                                            alt={slide.alt}
-                                            fill
-                                            className="object-cover object-top"
-                                            priority={i === 0}
-                                            sizes="(max-width: 1024px) 100vw, 700px"
-                                        />
-                                    </div>
-                                ))}
+                            <div className="relative aspect-video overflow-hidden">
+                                <video
+                                    src="/Superkabe.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                    aria-label="Superkabe platform demo — email deliverability protection dashboard walkthrough"
+                                    className="w-full h-full object-cover"
+                                >
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
-                        </div>
-
-                        {/* Carousel indicators */}
-                        <div className="flex items-center justify-center gap-2 mt-5 relative z-10">
-                            {heroSlides.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setHeroSlide(i)}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${i === heroSlide ? 'w-8 bg-gradient-to-r from-blue-600 to-purple-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'}`}
-                                    aria-label={`Slide ${i + 1}`}
-                                />
-                            ))}
                         </div>
 
                         {/* Floating accent cards */}
