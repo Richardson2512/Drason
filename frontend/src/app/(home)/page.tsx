@@ -52,6 +52,7 @@ function PlatformRow({ eyebrow, title, body, tags, tagColor, link, imageOnLeft, 
                         style={{
                             borderLeft: `1px solid ${GRID_LINE}`,
                             borderRight: `1px solid ${GRID_LINE}`,
+                            background: 'linear-gradient(to top, #FFEBC9 0%, #FFAA49 55%, #D4730F 100%)',
                         }}
                     >
                         {mockup}
