@@ -41,18 +41,15 @@
 
 .premium-card {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  border: 1px solid #D1CBC5;
+  border-radius: 14px;
   padding: 1.15rem;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.06);
-  transition: all 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 .premium-card:hover {
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  /* shadow-2xl */
-  border-color: #3b82f6;
-  transform: translateY(-2px);
+  border-color: #9A8F87;
+  background: #FCFBF9;
 }
 
 .premium-btn {

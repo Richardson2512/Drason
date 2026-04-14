@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Scale, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -20,7 +20,7 @@ export default function DashboardShell({
     const router = useRouter();
     const pathname = usePathname();
     const { user, subscription } = useDashboard();
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [systemMode, setSystemMode] = useState<string>('');
@@ -151,7 +151,7 @@ export default function DashboardShell({
 
             {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
             <div className="relative shrink-0 m-2 z-20" style={{
-                width: isCollapsed ? '60px' : '190px',
+                width: isCollapsed ? '88px' : '220px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             }}>
                 {/* Toggle Button — positioned on wrapper edge, outside aside */}
@@ -198,12 +198,12 @@ export default function DashboardShell({
 
                     <nav className="flex flex-col gap-1">
                         <Link href="/dashboard" className="nav-link" title={isCollapsed ? "Overview" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">📊</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><LayoutDashboard size={18} /></span>
                             {!isCollapsed && <span>Overview</span>}
                         </Link>
                         <Link href="/dashboard/notifications" className="nav-link relative" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center relative">
-                                🔔
+                            <span className="min-w-[24px] flex justify-center relative text-gray-600">
+                                <Bell size={18} />
                                 {unreadCount > 0 && (
                                     <span className="absolute -top-1 -right-1.5 bg-red-500 text-white text-[0.6rem] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-1 leading-none" style={{
                                         boxShadow: '0 1px 3px rgba(239,68,68,0.4)'
@@ -223,39 +223,39 @@ export default function DashboardShell({
                         {isCollapsed && <div className="h-3" />}
 
                         <Link href="/dashboard/leads" className="nav-link" title={isCollapsed ? "Leads" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">👥</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Users size={18} /></span>
                             {!isCollapsed && <span>Leads</span>}
                         </Link>
                         <Link href="/dashboard/campaigns" className="nav-link" title={isCollapsed ? "Campaigns" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🚀</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Rocket size={18} /></span>
                             {!isCollapsed && <span>Campaigns</span>}
                         </Link>
                         <Link href="/dashboard/mailboxes" className="nav-link" title={isCollapsed ? "Mailboxes" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">📫</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Mailbox size={18} /></span>
                             {!isCollapsed && <span>Mailboxes</span>}
                         </Link>
                         <Link href="/dashboard/domains" className="nav-link" title={isCollapsed ? "Domains" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🌐</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Globe size={18} /></span>
                             {!isCollapsed && <span>Domains</span>}
                         </Link>
                         <Link href="/dashboard/infrastructure" className="nav-link" title={isCollapsed ? "Infra Health" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🛡️</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><ShieldCheck size={18} /></span>
                             {!isCollapsed && <span>Infra Health</span>}
                         </Link>
                         <Link href="/dashboard/analytics" className="nav-link" title={isCollapsed ? "Analytics" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">📈</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><LineChart size={18} /></span>
                             {!isCollapsed && <span>Analytics</span>}
                         </Link>
                         <Link href="/dashboard/load-balancing" className="nav-link" title={isCollapsed ? "Load Balancing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">⚖️</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Scale size={18} /></span>
                             {!isCollapsed && <span>Load Balancing</span>}
                         </Link>
                         <Link href="/dashboard/predictive-risks" className="nav-link" title={isCollapsed ? "Predictive Risks" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🔮</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Sparkles size={18} /></span>
                             {!isCollapsed && <span>Predictive Risks</span>}
                         </Link>
                         <Link href="/dashboard/healing" className="nav-link" title={isCollapsed ? "Healing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🏥</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><HeartPulse size={18} /></span>
                             {!isCollapsed && <span>Healing</span>}
                         </Link>
 
@@ -267,23 +267,23 @@ export default function DashboardShell({
                         {isCollapsed && <div className="h-3" />}
 
                         <Link href="/dashboard/reports" className="nav-link" title={isCollapsed ? "Reports" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">📋</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><FileText size={18} /></span>
                             {!isCollapsed && <span>Reports</span>}
                         </Link>
                         <Link href="/dashboard/configuration" className="nav-link" title={isCollapsed ? "Routing Config" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">⚙️</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Settings size={18} /></span>
                             {!isCollapsed && <span>Routing Config</span>}
                         </Link>
                         <Link href="/dashboard/audit" className="nav-link" title={isCollapsed ? "Audit Log" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">📜</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><ScrollText size={18} /></span>
                             {!isCollapsed && <span>Audit Log</span>}
                         </Link>
-<Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">💳</span>
+                        <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><CreditCard size={18} /></span>
                             {!isCollapsed && <span>Billing</span>}
                         </Link>
                         <Link href="/dashboard/settings" className="nav-link" title={isCollapsed ? "Settings" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="text-base min-w-[24px] text-center">🔧</span>
+                            <span className="min-w-[24px] flex justify-center text-gray-600"><Wrench size={18} /></span>
                             {!isCollapsed && <span>Settings</span>}
                         </Link>
                     </nav>
