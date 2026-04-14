@@ -26,14 +26,14 @@
 
 /* Light theme for authenticated dashboard (Premium SaaS Look) */
 .light-theme {
-  --bg: #F5F8FF;
+  --bg: #F7F2EB;
   /* Matches landing page */
   --text: #1E1E2F;
   --muted: #6B7280;
   --card: #FFFFFF;
   --card-bg: #FFFFFF;
-  --card-border: #E4EAF8;
-  --border: #E4EAF8;
+  --card-border: #D1CBC5;
+  --border: #D1CBC5;
   --accent-gradient: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   background: var(--bg);
   color: var(--text);

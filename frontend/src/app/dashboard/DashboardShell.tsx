@@ -140,34 +140,29 @@ export default function DashboardShell({
     };
 
     return (
-        <div className="light-theme flex h-screen overflow-hidden bg-[#F5F8FF]">
+        <div className="light-theme flex h-screen overflow-hidden bg-[#F7F2EB]">
             <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-blue-600 focus:underline">Skip to main content</a>
-            {/* Ambient Background Effects */}
-            <div className="hero-blur pointer-events-none opacity-30 z-0">
-                <div className="blur-blob blur-purple w-[400px] h-[400px] -top-[10%] -left-[10%]"></div>
-                <div className="blur-blob blur-blue w-[400px] h-[400px] -bottom-[10%] -right-[10%]"></div>
-            </div>
-
 
             {/* Sidebar Wrapper — holds collapse button outside aside's overflow context */}
-            <div className="relative shrink-0 m-2 z-20" style={{
-                width: isCollapsed ? '88px' : '220px',
+            <div className="relative shrink-0 z-20" style={{
+                width: isCollapsed ? '72px' : '232px',
                 transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             }}>
-                {/* Toggle Button — positioned on wrapper edge, outside aside */}
+                {/* Toggle Button */}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="absolute -right-[14px] top-[48px] border-2 border-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer text-white z-40 hover:scale-110"
+                    className="absolute -right-3 top-[48px] rounded-full w-6 h-6 flex items-center justify-center cursor-pointer text-gray-700 z-40 hover:bg-gray-50"
                     style={{
-                        background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                        boxShadow: '0 2px 8px rgba(99, 102, 241, 0.4)',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        background: '#FFFFFF',
+                        border: '1px solid #D1CBC5',
+                        transition: 'all 0.2s ease',
                     }}
                 >
-                    {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+                    {isCollapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
                 </button>
 
-                <aside className="w-full h-full bg-white/80 backdrop-blur-[12px] border-r border-[var(--border)] py-6 px-4 flex flex-col gap-4 overflow-y-auto rounded-3xl shadow-md relative" style={{
+                <aside className="w-full h-full bg-white py-5 px-3 flex flex-col gap-3 overflow-y-auto relative" style={{
+                    borderRight: '1px solid #D1CBC5',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}>
 
@@ -566,26 +561,29 @@ export default function DashboardShell({
 
             <style jsx>{`
         .nav-link {
-          padding: 0.5rem 0.75rem;
-          border-radius: 10px;
+          height: 34px;
+          padding: 0 10px;
+          border-radius: 8px;
           color: #4B5563;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: background 0.15s ease, color 0.15s ease;
           text-decoration: none;
           display: flex;
           align-items: center;
-          gap: 14px;
-          font-size: 0.82rem;
+          gap: 10px;
+          font-size: 0.8rem;
           font-weight: 500;
-          border: 1px solid transparent;
+          white-space: nowrap;
         }
-        .nav-link span:first-child {
-          min-width: 24px;
-          display: flex;
+        .nav-link > span:first-child {
+          width: 20px;
+          height: 20px;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
+          flex-shrink: 0;
         }
         .nav-link:hover {
-          background: #F3F4F6;
+          background: #F5F1EA;
           color: #111827;
         }
         @keyframes pulse {
