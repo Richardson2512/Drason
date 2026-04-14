@@ -7,6 +7,404 @@ import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
+// ─── POPL-STYLE GRID ROW COMPONENTS ───────────────────────────────
+
+const GRID_LINE = '#D1CBC5'; // warm grey that matches the cream #F7F2EB bg
+
+function LineWork() {
+    return (
+        <div className="flex justify-center max-w-6xl mx-auto px-6">
+            <div className="w-1/2 h-[60px] md:h-[100px]" style={{ borderLeft: `1px solid ${GRID_LINE}`, borderRight: `1px solid ${GRID_LINE}` }} />
+        </div>
+    );
+}
+
+interface PlatformRowProps {
+    eyebrow: string;
+    title: string;
+    body: string;
+    tags: string[];
+    tagColor: 'blue' | 'purple' | 'teal' | 'orange' | 'yellow' | 'pink';
+    link: string;
+    imageOnLeft: boolean;
+    mockup: React.ReactNode;
+}
+
+const TAG_COLORS: Record<string, { bg: string; text: string }> = {
+    blue: { bg: 'bg-blue-50', text: 'text-blue-700' },
+    purple: { bg: 'bg-purple-50', text: 'text-purple-700' },
+    teal: { bg: 'bg-teal-50', text: 'text-teal-700' },
+    orange: { bg: 'bg-orange-50', text: 'text-orange-700' },
+    yellow: { bg: 'bg-yellow-50', text: 'text-yellow-700' },
+    pink: { bg: 'bg-pink-50', text: 'text-pink-700' },
+};
+
+function PlatformRow({ eyebrow, title, body, tags, tagColor, link, imageOnLeft, mockup }: PlatformRowProps) {
+    const tc = TAG_COLORS[tagColor];
+    return (
+        <>
+            <LineWork />
+            <div style={{ borderTop: `1px solid ${GRID_LINE}`, borderBottom: `1px solid ${GRID_LINE}` }}>
+                <div className={`max-w-6xl mx-auto flex flex-col md:flex-row items-stretch ${imageOnLeft ? '' : 'md:flex-row-reverse'}`}>
+                    {/* Image side */}
+                    <div
+                        className="md:w-1/2 flex items-center justify-center p-8 md:p-12 min-h-[360px]"
+                        style={{
+                            borderLeft: `1px solid ${GRID_LINE}`,
+                            borderRight: `1px solid ${GRID_LINE}`,
+                        }}
+                    >
+                        {mockup}
+                    </div>
+                    {/* Content side */}
+                    <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-12">
+                        <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-5">{eyebrow}</p>
+                        <h3 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
+                        <p className="text-base text-gray-600 leading-relaxed mb-6">{body}</p>
+                        <div className="flex flex-wrap gap-2 mb-7">
+                            {tags.map((t) => (
+                                <span key={t} className={`px-3 py-1 rounded-full text-[11px] font-semibold ${tc.bg} ${tc.text}`}>{t}</span>
+                            ))}
+                        </div>
+                        <div>
+                            <Link href={link} className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors">
+                                Learn more <span>→</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
+
+interface FeatureRowProps {
+    eyebrow: string;
+    title: string;
+    body: string;
+    link: string;
+    imageOnLeft: boolean;
+    mockup: React.ReactNode;
+}
+
+function FeatureRow({ eyebrow, title, body, link, imageOnLeft, mockup }: FeatureRowProps) {
+    return (
+        <>
+            <LineWork />
+            <div style={{ borderTop: `1px solid ${GRID_LINE}`, borderBottom: `1px solid ${GRID_LINE}` }}>
+                <div className={`max-w-6xl mx-auto flex flex-col md:flex-row items-stretch ${imageOnLeft ? '' : 'md:flex-row-reverse'}`}>
+                    <div
+                        className="md:w-1/2 flex items-center justify-center p-8 md:p-12 min-h-[360px]"
+                        style={{ borderLeft: `1px solid ${GRID_LINE}`, borderRight: `1px solid ${GRID_LINE}` }}
+                    >
+                        {mockup}
+                    </div>
+                    <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-12">
+                        <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-5">{eyebrow}</p>
+                        <h3 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
+                        <p className="text-base text-gray-600 leading-relaxed mb-7">{body}</p>
+                        <div>
+                            <Link href={link} className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors">
+                                Learn more <span>→</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
+
+// ─── MOCKUPS ─────────────────────────────────────────────────
+
+function SmartleadMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-[11px] font-semibold text-gray-700">Smartlead Webhook · Connected</span>
+            </div>
+            <div className="p-4 space-y-2">
+                {[
+                    { type: 'bounce', email: 'lead.42@acme.com', color: 'red' },
+                    { type: 'open', email: 'lead.17@corp.io', color: 'blue' },
+                    { type: 'reply', email: 'lead.08@biz.com', color: 'emerald' },
+                    { type: 'bounce', email: 'lead.33@dom.com', color: 'red' },
+                ].map((ev, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs px-3 py-2 bg-gray-50 rounded-lg">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold bg-${ev.color}-100 text-${ev.color}-700 uppercase`}>{ev.type}</span>
+                        <span className="text-gray-700 font-mono">{ev.email}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function InstantlyMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Campaign</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-700 font-semibold">API v2</span>
+            </div>
+            <div className="text-sm font-bold text-gray-900 mb-3">Q2 Enterprise Outbound</div>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+                {[{ v: '1,847', l: 'Sent' }, { v: '342', l: 'Opens' }, { v: '47', l: 'Replies' }].map((m, i) => (
+                    <div key={i} className="bg-gray-50 rounded-lg p-2.5 text-center">
+                        <div className="text-sm font-bold text-gray-900">{m.v}</div>
+                        <div className="text-[10px] text-gray-500 font-semibold uppercase">{m.l}</div>
+                    </div>
+                ))}
+            </div>
+            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" style={{ width: '72%' }} />
+            </div>
+            <div className="text-[10px] text-gray-500 mt-2">72% delivered · Bearer auth active</div>
+        </div>
+    );
+}
+
+function EmailBisonMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center gap-2 mb-4">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Warmup Control</span>
+            </div>
+            <div className="space-y-2.5">
+                {[
+                    { name: 'sarah@acme.co', vol: 85, max: 100, status: 'active' },
+                    { name: 'mark@acme.co', vol: 45, max: 50, status: 'active' },
+                    { name: 'lisa@acme.co', vol: 100, max: 100, status: 'full' },
+                ].map((m, i) => (
+                    <div key={i} className="flex items-center gap-3 text-xs">
+                        <span className="font-mono text-gray-700 w-32 truncate">{m.name}</span>
+                        <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(m.vol / m.max) * 100}%` }} />
+                        </div>
+                        <span className="text-[10px] text-gray-500 font-semibold w-14 text-right">{m.vol}/{m.max}</span>
+                    </div>
+                ))}
+            </div>
+            <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px]">
+                <span className="text-gray-500">3 mailboxes · warmup active</span>
+                <span className="text-teal-700 font-semibold">+Attach mailbox</span>
+            </div>
+        </div>
+    );
+}
+
+function ClayMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-2.5 border-b border-orange-100 flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-orange-700">Clay Webhook Endpoint</span>
+                <span className="text-[10px] text-orange-700 font-mono">POST</span>
+            </div>
+            <div className="p-4 font-mono text-[10px] text-gray-700 bg-gray-50 border-b border-gray-100">
+                https://api.superkabe.com/ingest/clay
+            </div>
+            <div className="p-4 space-y-2">
+                {[
+                    { name: 'Alex Chen', co: 'TechCorp', status: 'GREEN', color: 'emerald' },
+                    { name: 'Priya Patel', co: 'FinServe', status: 'YELLOW', color: 'amber' },
+                    { name: 'Sam Jordan', co: 'HealthAI', status: 'GREEN', color: 'emerald' },
+                ].map((l, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                        <div>
+                            <div className="font-semibold text-gray-900 text-[11px]">{l.name}</div>
+                            <div className="text-gray-500 text-[10px]">{l.co}</div>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold bg-${l.color}-100 text-${l.color}-700`}>{l.status}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function SlackMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-[#4A154B] text-white px-4 py-2.5 flex items-center gap-2">
+                <span className="text-[11px] font-bold">#superkabe-alerts</span>
+            </div>
+            <div className="p-4 space-y-3">
+                {[
+                    { icon: '🔴', t: 'Mailbox paused', m: 'sarah@acme.co — 5 hard bounces in 60min' },
+                    { icon: '⚠️', t: 'Domain warning', m: 'acme.co bounce rate 2.8% (threshold 3%)' },
+                    { icon: '✅', t: 'Healing complete', m: 'mark@acme.co resumed to healthy' },
+                ].map((a, i) => (
+                    <div key={i} className="flex items-start gap-2.5 text-xs">
+                        <span className="text-sm mt-0.5">{a.icon}</span>
+                        <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-gray-900 text-[11px]">{a.t}</div>
+                            <div className="text-gray-600 text-[10px] truncate">{a.m}</div>
+                        </div>
+                        <span className="text-[9px] text-gray-400">now</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function ReplyIoMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
+                <svg className="w-7 h-7 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <div className="text-sm font-bold text-gray-900 mb-1">Q2 2026 Rollout</div>
+            <div className="text-xs text-gray-500 mb-4">Reply.io adapter in active development</div>
+            <div className="flex items-center justify-center gap-1.5">
+                <div className="w-1.5 h-1.5 bg-pink-300 rounded-full animate-pulse" />
+                <div className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                <div className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+            </div>
+        </div>
+    );
+}
+
+function MonitoringMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Live Sync</span>
+                <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    <span className="text-[10px] text-green-700 font-semibold">24/7</span>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-3">
+                {[
+                    { l: 'Bounces', v: '12', c: 'text-red-600' },
+                    { l: 'Opens', v: '348', c: 'text-blue-600' },
+                    { l: 'Replies', v: '47', c: 'text-emerald-600' },
+                    { l: 'Blocks', v: '3', c: 'text-amber-600' },
+                ].map((m, i) => (
+                    <div key={i} className="bg-gray-50 rounded-lg p-2.5">
+                        <div className={`text-lg font-bold ${m.c}`}>{m.v}</div>
+                        <div className="text-[9px] text-gray-500 uppercase font-semibold">{m.l}</div>
+                    </div>
+                ))}
+            </div>
+            <div className="text-[10px] text-gray-500 font-mono">Last event: bounce · 2s ago</div>
+        </div>
+    );
+}
+
+function ExecutionGateMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="px-4 py-3 bg-gray-900 text-white flex items-center justify-between">
+                <span className="text-xs font-bold">EXECUTION GATE</span>
+                <span className="text-[10px] text-green-400 font-mono">ACTIVE</span>
+            </div>
+            <div className="p-4 space-y-2">
+                {[
+                    { domain: 'acme.co', score: 92, pass: true },
+                    { domain: 'corp.io', score: 78, pass: true },
+                    { domain: 'biz.com', score: 34, pass: false },
+                    { domain: 'tech.dev', score: 88, pass: true },
+                ].map((d, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                        <span className="font-mono text-gray-700">{d.domain}</span>
+                        <div className="flex items-center gap-2">
+                            <div className="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                <div className={`h-full ${d.pass ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${d.score}%` }} />
+                            </div>
+                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${d.pass ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                                {d.pass ? 'PASS' : 'GATE'}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function HealingMockup() {
+    const phases = [
+        { l: 'Paused', active: false, color: 'bg-gray-200' },
+        { l: 'Quarantine', active: false, color: 'bg-amber-300' },
+        { l: 'Restricted', active: true, color: 'bg-blue-400' },
+        { l: 'Warm Recovery', active: false, color: 'bg-purple-300' },
+        { l: 'Healthy', active: false, color: 'bg-emerald-400' },
+    ];
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">5-Phase Recovery</span>
+                <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded">Phase 3/5</span>
+            </div>
+            <div className="space-y-2.5">
+                {phases.map((p, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${p.active ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-400'}`}>
+                            {i + 1}
+                        </div>
+                        <div className="flex-1">
+                            <div className={`text-xs font-semibold ${p.active ? 'text-gray-900' : 'text-gray-400'}`}>{p.l}</div>
+                            {p.active && <div className="text-[10px] text-gray-500">10 clean sends / 15 required</div>}
+                        </div>
+                        {p.active && <div className="w-12 h-1 bg-blue-100 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: '66%' }} /></div>}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function ScalingMockup() {
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Multi-Platform Fleet</span>
+                <span className="text-[10px] text-gray-700 font-semibold">∞ mailboxes</span>
+            </div>
+            <div className="space-y-2">
+                {[
+                    { plat: 'Smartlead', c: 42, color: 'blue' },
+                    { plat: 'Instantly', c: 28, color: 'purple' },
+                    { plat: 'EmailBison', c: 15, color: 'teal' },
+                    { plat: 'Reply.io', c: 0, color: 'pink', soon: true },
+                ].map((p, i) => (
+                    <div key={i} className={`flex items-center justify-between p-2.5 rounded-lg bg-${p.color}-50`}>
+                        <span className={`text-xs font-bold text-${p.color}-700`}>{p.plat}</span>
+                        {p.soon ? (
+                            <span className={`text-[10px] text-${p.color}-700 font-semibold`}>Coming soon</span>
+                        ) : (
+                            <span className={`text-xs font-mono text-${p.color}-700`}>{p.c} mailboxes</span>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function AnalyticsMockup() {
+    const bars = [40, 62, 55, 78, 68, 85, 72, 90, 82, 95];
+    return (
+        <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Domain Health Trend</span>
+                <span className="text-xs font-bold text-emerald-600">+12% ↗</span>
+            </div>
+            <div className="flex items-end gap-1.5 h-24 mb-3">
+                {bars.map((h, i) => (
+                    <div key={i} className="flex-1 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t-sm opacity-80" style={{ height: `${h}%` }} />
+                ))}
+            </div>
+            <div className="flex items-center justify-between text-[10px] text-gray-500">
+                <span>10 days</span>
+                <span className="font-mono">99.2% deliverability</span>
+            </div>
+        </div>
+    );
+}
 
 export default function LandingPage() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -611,210 +1009,157 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            {/* ================= INTEGRATIONS SECTION ================= */}
-            <section className="py-10 lg:py-16 px-6 relative z-10">
+            {/* ================= INTEGRATIONS SECTION (popl-inspired row grid) ================= */}
+            <section className="relative z-10 py-14 lg:py-20 px-6">
                 <div className="max-w-6xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-xl rounded-[2rem] p-10 md:p-16 border border-gray-100 shadow-xl shadow-blue-500/5">
-
-                        {/* Header */}
-                        <div className="text-center mb-12">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase mb-6 border border-blue-100">
-                                <span>6+ Integrations</span>
-                            </div>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-                                Connects to your entire outbound stack
-                            </h2>
-                            <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
-                                Superkabe plugs into the tools you already use. No migration, no rip-and-replace. Connect your sending platform, enrich leads from Clay, and get alerts in Slack — all in under 5 minutes.
-                            </p>
+                    {/* Header */}
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
+                            6+ Integrations
                         </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+                            Connects to your entire outbound stack
+                        </h2>
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                            Superkabe plugs into the tools you already use. No migration, no rip-and-replace. Connect your sending platform, enrich leads from Clay, and get alerts in Slack — all in under 5 minutes.
+                        </p>
+                    </div>
+                </div>
 
-                        {/* Integration Cards Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+                {/* Integrations — alternating rows with visible grid lines */}
+                <PlatformRow
+                    eyebrow="Sending Platform"
+                    title="Real-time webhook sync for Smartlead"
+                    body="Real-time webhook sync for bounces, opens, and replies. Auto-pause campaigns, remove/add mailboxes, and push leads via API."
+                    tags={['Webhook Sync', 'API Mutations', 'CSV Export']}
+                    tagColor="blue"
+                    link="/docs/smartlead-integration"
+                    imageOnLeft={true}
+                    mockup={<SmartleadMockup />}
+                />
+                <PlatformRow
+                    eyebrow="API v2 Integration"
+                    title="Full campaign control for Instantly"
+                    body="Full campaign sync via API v2 with Bearer auth. Pause/resume campaigns, manage account-campaign mappings, and track per-mailbox analytics."
+                    tags={['API v2', 'Bearer Auth', 'Analytics']}
+                    tagColor="purple"
+                    link="/docs/instantly-integration"
+                    imageOnLeft={false}
+                    mockup={<InstantlyMockup />}
+                />
+                <PlatformRow
+                    eyebrow="Warmup Control"
+                    title="Campaign sync + sender health for EmailBison"
+                    body="Campaign and sender-email sync with warmup control. Attach/remove mailboxes from campaigns and manage leads across sequences."
+                    tags={['REST API', 'Warmup Control', 'Lead Mgmt']}
+                    tagColor="teal"
+                    link="/docs/emailbison-integration"
+                    imageOnLeft={true}
+                    mockup={<EmailBisonMockup />}
+                />
+                <PlatformRow
+                    eyebrow="Webhook Ingestion"
+                    title="Lead enrichment pipeline from Clay"
+                    body="Webhook ingestion for enriched leads. Clay pushes leads to Superkabe, where they get validated, health-gated, and routed to the right campaign automatically."
+                    tags={['Webhook', 'Lead Routing', 'Auto-Validation']}
+                    tagColor="orange"
+                    link="/docs/clay-integration"
+                    imageOnLeft={false}
+                    mockup={<ClayMockup />}
+                />
+                <PlatformRow
+                    eyebrow="Real-Time Alerts"
+                    title="Instant infrastructure events in Slack"
+                    body="Real-time alerts for every infrastructure event. Mailbox paused, domain blacklisted, campaign stopped, healing milestones — all in your Slack channel."
+                    tags={['Alerts', 'Real-Time', 'Configurable']}
+                    tagColor="yellow"
+                    link="/docs/slack-integration"
+                    imageOnLeft={true}
+                    mockup={<SlackMockup />}
+                />
+                <PlatformRow
+                    eyebrow="Coming Q2 2026"
+                    title="Reply.io support in development"
+                    body="Campaign and mailbox monitoring for Reply.io users. Same protection layer — different sending platform. Currently in development."
+                    tags={['Planned', 'Q2 2026']}
+                    tagColor="pink"
+                    link="/product/reply-io-deliverability-protection"
+                    imageOnLeft={false}
+                    mockup={<ReplyIoMockup />}
+                />
 
-                            {/* Smartlead */}
-                            <Link href="/docs/smartlead-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-blue-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/smartlead.webp" alt="Smartlead" width={36} height={36} className="object-contain" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">Smartlead</div>
-                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Real-time webhook sync for bounces, opens, and replies. Auto-pause campaigns, remove/add mailboxes, and push leads via API.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">Webhook Sync</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">API Mutations</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-blue-50 text-blue-600">CSV Export</span>
-                                </div>
-                            </Link>
-
-                            {/* Instantly */}
-                            <Link href="/docs/instantly-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-purple-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/instantly.png" alt="Instantly" width={36} height={36} className="object-contain" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">Instantly</div>
-                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Full campaign sync via API v2 with Bearer auth. Pause/resume campaigns, manage account-campaign mappings, and track per-mailbox analytics.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">API v2</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Bearer Auth</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-purple-50 text-purple-600">Analytics</span>
-                                </div>
-                            </Link>
-
-                            {/* EmailBison */}
-                            <Link href="/docs/emailbison-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-teal-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/emailbison.png" alt="EmailBison" width={36} height={36} className="object-contain" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">EmailBison</div>
-                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Campaign and sender-email sync with warmup control. Attach/remove mailboxes from campaigns and manage leads across sequences.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">REST API</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Warmup Control</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-teal-50 text-teal-600">Lead Mgmt</span>
-                                </div>
-                            </Link>
-
-                            {/* Clay */}
-                            <Link href="/docs/clay-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-orange-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/clay.png" alt="Clay" width={36} height={36} className="object-contain" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">Clay</div>
-                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Webhook ingestion for enriched leads. Clay pushes leads to Superkabe, where they get validated, health-gated, and routed to the right campaign automatically.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Webhook</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Lead Routing</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-orange-50 text-orange-600">Auto-Validation</span>
-                                </div>
-                            </Link>
-
-                            {/* Slack */}
-                            <Link href="/docs/slack-integration" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-yellow-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/slack-icon.svg" alt="Slack" width={36} height={36} className="object-contain" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">Slack</div>
-                                        <div className="text-xs text-green-600 font-semibold">Connected</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Real-time alerts for every infrastructure event. Mailbox paused, domain blacklisted, campaign stopped, healing milestones — all in your Slack channel.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Alerts</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Real-Time</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-yellow-50 text-yellow-700">Configurable</span>
-                                </div>
-                            </Link>
-
-                            {/* Reply.io */}
-                            <Link href="/product/reply-io-deliverability-protection" className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-lg cursor-pointer hover:-translate-y-1 hover:border-pink-200 transition-all duration-300 block no-underline">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <Image src="/replyio.png" alt="Reply.io" width={36} height={36} className="object-contain bg-white" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-gray-900">Reply.io</div>
-                                        <div className="text-xs text-blue-600 font-semibold">Coming Soon</div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-500 leading-relaxed">
-                                    Campaign and mailbox monitoring for Reply.io users. Same protection layer — different sending platform. Currently in development.
-                                </p>
-                                <div className="flex flex-wrap gap-1.5 mt-3">
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Planned</span>
-                                    <span className="px-2 py-0.5 rounded text-[0.6rem] font-semibold bg-pink-50 text-pink-600">Q2 2026</span>
-                                </div>
-                            </Link>
-                        </div>
-
-                        {/* Bottom row: How it connects */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-                            <div className="text-center">
-                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">1</div>
-                                <div className="font-bold text-gray-900 mb-1 text-sm">Connect in 2 clicks</div>
-                                <p className="text-xs text-gray-500">Paste your API key. Superkabe syncs campaigns, mailboxes, and leads automatically.</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">2</div>
-                                <div className="font-bold text-gray-900 mb-1 text-sm">Bi-directional sync</div>
-                                <p className="text-xs text-gray-500">Webhooks push real-time events to Superkabe. API mutations push actions back to your platform.</p>
-                            </div>
-                            <div className="text-center">
-                                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue-50 flex items-center justify-center text-xl">3</div>
-                                <div className="font-bold text-gray-900 mb-1 text-sm">Zero downtime</div>
-                                <p className="text-xs text-gray-500">Your sending platform keeps working exactly as before. Superkabe adds the protection layer on top.</p>
-                            </div>
-                        </div>
+                {/* Bottom how it connects — kept as-is for SEO/AEO content */}
+                <div className="max-w-6xl mx-auto mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+                    <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-xl font-bold text-gray-900">1</div>
+                        <div className="font-bold text-gray-900 mb-1 text-sm">Connect in 2 clicks</div>
+                        <p className="text-xs text-gray-500">Paste your API key. Superkabe syncs campaigns, mailboxes, and leads automatically.</p>
+                    </div>
+                    <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-xl font-bold text-gray-900">2</div>
+                        <div className="font-bold text-gray-900 mb-1 text-sm">Bi-directional sync</div>
+                        <p className="text-xs text-gray-500">Webhooks push real-time events to Superkabe. API mutations push actions back to your platform.</p>
+                    </div>
+                    <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-xl font-bold text-gray-900">3</div>
+                        <div className="font-bold text-gray-900 mb-1 text-sm">Zero downtime</div>
+                        <p className="text-xs text-gray-500">Your sending platform keeps working exactly as before. Superkabe adds the protection layer on top.</p>
                     </div>
                 </div>
             </section>
 
-            {/* ================= FEATURES GRID ================= */}
-            <section className="py-10 lg:py-16 px-6 relative z-10">
+            {/* ================= FEATURES GRID (TOTAL OUTBOUND INFRASTRUCTURE CONTROL - popl row layout) ================= */}
+            <section className="relative z-10 py-14 lg:py-20 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
+                            Platform Capabilities
+                        </div>
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900 tracking-tight">Total Outbound Infrastructure Control</h2>
                         <p className="text-gray-500 max-w-2xl mx-auto text-lg">Everything you need to keep your domains healthy and your emails landing in the primary inbox.</p>
                     </div>
-
-                    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-                        {features.map((item, i) => (
-                            <Link key={i} href={item.link} className="soft-card bg-white p-10 md:p-12 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 group block">
-                                <div className="w-14 h-14 bg-gray-50 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                    <div className="w-7 h-7 bg-blue-600 rounded-lg opacity-20 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </div>
-                                <h3 className="font-bold text-xl md:text-2xl mb-4 text-gray-900">{item.title}</h3>
-                                <p className="text-gray-500 text-base leading-relaxed">
-                                    {item.desc}
-                                </p>
-                                <span className="inline-flex items-center mt-4 text-blue-600 text-sm font-semibold group-hover:translate-x-1 transition-transform duration-300">
-                                    Learn more &rarr;
-                                </span>
-                            </Link>
-                        ))}
-
-                        <div className="rounded-[2rem] flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-purple-700 text-white p-10 md:p-12 shadow-2xl relative overflow-hidden group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
-                            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                            <div className="relative z-10 text-center">
-                                <span className="text-5xl mb-4 block">🛡️</span>
-                                <h3 className="font-bold text-2xl mb-2">Enterprise-Grade Deliverability Architecture</h3>
-                                <p className="text-blue-100 text-sm">Custom solutions for high-volume teams.</p>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
+
+                <FeatureRow
+                    eyebrow="Integration & Monitoring"
+                    title={features[0].title}
+                    body={features[0].desc}
+                    link={features[0].link}
+                    imageOnLeft={true}
+                    mockup={<MonitoringMockup />}
+                />
+                <FeatureRow
+                    eyebrow="Execution Gate"
+                    title={features[1].title}
+                    body={features[1].desc}
+                    link={features[1].link}
+                    imageOnLeft={false}
+                    mockup={<ExecutionGateMockup />}
+                />
+                <FeatureRow
+                    eyebrow="Auto-Healing"
+                    title={features[2].title}
+                    body={features[2].desc}
+                    link={features[2].link}
+                    imageOnLeft={true}
+                    mockup={<HealingMockup />}
+                />
+                <FeatureRow
+                    eyebrow="Multi-Entity Scaling"
+                    title={features[3].title}
+                    body={features[3].desc}
+                    link={features[3].link}
+                    imageOnLeft={false}
+                    mockup={<ScalingMockup />}
+                />
+                <FeatureRow
+                    eyebrow="Analytics Engine"
+                    title={features[4].title}
+                    body={features[4].desc}
+                    link={features[4].link}
+                    imageOnLeft={true}
+                    mockup={<AnalyticsMockup />}
+                />
             </section>
 
             {/* ================= PRICING ================= */}
