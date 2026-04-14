@@ -359,7 +359,7 @@ export default function BlogPage() {
                         <Zap size={14} className="inline mr-1.5" />
                         Superkabe Blog
                     </div>
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 uppercase">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 tracking-tight">
                         Email Infrastructure Intelligence
                     </h1>
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">

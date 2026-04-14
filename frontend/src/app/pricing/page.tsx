@@ -67,7 +67,7 @@ export default function PricingPage() {
                 </div>
 
                 <div className="relative z-10 max-w-7xl mx-auto">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight uppercase">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight">
                         Superkabe Pricing
                     </h1>
                     <p className="text-lg md:text-2xl text-gray-500 mb-4 max-w-3xl mx-auto">

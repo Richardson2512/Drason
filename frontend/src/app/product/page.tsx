@@ -127,7 +127,7 @@ export default function ProductIndexPage() {
 
             <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10 pt-32 md:pt-36">
                 <div className="text-center mb-20 mt-10">
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 uppercase">
+                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 tracking-tight">
                         Product Hub
                     </h1>
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
@@ -135,23 +135,44 @@ export default function ProductIndexPage() {
                     </p>
                 </div>
 
-                <div className="space-y-20">
+                <div className="space-y-16 md:space-y-20">
                     {categories.map((category) => (
                         <section key={category.title}>
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 pb-4 border-b border-gray-200">
-                                {category.title}
-                            </h2>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                                {category.links.map((link) => (
-                                    <Link key={link.href} href={link.href} className="group block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-100 transition-all duration-300 hover:scale-[1.02]">
-                                        <h3 className="font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors text-lg">
-                                            {link.title}
-                                        </h3>
-                                        <p className="text-sm text-gray-500 leading-relaxed">
-                                            {link.desc}
-                                        </p>
-                                    </Link>
-                                ))}
+                            <div className="mb-8 md:mb-10 flex items-baseline justify-between gap-4 flex-wrap">
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
+                                    {category.title}
+                                </h2>
+                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                    {category.links.length} {category.links.length === 1 ? 'page' : 'pages'}
+                                </span>
+                            </div>
+
+                            {/* Popl-style grid with continuous border lines */}
+                            <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5` }}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                    {category.links.map((link) => (
+                                        <Link
+                                            key={link.href}
+                                            href={link.href}
+                                            className="group block p-8 md:p-10 hover:bg-white transition-colors duration-300"
+                                            style={{
+                                                borderRight: `1px solid #D1CBC5`,
+                                                borderBottom: `1px solid #D1CBC5`,
+                                            }}
+                                        >
+                                            <h3 className="font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors text-base md:text-lg leading-[1.3] tracking-tight">
+                                                {link.title}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 leading-relaxed line-clamp-3 mb-5">
+                                                {link.desc}
+                                            </p>
+                                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-900 group-hover:gap-2.5 group-hover:text-blue-600 transition-all">
+                                                Learn more
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                                            </span>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
                         </section>
                     ))}

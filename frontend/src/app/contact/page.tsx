@@ -121,7 +121,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="relative z-10 max-w-3xl mx-auto">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight uppercase">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight">
                         Contact Us
                     </h1>
                     <p className="text-lg md:text-2xl text-gray-500 mb-2 max-w-2xl mx-auto">
