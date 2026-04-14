@@ -66,156 +66,195 @@ export default function PricingPage() {
                     <div className="absolute inset-0 hero-grid"></div>
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight">
-                        Superkabe Pricing
-                    </h1>
-                    <p className="text-lg md:text-2xl text-gray-500 mb-4 max-w-3xl mx-auto">
-                        Protect Your Outbound Infrastructure Before It Breaks
-                    </p>
-                    <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Superkabe is a control layer for modern outbound teams running multi-domain, multi-mailbox email infrastructure.
-                    </p>
-                    <div className="mt-6 md:mt-8 inline-flex items-center gap-2 px-6 py-3 bg-green-50 border-2 border-green-200 rounded-full">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-green-700 font-bold text-lg">14-day free trial · No credit card required</span>
+                <div className="relative z-10 max-w-5xl mx-auto">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        Transparent pricing for outbound teams
                     </div>
-                    <div className="mt-6 md:mt-8 space-y-2">
-                        <p className="text-lg md:text-xl font-semibold text-gray-900">We don't optimize volume.</p>
-                        <p className="text-lg md:text-xl font-semibold text-blue-600">We prevent irreversible damage.</p>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight leading-[1.05]">
+                        Simple pricing for teams of all sizes
+                    </h1>
+                    <p className="text-lg md:text-xl text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
+                        Superkabe is a control layer for modern outbound teams running multi-domain, multi-mailbox email infrastructure. Pick the tier that matches your scale.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-4">
+                        <Link href={isLoggedIn ? "/dashboard" : "/signup"} className="px-7 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors shadow-sm">
+                            Start free trial
+                        </Link>
+                        <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="px-7 py-3 bg-white text-gray-900 border border-gray-200 rounded-full text-sm font-semibold hover:bg-gray-50 transition-colors">
+                            Book a demo
+                        </a>
+                    </div>
+                    <p className="text-xs text-gray-400">14-day free trial · No credit card required</p>
+                </div>
+            </div>
+
+            {/* ─── What's included in every plan (popl-inspired checklist) ─── */}
+            <div className="relative z-10 max-w-5xl mx-auto px-6 pb-16">
+                <div className="bg-white rounded-3xl border border-gray-200 p-10 md:p-14">
+                    <div className="text-center mb-10">
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">What&apos;s included in every plan</p>
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Every tier ships with infrastructure-grade protection</h2>
+                    </div>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5">
+                        {[
+                            '14-day free trial with no credit card',
+                            'Real-time bounce & failure monitoring',
+                            '5-phase graduated healing pipeline',
+                            'DNS health checks (SPF, DKIM, DMARC)',
+                            'Clay, Smartlead, Instantly, EmailBison integrations',
+                            'ICP → Campaign routing engine',
+                            'Observe / Suggest / Enforce operational modes',
+                            'Mailbox & Campaign-level pause',
+                            'Audit log & full infra visibility',
+                            'Slack real-time alerts',
+                            'Failure classification (hard vs soft)',
+                            'Sliding window risk tracking',
+                        ].map((item) => (
+                            <li key={item} className="flex items-start gap-3 text-sm text-gray-700">
+                                <span className="shrink-0 w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center mt-0.5">
+                                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </span>
+                                <span className="leading-relaxed">{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            {/* Pricing Tiers — popl grid-line style, 3 public tiers */}
+            <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Pick the tier that matches your scale</h2>
+                    <p className="text-base text-gray-500">Transparent, flat-rate pricing. Upgrade or downgrade anytime.</p>
+                </div>
+
+                <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5` }}>
+                    <div className="grid grid-cols-1 md:grid-cols-3">
+                        <PricingCard
+                            tier="Starter"
+                            tierKey="starter"
+                            description="For founder-led teams running structured outbound infra."
+                            price="$49"
+                            period="/ month"
+                            features={[
+                                "Up to 10,000 active leads",
+                                "Up to 20 domains",
+                                "Up to 75 mailboxes",
+                                "10,000 email validation credits (syntax, MX, disposable, catch-all)",
+                                "5-phase healing pipeline",
+                                "DNS health monitoring",
+                                "Standard support",
+                            ]}
+                            bestFor="Teams sending ~5k–10k leads/month across multiple domains"
+                            ctaText="Start free trial"
+                            isLoggedIn={isLoggedIn}
+                            router={router}
+                        />
+
+                        <PricingCard
+                            tier="Growth"
+                            tierKey="growth"
+                            description="For scaling outbound operations with serious infrastructure exposure."
+                            price="$199"
+                            period="/ month"
+                            features={[
+                                "Up to 50,000 active leads",
+                                "Up to 75 domains",
+                                "Up to 350 mailboxes",
+                                "50,000 email validation credits (internal + MillionVerifier API for risky leads)",
+                                "Correlation engine",
+                                "DNS monitoring + blacklist checks",
+                                "Priority support",
+                            ]}
+                            bestFor="B2B SaaS teams running aggressive outbound operations"
+                            ctaText="Start free trial"
+                            featured
+                            isLoggedIn={isLoggedIn}
+                            router={router}
+                        />
+
+                        <PricingCard
+                            tier="Scale"
+                            tierKey="scale"
+                            description="For agencies and aggressive outbound engines managing large domain fleets."
+                            price="$349"
+                            period="/ month"
+                            features={[
+                                "Up to 100,000 active leads",
+                                "Up to 150 domains",
+                                "Up to 700 mailboxes",
+                                "100,000 email validation credits (internal + API for medium & high risk)",
+                                "Advanced correlation engine",
+                                "Mailbox rotation (standby swap)",
+                                "Priority Slack alerts",
+                            ]}
+                            bestFor="Agencies and high-volume outbound operations"
+                            ctaText="Start free trial"
+                            isLoggedIn={isLoggedIn}
+                            router={router}
+                        />
                     </div>
                 </div>
             </div>
 
-            {/* Pricing Tiers */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 pb-10 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-                    {/* Starter */}
-                    <PricingCard
-                        tier="Starter"
-                        tierKey="starter"
-                        description="For founder-led teams running structured outbound infra."
-                        price="$49"
-                        period="/ month"
-                        features={[
-                            "Up to 10,000 active leads",
-                            "Up to 20 domains",
-                            "Up to 75 mailboxes",
-                            "10,000 email validation credits (syntax, MX, disposable, catch-all)",
-                            "5-phase healing pipeline",
-                            "DNS health monitoring",
-                            "Clay & Smartlead integrations",
-                            "ICP → Campaign routing",
-                            "Bounce & failure monitoring",
-                            "Mailbox & Campaign-level pause",
-                            "Sliding window risk tracking",
-                            "All operational modes (Observe, Suggest, Enforce)",
-                            "Failure classification (hard vs soft)",
-                            "Audit log & infra visibility",
-                            "Slack alerts",
-                            "Standard support"
-                        ]}
-                        bestFor="Teams sending ~5k–10k leads/month across multiple domains"
-                        ctaText="Start free trial"
-                        isLoggedIn={isLoggedIn}
-                        router={router}
-                    />
+            {/* ─── Enterprise Book a Demo (dedicated section) ─── */}
+            <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-16">
+                <div className="rounded-3xl overflow-hidden border border-gray-200">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch">
+                        {/* Left: Green gradient panel with illustration */}
+                        <div
+                            className="relative flex flex-col justify-center items-center p-12 md:p-16 text-white min-h-[360px]"
+                            style={{ background: 'linear-gradient(to top, #D4F0DC 0%, #1C4532 55%, #143325 100%)' }}
+                        >
+                            <div className="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-6">
+                                <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                                </svg>
+                            </div>
+                            <div className="text-[10px] font-bold tracking-widest uppercase text-emerald-200 mb-3">Enterprise</div>
+                            <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-3 text-center">Custom deliverability SLA</h3>
+                            <p className="text-sm md:text-base text-emerald-50/90 text-center max-w-sm leading-relaxed">
+                                Unlimited domains, unlimited mailboxes, super admin console, and a dedicated support team with guaranteed response times.
+                            </p>
+                        </div>
 
-                    {/* Growth */}
-                    <PricingCard
-                        tier="Growth"
-                        tierKey="growth"
-                        description="For scaling outbound operations with serious infrastructure exposure."
-                        price="$199"
-                        period="/ month"
-                        features={[
-                            "Up to 50,000 active leads",
-                            "Up to 75 domains",
-                            "Up to 350 mailboxes",
-                            "50,000 email validation credits (internal + MillionVerifier API for risky leads)",
-                            "5-phase auto-healing pipeline",
-                            "Correlation engine",
-                            "DNS monitoring + blacklist checks",
-                            "Clay & Smartlead integrations",
-                            "ICP → Campaign routing",
-                            "Bounce & failure monitoring",
-                            "Mailbox & Campaign-level pause",
-                            "Sliding window risk tracking",
-                            "All operational modes (Observe, Suggest, Enforce)",
-                            "Failure classification (hard vs soft)",
-                            "Audit log & infra visibility",
-                            "Slack real-time alerts",
-                            "Priority support"
-                        ]}
-                        bestFor="B2B SaaS teams running aggressive outbound operations"
-                        ctaText="Start free trial"
-                        featured
-                        isLoggedIn={isLoggedIn}
-                        router={router}
-                    />
+                        {/* Right: Benefits list + CTA */}
+                        <div className="bg-white p-10 md:p-14">
+                            <h4 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">Book a demo</h4>
+                            <p className="text-sm text-gray-500 mb-8">30-minute call with our team to scope your outbound infrastructure protection.</p>
 
-                    {/* Scale */}
-                    <PricingCard
-                        tier="Scale"
-                        tierKey="scale"
-                        description="For agencies and aggressive outbound engines managing large domain fleets."
-                        price="$349"
-                        period="/ month"
-                        features={[
-                            "Up to 100,000 active leads",
-                            "Up to 150 domains",
-                            "Up to 700 mailboxes",
-                            "100,000 email validation credits (internal + API for medium & high risk)",
-                            "5-phase healing with accelerated graduation",
-                            "Advanced correlation engine",
-                            "Mailbox rotation (standby swap)",
-                            "DNS monitoring + blacklist checks",
-                            "Clay & Smartlead integrations",
-                            "ICP → Campaign routing",
-                            "Bounce & failure monitoring",
-                            "Mailbox & Campaign-level pause",
-                            "Sliding window risk tracking",
-                            "All operational modes (Observe, Suggest, Enforce)",
-                            "Failure classification (hard vs soft)",
-                            "Audit log & infra visibility",
-                            "Priority Slack alerts"
-                        ]}
-                        bestFor="Agencies and high-volume outbound operations"
-                        ctaText="Start free trial"
-                        isLoggedIn={isLoggedIn}
-                        router={router}
-                    />
+                            <ul className="space-y-3 mb-8">
+                                {[
+                                    'Unlimited active leads, domains, and mailboxes',
+                                    'Super admin console with multi-workspace controls',
+                                    'Custom healing pipeline configuration',
+                                    'Unlimited email validation credits with custom thresholds',
+                                    'Dedicated CSM + SLA guarantees',
+                                    'Custom integrations & white-glove onboarding',
+                                ].map((benefit) => (
+                                    <li key={benefit} className="flex items-start gap-3 text-sm text-gray-700">
+                                        <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span className="leading-relaxed">{benefit}</span>
+                                    </li>
+                                ))}
+                            </ul>
 
-                    {/* Enterprise */}
-                    <PricingCard
-                        tier="Enterprise"
-                        tierKey="enterprise"
-                        description="For high-volume outbound operators requiring governance controls and SLA guarantees."
-                        price="Custom"
-                        period=""
-                        features={[
-                            "Unlimited active leads",
-                            "Unlimited domains",
-                            "Unlimited mailboxes",
-                            "Unlimited email validation credits + custom thresholds",
-                            "Super admin console",
-                            "Custom healing pipeline configuration",
-                            "Clay & Smartlead integrations",
-                            "ICP → Campaign routing",
-                            "Bounce & failure monitoring",
-                            "Mailbox & Campaign-level pause",
-                            "Sliding window risk tracking",
-                            "All operational modes (Observe, Suggest, Enforce)",
-                            "Failure classification (hard vs soft)",
-                            "Audit log & infra visibility",
-                            "Dedicated support + SLA"
-                        ]}
-                        ctaText="Contact sales"
-                        isLoggedIn={isLoggedIn}
-                        router={router}
-                    />
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors shadow-sm">
+                                    Book a demo
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                                </a>
+                                <a href="mailto:richardson@superkabe.com?subject=Enterprise%20Plan%20Inquiry" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-gray-900 border border-gray-200 rounded-full text-sm font-semibold hover:bg-gray-50 transition-colors">
+                                    Email sales
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -348,7 +387,6 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
             setShowContactModal(true);
             return;
         }
-
         if (isLoggedIn) {
             router.push(`/dashboard/settings?upgrade=${tierKey}`);
         } else {
@@ -357,72 +395,60 @@ function PricingCard({ tier, tierKey, description, price, period, features, best
     };
 
     return (
-        <div className={`relative rounded-[2rem] p-6 md:p-8 border flex flex-col h-full transition-all duration-300
-            ${featured
-                ? 'bg-gradient-to-br from-blue-600 to-purple-700 text-white border-transparent shadow-2xl shadow-blue-500/20 lg:scale-105 z-10 mt-6 lg:mt-0'
-                : 'bg-white border-gray-100 shadow-lg shadow-gray-200/50 hover:shadow-xl hover:shadow-blue-500/5'
-            }`}
+        <div
+            className={`relative flex flex-col p-8 md:p-10 transition-colors duration-300 ${featured ? 'bg-gray-900 text-white' : 'hover:bg-white'}`}
+            style={{
+                borderRight: `1px solid #D1CBC5`,
+                borderBottom: `1px solid #D1CBC5`,
+            }}
         >
             {featured && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
-                    Most Popular
+                <div className="absolute -top-3 left-8 bg-[#FFAA49] text-gray-900 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
+                    Most popular
                 </div>
             )}
+
             <div className="mb-6">
-                <h3 className={`text-2xl font-bold mb-2 ${featured ? 'text-white' : 'text-gray-900'}`}>{tier}</h3>
-                <p className={`text-sm leading-relaxed min-h-[40px] ${featured ? 'text-blue-100' : 'text-gray-500'}`}>{description}</p>
+                <h3 className={`text-2xl font-bold mb-2 tracking-tight ${featured ? 'text-white' : 'text-gray-900'}`}>{tier}</h3>
+                <p className={`text-sm leading-relaxed min-h-[44px] ${featured ? 'text-gray-300' : 'text-gray-500'}`}>{description}</p>
             </div>
 
-            {tierKey !== 'enterprise' && (
-                <div className="mb-4 flex items-center justify-center">
-                    <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${featured ? 'bg-white/20 text-white border border-white/20' : 'bg-green-50 border border-green-200 text-green-700'}`}>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        14-day free trial
-                    </span>
-                </div>
-            )}
-
-            <div className={`mb-2 p-4 rounded-xl border ${featured ? 'bg-white/10 border-white/20' : 'bg-gray-50 border-gray-100'}`}>
-                <span className={`text-4xl font-bold ${featured ? 'text-white' : 'text-gray-900'}`}>{price}</span>
-                <span className={`ml-1 font-medium ${featured ? 'text-blue-200' : 'text-gray-500'}`}>{period}</span>
+            <div className="mb-2 flex items-baseline gap-1">
+                <span className={`text-5xl font-extrabold tracking-tight ${featured ? 'text-white' : 'text-gray-900'}`}>{price}</span>
+                <span className={`text-sm font-medium ${featured ? 'text-gray-400' : 'text-gray-500'}`}>{period}</span>
             </div>
+            <p className={`text-[11px] mb-7 ${featured ? 'text-gray-400' : 'text-gray-400'}`}>14-day free trial · No credit card required</p>
 
-            {tierKey !== 'enterprise' && (
-                <p className={`text-center text-xs mb-6 ${featured ? 'text-blue-200' : 'text-gray-500'}`}>
-                    No credit card required
-                </p>
-            )}
+            <button
+                onClick={handleCTAClick}
+                className={`w-full py-3 rounded-full font-semibold text-sm transition-all mb-8 ${featured
+                    ? 'bg-white hover:bg-gray-100 text-gray-900'
+                    : 'bg-gray-900 hover:bg-black text-white'
+                    }`}
+            >
+                {ctaText}
+            </button>
 
-            <ul className="space-y-4 mb-8 flex-1">
+            <div className={`text-[10px] font-bold uppercase tracking-widest mb-4 ${featured ? 'text-gray-400' : 'text-gray-500'}`}>What&apos;s included</div>
+            <ul className="space-y-3 mb-6 flex-1">
                 {features.map((feature, idx) => (
-                    <li key={idx} className={`flex items-start text-sm ${featured ? 'text-blue-100' : 'text-gray-600'}`}>
-                        <svg className={`w-5 h-5 mr-3 mt-0.5 flex-shrink-0 ${featured ? 'text-white' : 'text-blue-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{feature}</span>
+                    <li key={idx} className={`flex items-start gap-3 text-sm ${featured ? 'text-gray-200' : 'text-gray-700'}`}>
+                        <span className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${featured ? 'bg-white/10' : 'bg-gray-900'}`}>
+                            <svg className={`w-2.5 h-2.5 ${featured ? 'text-white' : 'text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </span>
+                        <span className="leading-relaxed">{feature}</span>
                     </li>
                 ))}
             </ul>
 
             {bestFor && (
-                <div className={`mb-6 p-4 rounded-lg border ${featured ? 'bg-white/10 border-white/20' : 'bg-blue-50/50 border-blue-100/50'}`}>
-                    <p className={`text-xs ${featured ? 'text-blue-100' : 'text-gray-500'}`}>
-                        <span className={`font-semibold block mb-1 ${featured ? 'text-white' : 'text-blue-700'}`}>Best for:</span> {bestFor}
-                    </p>
+                <div className={`mt-auto pt-5 border-t ${featured ? 'border-white/10' : 'border-gray-100'}`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${featured ? 'text-gray-400' : 'text-gray-500'}`}>Best for</p>
+                    <p className={`text-xs leading-relaxed ${featured ? 'text-gray-300' : 'text-gray-600'}`}>{bestFor}</p>
                 </div>
             )}
-
-            <button
-                onClick={handleCTAClick}
-                className={`w-full py-4 rounded-full font-bold transition-all duration-200 shadow-lg ${featured
-                    ? 'bg-white hover:bg-gray-100 text-gray-900 shadow-white/20'
-                    : 'bg-gray-900 hover:bg-black text-white shadow-gray-200'
-                    }`}
-            >
-                {ctaText}
-            </button>
 
             {/* Enterprise Contact Modal */}
             {showContactModal && (
