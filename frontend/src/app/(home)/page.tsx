@@ -661,7 +661,7 @@ export default function LandingPage() {
 
             {/* ================= HERO (SPLIT LAYOUT) ================= */}
             <section className="relative pt-32 md:pt-36 pb-10 z-10 px-6">
-                <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+                <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
                     {/* LEFT — content + CTAs */}
                     <div className="text-center lg:text-left">
@@ -700,9 +700,9 @@ export default function LandingPage() {
                             <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
                         </div>
 
-                        {/* Superkabe product demo video (looping, fills column height) */}
-                        <div className="relative w-full min-h-[420px] lg:min-h-0 rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
-                            <div className="relative w-full h-full aspect-video lg:aspect-auto overflow-hidden">
+                        {/* Superkabe product demo video (looping, 16:9 maintained) */}
+                        <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
+                            <div className="relative w-full aspect-video overflow-hidden">
                                 <video
                                     src="/Superkabe.mp4"
                                     autoPlay
@@ -711,7 +711,7 @@ export default function LandingPage() {
                                     playsInline
                                     preload="metadata"
                                     aria-label="Superkabe platform demo — email deliverability protection dashboard walkthrough"
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain bg-white"
                                 >
                                     Your browser does not support the video tag.
                                 </video>
