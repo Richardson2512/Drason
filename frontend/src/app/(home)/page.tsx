@@ -120,9 +120,13 @@ function FeatureRow({ eyebrow, title, body, link, imageOnLeft, mockup }: Feature
 function SmartleadMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-[11px] font-semibold text-gray-700">Smartlead Webhook · Connected</span>
+            <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center gap-3">
+                <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} className="object-contain shrink-0" />
+                <span className="text-xs font-bold text-gray-900 flex-1">Smartlead</span>
+                <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    <span className="text-[10px] font-semibold text-green-700">Connected</span>
+                </div>
             </div>
             <div className="p-4 space-y-2">
                 {[
@@ -144,10 +148,12 @@ function SmartleadMockup() {
 function InstantlyMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-            <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Campaign</span>
+            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+                <Image src="/instantly.png" alt="Instantly" width={24} height={24} className="object-contain shrink-0" />
+                <span className="text-xs font-bold text-gray-900 flex-1">Instantly</span>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-700 font-semibold">API v2</span>
             </div>
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Campaign</div>
             <div className="text-sm font-bold text-gray-900 mb-3">Q2 Enterprise Outbound</div>
             <div className="grid grid-cols-3 gap-2 mb-4">
                 {[{ v: '1,847', l: 'Sent' }, { v: '342', l: 'Opens' }, { v: '47', l: 'Replies' }].map((m, i) => (
@@ -168,9 +174,12 @@ function InstantlyMockup() {
 function EmailBisonMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Warmup Control</span>
+            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+                <Image src="/emailbison.png" alt="EmailBison" width={24} height={24} className="object-contain shrink-0" />
+                <span className="text-xs font-bold text-gray-900 flex-1">EmailBison</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-teal-100 text-teal-700 font-semibold">Warmup</span>
             </div>
+            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Mailbox Daily Caps</div>
             <div className="space-y-2.5">
                 {[
                     { name: 'sarah@acme.co', vol: 85, max: 100, status: 'active' },
@@ -197,9 +206,10 @@ function EmailBisonMockup() {
 function ClayMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-2.5 border-b border-orange-100 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-orange-700">Clay Webhook Endpoint</span>
-                <span className="text-[10px] text-orange-700 font-mono">POST</span>
+            <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-3 border-b border-orange-100 flex items-center gap-3">
+                <Image src="/clay.png" alt="Clay" width={24} height={24} className="object-contain shrink-0" />
+                <span className="text-xs font-bold text-gray-900 flex-1">Clay</span>
+                <span className="text-[10px] text-orange-700 font-mono font-bold">POST</span>
             </div>
             <div className="p-4 font-mono text-[10px] text-gray-700 bg-gray-50 border-b border-gray-100">
                 https://api.superkabe.com/ingest/clay
@@ -226,8 +236,10 @@ function ClayMockup() {
 function SlackMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div className="bg-[#4A154B] text-white px-4 py-2.5 flex items-center gap-2">
-                <span className="text-[11px] font-bold">#superkabe-alerts</span>
+            <div className="bg-[#4A154B] text-white px-4 py-3 flex items-center gap-3">
+                <Image src="/slack-icon.svg" alt="Slack" width={20} height={20} className="object-contain shrink-0 brightness-0 invert" />
+                <span className="text-xs font-bold flex-1">#superkabe-alerts</span>
+                <span className="text-[10px] font-mono bg-white/10 px-2 py-0.5 rounded">live</span>
             </div>
             <div className="p-4 space-y-3">
                 {[
@@ -252,10 +264,10 @@ function SlackMockup() {
 function ReplyIoMockup() {
     return (
         <div className="w-full max-w-[420px] bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
-                <svg className="w-7 h-7 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center p-3">
+                <Image src="/replyio.png" alt="Reply.io" width={40} height={40} className="object-contain" />
             </div>
-            <div className="text-sm font-bold text-gray-900 mb-1">Q2 2026 Rollout</div>
+            <div className="text-sm font-bold text-gray-900 mb-1">Reply.io · Q2 2026 Rollout</div>
             <div className="text-xs text-gray-500 mb-4">Reply.io adapter in active development</div>
             <div className="flex items-center justify-center gap-1.5">
                 <div className="w-1.5 h-1.5 bg-pink-300 rounded-full animate-pulse" />
