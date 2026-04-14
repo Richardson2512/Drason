@@ -187,97 +187,67 @@ export default function DashboardShell({
                         </span>
                     </div>
 
-                    <nav className="flex flex-col gap-1">
-                        <Link href="/dashboard" className="nav-link" title={isCollapsed ? "Overview" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><LayoutDashboard size={18} /></span>
-                            {!isCollapsed && <span>Overview</span>}
-                        </Link>
-                        <Link href="/dashboard/notifications" className="nav-link relative" title={isCollapsed ? "Notifications" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center relative text-gray-600">
-                                <Bell size={18} />
-                                {unreadCount > 0 && (
-                                    <span className="absolute -top-1 -right-1.5 bg-red-500 text-white text-[0.6rem] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-1 leading-none" style={{
-                                        boxShadow: '0 1px 3px rgba(239,68,68,0.4)'
-                                    }}>
-                                        {unreadCount > 99 ? '99+' : unreadCount}
-                                    </span>
-                                )}
-                            </span>
-                            {!isCollapsed && <span>Notifications</span>}
-                        </Link>
-
-                        {!isCollapsed && (
-                            <div className="pl-4 mt-3 mb-1 text-[0.65rem] text-gray-400 uppercase tracking-[0.1em] font-bold whitespace-nowrap">
-                                Monitoring
-                            </div>
-                        )}
-                        {isCollapsed && <div className="h-3" />}
-
-                        <Link href="/dashboard/leads" className="nav-link" title={isCollapsed ? "Leads" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Users size={18} /></span>
-                            {!isCollapsed && <span>Leads</span>}
-                        </Link>
-                        <Link href="/dashboard/campaigns" className="nav-link" title={isCollapsed ? "Campaigns" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Rocket size={18} /></span>
-                            {!isCollapsed && <span>Campaigns</span>}
-                        </Link>
-                        <Link href="/dashboard/mailboxes" className="nav-link" title={isCollapsed ? "Mailboxes" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Mailbox size={18} /></span>
-                            {!isCollapsed && <span>Mailboxes</span>}
-                        </Link>
-                        <Link href="/dashboard/domains" className="nav-link" title={isCollapsed ? "Domains" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Globe size={18} /></span>
-                            {!isCollapsed && <span>Domains</span>}
-                        </Link>
-                        <Link href="/dashboard/infrastructure" className="nav-link" title={isCollapsed ? "Infra Health" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><ShieldCheck size={18} /></span>
-                            {!isCollapsed && <span>Infra Health</span>}
-                        </Link>
-                        <Link href="/dashboard/analytics" className="nav-link" title={isCollapsed ? "Analytics" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><LineChart size={18} /></span>
-                            {!isCollapsed && <span>Analytics</span>}
-                        </Link>
-                        <Link href="/dashboard/load-balancing" className="nav-link" title={isCollapsed ? "Load Balancing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Scale size={18} /></span>
-                            {!isCollapsed && <span>Load Balancing</span>}
-                        </Link>
-                        <Link href="/dashboard/predictive-risks" className="nav-link" title={isCollapsed ? "Predictive Risks" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Sparkles size={18} /></span>
-                            {!isCollapsed && <span>Predictive Risks</span>}
-                        </Link>
-                        <Link href="/dashboard/healing" className="nav-link" title={isCollapsed ? "Healing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><HeartPulse size={18} /></span>
-                            {!isCollapsed && <span>Healing</span>}
-                        </Link>
-
-                        {!isCollapsed && (
-                            <div className="pl-4 mt-3 mb-1 text-[0.65rem] text-gray-400 uppercase tracking-[0.1em] font-bold whitespace-nowrap">
-                                System
-                            </div>
-                        )}
-                        {isCollapsed && <div className="h-3" />}
-
-                        <Link href="/dashboard/reports" className="nav-link" title={isCollapsed ? "Reports" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><FileText size={18} /></span>
-                            {!isCollapsed && <span>Reports</span>}
-                        </Link>
-                        <Link href="/dashboard/configuration" className="nav-link" title={isCollapsed ? "Routing Config" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Settings size={18} /></span>
-                            {!isCollapsed && <span>Routing Config</span>}
-                        </Link>
-                        <Link href="/dashboard/audit" className="nav-link" title={isCollapsed ? "Audit Log" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><ScrollText size={18} /></span>
-                            {!isCollapsed && <span>Audit Log</span>}
-                        </Link>
-                        <Link href="/dashboard/billing" className="nav-link" title={isCollapsed ? "Billing" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><CreditCard size={18} /></span>
-                            {!isCollapsed && <span>Billing</span>}
-                        </Link>
-                        <Link href="/dashboard/settings" className="nav-link" title={isCollapsed ? "Settings" : ""} style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                            <span className="min-w-[24px] flex justify-center text-gray-600"><Wrench size={18} /></span>
-                            {!isCollapsed && <span>Settings</span>}
-                        </Link>
-                    </nav>
+                    {(() => {
+                        const sections: Array<{ label?: string; items: Array<{ href: string; label: string; icon: React.ReactNode; badge?: number }> }> = [
+                            { items: [
+                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={17} strokeWidth={1.75} />, badge: unreadCount },
+                            ]},
+                            { label: 'Monitoring', items: [
+                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={17} strokeWidth={1.75} /> },
+                            ]},
+                            { label: 'System', items: [
+                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={17} strokeWidth={1.75} /> },
+                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={17} strokeWidth={1.75} /> },
+                            ]},
+                        ];
+                        const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname?.startsWith(href);
+                        return (
+                            <nav className="flex flex-col gap-0.5">
+                                {sections.map((section, si) => (
+                                    <div key={si} className="flex flex-col gap-0.5">
+                                        {section.label && !isCollapsed && (
+                                            <div className="px-2.5 mt-3 mb-1 text-[10px] text-gray-400 uppercase tracking-[0.12em] font-semibold">
+                                                {section.label}
+                                            </div>
+                                        )}
+                                        {section.label && isCollapsed && <div className="h-2" />}
+                                        {section.items.map((item) => {
+                                            const active = isActive(item.href);
+                                            return (
+                                                <Link
+                                                    key={item.href}
+                                                    href={item.href}
+                                                    className="nav-link"
+                                                    data-active={active ? 'true' : undefined}
+                                                    title={isCollapsed ? item.label : ''}
+                                                >
+                                                    <span className="nav-icon">
+                                                        {item.icon}
+                                                        {item.badge && item.badge > 0 ? (
+                                                            <span className="nav-badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                                                        ) : null}
+                                                    </span>
+                                                    {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </nav>
+                        );
+                    })()}
 
                     <div className="mt-auto flex flex-col gap-1.5 pt-3 border-t border-gray-100">
                         {!isCollapsed && (
@@ -561,29 +531,65 @@ export default function DashboardShell({
 
             <style jsx>{`
         .nav-link {
-          height: 34px;
+          height: 32px;
           padding: 0 10px;
           border-radius: 8px;
           color: #4B5563;
           transition: background 0.15s ease, color 0.15s ease;
-          text-decoration: none;
+          text-decoration: none !important;
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 0.8rem;
+          font-size: 0.8125rem;
           font-weight: 500;
           white-space: nowrap;
+          line-height: 1;
         }
-        .nav-link > span:first-child {
+        .nav-link .nav-icon {
           width: 20px;
           height: 20px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
+          color: #6B7280;
+          position: relative;
+        }
+        .nav-link .nav-label {
+          font-size: 0.8125rem;
+          color: inherit;
+          letter-spacing: -0.005em;
+        }
+        .nav-link .nav-badge {
+          position: absolute;
+          top: -4px;
+          right: -8px;
+          background: #EF4444;
+          color: #fff;
+          font-size: 9px;
+          font-weight: 700;
+          min-width: 15px;
+          height: 15px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 4px;
+          line-height: 1;
         }
         .nav-link:hover {
           background: #F5F1EA;
+          color: #111827;
+        }
+        .nav-link:hover .nav-icon {
+          color: #111827;
+        }
+        .nav-link[data-active="true"] {
+          background: #F7F2EB;
+          color: #111827;
+          font-weight: 600;
+        }
+        .nav-link[data-active="true"] .nav-icon {
           color: #111827;
         }
         @keyframes pulse {
