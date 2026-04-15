@@ -338,10 +338,14 @@ function BillingContent() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[
-                                { label: 'Active Leads', current: data?.usage.leads || 0, limit: data?.limits.leads || 0, icon: '📧' },
-                                { label: 'Domains', current: data?.usage.domains || 0, limit: data?.limits.domains || 0, icon: '🌐' },
-                                { label: 'Mailboxes', current: data?.usage.mailboxes || 0, limit: data?.limits.mailboxes || 0, icon: '📮' }
-                            ].map(({ label, current, limit, icon }) => {
+                                { label: 'Active Leads', current: data?.usage?.leads || 0, limit: data?.limits?.leads || 0, icon: '📧' },
+                                { label: 'Domains', current: data?.usage?.domains || 0, limit: data?.limits?.domains || 0, icon: '🌐' },
+                                { label: 'Mailboxes', current: data?.usage?.mailboxes || 0, limit: data?.limits?.mailboxes || 0, icon: '📮' }
+                            ].map((stat) => {
+                                const label = stat.label;
+                                const current = stat.current;
+                                const limit = stat.limit;
+                                const icon = stat.icon;
                                 const percentage = getUsagePercentage(current, limit);
                                 const isNearLimit = percentage > 80;
                                 return (
@@ -354,7 +358,7 @@ function BillingContent() {
                                             <div>
                                                 <div className="text-xs font-semibold uppercase text-[#94A3B8]">{label}</div>
                                                 <div className="text-2xl font-extrabold text-gray-900">
-                                                    {current.toLocaleString()} <span className="text-sm font-normal text-[#94A3B8]">/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
+                                                    {Number(current).toLocaleString()} <span className="text-sm font-normal text-[#94A3B8]">/ {limit === Infinity ? '∞' : Number(limit).toLocaleString()}</span>
                                                 </div>
                                             </div>
                                         </div>
