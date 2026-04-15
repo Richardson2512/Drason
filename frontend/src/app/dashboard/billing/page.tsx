@@ -304,22 +304,6 @@ function BillingContent() {
                         )}
                     </div>
 
-                    {/* Emails Validated */}
-                    <div className="premium-card">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <div className="text-xs font-semibold uppercase mb-1 text-[#94A3B8]">Total Emails Validated</div>
-                                <div className="text-2xl font-extrabold text-gray-900">
-                                    {(data?.usage?.emailsValidated ?? 0).toLocaleString()}
-                                </div>
-                                <div className="text-sm mt-1 text-slate-500">
-                                    Lifetime validations across all sources (internal + MillionVerifier)
-                                </div>
-                            </div>
-                            <div className="text-3xl">✉️</div>
-                        </div>
-                    </div>
-
                     {/* Resource Usage */}
                     <div className="premium-card">
                         <div className="flex justify-between items-center mb-5">
@@ -336,11 +320,12 @@ function BillingContent() {
                                 {refreshingUsage ? 'Refreshing...' : 'Refresh Usage'}
                             </button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {[
                                 { label: 'Active Leads', current: data?.usage?.leads || 0, limit: data?.limits?.leads || 0, icon: '📧' },
                                 { label: 'Domains', current: data?.usage?.domains || 0, limit: data?.limits?.domains || 0, icon: '🌐' },
-                                { label: 'Mailboxes', current: data?.usage?.mailboxes || 0, limit: data?.limits?.mailboxes || 0, icon: '📮' }
+                                { label: 'Mailboxes', current: data?.usage?.mailboxes || 0, limit: data?.limits?.mailboxes || 0, icon: '📮' },
+                                { label: 'Emails Validated', current: data?.usage?.emailsValidated || 0, limit: Infinity, icon: '✉️' }
                             ].map((stat) => {
                                 const label = stat.label;
                                 const current = stat.current;
