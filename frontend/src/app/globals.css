@@ -258,7 +258,7 @@ body {
 .cloud-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #a8d8ff 0%, #bfe3ff 20%, #d6edff 40%, #e8f4ff 60%, #f5faff 80%, #ffffff 100%);
+  background: linear-gradient(180deg, #EDE4D4 0%, #F0E8D9 20%, #F3ECDF 40%, #F5EFE4 60%, #F6F1E8 80%, #F7F2EB 100%);
   overflow: hidden;
 }
 
@@ -349,10 +349,10 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 800px 250px at 25% 18%, rgba(137,184,216,0.18) 0%, transparent 65%),
-    radial-gradient(ellipse 700px 220px at 65% 12%, rgba(137,184,216,0.15) 0%, transparent 65%),
-    radial-gradient(ellipse 600px 200px at 45% 30%, rgba(137,184,216,0.12) 0%, transparent 65%),
-    radial-gradient(ellipse 500px 180px at 75% 38%, rgba(137,184,216,0.10) 0%, transparent 65%);
+    radial-gradient(ellipse 800px 250px at 25% 18%, rgba(184,167,140,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 220px at 65% 12%, rgba(184,167,140,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 200px at 45% 30%, rgba(184,167,140,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 180px at 75% 38%, rgba(184,167,140,0.08) 0%, transparent 65%);
   pointer-events: none;
 }
 
