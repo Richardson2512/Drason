@@ -381,7 +381,7 @@ export default function DashboardShell({
                 )}
 
                 <div className="container min-h-full py-2 px-3">
-                    <ErrorBoundary>
+                    <ErrorBoundary resetKey={pathname || ''}>
                         {children}
                     </ErrorBoundary>
                 </div>

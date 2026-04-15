@@ -4,6 +4,7 @@ import React from 'react';
 
 interface ErrorBoundaryProps {
     children: React.ReactNode;
+    resetKey?: string | number;
 }
 
 interface ErrorBoundaryState {
@@ -27,6 +28,14 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
         console.error('[ErrorBoundary] Caught render error:', error, errorInfo);
+    }
+
+    componentDidUpdate(prevProps: ErrorBoundaryProps): void {
+        // Reset error state when navigating to a new route so a crash on one page
+        // doesn't make sibling routes unreachable without a hard refresh.
+        if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+            this.setState({ hasError: false, error: null });
+        }
     }
 
     handleRetry = (): void => {
