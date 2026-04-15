@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Why Your Verified Emails Still Bounce (And What to Do About It)',
-    description: 'You verified every email on your list. They all came back valid. Then 6% bounced. Here are the 6 reasons verified emails still bounce and what to do about each one.',
+    title: 'Why Your Verified Emails Still Bounce',
+    description: 'You verified every email on your list. They all came back valid. Then 6% bounced. Here are the 6 reasons verified emails still bounce and what to do.',
     openGraph: {
-        title: 'Why Your Verified Emails Still Bounce (And What to Do About It)',
+        title: 'Why Your Verified Emails Still Bounce',
         description: 'Catch-all domains, stale data, greylisting, spam traps, role-based addresses, and verification accuracy gaps. Six reasons your verified list still bounces and how to handle each.',
         url: '/blog/why-verified-emails-still-bounce',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Why your verified emails still bounce (and what to do about it)",
-        "description": "You verified every email on your list. They all came back valid. Then 6% bounced. Here are the 6 reasons verified emails still bounce and what to do about each one.",
+        "description": "You verified every email on your list. They all came back valid. Then 6% bounced. Here are the 6 reasons verified emails still bounce and what to do.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

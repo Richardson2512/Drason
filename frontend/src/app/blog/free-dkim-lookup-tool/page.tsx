@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Free DKIM Record Lookup Tool – Verify Your Email Signatures Are Valid',
-    description: 'Use our free DKIM lookup tool to verify your domain\'s DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause deliverability failures.',
+    title: "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
+    description: "Use our free DKIM lookup tool to verify your domain's DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause.",
     openGraph: {
-        title: 'Free DKIM Record Lookup Tool – Verify Your Email Signatures Are Valid',
-        description: 'Use our free DKIM lookup tool to verify your domain\'s DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause deliverability failures.',
+        title: "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
+        description: "Use our free DKIM lookup tool to verify your domain's DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause.",
         url: '/blog/free-dkim-lookup-tool',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,7 +22,7 @@ export default function FreeDkimLookupToolArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Free DKIM Record Lookup Tool – Verify Your Email Signatures Are Valid",
+        "headline": "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
         "description": "Use our free DKIM lookup tool to verify your domain's DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause deliverability failures.",
         "author": {
             "@type": "Organization",

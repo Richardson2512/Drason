@@ -4,8 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-    title: 'Free Email Authentication Tools – SPF, DKIM & DMARC Lookup and Generator | Superkabe',
-    description: 'Free SPF, DKIM, and DMARC lookup and generator tools. Check your DNS records, generate properly formatted authentication records, and protect your email deliverability.',
+    title: 'Free Email Authentication Tools – SPF, DKIM | Superkabe',
+    description: 'Free SPF, DKIM, and DMARC lookup and generator tools. Check your DNS records, generate properly formatted authentication records, and protect your email.',
     openGraph: {
         title: 'Free Email Authentication Tools – SPF, DKIM & DMARC | Superkabe',
         description: 'Free SPF, DKIM, and DMARC lookup and generator tools. Check your DNS records and generate properly formatted authentication records.',

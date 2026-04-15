@@ -2,10 +2,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Validation for Smartlead and Instantly Users: The Missing Layer in Your Stack',
-    description: 'Smartlead and Instantly send emails. They don\'t validate them. Learn how to add a validation layer between Clay and your sending platform to prevent bounces, protect domains, and keep mailboxes alive.',
+    title: "Email Validation for Smartlead and Instantly Users",
+    description: "Smartlead and Instantly send emails. They don't validate them. Learn how to add a validation layer between Clay and your sending platform to prevent.",
     openGraph: {
-        title: 'Email Validation for Smartlead and Instantly Users: The Missing Layer in Your Stack',
+        title: "Email Validation for Smartlead and Instantly Users",
         description: 'Your sending platform doesn\'t validate leads. Here\'s how to add the missing layer between enrichment and sending — whether you use Smartlead, Instantly, or both.',
         url: '/blog/email-validation-smartlead-instantly',
         siteName: 'Superkabe',
@@ -21,7 +21,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Email Validation for Smartlead and Instantly Users: The Missing Layer in Your Stack",
+        "headline": "Email Validation for Smartlead and Instantly Users",
         "description": "Smartlead and Instantly send emails. They don't validate them. Learn how to add a validation layer between Clay and your sending platform to prevent bounces, protect domains, and keep mailboxes alive.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",

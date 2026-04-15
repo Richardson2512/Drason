@@ -2,10 +2,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026',
-    description: 'The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo. Includes DMARC requirements, recovery timelines, and how to monitor in real time.',
+    title: 'Cold Email Bounce Rate Thresholds: What Gets You',
+    description: 'The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo.',
     openGraph: {
-        title: 'Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026',
+        title: 'Cold Email Bounce Rate Thresholds: What Gets You',
         description: 'ISP bounce thresholds, DMARC requirements, and the compounding damage timeline that gets cold email domains blacklisted. Real numbers, real consequences.',
         url: '/blog/cold-email-bounce-rate-thresholds',
         siteName: 'Superkabe',
@@ -21,8 +21,8 @@ export default function ColdEmailBounceRateThresholdsArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026",
-        "description": "The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo. Includes DMARC requirements, recovery timelines, and how to monitor in real time.",
+        "headline": "Cold Email Bounce Rate Thresholds: What Gets You",
+        "description": "The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
         "author": { "@type": "Organization", "name": "Superkabe" },

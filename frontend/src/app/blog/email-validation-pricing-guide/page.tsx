@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Validation Pricing: What It Actually Costs (And What It Saves You)',
-    description: 'Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe. Cost per email at 10K, 50K, and 100K leads per month, plus ROI calculations.',
+    title: 'Email Validation Pricing: What It Actually Costs',
+    description: 'Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe.',
     openGraph: {
-        title: 'Email Validation Pricing: What It Actually Costs (And What It Saves You)',
+        title: 'Email Validation Pricing: What It Actually Costs',
         description: 'We compared email validation pricing across 5 tools at real volumes. Pay-per-email vs subscription, hidden costs, and why one burned domain costs more than a year of validation.',
         url: '/blog/email-validation-pricing-guide',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function EmailValidationPricingGuideArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Email validation pricing: what it actually costs (and what it saves you)",
-        "description": "Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe. Cost per email at 10K, 50K, and 100K leads per month, plus ROI calculations.",
+        "description": "Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

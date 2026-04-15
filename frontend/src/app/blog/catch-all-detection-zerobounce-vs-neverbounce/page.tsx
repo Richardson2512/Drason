@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Catch-All Domain Detection: ZeroBounce vs NeverBounce vs Superkabe (2026 Comparison)',
-    description: 'A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains. Covers detection, risk scoring, bounce monitoring, and pricing.',
+    title: 'Catch-All Domain Detection: ZeroBounce vs NeverBounce vs',
+    description: 'A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains.',
     openGraph: {
-        title: 'Catch-All Domain Detection: ZeroBounce vs NeverBounce vs Superkabe (2026 Comparison)',
+        title: 'Catch-All Domain Detection: ZeroBounce vs NeverBounce vs',
         description: 'ZeroBounce labels catch-all. NeverBounce says don\'t send. Superkabe lets you send safely. Here is the full comparison for outbound teams dealing with catch-all domains.',
         url: '/blog/catch-all-detection-zerobounce-vs-neverbounce',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function CatchAllDetectionComparisonArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs Superkabe (2026 Comparison)",
-        "description": "A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains. Covers detection, risk scoring, bounce monitoring, and pricing.",
+        "headline": "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs",
+        "description": "A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

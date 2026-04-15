@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Superkabe vs Manual Email Infrastructure Monitoring: Why Spreadsheets Don\'t Scale',
-    description: 'Compare manual cold email monitoring (spreadsheets, daily bounce checks, manual pausing) vs Superkabe\'s automated infrastructure protection. Real scenarios show why manual monitoring fails at scale.',
+    title: "Superkabe vs Manual Email Infrastructure Monitoring",
+    description: "Compare manual cold email monitoring (spreadsheets, daily bounce checks, manual pausing) vs Superkabe's automated infrastructure protection.",
     openGraph: {
-        title: 'Superkabe vs Manual Email Infrastructure Monitoring: Why Spreadsheets Don\'t Scale',
+        title: "Superkabe vs Manual Email Infrastructure Monitoring",
         description: 'Manual bounce tracking in spreadsheets vs automated infrastructure protection. See what happens when you\'re asleep and bounce rates spike across 50+ domains.',
         url: '/blog/superkabe-vs-manual-monitoring',
         siteName: 'Superkabe',

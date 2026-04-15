@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Domain Reputation vs IP Reputation: What Actually Matters for Cold Email in 2026',
+    title: 'Domain Reputation vs IP Reputation: What Actually Matters',
     description: 'Domain reputation now matters more than IP reputation for cold email. How the shift happened, DMARC impact, real deliverability data, and what you can control.',
     openGraph: {
-        title: 'Domain Reputation vs IP Reputation: What Actually Matters for Cold Email in 2026',
+        title: 'Domain Reputation vs IP Reputation: What Actually Matters',
         description: 'Domain reputation now matters more than IP reputation for cold email. How the shift happened, DMARC impact, and real deliverability data.',
         url: '/blog/domain-reputation-vs-ip-reputation',
         siteName: 'Superkabe',

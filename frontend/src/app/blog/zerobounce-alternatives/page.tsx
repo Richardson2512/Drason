@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Best ZeroBounce Alternatives for Cold Email Teams (2026)',
-    description: 'Ranked comparison of ZeroBounce alternatives for cold email. Covers Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby with pricing, accuracy, and monitoring features.',
+    description: 'Ranked comparison of ZeroBounce alternatives for cold email. Covers Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby with pricing.',
     openGraph: {
         title: 'Best ZeroBounce Alternatives for Cold Email Teams (2026)',
         description: 'ZeroBounce is accurate but verification alone leaves your infrastructure exposed. Here are 6 alternatives ranked for cold email teams, from budget verification to full infrastructure protection.',
@@ -23,7 +23,7 @@ export default function ZeroBounceAlternativesPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Best ZeroBounce Alternatives for Cold Email Teams (2026)",
-        "description": "Ranked comparison of ZeroBounce alternatives for cold email. Covers Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby with pricing, accuracy, and monitoring features.",
+        "description": "Ranked comparison of ZeroBounce alternatives for cold email. Covers Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby with pricing.",
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",
         "author": {

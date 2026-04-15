@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'ZeroBounce Alternatives That Actually Protect Your Infrastructure (Not Just Verify Emails)',
-    description: 'A comparison of ZeroBounce alternatives including Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby. Covers what verification tools miss and why infrastructure monitoring matters more than accuracy alone.',
+    title: 'ZeroBounce Alternatives That Actually Protect Your',
+    description: 'A comparison of ZeroBounce alternatives including Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby.',
     openGraph: {
-        title: 'ZeroBounce Alternatives That Actually Protect Your Infrastructure (Not Just Verify Emails)',
+        title: 'ZeroBounce Alternatives That Actually Protect Your',
         description: 'ZeroBounce is accurate. But verification alone does not protect your sending infrastructure. Here are the alternatives that go further, plus what to look for beyond accuracy.',
         url: '/blog/zerobounce-alternatives-infrastructure-monitoring',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function ZeroBounceAlternativesArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "ZeroBounce Alternatives That Actually Protect Your Infrastructure (Not Just Verify Emails)",
-        "description": "A comparison of ZeroBounce alternatives including Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby. Covers what verification tools miss and why infrastructure monitoring matters more than accuracy alone.",
+        "headline": "ZeroBounce Alternatives That Actually Protect Your",
+        "description": "A comparison of ZeroBounce alternatives including Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

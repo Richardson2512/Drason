@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: 'Complete Guide: Clay to Sender Platform via Superkabe | Superkabe Docs',
+    title: 'Complete Guide: Clay to Sender Platform via Superkabe',
     description: 'End-to-end guide covering the complete flow from Clay enrichment through Superkabe validation, health gate, and routing to Smartlead, Instantly, or EmailBison.',
     alternates: { canonical: '/docs/clay-integration' },
     openGraph: {
-        title: 'Complete Guide: Clay to Sender Platform via Superkabe | Superkabe Docs',
+        title: 'Complete Guide: Clay to Sender Platform via Superkabe',
         description: 'End-to-end guide covering the complete flow from Clay enrichment through Superkabe validation, health gate, and routing to Smartlead, Instantly, or EmailBison.',
         url: '/docs/clay-integration',
         siteName: 'Superkabe',

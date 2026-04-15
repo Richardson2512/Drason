@@ -4,8 +4,8 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'The Complete Guide to Email Validation for Cold Outreach (2026) | Superkabe',
-    description: 'The definitive guide to email validation for cold outreach. Technical breakdown, tool comparisons, pricing, platform setup for Smartlead and Instantly, and infrastructure protection.',
+    title: 'The Complete Guide to Email Validation for Cold | Superkabe',
+    description: 'The definitive guide to email validation for cold outreach. Technical breakdown, tool comparisons, pricing, platform setup for Smartlead and Instantly.',
     alternates: { canonical: '/guides/email-validation-cold-outreach' },
     openGraph: {
         title: 'The Complete Guide to Email Validation for Cold Outreach (2026)',
@@ -23,7 +23,7 @@ export default function EmailValidationColdOutreachGuide() {
         "@type": "Article",
         "articleSection": "Guides",
         "headline": "The complete guide to email validation for cold outreach (2026)",
-        "description": "The definitive guide to email validation for cold outreach. Technical breakdown, tool comparisons, pricing, platform setup for Smartlead and Instantly, and infrastructure protection.",
+        "description": "The definitive guide to email validation for cold outreach. Technical breakdown, tool comparisons, pricing, platform setup for Smartlead and Instantly.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

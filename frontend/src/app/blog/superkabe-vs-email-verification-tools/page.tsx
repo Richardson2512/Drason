@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Verification vs Email Infrastructure Protection: Understanding the Difference',
-    description: 'Email verification tools like ZeroBounce and NeverBounce check if an email exists. Superkabe protects the sender. Different layers, complementary tools. Here\'s how they work together.',
+    title: "Email Verification vs Email Infrastructure Protection",
+    description: "Email verification tools like ZeroBounce and NeverBounce check if an email exists. Superkabe protects the sender. Different layers, complementary tools.",
     openGraph: {
-        title: 'Email Verification vs Email Infrastructure Protection: Understanding the Difference',
+        title: "Email Verification vs Email Infrastructure Protection",
         description: 'ZeroBounce checks if the recipient is real. Superkabe protects the sender from damage. Verification and infrastructure protection are different layers — most teams need both.',
         url: '/blog/superkabe-vs-email-verification-tools',
         siteName: 'Superkabe',

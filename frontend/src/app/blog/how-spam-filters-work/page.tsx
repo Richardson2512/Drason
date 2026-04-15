@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How spam filters work and how they affect email deliverability',
+    title: 'How spam filters work and how they affect email',
     description: 'How ISP spam filters evaluate outbound emails across four layers, content triggers that cause filtering, and strategies for staying in the inbox.',
     openGraph: {
-        title: 'How spam filters work and how they affect email deliverability',
+        title: 'How spam filters work and how they affect email',
         description: 'How ISP spam filters score inbound email, what triggers filtering for outbound teams, and how to avoid the spam folder without sacrificing personalization.',
         url: '/blog/how-spam-filters-work',
         siteName: 'Superkabe',
@@ -22,7 +22,7 @@ export default function HowSpamFiltersWorkArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How spam filters work and how they affect email deliverability",
+        "headline": "How spam filters work and how they affect email",
         "description": "How ISP spam filters score inbound email, what triggers filtering for outbound teams, and how to avoid the spam folder without sacrificing personalization.",
         "author": {
             "@type": "Organization",

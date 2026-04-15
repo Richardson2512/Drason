@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Protect Your Sender Reputation While Scaling Cold Outreach',
-    description: 'A practical guide to protecting domain and mailbox reputation at scale. Covers safe sending volumes, DNS configuration, real-time monitoring, auto-pause, correlation, healing, and load balancing for 50-100+ mailbox operations.',
+    title: 'How to Protect Your Sender Reputation While Scaling Cold',
+    description: 'A practical guide to protecting domain and mailbox reputation at scale. Covers safe sending volumes, DNS configuration, real-time monitoring, auto-pause.',
     openGraph: {
-        title: 'How to Protect Your Sender Reputation While Scaling Cold Outreach',
+        title: 'How to Protect Your Sender Reputation While Scaling Cold',
         description: 'Scaling outbound is when things break. Here is how to protect sender reputation across 50-100+ mailboxes without burning domains.',
         url: '/blog/protect-sender-reputation-scaling-outreach',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function ProtectSenderReputationArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How to Protect Your Sender Reputation While Scaling Cold Outreach",
-        "description": "A practical guide to protecting domain and mailbox reputation at scale. Covers safe sending volumes, DNS configuration, real-time monitoring, auto-pause, correlation, healing, and load balancing for 50-100+ mailbox operations.",
+        "headline": "How to Protect Your Sender Reputation While Scaling Cold",
+        "description": "A practical guide to protecting domain and mailbox reputation at scale. Covers safe sending volumes, DNS configuration, real-time monitoring, auto-pause.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

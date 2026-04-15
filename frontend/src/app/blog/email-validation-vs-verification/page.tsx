@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Validation vs Email Verification: What\'s Actually Different',
-    description: 'Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP. Here is what each does, when you need which, and why cold outreach teams need both.',
+    title: "Email Validation vs Email Verification: What's Actually",
+    description: "Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP.",
     openGraph: {
-        title: 'Email Validation vs Email Verification: What\'s Actually Different',
+        title: "Email Validation vs Email Verification: What's Actually",
         description: 'Validation checks if an email can theoretically receive mail. Verification checks if the specific mailbox exists. Cold outreach teams that confuse the two end up with burned domains.',
         url: '/blog/email-validation-vs-verification',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function EmailValidationVsVerificationArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Email validation vs email verification: what's actually different",
-        "description": "Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP. Here is what each does, when you need which, and why cold outreach teams need both.",
+        "description": "Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

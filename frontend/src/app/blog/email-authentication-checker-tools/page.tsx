@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC in One Place',
-    description: 'Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain. Verify your complete authentication stack, fix misconfigurations, and meet Google/Yahoo 2024 requirements.',
+    title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC',
+    description: 'Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain.',
     openGraph: {
-        title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC in One Place',
-        description: 'Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain. Verify your complete authentication stack, fix misconfigurations, and meet Google/Yahoo 2024 requirements.',
+        title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC',
+        description: 'Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain.',
         url: '/blog/email-authentication-checker-tools',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,8 +22,8 @@ export default function EmailAuthenticationCheckerToolsArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Free Email Authentication Checker Tools – SPF, DKIM & DMARC in One Place",
-        "description": "Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain. Verify your complete authentication stack, fix misconfigurations, and meet Google/Yahoo 2024 requirements.",
+        "headline": "Free Email Authentication Checker Tools – SPF, DKIM & DMARC",
+        "description": "Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"

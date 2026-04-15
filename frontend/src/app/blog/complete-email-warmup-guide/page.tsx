@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'The Complete Email Warmup Guide 2026: Domains, Mailboxes, and What Happens After',
+    title: 'The Complete Email Warmup Guide 2026: Domains, Mailboxes',
     description: 'Everything about email warmup for cold outreach: domain warmup, mailbox warmup, warmup schedules, what warmup tools do, and why warmup alone is not enough.',
     openGraph: {
-        title: 'The Complete Email Warmup Guide 2026: Domains, Mailboxes, and What Happens After',
+        title: 'The Complete Email Warmup Guide 2026: Domains, Mailboxes',
         description: 'Everything about email warmup for cold outreach: domain warmup, mailbox warmup, warmup schedules, what warmup tools do, and why warmup alone is not enough.',
         url: '/blog/complete-email-warmup-guide',
         siteName: 'Superkabe',
@@ -22,7 +22,7 @@ export default function CompleteEmailWarmupGuide() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "The Complete Email Warmup Guide 2026: Domains, Mailboxes, and What Happens After",
+        "headline": "The Complete Email Warmup Guide 2026: Domains, Mailboxes",
         "description": "Everything about email warmup for cold outreach: domain warmup, mailbox warmup, warmup schedules, what warmup tools do, and why warmup alone is not enough.",
         "author": {
             "@type": "Organization",

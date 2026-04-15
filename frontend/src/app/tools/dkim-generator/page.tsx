@@ -3,10 +3,10 @@ import Link from 'next/link';
 import DkimGeneratorClient from './DkimGeneratorClient';
 
 export const metadata: Metadata = {
-    title: 'Free DKIM Record Generator – Create Your DKIM TXT Record | Superkabe',
+    title: 'Free DKIM Record Generator – Create Your DKIM TXT Record',
     description: 'Free DKIM record generator tool. Configure your selector, paste your public key, and generate a properly formatted DKIM TXT record for your domain DNS.',
     openGraph: {
-        title: 'Free DKIM Record Generator – Create Your DKIM TXT Record | Superkabe',
+        title: 'Free DKIM Record Generator – Create Your DKIM TXT Record',
         description: 'Free DKIM record generator tool. Configure your selector, paste your public key, and generate a properly formatted DKIM TXT record for your domain DNS.',
         url: '/tools/dkim-generator',
         siteName: 'Superkabe',

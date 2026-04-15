@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Get Your Cold Email Bounce Rate Below 2% (Step by Step)',
-    description: 'A practical 7-step guide to reducing cold email bounce rates below 2%. Covers email validation, real-time monitoring, auto-pause rules, risk-aware routing, and domain-level health tracking.',
+    title: 'How to Get Your Cold Email Bounce Rate Below 2%',
+    description: 'A practical 7-step guide to reducing cold email bounce rates below 2%. Covers email validation, real-time monitoring, auto-pause rules, risk-aware.',
     openGraph: {
-        title: 'How to Get Your Cold Email Bounce Rate Below 2% (Step by Step)',
+        title: 'How to Get Your Cold Email Bounce Rate Below 2%',
         description: 'Seven concrete steps to get your cold email bounce rate under the 2% threshold that Google and Yahoo enforce. Includes the math on what happens when you skip validation.',
         url: '/blog/reduce-cold-email-bounce-rate',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function ReduceBounceRateArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How to Get Your Cold Email Bounce Rate Below 2% (Step by Step)",
-        "description": "A practical 7-step guide to reducing cold email bounce rates below 2%. Covers email validation, real-time monitoring, auto-pause rules, risk-aware routing, and domain-level health tracking.",
+        "headline": "How to Get Your Cold Email Bounce Rate Below 2%",
+        "description": "A practical 7-step guide to reducing cold email bounce rates below 2%. Covers email validation, real-time monitoring, auto-pause rules, risk-aware.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 import DmarcLookupClient from './DmarcLookupClient';
 
 export const metadata: Metadata = {
-    title: 'Free DMARC Record Lookup Tool – Check Your Domain\'s DMARC Policy | Superkabe',
-    description: 'Free DMARC record lookup tool. Enter any domain to check its DMARC policy, view reporting addresses, alignment settings, and enforcement level for unauthenticated emails.',
+    title: "Free DMARC Record Lookup Tool – Check Your | Superkabe",
+    description: "Free DMARC record lookup tool. Enter any domain to check its DMARC policy, view reporting addresses, alignment settings, and enforcement level.",
     openGraph: {
-        title: 'Free DMARC Record Lookup Tool – Check Your Domain\'s DMARC Policy | Superkabe',
-        description: 'Free DMARC record lookup tool. Enter any domain to check its DMARC policy, view reporting addresses, alignment settings, and enforcement level for unauthenticated emails.',
+        title: "Free DMARC Record Lookup Tool – Check Your | Superkabe",
+        description: "Free DMARC record lookup tool. Enter any domain to check its DMARC policy, view reporting addresses, alignment settings, and enforcement level.",
         url: '/tools/dmarc-lookup',
         siteName: 'Superkabe',
         type: 'website',

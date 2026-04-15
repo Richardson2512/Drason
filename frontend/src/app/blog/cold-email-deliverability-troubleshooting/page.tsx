@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Cold email deliverability problems: how to diagnose and fix infrastructure failures',
-    description: 'Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures, and platform-specific problems.',
+    title: 'Cold email deliverability problems: how to diagnose and fix',
+    description: 'Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures,.',
     openGraph: {
-        title: 'Cold email deliverability problems: how to diagnose and fix infrastructure failures',
+        title: 'Cold email deliverability problems: how to diagnose and fix',
         description: 'Diagnose and fix the most common cold email infrastructure failures — from bounce rate spikes and spam placement to blacklisted domains and broken DNS authentication.',
         url: '/blog/cold-email-deliverability-troubleshooting',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Cold email deliverability problems: how to diagnose and fix infrastructure failures",
-        "description": "Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures, and platform-specific problems.",
+        "headline": "Cold email deliverability problems: how to diagnose and fix",
+        "description": "Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures,.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"

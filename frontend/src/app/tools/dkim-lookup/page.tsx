@@ -3,11 +3,11 @@ import Link from 'next/link';
 import DkimLookupClient from './DkimLookupClient';
 
 export const metadata: Metadata = {
-    title: 'Free DKIM Record Lookup Tool – Verify Your DKIM DNS Record | Superkabe',
-    description: 'Free DKIM record lookup tool. Enter your domain and selector to verify your DKIM public key is published correctly and email signatures can be validated by receiving servers.',
+    title: 'Free DKIM Record Lookup Tool – Verify Your DKIM DNS Record',
+    description: 'Free DKIM record lookup tool. Enter your domain and selector to verify your DKIM public key is published correctly and email signatures can be validated.',
     openGraph: {
-        title: 'Free DKIM Record Lookup Tool – Verify Your DKIM DNS Record | Superkabe',
-        description: 'Free DKIM record lookup tool. Enter your domain and selector to verify your DKIM public key is published correctly and email signatures can be validated by receiving servers.',
+        title: 'Free DKIM Record Lookup Tool – Verify Your DKIM DNS Record',
+        description: 'Free DKIM record lookup tool. Enter your domain and selector to verify your DKIM public key is published correctly and email signatures can be validated.',
         url: '/tools/dkim-lookup',
         siteName: 'Superkabe',
         type: 'website',

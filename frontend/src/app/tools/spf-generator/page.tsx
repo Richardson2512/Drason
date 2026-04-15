@@ -3,13 +3,13 @@ import Link from 'next/link';
 import SpfGeneratorClient from './SpfGeneratorClient';
 
 export const metadata: Metadata = {
-    title: 'Free SPF Record Generator – Create Your SPF TXT Record | Superkabe',
+    title: 'Free SPF Record Generator – Create Your SPF TXT Record',
     description:
-        'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record for your domain.',
+        'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record.',
     openGraph: {
-        title: 'Free SPF Record Generator – Create Your SPF TXT Record | Superkabe',
+        title: 'Free SPF Record Generator – Create Your SPF TXT Record',
         description:
-            'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record for your domain.',
+            'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record.',
         url: '/tools/spf-generator',
         siteName: 'Superkabe',
         type: 'website',
@@ -48,7 +48,7 @@ export default function SpfGeneratorPage() {
         '@type': 'WebApplication',
         name: 'SPF Record Generator',
         description:
-            'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record for your domain.',
+            'Free SPF record generator tool. Configure authorized sending servers, IP addresses, and third-party includes to create a properly formatted SPF TXT record.',
         url: 'https://www.superkabe.com/tools/spf-generator',
         applicationCategory: 'Utility',
         operatingSystem: 'Any',

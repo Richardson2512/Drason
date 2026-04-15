@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Deliverability Tools Compared: Testing vs Protection (2026)',
-    description: 'Compare email deliverability monitoring, testing, and infrastructure protection tools for cold email teams. GlockApps vs MailReach vs Folderly vs Superkabe — which approach actually prevents domain burnout?',
+    title: 'Email Deliverability Tools Compared: Testing vs Protection',
+    description: 'Compare email deliverability monitoring, testing, and infrastructure protection tools for cold email teams.',
     openGraph: {
-        title: 'Email Deliverability Tools Compared: Testing vs Protection (2026)',
+        title: 'Email Deliverability Tools Compared: Testing vs Protection',
         description: 'Side-by-side comparison of deliverability monitoring tools, testing platforms, and infrastructure protection software. Learn the critical difference between reactive testing and proactive protection.',
         url: '/blog/email-deliverability-tools-compared',
         siteName: 'Superkabe',

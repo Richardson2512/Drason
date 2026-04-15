@@ -4,8 +4,8 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'The Modern Outbound Email Infrastructure Stack: A Complete Breakdown | Superkabe',
-    description: 'How the 6 layers of outbound email infrastructure fit together. Data enrichment, validation, sending platforms, mailbox providers, monitoring, and alerting explained.',
+    title: 'The Modern Outbound Email Infrastructure Stack | Superkabe',
+    description: 'How the 6 layers of outbound email infrastructure fit together. Data enrichment, validation, sending platforms, mailbox providers, monitoring,.',
     alternates: { canonical: '/guides/outbound-email-infrastructure-stack' },
     openGraph: {
         title: 'The Modern Outbound Email Infrastructure Stack: A Complete Breakdown',
@@ -23,7 +23,7 @@ export default function OutboundInfrastructureStackGuide() {
         "@type": "Article",
         "articleSection": "Guides",
         "headline": "The modern outbound email infrastructure stack: a complete breakdown",
-        "description": "How the 6 layers of outbound email infrastructure fit together. Data enrichment, validation, sending platforms, mailbox providers, monitoring, and alerting explained.",
+        "description": "How the 6 layers of outbound email infrastructure fit together. Data enrichment, validation, sending platforms, mailbox providers, monitoring,.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

@@ -2,10 +2,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Email Validation for Cold Email Agencies: Protect Clients Without Burning Their Domains',
-    description: 'Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make infrastructure protection a selling point.',
+    title: 'Email Validation for Cold Email Agencies: Protect Clients',
+    description: 'Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make.',
     openGraph: {
-        title: 'Email Validation for Cold Email Agencies: Protect Clients Without Burning Their Domains',
+        title: 'Email Validation for Cold Email Agencies: Protect Clients',
         description: 'You send on client domains, not yours. Here\'s how agencies protect multiple clients\' infrastructure at scale without burning through domains or losing accounts.',
         url: '/blog/email-validation-for-agencies',
         siteName: 'Superkabe',
@@ -21,8 +21,8 @@ export default function EmailValidationForAgenciesArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Email Validation for Cold Email Agencies: Protect Clients Without Burning Their Domains",
-        "description": "Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make infrastructure protection a selling point.",
+        "headline": "Email Validation for Cold Email Agencies: Protect Clients",
+        "description": "Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
         "author": { "@type": "Organization", "name": "Superkabe" },

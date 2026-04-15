@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Protect Your Domain Reputation While Scaling Cold Email',
-    description: 'Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated monitoring. Prevent cascade failures across 50-100+ mailboxes.',
+    title: 'How to Protect Your Domain Reputation While Scaling Cold',
+    description: 'Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated.',
     openGraph: {
-        title: 'How to Protect Your Domain Reputation While Scaling Cold Email',
+        title: 'How to Protect Your Domain Reputation While Scaling Cold',
         description: 'The scaling trap hits every cold email operation. 10 mailboxes is fine. 100+ without protection is a domain graveyard. Here is how to protect reputation while scaling.',
         url: '/blog/protect-domain-reputation-scaling-cold-email',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function ProtectDomainReputationScalingArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "How to protect your domain reputation while scaling cold email",
-        "description": "Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated monitoring. Prevent cascade failures across 50-100+ mailboxes.",
+        "description": "Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

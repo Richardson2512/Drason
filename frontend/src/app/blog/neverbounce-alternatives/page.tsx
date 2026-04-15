@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Best NeverBounce Alternatives for Email Verification (2026)',
-    description: 'Ranked comparison of NeverBounce alternatives including Superkabe, ZeroBounce, MillionVerifier, Clearout, DeBounce, and Emailable. Covers pricing, catch-all detection, and infrastructure protection.',
+    description: 'Ranked comparison of NeverBounce alternatives including Superkabe, ZeroBounce, MillionVerifier, Clearout, DeBounce, and Emailable.',
     openGraph: {
         title: 'Best NeverBounce Alternatives for Email Verification (2026)',
         description: 'NeverBounce is fast and reliable but verification alone leaves gaps. Here are 6 alternatives ranked for email teams in 2026, from budget verification to full infrastructure protection.',
@@ -23,7 +23,7 @@ export default function NeverBounceAlternativesPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Best NeverBounce Alternatives for Email Verification (2026)",
-        "description": "Ranked comparison of NeverBounce alternatives including Superkabe, ZeroBounce, MillionVerifier, Clearout, DeBounce, and Emailable. Covers pricing, catch-all detection, and infrastructure protection.",
+        "description": "Ranked comparison of NeverBounce alternatives including Superkabe, ZeroBounce, MillionVerifier, Clearout, DeBounce, and Emailable.",
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",
         "author": {

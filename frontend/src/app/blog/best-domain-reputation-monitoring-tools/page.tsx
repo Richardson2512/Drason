@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Best Domain Reputation Monitoring Tools for Cold Email Teams (2026)',
-    description: 'Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing breakdowns for outbound teams.',
+    title: 'Best Domain Reputation Monitoring Tools for Cold Email',
+    description: 'Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing breakdowns.',
     openGraph: {
-        title: 'Best Domain Reputation Monitoring Tools for Cold Email Teams (2026)',
+        title: 'Best Domain Reputation Monitoring Tools for Cold Email',
         description: 'Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing for outbound teams.',
         url: '/blog/best-domain-reputation-monitoring-tools',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function BestDomainReputationMonitoringToolsArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Best domain reputation monitoring tools for cold email teams (2026)",
-        "description": "Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing breakdowns for outbound teams.",
+        "description": "Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing breakdowns.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

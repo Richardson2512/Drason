@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Free DMARC Lookup & Generator Tool – Configure Your Domain\'s Email Policy',
-    description: 'Use our free DMARC lookup and generator tools to check and configure your domain\'s DMARC policy. Understand policy levels, rollout strategy, reporting, and Google/Yahoo requirements.',
+    title: "Free DMARC Lookup & Generator Tool – Configure Your",
+    description: "Use our free DMARC lookup and generator tools to check and configure your domain's DMARC policy.",
     openGraph: {
-        title: 'Free DMARC Lookup & Generator Tool – Configure Your Domain\'s Email Policy',
-        description: 'Use our free DMARC lookup and generator tools to check and configure your domain\'s DMARC policy. Understand policy levels, rollout strategy, reporting, and Google/Yahoo requirements.',
+        title: "Free DMARC Lookup & Generator Tool – Configure Your",
+        description: "Use our free DMARC lookup and generator tools to check and configure your domain's DMARC policy.",
         url: '/blog/free-dmarc-lookup-generator-tool',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,7 +22,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Free DMARC Lookup & Generator Tool – Configure Your Domain's Email Policy",
+        "headline": "Free DMARC Lookup & Generator Tool – Configure Your",
         "description": "Use our free DMARC lookup and generator tools to check and configure your domain's DMARC policy. Understand policy levels, rollout strategy, reporting, and Google/Yahoo requirements.",
         "author": {
             "@type": "Organization",

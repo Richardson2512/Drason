@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Real-time domain and mailbox health monitoring for cold email',
-    description: 'How continuous real-time monitoring of domain reputation, mailbox health, DNS status, and bounce rates protects cold email infrastructure from rapid degradation.',
+    title: 'Real-time domain and mailbox health monitoring for cold',
+    description: 'How continuous real-time monitoring of domain reputation, mailbox health, DNS status, and bounce rates protects cold email infrastructure from rapid.',
     openGraph: {
-        title: 'Real-time domain and mailbox health monitoring for cold email',
+        title: 'Real-time domain and mailbox health monitoring for cold',
         description: 'Why periodic testing misses critical infrastructure failures and how real-time monitoring with automated protection prevents domain and mailbox degradation.',
         url: '/blog/real-time-email-infrastructure-monitoring',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function RealTimeMonitoringArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Real-time domain and mailbox health monitoring for cold email",
-        "description": "How continuous real-time monitoring of domain reputation, mailbox health, DNS status, and bounce rates protects cold email infrastructure from rapid degradation.",
+        "headline": "Real-time domain and mailbox health monitoring for cold",
+        "description": "How continuous real-time monitoring of domain reputation, mailbox health, DNS status, and bounce rates protects cold email infrastructure from rapid.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"

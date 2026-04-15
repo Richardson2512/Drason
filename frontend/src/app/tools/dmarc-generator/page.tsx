@@ -3,13 +3,13 @@ import Link from 'next/link';
 import DmarcGeneratorClient from './DmarcGeneratorClient';
 
 export const metadata: Metadata = {
-    title: 'Free DMARC Record Generator – Create Your DMARC TXT Record | Superkabe',
+    title: 'Free DMARC Record Generator – Create Your DMARC TXT Record',
     description:
-        'Free DMARC record generator tool. Configure your DMARC policy, reporting addresses, and alignment settings to create a properly formatted DMARC TXT record for your domain.',
+        'Free DMARC record generator tool. Configure your DMARC policy, reporting addresses, and alignment settings to create a properly formatted DMARC TXT record.',
     openGraph: {
-        title: 'Free DMARC Record Generator – Create Your DMARC TXT Record | Superkabe',
+        title: 'Free DMARC Record Generator – Create Your DMARC TXT Record',
         description:
-            'Free DMARC record generator tool. Configure your DMARC policy, reporting addresses, and alignment settings to create a properly formatted DMARC TXT record for your domain.',
+            'Free DMARC record generator tool. Configure your DMARC policy, reporting addresses, and alignment settings to create a properly formatted DMARC TXT record.',
         url: '/tools/dmarc-generator',
         siteName: 'Superkabe',
         type: 'website',

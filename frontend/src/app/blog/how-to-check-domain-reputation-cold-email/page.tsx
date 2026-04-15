@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Check Your Domain Reputation for Cold Email (2026 Guide)',
-    description: 'Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks, limitations, and what to do when reputation drops.',
+    title: 'How to Check Your Domain Reputation for Cold Email',
+    description: 'Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks.',
     openGraph: {
-        title: 'How to Check Your Domain Reputation for Cold Email (2026 Guide)',
+        title: 'How to Check Your Domain Reputation for Cold Email',
         description: 'Compare 6 domain reputation tools for cold email senders. Learn what ISPs evaluate, which tools matter most, and what to do when Google Postmaster shows bad reputation.',
         url: '/blog/how-to-check-domain-reputation-cold-email',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function HowToCheckDomainReputationArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "How to check your domain reputation for cold email (2026 guide)",
-        "description": "Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks, limitations, and what to do when reputation drops.",
+        "description": "Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

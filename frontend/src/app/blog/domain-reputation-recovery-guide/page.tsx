@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Domain Reputation Dropped? The Complete Recovery Playbook',
-    description: 'Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail and Outlook, and automated healing.',
+    description: 'Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail.',
     openGraph: {
         title: 'Domain Reputation Dropped? The Complete Recovery Playbook',
         description: 'Your domain reputation tanked after outreach. Here is the complete recovery playbook: diagnosis, root cause fixes, ISP reset timelines, and re-warming schedules.',
@@ -23,7 +23,7 @@ export default function DomainReputationRecoveryGuideArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Domain reputation dropped? The complete recovery playbook",
-        "description": "Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail and Outlook, and automated healing.",
+        "description": "Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Automated cold email infrastructure protection for lead generation agencies',
+    title: 'Automated cold email infrastructure protection for lead',
     description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.',
     openGraph: {
-        title: 'Automated cold email infrastructure protection for lead generation agencies',
+        title: 'Automated cold email infrastructure protection for lead',
         description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.',
         url: '/blog/cold-email-infrastructure-protection-for-agencies',
         siteName: 'Superkabe',
@@ -22,7 +22,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Automated cold email infrastructure protection for lead generation agencies",
+        "headline": "Automated cold email infrastructure protection for lead",
         "description": "How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.",
         "author": {
             "@type": "Organization",

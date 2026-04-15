@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Data Sync Coverage by Platform | Superkabe Docs',
-    description: 'Understand exactly what data Superkabe can and cannot sync from Smartlead, Instantly, and EmailBison. Per-entity breakdown of historical vs real-time data availability for campaigns, mailboxes, leads, and domains.',
+    description: 'Understand exactly what data Superkabe can and cannot sync from Smartlead, Instantly, and EmailBison.',
     alternates: { canonical: '/docs/data-sync-coverage' },
     openGraph: {
         title: 'Data Sync Coverage by Platform | Superkabe Docs',
-        description: 'Understand exactly what data Superkabe can and cannot sync from Smartlead, Instantly, and EmailBison. Per-entity breakdown of historical vs real-time data availability for campaigns, mailboxes, leads, and domains.',
+        description: 'Understand exactly what data Superkabe can and cannot sync from Smartlead, Instantly, and EmailBison.',
         url: '/docs/data-sync-coverage',
         siteName: 'Superkabe',
         type: 'article',

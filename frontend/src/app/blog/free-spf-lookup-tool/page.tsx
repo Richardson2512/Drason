@@ -3,11 +3,11 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Free SPF Record Lookup Tool – Check Your Domain\'s Email Authentication',
-    description: 'Use our free SPF record lookup tool to check your domain\'s SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before they damage deliverability.',
+    title: "Free SPF Record Lookup Tool – Check Your Domain's Email",
+    description: "Use our free SPF record lookup tool to check your domain's SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before.",
     openGraph: {
-        title: 'Free SPF Record Lookup Tool – Check Your Domain\'s Email Authentication',
-        description: 'Use our free SPF record lookup tool to check your domain\'s SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before they damage deliverability.',
+        title: "Free SPF Record Lookup Tool – Check Your Domain's Email",
+        description: "Use our free SPF record lookup tool to check your domain's SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before.",
         url: '/blog/free-spf-lookup-tool',
         siteName: 'Superkabe',
         type: 'article',
@@ -22,7 +22,7 @@ export default function FreeSpfLookupToolArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Free SPF Record Lookup Tool – Check Your Domain's Email Authentication",
+        "headline": "Free SPF Record Lookup Tool – Check Your Domain's Email",
         "description": "Use our free SPF record lookup tool to check your domain's SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before they damage deliverability.",
         "author": {
             "@type": "Organization",

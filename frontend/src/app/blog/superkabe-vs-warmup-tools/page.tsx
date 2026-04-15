@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Why Email Warmup Tools Alone Won\'t Protect Your Domains',
-    description: 'Warmup tools like Lemwarm and Warmup Inbox build pre-send reputation. But they don\'t monitor live campaigns, catch bounce spikes, or heal damaged infrastructure. Here\'s the gap they leave open.',
+    title: "Why Email Warmup Tools Alone Won't Protect Your Domains",
+    description: "Warmup tools like Lemwarm and Warmup Inbox build pre-send reputation. But they don't monitor live campaigns, catch bounce spikes, or heal damaged.",
     openGraph: {
-        title: 'Why Email Warmup Tools Alone Won\'t Protect Your Domains',
+        title: "Why Email Warmup Tools Alone Won't Protect Your Domains",
         description: 'Email warmup handles pre-send reputation. Superkabe handles everything after: live bounce monitoring, auto-pause, DNS health, domain healing. Different jobs, different tools.',
         url: '/blog/superkabe-vs-warmup-tools',
         siteName: 'Superkabe',

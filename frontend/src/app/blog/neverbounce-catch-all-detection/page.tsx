@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'NeverBounce Catch-All Detection: What It Does and What It Doesn\'t',
-    description: 'NeverBounce labels catch-all emails as accept_all and recommends not sending. But skipping 30-40% of B2B leads is not practical. Here is what NeverBounce does and how to fill the gap.',
+    title: "NeverBounce Catch-All Detection: What It Does",
+    description: 'NeverBounce labels catch-all emails as accept_all and recommends not sending. But skipping 30-40% of B2B leads is not practical.',
     openGraph: {
-        title: 'NeverBounce Catch-All Detection: What It Does and What It Doesn\'t',
+        title: "NeverBounce Catch-All Detection: What It Does",
         description: 'NeverBounce flags catch-all domains as accept_all. Their recommendation: don\'t send. But 30-40% of B2B leads are catch-all. Here is a practical approach that actually works.',
         url: '/blog/neverbounce-catch-all-detection',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "NeverBounce Catch-All Detection: What It Does and What It Doesn't",
-        "description": "NeverBounce labels catch-all emails as accept_all and recommends not sending. But skipping 30-40% of B2B leads is not practical. Here is what NeverBounce does and how to fill the gap.",
+        "description": "NeverBounce labels catch-all emails as accept_all and recommends not sending. But skipping 30-40% of B2B leads is not practical.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

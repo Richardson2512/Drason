@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Best Email Validation Tools for Cold Outreach in 2026',
-    description: 'Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration, and infrastructure protection.',
+    description: 'Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration,.',
     openGraph: {
         title: 'Best Email Validation Tools for Cold Outreach in 2026',
         description: 'We ranked 6 email validation tools for cold outreach teams. Catch-all handling, pricing per email, API speed, and sending platform integrations compared side by side.',
@@ -23,7 +23,7 @@ export default function BestEmailValidationToolsArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Best email validation tools for cold outreach in 2026",
-        "description": "Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration, and infrastructure protection.",
+        "description": "Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration,.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

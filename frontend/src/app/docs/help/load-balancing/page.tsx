@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'How Does Load Balancing Work? | Superkabe Help',
-    description: 'Learn how Superkabe analyzes mailbox distribution across campaigns and provides intelligent rebalancing suggestions to prevent overload and improve deliverability.',
+    description: 'Learn how Superkabe analyzes mailbox distribution across campaigns and provides intelligent rebalancing suggestions to prevent overload and improve.',
     alternates: { canonical: '/docs/help/load-balancing' },
     openGraph: {
         title: 'How Does Load Balancing Work? | Superkabe Help',
-        description: 'Learn how Superkabe analyzes mailbox distribution across campaigns and provides intelligent rebalancing suggestions to prevent overload and improve deliverability.',
+        description: 'Learn how Superkabe analyzes mailbox distribution across campaigns and provides intelligent rebalancing suggestions to prevent overload and improve.',
         url: '/docs/help/load-balancing',
         siteName: 'Superkabe',
         type: 'article',

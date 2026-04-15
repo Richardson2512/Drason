@@ -4,8 +4,8 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-    title: 'Email Deliverability Glossary: Every Term Outbound Teams Need to Know | Superkabe',
-    description: 'A-Z glossary of email deliverability terms for cold outreach teams. 70+ definitions covering authentication, bounce handling, infrastructure protection, and sending platforms.',
+    title: 'Email Deliverability Glossary: Every Term | Superkabe',
+    description: 'A-Z glossary of email deliverability terms for cold outreach teams. 70+ definitions covering authentication, bounce handling, infrastructure protection.',
     alternates: { canonical: '/guides/email-deliverability-glossary' },
     openGraph: {
         title: 'Email Deliverability Glossary: Every Term Outbound Teams Need to Know',
@@ -23,7 +23,7 @@ export default function EmailDeliverabilityGlossary() {
         "@type": "Article",
         "articleSection": "Guides",
         "headline": "Email deliverability glossary: every term outbound teams need to know",
-        "description": "A-Z glossary of email deliverability terms for cold outreach teams. 70+ definitions covering authentication, bounce handling, infrastructure protection, and sending platforms.",
+        "description": "A-Z glossary of email deliverability terms for cold outreach teams. 70+ definitions covering authentication, bounce handling, infrastructure protection.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

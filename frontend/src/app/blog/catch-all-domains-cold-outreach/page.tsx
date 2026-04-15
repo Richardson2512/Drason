@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold Email Deliverability',
-    description: 'Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike. Learn how to detect, manage, and route catch-all leads safely.',
+    title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold',
+    description: 'Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike.',
     openGraph: {
-        title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold Email Deliverability',
+        title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold',
         description: 'Catch-all domains make verification useless. They accept everything at SMTP level but bounce internally. Here is how to detect them, score the risk, and protect your domains.',
         url: '/blog/catch-all-domains-cold-outreach',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Catch-all domains: the hidden risk destroying your cold email deliverability",
-        "description": "Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike. Learn how to detect, manage, and route catch-all leads safely.",
+        "description": "Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

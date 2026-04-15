@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Domain Burned From a Bad Lead List? Complete Recovery and Prevention Guide',
-    description: 'Your domain got blacklisted after a bad lead list. Here is the step-by-step recovery process, how to validate Clay leads before sending, and how to prevent it from happening again.',
+    title: 'Domain Burned From a Bad Lead List? Complete Recovery',
+    description: 'Your domain got blacklisted after a bad lead list. Here is the step-by-step recovery process, how to validate Clay leads before sending, and how.',
     openGraph: {
-        title: 'Domain Burned From a Bad Lead List? Complete Recovery and Prevention Guide',
+        title: 'Domain Burned From a Bad Lead List? Complete Recovery',
         description: 'Step-by-step domain recovery after a bounce spike: blacklist removal, DNS fixes, re-warming, and how to add validation between Clay and your sender so it never happens again.',
         url: '/blog/domain-burned-recovery-prevention',
         siteName: 'Superkabe',
@@ -23,7 +23,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Domain burned from a bad lead list? Complete recovery and prevention guide",
-        "description": "Your domain got blacklisted after a bad lead list. Here is the step-by-step recovery process, how to validate Clay leads before sending, and how to prevent it from happening again.",
+        "description": "Your domain got blacklisted after a bad lead list. Here is the step-by-step recovery process, how to validate Clay leads before sending, and how.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",

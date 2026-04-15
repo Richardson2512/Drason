@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How bounce rates damage sender reputation (and how to prevent it)',
+    title: 'How bounce rates damage sender reputation',
     description: 'Technical guide on email bounce rates, their impact on sender reputation and domain health, and strategies for preventing deliverability degradation.',
     openGraph: {
-        title: 'How bounce rates damage sender reputation (and how to prevent it)',
+        title: 'How bounce rates damage sender reputation',
         description: 'Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.',
         url: '/blog/bounce-rate-deliverability',
         siteName: 'Superkabe',
@@ -22,7 +22,7 @@ export default function BounceRateArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How bounce rates damage sender reputation (and how to prevent it)",
+        "headline": "How bounce rates damage sender reputation",
         "description": "Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.",
         "author": {
             "@type": "Organization",

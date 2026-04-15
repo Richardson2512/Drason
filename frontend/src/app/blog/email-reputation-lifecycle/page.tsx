@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)',
+    title: 'How to Repair Sender Reputation: The Complete Email',
     description: 'How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.',
     openGraph: {
-        title: 'How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)',
+        title: 'How to Repair Sender Reputation: The Complete Email',
         description: 'How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.',
         url: '/blog/email-reputation-lifecycle',
         siteName: 'Superkabe',
@@ -22,7 +22,7 @@ export default function EmailReputationArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)",
+        "headline": "How to Repair Sender Reputation: The Complete Email",
         "description": "How sender reputation works, what damages it, and step-by-step instructions to repair it. ISP scoring models, feedback loops, and recovery timelines.",
         "datePublished": "2025-12-10",
         "dateModified": "2026-04-07",

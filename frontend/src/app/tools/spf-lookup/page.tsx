@@ -3,11 +3,11 @@ import Link from 'next/link';
 import SpfLookupClient from './SpfLookupClient';
 
 export const metadata: Metadata = {
-    title: 'Free SPF Record Lookup Tool – Check Your Domain\'s SPF Record | Superkabe',
-    description: 'Free SPF record lookup tool. Enter any domain to check its SPF record, view authorized sending servers, and detect misconfigurations that cause email authentication failures.',
+    title: "Free SPF Record Lookup Tool – Check Your Domain's SPF Record",
+    description: "Free SPF record lookup tool. Enter any domain to check its SPF record, view authorized sending servers, and detect misconfigurations that cause email.",
     openGraph: {
-        title: 'Free SPF Record Lookup Tool – Check Your Domain\'s SPF Record | Superkabe',
-        description: 'Free SPF record lookup tool. Enter any domain to check its SPF record, view authorized sending servers, and detect misconfigurations that cause email authentication failures.',
+        title: "Free SPF Record Lookup Tool – Check Your Domain's SPF Record",
+        description: "Free SPF record lookup tool. Enter any domain to check its SPF record, view authorized sending servers, and detect misconfigurations that cause email.",
         url: '/tools/spf-lookup',
         siteName: 'Superkabe',
         type: 'website',

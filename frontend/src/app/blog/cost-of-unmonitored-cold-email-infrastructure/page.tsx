@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'The real cost of unmonitored cold email infrastructure',
-    description: 'Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI of proactive deliverability protection.',
+    description: 'Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI.',
     openGraph: {
         title: 'The real cost of unmonitored cold email infrastructure',
         description: 'How much burned domains, lost pipeline, and reactive monitoring really cost lead gen agencies — and the ROI of proactive infrastructure protection.',
@@ -23,7 +23,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "The real cost of unmonitored cold email infrastructure",
-        "description": "Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI of proactive deliverability protection.",
+        "description": "Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe"

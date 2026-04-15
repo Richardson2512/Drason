@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How ZeroBounce Handles Catch-All Domains (And What It Misses)',
-    description: 'ZeroBounce labels catch-all emails but leaves the send decision to you. Learn what ZeroBounce does with catch-all domains, where it stops, and how to send to catch-all leads safely.',
+    title: 'How ZeroBounce Handles Catch-All Domains',
+    description: 'ZeroBounce labels catch-all emails but leaves the send decision to you. Learn what ZeroBounce does with catch-all domains, where it stops, and how to send.',
     openGraph: {
-        title: 'How ZeroBounce Handles Catch-All Domains (And What It Misses)',
+        title: 'How ZeroBounce Handles Catch-All Domains',
         description: 'ZeroBounce flags catch-all addresses but cannot protect your infrastructure if you send to them. Here is what it does, what it misses, and how to fill the gap.',
         url: '/blog/zerobounce-catch-all-handling',
         siteName: 'Superkabe',
@@ -22,8 +22,8 @@ export default function ZeroBounceCatchAllHandlingArticle() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "How ZeroBounce Handles Catch-All Domains (And What It Misses)",
-        "description": "ZeroBounce labels catch-all emails but leaves the send decision to you. Learn what ZeroBounce does with catch-all domains, where it stops, and how to send to catch-all leads safely.",
+        "headline": "How ZeroBounce Handles Catch-All Domains",
+        "description": "ZeroBounce labels catch-all emails but leaves the send decision to you. Learn what ZeroBounce does with catch-all domains, where it stops, and how to send.",
         "author": {
             "@type": "Organization",
             "name": "Superkabe",
