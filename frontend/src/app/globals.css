@@ -146,6 +146,22 @@
 .light-theme .rounded-2xl { border-radius: 8px !important; }
 .light-theme .rounded-xl { border-radius: 7px !important; }
 
+/* Scroll performance — isolate paint per card so the browser doesn't recomposite
+   the entire main pane on every scroll frame. content-visibility skips offscreen
+   work entirely, contain:layout/paint scopes work that does happen. */
+.light-theme .premium-card {
+  contain: layout paint style;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+}
+/* Promote the scroll container to its own compositor layer */
+.light-theme main {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
 .premium-card:hover {
   border-color: #9A8F87;
   background: #FCFBF9;
