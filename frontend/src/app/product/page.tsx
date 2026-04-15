@@ -30,11 +30,19 @@ export default function ProductIndexPage() {
             title: 'Core Platform & Infrastructure',
             links: [
                 { title: 'Email Deliverability Protection', href: '/product/email-deliverability-protection', desc: 'Complete overview of our deliverability protection layer.' },
+                { title: 'Email Validation Infrastructure', href: '/product/email-validation-infrastructure-protection', desc: 'Hybrid email validation layer that catches invalid, disposable, and risky addresses before they reach your sender.' },
                 { title: 'Outbound Domain Protection', href: '/product/outbound-domain-protection', desc: 'Secure your outbound sender domains from hard bounces.' },
                 { title: 'Email Infrastructure Health Check', href: '/product/email-infrastructure-health-check', desc: 'Continuous DNS health and reputation monitoring.' },
                 { title: 'Cold Email Infrastructure Protection', href: '/product/cold-email-infrastructure-protection', desc: 'Designed for high-volume cold email scaling.' },
                 { title: 'Outbound Email Infrastructure Monitoring', href: '/product/outbound-email-infrastructure-monitoring', desc: 'Real-time SMTP block and bounce detection.' },
                 { title: 'Email Infrastructure Protection', href: '/product/email-infrastructure-protection', desc: 'The baseline protection system for your agency.' },
+            ]
+        },
+        {
+            title: 'Email Validation & Lead Hygiene',
+            links: [
+                { title: 'Email Validation Infrastructure Protection', href: '/product/email-validation-infrastructure-protection', desc: 'The hybrid validation layer that filters invalid, disposable, role-based, and catch-all emails before send.' },
+                { title: 'Multi-Platform Email Validation', href: '/product/multi-platform-email-validation', desc: 'Validate leads across Smartlead, Instantly, and EmailBison with a single unified layer.' },
             ]
         },
         {

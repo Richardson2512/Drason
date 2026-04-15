@@ -226,7 +226,7 @@ function TableOfContents() {
 
     return (
         <aside className="hidden xl:block fixed top-32 right-8 w-52 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
-            <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-4 shadow-lg shadow-gray-200/30">
+            <div className="bg-white border border-[#D1CBC5] rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
                     <List size={14} className="text-gray-400" />
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">On this page</span>
@@ -271,7 +271,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     };
 
     return (
-        <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+        <div className="docs-body relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
 
             {/* ================= JSON-LD (TechArticle + BreadcrumbList per page) ================= */}
             <DocJsonLd />
@@ -295,8 +295,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 <div className="flex">
                     {/* Sidebar - fixed on desktop, stays frozen while scrolling */}
                     <aside className={`
-                        hidden lg:block fixed top-32 left-6 w-72 h-[calc(100vh-10rem)] bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
-                        shadow-xl shadow-gray-200/50 z-30
+                        hidden lg:block fixed top-32 left-6 w-72 h-[calc(100vh-10rem)] bg-white border border-[#D1CBC5] rounded-xl overflow-y-auto scrollbar-hide z-30
                     `}>
                         <div className="p-6">
                             <nav className="space-y-8">
@@ -324,8 +323,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
                     {/* Mobile Sidebar - fixed overlay */}
                     <aside className={`
-                        fixed top-32 left-6 h-[calc(100vh-10rem)] w-72 bg-white/70 backdrop-blur-md border border-white/30 rounded-3xl overflow-y-auto scrollbar-hide
-                        transition-transform duration-300 z-40 shadow-xl shadow-gray-200/50 lg:hidden
+                        fixed top-32 left-6 h-[calc(100vh-10rem)] w-72 bg-white border border-[#D1CBC5] rounded-xl overflow-y-auto scrollbar-hide
+                        transition-transform duration-300 z-40 lg:hidden
                         ${sidebarOpen ? 'translate-x-0' : '-translate-x-[120%]'}
                     `}>
                         <div className="p-6">

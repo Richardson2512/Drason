@@ -28,6 +28,7 @@ export default function BillingPage() {
                 <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
                 <p className="text-blue-800 mb-4">
                     Superkabe offers tiered plans based on the number of <strong>active leads</strong>, <strong>domains</strong>, and <strong>mailboxes</strong> you monitor.
+                    Every paid plan also includes <strong>email validation credits</strong> for the hybrid validation layer that checks every lead before send.
                     Every account starts with a <strong>free trial</strong>. Usage is tracked in real-time and you can upgrade, downgrade, or cancel at any time.
                 </p>
                 <p className="text-blue-700 text-sm">
@@ -46,6 +47,7 @@ export default function BillingPage() {
                             <th className="px-6 py-3 text-gray-700 font-semibold">Leads</th>
                             <th className="px-6 py-3 text-gray-700 font-semibold">Domains</th>
                             <th className="px-6 py-3 text-gray-700 font-semibold">Mailboxes</th>
+                            <th className="px-6 py-3 text-gray-700 font-semibold">Validation Credits</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -55,6 +57,7 @@ export default function BillingPage() {
                             <td className="px-6 py-4 text-gray-600">10,000</td>
                             <td className="px-6 py-4 text-gray-600">20</td>
                             <td className="px-6 py-4 text-gray-600">75</td>
+                            <td className="px-6 py-4 text-gray-600">10,000</td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 font-bold text-gray-900">Starter</td>
@@ -62,6 +65,7 @@ export default function BillingPage() {
                             <td className="px-6 py-4 text-gray-600">10,000</td>
                             <td className="px-6 py-4 text-gray-600">20</td>
                             <td className="px-6 py-4 text-gray-600">75</td>
+                            <td className="px-6 py-4 text-gray-600">10,000/mo</td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 font-bold text-gray-900">Growth</td>
@@ -69,6 +73,7 @@ export default function BillingPage() {
                             <td className="px-6 py-4 text-gray-600">50,000</td>
                             <td className="px-6 py-4 text-gray-600">75</td>
                             <td className="px-6 py-4 text-gray-600">350</td>
+                            <td className="px-6 py-4 text-gray-600">50,000/mo</td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 font-bold text-gray-900">Scale</td>
@@ -76,10 +81,12 @@ export default function BillingPage() {
                             <td className="px-6 py-4 text-gray-600">100,000</td>
                             <td className="px-6 py-4 text-gray-600">150</td>
                             <td className="px-6 py-4 text-gray-600">700</td>
+                            <td className="px-6 py-4 text-gray-600">100,000/mo</td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 font-bold text-gray-900">Enterprise</td>
                             <td className="px-6 py-4 text-gray-700 font-medium">Custom</td>
+                            <td className="px-6 py-4 text-gray-600">Unlimited</td>
                             <td className="px-6 py-4 text-gray-600">Unlimited</td>
                             <td className="px-6 py-4 text-gray-600">Unlimited</td>
                             <td className="px-6 py-4 text-gray-600">Unlimited</td>
@@ -91,9 +98,35 @@ export default function BillingPage() {
             {/* How Do Usage Limits Work */}
             <h2 className="text-3xl font-bold mb-6 text-gray-900">How Do Usage Limits Work?</h2>
             <p className="text-gray-600 mb-4">
-                Your plan determines the maximum number of active leads, domains, and mailboxes Superkabe monitors.
-                Usage is tracked in real-time with visual progress bars on the billing page.
+                Your plan determines the maximum number of active leads, domains, mailboxes, and email validation credits Superkabe monitors.
+                Usage is tracked in real-time with visual progress bars on the billing page, including a lifetime count of emails validated.
             </p>
+
+            {/* Email Validation Credits */}
+            <div className="bg-white border border-[#D1CBC5] rounded-2xl p-6 mb-6">
+                <h3 className="text-lg font-bold mb-2 text-gray-900">What Are Email Validation Credits?</h3>
+                <p className="text-gray-600 mb-3">
+                    Every paid plan includes monthly email validation credits. One credit = one email checked through the hybrid validation layer (syntax, MX, SMTP probe, disposable detection, role detection, catch-all detection).
+                </p>
+                <ul className="space-y-2 text-gray-600 text-sm">
+                    <li className="flex items-start gap-2">
+                        <span>&#x2022;</span>
+                        <span><strong>Automatic use</strong> &mdash; every lead ingested from Clay or API is validated before routing to Smartlead/Instantly/EmailBison. No manual action required.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <span>&#x2022;</span>
+                        <span><strong>Cached results</strong> &mdash; Superkabe caches validation results for 30 days, so re-ingesting the same email doesn&apos;t re-spend a credit.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <span>&#x2022;</span>
+                        <span><strong>Tracked on Billing &rarr; Usage</strong> &mdash; &ldquo;Emails Validated&rdquo; stat card shows lifetime total across all sources (internal + MillionVerifier).</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <span>&#x2022;</span>
+                        <span><strong>Resets monthly</strong> on your billing anniversary. Unused credits don&apos;t roll over.</span>
+                    </li>
+                </ul>
+            </div>
             <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-12 rounded-r-lg">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">What Happens at 80%+ Usage?</h3>
                 <p className="text-amber-800 mb-2">

@@ -146,6 +146,37 @@
 .light-theme .rounded-2xl { border-radius: 8px !important; }
 .light-theme .rounded-xl { border-radius: 7px !important; }
 
+/* ============================================================================
+   DOCS GRID DESIGN — popl-style cards applied platform-wide to every doc page
+   ============================================================================ */
+.docs-body .bg-white.border,
+.docs-body .bg-white.rounded-2xl,
+.docs-body .bg-white.rounded-xl,
+.docs-body .bg-white.rounded-3xl {
+  border-color: #D1CBC5 !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+}
+.docs-body .rounded-3xl { border-radius: 10px !important; }
+.docs-body .rounded-2xl { border-radius: 10px !important; }
+.docs-body .rounded-xl { border-radius: 8px !important; }
+/* Soften the blue/amber callout banners to look like grid panels, not drop shadows */
+.docs-body .shadow-sm,
+.docs-body .shadow,
+.docs-body .shadow-md,
+.docs-body .shadow-lg,
+.docs-body .shadow-xl,
+.docs-body .shadow-2xl { box-shadow: none !important; }
+/* Remove the translucent glass fill on any leftover bg-white/70 blocks */
+.docs-body [class*="bg-white/"] {
+  background-color: #FFFFFF !important;
+  backdrop-filter: none !important;
+}
+/* Unify card backgrounds that used gray/slate fills */
+.docs-body .bg-gray-50, .docs-body .bg-slate-50 {
+  background-color: #FBF8F2 !important;
+}
+
 /* Scroll performance — isolate paint per card so the browser doesn't recomposite
    the entire main pane on every scroll frame. content-visibility skips offscreen
    work entirely, contain:layout/paint scopes work that does happen. */
