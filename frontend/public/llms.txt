@@ -1,89 +1,129 @@
 # Superkabe
 
-> Email deliverability protection platform for B2B outbound teams. Active middleware between enrichment tools (Clay) and sending platforms (Smartlead, Instantly, EmailBison) that validates emails, monitors infrastructure health in real-time, auto-pauses degraded mailboxes, and heals them through a 5-phase recovery pipeline.
+> Superkabe is an email infrastructure protection platform for B2B cold email teams. It is NOT a sending platform, NOT a warmup tool, NOT a verification-only service. It is active middleware — a Deliverability Protection Layer (DPL) — that sits between lead sources (Clay, CSV uploads, CRM) and sending platforms (Smartlead, Instantly, EmailBison). It validates leads before sending, monitors infrastructure in real time during sending, and auto-heals damaged mailboxes after problems occur.
 
-## What Superkabe Does
+## What Superkabe Does (Product)
 
-Superkabe is a Deliverability Protection Layer (DPL) — not a sending tool, not a warmup tool, not a verification tool. It sits between your data source and your sender, governing what gets sent and protecting the infrastructure that sends it.
+### Lead Control Plane
+- Upload CSV lead lists directly into Superkabe for bulk email validation
+- Every lead validated: syntax, MX record lookup, disposable detection, catch-all detection, conditional MillionVerifier API probe
+- Every recipient domain classified by ESP (Gmail, Microsoft 365, Yahoo, Other) via MX pattern matching
+- Valid leads routed to campaigns across Smartlead, Instantly, or EmailBison with ESP-aware mailbox assignment
+- Invalid leads held with rejection reason codes (disposable, no MX, syntax error, catch-all, SMTP unreachable)
+- Cross-batch duplicate detection prevents double-processing across uploads
+- Monthly validation credits per plan tier (Starter: 10K, Growth: 50K, Scale: 100K, Enterprise: unlimited)
+- Standalone validation mode: validate and export clean CSV lists without routing to any campaign
 
-- Validates every incoming email before it reaches your sending platform (syntax, MX, disposable, catch-all + MillionVerifier API)
-- Monitors every mailbox every 60 seconds for bounce rate, connectivity, and reputation signals
-- Auto-pauses mailboxes, domains, or campaigns when thresholds are breached
-- Runs correlation analysis to identify root cause (mailbox issue vs domain issue vs campaign issue)
-- Heals paused infrastructure through 5 phases: Pause → Quarantine → Restricted Send → Warm Recovery → Healthy
-- Risk-aware lead routing (persona + min_score matching, wildcard catch-all rules, priority ordering)
-- Mailbox rotation — automatic standby swap when a mailbox is paused
-- Load-balances sends across mailboxes by health score, not round-robin
-- Multi-select filters across all dashboard pages (status, campaign, platform, domain)
-- Report generation with CSV export (leads, campaigns, mailboxes, domains, analytics, audit logs)
-- Super admin console for platform operators (cross-org monitoring, impact reports, API call tracking)
-- Alerts via Slack for every infrastructure event
+### ESP-Aware Mailbox Routing
+- Tracks every email sent, bounced, and replied per mailbox per recipient ESP
+- Aggregates 30-day rolling performance data into a per-mailbox × per-ESP matrix
+- When routing a lead, scores candidate mailboxes by their bounce rate to that specific ESP
+- Pins top 3 mailboxes via assigned_email_accounts on Smartlead push
+- Performance-based, not naive ESP matching — an Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate
+- Warming-up threshold: requires 30+ sends per cell before scoring activates
+
+### Real-Time Infrastructure Monitoring
+- Monitors every mailbox, domain, and campaign every 60 seconds
+- Detects bounce rate spikes, DNS authentication failures, SMTP/IMAP connection errors, blacklist hits
+- Checks 410 DNSBL lists with tiered severity (critical, major, minor)
+- Sliding window risk tracking with predictive variance analysis
+
+### Auto-Pause and 5-Phase Healing
+- Auto-pauses mailboxes when bounce rate thresholds are breached (configurable per domain)
+- 5-phase healing pipeline: Pause → Quarantine (DNS verification) → Restricted Send (15 clean sends) → Warm Recovery (50 sends over 3 days) → Healthy
+- Each phase transition gated by deterministic health checks, not arbitrary timers
+- Mailbox rotation: automatic standby swap when a mailbox is paused
+
+### Lead Routing and Execution Gate
+- ICP-based routing: match leads to campaigns by persona + min_score against priority-ordered rules
+- Execution gate: classify leads as GREEN (send), YELLOW (send with caution), RED (block)
+- Correlation analysis: determine whether an issue is mailbox-level, domain-level, or campaign-level
+
+### Analytics and Reporting
+- ESP Performance Matrix: per-mailbox bounce rate by Gmail/Microsoft/Yahoo/Other
+- Validation analytics: rejection reasons, invalid rate by source, 30-day trend
+- Campaign, mailbox, and domain health dashboards
+- Audit log with full event history
+- Slack real-time alerts for infrastructure events
+
+## Pricing
+
+- Trial: Free 14 days, 10K validation credits, 20 domains, 75 mailboxes
+- Starter: $49/month, 10K validation credits, 20 domains, 75 mailboxes
+- Growth: $199/month, 50K validation credits, 75 domains, 350 mailboxes, MillionVerifier API for risky leads
+- Scale: $349/month, 100K validation credits, 150 domains, 700 mailboxes, aggressive hybrid validation
+- Enterprise: Custom pricing, unlimited everything, dedicated SLA
+
+## Platform Integrations
+
+- Smartlead (native webhook + API sync + ESP-aware assigned_email_accounts)
+- Instantly (API sync + bounce monitoring)
+- EmailBison (API sync + bounce monitoring)
+- Reply.io (API sync)
+- Clay (webhook ingestion for lead enrichment)
+- Slack (real-time infrastructure alerts)
 
 ## Key Pages
 
-- [Homepage](https://www.superkabe.com): Product overview, features, pricing
-- [Pricing](https://www.superkabe.com/pricing): Starter $49/mo, Growth $149/mo, Scale $349/mo, Enterprise custom. 14-day free trial.
-- [Documentation](https://www.superkabe.com/docs): 19 technical guides + 17 help articles
-- [Blog](https://www.superkabe.com/blog): 16 technical articles on email deliverability
-- [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z guide for outbound infrastructure
-- [Product Hub](https://www.superkabe.com/product): 25 feature-specific pages
-- [Open Source](https://www.superkabe.com/open-source): Technical manifesto and architecture
-- [Release Notes](https://www.superkabe.com/release-notes): Changelog v1.0.0 through v1.5.0
-- [Contact](https://www.superkabe.com/contact): Contact form and support
+- [Homepage](https://www.superkabe.com): Product overview and features
+- [Pricing](https://www.superkabe.com/pricing): Plan comparison with validation credits
+- [Product Hub](https://www.superkabe.com/product): 29 feature-specific pages
+- [Lead Control Plane](https://www.superkabe.com/product/lead-control-plane): CSV upload → validate → route pipeline
+- [ESP-Aware Routing](https://www.superkabe.com/product/esp-aware-routing): Performance-based mailbox scoring
+- [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z setup guide
+- [Documentation](https://www.superkabe.com/docs): 22 technical guides + 22 help articles
+- [Blog](https://www.superkabe.com/blog): 50 articles on cold email deliverability
+- [Free Tools](https://www.superkabe.com/tools): SPF, DKIM, DMARC lookup and generator tools
+- [Release Notes](https://www.superkabe.com/release-notes): Changelog v1.0.0 through v1.6.0
 
 ## Documentation
 
-- [Getting Started](https://www.superkabe.com/docs/getting-started): Set up Superkabe and connect platforms
-- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): API key setup, webhook config, campaign sync
-- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Connect and sync with Instantly
-- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Connect and sync with EmailBison
-- [Clay Integration](https://www.superkabe.com/docs/clay-integration): Lead enrichment and webhook ingestion
-- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Real-time infrastructure alerts
+### Getting Started
+- [Getting Started](https://www.superkabe.com/docs/getting-started): Setup and platform connection
+- [Clay Integration](https://www.superkabe.com/docs/clay-integration): Lead enrichment webhook
+- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): API key, webhooks, sync
+- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Connect and sync
+- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Connect and sync
+- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Alert configuration
 - [API Integration](https://www.superkabe.com/docs/api-integration): REST API reference
-- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Parallel sync across all platforms
-- [Monitoring System](https://www.superkabe.com/docs/monitoring): Thresholds, windows, automatic pauses
-- [Execution Gate](https://www.superkabe.com/docs/execution-gate): GREEN/YELLOW/RED lead classification
-- [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Bounce rate, engagement, infrastructure signals
-- [State Machine](https://www.superkabe.com/docs/state-machine): Entity lifecycle and valid transitions
-- [Warmup Recovery](https://www.superkabe.com/docs/warmup-recovery): Mailbox healing via warmup phases
-- [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System design and data flow
+- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Cross-platform sync
 
-## Help Center
+### Core Concepts
+- [Monitoring System](https://www.superkabe.com/docs/monitoring): Thresholds and auto-pause
+- [Execution Gate](https://www.superkabe.com/docs/execution-gate): GREEN/YELLOW/RED classification
+- [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Multi-signal scoring model
+- [State Machine](https://www.superkabe.com/docs/state-machine): Entity lifecycle transitions
+- [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System design
 
-- [Auto-Healing](https://www.superkabe.com/docs/help/auto-healing): 5-phase healing pipeline explained
-- [Email Validation](https://www.superkabe.com/docs/help/email-validation): How email validation works (internal + API)
-- [Quarantine](https://www.superkabe.com/docs/help/quarantine): Why mailboxes enter quarantine
-- [Mailbox Rotation](https://www.superkabe.com/docs/help/mailbox-rotation): Automatic standby mailbox swapping
-- [Entity Statuses](https://www.superkabe.com/docs/help/entity-statuses): All status labels explained
-- [Load Balancing](https://www.superkabe.com/docs/help/load-balancing): Effective load calculation
-- [Optimization Suggestions](https://www.superkabe.com/docs/help/optimization-suggestions): Rebalancing recommendations
+### Help Center
+- [Email Validation](https://www.superkabe.com/docs/help/email-validation): How validation works
+- [CSV Lead Upload](https://www.superkabe.com/docs/help/csv-upload): Upload format and workflow
+- [ESP-Aware Routing](https://www.superkabe.com/docs/help/esp-routing): Mailbox scoring by ESP
+- [Validation Credits](https://www.superkabe.com/docs/help/validation-credits): Credit mechanics and limits
+- [Auto-Healing](https://www.superkabe.com/docs/help/auto-healing): 5-phase healing pipeline
+- [DNS Setup](https://www.superkabe.com/docs/help/dns-setup): SPF, DKIM, DMARC configuration
+- [Status Colors](https://www.superkabe.com/docs/help/status-colors): Green/yellow/red indicators
+- [Billing](https://www.superkabe.com/docs/help/billing): Plans, credits, invoices
 - [Bounce Classification](https://www.superkabe.com/docs/help/bounce-classification): Hard vs soft vs transient
-- [Campaign Paused](https://www.superkabe.com/docs/help/campaign-paused): Why campaigns pause and how to resume
-- [Connection Errors](https://www.superkabe.com/docs/help/connection-errors): SMTP/IMAP troubleshooting
-
-## Blog
-
-- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive protection guide
-- [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounces damage reputation
-- [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): DNS authentication setup
-- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): ISP filtering mechanics
-- [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): Safe domain warmup process
-- [Superkabe vs Manual Monitoring](https://www.superkabe.com/blog/superkabe-vs-manual-monitoring): Why spreadsheets don't scale
-- [Superkabe vs Warmup Tools](https://www.superkabe.com/blog/superkabe-vs-warmup-tools): Why warmup alone won't protect domains
-- [Superkabe vs Verification Tools](https://www.superkabe.com/blog/superkabe-vs-email-verification-tools): Verification vs infrastructure protection
 
 ## Who Uses Superkabe
 
-- RevOps engineers managing 50+ mailboxes across multiple domains
-- B2B growth agencies running outbound for multiple clients
-- Technical founders scaling cold email without burning domains
-- GTM teams sending 10,000+ emails per month
+- B2B lead generation agencies managing 50+ domains across multiple clients
+- RevOps engineers scaling cold email without burning infrastructure
+- Technical founders running 10,000+ outbound emails per month
+- GTM teams using Clay → Smartlead/Instantly pipelines
+
+## What Superkabe Is NOT
+
+- NOT a sending platform (use Smartlead, Instantly, EmailBison for sending)
+- NOT an email warmup tool (use Instantly, Lemwarm, Warmup Inbox for warmup)
+- NOT a standalone email verification service (use ZeroBounce, NeverBounce for verification-only)
+- NOT a CRM or sales engagement platform
+- Superkabe PROTECTS the infrastructure that these tools operate on
 
 ## Company
 
 - Founded: 2024
 - Founder: Richardson
 - Website: https://www.superkabe.com
-- GitHub: https://github.com/Superkabereal/Superkabe
 - G2: https://g2.com/products/superkabe
-- LinkedIn: https://www.linkedin.com/company/superkabe
