@@ -83,6 +83,10 @@ function ValidationPageContent() {
     const [batchMeta, setBatchMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 0 });
     const [analytics, setAnalytics] = useState<ValidationAnalytics | null>(null);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [espPerformance, setEspPerformance] = useState<Array<{
+        mailbox_id: string; email: string; status: string;
+        esp_scores: Record<string, { send_count: number; bounce_count: number; bounce_rate: number; reply_count: number }>;
+    }>>([]);
     const [loading, setLoading] = useState(true);
     const [statusFilter, setStatusFilter] = useState('all');
     const [espFilter, setEspFilter] = useState('all');
@@ -132,6 +136,13 @@ function ValidationPageContent() {
         } catch { /* graceful */ }
     }, []);
 
+    const fetchEspPerformance = useCallback(async () => {
+        try {
+            const res = await apiClient<{ data: typeof espPerformance }>('/api/analytics/esp-performance');
+            setEspPerformance(res?.data || []);
+        } catch { /* graceful */ }
+    }, []);
+
     const fetchBatchLeads = useCallback(async (batchId: string, page = 1) => {
         try {
             const params = new URLSearchParams({ page: String(page), limit: String(batchMeta.limit) });
@@ -147,7 +158,7 @@ function ValidationPageContent() {
     }, [statusFilter, espFilter, searchQuery, batchMeta.limit]);
 
     useEffect(() => {
-        Promise.all([fetchBatches(), fetchAnalytics(), fetchCampaigns()]).then(() => setLoading(false));
+        Promise.all([fetchBatches(), fetchAnalytics(), fetchCampaigns(), fetchEspPerformance()]).then(() => setLoading(false));
     }, [fetchBatches, fetchAnalytics, fetchCampaigns]);
 
     useEffect(() => {
@@ -370,6 +381,55 @@ function ValidationPageContent() {
                                 );
                             })}
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Mailbox ESP Performance Matrix */}
+            {espPerformance.length > 0 && (
+                <div className="premium-card">
+                    <div className="flex items-center justify-between mb-3">
+                        <div>
+                            <h2 className="text-sm font-bold text-gray-900">Mailbox ESP Performance</h2>
+                            <p className="text-[10px] text-gray-400 mt-0.5">30-day rolling bounce rate per mailbox per recipient ESP. Used for ESP-aware routing.</p>
+                        </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="border-b" style={{ borderColor: '#D1CBC5' }}>
+                                    <th className="pb-2 text-[10px] font-bold uppercase text-gray-400">Mailbox</th>
+                                    <th className="pb-2 text-[10px] font-bold uppercase text-gray-400 text-center" style={{ color: ESP_COLORS.gmail }}>Gmail</th>
+                                    <th className="pb-2 text-[10px] font-bold uppercase text-gray-400 text-center" style={{ color: ESP_COLORS.microsoft }}>Microsoft</th>
+                                    <th className="pb-2 text-[10px] font-bold uppercase text-gray-400 text-center" style={{ color: ESP_COLORS.yahoo }}>Yahoo</th>
+                                    <th className="pb-2 text-[10px] font-bold uppercase text-gray-400 text-center" style={{ color: ESP_COLORS.other }}>Other</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {espPerformance.map(mb => (
+                                    <tr key={mb.mailbox_id} style={{ borderBottom: '1px solid #D1CBC5' }}>
+                                        <td className="py-1.5 text-xs text-gray-900 font-medium max-w-[200px] truncate">{mb.email}</td>
+                                        {['gmail', 'microsoft', 'yahoo', 'other'].map(esp => {
+                                            const data = mb.esp_scores[esp];
+                                            if (!data || data.send_count < 30) {
+                                                return <td key={esp} className="py-1.5 text-center text-[10px] text-gray-300">warming up</td>;
+                                            }
+                                            const rate = data.bounce_rate * 100;
+                                            const color = rate < 1 ? '#065F46' : rate < 2 ? '#92400E' : '#991B1B';
+                                            const bg = rate < 1 ? '#D1FAE5' : rate < 2 ? '#FEF3C7' : '#FEE2E2';
+                                            return (
+                                                <td key={esp} className="py-1.5 text-center">
+                                                    <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: bg, color }}>
+                                                        {rate.toFixed(1)}%
+                                                    </span>
+                                                    <div className="text-[9px] text-gray-400 mt-0.5">{data.send_count} sends</div>
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             )}
