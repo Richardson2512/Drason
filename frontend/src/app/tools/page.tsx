@@ -83,7 +83,7 @@ export default function ToolsPage() {
                 "@type": "ListItem",
                 "position": i + 1,
                 "name": tool.title,
-                "url": `https://www.superkabe.com${tool.href}`,
+                "item": `https://www.superkabe.com${tool.href}`,
             })),
         },
     };

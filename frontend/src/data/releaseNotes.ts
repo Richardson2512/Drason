@@ -21,7 +21,7 @@ export const releaseNotes: ReleaseNote[] = [
         isoDate: '2026-03-15',
         label: 'Latest',
         slug: 'v1.5.0',
-        headline: 'Hybrid Email Validation, Multi-Select Filters, and Load Balancing Redesign',
+        headline: 'Hybrid Email Validation and Load Balancing',
         summary: 'This release introduces a hybrid email validation layer that checks every incoming lead before it reaches your sending platform. We also added multi-select filters across all dashboard pages and completely redesigned the load balancing system.',
         features: [
             'Hybrid email validation layer (syntax, MX, disposable, catch-all + MillionVerifier API)',
@@ -164,7 +164,7 @@ export const releaseNotes: ReleaseNote[] = [
         isoDate: '2025-12-15',
         label: null,
         slug: 'v1.2.0',
-        headline: 'Infrastructure Assessment, DNS Health Checks, and Analytics',
+        headline: 'Infrastructure Assessment and DNS Health',
         summary: 'New onboarding flow that assesses your infrastructure health before you start sending. DNS checks verify SPF, DKIM, and DMARC configuration. The analytics dashboard shows engagement trends over time.',
         features: [
             'Infrastructure assessment on onboarding',
@@ -250,7 +250,7 @@ export const releaseNotes: ReleaseNote[] = [
         isoDate: '2025-10-15',
         label: 'Initial Release',
         slug: 'v1.0.0',
-        headline: 'Superkabe Launches — Real-Time Email Infrastructure Monitoring',
+        headline: 'Real-Time Email Infrastructure Monitoring',
         summary: 'The first version of Superkabe. Connects to Smartlead, syncs your campaigns, mailboxes, and leads, and provides real-time bounce monitoring with manual intervention tools.',
         features: [
             'Initial release',

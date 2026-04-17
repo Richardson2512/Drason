@@ -39,8 +39,7 @@ export default function ReleaseNotesPage() {
                 "@type": "ListItem",
                 "position": index + 1,
                 "name": `Superkabe v${release.version} — ${release.headline}`,
-                "description": release.summary,
-                "url": `https://www.superkabe.com/release-notes/${release.slug}`
+                "item": `https://www.superkabe.com/release-notes/${release.slug}`
             }))
         },
         "mainEntityOfPage": {

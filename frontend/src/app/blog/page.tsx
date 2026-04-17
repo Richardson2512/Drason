@@ -328,9 +328,8 @@ export default function BlogPage() {
             "itemListElement": articles.map((article, index) => ({
                 "@type": "ListItem",
                 "position": index + 1,
-                "url": `https://www.superkabe.com/blog/${article.slug}`,
                 "name": article.title,
-                "description": article.description
+                "item": `https://www.superkabe.com/blog/${article.slug}`
             }))
         }
     };

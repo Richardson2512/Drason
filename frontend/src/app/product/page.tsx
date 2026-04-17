@@ -107,9 +107,8 @@ export default function ProductIndexPage() {
                 category.links.map((link, index) => ({
                     "@type": "ListItem",
                     "position": index + 1,
-                    "url": `https://www.superkabe.com${link.href}`,
                     "name": link.title,
-                    "description": link.desc
+                    "item": `https://www.superkabe.com${link.href}`
                 }))
             )
         }

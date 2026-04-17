@@ -780,7 +780,7 @@ export const productPages: Record<string, ProductPageData> = {
     },
     "email-validation-infrastructure-protection": {
         slug: "email-validation-infrastructure-protection",
-        title: "Email Validation with Infrastructure Protection for Cold Outreach",
+        title: "Email Validation + Infrastructure Protection",
         description: "Superkabe combines email validation, real-time bounce monitoring, and automated mailbox healing in one platform. Validate leads before sending, monitor infrastructure after sending, and auto-recover when things break.",
         intro: "combines email validation with full infrastructure protection. Most validation tools check if an email exists and stop there. Superkabe validates before sending, monitors bounce rates in real time after sending, auto-pauses degraded mailboxes, and heals them through a 5-phase recovery pipeline. One platform replaces your verification tool, your monitoring spreadsheet, and your manual pause-and-pray workflow.",
         sections: [

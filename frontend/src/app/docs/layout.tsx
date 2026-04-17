@@ -52,6 +52,8 @@ const docSections = [
             { title: 'Quarantine Explained', href: '/docs/help/quarantine', icon: HelpCircle },
             { title: 'Mailbox Rotation', href: '/docs/help/mailbox-rotation', icon: HelpCircle },
             { title: 'Status Labels', href: '/docs/help/entity-statuses', icon: HelpCircle },
+            { title: 'Status Colors', href: '/docs/help/status-colors', icon: HelpCircle },
+            { title: 'DNS Setup Guide', href: '/docs/help/dns-setup', icon: HelpCircle },
             { title: 'Bounce Classification', href: '/docs/help/bounce-classification', icon: HelpCircle },
             { title: 'Load Balancing', href: '/docs/help/load-balancing', icon: HelpCircle },
             { title: 'Optimization Suggestions', href: '/docs/help/optimization-suggestions', icon: HelpCircle },

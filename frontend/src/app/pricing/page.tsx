@@ -35,11 +35,11 @@ export default function PricingPage() {
         "mainEntity": {
             "@type": "ItemList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Trial", "description": "Free 7-day trial with up to 3 domains and 9 mailboxes" },
-                { "@type": "ListItem", "position": 2, "name": "Starter", "description": "$49/month — 20 domains, 75 mailboxes, email validation, 5-phase healing, DNS monitoring, core protection" },
-                { "@type": "ListItem", "position": 3, "name": "Growth", "description": "$199/month — 75 domains, 350 mailboxes, hybrid validation, correlation engine, auto-healing pipeline" },
-                { "@type": "ListItem", "position": 4, "name": "Scale", "description": "$349/month — 150 domains, 700 mailboxes, aggressive hybrid validation, advanced correlation, mailbox rotation" },
-                { "@type": "ListItem", "position": 5, "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes, full hybrid validation with custom thresholds, super admin console, dedicated SLA" }
+                { "@type": "ListItem", "position": 1, "name": "Trial", "item": { "@type": "Offer", "name": "Trial", "description": "Free 7-day trial with up to 3 domains and 9 mailboxes", "url": "https://www.superkabe.com/pricing#trial" } },
+                { "@type": "ListItem", "position": 2, "name": "Starter", "item": { "@type": "Offer", "name": "Starter", "description": "$49/month — 20 domains, 75 mailboxes, email validation, 5-phase healing, DNS monitoring", "url": "https://www.superkabe.com/pricing#starter", "price": "49", "priceCurrency": "USD" } },
+                { "@type": "ListItem", "position": 3, "name": "Growth", "item": { "@type": "Offer", "name": "Growth", "description": "$199/month — 75 domains, 350 mailboxes, hybrid validation, correlation engine, auto-healing", "url": "https://www.superkabe.com/pricing#growth", "price": "199", "priceCurrency": "USD" } },
+                { "@type": "ListItem", "position": 4, "name": "Scale", "item": { "@type": "Offer", "name": "Scale", "description": "$349/month — 150 domains, 700 mailboxes, aggressive hybrid validation, advanced correlation", "url": "https://www.superkabe.com/pricing#scale", "price": "349", "priceCurrency": "USD" } },
+                { "@type": "ListItem", "position": 5, "name": "Enterprise", "item": { "@type": "Offer", "name": "Enterprise", "description": "Custom pricing — unlimited domains and mailboxes, full hybrid validation, dedicated SLA", "url": "https://www.superkabe.com/pricing#enterprise" } }
             ]
         },
         "datePublished": "2025-11-01",
