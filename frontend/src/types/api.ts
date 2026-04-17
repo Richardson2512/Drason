@@ -565,3 +565,58 @@ export interface SyncResponse {
   mailboxes_synced?: number;
   leads_synced?: number;
 }
+
+// ────────────────────────────────────────────────────────────────────
+// Email Validation (bulk upload + ESP classification)
+// ────────────────────────────────────────────────────────────────────
+
+export interface ValidationBatch {
+  id: string;
+  source: string;
+  status: string;
+  file_name?: string;
+  total_count: number;
+  valid_count: number;
+  invalid_count: number;
+  risky_count: number;
+  duplicate_count: number;
+  routed_count: number;
+  target_campaign_id?: string;
+  created_at: string;
+  completed_at?: string;
+}
+
+export interface ValidationBatchLead {
+  id: string;
+  batch_id: string;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+  persona?: string;
+  lead_score?: number;
+  validation_status: string;
+  validation_score?: number;
+  esp_bucket?: string;
+  routed_to_campaign_id?: string;
+  routed_at?: string;
+  error_message?: string;
+  created_at: string;
+}
+
+export interface ColumnMapping {
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+  persona?: string;
+  lead_score?: string;
+}
+
+export interface ValidationAnalytics {
+  totalValidated: number;
+  statusBreakdown: Record<string, number>;
+  invalidRateBySource: Array<{ source: string; total: number; invalid: number; rate: number }>;
+  espDistribution: Record<string, number>;
+  trend: Array<{ date: string; status: string; count: number }>;
+}

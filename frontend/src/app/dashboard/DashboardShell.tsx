@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Scale, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Scale, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -199,6 +199,7 @@ export default function DashboardShell({
                                 { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={13} strokeWidth={1.75} /> },
                                 { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={13} strokeWidth={1.75} /> },
                                 { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={13} strokeWidth={1.75} /> },
+                                { href: '/dashboard/validation', label: 'Email Validation', icon: <BadgeCheck size={13} strokeWidth={1.75} /> },
                             ]},
                             { label: 'System', items: [
                                 { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={13} strokeWidth={1.75} /> },
