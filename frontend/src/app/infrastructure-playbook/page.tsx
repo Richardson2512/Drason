@@ -39,15 +39,21 @@ export default function InfrastructurePlaybookPage() {
             },
             {
                 "@type": "HowToStep",
-                "name": "Configure Structural Governance and Validation",
-                "text": "Enable DNS authentication monitoring for SPF, DKIM, and DMARC records. Configure mailbox fatigue auto-healing to detect soft bounce spikes and automatically load-balance traffic away from fatigued mailboxes toward healthy assets.",
+                "name": "Upload and Validate Leads via Lead Control Plane",
+                "text": "Upload CSV files directly into Superkabe for bulk email validation. Every lead is checked for syntax, MX records, disposable domains, and catch-all detection. Recipients are classified by ESP (Gmail, Microsoft, Yahoo) via MX lookup. Invalid leads are held with rejection reasons. Valid leads are routed to campaigns with ESP-aware mailbox assignment.",
                 "url": "https://www.superkabe.com/infrastructure-playbook#3"
             },
             {
                 "@type": "HowToStep",
-                "name": "Review Documentation and Next Steps",
-                "text": "Explore focused technical resources including the deliverability guide, DNS authentication setup, domain burnout prevention suite, and auto-healing architecture documentation to fully secure your outbound revenue stream.",
+                "name": "Configure Structural Governance and ESP-Aware Routing",
+                "text": "Enable DNS authentication monitoring for SPF, DKIM, and DMARC records. Configure ESP-aware mailbox routing that scores each mailbox by its 30-day bounce rate per recipient ESP and pins the best performers. Set up the 5-phase healing pipeline for automated mailbox recovery.",
                 "url": "https://www.superkabe.com/infrastructure-playbook#4"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Review Documentation and Next Steps",
+                "text": "Explore focused technical resources including the Lead Control Plane, ESP-aware routing, validation credits, domain burnout prevention, and auto-healing documentation to fully secure your outbound revenue stream.",
+                "url": "https://www.superkabe.com/infrastructure-playbook#5"
             }
         ],
         "author": {
@@ -121,9 +127,28 @@ export default function InfrastructurePlaybookPage() {
                         Before any lead touches your sender platform, run it through email validation — syntax checks, MX record verification, disposable domain detection, and catch-all identification at minimum. Superkabe performs this multi-stage validation automatically on ingestion, blocking invalid addresses before they can generate bounces and damage your sender reputation. For risky leads that pass basic checks but score below confidence thresholds, Superkabe conditionally routes them through external API verification (MillionVerifier) for a second opinion.
                     </p>
 
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">The Lead Control Plane: CSV Upload + Validation + Routing</h3>
+                    <p className="mb-6 leading-relaxed">
+                        Leads uploaded directly into Smartlead or Instantly bypass validation entirely. The Lead Control Plane closes this gap. Upload CSV files directly into Superkabe&apos;s Email Validation dashboard. Every lead is validated, classified by recipient ESP (Gmail, Microsoft 365, Yahoo, or Other via MX record pattern matching), and routed to campaigns with ESP-aware mailbox assignment. Results show exactly which leads were caught as invalid, disposable, or duplicate — with rejection reasons and validation scores.
+                    </p>
+                    <p className="mb-6 leading-relaxed">
+                        Each plan includes monthly validation credits (Starter: 10K, Growth: 50K, Scale: 100K, Enterprise: unlimited). One credit equals one unique email validated. Cached results and duplicates do not consume credits. Track usage on the Billing page alongside active leads, domains, and mailboxes.
+                    </p>
+
                     <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Health Gate: Lead Triage Before Routing</h3>
                     <p className="mb-6 leading-relaxed">
                         Classify leads as GREEN (safe to send), YELLOW (proceed with caution — distributed with per-mailbox risk caps), or RED (block entirely) based on validation score and domain health. This deterministic triage layer runs after validation and before routing, ensuring that only leads meeting your quality threshold ever reach a campaign.
+                    </p>
+
+                    <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">ESP-Aware Mailbox Routing</h3>
+                    <p className="mb-6 leading-relaxed">
+                        Most sending platforms offer basic ESP matching — route Gmail recipients to Gmail mailboxes. Superkabe goes further. Every email sent, bounced, and replied creates a tracking event tagged with the sending mailbox and the recipient&apos;s ESP. Every 6 hours, these events are aggregated into a per-mailbox per-ESP performance matrix showing 30-day rolling bounce rates.
+                    </p>
+                    <p className="mb-6 leading-relaxed">
+                        When a lead is pushed to a campaign, Superkabe scores each mailbox against the recipient&apos;s ESP using actual performance data — not provider identity. A Gmail mailbox with a 2% bounce rate to Gmail recipients gets skipped. An Outlook mailbox with 0.1% bounce rate to Gmail gets selected. The top 3 performing mailboxes are pinned to the lead via <code>assigned_email_accounts</code>, overriding the platform&apos;s default mailbox picker.
+                    </p>
+                    <p className="mb-6 leading-relaxed">
+                        The ESP Performance Matrix dashboard visualizes this data: green under 1% bounce rate, yellow 1–2%, red above 2%. Cells with fewer than 30 sends show &ldquo;warming up&rdquo; to prevent routing decisions based on statistical noise. After 3–4 weeks of normal volume, most cells have enough data for reliable scoring.
                     </p>
 
                     <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-16">2. Deploying the Deliverability Protection Layer (DPL)</h2>
@@ -167,21 +192,29 @@ export default function InfrastructurePlaybookPage() {
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mt-10 not-prose">
-                        <Link href="/blog/email-deliverability-guide" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
-                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">The Ultimate Deliverability Guide</h4>
-                            <p className="text-gray-600 text-sm leading-relaxed">Understand the distinct mathematics behind ISP reputation scoring and inbox placement.</p>
+                        <Link href="/product/lead-control-plane" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
+                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Lead Control Plane</h4>
+                            <p className="text-gray-600 text-sm leading-relaxed">Upload CSV leads, validate every email, classify by ESP, and route to the best-performing mailboxes.</p>
                         </Link>
-                        <Link href="/blog/spf-dkim-dmarc-explained" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
-                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Mastering DNS Records</h4>
-                            <p className="text-gray-600 text-sm leading-relaxed">A strictly technical breakdown on constructing and validating SPF, DKIM, and DMARC text records.</p>
+                        <Link href="/product/esp-aware-routing" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
+                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">ESP-Aware Mailbox Routing</h4>
+                            <p className="text-gray-600 text-sm leading-relaxed">Score mailboxes by 30-day per-ESP bounce rate and pin the best performers for each lead.</p>
                         </Link>
                         <Link href="/product/domain-burnout-prevention-tool" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
                             <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Domain Burnout Prevention Suite</h4>
                             <p className="text-gray-600 text-sm leading-relaxed">Explore the specific features Superkabe uses to intercept domain damage.</p>
                         </Link>
                         <Link href="/product/automated-domain-healing" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
-                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">DPL Auto-Healing Architecture</h4>
-                            <p className="text-gray-600 text-sm leading-relaxed">Dive deep into how load-balanced active middleware recovers fatigued resources.</p>
+                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">5-Phase Healing Pipeline</h4>
+                            <p className="text-gray-600 text-sm leading-relaxed">How Superkabe automatically recovers fatigued mailboxes through graduated rehabilitation.</p>
+                        </Link>
+                        <Link href="/blog/email-deliverability-guide" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
+                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">The Ultimate Deliverability Guide</h4>
+                            <p className="text-gray-600 text-sm leading-relaxed">Understand ISP reputation scoring and inbox placement mathematics.</p>
+                        </Link>
+                        <Link href="/docs/help/validation-credits" className="block bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group hover:scale-[1.02]">
+                            <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600">Validation Credits Guide</h4>
+                            <p className="text-gray-600 text-sm leading-relaxed">Monthly credit limits, usage tracking, caching benefits, and optimization tips.</p>
                         </Link>
                     </div>
 
