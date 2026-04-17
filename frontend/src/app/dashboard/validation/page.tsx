@@ -385,12 +385,129 @@ function ValidationPageContent() {
                 </div>
             )}
 
+            {/* Analytics Deep-Dive: Rejection Reasons + Source Breakdown + Trend */}
+            {analytics && analytics.totalValidated > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {/* Rejection Reasons */}
+                    <div className="premium-card">
+                        <h3 className="text-xs font-bold text-gray-900 mb-2">Rejection Reasons</h3>
+                        {(analytics.rejectionReasons || []).length > 0 ? (
+                            <div className="flex flex-col gap-1.5">
+                                {(analytics.rejectionReasons || []).map(r => {
+                                    const totalInvalid = (analytics.statusBreakdown.invalid || 0) + (analytics.statusBreakdown.risky || 0);
+                                    const pct = totalInvalid > 0 ? Math.round((r.count / totalInvalid) * 100) : 0;
+                                    const labels: Record<string, string> = {
+                                        disposable: 'Disposable email',
+                                        no_mx: 'No MX records',
+                                        syntax: 'Syntax error',
+                                        smtp_fail: 'SMTP unreachable',
+                                        catch_all: 'Catch-all domain',
+                                        role_based: 'Role-based (info@)',
+                                        low_score: 'Low confidence score',
+                                        api_invalid: 'API rejected',
+                                    };
+                                    return (
+                                        <div key={r.reason}>
+                                            <div className="flex items-center justify-between text-[10px] mb-0.5">
+                                                <span className="text-gray-600">{labels[r.reason] || r.reason}</span>
+                                                <span className="font-semibold text-gray-900">{r.count} ({pct}%)</span>
+                                            </div>
+                                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                                <div className="h-full bg-red-400 rounded-full" style={{ width: `${pct}%` }} />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <p className="text-[10px] text-gray-400 text-center py-4">No rejections yet</p>
+                        )}
+                    </div>
+
+                    {/* Invalid Rate by Source */}
+                    <div className="premium-card">
+                        <h3 className="text-xs font-bold text-gray-900 mb-2">Invalid Rate by Source</h3>
+                        {(analytics.invalidRateBySource || []).length > 0 ? (
+                            <div className="flex flex-col gap-2">
+                                {analytics.invalidRateBySource.map(s => {
+                                    const ratePct = Math.round(s.rate * 100);
+                                    const barColor = ratePct < 3 ? '#10B981' : ratePct < 8 ? '#F59E0B' : '#EF4444';
+                                    return (
+                                        <div key={s.source}>
+                                            <div className="flex items-center justify-between text-[10px] mb-0.5">
+                                                <span className="text-gray-600 uppercase font-medium">{s.source}</span>
+                                                <span className="font-semibold" style={{ color: barColor }}>{ratePct}% invalid</span>
+                                            </div>
+                                            <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                                <div className="h-full rounded-full" style={{ width: `${Math.min(ratePct, 100)}%`, background: barColor }} />
+                                            </div>
+                                            <div className="text-[9px] text-gray-400 mt-0.5">{s.total.toLocaleString()} total, {s.invalid.toLocaleString()} invalid</div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <p className="text-[10px] text-gray-400 text-center py-4">No data yet</p>
+                        )}
+                    </div>
+
+                    {/* 30-Day Trend */}
+                    <div className="premium-card">
+                        <h3 className="text-xs font-bold text-gray-900 mb-2">30-Day Trend</h3>
+                        {(analytics.trend || []).length > 0 ? (() => {
+                            // Group trend data by date
+                            const dateMap = new Map<string, Record<string, number>>();
+                            for (const t of analytics.trend) {
+                                if (!dateMap.has(t.date)) dateMap.set(t.date, {});
+                                dateMap.get(t.date)![t.status] = t.count;
+                            }
+                            const dates = Array.from(dateMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+                            const maxCount = Math.max(...dates.map(([, d]) => Object.values(d).reduce((a, b) => a + b, 0)), 1);
+                            return (
+                                <div className="flex items-end gap-px h-24">
+                                    {dates.slice(-30).map(([date, counts]) => {
+                                        const valid = counts.valid || 0;
+                                        const invalid = counts.invalid || 0;
+                                        const risky = counts.risky || 0;
+                                        const total = valid + invalid + risky;
+                                        const heightPct = (total / maxCount) * 100;
+                                        const validPct = total > 0 ? (valid / total) * 100 : 0;
+                                        const riskyPct = total > 0 ? (risky / total) * 100 : 0;
+                                        return (
+                                            <div key={date} className="flex-1 flex flex-col justify-end" title={`${date}: ${valid} valid, ${invalid} invalid, ${risky} risky`}>
+                                                <div className="w-full rounded-sm overflow-hidden" style={{ height: `${heightPct}%`, minHeight: total > 0 ? '2px' : '0' }}>
+                                                    <div className="w-full bg-emerald-400" style={{ height: `${validPct}%` }} />
+                                                    <div className="w-full bg-amber-400" style={{ height: `${riskyPct}%` }} />
+                                                    <div className="w-full bg-red-400" style={{ height: `${100 - validPct - riskyPct}%` }} />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })() : (
+                            <p className="text-[10px] text-gray-400 text-center py-4">No trend data yet</p>
+                        )}
+                        <div className="flex items-center gap-3 mt-2 justify-center">
+                            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-sm bg-emerald-400" /><span className="text-[9px] text-gray-400">Valid</span></div>
+                            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-sm bg-amber-400" /><span className="text-[9px] text-gray-400">Risky</span></div>
+                            <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-sm bg-red-400" /><span className="text-[9px] text-gray-400">Invalid</span></div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Mailbox ESP Performance Matrix */}
             {espPerformance.length > 0 && (
                 <div className="premium-card">
                     <div className="flex items-center justify-between mb-3">
                         <div>
-                            <h2 className="text-sm font-bold text-gray-900">Mailbox ESP Performance</h2>
+                            <h2 className="text-sm font-bold text-gray-900">
+                                Mailbox ESP Performance
+                                {espPerformance.every(mb => Object.values(mb.esp_scores).every(s => s.send_count < 30)) && (
+                                    <span className="ml-2 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-amber-100 text-amber-700">Warming up</span>
+                                )}
+                            </h2>
                             <p className="text-[10px] text-gray-400 mt-0.5">30-day rolling bounce rate per mailbox per recipient ESP. Used for ESP-aware routing.</p>
                         </div>
                     </div>
@@ -522,7 +639,15 @@ function ValidationPageContent() {
                                 style={{ borderColor: '#D1CBC5' }}
                             >
                                 <Download size={11} />
-                                Export Valid
+                                Export Clean List
+                            </button>
+                            <button
+                                onClick={() => handleExport()}
+                                className="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-50 text-gray-500"
+                                style={{ borderColor: '#D1CBC5' }}
+                            >
+                                <Download size={11} />
+                                Full Results
                             </button>
                         </div>
                     </div>
@@ -599,6 +724,11 @@ function ValidationPageContent() {
                                             }}>
                                                 {lead.validation_status}
                                             </span>
+                                            {lead.error_message && (
+                                                <span className="text-[9px] text-gray-400 block mt-0.5" title={lead.error_message}>
+                                                    {lead.error_message.length > 30 ? lead.error_message.slice(0, 30) + '...' : lead.error_message}
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score ?? '—'}</td>
                                         <td className="py-1.5">
@@ -799,17 +929,28 @@ function ValidationPageContent() {
                             ) : (
                                 <>
                                     <label className="text-[10px] font-semibold text-gray-500 uppercase block mb-1">Select Campaign</label>
-                                    <select
-                                        value={routeCampaignId}
-                                        onChange={e => setRouteCampaignId(e.target.value)}
-                                        className="w-full px-3 py-2 border rounded-lg text-xs outline-none mb-4"
-                                        style={{ borderColor: '#D1CBC5' }}
-                                    >
-                                        <option value="">Choose a campaign...</option>
-                                        {campaigns.map(c => (
-                                            <option key={c.id} value={c.id}>{c.name} — {c.source_platform?.toUpperCase()}</option>
-                                        ))}
-                                    </select>
+                                    {campaigns.length > 0 ? (
+                                        <select
+                                            value={routeCampaignId}
+                                            onChange={e => setRouteCampaignId(e.target.value)}
+                                            className="w-full px-3 py-2 border rounded-lg text-xs outline-none mb-3"
+                                            style={{ borderColor: '#D1CBC5' }}
+                                        >
+                                            <option value="">Choose a campaign...</option>
+                                            {campaigns.map(c => (
+                                                <option key={c.id} value={c.id}>{c.name} — {c.source_platform?.toUpperCase()}</option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        <div className="p-3 rounded-lg text-xs text-center mb-3" style={{ background: '#FEF3C7', color: '#92400E' }}>
+                                            No campaigns found. Connect a sending platform in Settings first, or export your clean list as CSV.
+                                        </div>
+                                    )}
+                                    <div className="p-2.5 rounded-lg text-[10px] mb-4" style={{ background: '#F5F1EA', color: '#6B7280' }}>
+                                        ESP-aware routing is {espPerformance.length > 0 ? 'active' : 'warming up'}. {espPerformance.length > 0
+                                            ? 'Leads will be matched to the best-performing mailboxes for their recipient ESP.'
+                                            : 'Once enough send data accumulates (~30 sends per mailbox per ESP), scoring activates automatically.'}
+                                    </div>
                                     <div className="flex justify-end gap-2">
                                         <button onClick={() => setShowRouteModal(false)} className="px-3 py-1.5 text-xs text-gray-600 border rounded-lg cursor-pointer" style={{ borderColor: '#D1CBC5' }}>Cancel</button>
                                         <button

@@ -597,6 +597,9 @@ export interface ValidationBatchLead {
   lead_score?: number;
   validation_status: string;
   validation_score?: number;
+  rejection_reason?: string;
+  is_disposable?: boolean;
+  is_catch_all?: boolean;
   esp_bucket?: string;
   routed_to_campaign_id?: string;
   routed_at?: string;
@@ -617,6 +620,7 @@ export interface ValidationAnalytics {
   totalValidated: number;
   statusBreakdown: Record<string, number>;
   invalidRateBySource: Array<{ source: string; total: number; invalid: number; rate: number }>;
+  rejectionReasons: Array<{ reason: string; count: number }>;
   espDistribution: Record<string, number>;
   trend: Array<{ date: string; status: string; count: number }>;
 }
