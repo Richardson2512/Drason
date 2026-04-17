@@ -41,7 +41,9 @@ export default function ProductIndexPage() {
         {
             title: 'Email Validation & Lead Hygiene',
             links: [
+                { title: 'Lead Control Plane', href: '/product/lead-control-plane', desc: 'Upload CSV leads into Superkabe. Validate, classify by ESP, and route to campaigns with pinned mailboxes.' },
                 { title: 'Email Validation Infrastructure Protection', href: '/product/email-validation-infrastructure-protection', desc: 'The hybrid validation layer that filters invalid, disposable, role-based, and catch-all emails before send.' },
+                { title: 'ESP-Aware Mailbox Routing', href: '/product/esp-aware-routing', desc: 'Score mailboxes by 30-day per-ESP performance and pin the best performers for each lead.' },
                 { title: 'Multi-Platform Email Validation', href: '/product/multi-platform-email-validation', desc: 'Validate leads across Smartlead, Instantly, and EmailBison with a single unified layer.' },
             ]
         },

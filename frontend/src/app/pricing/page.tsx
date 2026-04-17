@@ -101,15 +101,15 @@ export default function PricingPage() {
                             '14-day free trial with no credit card',
                             'Real-time bounce & failure monitoring',
                             '5-phase graduated healing pipeline',
+                            'Hybrid email validation (syntax, MX, disposable, catch-all)',
+                            'CSV lead upload with bulk validation',
+                            'ESP-aware mailbox routing (Gmail, Microsoft, Yahoo)',
                             'DNS health checks (SPF, DKIM, DMARC)',
                             'Clay, Smartlead, Instantly, EmailBison integrations',
                             'ICP → Campaign routing engine',
+                            'Monthly validation credits included',
                             'Observe / Suggest / Enforce operational modes',
-                            'Mailbox & Campaign-level pause',
                             'Audit log & full infra visibility',
-                            'Slack real-time alerts',
-                            'Failure classification (hard vs soft)',
-                            'Sliding window risk tracking',
                         ].map((item) => (
                             <li key={item} className="flex items-start gap-3 text-sm text-gray-700">
                                 <span className="shrink-0 w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center mt-0.5">

@@ -48,6 +48,9 @@ const docSections = [
         title: 'Help Center',
         items: [
             { title: 'Email Validation', href: '/docs/help/email-validation', icon: HelpCircle },
+            { title: 'CSV Lead Upload', href: '/docs/help/csv-upload', icon: HelpCircle },
+            { title: 'ESP-Aware Routing', href: '/docs/help/esp-routing', icon: HelpCircle },
+            { title: 'Validation Credits', href: '/docs/help/validation-credits', icon: HelpCircle },
             { title: 'Auto-Healing Pipeline', href: '/docs/help/auto-healing', icon: HelpCircle },
             { title: 'Quarantine Explained', href: '/docs/help/quarantine', icon: HelpCircle },
             { title: 'Mailbox Rotation', href: '/docs/help/mailbox-rotation', icon: HelpCircle },

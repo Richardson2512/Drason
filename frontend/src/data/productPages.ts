@@ -838,5 +838,79 @@ export const productPages: Record<string, ProductPageData> = {
             { slug: "bounce-rate-deliverability", title: "How Bounce Rates Damage Sender Reputation", description: "Technical guide to bounce rates and their impact on deliverability" },
             { slug: "superkabe-vs-email-verification-tools", title: "Superkabe vs Email Verification Tools", description: "Understanding the difference between verification and infrastructure protection" }
         ]
+    },
+    "lead-control-plane": {
+        slug: "lead-control-plane",
+        title: "Lead Control Plane for Cold Email",
+        description: "Upload CSV leads into Superkabe. Every lead is validated, classified by recipient ESP, and routed to the best-performing mailboxes.",
+        intro: "makes Superkabe the primary entry point for every lead. Instead of uploading CSVs directly into your sending platform where they skip validation entirely, upload through Superkabe. Every email is validated against syntax, MX, disposable, and catch-all checks. Every recipient domain is classified by ESP (Gmail, Microsoft, Yahoo). Valid leads are routed to campaigns with mailboxes pinned based on 30-day per-ESP performance data. Invalid leads are held with reason codes. Nothing reaches your sender unvalidated.",
+        sections: [
+            {
+                heading: "Why Leads Should Enter Through Superkabe",
+                paragraphs: [
+                    "When leads are uploaded directly into Smartlead or Instantly, Superkabe never sees them. No validation runs. No ESP classification happens. No performance-based mailbox selection occurs. The lead hits whatever mailbox the platform picks at random.",
+                    "If that lead has a disposable email, it bounces. If the recipient is on Gmail but the assigned mailbox has a 3% bounce rate to Gmail, the send damages the mailbox further. None of this is visible until after the damage is done.",
+                    "The Lead Control Plane closes this gap. Every lead — whether from Clay, CSV, or eventually HubSpot and Salesforce — enters through one pipeline. Validation, ESP classification, and routing happen before the lead touches any sending platform."
+                ]
+            },
+            {
+                heading: "The Upload-to-Route Pipeline",
+                paragraphs: [
+                    "Upload a CSV in the Email Validation dashboard. Superkabe auto-detects your column headers (email, first name, company, title, score) and lets you confirm the mapping. Optionally pre-select a target campaign for automatic routing, or leave it blank to decide after reviewing results.",
+                    "Every lead runs through the hybrid validation pipeline: syntax validation, MX record lookup, disposable domain detection against 30,000+ known providers, catch-all detection, and conditional MillionVerifier API probe. Results are cached for 30 days.",
+                    "Simultaneously, each recipient domain is classified by ESP via MX pattern matching. Gmail, Microsoft 365, Yahoo, or Other. This classification drives the downstream mailbox scoring.",
+                    "After validation completes, the results table shows every lead with status (valid, risky, invalid, duplicate), confidence score, ESP bucket, and rejection reason. Select valid leads, pick a campaign from any connected platform, and push. Superkabe pins the top 3 mailboxes based on 30-day ESP performance data."
+                ]
+            },
+            {
+                heading: "What You See After Every Upload",
+                paragraphs: [
+                    "The validation page shows comprehensive results: 237 uploaded, 205 valid, 12 invalid, 8 risky, 12 duplicates. Gmail leads routed to 3 Gmail-matched mailboxes. Outlook leads routed to 5 Outlook-matched mailboxes.",
+                    "The analytics panel tracks total validated, pass rate, invalid rate, rejection reasons breakdown (disposable, no MX, syntax, catch-all), invalid rate by source (CSV vs Clay vs API), and a 30-day trend chart.",
+                    "Every upload is preserved as a batch. Return to any past batch to review results, route unrouted leads, or export clean lists. Upload history shows date, source, file name, counts, and routing status."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "best-email-validation-tools-cold-outreach", title: "Best Email Validation Tools for Cold Outreach", description: "Ranked comparison of validation tools for cold email teams" },
+            { slug: "email-validation-smartlead-instantly", title: "Email Validation for Smartlead and Instantly", description: "How to add a validation layer between Clay and your sending platform" },
+            { slug: "cold-email-deliverability-troubleshooting", title: "Cold Email Deliverability Troubleshooting", description: "Diagnosing and fixing bounce rate spikes and spam placement" }
+        ]
+    },
+    "esp-aware-routing": {
+        slug: "esp-aware-routing",
+        title: "ESP-Aware Mailbox Routing",
+        description: "Superkabe scores each mailbox by its 30-day bounce rate per recipient ESP and pins the best performers. Performance beats provider matching.",
+        intro: "routes leads to the best-performing mailboxes for each recipient's email provider. Most sending platforms offer simple ESP matching: Gmail mailbox to Gmail recipient. Superkabe goes further. It tracks every send, bounce, and reply per mailbox per ESP over a 30-day rolling window. A Gmail mailbox with a 2% bounce rate to Gmail gets skipped. An Outlook mailbox with 0.1% bounce rate to Gmail gets selected. Performance beats provider matching.",
+        sections: [
+            {
+                heading: "How ESP-Aware Routing Differs from ESP Matching",
+                paragraphs: [
+                    "Smartlead and Instantly offer basic ESP matching: route Gmail recipients to Gmail mailboxes. This is a binary rule. If you have 5 Gmail mailboxes, the platform picks one at random. It does not know which of those 5 performs best with Gmail recipients.",
+                    "Superkabe tracks actual performance data. Every email sent creates a SendEvent tagged with the sending mailbox and the recipient ESP. Every bounce and reply creates corresponding events. Every 6 hours, these events are aggregated into a per-mailbox per-ESP performance matrix.",
+                    "When a new lead is routed, Superkabe queries this matrix. A mailbox with 500 sends to Gmail and a 0.2% bounce rate scores higher than a mailbox with 50 sends and 0% (less data, lower confidence). The top 3 mailboxes are pinned to the lead via assigned_email_accounts."
+                ]
+            },
+            {
+                heading: "The Performance Matrix",
+                paragraphs: [
+                    "The ESP Performance Matrix on the Email Validation dashboard shows every mailbox in your account with bounce rates broken down by Gmail, Microsoft, Yahoo, and Other. Color-coded: green under 1%, yellow 1-2%, red above 2%.",
+                    "Cells with fewer than 30 sends show 'warming up' instead of a bounce rate. This prevents routing decisions based on noise. After 3-4 weeks of normal sending volume, most cells will have enough data for reliable scoring.",
+                    "Use this matrix to identify mailboxes that underperform for specific ESPs. A mailbox might be excellent for Outlook (0.3% bounce rate) but poor for Gmail (2.1%). Without per-ESP breakdown, this pattern is invisible in aggregate stats."
+                ]
+            },
+            {
+                heading: "Works Across All Ingestion Paths",
+                paragraphs: [
+                    "ESP-aware scoring runs on every lead entry path. CSV uploads through the Lead Control Plane, Clay webhook ingestion, and direct API calls all classify the recipient ESP and score mailboxes before pushing.",
+                    "For EmailBison and Reply.io which lack native ESP matching, Superkabe is the only layer providing any form of ESP-aware routing. The assigned_email_accounts parameter is Smartlead-specific today, but the scoring data is available for all platforms."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "domain-reputation-vs-ip-reputation", title: "Domain Reputation vs IP Reputation", description: "What matters more for cold email deliverability in 2026" },
+            { slug: "reduce-cold-email-bounce-rate", title: "How to Reduce Cold Email Bounce Rate", description: "A practical guide to getting bounce rates below 2%" },
+            { slug: "best-domain-reputation-monitoring-tools", title: "Best Domain Reputation Monitoring Tools", description: "Ranked comparison for cold email teams" }
+        ]
     }
 };

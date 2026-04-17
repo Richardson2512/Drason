@@ -16,10 +16,71 @@ export interface ReleaseNote {
 
 export const releaseNotes: ReleaseNote[] = [
     {
+        version: '1.6.0',
+        date: 'April 2026',
+        isoDate: '2026-04-18',
+        label: 'Latest',
+        slug: 'v1.6.0',
+        headline: 'Lead Control Plane and ESP-Aware Routing',
+        summary: 'Superkabe becomes the primary lead entry point. Upload CSVs directly, validate every email, classify recipients by ESP, and route to the best-performing mailboxes automatically.',
+        features: [
+            'Lead Control Plane — CSV upload with validation, ESP classification, and campaign routing',
+            'ESP-Aware Mailbox Scoring — route leads to mailboxes with the lowest bounce rate for the recipient ESP',
+            'SendEvent + ReplyEvent tracking — every email sent and replied is recorded per mailbox per ESP',
+            'ESP Performance Matrix dashboard — per-mailbox bounce rates broken down by Gmail, Microsoft, Yahoo',
+            'Validation credits with monthly tier limits and enforcement',
+            'Cross-batch duplicate detection — prevents double-processing across uploads',
+            'Rejection reason tracking — disposable, no MX, syntax, SMTP fail, catch-all breakdown',
+            'Analytics deep-dive — invalid rate by source, rejection reasons chart, 30-day trend',
+        ],
+        sections: [
+            {
+                title: 'Lead Control Plane',
+                description: 'Every lead now enters through Superkabe — whether from a CSV upload, Clay webhook, or API call. Superkabe validates, classifies, and routes before anything reaches your sending platform.',
+                items: [
+                    { title: 'CSV upload with auto-mapping', detail: 'Drag and drop a CSV file. Superkabe auto-detects column headers (email, first name, last name, company, title, score) and lets you confirm or override the mapping before processing.' },
+                    { title: 'Bulk validation pipeline', detail: 'Every lead runs through the full hybrid validation pipeline: syntax check, MX lookup, disposable detection, catch-all detection, and conditional MillionVerifier API probe. Results are cached for 30 days.' },
+                    { title: 'ESP classification', detail: 'During validation, Superkabe resolves the recipient domain MX records and classifies the ESP: Gmail, Microsoft 365, Yahoo, or Other. This classification drives the ESP-aware routing downstream.' },
+                    { title: 'Post-validation routing', detail: 'After validation, select leads from the results table and route them to any campaign across Smartlead, Instantly, or EmailBison. Or pre-select a campaign before upload for automatic routing.' },
+                    { title: 'Export clean lists', detail: 'Download validated leads as CSV — export only valid leads (clean list) or full results with status, score, and ESP classification columns.' },
+                ],
+            },
+            {
+                title: 'ESP-Aware Mailbox Scoring',
+                description: 'When routing a lead, Superkabe scores each mailbox in the campaign against the recipient ESP using 30-day rolling performance data — not just naive ESP matching.',
+                items: [
+                    { title: 'SendEvent + ReplyEvent capture', detail: 'Every EMAIL_SENT and EMAIL_REPLIED webhook from Smartlead now creates a tracking event with the recipient ESP classification. This builds the per-mailbox performance dataset over time.' },
+                    { title: 'Performance aggregation worker', detail: 'Every 6 hours, Superkabe aggregates send, bounce, and reply events from the last 30 days, grouped by mailbox and recipient ESP. The result is a performance score per cell in the mailbox-ESP matrix.' },
+                    { title: 'Mailbox scoring at route time', detail: 'When pushing a lead to Smartlead, Superkabe scores candidate mailboxes by their 30-day bounce rate to the recipient ESP. Top 3 mailboxes are pinned via assigned_email_accounts. Smartlead sends from only those mailboxes.' },
+                    { title: 'Warming up fallback', detail: 'When a mailbox-ESP cell has fewer than 30 sends, Superkabe skips ESP scoring and lets the platform pick — preventing routing decisions based on noise.' },
+                ],
+            },
+            {
+                title: 'Validation Analytics',
+                description: 'The Email Validation dashboard now shows comprehensive analytics for every upload and across your entire validation history.',
+                items: [
+                    { title: 'Rejection reasons breakdown', detail: 'See exactly why leads failed: disposable email, no MX records, syntax error, SMTP unreachable, catch-all domain, or low confidence score. Displayed as a percentage bar chart.' },
+                    { title: 'Invalid rate by source', detail: 'Compare lead quality across sources: Clay leads at 2.1% invalid vs CSV uploads at 8.7%. Know which source needs cleanup.' },
+                    { title: '30-day trend chart', detail: 'Stacked bar chart showing daily valid, risky, and invalid validation counts. Spot quality degradation trends early.' },
+                    { title: 'ESP Performance Matrix', detail: 'Color-coded table showing each mailbox bounce rate per recipient ESP (Gmail, Microsoft, Yahoo, Other). Green under 1%, yellow 1-2%, red above 2%. Cells with insufficient data show warming up.' },
+                ],
+            },
+            {
+                title: 'Validation Credits and Enforcement',
+                description: 'Validation credits are now enforced per tier with monthly limits.',
+                items: [
+                    { title: 'Tier-based credit limits', detail: 'Trial and Starter: 10,000 credits/month. Growth: 50,000. Scale: 100,000. Enterprise: unlimited. One credit equals one email validated.' },
+                    { title: 'Monthly enforcement', detail: 'When credits are exhausted mid-batch, remaining leads are flagged with a credit limit message instead of being validated. Duplicates do not consume credits.' },
+                    { title: 'Usage tracking on billing page', detail: 'The Emails Validated stat card on the billing page shows lifetime validation count. The analytics dashboard shows monthly usage by source.' },
+                ],
+            },
+        ],
+    },
+    {
         version: '1.5.0',
         date: 'March 2026',
         isoDate: '2026-03-15',
-        label: 'Latest',
+        label: null,
         slug: 'v1.5.0',
         headline: 'Hybrid Email Validation and Load Balancing',
         summary: 'This release introduces a hybrid email validation layer that checks every incoming lead before it reaches your sending platform. We also added multi-select filters across all dashboard pages and completely redesigned the load balancing system.',
