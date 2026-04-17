@@ -219,18 +219,35 @@
 .premium-input {
   width: 100%;
   padding: 0.55rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  border-radius: 8px;
+  border: 1px solid #D1CBC5;
   background: #FFFFFF;
   color: var(--text);
   font-size: 0.85rem;
-  transition: all 0.2s;
+  transition: border-color 0.15s ease;
   outline: none;
 }
 
 .premium-input:focus {
-  border-color: #2563EB;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #111827;
+}
+
+/* Global select styling — match platform aesthetic */
+.light-theme select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px !important;
+  border: 1px solid #D1CBC5 !important;
+  border-radius: 8px !important;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.light-theme select:focus {
+  border-color: #111827 !important;
+  outline: none;
 }
 
 .page-header {

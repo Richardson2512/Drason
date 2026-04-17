@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { apiClient } from '@/lib/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import type { CampaignSummary, RoutingRule } from '@/types/api';
@@ -20,6 +20,8 @@ export default function Configuration() {
     const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; persona: string; campaign: string } | null>(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [deleteError, setDeleteError] = useState<string | null>(null);
+    const dropdownTriggerRef = useRef<HTMLDivElement>(null);
+    const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 });
 
     // Derive unique platforms from synced campaigns
     const platforms = Array.from(new Set(campaigns.map(c => c.source_platform || 'unknown').filter(Boolean)));
@@ -57,6 +59,14 @@ export default function Configuration() {
     }, {});
 
     const selectedCampaign = campaignMap.get(formData.target_campaign_id);
+
+    const openDropdown = () => {
+        if (dropdownTriggerRef.current) {
+            const rect = dropdownTriggerRef.current.getBoundingClientRect();
+            setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width });
+        }
+        setShowDropdown(true);
+    };
 
     const handleDeleteClick = (rule: RoutingRule) => {
         const campaign = campaignMap.get(rule.target_campaign_id);
@@ -253,7 +263,8 @@ export default function Configuration() {
                                 Platform
                             </label>
                             <select
-                                className="premium-input w-full"
+                                className="w-full px-3 py-2 rounded-lg text-xs outline-none"
+                                style={{ border: '1px solid #D1CBC5' }}
                                 value={selectedPlatform}
                                 onChange={e => {
                                     setSelectedPlatform(e.target.value);
@@ -272,7 +283,7 @@ export default function Configuration() {
                         </div>
 
                         {/* Campaign Selector with Platform Badges */}
-                        <div className="relative">
+                        <div ref={dropdownTriggerRef}>
                             <label className="block mb-2 text-sm font-semibold text-gray-700">
                                 Target Campaign
                             </label>
@@ -280,92 +291,92 @@ export default function Configuration() {
                             {/* Selected campaign display or search input */}
                             {selectedCampaign && !showDropdown ? (
                                 <div
-                                    onClick={() => setShowDropdown(true)}
-                                    className="w-full px-3.5 py-2.5 rounded-[10px] border border-slate-200 bg-white cursor-pointer flex items-center justify-between gap-2 transition-colors hover:border-blue-300"
+                                    onClick={openDropdown}
+                                    className="w-full px-3 py-2 rounded-lg bg-white cursor-pointer flex items-center justify-between gap-2 transition-colors hover:bg-[#F5F1EA]"
+                                    style={{ border: '1px solid #D1CBC5' }}
                                 >
                                     <div className="flex items-center gap-2 min-w-0">
                                         <PlatformBadge platform={selectedCampaign.source_platform || 'unknown'} />
-                                        <span className="text-sm text-slate-800 font-medium truncate">
+                                        <span className="text-xs text-gray-900 font-medium truncate">
                                             {selectedCampaign.name}
                                         </span>
                                     </div>
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="6 9 12 15 18 9"></polyline>
                                     </svg>
                                 </div>
                             ) : (
                                 <input
-                                    className="premium-input w-full"
+                                    className="w-full px-3 py-2 rounded-lg text-xs outline-none bg-white"
+                                    style={{ border: '1px solid #D1CBC5' }}
                                     type="text"
                                     value={campaignSearch}
                                     onChange={e => {
                                         setCampaignSearch(e.target.value);
-                                        setShowDropdown(true);
+                                        openDropdown();
                                     }}
-                                    onFocus={() => setShowDropdown(true)}
+                                    onFocus={openDropdown}
                                     placeholder="Search campaigns by name or platform..."
                                 />
                             )}
+                        </div>
 
-                            {/* Dropdown */}
-                            {showDropdown && (
-                                <>
-                                    {/* Backdrop to close dropdown */}
-                                    <div
-                                        className="fixed inset-0 z-40"
-                                        onClick={() => setShowDropdown(false)}
-                                    />
-
-                                    <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-200 shadow-lg max-h-[280px] overflow-y-auto z-50">
-                                        {Object.keys(groupedCampaigns).length === 0 ? (
-                                            <div className="p-6 text-center text-gray-400 text-sm">
-                                                {campaigns.length === 0 ? 'No campaigns synced yet' : 'No campaigns match your search'}
-                                            </div>
-                                        ) : (
-                                            Object.entries(groupedCampaigns).map(([platform, platformCampaigns]) => (
-                                                <div key={platform}>
-                                                    {/* Platform group header */}
-                                                    <div className="px-3.5 py-2 bg-slate-50 border-b border-slate-100 flex items-center gap-2 sticky top-0 z-[1]">
-                                                        <PlatformBadge platform={platform} />
-                                                        <span className="text-[0.7rem] text-slate-400 font-medium">
-                                                            {platformCampaigns.length} campaign{platformCampaigns.length !== 1 ? 's' : ''}
+                        {/* Campaign Dropdown — fixed position, escapes card overflow */}
+                        {showDropdown && (
+                            <>
+                                <div className="fixed inset-0 z-[9998]" onClick={() => setShowDropdown(false)} />
+                                <div
+                                    className="fixed z-[9999] bg-white overflow-y-auto scrollbar-hide"
+                                    style={{
+                                        top: dropdownPos.top,
+                                        left: dropdownPos.left,
+                                        width: dropdownPos.width,
+                                        maxHeight: '320px',
+                                        border: '1px solid #D1CBC5',
+                                        borderRadius: '8px',
+                                    }}
+                                >
+                                    {Object.keys(groupedCampaigns).length === 0 ? (
+                                        <div className="p-4 text-center text-gray-400 text-xs">
+                                            {campaigns.length === 0 ? 'No campaigns synced yet. Run a sync in Settings first.' : 'No campaigns match your search.'}
+                                        </div>
+                                    ) : (
+                                        Object.entries(groupedCampaigns).map(([platform, platformCampaigns]) => (
+                                            <div key={platform}>
+                                                <div className="px-3 py-1.5 bg-[#F7F2EB] flex items-center gap-2 sticky top-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
+                                                    <PlatformBadge platform={platform} />
+                                                    <span className="text-[10px] text-gray-500 font-medium">
+                                                        {platformCampaigns.length} campaign{platformCampaigns.length !== 1 ? 's' : ''}
+                                                    </span>
+                                                </div>
+                                                {platformCampaigns.map(campaign => (
+                                                    <div
+                                                        key={campaign.id}
+                                                        onClick={() => {
+                                                            setFormData({ ...formData, target_campaign_id: campaign.id });
+                                                            setCampaignSearch('');
+                                                            setShowDropdown(false);
+                                                        }}
+                                                        className="px-3 py-2 cursor-pointer flex items-center justify-between gap-2 transition-colors hover:bg-[#F5F1EA]"
+                                                        style={{ borderBottom: '1px solid #F0EBE3' }}
+                                                    >
+                                                        <div className="min-w-0">
+                                                            <div className="text-xs font-medium text-gray-900 truncate">{campaign.name}</div>
+                                                        </div>
+                                                        <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold shrink-0" style={{
+                                                            background: campaign.status === 'active' ? '#D1FAE5' : campaign.status === 'paused' ? '#FEE2E2' : '#FEF3C7',
+                                                            color: campaign.status === 'active' ? '#065F46' : campaign.status === 'paused' ? '#991B1B' : '#92400E',
+                                                        }}>
+                                                            {campaign.status}
                                                         </span>
                                                     </div>
-
-                                                    {/* Campaign items */}
-                                                    {platformCampaigns.map(campaign => (
-                                                        <div
-                                                            key={campaign.id}
-                                                            onClick={() => {
-                                                                setFormData({ ...formData, target_campaign_id: campaign.id });
-                                                                setCampaignSearch('');
-                                                                setShowDropdown(false);
-                                                            }}
-                                                            className="px-3.5 py-2.5 cursor-pointer flex items-center justify-between gap-2 border-b border-slate-50 transition-colors hover:bg-blue-50"
-                                                        >
-                                                            <div className="min-w-0">
-                                                                <div className="text-sm font-medium text-slate-800 truncate">
-                                                                    {campaign.name}
-                                                                </div>
-                                                                <div className="text-[0.7rem] text-slate-400 font-mono">
-                                                                    {campaign.id.substring(0, 12)}...
-                                                                </div>
-                                                            </div>
-                                                            <span className="text-[0.7rem] px-1.5 py-0.5 rounded font-semibold shrink-0" style={{
-                                                                background: campaign.status === 'active' ? '#ECFDF5' : campaign.status === 'paused' ? '#FEF2F2' : campaign.status === 'completed' ? '#FFF7ED' : '#FEF3C7',
-                                                                color: campaign.status === 'active' ? '#059669' : campaign.status === 'paused' ? '#DC2626' : campaign.status === 'completed' ? '#C2410C' : '#D97706',
-                                                            }}>
-                                                                {campaign.status}
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ))
-                                        )}
-                                    </div>
-                                </>
-                            )}
-                        </div>
+                                                ))}
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </>
+                        )}
 
                         <button
                             type="submit"
