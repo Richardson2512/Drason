@@ -212,6 +212,27 @@ const blogArticles = [
         href: '/blog/email-authentication-checker-tools',
         icon: CheckCircle,
     },
+    // ── Cold Email Operations ──
+    {
+        title: 'Why Cold Emails Go to Spam',
+        href: '/blog/why-cold-emails-go-to-spam',
+        icon: AlertTriangle,
+    },
+    {
+        title: 'Remove Domain From Blacklist',
+        href: '/blog/how-to-remove-domain-from-blacklist',
+        icon: Shield,
+    },
+    {
+        title: 'Is My Domain Burned?',
+        href: '/blog/how-to-know-if-domain-is-burned',
+        icon: AlertTriangle,
+    },
+    {
+        title: 'Cold Emails Per Day Limits',
+        href: '/blog/how-many-cold-emails-per-day',
+        icon: Mail,
+    },
     // ── Domain Reputation ──
     {
         title: 'Domain Reputation Monitoring',
