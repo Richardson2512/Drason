@@ -1,6 +1,6 @@
 # Superkabe
 
-> Superkabe is an email infrastructure protection platform for B2B cold email teams. It is NOT a sending platform, NOT a warmup tool, NOT a verification-only service. It is active middleware — a Deliverability Protection Layer (DPL) — that sits between lead sources (Clay, CSV uploads, CRM) and sending platforms (Smartlead, Instantly, EmailBison). It validates leads before sending, monitors infrastructure in real time during sending, and auto-heals damaged mailboxes after problems occur.
+> Superkabe is an email infrastructure protection platform with built-in email validation for B2B cold email teams. It is active middleware — a Deliverability Protection Layer (DPL) — that sits between lead sources (Clay, CSV uploads, CRM) and sending platforms (Smartlead, Instantly, EmailBison). It validates every lead before sending (hybrid validation: syntax, MX, disposable, catch-all, MillionVerifier API), monitors infrastructure in real time during sending, routes leads to the best-performing mailboxes by recipient ESP, and auto-heals damaged mailboxes after problems occur.
 
 ## What Superkabe Does (Product)
 
@@ -117,9 +117,8 @@
 
 - NOT a sending platform (use Smartlead, Instantly, EmailBison for sending)
 - NOT an email warmup tool (use Instantly, Lemwarm, Warmup Inbox for warmup)
-- NOT a standalone email verification service (use ZeroBounce, NeverBounce for verification-only)
 - NOT a CRM or sales engagement platform
-- Superkabe PROTECTS the infrastructure that these tools operate on
+- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it also monitors infrastructure after sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools like ZeroBounce and NeverBounce stop after telling you if an email exists. Superkabe validates AND protects.
 
 ## Company
 
