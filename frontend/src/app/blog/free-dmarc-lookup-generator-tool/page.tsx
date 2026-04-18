@@ -24,10 +24,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
         "@type": "BlogPosting",
         "headline": "Free DMARC Lookup & Generator Tool – Configure Your",
         "description": "Use our free DMARC lookup and generator tools to check and configure your domain's DMARC policy. Understand policy levels, rollout strategy, reporting, and Google/Yahoo requirements.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-09",
         "dateModified": "2026-04-09",

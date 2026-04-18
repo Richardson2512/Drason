@@ -25,7 +25,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
         "description": "Smartlead and Instantly send emails. They don't validate them. Learn how to add a validation layer between Clay and your sending platform to prevent bounces, protect domains, and keep mailboxes alive.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
-        "author": { "@type": "Organization", "name": "Superkabe" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/email-validation-smartlead-instantly" }
     };

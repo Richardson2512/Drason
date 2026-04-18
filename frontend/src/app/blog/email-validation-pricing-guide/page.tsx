@@ -24,11 +24,7 @@ export default function EmailValidationPricingGuideArticle() {
         "@type": "BlogPosting",
         "headline": "Email validation pricing: what it actually costs (and what it saves you)",
         "description": "Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

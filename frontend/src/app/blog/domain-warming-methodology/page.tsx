@@ -26,7 +26,7 @@ export default function DomainWarmingArticle() {
         "description": "Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.",
         "datePublished": "2025-11-20",
         "dateModified": "2026-04-07",
-        "author": { "@type": "Organization", "name": "Superkabe" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

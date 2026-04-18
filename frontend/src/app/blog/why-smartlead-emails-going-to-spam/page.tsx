@@ -21,7 +21,7 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
         "@type": "BlogPosting",
         "headline": "Why Are My Smartlead Emails Going to Spam?",
         "description": "Your Smartlead campaigns are landing in spam. Here are the 6 most common causes and step-by-step fixes for each one.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/why-smartlead-emails-going-to-spam" },
         "datePublished": "2026-04-18",

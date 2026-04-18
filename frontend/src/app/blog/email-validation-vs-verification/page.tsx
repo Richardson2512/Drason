@@ -24,11 +24,7 @@ export default function EmailValidationVsVerificationArticle() {
         "@type": "BlogPosting",
         "headline": "Email validation vs email verification: what's actually different",
         "description": "Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

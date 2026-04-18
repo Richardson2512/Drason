@@ -24,11 +24,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
         "@type": "BlogPosting",
         "headline": "Why your verified emails still bounce (and what to do about it)",
         "description": "You verified every email on your list. They all came back valid. Then 6% bounced. Here are the 6 reasons verified emails still bounce and what to do.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

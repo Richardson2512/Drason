@@ -24,11 +24,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
         "@type": "BlogPosting",
         "headline": "Catch-all domains: the hidden risk destroying your cold email deliverability",
         "description": "Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

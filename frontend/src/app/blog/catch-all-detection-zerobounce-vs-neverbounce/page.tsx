@@ -24,11 +24,7 @@ export default function CatchAllDetectionComparisonArticle() {
         "@type": "BlogPosting",
         "headline": "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs",
         "description": "A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",

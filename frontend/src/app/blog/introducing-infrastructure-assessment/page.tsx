@@ -25,10 +25,7 @@ export default function InfrastructureAssessmentPost() {
         "description": "Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.",
         "datePublished": "2026-02-01",
         "dateModified": "2026-03-26",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

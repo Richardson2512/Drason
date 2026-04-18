@@ -21,7 +21,7 @@ export default function TopBounceRateManagementToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Bounce Rate Management Tools (2026)",
         "description": "Ranked list of 7 tools for managing and reducing cold email bounce rates. Pre-send validation, real-time monitoring, and auto-pause.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-bounce-rate-management-tools" },
         "datePublished": "2026-04-18",

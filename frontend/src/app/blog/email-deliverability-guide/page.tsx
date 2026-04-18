@@ -25,10 +25,7 @@ export default function EmailDeliverabilityGuide() {
         "@type": "BlogPosting",
         "headline": "How to protect and master your outbound email deliverability",
         "description": "Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

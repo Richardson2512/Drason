@@ -21,7 +21,7 @@ export default function TopColdEmailInfrastructureToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Cold Email Infrastructure Tools (2026)",
         "description": "Ranked list of 7 infrastructure monitoring and protection tools for cold email teams. Real-time alerts, auto-pause, and healing compared.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-cold-email-infrastructure-tools" },
         "datePublished": "2026-04-18",

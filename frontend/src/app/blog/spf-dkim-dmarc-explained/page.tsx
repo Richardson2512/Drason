@@ -24,10 +24,7 @@ export default function SpfDkimDmarcArticle() {
         "@type": "BlogPosting",
         "headline": "Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams",
         "description": "Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2025-11-10",
         "dateModified": "2026-03-26",

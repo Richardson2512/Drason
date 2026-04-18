@@ -25,7 +25,7 @@ export default function EmailValidationForAgenciesArticle() {
         "description": "Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
-        "author": { "@type": "Organization", "name": "Superkabe" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/email-validation-for-agencies" }
     };

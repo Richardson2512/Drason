@@ -21,7 +21,7 @@ export default function WhySpfDmarcFailingArticle() {
         "@type": "BlogPosting",
         "headline": "Why Is My SPF or DMARC Failing?",
         "description": "SPF or DMARC authentication is failing on your emails. Here are the common causes and how to fix each one step by step.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/why-spf-dmarc-failing" },
         "datePublished": "2026-04-18",

@@ -24,11 +24,7 @@ export default function HowToCheckDomainReputationArticle() {
         "@type": "BlogPosting",
         "headline": "How to check your domain reputation for cold email (2026 guide)",
         "description": "Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

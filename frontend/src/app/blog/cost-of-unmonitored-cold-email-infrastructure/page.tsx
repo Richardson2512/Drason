@@ -24,10 +24,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
         "@type": "BlogPosting",
         "headline": "The real cost of unmonitored cold email infrastructure",
         "description": "Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

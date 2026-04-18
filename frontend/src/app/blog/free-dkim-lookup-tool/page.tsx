@@ -24,10 +24,7 @@ export default function FreeDkimLookupToolArticle() {
         "@type": "BlogPosting",
         "headline": "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
         "description": "Use our free DKIM lookup tool to verify your domain's DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause deliverability failures.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-09",
         "dateModified": "2026-04-09",

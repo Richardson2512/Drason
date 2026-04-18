@@ -24,10 +24,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
         "@type": "BlogPosting",
         "headline": "Automated cold email infrastructure protection for lead",
         "description": "How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

@@ -24,11 +24,7 @@ export default function DomainReputationVsIpReputationArticle() {
         "@type": "BlogPosting",
         "headline": "Domain reputation vs IP reputation: what actually matters for cold email in 2026",
         "description": "Domain reputation now matters more than IP reputation for cold email. How the shift happened, DMARC impact, real deliverability data, and what you can control.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

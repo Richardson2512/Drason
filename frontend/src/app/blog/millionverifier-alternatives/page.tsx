@@ -26,11 +26,7 @@ export default function MillionVerifierAlternativesPage() {
         "description": "Ranked comparison of MillionVerifier alternatives including Superkabe, ZeroBounce, NeverBounce, Clearout, DeBounce, and Bouncer.",
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

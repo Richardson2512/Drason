@@ -24,10 +24,7 @@ export default function BounceRateArticle() {
         "@type": "BlogPosting",
         "headline": "How bounce rates damage sender reputation",
         "description": "Understanding the mechanics of bounce rates, their impact on sender reputation, and how to prevent domain degradation before it becomes irreversible.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2025-11-15",
         "dateModified": "2026-03-26",

@@ -24,11 +24,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
         "@type": "BlogPosting",
         "headline": "Domain burned from a bad lead list? Complete recovery and prevention guide",
         "description": "Your domain got blacklisted after a bad lead list. Here is the step-by-step recovery process, how to validate Clay leads before sending, and how.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

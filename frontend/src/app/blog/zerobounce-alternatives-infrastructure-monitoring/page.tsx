@@ -24,11 +24,7 @@ export default function ZeroBounceAlternativesArticle() {
         "@type": "BlogPosting",
         "headline": "ZeroBounce Alternatives That Actually Protect Your",
         "description": "A comparison of ZeroBounce alternatives including Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",

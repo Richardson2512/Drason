@@ -24,11 +24,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
         "@type": "BlogPosting",
         "headline": "NeverBounce Catch-All Detection: What It Does and What It Doesn't",
         "description": "NeverBounce labels catch-all emails as accept_all and recommends not sending. But skipping 30-40% of B2B leads is not practical.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",

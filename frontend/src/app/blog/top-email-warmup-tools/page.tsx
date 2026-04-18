@@ -21,7 +21,7 @@ export default function TopEmailWarmupToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Email Warmup Tools for Cold Outreach (2026)",
         "description": "Ranked list of 7 email warmup tools for cold email. Warmup automation, reputation building, and post-warmup protection compared.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-email-warmup-tools" },
         "datePublished": "2026-04-18",

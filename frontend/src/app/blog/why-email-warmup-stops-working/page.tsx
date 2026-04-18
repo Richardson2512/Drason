@@ -21,7 +21,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
         "@type": "BlogPosting",
         "headline": "Why Does Email Warmup Stop Working?",
         "description": "Your warmup scores were great but deliverability collapsed when you started real campaigns. Here is why and how to bridge the gap.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/why-email-warmup-stops-working" },
         "datePublished": "2026-04-18",

@@ -24,10 +24,7 @@ export default function EmailAuthenticationCheckerToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Free Email Authentication Checker Tools – SPF, DKIM & DMARC",
         "description": "Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-09",
         "dateModified": "2026-04-09",

@@ -24,11 +24,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
         "@type": "BlogPosting",
         "headline": "How ZeroBounce Handles Catch-All Domains",
         "description": "ZeroBounce labels catch-all emails but leaves the send decision to you. Learn what ZeroBounce does with catch-all domains, where it stops, and how to send.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",

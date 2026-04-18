@@ -21,7 +21,7 @@ export default function HowManyColdEmailsPerDayArticle() {
         "@type": "BlogPosting",
         "headline": "How Many Cold Emails Can I Send Per Day?",
         "description": "Safe daily sending limits per mailbox and domain for cold email. Volume guidelines for Google Workspace, Outlook 365, and Smartlead.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/how-many-cold-emails-per-day" },
         "datePublished": "2026-04-18",

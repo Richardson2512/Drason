@@ -24,10 +24,7 @@ export default function FreeSpfLookupToolArticle() {
         "@type": "BlogPosting",
         "headline": "Free SPF Record Lookup Tool – Check Your Domain's Email",
         "description": "Use our free SPF record lookup tool to check your domain's SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before they damage deliverability.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-04-09",
         "dateModified": "2026-04-09",

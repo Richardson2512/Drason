@@ -25,7 +25,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
         "description": "The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo.",
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",
-        "author": { "@type": "Organization", "name": "Superkabe" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/cold-email-bounce-rate-thresholds" }
     };

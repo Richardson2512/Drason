@@ -24,11 +24,7 @@ export default function CompleteEmailWarmupGuide() {
         "@type": "BlogPosting",
         "headline": "The Complete Email Warmup Guide 2026: Domains, Mailboxes",
         "description": "Everything about email warmup for cold outreach: domain warmup, mailbox warmup, warmup schedules, what warmup tools do, and why warmup alone is not enough.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "@id": "https://www.superkabe.com/#organization",

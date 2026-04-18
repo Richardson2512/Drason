@@ -21,7 +21,7 @@ export default function TopEmailValidationToolsAgenciesArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Email Validation Tools for Agencies (2026)",
         "description": "Ranked comparison of 7 email validation tools for lead gen agencies. Bulk validation, catch-all detection, and multi-client support.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-email-validation-tools-agencies" },
         "datePublished": "2026-04-18",

@@ -24,10 +24,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
         "@type": "BlogPosting",
         "headline": "Cold email deliverability problems: how to diagnose and fix",
         "description": "Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures,.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

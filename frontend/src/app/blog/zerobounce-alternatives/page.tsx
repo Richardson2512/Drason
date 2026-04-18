@@ -26,11 +26,7 @@ export default function ZeroBounceAlternativesPage() {
         "description": "Ranked comparison of ZeroBounce alternatives for cold email. Covers Superkabe, NeverBounce, MillionVerifier, Clearout, DeBounce, and Scrubby with pricing.",
         "datePublished": "2026-04-07",
         "dateModified": "2026-04-07",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

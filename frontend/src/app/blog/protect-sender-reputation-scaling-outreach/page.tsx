@@ -24,11 +24,7 @@ export default function ProtectSenderReputationArticle() {
         "@type": "BlogPosting",
         "headline": "How to Protect Your Sender Reputation While Scaling Cold",
         "description": "A practical guide to protecting domain and mailbox reputation at scale. Covers safe sending volumes, DNS configuration, real-time monitoring, auto-pause.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",

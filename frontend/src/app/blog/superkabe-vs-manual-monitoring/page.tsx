@@ -24,11 +24,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
         "@type": "BlogPosting",
         "headline": "Superkabe vs manual email infrastructure monitoring: why spreadsheets don't scale",
         "description": "Compare manual cold email monitoring (spreadsheets, daily bounce checks, manual pausing) vs Superkabe's automated infrastructure protection. Real scenarios show why manual monitoring fails at scale.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

@@ -27,11 +27,7 @@ export default function DeliverabilityToolsComparedArticle() {
         "description": "Side-by-side comparison of deliverability monitoring, testing, and infrastructure protection tools. GlockApps vs MailReach vs Folderly vs Superkabe.",
         "datePublished": "2026-01-15",
         "dateModified": "2026-03-26",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

@@ -24,11 +24,7 @@ export default function DomainReputationRecoveryGuideArticle() {
         "@type": "BlogPosting",
         "headline": "Domain reputation dropped? The complete recovery playbook",
         "description": "Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

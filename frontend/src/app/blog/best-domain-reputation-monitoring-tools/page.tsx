@@ -24,11 +24,7 @@ export default function BestDomainReputationMonitoringToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Best domain reputation monitoring tools for cold email teams (2026)",
         "description": "Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing breakdowns.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

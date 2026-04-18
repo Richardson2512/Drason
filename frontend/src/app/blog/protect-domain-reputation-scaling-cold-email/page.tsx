@@ -24,11 +24,7 @@ export default function ProtectDomainReputationScalingArticle() {
         "@type": "BlogPosting",
         "headline": "How to protect your domain reputation while scaling cold email",
         "description": "Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

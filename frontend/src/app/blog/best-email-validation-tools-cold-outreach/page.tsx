@@ -24,11 +24,7 @@ export default function BestEmailValidationToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Best email validation tools for cold outreach in 2026",
         "description": "Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration,.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

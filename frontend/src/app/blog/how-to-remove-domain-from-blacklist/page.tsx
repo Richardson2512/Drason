@@ -21,7 +21,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
         "@type": "BlogPosting",
         "headline": "How Do I Remove My Domain From a Blacklist?",
         "description": "Step-by-step guide to identifying which blacklists you are on, requesting delisting, and preventing future blacklisting.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/how-to-remove-domain-from-blacklist" },
         "datePublished": "2026-04-18",

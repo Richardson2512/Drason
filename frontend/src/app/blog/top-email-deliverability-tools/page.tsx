@@ -21,7 +21,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Email Deliverability Tools for Cold Email (2026)",
         "description": "Ranked list of the 7 best email deliverability tools for cold email teams in 2026. Pricing, features, and integration details compared.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-email-deliverability-tools" },
         "datePublished": "2026-04-18",

@@ -24,10 +24,7 @@ export default function RealTimeMonitoringArticle() {
         "@type": "BlogPosting",
         "headline": "Real-time domain and mailbox health monitoring for cold",
         "description": "How continuous real-time monitoring of domain reputation, mailbox health, DNS status, and bounce rates protects cold email infrastructure from rapid.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

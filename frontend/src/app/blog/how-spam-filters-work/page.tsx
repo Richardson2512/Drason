@@ -24,10 +24,7 @@ export default function HowSpamFiltersWorkArticle() {
         "@type": "BlogPosting",
         "headline": "How spam filters work and how they affect email",
         "description": "How ISP spam filters score inbound email, what triggers filtering for outbound teams, and how to avoid the spam folder without sacrificing personalization.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe"
-        },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": {
             "@type": "Organization",
             "name": "Superkabe",

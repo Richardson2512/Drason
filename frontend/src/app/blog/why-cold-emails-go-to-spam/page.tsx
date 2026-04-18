@@ -21,7 +21,7 @@ export default function WhyColdEmailsGoToSpamArticle() {
         "@type": "BlogPosting",
         "headline": "Why Do Cold Emails Go to Spam After 2 Weeks?",
         "description": "Your cold emails worked fine during warmup but now land in spam. Here are the 5 reasons this happens and how to fix each one.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/why-cold-emails-go-to-spam" },
         "datePublished": "2026-04-18",

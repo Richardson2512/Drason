@@ -24,11 +24,7 @@ export default function ReduceBounceRateArticle() {
         "@type": "BlogPosting",
         "headline": "How to Get Your Cold Email Bounce Rate Below 2%",
         "description": "A practical 7-step guide to reducing cold email bounce rates below 2%. Covers email validation, real-time monitoring, auto-pause rules, risk-aware.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "datePublished": "2026-03-27",
         "dateModified": "2026-03-27",

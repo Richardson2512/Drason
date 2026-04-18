@@ -24,11 +24,7 @@ export default function SuperkabeVsEmailVerificationArticle() {
         "@type": "BlogPosting",
         "headline": "Email verification vs email infrastructure protection: understanding the difference",
         "description": "Email verification tools like ZeroBounce and NeverBounce check if an email exists. Superkabe protects the sender. Different layers, complementary tools. Here's how they work together.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

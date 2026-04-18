@@ -21,7 +21,7 @@ export default function TopSenderReputationToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Top 7 Sender Reputation Monitoring Tools (2026)",
         "description": "Ranked list of 7 sender reputation tools for cold email. Track domain health, IP scores, blacklists, and ISP feedback.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-sender-reputation-tools" },
         "datePublished": "2026-04-18",

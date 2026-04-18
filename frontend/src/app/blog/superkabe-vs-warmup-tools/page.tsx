@@ -24,11 +24,7 @@ export default function SuperkabeVsWarmupToolsArticle() {
         "@type": "BlogPosting",
         "headline": "Why email warmup tools alone won't protect your domains",
         "description": "Warmup tools like Lemwarm and Warmup Inbox build pre-send reputation. But they don't monitor live campaigns, catch bounce spikes, or heal damaged infrastructure. Here's the gap they leave open.",
-        "author": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": "https://www.superkabe.com"
-        },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": {
             "@type": "WebPage",

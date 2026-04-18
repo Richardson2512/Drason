@@ -21,7 +21,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
         "@type": "BlogPosting",
         "headline": "How Do I Know If My Email Domain Is Burned?",
         "description": "7 warning signs your sending domain is burned and the exact steps to diagnose, recover, or replace it.",
-        "author": { "@type": "Organization", "name": "Superkabe", "url": "https://www.superkabe.com" },
+        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/how-to-know-if-domain-is-burned" },
         "datePublished": "2026-04-18",
