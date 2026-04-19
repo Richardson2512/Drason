@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
-  authors: [{ name: 'Richardson', url: 'https://www.superkabe.com' }],
+  authors: [{ name: 'Robert Smith', url: 'https://www.superkabe.com' }],
   publisher: 'Superkabe',
   icons: {
     icon: '/image/favicon-32.png',
@@ -70,7 +70,7 @@ export default function RootLayout({
     foundingDate: '2024',
     founder: {
       '@type': 'Person',
-      name: 'Richardson',
+      name: 'Balaji Jayakumar',
     },
     contactPoint: {
       '@type': 'ContactPoint',

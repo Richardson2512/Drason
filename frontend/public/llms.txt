@@ -123,6 +123,6 @@
 ## Company
 
 - Founded: 2024
-- Founder: Richardson
+- Founder: Balaji Jayakumar
 - Website: https://www.superkabe.com
 - G2: https://g2.com/products/superkabe
