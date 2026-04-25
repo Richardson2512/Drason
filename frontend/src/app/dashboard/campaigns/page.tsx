@@ -13,6 +13,7 @@ import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import BulkActionBar from '@/components/ui/BulkActionBar';
+import CustomSelect from '@/components/ui/CustomSelect';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useEntityStats } from '@/hooks/useEntityStats';
@@ -191,9 +192,9 @@ export default function CampaignsPage() {
     if (!loading && campaigns.length === 0 && fetchError) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
-                <div className="text-5xl mb-6">⚠️</div>
+                <div className="text-5xl mb-3">⚠️</div>
                 <h2 className="text-2xl font-bold mb-3 text-gray-900">Failed to Load Campaigns</h2>
-                <p className="text-gray-500 mb-6">{fetchError}</p>
+                <p className="text-gray-500 mb-3">{fetchError}</p>
                 <button
                     onClick={fetchCampaigns}
                     className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-all"
@@ -205,21 +206,30 @@ export default function CampaignsPage() {
     }
 
     return (
-        <div className="flex h-full gap-8">
+        <div className="flex h-full gap-4 p-4">
             {/* Left: Campaign List */}
-            <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '400px' }}>
-                <div className="mb-6 shrink-0">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-3">Campaigns</h2>
+            <div className="premium-card flex flex-col p-4 h-full overflow-hidden rounded-2xl" style={{ width: '380px' }}>
+                <div className="mb-4 shrink-0">
+                    <h1 className="text-xl font-bold text-gray-900 mb-3">Campaigns</h1>
 
-                    {/* Stats Breakdown */}
+                    {/* Stats bar — interactive. Clicking a pill filters the
+                        list; "All" clears. Replaces the status dropdown. */}
                     {entityStats?.campaigns && (
                         <div className="mb-3">
                             <EntityStatsBar
                                 total={entityStats.campaigns.total}
+                                activeKeys={statusFilter}
+                                onToggle={(key) => {
+                                    if (key === 'all') {
+                                        setStatusFilter([]);
+                                    } else {
+                                        setStatusFilter(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
+                                    }
+                                }}
                                 stats={[
-                                    { label: 'Active', value: entityStats.campaigns.active, color: '#22c55e' },
-                                    { label: 'Paused', value: entityStats.campaigns.paused, color: '#ef4444' },
-                                    { label: 'Completed', value: entityStats.campaigns.completed, color: '#6b7280' },
+                                    { key: 'active',    label: 'Active',    value: entityStats.campaigns.active,    color: '#22c55e' },
+                                    { key: 'paused',    label: 'Paused',    value: entityStats.campaigns.paused,    color: '#ef4444' },
+                                    { key: 'completed', label: 'Completed', value: entityStats.campaigns.completed, color: '#9ca3af' },
                                 ]}
                             />
                         </div>
@@ -228,23 +238,10 @@ export default function CampaignsPage() {
                     {/* Search Input */}
                     <input
                         type="text"
-                        placeholder="🔍 Search campaigns..."
+                        placeholder="Search campaigns..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="dash-input mb-3"
-                    />
-
-                    {/* Status Filter */}
-                    <MultiSelectDropdown
-                        options={[
-                            { value: 'active', label: 'Active' },
-                            { value: 'paused', label: 'Paused' },
-                            { value: 'completed', label: 'Completed' },
-                        ]}
-                        selected={statusFilter}
-                        onChange={setStatusFilter}
-                        placeholder="All Statuses"
-                        className="mb-3"
                     />
 
                     {/* Sort & Filter Button */}
@@ -320,8 +317,8 @@ export default function CampaignsPage() {
                     <div className="animate-fade-in">
                         <div className="page-header flex justify-between items-start">
                             <div>
-                                <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">{selectedCampaign.name}</h1>
-                                <div className="text-gray-500 text-[1.1rem]">Campaign Performance Details</div>
+                                <h1 className="text-xl font-bold mb-0.5 text-gray-900 tracking-tight">{selectedCampaign.name}</h1>
+                                <div className="text-xs text-gray-500">Campaign Performance Details</div>
                             </div>
                             {selectedCampaign.status === 'active' ? (
                                 <button
@@ -352,7 +349,7 @@ export default function CampaignsPage() {
 
                         {/* Pause Reason Banner */}
                         {selectedCampaign.status === 'paused' && selectedCampaign.paused_reason && (
-                            <div className="p-4 bg-red-50 border border-red-300 rounded-lg mb-6">
+                            <div className="p-4 bg-red-50 border border-red-300 rounded-lg mb-3">
                                 <div className="flex items-start gap-3">
                                     <span className="text-xl">⏸️</span>
                                     <div className="flex-1">
@@ -381,13 +378,13 @@ export default function CampaignsPage() {
                         )}
 
                         {/* Top Stats - SPECIFIC TO CAMPAIGN (Clickable) */}
-                        <div className="grid grid-cols-3 gap-6 mb-10">
+                        <div className="grid grid-cols-3 gap-6 mb-3">
                             <div
                                 className="premium-card hover:shadow-lg stat-card-clickable"
                                 onClick={() => navigateToLeads()}
                             >
                                 <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Total Leads</div>
-                                <div className="text-4xl font-extrabold text-gray-900">{stats ? stats.total : '-'}</div>
+                                <div className="text-2xl font-bold text-gray-900">{stats ? stats.total : '-'}</div>
                                 <div className="text-xs text-gray-400 mt-2 font-medium">Click to view all leads →</div>
                             </div>
                             <div
@@ -395,7 +392,7 @@ export default function CampaignsPage() {
                                 onClick={() => navigateToLeads('active')}
                             >
                                 <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Active Execution</div>
-                                <div className="text-4xl font-extrabold text-green-600">{stats ? stats.active : '-'}</div>
+                                <div className="text-2xl font-bold text-green-600">{stats ? stats.active : '-'}</div>
                                 <div className="text-xs text-gray-400 mt-2 font-medium">Click to view active leads →</div>
                             </div>
                             <div
@@ -403,14 +400,14 @@ export default function CampaignsPage() {
                                 onClick={() => navigateToLeads('paused')}
                             >
                                 <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Paused</div>
-                                <div className="text-4xl font-extrabold text-red-500">{stats ? stats.paused : '-'}</div>
+                                <div className="text-2xl font-bold text-red-500">{stats ? stats.paused : '-'}</div>
                                 <div className="text-xs text-gray-400 mt-2 font-medium">Click to view paused leads →</div>
                             </div>
                         </div>
 
                         {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
-                        <div className="premium-card mb-10">
-                            <div className="mb-6">
+                        <div className="premium-card mb-3">
+                            <div className="mb-3">
                                 <h2 className="text-xl font-bold text-gray-900 mb-1">
                                     Engagement Metrics
                                 </h2>
@@ -425,7 +422,7 @@ export default function CampaignsPage() {
                                     <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Total Sent
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-gray-900">
+                                    <div className="text-2xl font-bold text-gray-900">
                                         {selectedCampaign.total_sent?.toLocaleString() || '0'}
                                     </div>
                                 </div>
@@ -435,7 +432,7 @@ export default function CampaignsPage() {
                                     <div className="text-blue-800 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Opens
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-blue-900">
+                                    <div className="text-2xl font-bold text-blue-900">
                                         {selectedCampaign.open_count?.toLocaleString() || '0'}
                                     </div>
                                     <div className="text-xs text-blue-500 mt-1 font-semibold">
@@ -448,7 +445,7 @@ export default function CampaignsPage() {
                                     <div className="text-green-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Clicks
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-green-700">
+                                    <div className="text-2xl font-bold text-green-700">
                                         {selectedCampaign.click_count?.toLocaleString() || '0'}
                                     </div>
                                     <div className="text-xs text-green-500 mt-1 font-semibold">
@@ -461,7 +458,7 @@ export default function CampaignsPage() {
                                     <div className="text-fuchsia-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Replies
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-fuchsia-700">
+                                    <div className="text-2xl font-bold text-fuchsia-700">
                                         {selectedCampaign.reply_count?.toLocaleString() || '0'}
                                     </div>
                                     <div className="text-xs text-fuchsia-500 mt-1 font-semibold">
@@ -477,7 +474,7 @@ export default function CampaignsPage() {
                                     <div className="text-red-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Bounces (HARD SIGNAL)
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-red-600">
+                                    <div className="text-2xl font-bold text-red-600">
                                         {selectedCampaign.total_bounced?.toLocaleString() || '0'}
                                     </div>
                                     <div className="text-xs text-red-500 mt-1 font-semibold">
@@ -490,7 +487,7 @@ export default function CampaignsPage() {
                                     <div className="text-amber-900 text-xs font-semibold uppercase tracking-wide mb-2">
                                         Unsubscribes
                                     </div>
-                                    <div className="text-[1.75rem] font-bold text-amber-700">
+                                    <div className="text-2xl font-bold text-amber-700">
                                         {selectedCampaign.unsubscribed_count?.toLocaleString() || '0'}
                                     </div>
                                 </div>
@@ -624,7 +621,7 @@ export default function CampaignsPage() {
                     onClick={() => sortFilter.close()}
                 >
                     <div
-                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
+                        className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
@@ -643,31 +640,30 @@ export default function CampaignsPage() {
                         {/* Modal Body */}
                         <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
-                                <select
-                                    id="modal-sort-by"
+                                <CustomSelect
                                     value={sortFilter.temp.sortBy}
-                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="name_asc">Name (A-Z)</option>
-                                    <option value="name_desc">Name (Z-A)</option>
-                                    <option value="sent_desc">Sent (High to Low)</option>
-                                    <option value="sent_asc">Sent (Low to High)</option>
-                                    <option value="open_rate_desc">Open Rate (High to Low)</option>
-                                    <option value="open_rate_asc">Open Rate (Low to High)</option>
-                                    <option value="reply_rate_desc">Reply Rate (High to Low)</option>
-                                    <option value="reply_rate_asc">Reply Rate (Low to High)</option>
-                                    <option value="bounce_rate_desc">Bounce Rate (High to Low)</option>
-                                    <option value="bounce_rate_asc">Bounce Rate (Low to High)</option>
-                                </select>
+                                    onChange={(v) => sortFilter.setTempValue('sortBy', v)}
+                                    options={[
+                                        { value: 'name_asc', label: 'Name (A-Z)' },
+                                        { value: 'name_desc', label: 'Name (Z-A)' },
+                                        { value: 'sent_desc', label: 'Sent (High to Low)' },
+                                        { value: 'sent_asc', label: 'Sent (Low to High)' },
+                                        { value: 'open_rate_desc', label: 'Open Rate (High to Low)' },
+                                        { value: 'open_rate_asc', label: 'Open Rate (Low to High)' },
+                                        { value: 'reply_rate_desc', label: 'Reply Rate (High to Low)' },
+                                        { value: 'reply_rate_asc', label: 'Reply Rate (Low to High)' },
+                                        { value: 'bounce_rate_desc', label: 'Bounce Rate (High to Low)' },
+                                        { value: 'bounce_rate_asc', label: 'Bounce Rate (Low to High)' },
+                                    ]}
+                                />
                             </div>
 
                             {/* Total Sent Range */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Total Sent Range
                                 </label>
@@ -693,7 +689,7 @@ export default function CampaignsPage() {
                             </div>
 
                             {/* Open Rate Range */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Open Rate Range (%)
                                 </label>
@@ -721,7 +717,7 @@ export default function CampaignsPage() {
                             </div>
 
                             {/* Platform Filter */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>

@@ -1,11 +1,12 @@
 # Superkabe — Full AI Context
 
-> Superkabe is an infrastructure protection layer for outbound email teams. It sits between lead enrichment tools (Clay) and email sending platforms (Smartlead, Instantly, EmailBison) to monitor bounce rates, enforce DNS authentication, detect mailbox fatigue, and score lead health in real time. The goal: prevent domain burnout and protect sender reputation before damage becomes irreversible.
+> Superkabe is an AI-driven cold email platform that does two things at once for outbound email teams. **First**, it sends campaigns natively through connected Gmail, Microsoft 365, or SMTP mailboxes. **Second**, it sits in the middle as an active Deliverability Protection Layer (DPL) around any sending infrastructure — native Superkabe mailboxes AND existing Smartlead / Instantly / EmailBison / Reply.io setups, simultaneously in the same account. The DPL monitors bounce rates, enforces DNS authentication, detects mailbox fatigue, and scores lead health in real time across every connected sender, preventing domain burnout before sender reputation damage becomes irreversible.
 
 ## What Superkabe Does
 
-Superkabe does NOT send emails. It monitors and protects the infrastructure that does. Key capabilities:
+Superkabe runs two complementary systems on the same tenant: a native email sending sequencer, and a Deliverability Protection Layer that wraps every send (from the native sequencer, from a connected platform like Smartlead / Instantly / EmailBison / Reply.io, or from both simultaneously). Key capabilities:
 
+- **Native Sending Sequencer**: Connect Gmail / Microsoft 365 / SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; per-org send schedule, daily limit, and tracking; unified inbox for replies
 - **Bounce Rate Monitoring**: Tiered thresholds (warning at 5%, critical at 10%) with sliding window analysis
 - **DNS Authentication Enforcement**: SPF, DKIM, DMARC validation per domain
 - **Mailbox Fatigue Detection**: Tracks send volume, bounce patterns, and cooldown periods per mailbox

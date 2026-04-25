@@ -14,6 +14,7 @@ import AssessmentProgressOverlay from '@/components/AssessmentProgressOverlay';
 import TransitionGateBanner from './TransitionGateBanner';
 // Recovery and warmup panels moved to /dashboard/healing
 import FindingsSection from './FindingsSection';
+import DnsHealthPanel from './DnsHealthPanel';
 import RecommendationsList from './RecommendationsList';
 
 const ScoreGauge = dynamic(() => import('./Charts').then(mod => ({ default: mod.ScoreGauge })), { ssr: false });
@@ -215,7 +216,7 @@ export default function InfrastructureHealthPage() {
     if (error) {
         return (
             <div className="premium-card max-w-[600px] mx-auto mt-16 text-center">
-                <div className="text-[3rem] mb-4">⚠️</div>
+                <div className="text-4xl mb-4">⚠️</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">Failed to Load Report</h2>
                 <p className="text-gray-500 mb-6">{error}</p>
                 <button onClick={fetchReport} className="premium-btn">Retry</button>
@@ -229,9 +230,9 @@ export default function InfrastructureHealthPage() {
                 <div className="w-[120px] h-[120px] rounded-full flex items-center justify-center shadow-xl" style={{
                     background: 'linear-gradient(135deg, #EFF6FF, #F5F3FF)',
                 }}>
-                    <span className="text-[3rem]">🏗️</span>
+                    <span className="text-4xl">🏗️</span>
                 </div>
-                <h2 className="text-[1.75rem] font-extrabold text-gray-900 tracking-tight">
+                <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
                     No Infrastructure Assessment Yet
                 </h2>
                 <p className="text-gray-500 text-base max-w-[600px] text-center leading-relaxed">
@@ -246,9 +247,9 @@ export default function InfrastructureHealthPage() {
                         { icon: '📋', title: 'Report', desc: 'Get a scored report with specific findings and remediation steps' },
                     ].map((step, i) => (
                         <div key={step.title} className="flex-1 p-6 rounded-[20px] bg-white border border-gray-200 text-center relative shadow-sm">
-                            <div className="absolute top-[-12px] left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-extrabold flex items-center justify-center">{i + 1}</div>
+                            <div className="absolute top-[-12px] left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#2563EB] text-white text-xs font-bold flex items-center justify-center">{i + 1}</div>
                             <div className="text-[2rem] mb-2">{step.icon}</div>
-                            <div className="font-extrabold text-gray-900 mb-[0.35rem]">{step.title}</div>
+                            <div className="font-bold text-gray-900 mb-[0.35rem]">{step.title}</div>
                             <div className="text-gray-500 text-[0.825rem] leading-normal">{step.desc}</div>
                         </div>
                     ))}
@@ -271,7 +272,7 @@ export default function InfrastructureHealthPage() {
     const scoreColor = getScoreColor(report.overall_score);
 
     return (
-        <div className="grid gap-6">
+        <div className="p-4 flex flex-col gap-4">
             <AssessmentProgressOverlay isVisible={reassessing} stage={assessmentStage} />
             <AssessmentConfirmationModal
                 isOpen={showConfirmModal}
@@ -284,13 +285,13 @@ export default function InfrastructureHealthPage() {
                 onConfirm={() => { setShowConfirmModal(false); }}
                 onReview={() => { setShowConfirmModal(false); }}
             />
-            <div className="page-header flex justify-between items-start">
+            <div className="flex justify-between items-start flex-wrap gap-3">
                 <div>
-                    <h1 className="page-title flex items-center gap-3">
+                    <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                         <span>Infrastructure Health</span>
                         <HelpLink href="/docs/help/infrastructure-score-explained" size="sm" />
                     </h1>
-                    <p className="page-subtitle">
+                    <p className="text-xs text-gray-500 mt-0.5">
                         Assessment report from {new Date(report.created_at).toLocaleDateString(undefined, { dateStyle: 'long' })} at {new Date(report.created_at).toLocaleTimeString(undefined, { timeStyle: 'short' })}
                     </p>
                 </div>
@@ -342,7 +343,7 @@ export default function InfrastructureHealthPage() {
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-extrabold text-[#065F46] m-0">
+                            <h3 className="text-lg font-bold text-[#065F46] m-0">
                                 24/7 Automated Monitoring Active
                             </h3>
                             <span className="py-1 px-3 bg-[#10B981] text-white rounded-full text-[0.625rem] font-bold tracking-wide">
@@ -426,7 +427,7 @@ export default function InfrastructureHealthPage() {
                     <div className="h-[180px] relative">
                         <ScoreGauge score={report.overall_score} scoreColor={scoreColor} />
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                            <div className="text-4xl font-extrabold leading-none" style={{ color: scoreColor }}>
+                            <div className="text-2xl font-bold leading-none" style={{ color: scoreColor }}>
                                 {report.overall_score}
                             </div>
                             <div className="text-xs text-gray-500 font-semibold mt-[2px]">
@@ -474,7 +475,7 @@ export default function InfrastructureHealthPage() {
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="text-xl">{card.icon}</span>
                                 <span className="font-bold text-gray-900 text-base">{card.label}</span>
-                                <span className="ml-auto font-extrabold text-gray-900 text-2xl">{total}</span>
+                                <span className="ml-auto font-bold text-gray-900 text-2xl">{total}</span>
                             </div>
                             {/* Stacked Status Bar */}
                             <div className="h-2 rounded bg-gray-100 overflow-hidden flex">
@@ -556,6 +557,11 @@ export default function InfrastructureHealthPage() {
                     </div>
                 </Link>
             )}
+
+            {/* DNS Health summary — sits ABOVE the Findings section so users see
+                the four authentication signals (SPF / DKIM / DMARC / Blacklist)
+                at a glance before drilling into per-finding detail. */}
+            <DnsHealthPanel />
 
             {/* Findings Distribution + Findings List */}
             <FindingsSection

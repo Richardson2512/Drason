@@ -213,6 +213,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
             'case-study-infrastructure-protection',
             'email-validation-infrastructure-protection',
             'multi-platform-email-validation',
+            // ─── Sequencer Capability Pages (2026-04-24) ─────────
+            'ai-cold-email-sequences',
+            'esp-aware-sending-health-gate',
+            'unlimited-multi-mailbox-sending',
+            'cold-email-sending-analytics',
         ].map(slug => ({
             url: `${BASE_URL}/product/${slug}`,
             lastModified: productMtime,

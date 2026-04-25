@@ -88,7 +88,7 @@ function SummaryCard({ label, count, color, icon }: {
         <div className="premium-card rounded-[16px] relative overflow-hidden" style={{ borderLeft: `4px solid ${color}` }}>
             <div className="flex items-center justify-between">
                 <div>
-                    <div className="text-3xl font-extrabold text-gray-900">{count}</div>
+                    <div className="text-xl font-bold text-gray-900">{count}</div>
                     <div className="text-sm font-semibold text-gray-500 mt-1">{label}</div>
                 </div>
                 <div className="text-2xl opacity-40">{icon}</div>
@@ -226,7 +226,7 @@ function RecoveryEntityCard({ entity, type }: {
                 {(phase === 'restricted_send' || phase === 'warm_recovery') && (
                     <div>
                         <div className="text-[0.65rem] text-gray-400 font-semibold uppercase tracking-wide">Clean Sends</div>
-                        <div className="text-[0.9rem] font-extrabold text-gray-800">
+                        <div className="text-[0.9rem] font-bold text-gray-800">
                             {cleanSends}/{phase === 'warm_recovery' ? 50 : (consecutivePauses > 1 ? 25 : 15)}
                         </div>
                     </div>
@@ -240,7 +240,7 @@ function RecoveryEntityCard({ entity, type }: {
                 {phase === 'paused' && (
                     <div>
                         <div className="text-[0.65rem] text-gray-400 font-semibold uppercase tracking-wide">Consecutive Pauses</div>
-                        <div className="text-[0.9rem] font-extrabold text-gray-800">{consecutivePauses}</div>
+                        <div className="text-[0.9rem] font-bold text-gray-800">{consecutivePauses}</div>
                     </div>
                 )}
                 {phase === 'quarantine' && (
@@ -255,7 +255,7 @@ function RecoveryEntityCard({ entity, type }: {
                 )}
                 <div>
                     <div className="text-[0.65rem] text-gray-400 font-semibold uppercase tracking-wide">Bounce Rate</div>
-                    <div className="text-[0.9rem] font-extrabold" style={{
+                    <div className="text-[0.9rem] font-bold" style={{
                         color: bounceRate < 0.02 ? '#16A34A' : bounceRate < 0.03 ? '#F59E0B' : '#EF4444',
                     }}>
                         {(bounceRate * 100).toFixed(1)}%
@@ -264,7 +264,7 @@ function RecoveryEntityCard({ entity, type }: {
                 {resilience !== undefined && resilience !== null && (
                     <div>
                         <div className="text-[0.65rem] text-gray-400 font-semibold uppercase tracking-wide">Resilience</div>
-                        <div className="text-[0.9rem] font-extrabold" style={{
+                        <div className="text-[0.9rem] font-bold" style={{
                             color: resilience >= 70 ? '#16A34A' : resilience >= 30 ? '#F59E0B' : '#EF4444',
                         }}>
                             {resilience}
@@ -286,7 +286,7 @@ function RecoveryEntityCard({ entity, type }: {
                 {type === 'domain' && entity.mailbox_count !== undefined && (
                     <div>
                         <div className="text-[0.65rem] text-gray-400 font-semibold uppercase tracking-wide">Mailboxes</div>
-                        <div className="text-[0.9rem] font-extrabold text-gray-800">{entity.mailbox_count}</div>
+                        <div className="text-[0.9rem] font-bold text-gray-800">{entity.mailbox_count}</div>
                     </div>
                 )}
             </div>
@@ -319,7 +319,7 @@ function CooldownTimer({ cooldownUntil }: { cooldownUntil: string }) {
     }, [cooldownUntil]);
 
     return (
-        <div className="text-[0.9rem] font-extrabold" style={{
+        <div className="text-[0.9rem] font-bold" style={{
             color: remaining === 'Ready' ? '#16A34A' : '#DC2626',
         }}>
             {remaining}
@@ -449,11 +449,10 @@ export default function HealingPipelinePage() {
     const totalRecovering = (recoveryData?.summary?.totalRecovering ?? 0);
 
     return (
-        <div className="max-w-[1400px] mx-auto">
-            {/* ── Header ──────────────────────────────────────────────────── */}
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">Healing Pipeline</h1>
-                <p className="text-gray-500 mt-1">
+        <div className="p-4 flex flex-col gap-4">
+            <div>
+                <h1 className="text-xl font-bold text-gray-900">Healing Pipeline</h1>
+                <p className="text-xs text-gray-500 mt-0.5">
                     Monitor and track the recovery progress of paused mailboxes and domains
                 </p>
             </div>

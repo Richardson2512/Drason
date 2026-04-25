@@ -1,8 +1,15 @@
-# Drason
+# Drason (repo) / Superkabe (platform)
 
-**Drason** is a rule-based outbound execution control layer that manages the lifecycle of leads entering email campaigns. It acts as a **control plane** between your lead enrichment sources (like Clay) and your email senders (like Smartlead), ensuring leads only enter campaigns when it's safe to do so.
+**Superkabe** is an AI-driven cold email platform that does two things at once:
 
-> **Guiding Principle**: Drason exists to prevent irreversible outbound damage through conservative, explainable, rule-based control — not to maximize send volume.
+1. **Sends email campaigns natively** — connect Gmail, Microsoft 365, or SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; unified inbox; full analytics.
+2. **Acts as middleware protection** for existing sending infrastructure — sits between lead sources (Clay, CSV, API) and senders (the native Superkabe sequencer **and/or** Smartlead / Instantly / EmailBison / Reply.io), applying an active Deliverability Protection Layer (DPL) that gates execution, monitors bounces, enforces DNS authentication, and auto-pauses damaged mailboxes before domain reputation burns.
+
+Both capabilities run on the same tenant simultaneously. A team can send from a native Superkabe mailbox for one campaign while Superkabe protects a connected Smartlead or Instantly setup for another — one dashboard, one protection layer, two execution paths.
+
+> **Guiding Principle**: Superkabe prevents irreversible outbound damage through conservative, explainable, rule-based control — applied uniformly whether the send originates in Superkabe's own sequencer or on a connected platform.
+>
+> *Note: "Drason" is the original repository name. The product is "Superkabe". See staging docs for positioning.*
 
 ---
 
@@ -23,66 +30,82 @@
 
 ## Overview
 
-### What Drason Does
+### What Superkabe Does
 
-1. **Receives enriched leads** from Clay via webhook
-2. **Routes leads** to appropriate campaigns based on configurable rules (persona + lead score)
-3. **Gates execution** by validating campaign health, domain status, and mailbox availability before pushing leads
-4. **Monitors risk signals** (hard bounces, delivery failures) in real-time
-5. **Pauses execution** when thresholds are exceeded to prevent deliverability damage
-6. **Explains every action** through comprehensive audit logging
+**Native sending:**
+1. **Connects your mailboxes** — Gmail, Microsoft 365, or SMTP (OAuth where supported, encrypted credentials otherwise)
+2. **Runs multi-step email sequences** with A/B variants, per-campaign schedule, daily limits, and send-time spreading
+3. **Routes each lead to the best mailbox** by 30-day per-ESP bounce/reply performance
+4. **Tracks opens, clicks, and replies** with HMAC-signed tracking URLs and IMAP reply polling
+5. **Runs a unified inbox** across every connected mailbox for fast response
 
-### What Drason Does NOT Do (By Design)
+**Deliverability protection (applies to native AND connected senders):**
+6. **Receives leads** from Clay webhook, CSV upload, or direct API
+7. **Validates every lead** (syntax, MX, disposable, catch-all, optional MillionVerifier probe)
+8. **Routes leads** to appropriate campaigns based on configurable rules (persona + lead score)
+9. **Gates execution** by validating campaign health, domain status, and mailbox availability before a send fires
+10. **Monitors risk signals** (hard bounces, delivery failures, provider throttling) in real-time
+11. **Pauses and heals** mailboxes/domains through a 5-phase recovery pipeline when thresholds are exceeded
+12. **Explains every action** through comprehensive audit logging and state-transition history
 
-- Detect spam or inbox placement
-- Use AI/ML for decision-making
-- Optimize campaign performance
-- Perform email warm-up orchestration
-- Switch channels automatically
-- Support multiple email senders beyond Smartlead
-- Support CSV/Sheets ingestion
+### What Superkabe Does NOT Do (By Design)
+
+- Detect spam filter placement (no seed-list testing)
+- Switch channels automatically (email only — no LinkedIn, no SMS)
+- Replace CRM or sales engagement platforms (no deal pipeline, no call tracking)
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           ARCHITECTURE                               │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌──────────┐     Webhook      ┌──────────────────┐                 │
-│  │   Clay   │ ───────────────► │  Drason Backend  │                 │
-│  │  (Leads) │                  │   (Control Plane)│                 │
-│  └──────────┘                  └────────┬─────────┘                 │
-│                                         │                           │
-│                                         │ API Calls                 │
-│                                         ▼                           │
-│                                ┌──────────────────┐                 │
-│                                │    Smartlead     │                 │
-│                                │ (Email Campaigns)│                 │
-│                                └────────┬─────────┘                 │
-│                                         │                           │
-│                                         │ Webhooks                  │
-│                                         ▼                           │
-│                                ┌──────────────────┐                 │
-│                                │ Monitoring System│                 │
-│                                │ (Bounce Tracking)│                 │
-│                                └──────────────────┘                 │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                                  ARCHITECTURE                                  │
+├───────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│   ┌──────────┐   ┌──────────┐   ┌───────────┐                                 │
+│   │   Clay   │   │   CSV    │   │  API v1   │                                 │
+│   │ webhook  │   │  upload  │   │  ingest   │                                 │
+│   └────┬─────┘   └────┬─────┘   └─────┬─────┘                                 │
+│        └──────────────┼──────────────┘                                        │
+│                       ▼                                                       │
+│            ┌──────────────────────┐                                           │
+│            │  Validate + Route +  │  <-- Deliverability Protection Layer      │
+│            │   Execution Gate     │      (shared: guards every send path)    │
+│            └──────────┬───────────┘                                           │
+│                       │ gate passes                                           │
+│        ┌──────────────┴──────────────┐                                        │
+│        ▼                             ▼                                        │
+│  ┌──────────────┐            ┌──────────────────┐                             │
+│  │  NATIVE      │            │   CONNECTED      │                             │
+│  │  SEQUENCER   │            │   PLATFORM       │                             │
+│  │  Gmail /     │            │   Smartlead /    │                             │
+│  │  Microsoft / │            │   Instantly /    │                             │
+│  │  SMTP        │            │   EmailBison /   │                             │
+│  │              │            │   Reply.io       │                             │
+│  └──────┬───────┘            └────────┬─────────┘                             │
+│         │ SendEvent                   │ webhook events                        │
+│         └───────────────┬─────────────┘                                       │
+│                         ▼                                                     │
+│              ┌─────────────────────┐                                          │
+│              │   Monitoring +      │  <-- Bounces, DNSBL, velocity,           │
+│              │   Healing Engine    │      5-phase recovery, auto-pause        │
+│              └─────────────────────┘                                          │
+│                                                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Data Flow
 
-1. **Lead Ingestion**: Clay sends enriched leads via POST to `/api/ingest/clay`
-2. **Routing**: System matches lead against routing rules (persona + min_score) → assigns campaign
-3. **Execution Gate**: Before pushing to Smartlead, validates:
-   - Campaign is active
-   - Domain is not paused
-   - At least one mailbox is healthy
-4. **Monitoring**: Smartlead sends bounce/sent events via webhook → system tracks metrics
-5. **Pause Logic**: When bounce thresholds are exceeded, mailboxes/domains are paused automatically
+1. **Lead Ingestion**: Leads arrive from Clay webhook (`/api/ingest/clay`), CSV batch upload (`/api/validation`), or direct API (`/api/ingest`).
+2. **Validation**: Hybrid check (syntax → MX → disposable → catch-all → optional MillionVerifier probe). Invalid leads blocked; risky leads flagged.
+3. **Routing**: Matches lead against configured routing rules (persona + min_score) → assigns campaign.
+4. **Execution Gate**: Before any send (native OR connected-platform), validates campaign is active, domain is healthy, at least one mailbox is available, below capacity, risk score below threshold.
+5. **Send** — one of two paths:
+   - **Native sequencer**: `sendQueueService` dispatches the email through Gmail API, Microsoft Graph, or SMTP; writes a `SendEvent`.
+   - **Connected platform**: adapter pushes the lead to Smartlead/Instantly/EmailBison/Reply.io; the platform sends; webhook events come back to us.
+6. **Monitoring**: Both paths produce the same event shape (`SendEvent`, `BounceEvent`, `ReplyEvent`). The Protection layer tracks metrics identically.
+7. **Pause + Heal**: When thresholds are exceeded (5 bounces in window OR 3% bounce rate after 60 sends OR correlation signal), mailbox/domain enters the 5-phase recovery pipeline. Standby mailboxes rotate in automatically.
 
 ---
 

@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
+import { Activity, AlertTriangle, ArrowRight, Clock, Users, Rocket, Mailbox as MailboxIcon, Globe, HeartPulse } from 'lucide-react';
 import OverviewEmptyState from '@/components/dashboard/OverviewEmptyState';
 import LeadHealthChart from '@/components/dashboard/LeadHealthChart';
 import TopLeadsCard from '@/components/dashboard/TopLeadsCard';
-import SemiCircleGauge from '@/components/dashboard/SemiCircleGauge';
+import EntityStatsBar from '@/components/ui/EntityStatsBar';
 import { useDashboard } from '@/contexts/DashboardContext';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
@@ -26,7 +28,6 @@ export default function Overview() {
 
   const [error, setError] = useState<string | null>(null);
   const [resuming, setResuming] = useState<string | null>(null);
-  const [campaignStatusFilter, setCampaignStatusFilter] = useState<string>('all');
   const [confirmResume, setConfirmResume] = useState<{ type: 'domain' | 'mailbox'; id: string; name: string; reason: string } | null>(null);
 
   const handleResumeDomainClick = (d: DomainSummary) => {
@@ -148,384 +149,315 @@ export default function Overview() {
   const warningDomains = domains.filter(d => d.status === 'warning');
   const pausedMailboxes = mailboxes.filter(m => m.status === 'paused');
 
-  // Color Constants
-  const COLORS = {
-    active: '#22c55e',
-    paused: '#ef4444',
-    held: '#eab308',
-    healthy: '#22c55e',
-    warning: '#eab308'
-  };
-
-  const leadChartData = [
-    { name: 'Active', value: stats.active, color: COLORS.active },
-    { name: 'Held', value: stats.held, color: COLORS.held },
-    { name: 'Paused', value: stats.paused, color: COLORS.paused },
-  ];
-
-  const domainChartData = [
-    { name: 'Healthy', value: domains.filter(d => d.status === 'healthy').length, color: COLORS.healthy },
-    { name: 'Warning', value: domains.filter(d => d.status === 'warning').length, color: COLORS.warning },
-    { name: 'Paused', value: domains.filter(d => d.status === 'paused').length, color: COLORS.paused },
-  ];
-
-  const mailboxChartData = [
-    { name: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy').length, color: COLORS.healthy },
-    { name: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length, color: COLORS.warning },
-    { name: 'Paused', value: mailboxes.filter(m => m.status === 'paused').length, color: COLORS.paused },
-    { name: 'Quarantine', value: mailboxes.filter(m => m.status === 'quarantine' || m.status === 'restricted_send').length, color: '#EF4444' },
-  ];
-
-  const filteredCampaignCount = campaignStatusFilter === 'all'
-    ? campaigns.length
-    : campaigns.filter(c => c.status === campaignStatusFilter).length;
-
   const hasData = (stats.active + stats.held + stats.paused) > 0 || campaigns.length > 0 || mailboxes.length > 0;
+
+  // Counts used by the stat bars
+  const totalLeads = stats.active + stats.held + stats.paused;
+  const totalAttention = pausedDomains.length + warningDomains.length + pausedMailboxes.length;
 
   if (!hasData) {
     return <OverviewEmptyState stats={stats} />;
   }
 
+  const criticalFindings = orgFindings.filter(f => f.severity === 'critical').length;
+  const warningFindings = orgFindings.filter(f => f.severity === 'warning').length;
+  const infoFindings = orgFindings.filter(f => f.severity === 'info').length;
+
   return (
-    <div className="grid gap-6 pb-8">
-      {/* Welcome Section */}
-      <div className="pb-1">
-        <h2 className="text-[1.1rem] font-semibold text-indigo-600 mb-[0.125rem]">
-          Welcome back, {user?.name?.split(' ')[0] || 'User'} 👋
-        </h2>
-        <p className="text-[0.8rem] text-gray-400">
-          Here's your system overview and health status.
-        </p>
-      </div>
-
-      <div className="page-header flex justify-between items-start">
+    <div className="p-4 flex flex-col gap-4 pb-8">
+      {/* ─── Page header ──────────────────────────────────────────── */}
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="page-title">System Overview</h1>
-          <p className="page-subtitle">Real-time health monitoring across your infrastructure.</p>
+          <h1 className="text-xl font-bold text-gray-900">
+            {user?.name?.split(' ')[0] ? `Welcome back, ${user.name.split(' ')[0]}` : 'System Overview'}
+          </h1>
+          <p className="text-xs text-gray-500 mt-0.5">Real-time health monitoring across your infrastructure.</p>
         </div>
-
-        {/* Trial Countdown */}
-        {isTrialing && daysRemaining !== null && (
-          <div
-            className="px-6 py-4 rounded-xl min-w-[200px] text-center"
-            style={{
-              background: daysRemaining <= 3 ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)' : 'linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%)',
-              border: `2px solid ${daysRemaining <= 3 ? '#F59E0B' : '#3B82F6'}`,
-            }}
-          >
-            <div
-              className="text-xs font-bold uppercase tracking-wide mb-1"
-              style={{ color: daysRemaining <= 3 ? '#92400E' : '#1E40AF' }}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Monitoring status — unobtrusive, replaces the old green gradient banner */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-semibold text-gray-700">24/7 monitoring</span>
+            <span className="text-[10px] text-gray-400">· syncs every 20 min</span>
+          </div>
+          {/* Trial countdown — now a quiet pill, not a gradient card */}
+          {isTrialing && daysRemaining !== null && (
+            <Link
+              href="/dashboard/billing"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border no-underline transition-colors"
+              style={{
+                background: daysRemaining <= 3 ? '#FEF3C7' : '#F9FAFB',
+                borderColor: daysRemaining <= 3 ? '#FCD34D' : '#E5E7EB',
+                color: daysRemaining <= 3 ? '#92400E' : '#374151',
+              }}
             >
-              Trial Period
-            </div>
-            <div
-              className="text-[1.75rem] font-extrabold leading-tight mb-1"
-              style={{ color: daysRemaining <= 3 ? '#B45309' : '#1D4ED8' }}
-            >
-              {daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'}
-            </div>
-            <div
-              className="text-[0.7rem] font-semibold"
-              style={{ color: daysRemaining <= 3 ? '#78350F' : '#1E40AF' }}
-            >
-              {daysRemaining <= 3 ? '⚠️ Ending Soon' : 'Remaining'}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Infrastructure Stat Boxes */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="premium-card p-5 text-center">
-          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
-            Mailboxes
-          </div>
-          <div className="text-[2rem] font-extrabold text-blue-600 leading-tight">
-            {mailboxes.length}
-          </div>
-          <div className="text-[0.7rem] text-gray-400 mt-1">
-            {mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length} healthy
-          </div>
-        </div>
-        <div className="premium-card p-5 text-center">
-          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
-            Leads
-          </div>
-          <div className="text-[2rem] font-extrabold text-violet-600 leading-tight">
-            {stats.active + stats.held + stats.paused}
-          </div>
-          <div className="text-[0.7rem] text-gray-400 mt-1">
-            {stats.active} active
-          </div>
-        </div>
-        <div className="premium-card p-5 text-center relative">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-              Campaigns
-            </span>
-            <select
-              value={campaignStatusFilter}
-              onChange={(e) => setCampaignStatusFilter(e.target.value)}
-              className="text-[0.65rem] px-1.5 py-0.5 rounded-md border border-gray-200 bg-gray-50 text-gray-700 font-semibold cursor-pointer outline-none"
-            >
-              <option value="all">All</option>
-              <option value="active">Active</option>
-              <option value="paused">Paused</option>
-              <option value="completed">Completed</option>
-            </select>
-          </div>
-          <div className="text-[2rem] font-extrabold text-emerald-600 leading-tight">
-            {filteredCampaignCount}
-          </div>
-          <div className="text-[0.7rem] text-gray-400 mt-1">
-            {campaignStatusFilter === 'all' ? `${campaigns.filter(c => c.status === 'active').length} active` : campaignStatusFilter}
-          </div>
-        </div>
-        <div className="premium-card p-5 text-center">
-          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
-            Domains
-          </div>
-          <div className="text-[2rem] font-extrabold text-amber-500 leading-tight">
-            {domains.length}
-          </div>
-          <div className="text-[0.7rem] text-gray-400 mt-1">
-            {domains.filter(d => d.status === 'healthy').length} healthy
-          </div>
+              <Clock size={12} strokeWidth={1.75} />
+              <span className="text-xs font-semibold">
+                Trial · {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} left
+              </span>
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* 24/7 Monitoring Status */}
-      <div
-        className="premium-card flex items-center gap-4 rounded-xl px-6 py-4"
-        style={{
-          background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
-          border: '2px solid #22C55E',
-        }}
-      >
-        <div className="w-10 h-10 rounded-[10px] bg-green-500 flex items-center justify-center text-xl shrink-0">
-          ⚡
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-1">
-            <span className="font-extrabold text-green-800 text-[0.9rem]">
-              24/7 Monitoring Active
-            </span>
-            <span className="py-0.5 px-2 bg-green-500 text-white rounded-full text-[0.625rem] font-bold tracking-wide">
-              LIVE
-            </span>
-          </div>
-          <p className="text-xs text-green-700 m-0 leading-normal">
-            Auto-syncing all connected platforms every 20 minutes • Real-time health detection • Instant protection
-          </p>
-        </div>
-        <a
-          href="/docs/help/24-7-monitoring"
-          target="_blank"
-          className="text-xs text-green-600 font-bold underline whitespace-nowrap shrink-0"
-        >
-          Learn more →
-        </a>
-      </div>
+      {/* ─── Unified stats bar — replaces 4 colored stat tiles ───── */}
+      <EntityStatsBar
+        totalLabel="Overview"
+        total={totalLeads + mailboxes.length + domains.length + campaigns.length}
+        stats={[
+          { key: 'leads',     label: 'Leads',     value: totalLeads,       color: '#8b5cf6' },
+          { key: 'campaigns', label: 'Campaigns', value: campaigns.length, color: '#22c55e' },
+          { key: 'mailboxes', label: 'Mailboxes', value: mailboxes.length, color: '#3b82f6' },
+          { key: 'domains',   label: 'Domains',   value: domains.length,   color: '#f59e0b' },
+        ]}
+      />
 
-      {/* 1. Attention Needed Section */}
-      {(pausedDomains.length > 0 || warningDomains.length > 0 || pausedMailboxes.length > 0) && (
-        <div className="mb-8 bg-white border border-gray-200 rounded-2xl overflow-hidden">
-          {/* Header bar with count summary */}
-          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <h2 className="text-base font-bold text-gray-900 m-0">Attention Needed</h2>
-            </div>
+      {/* ─── Attention Needed ────────────────────────────────────── */}
+      {totalAttention > 0 && (
+        <div className="premium-card p-0 overflow-hidden">
+          <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
             <div className="flex items-center gap-2">
+              <AlertTriangle size={14} strokeWidth={1.75} className="text-gray-700" />
+              <h2 className="text-sm font-semibold text-gray-900 m-0">Attention needed</h2>
+              <span className="text-xs text-gray-400">({totalAttention})</span>
+            </div>
+            <div className="flex items-center gap-1.5">
               {pausedDomains.length > 0 && (
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
-                  {pausedDomains.length} domain{pausedDomains.length > 1 ? 's' : ''} paused
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-gray-50 border border-gray-200 text-gray-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  {pausedDomains.length} domain paused
                 </span>
               )}
               {pausedMailboxes.length > 0 && (
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
-                  {pausedMailboxes.length} mailbox{pausedMailboxes.length > 1 ? 'es' : ''} paused
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-gray-50 border border-gray-200 text-gray-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  {pausedMailboxes.length} mailbox paused
                 </span>
               )}
               {warningDomains.length > 0 && (
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
-                  {warningDomains.length} warning{warningDomains.length > 1 ? 's' : ''}
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-gray-50 border border-gray-200 text-gray-700">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                  {warningDomains.length} warning
                 </span>
               )}
             </div>
           </div>
 
-          {/* Items list */}
-          <div className="divide-y divide-gray-50 max-h-[320px] overflow-y-auto">
+          <div className="divide-y divide-gray-100 max-h-[320px] overflow-y-auto scrollbar-hide">
             {pausedDomains.map(d => (
-              <div key={d.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
-                  <span className="text-red-500 text-sm font-bold">D</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-gray-900 truncate">{d.domain}</div>
-                  <div className="text-xs text-gray-500 truncate">{d.paused_reason || 'Infrastructure health issue'}</div>
-                </div>
-                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-red-500 shrink-0">Paused</span>
-                <button
-                  onClick={() => handleResumeDomainClick(d)}
-                  disabled={resuming === d.id}
-                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {resuming === d.id ? 'Resuming...' : 'Resume'}
-                </button>
-              </div>
+              <AttentionRow
+                key={d.id}
+                kind="Domain"
+                tone="critical"
+                name={d.domain}
+                reason={d.paused_reason || 'Infrastructure health issue'}
+                status="Paused"
+                actionLabel={resuming === d.id ? 'Resuming…' : 'Resume'}
+                onAction={() => handleResumeDomainClick(d)}
+                actionDisabled={resuming === d.id}
+              />
             ))}
             {pausedMailboxes.map(m => (
-              <div key={m.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center shrink-0">
-                  <span className="text-red-500 text-sm font-bold">M</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-gray-900 truncate">{m.email}</div>
-                  <div className="text-xs text-gray-500 truncate">{m.paused_reason || 'Health degradation detected'}</div>
-                </div>
-                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-red-500 shrink-0">Paused</span>
-                <button
-                  onClick={() => handleResumeMailboxClick(m)}
-                  disabled={resuming === m.id}
-                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {resuming === m.id ? 'Resuming...' : 'Resume'}
-                </button>
-              </div>
+              <AttentionRow
+                key={m.id}
+                kind="Mailbox"
+                tone="critical"
+                name={m.email}
+                reason={m.paused_reason || 'Health degradation detected'}
+                status="Paused"
+                actionLabel={resuming === m.id ? 'Resuming…' : 'Resume'}
+                onAction={() => handleResumeMailboxClick(m)}
+                actionDisabled={resuming === m.id}
+              />
             ))}
             {warningDomains.map(d => (
-              <div key={d.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
-                  <span className="text-amber-500 text-sm font-bold">D</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-gray-900 truncate">{d.domain}</div>
-                  <div className="text-xs text-gray-500 truncate">High bounce rate detected</div>
-                </div>
-                <span className="text-[0.65rem] font-bold uppercase tracking-wide text-amber-500 shrink-0">Warning</span>
-                <a
-                  href="/dashboard/domains"
-                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 no-underline cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all"
-                >
-                  View
-                </a>
-              </div>
+              <AttentionRow
+                key={d.id}
+                kind="Domain"
+                tone="warning"
+                name={d.domain}
+                reason="High bounce rate detected"
+                status="Warning"
+                actionLabel="View"
+                actionHref="/dashboard/domains"
+              />
             ))}
           </div>
         </div>
       )}
 
-      {/* 2. Visual Analytics (Gauges) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="premium-card flex flex-col items-center pt-6 pb-4">
-          <div className="text-center mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Lead Status</h2>
-            <p className="text-sm text-gray-500">Active vs. Paused leads</p>
-          </div>
-          <SemiCircleGauge
-            data={leadChartData}
-            centerValue={stats.active + stats.held + stats.paused}
-            centerLabel="Total"
-          />
-        </div>
+      {/* ─── Breakdown cards: 4 entity classes with stacked bars ─── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <BreakdownCard
+          title="Leads"
+          icon={<Users size={14} strokeWidth={1.75} />}
+          total={totalLeads}
+          href="/dashboard/leads"
+          segments={[
+            { label: 'Active',   value: stats.active,  color: '#22c55e' },
+            { label: 'Held',     value: stats.held,    color: '#3b82f6' },
+            { label: 'Paused',   value: stats.paused,  color: '#ef4444' },
+          ]}
+        />
+        <BreakdownCard
+          title="Campaigns"
+          icon={<Rocket size={14} strokeWidth={1.75} />}
+          total={campaigns.length}
+          href="/dashboard/campaigns"
+          segments={[
+            { label: 'Active',    value: campaigns.filter(c => c.status === 'active').length,    color: '#22c55e' },
+            { label: 'Paused',    value: campaigns.filter(c => c.status === 'paused').length,    color: '#ef4444' },
+            { label: 'Completed', value: campaigns.filter(c => c.status === 'completed').length, color: '#9ca3af' },
+          ]}
+        />
+        <BreakdownCard
+          title="Mailboxes"
+          icon={<MailboxIcon size={14} strokeWidth={1.75} />}
+          total={mailboxes.length}
+          href="/dashboard/mailboxes"
+          segments={[
+            { label: 'Healthy', value: mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length, color: '#22c55e' },
+            { label: 'Warning', value: mailboxes.filter(m => m.status === 'warning').length,                          color: '#f59e0b' },
+            { label: 'Paused',  value: mailboxes.filter(m => m.status === 'paused').length,                           color: '#ef4444' },
+            { label: 'Healing', value: mailboxes.filter(m => m.status === 'quarantine' || m.status === 'restricted_send' || m.status === 'warm_recovery').length, color: '#9ca3af' },
+          ]}
+        />
+        <BreakdownCard
+          title="Domains"
+          icon={<Globe size={14} strokeWidth={1.75} />}
+          total={domains.length}
+          href="/dashboard/domains"
+          segments={[
+            { label: 'Healthy', value: domains.filter(d => d.status === 'healthy').length, color: '#22c55e' },
+            { label: 'Warning', value: domains.filter(d => d.status === 'warning').length, color: '#f59e0b' },
+            { label: 'Paused',  value: domains.filter(d => d.status === 'paused').length,  color: '#ef4444' },
+          ]}
+        />
+      </div>
 
-        <div className="premium-card flex flex-col items-center pt-6 pb-4">
-          <div className="text-center mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Domain Health</h2>
-            <p className="text-sm text-gray-500">Infrastructure reputation</p>
+      {/* ─── Healing pipeline progress ─────────────────────────── */}
+      <div className="premium-card p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <HeartPulse size={14} strokeWidth={1.75} className="text-gray-700" />
+            <h2 className="text-sm font-semibold text-gray-900 m-0">Healing Pipeline</h2>
+            <span className="text-xs text-gray-400">mailboxes recovering</span>
           </div>
-          <SemiCircleGauge
-            data={domainChartData}
-            centerValue={domains.length}
-            centerLabel="Domains"
-          />
+          <Link href="/dashboard/healing" className="text-xs text-gray-600 font-semibold hover:text-gray-900 flex items-center gap-1 no-underline">
+            View pipeline <ArrowRight size={11} strokeWidth={1.75} />
+          </Link>
         </div>
-
-        <div className="premium-card flex flex-col items-center pt-6 pb-4">
-          <div className="text-center mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Mailbox Health</h2>
-            <p className="text-sm text-gray-500">Sending capacity status</p>
-          </div>
-          <SemiCircleGauge
-            data={mailboxChartData}
-            centerValue={mailboxes.length}
-            centerLabel="Mailboxes"
+        <div className="grid grid-cols-5 gap-2">
+          <HealingPhase
+            label="Paused"
+            count={mailboxes.filter(m => m.status === 'paused').length}
+            description="Bounce / DNSBL trigger"
+          />
+          <HealingPhase
+            label="Quarantine"
+            count={mailboxes.filter(m => m.status === 'quarantine').length}
+            description="DNS verification"
+            isCurrent
+          />
+          <HealingPhase
+            label="Restricted"
+            count={mailboxes.filter(m => m.status === 'restricted_send').length}
+            description="15 clean sends"
+            isCurrent
+          />
+          <HealingPhase
+            label="Warming"
+            count={mailboxes.filter(m => m.status === 'warm_recovery').length}
+            description="50 sends / 3 days"
+            isCurrent
+          />
+          <HealingPhase
+            label="Healthy"
+            count={mailboxes.filter(m => m.status === 'healthy' || m.status === 'active').length}
+            description="Back in rotation"
+            isEnd
           />
         </div>
       </div>
 
-      {/* Campaign Distribution */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="premium-card flex flex-col items-center pt-6 pb-4">
-          <div className="text-center mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Active Campaigns</h2>
-            <p className="text-sm text-gray-500">Lead distribution by campaign</p>
+      {/* ─── Lead distribution + lead health ────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="premium-card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-gray-900 m-0">Leads by campaign</h2>
+            <span className="text-xs text-gray-400">top {Math.min(campaignData.length, 6)}</span>
           </div>
-          <SemiCircleGauge
-            data={campaignData.map((c, i) => ({
-              name: c.name.length > 20 ? c.name.substring(0, 20) + '...' : c.name,
-              value: c.count,
-              color: ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#6366F1'][i % 8],
-            }))}
-            centerValue={campaignData.reduce((sum, c) => sum + c.count, 0)}
-            centerLabel="Leads"
-          />
+          {campaignData.length === 0 ? (
+            <div className="text-xs text-gray-400 text-center py-8">No campaign activity yet</div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {(() => {
+                const sorted = [...campaignData].sort((a, b) => b.count - a.count).slice(0, 6);
+                const maxCount = Math.max(...sorted.map(c => c.count), 1);
+                return sorted.map((c, i) => (
+                  <div key={`${c.name}-${i}`} className="flex items-center gap-3">
+                    <div className="text-xs text-gray-700 font-medium min-w-0 flex-1 truncate">{c.name}</div>
+                    <div className="flex-[2] h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gray-900 rounded-full transition-all"
+                        style={{ width: `${(c.count / maxCount) * 100}%` }}
+                      />
+                    </div>
+                    <div className="text-xs font-bold text-gray-900 tabular-nums w-10 text-right">{c.count}</div>
+                  </div>
+                ));
+              })()}
+            </div>
+          )}
         </div>
-
-        {/* Lead Health Classification */}
         <LeadHealthChart />
       </div>
 
-      {/* Top Performing Leads */}
+      {/* ─── Top leads ──────────────────────────────────────────── */}
       <TopLeadsCard campaigns={campaigns} />
 
-      {/* Infrastructure Findings Summary */}
+      {/* ─── Infrastructure findings ────────────────────────────── */}
       {orgFindings.length > 0 && (
-        <div className="premium-card rounded-[20px]">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Infrastructure Findings</h2>
-            <a href="/dashboard/infrastructure" className="text-sm text-blue-500 font-semibold no-underline">
-              View Details →
-            </a>
+        <div className="premium-card p-4">
+          <div className="flex justify-between items-center mb-3">
+            <div className="flex items-center gap-2">
+              <Activity size={14} strokeWidth={1.75} className="text-gray-700" />
+              <h2 className="text-sm font-semibold text-gray-900 m-0">Infrastructure findings</h2>
+            </div>
+            <Link href="/dashboard/infrastructure" className="text-xs text-gray-600 font-semibold hover:text-gray-900 flex items-center gap-1 no-underline">
+              View details <ArrowRight size={11} strokeWidth={1.75} />
+            </Link>
           </div>
-          <div className="flex gap-3 flex-wrap">
-            {(() => {
-              const critical = orgFindings.filter(f => f.severity === 'critical').length;
-              const warning = orgFindings.filter(f => f.severity === 'warning').length;
-              const info = orgFindings.filter(f => f.severity === 'info').length;
-              return (
-                <>
-                  {critical > 0 && (
-                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-red-100 text-red-600 border border-red-300">
-                      {critical} critical
-                    </span>
-                  )}
-                  {warning > 0 && (
-                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-amber-100 text-amber-600 border border-amber-200">
-                      {warning} warnings
-                    </span>
-                  )}
-                  {info > 0 && (
-                    <span className="py-1.5 px-3 rounded-full text-[0.8rem] font-semibold bg-blue-50 text-blue-600 border border-blue-200">
-                      {info} info
-                    </span>
-                  )}
-                </>
-              );
-            })()}
+          <div className="flex gap-1.5 flex-wrap mb-3">
+            {criticalFindings > 0 && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] font-semibold text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> {criticalFindings} critical
+              </span>
+            )}
+            {warningFindings > 0 && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] font-semibold text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> {warningFindings} warnings
+              </span>
+            )}
+            {infoFindings > 0 && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] font-semibold text-gray-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> {infoFindings} info
+              </span>
+            )}
           </div>
-          <div className="mt-3 flex flex-col gap-2">
-            {orgFindings.filter(f => f.severity === 'critical').slice(0, 3).map((f, i) => (
-              <div key={i} className="py-2 px-3 bg-red-50 rounded-lg text-sm text-red-800 font-medium">
-                {f.title}
-              </div>
-            ))}
-          </div>
+          {orgFindings.filter(f => f.severity === 'critical').slice(0, 3).length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              {orgFindings.filter(f => f.severity === 'critical').slice(0, 3).map((f, i) => (
+                <div key={i} className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-800 font-medium flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                  {f.title}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
+
       {/* Resume Confirmation Modal */}
       {confirmResume && (
         <ConfirmActionModal
@@ -561,4 +493,118 @@ export default function Overview() {
       )}
     </div>
   );
+}
+
+// ─── Local presentational helpers ────────────────────────────────────────
+
+interface Segment {
+    label: string;
+    value: number;
+    color: string;
+}
+
+function BreakdownCard({ title, icon, total, segments, href }: {
+    title: string;
+    icon: React.ReactNode;
+    total: number;
+    segments: Segment[];
+    href?: string;
+}) {
+    const sum = segments.reduce((a, s) => a + s.value, 0) || 1;
+    return (
+        <div className="premium-card p-4 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span className="text-gray-600">{icon}</span>
+                    <h2 className="text-sm font-semibold text-gray-900 m-0">{title}</h2>
+                </div>
+                {href && (
+                    <Link href={href} className="text-[11px] text-gray-500 hover:text-gray-900 flex items-center gap-0.5 no-underline font-medium">
+                        View <ArrowRight size={10} strokeWidth={2} />
+                    </Link>
+                )}
+            </div>
+            <div className="text-3xl font-bold text-gray-900 tabular-nums leading-none">{total.toLocaleString()}</div>
+            {/* Stacked bar */}
+            <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden flex">
+                {segments.map((s, i) => {
+                    const pct = (s.value / sum) * 100;
+                    if (pct === 0) return null;
+                    return (
+                        <div
+                            key={`${s.label}-${i}`}
+                            style={{ width: `${pct}%`, background: s.color }}
+                            className="h-full"
+                            title={`${s.label}: ${s.value}`}
+                        />
+                    );
+                })}
+            </div>
+            {/* Legend */}
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+                {segments.map((s, i) => (
+                    <div key={`${s.label}-legend-${i}`} className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: s.color }} />
+                        <span className="text-[11px] text-gray-500">{s.label}</span>
+                        <span className="text-[11px] font-semibold text-gray-900 tabular-nums">{s.value}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function HealingPhase({ label, count, description, isCurrent, isEnd }: {
+    label: string;
+    count: number;
+    description: string;
+    isCurrent?: boolean;
+    isEnd?: boolean;
+}) {
+    const dotColor = isEnd
+        ? '#22c55e'
+        : isCurrent
+            ? '#3b82f6'
+            : '#ef4444';
+    return (
+        <div className="relative flex flex-col items-center gap-1.5 py-3 px-2 rounded-lg border border-gray-200 bg-gray-50/40">
+            <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dotColor }} />
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-600">{label}</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900 tabular-nums leading-none">{count}</div>
+            <div className="text-[10px] text-gray-400 text-center leading-tight">{description}</div>
+        </div>
+    );
+}
+
+function AttentionRow({ kind, tone, name, reason, status, actionLabel, actionHref, onAction, actionDisabled }: {
+    kind: 'Domain' | 'Mailbox';
+    tone: 'critical' | 'warning';
+    name: string;
+    reason: string;
+    status: string;
+    actionLabel: string;
+    actionHref?: string;
+    onAction?: () => void;
+    actionDisabled?: boolean;
+}) {
+    const dotColor = tone === 'critical' ? '#ef4444' : '#f59e0b';
+    const btnClass = 'shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed no-underline';
+    return (
+        <div className="px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dotColor }} />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 shrink-0 w-[60px]">{kind}</span>
+            <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-gray-900 truncate">{name}</div>
+                <div className="text-xs text-gray-500 truncate">{reason}</div>
+            </div>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0">{status}</span>
+            {actionHref ? (
+                <Link href={actionHref} className={btnClass}>{actionLabel}</Link>
+            ) : (
+                <button onClick={onAction} disabled={actionDisabled} className={btnClass}>{actionLabel}</button>
+            )}
+        </div>
+    );
 }

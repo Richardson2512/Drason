@@ -5,6 +5,17 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { apiClient } from '@/lib/api';
 import { logout as serverLogout } from '@/lib/api';
+import CustomSelect from '@/components/ui/CustomSelect';
+
+const ADMIN_SORT_OPTIONS = [
+    { value: 'created_desc', label: 'Newest First' },
+    { value: 'created_asc', label: 'Oldest First' },
+    { value: 'name_asc', label: 'Name A-Z' },
+    { value: 'name_desc', label: 'Name Z-A' },
+    { value: 'mailboxes', label: 'Most Mailboxes' },
+    { value: 'leads', label: 'Most Leads' },
+    { value: 'campaigns', label: 'Most Campaigns' },
+];
 
 interface OrgSummary {
     id: string;
@@ -404,31 +415,35 @@ export default function AdminConsole() {
                                     className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/50"
                                 />
                             </div>
-                            <div>
+                            <div style={{ minWidth: 160 }}>
                                 <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Tier</label>
-                                <select value={tierFilter} onChange={e => setTierFilter(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
-                                    <option value="all">All Tiers</option>
-                                    {uniqueTiers.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
-                                </select>
+                                <CustomSelect
+                                    value={tierFilter}
+                                    onChange={setTierFilter}
+                                    options={[
+                                        { value: 'all', label: 'All Tiers' },
+                                        ...uniqueTiers.map(t => ({ value: t, label: t.charAt(0).toUpperCase() + t.slice(1) })),
+                                    ]}
+                                />
                             </div>
-                            <div>
+                            <div style={{ minWidth: 160 }}>
                                 <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</label>
-                                <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
-                                    <option value="all">All Statuses</option>
-                                    {uniqueStatuses.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
-                                </select>
+                                <CustomSelect
+                                    value={statusFilter}
+                                    onChange={setStatusFilter}
+                                    options={[
+                                        { value: 'all', label: 'All Statuses' },
+                                        ...uniqueStatuses.map(s => ({ value: s, label: s.charAt(0).toUpperCase() + s.slice(1) })),
+                                    ]}
+                                />
                             </div>
-                            <div>
+                            <div style={{ minWidth: 180 }}>
                                 <label className="block text-[0.6rem] font-bold text-gray-500 uppercase tracking-wide mb-1">Sort</label>
-                                <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-200 focus:outline-none focus:border-violet-500/50">
-                                    <option value="created_desc">Newest First</option>
-                                    <option value="created_asc">Oldest First</option>
-                                    <option value="name_asc">Name A-Z</option>
-                                    <option value="name_desc">Name Z-A</option>
-                                    <option value="mailboxes">Most Mailboxes</option>
-                                    <option value="leads">Most Leads</option>
-                                    <option value="campaigns">Most Campaigns</option>
-                                </select>
+                                <CustomSelect
+                                    value={sortBy}
+                                    onChange={setSortBy}
+                                    options={ADMIN_SORT_OPTIONS}
+                                />
                             </div>
                         </div>
 

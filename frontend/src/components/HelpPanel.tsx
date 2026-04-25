@@ -489,8 +489,8 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                                 Suggested for this page
                             </h3>
                             <div className="space-y-2">
-                                {suggestedArticles.map((article) => (
-                                    <ArticleCard key={article.href} article={article} onClose={onClose} />
+                                {suggestedArticles.map((article, i) => (
+                                    <ArticleCard key={`${article.href}-${i}`} article={article} onClose={onClose} />
                                 ))}
                             </div>
                         </div>
@@ -508,8 +508,11 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                             </div>
                         ) : (
                             <div className="space-y-2">
-                                {filteredArticles.map((article) => (
-                                    <ArticleCard key={article.href} article={article} onClose={onClose} />
+                                {filteredArticles.map((article, i) => (
+                                    // Compound key — multiple articles legitimately share the same
+                                    // href (e.g. Lead Scoring + Risk Scoring both point to
+                                    // /docs/risk-scoring since there's no dedicated lead-scoring doc yet).
+                                    <ArticleCard key={`${article.href}-${article.title}-${i}`} article={article} onClose={onClose} />
                                 ))}
                             </div>
                         )}
@@ -588,6 +591,7 @@ export function HelpPanelTrigger({ onClick }: { onClick: () => void }) {
             className="
                 fixed bottom-6 right-6 z-30
                 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg
+                opacity-40 hover:opacity-100
                 hover:bg-blue-700 hover:scale-110 transition-all duration-200
                 flex items-center justify-center
                 group

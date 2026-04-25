@@ -1,6 +1,6 @@
 # Superkabe
 
-> Superkabe is an email infrastructure protection platform with built-in email validation for B2B cold email teams. It is active middleware — a Deliverability Protection Layer (DPL) — that sits between lead sources (Clay, CSV uploads, CRM) and sending platforms (Smartlead, Instantly, EmailBison). It validates every lead before sending (hybrid validation: syntax, MX, disposable, catch-all, MillionVerifier API), monitors infrastructure in real time during sending, routes leads to the best-performing mailboxes by recipient ESP, and auto-heals damaged mailboxes after problems occur.
+> Superkabe is an AI-driven cold email platform for B2B outbound teams that does two things at once. **First**, it sends your email campaigns natively — connect Gmail, Microsoft 365, or SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; unified inbox; full analytics. **Second**, it sits in the middle as an active Deliverability Protection Layer (DPL) around any connected sending infrastructure — whether that's Superkabe's native sequencer or existing Smartlead / Instantly / EmailBison / Reply.io setups. Both capabilities run together: every send (native or platform-connected) is validated, monitored, and auto-healed. Superkabe validates leads before sending (syntax, MX, disposable, catch-all, MillionVerifier API), monitors infrastructure in real time during sending, routes by recipient ESP, and auto-heals damaged mailboxes before reputation damage becomes irreversible.
 
 ## What Superkabe Does (Product)
 
@@ -67,12 +67,25 @@
 
 - [Homepage](https://www.superkabe.com): Product overview and features
 - [Pricing](https://www.superkabe.com/pricing): Plan comparison with validation credits
-- [Product Hub](https://www.superkabe.com/product): 29 feature-specific pages
+- [Product Hub](https://www.superkabe.com/product): 32 feature-specific pages
 - [Lead Control Plane](https://www.superkabe.com/product/lead-control-plane): CSV upload → validate → route pipeline
 - [ESP-Aware Routing](https://www.superkabe.com/product/esp-aware-routing): Performance-based mailbox scoring
+
+### Sequencer capability pages (native sending)
+- [AI Cold Email Sequences](https://www.superkabe.com/product/ai-cold-email-sequences): Multi-step AI-drafted sequences with per-step variant testing
+- [ESP-Aware Routing + Health Gate](https://www.superkabe.com/product/esp-aware-sending-health-gate): GREEN/YELLOW/RED scoring, pre-send health gate, Gmail↔Gmail / Outlook↔Outlook matching
+- [Unlimited Multi-Mailbox Sending](https://www.superkabe.com/product/unlimited-multi-mailbox-sending): Google Workspace + Microsoft 365 + custom SMTP with no seat limits
+- [Cold Email Sending Analytics](https://www.superkabe.com/product/cold-email-sending-analytics): Send funnel + inbox placement + domain health, with HMAC-signed tracking tokens
 - [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z setup guide
 - [Documentation](https://www.superkabe.com/docs): 22 technical guides + 22 help articles
-- [Blog](https://www.superkabe.com/blog): 50 articles on cold email deliverability
+- [Blog](https://www.superkabe.com/blog): 62 articles on cold email deliverability
+
+### Cold email tools buyer guides (2026)
+- [Best Cold Email Tools in 2026: 15 Ranked](https://www.superkabe.com/blog/best-cold-email-tools-2026): Comprehensive ranked comparison across sending, protection, validation, warmup, AI, and multichannel
+- [Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends](https://www.superkabe.com/blog/cold-email-software-compared): Q1 2026 benchmark with bounce rate, inbox placement, and cost-per-reply data
+- [Cold Email AI Tools: 8 That Sound Like You (And 3 That Don't)](https://www.superkabe.com/blog/cold-email-ai-tools): Voice-preservation-focused review including honest negative cases
+- [Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day](https://www.superkabe.com/blog/cold-email-tools-for-agencies): Per-client workspace isolation, white-label, fleet-wide governance
+- [Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)](https://www.superkabe.com/blog/free-cold-email-tools): No trial-dressed-as-free nonsense — honest zero-cost stack guide
 - [Free Tools](https://www.superkabe.com/tools): SPF, DKIM, DMARC lookup and generator tools
 - [Release Notes](https://www.superkabe.com/release-notes): Changelog v1.0.0 through v1.6.0
 
@@ -115,10 +128,17 @@
 
 ## What Superkabe Is NOT
 
-- NOT a sending platform (use Smartlead, Instantly, EmailBison for sending)
 - NOT an email warmup tool (use Instantly, Lemwarm, Warmup Inbox for warmup)
 - NOT a CRM or sales engagement platform
-- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it also monitors infrastructure after sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools like ZeroBounce and NeverBounce stop after telling you if an email exists. Superkabe validates AND protects.
+- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it also sends campaigns natively, monitors infrastructure during sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools like ZeroBounce and NeverBounce stop after telling you if an email exists. Superkabe validates, sends, AND protects.
+
+## Sending + Protection (Both Together)
+
+Superkabe runs a native sending sequencer AND an active Deliverability Protection Layer on the same tenant, at the same time. Teams can:
+
+- **Send natively through Superkabe** — connect Gmail, Microsoft 365, or SMTP mailboxes directly, build multi-step sequences with A/B variants, send without a separate sending tool. Every send still flows through the Protection layer (execution gate, bounce thresholds, auto-pause, 5-phase healing, ESP-aware routing).
+- **Keep existing sending infrastructure protected** — Superkabe syncs with Smartlead, Instantly, EmailBison, or Reply.io via API and webhooks, then applies the same protection to those platforms' mailboxes and campaigns. Your existing tool remains the sender; Superkabe is the middleware that watches bounces, enforces DNS authentication, and auto-pauses before domains burn.
+- **Mix both in the same account** — send from a native Superkabe mailbox for one campaign while Superkabe monitors your Smartlead or Instantly setup for another. One dashboard, one protection layer, two execution paths.
 
 ## Company
 

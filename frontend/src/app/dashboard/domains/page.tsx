@@ -10,6 +10,7 @@ import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import CustomSelect from '@/components/ui/CustomSelect';
 import { useEntityStats } from '@/hooks/useEntityStats';
 import EntityStatsBar from '@/components/ui/EntityStatsBar';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
@@ -132,20 +133,30 @@ export default function DomainsPage() {
     }
 
     return (
-        <div className="flex h-full gap-8">
+        <div className="flex h-full gap-4 p-4">
             {/* Left: List */}
-            <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '420px' }}>
-                <h2 className="text-2xl font-bold mb-3 shrink-0 text-gray-900">Domains</h2>
+            <div className="premium-card flex flex-col p-4 h-full overflow-hidden rounded-2xl" style={{ width: '380px' }}>
+                <h1 className="text-xl font-bold mb-3 shrink-0 text-gray-900">Domains</h1>
 
-                {/* Stats Breakdown */}
+                {/* Stats bar — interactive. Clicking a pill filters the list;
+                    "All" clears. Replaces the separate status dropdown. */}
                 {entityStats?.domains && (
                     <div className="mb-4">
                         <EntityStatsBar
                             total={entityStats.domains.total}
+                            activeKeys={selectedStatus}
+                            onToggle={(key) => {
+                                if (key === 'all') {
+                                    setSelectedStatus([]);
+                                } else {
+                                    setSelectedStatus(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
+                                }
+                                setMeta(prev => ({ ...prev, page: 1 }));
+                            }}
                             stats={[
-                                { label: 'Healthy', value: entityStats.domains.healthy, color: '#22c55e' },
-                                { label: 'Warning', value: entityStats.domains.warning, color: '#f59e0b' },
-                                { label: 'Paused', value: entityStats.domains.paused, color: '#ef4444' },
+                                { key: 'healthy', label: 'Healthy', value: entityStats.domains.healthy, color: '#22c55e' },
+                                { key: 'warning', label: 'Warning', value: entityStats.domains.warning, color: '#f59e0b' },
+                                { key: 'paused',  label: 'Paused',  value: entityStats.domains.paused,  color: '#ef4444' },
                             ]}
                         />
                     </div>
@@ -164,21 +175,6 @@ export default function DomainsPage() {
                         }}
                         className="w-full rounded-xl border border-gray-200 bg-white text-sm outline-none"
                         style={{ padding: '0.625rem 1rem' }}
-                    />
-
-                    {/* Status Filter */}
-                    <MultiSelectDropdown
-                        options={[
-                            { value: 'healthy', label: 'Healthy' },
-                            { value: 'warning', label: 'Warning' },
-                            { value: 'paused', label: 'Paused' },
-                        ]}
-                        selected={selectedStatus}
-                        onChange={(vals) => {
-                            setSelectedStatus(vals);
-                            setMeta(prev => ({ ...prev, page: 1 }));
-                        }}
-                        placeholder="All Status"
                     />
 
                     {/* Sort & Filter Button */}
@@ -253,7 +249,13 @@ export default function DomainsPage() {
             {/* Right: Details (Unchanged mostly) */}
             <div className="flex-1 overflow-y-auto scrollbar-hide">
                 {selectedDomain ? (
-                    <DomainDetailsView selectedDomain={selectedDomain} auditLogs={auditLogs} />
+                    <DomainDetailsView
+                        selectedDomain={selectedDomain}
+                        auditLogs={auditLogs}
+                        onDomainRefreshed={(patch) => {
+                            setSelectedDomain((prev) => (prev ? { ...prev, ...patch } : prev));
+                        }}
+                    />
                 ) : (
                     <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-4">
                         <div className="text-5xl">👈</div>
@@ -270,7 +272,7 @@ export default function DomainsPage() {
                     onClick={() => sortFilter.close()}
                 >
                     <div
-                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-xl"
+                        className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
@@ -289,30 +291,28 @@ export default function DomainsPage() {
                         {/* Modal Body */}
                         <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
-                                <select
-                                    id="modal-sort-by"
+                                <CustomSelect
                                     value={sortFilter.temp.sortBy}
-                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
-                                    className="w-full rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                    style={{ padding: '0.75rem 1rem' }}
-                                >
-                                    <option value="domain_asc">Domain (A-Z)</option>
-                                    <option value="domain_desc">Domain (Z-A)</option>
-                                    <option value="sent_desc">Sent (High to Low)</option>
-                                    <option value="sent_asc">Sent (Low to High)</option>
-                                    <option value="engagement_desc">Engagement (High to Low)</option>
-                                    <option value="engagement_asc">Engagement (Low to High)</option>
-                                    <option value="bounce_desc">Bounce (High to Low)</option>
-                                    <option value="bounce_asc">Bounce (Low to High)</option>
-                                </select>
+                                    onChange={(v) => sortFilter.setTempValue('sortBy', v)}
+                                    options={[
+                                        { value: 'domain_asc', label: 'Domain (A-Z)' },
+                                        { value: 'domain_desc', label: 'Domain (Z-A)' },
+                                        { value: 'sent_desc', label: 'Sent (High to Low)' },
+                                        { value: 'sent_asc', label: 'Sent (Low to High)' },
+                                        { value: 'engagement_desc', label: 'Engagement (High to Low)' },
+                                        { value: 'engagement_asc', label: 'Engagement (Low to High)' },
+                                        { value: 'bounce_desc', label: 'Bounce (High to Low)' },
+                                        { value: 'bounce_asc', label: 'Bounce (Low to High)' },
+                                    ]}
+                                />
                             </div>
 
                             {/* Engagement Rate Range */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Engagement Rate Range (%)
                                 </label>
@@ -342,7 +342,7 @@ export default function DomainsPage() {
                             </div>
 
                             {/* Bounce Rate Range */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Bounce Rate Range (%)
                                 </label>
@@ -372,7 +372,7 @@ export default function DomainsPage() {
                             </div>
 
                             {/* Platform Filter */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>
@@ -444,7 +444,15 @@ export default function DomainsPage() {
 }
 
 // Memoized component for better Safari performance
-function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Domain; auditLogs: AuditLog[] }) {
+function DomainDetailsView({
+    selectedDomain,
+    auditLogs,
+    onDomainRefreshed,
+}: {
+    selectedDomain: Domain;
+    auditLogs: AuditLog[];
+    onDomainRefreshed: (patch: Partial<Domain>) => void;
+}) {
     // Memoize engagement rate calculations to prevent re-calculation on every render
     const openRate = useMemo(() => {
         return (selectedDomain.total_sent_lifetime || 0) > 0
@@ -466,13 +474,13 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
 
     return (
         <div className="animate-fade-in">
-            <div className="page-header">
-                <h1 className="font-extrabold mb-2 text-gray-900 tracking-tight" style={{ fontSize: '2.25rem' }}>{selectedDomain.domain}</h1>
-                <div className="text-gray-500" style={{ fontSize: '1.1rem' }}>Reputation & Usage</div>
+            <div className="mb-4">
+                <h1 className="text-xl font-bold text-gray-900 tracking-tight">{selectedDomain.domain}</h1>
+                <p className="text-xs text-gray-500 mt-0.5">Reputation & Usage</p>
             </div>
 
             {selectedDomain.status === 'paused' && (
-                <div className="premium-card mb-8" style={{
+                <div className="premium-card mb-3" style={{
                     background: '#FEF2F2',
                     border: '1px solid #FECACA',
                     borderLeft: '6px solid #EF4444',
@@ -480,7 +488,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                     <div className="flex items-start gap-3">
                         <span className="text-2xl">⚠️</span>
                         <div className="flex-1">
-                            <h3 className="font-extrabold text-xl tracking-tight mb-2" style={{ color: '#B91C1C' }}>DOMAIN PAUSED</h3>
+                            <h3 className="font-bold text-xl tracking-tight mb-2" style={{ color: '#B91C1C' }}>DOMAIN PAUSED</h3>
                             <p className="text-base leading-relaxed mb-2" style={{ color: '#7F1D1D' }}>
                                 {selectedDomain.paused_reason || 'No reason provided'}
                             </p>
@@ -494,27 +502,27 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                 </div>
             )}
 
-            <div className="premium-card mb-8">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Overview</h2>
-                <div className="grid grid-cols-2 gap-8">
+            <div className="premium-card mb-3">
+                <h2 className="text-xl font-bold mb-3 text-gray-900">Bounce Overview</h2>
+                <div className="grid grid-cols-2 gap-3">
                     <div>
                         <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Bounce Rate Trend</div>
-                        <div className="text-4xl font-extrabold" style={{ color: (selectedDomain.aggregated_bounce_rate_trend || 0) > 2 ? '#EF4444' : '#16A34A' }}>
+                        <div className="text-2xl font-bold" style={{ color: (selectedDomain.aggregated_bounce_rate_trend || 0) > 2 ? '#EF4444' : '#16A34A' }}>
                             {(selectedDomain.aggregated_bounce_rate_trend || 0).toFixed(2)}<span className="text-2xl">%</span>
                         </div>
                         <div className="text-sm text-gray-400 mt-1">Lifetime aggregate across all mailboxes</div>
                     </div>
                     <div>
                         <div className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-2">Warnings Triggered</div>
-                        <div className="text-4xl font-extrabold" style={{ color: (selectedDomain.warning_count || 0) > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count || 0}</div>
+                        <div className="text-2xl font-bold" style={{ color: (selectedDomain.warning_count || 0) > 0 ? '#F59E0B' : '#1E293B' }}>{selectedDomain.warning_count || 0}</div>
                         <div className="text-sm text-gray-400 mt-1">Lifetime incidents</div>
                     </div>
                 </div>
             </div>
 
             {/* Engagement Metrics Section (SOFT SIGNALS - aggregated from all mailboxes) */}
-            <div className="premium-card mb-8">
-                <div className="mb-6">
+            <div className="premium-card mb-3">
+                <div className="mb-3">
                     <h2 className="text-xl font-bold text-gray-900 mb-1">
                         Domain-Wide Engagement
                     </h2>
@@ -523,62 +531,18 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                     </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4">
-                    {/* Total Sent */}
-                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">
-                            Total Sent
-                        </div>
-                        <div className="font-bold text-gray-900" style={{ fontSize: '1.75rem' }}>
-                            {selectedDomain.total_sent_lifetime?.toLocaleString() || '0'}
-                        </div>
-                    </div>
-
-                    {/* Opens */}
-                    <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">
-                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#1E40AF' }}>
-                            Opens
-                        </div>
-                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#1E3A8A' }}>
-                            {selectedDomain.total_opens?.toLocaleString() || '0'}
-                        </div>
-                        <div className="text-xs text-blue-500 mt-1 font-semibold">
-                            {openRate}% rate
-                        </div>
-                    </div>
-
-                    {/* Clicks */}
-                    <div className="p-4 bg-green-50 rounded-xl border border-green-200">
-                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#166534' }}>
-                            Clicks
-                        </div>
-                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#15803D' }}>
-                            {selectedDomain.total_clicks?.toLocaleString() || '0'}
-                        </div>
-                        <div className="text-xs text-green-500 mt-1 font-semibold">
-                            {clickRate}% rate
-                        </div>
-                    </div>
-
-                    {/* Replies */}
-                    <div className="p-4 rounded-xl border" style={{ background: '#FDF4FF', borderColor: '#F0ABFC' }}>
-                        <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#86198F' }}>
-                            Replies
-                        </div>
-                        <div className="font-bold" style={{ fontSize: '1.75rem', color: '#A21CAF' }}>
-                            {selectedDomain.total_replies?.toLocaleString() || '0'}
-                        </div>
-                        <div className="text-xs mt-1 font-semibold" style={{ color: '#C026D3' }}>
-                            {replyRate}% rate
-                        </div>
-                    </div>
+                <div className="grid grid-cols-4 gap-3">
+                    <DomainMetric label="Total Sent" value={selectedDomain.total_sent_lifetime} dot="#9ca3af" />
+                    <DomainMetric label="Opens"      value={selectedDomain.total_opens}  dot="#3b82f6" rate={`${openRate}% rate`} />
+                    <DomainMetric label="Clicks"     value={selectedDomain.total_clicks} dot="#22c55e" rate={`${clickRate}% rate`} />
+                    <DomainMetric label="Replies"    value={selectedDomain.total_replies} dot="#8b5cf6" rate={`${replyRate}% rate`} />
                 </div>
             </div>
 
             {/* Recovery Status */}
             {selectedDomain.recovery_phase && selectedDomain.recovery_phase !== 'healthy' && (
-                <div className="premium-card mb-8">
-                    <h2 className="text-xl font-bold mb-6 text-gray-900 flex items-center gap-3">
+                <div className="premium-card mb-3">
+                    <h2 className="text-xl font-bold mb-3 text-gray-900 flex items-center gap-3">
                         🔄 Recovery Status
                         <span className="rounded-full text-xs font-semibold uppercase tracking-wide" style={{
                             padding: '0.25rem 0.75rem',
@@ -604,7 +568,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                         {/* Resilience Score */}
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
                             <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Resilience</div>
-                            <div className="font-extrabold" style={{
+                            <div className="font-bold" style={{
                                 fontSize: '1.75rem',
                                 color: (selectedDomain.resilience_score || 0) >= 70 ? '#16A34A' :
                                     (selectedDomain.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
@@ -618,7 +582,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                             <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">
                                 {selectedDomain.recovery_phase === 'restricted_send' || selectedDomain.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
                             </div>
-                            <div className="text-slate-800 font-extrabold" style={{ fontSize: '1.75rem' }}>
+                            <div className="text-slate-800 font-bold" style={{ fontSize: '1.75rem' }}>
                                 {selectedDomain.clean_sends_since_phase || 0}
                                 {selectedDomain.recovery_phase === 'restricted_send' && `/${(selectedDomain.consecutive_pauses || 0) > 1 ? 25 : 15}`}
                                 {selectedDomain.recovery_phase === 'warm_recovery' && `/50`}
@@ -629,7 +593,7 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                         {(selectedDomain.relapse_count || 0) > 0 && (
                             <div className="p-4 bg-red-50 rounded-xl border border-red-100">
                                 <div className="text-xs mb-2 font-semibold uppercase" style={{ color: '#DC2626' }}>Relapses</div>
-                                <div className="font-extrabold" style={{ fontSize: '1.75rem', color: '#DC2626' }}>
+                                <div className="font-bold" style={{ fontSize: '1.75rem', color: '#DC2626' }}>
                                     {selectedDomain.relapse_count}
                                 </div>
                             </div>
@@ -651,8 +615,8 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                 </div>
             )}
 
-            <div className="premium-card mb-8">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">Domain Events Log</h2>
+            <div className="premium-card mb-3">
+                <h2 className="text-xl font-bold mb-3 text-gray-900">Domain Events Log</h2>
                 {auditLogs.length > 0 ? (
                     <div className="max-h-[300px] overflow-y-auto rounded-lg border border-slate-200">
                         <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0' }}>
@@ -683,8 +647,8 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                 )}
             </div>
 
-            <div className="premium-card mb-8">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">Child Mailboxes</h2>
+            <div className="premium-card mb-3">
+                <h2 className="text-xl font-bold mb-3 text-gray-900">Child Mailboxes</h2>
                 <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: '0' }}>
                     <thead>
                         <tr>
@@ -717,8 +681,329 @@ function DomainDetailsView({ selectedDomain, auditLogs }: { selectedDomain: Doma
                 </table>
             </div>
 
+            {/* DNS Authentication — SPF / DKIM / DMARC / MX, populated by
+                infrastructureAssessmentService during the periodic sweep and
+                refreshed live by the healing pipeline. Sits directly above
+                Infrastructure Health Issues so the SPF/DKIM/DMARC/MX state
+                and the findings derived from it read together. */}
+            <DomainDnsCard selectedDomain={selectedDomain} onRefreshed={onDomainRefreshed} />
+
             {/* Infrastructure Health Issues */}
             <FindingsCard entityType="domain" entityId={selectedDomain.id} />
         </div>
     );
 }
+
+function DomainMetric({ label, value, dot, rate }: { label: string; value: number | null | undefined; dot: string; rate?: string }) {
+    return (
+        <div className="p-3 rounded-xl bg-gray-50 border border-gray-200">
+            <div className="flex items-center gap-1.5 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{label}</div>
+            </div>
+            <div className="text-2xl font-bold text-gray-900 tabular-nums">
+                {(value ?? 0).toLocaleString()}
+            </div>
+            {rate && <div className="text-[11px] text-gray-500 mt-0.5">{rate}</div>}
+        </div>
+    );
+}
+
+// ─── DNS Authentication card ─────────────────────────────────────────────────
+
+type DnsState = 'pass' | 'warn' | 'fail' | 'unknown';
+
+function dnsTone(state: DnsState): { fg: string; bg: string; border: string; label: string } {
+    switch (state) {
+        case 'pass':
+            return { fg: '#15803D', bg: '#ECFDF5', border: '#BBF7D0', label: 'Passing' };
+        case 'warn':
+            return { fg: '#B45309', bg: '#FFFBEB', border: '#FED7AA', label: 'Weak' };
+        case 'fail':
+            return { fg: '#B91C1C', bg: '#FEF2F2', border: '#FECACA', label: 'Failing' };
+        default:
+            return { fg: '#475569', bg: '#F8FAFC', border: '#E2E8F0', label: 'Not assessed' };
+    }
+}
+
+// DNS state interpretation distinguishes three things:
+//   1. Sweep has never run for this domain (`assessed=false`)         → 'unknown' for every row
+//   2. Sweep ran but a transient resolve error stopped a single check → 'unknown' for that row
+//   3. Sweep ran and the record genuinely is missing/wrong            → 'fail' / 'warn'
+//
+// `assessed` is the gate. When false, no per-field interpretation is done so
+// we never paint a domain as "Failing" before we've actually checked. This is
+// the key contract with the Findings panel — Findings only writes rows when
+// the sweep produced failing data, so DNS Authentication must not contradict
+// that empty state with red badges.
+
+function spfState(v: boolean | null | undefined, assessed: boolean): DnsState {
+    if (!assessed) return 'unknown';
+    if (v === true) return 'pass';
+    if (v === false) return 'fail';
+    return 'unknown';
+}
+function dkimState(v: boolean | null | undefined, assessed: boolean): DnsState {
+    if (!assessed) return 'unknown';
+    if (v === true) return 'pass';
+    if (v === false) return 'fail';
+    return 'unknown';
+}
+function dmarcState(p: string | null | undefined, assessed: boolean): DnsState {
+    if (!assessed) return 'unknown';
+    if (!p) return 'fail';            // sweep ran, no DMARC found → legitimate fail
+    if (p === 'none') return 'warn';
+    return 'pass';
+}
+function mxState(
+    records: Array<{ priority: number; exchange: string }> | null | undefined,
+    valid: boolean | null | undefined,
+    assessed: boolean,
+): DnsState {
+    if (!assessed) return 'unknown';
+    if (Array.isArray(records)) return records.length > 0 ? 'pass' : 'fail';
+    if (valid === true) return 'pass';
+    if (valid === false) return 'fail';
+    return 'unknown';
+}
+
+// Resolution targets for failing/warn rows. Internal docs cover SPF/DKIM/DMARC
+// (we own the playbook content); MX points to Google's authoritative setup
+// guide since it's typically configured at the domain registrar level.
+const RESOLUTION_LINKS = {
+    spf: { href: '/docs/help/dns-setup#spf', label: 'How to fix SPF', external: false },
+    dkim: { href: '/docs/help/dns-setup#dkim', label: 'How to fix DKIM', external: false },
+    dmarc: { href: '/docs/help/dns-setup#dmarc', label: 'How to fix DMARC', external: false },
+    mx: { href: '/docs/help/dns-setup#mx', label: 'How to set up MX records', external: false },
+} as const;
+
+function DomainDnsCard({
+    selectedDomain,
+    onRefreshed,
+}: {
+    selectedDomain: Domain;
+    onRefreshed: (patch: Partial<Domain>) => void;
+}) {
+    const assessed = !!selectedDomain.dns_checked_at;
+    const [checking, setChecking] = useState(false);
+    const [cooldownMsg, setCooldownMsg] = useState<string | null>(null);
+
+    const handleCheckNow = async () => {
+        if (checking) return;
+        setChecking(true);
+        setCooldownMsg(null);
+        try {
+            const res = await apiClient<{
+                success: boolean;
+                cached?: boolean;
+                cooldown_seconds_remaining?: number;
+                domain: Partial<Domain>;
+            }>(`/api/assessment/domain/${selectedDomain.id}/dns/recheck`, { method: 'POST' });
+            onRefreshed(res.domain);
+            if (res.cached) {
+                setCooldownMsg(
+                    `DNS was just checked — try again in ${res.cooldown_seconds_remaining ?? 30}s for fresh data.`,
+                );
+            }
+        } catch (err) {
+            setCooldownMsg(`Check failed: ${(err as Error).message || 'unknown error'}`);
+        } finally {
+            setChecking(false);
+        }
+    };
+
+    const lastChecked = selectedDomain.dns_checked_at
+        ? new Date(selectedDomain.dns_checked_at).toLocaleString(undefined, {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+          })
+        : null;
+
+    return (
+        <div className="premium-card mb-3">
+            <div className="flex items-start justify-between mb-3 flex-wrap gap-2">
+                <div>
+                    <h2 className="text-xl font-bold text-gray-900">DNS Authentication</h2>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                        SPF, DKIM, DMARC and MX records for this sending domain.
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    {lastChecked ? (
+                        <span className="text-[11px] text-gray-500">Last checked {lastChecked}</span>
+                    ) : (
+                        <span className="text-[11px] text-gray-400 italic">Awaiting first assessment</span>
+                    )}
+                    <button
+                        onClick={handleCheckNow}
+                        disabled={checking}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                    >
+                        {checking ? (
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                        ) : (
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 12a9 9 0 0 1-9 9"/><path d="M3 12a9 9 0 0 1 9-9"/><polyline points="21 3 21 9 15 9"/><polyline points="3 21 3 15 9 15"/></svg>
+                        )}
+                        {checking ? 'Checking…' : 'Check now'}
+                    </button>
+                </div>
+            </div>
+            {cooldownMsg && (
+                <div className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mb-3">
+                    {cooldownMsg}
+                </div>
+            )}
+
+            {!assessed && (
+                <div
+                    className="rounded-xl border px-3 py-2 mb-3 text-xs"
+                    style={{ borderColor: '#E2E8F0', background: '#F8FAFC', color: '#475569' }}
+                >
+                    The DNS sweep hasn’t run for this domain yet, so SPF, DKIM, DMARC and MX are unknown — not failing.
+                    The infrastructure-assessment worker checks each domain on its periodic schedule, and freshly-added
+                    domains are picked up on the next run. This is also why <span className="font-semibold">Infrastructure Health Issues</span> is empty: findings are only written when an actual check produces a failure.
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <DnsRow
+                    label="SPF"
+                    state={spfState(selectedDomain.spf_valid, assessed)}
+                    resolution={RESOLUTION_LINKS.spf}
+                    detail={
+                        !assessed
+                            ? 'Awaiting first assessment.'
+                            : selectedDomain.spf_valid === true
+                              ? 'SPF record found and valid.'
+                              : selectedDomain.spf_valid === false
+                                ? 'No valid SPF record. Email providers may treat your sends as unauthenticated.'
+                                : 'SPF lookup did not return a definitive answer — likely a transient DNS error. Will retry on the next sweep.'
+                    }
+                />
+                <DnsRow
+                    label="DKIM"
+                    state={dkimState(selectedDomain.dkim_valid, assessed)}
+                    resolution={RESOLUTION_LINKS.dkim}
+                    detail={
+                        !assessed
+                            ? 'Awaiting first assessment.'
+                            : selectedDomain.dkim_valid === true
+                              ? 'DKIM signature record published on at least one common selector.'
+                              : selectedDomain.dkim_valid === false
+                                ? 'No DKIM record found on common selectors (default, google, selector1, selector2).'
+                                : 'DKIM lookup did not return a definitive answer — will retry on the next sweep.'
+                    }
+                />
+                <DnsRow
+                    label="DMARC"
+                    state={dmarcState(selectedDomain.dmarc_policy, assessed)}
+                    resolution={RESOLUTION_LINKS.dmarc}
+                    detail={
+                        !assessed
+                            ? 'Awaiting first assessment.'
+                            : selectedDomain.dmarc_policy
+                              ? selectedDomain.dmarc_policy === 'none'
+                                  ? `Policy: p=none — monitoring only. Upgrade to quarantine or reject once SPF/DKIM are stable.`
+                                  : `Policy: p=${selectedDomain.dmarc_policy} — enforcing.`
+                              : 'No DMARC record found at _dmarc.<domain>.'
+                    }
+                />
+                <DnsRow
+                    label="MX"
+                    state={mxState(selectedDomain.mx_records, selectedDomain.mx_valid, assessed)}
+                    resolution={RESOLUTION_LINKS.mx}
+                    detail={
+                        !assessed
+                            ? 'Awaiting first assessment.'
+                            : Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length > 0
+                              ? `${selectedDomain.mx_records.length} record${selectedDomain.mx_records.length === 1 ? '' : 's'} configured.`
+                              : selectedDomain.mx_valid === false || (Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length === 0)
+                                ? 'No MX records configured — this domain cannot receive replies, bounces, or unsubscribes.'
+                                : 'MX lookup did not return a definitive answer — will retry on the next sweep.'
+                    }
+                >
+                    {Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length > 0 && (
+                        <div className="mt-2 rounded-md bg-slate-50 border border-slate-200 overflow-hidden">
+                            <table className="w-full text-xs">
+                                <thead>
+                                    <tr className="text-left text-[10px] font-semibold uppercase tracking-wide text-slate-500 bg-slate-100">
+                                        <th className="px-2 py-1 w-20">Priority</th>
+                                        <th className="px-2 py-1">Exchange</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {selectedDomain.mx_records.map((r, i) => (
+                                        <tr key={i} className="border-t border-slate-200">
+                                            <td className="px-2 py-1 tabular-nums text-slate-700">{r.priority}</td>
+                                            <td className="px-2 py-1 font-mono text-slate-800">{r.exchange}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </DnsRow>
+            </div>
+        </div>
+    );
+}
+
+function DnsRow({
+    label,
+    state,
+    detail,
+    resolution,
+    children,
+}: {
+    label: string;
+    state: DnsState;
+    detail: string;
+    resolution: { href: string; label: string; external: boolean };
+    children?: React.ReactNode;
+}) {
+    const tone = dnsTone(state);
+    const showResolution = state === 'fail' || state === 'warn';
+    return (
+        <div className="rounded-xl border p-3" style={{ borderColor: tone.border, background: tone.bg }}>
+            <div className="flex items-center justify-between mb-1">
+                <span className="text-sm font-bold" style={{ color: tone.fg }}>{label}</span>
+                <span
+                    className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded"
+                    style={{ color: tone.fg, background: 'rgba(255,255,255,0.6)', border: `1px solid ${tone.border}` }}
+                >
+                    {tone.label}
+                </span>
+            </div>
+            <p className="text-xs text-gray-700">{detail}</p>
+            {showResolution && (
+                <a
+                    href={resolution.href}
+                    target={resolution.external ? '_blank' : undefined}
+                    rel={resolution.external ? 'noopener noreferrer' : undefined}
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold underline"
+                    style={{ color: tone.fg }}
+                >
+                    {resolution.label}
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                        {resolution.external ? (
+                            <>
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                            </>
+                        ) : (
+                            <>
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </>
+                        )}
+                    </svg>
+                </a>
+            )}
+            {children}
+        </div>
+    );
+}
+

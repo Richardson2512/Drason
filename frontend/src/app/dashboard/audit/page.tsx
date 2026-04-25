@@ -36,8 +36,8 @@ export default function Audit() {
     return (
         <div className="flex flex-col" style={{ height: 'calc(100vh - 4rem)' }}>
             <div className="page-header">
-                <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">System Audit Log</h1>
-                <div className="text-gray-500 text-[1.1rem]">Immutable record of all system events and triggers</div>
+                <h1 className="text-xl font-bold mb-0.5 text-gray-900 tracking-tight">System Audit Log</h1>
+                <div className="text-xs text-gray-500">Immutable record of all system events and triggers</div>
             </div>
 
             <div className="premium-card flex-1 overflow-hidden flex flex-col p-0 rounded-3xl">

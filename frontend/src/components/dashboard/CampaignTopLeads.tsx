@@ -29,7 +29,7 @@ export default function CampaignTopLeads({ campaignId }: { campaignId: string })
 
     if (loading) {
         return (
-            <div className="premium-card" style={{ marginBottom: '2.5rem', padding: '2rem', textAlign: 'center', color: '#6B7280' }}>
+            <div className="premium-card" style={{ marginBottom: '0.75rem', padding: '2rem', textAlign: 'center', color: '#6B7280' }}>
                 Loading top leads...
             </div>
         );
@@ -37,7 +37,7 @@ export default function CampaignTopLeads({ campaignId }: { campaignId: string })
 
     if (leads.length === 0) {
         return (
-            <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
+            <div className="premium-card" style={{ marginBottom: '0.75rem' }}>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>
                     Top Performing Leads
                 </h2>
@@ -49,7 +49,7 @@ export default function CampaignTopLeads({ campaignId }: { campaignId: string })
     }
 
     return (
-        <div className="premium-card" style={{ marginBottom: '2.5rem' }}>
+        <div className="premium-card" style={{ marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div>
                     <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>

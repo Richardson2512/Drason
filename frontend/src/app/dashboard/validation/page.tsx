@@ -6,6 +6,8 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { Upload, FileSpreadsheet, CheckCircle, XCircle, AlertTriangle, Copy, Download, Send, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 import Papa from 'papaparse';
 import type { ValidationBatch, ValidationBatchLead, ColumnMapping, ValidationAnalytics } from '@/types/api';
+import CustomSelect from '@/components/ui/CustomSelect';
+import DatePicker from '@/components/ui/DatePicker';
 
 // ============================================================================
 // TYPES
@@ -115,31 +117,57 @@ function ValidationPageContent() {
 
     // ========== DATA FETCHING ==========
 
+    // Time-range filter for analytics + batch history
+    const [timeRange, setTimeRange] = useState<'all' | '7d' | '30d' | '90d' | 'custom'>('all');
+    const [customFrom, setCustomFrom] = useState('');
+    const [customTo, setCustomTo] = useState('');
+
+    const buildRangeQuery = useCallback(() => {
+        const params = new URLSearchParams();
+        if (timeRange === 'custom') {
+            if (customFrom) params.set('from', customFrom);
+            if (customTo) params.set('to', customTo);
+        } else if (timeRange !== 'all') {
+            params.set('timeRange', timeRange);
+        }
+        return params.toString();
+    }, [timeRange, customFrom, customTo]);
+
     const fetchBatches = useCallback(async () => {
         try {
-            const res = await apiClient<{ data: ValidationBatch[]; meta: any }>('/api/validation/batches?limit=50');
-            setBatches(res?.data || []);
+            const qs = buildRangeQuery();
+            // apiClient auto-unwraps the `data` key, so res IS the array directly
+            // when the backend returns `{success, data, meta}`. meta is lost via the
+            // unwrap — we fall back to the array's length for display.
+            const res = await apiClient<any>(`/api/validation/batches?limit=50${qs ? `&${qs}` : ''}`);
+            const list: ValidationBatch[] = Array.isArray(res) ? res : (res?.data || []);
+            setBatches(list);
         } catch { /* graceful */ }
-    }, []);
+    }, [buildRangeQuery]);
 
     const fetchAnalytics = useCallback(async () => {
         try {
-            const res = await apiClient<ValidationAnalytics>('/api/validation/analytics');
+            const qs = buildRangeQuery();
+            // Backend returns `{success, ...analytics}` — no `data` key, so apiClient
+            // returns the whole response object. Cast and use directly.
+            const res = await apiClient<ValidationAnalytics>(`/api/validation/analytics${qs ? `?${qs}` : ''}`);
             setAnalytics(res);
         } catch { /* graceful */ }
-    }, []);
+    }, [buildRangeQuery]);
 
     const fetchCampaigns = useCallback(async () => {
         try {
-            const res = await apiClient<{ data: Campaign[] }>('/api/dashboard/campaigns?limit=200');
-            setCampaigns(res?.data || []);
+            const res = await apiClient<any>('/api/dashboard/campaigns?limit=200');
+            const list: Campaign[] = Array.isArray(res) ? res : (res?.data || res?.campaigns || []);
+            setCampaigns(list);
         } catch { /* graceful */ }
     }, []);
 
     const fetchEspPerformance = useCallback(async () => {
         try {
-            const res = await apiClient<{ data: typeof espPerformance }>('/api/analytics/esp-performance');
-            setEspPerformance(res?.data || []);
+            const res = await apiClient<any>('/api/analytics/esp-performance');
+            const list = Array.isArray(res) ? res : (res?.data || []);
+            setEspPerformance(list);
         } catch { /* graceful */ }
     }, []);
 
@@ -149,10 +177,12 @@ function ValidationPageContent() {
             if (statusFilter !== 'all') params.set('status', statusFilter);
             if (espFilter !== 'all') params.set('esp', espFilter);
             if (searchQuery.trim()) params.set('search', searchQuery.trim());
-            const res = await apiClient<{ batch: ValidationBatch; data: ValidationBatchLead[]; meta: any }>(`/api/validation/batches/${batchId}?${params}`);
-            setSelectedBatch(res?.batch || null);
-            setBatchLeads(res?.data || []);
-            setBatchMeta(res?.meta || batchMeta);
+            // Backend nests `batch` + `meta` + `leads` inside `data` so the apiClient
+            // auto-unwrap preserves them. Fall back to legacy `res.data` shape too.
+            const res = await apiClient<any>(`/api/validation/batches/${batchId}?${params}`);
+            setBatchLeads(res?.leads || res?.data || []);
+            if (res?.meta) setBatchMeta(res.meta);
+            if (res?.batch) setSelectedBatch(res.batch);
             setSelectedIds(new Set());
         } catch { /* graceful */ }
     }, [statusFilter, espFilter, searchQuery, batchMeta.limit]);
@@ -336,8 +366,8 @@ function ValidationPageContent() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Email Validation</h1>
-                    <p className="text-sm text-gray-500 mt-1">Upload leads, validate emails, classify by ESP, and route to campaigns.</p>
+                    <h1 className="text-xl font-bold text-gray-900">Email Validation</h1>
+                    <p className="text-xs text-gray-500 mt-0.5">Upload leads, validate emails, classify by ESP, and route to campaigns.</p>
                 </div>
                 <button
                     onClick={() => { setShowUpload(true); setUploadStep('select'); }}
@@ -346,6 +376,56 @@ function ValidationPageContent() {
                     <Upload size={14} />
                     Upload CSV
                 </button>
+            </div>
+
+            {/* Time range filter — applies to stats + validation history */}
+            <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-semibold text-gray-500 uppercase">Range</span>
+                {([
+                    { key: 'all', label: 'All time' },
+                    { key: '7d', label: '7 days' },
+                    { key: '30d', label: '30 days' },
+                    { key: '90d', label: '90 days' },
+                ] as const).map(r => (
+                    <button
+                        key={r.key}
+                        onClick={() => setTimeRange(r.key)}
+                        className="px-2.5 py-1 rounded-md text-[10px] font-semibold cursor-pointer transition-colors"
+                        style={{
+                            background: timeRange === r.key ? '#111827' : '#FFFFFF',
+                            color: timeRange === r.key ? '#FFFFFF' : '#6B7280',
+                            border: `1px solid ${timeRange === r.key ? '#111827' : '#D1CBC5'}`,
+                        }}
+                    >
+                        {r.label}
+                    </button>
+                ))}
+                <div className="w-px h-5 bg-gray-200 mx-1" />
+                <div className="flex items-center gap-1.5">
+                    <div className="w-36">
+                        <DatePicker
+                            value={customFrom}
+                            onChange={v => { setCustomFrom(v); if (customTo || v) setTimeRange('custom'); }}
+                            placeholder="From"
+                        />
+                    </div>
+                    <span className="text-[10px] text-gray-400">to</span>
+                    <div className="w-36">
+                        <DatePicker
+                            value={customTo}
+                            onChange={v => { setCustomTo(v); if (customFrom || v) setTimeRange('custom'); }}
+                            placeholder="To"
+                        />
+                    </div>
+                    {(customFrom || customTo) && (
+                        <button
+                            onClick={() => { setCustomFrom(''); setCustomTo(''); setTimeRange('all'); }}
+                            className="text-[10px] text-gray-500 hover:text-gray-800 cursor-pointer bg-transparent border-none px-1"
+                        >
+                            Clear
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Analytics Summary */}
@@ -807,17 +887,16 @@ function ValidationPageContent() {
 
                                     <div>
                                         <label className="text-[10px] font-semibold text-gray-500 uppercase block mb-1">Route all leads to campaign (optional)</label>
-                                        <select
+                                        <CustomSelect
                                             value={targetCampaignId}
-                                            onChange={e => setTargetCampaignId(e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-lg text-xs outline-none"
-                                            style={{ borderColor: '#D1CBC5' }}
-                                        >
-                                            <option value="">Decide after validation</option>
-                                            {campaigns.map(c => (
-                                                <option key={c.id} value={c.id}>{c.name} — {c.source_platform?.toUpperCase()}</option>
-                                            ))}
-                                        </select>
+                                            onChange={setTargetCampaignId}
+                                            searchable={campaigns.length > 5}
+                                            placeholder="Decide after validation"
+                                            options={[
+                                                { value: '', label: 'Decide after validation' },
+                                                ...campaigns.map(c => ({ value: c.id, label: `${c.name} — ${c.source_platform?.toUpperCase()}` })),
+                                            ]}
+                                        />
                                     </div>
                                 </div>
                             )}
@@ -832,15 +911,15 @@ function ValidationPageContent() {
                                                 <label className="text-[10px] font-semibold text-gray-500 uppercase block mb-1">
                                                     {field.replace(/_/g, ' ')}{field === 'email' && ' *'}
                                                 </label>
-                                                <select
+                                                <CustomSelect
                                                     value={(columnMapping as any)[field] || ''}
-                                                    onChange={e => setColumnMapping(m => ({ ...m, [field]: e.target.value || undefined }))}
-                                                    className="w-full px-2 py-1.5 border rounded-md text-xs outline-none"
-                                                    style={{ borderColor: '#D1CBC5' }}
-                                                >
-                                                    <option value="">— skip —</option>
-                                                    {csvHeaders.map(h => <option key={h} value={h}>{h}</option>)}
-                                                </select>
+                                                    onChange={(v) => setColumnMapping(m => ({ ...m, [field]: v || undefined }))}
+                                                    placeholder="— skip —"
+                                                    options={[
+                                                        { value: '', label: '— skip —' },
+                                                        ...csvHeaders.map(h => ({ value: h, label: h })),
+                                                    ]}
+                                                />
                                             </div>
                                         ))}
                                     </div>
@@ -930,17 +1009,15 @@ function ValidationPageContent() {
                                 <>
                                     <label className="text-[10px] font-semibold text-gray-500 uppercase block mb-1">Select Campaign</label>
                                     {campaigns.length > 0 ? (
-                                        <select
-                                            value={routeCampaignId}
-                                            onChange={e => setRouteCampaignId(e.target.value)}
-                                            className="w-full px-3 py-2 border rounded-lg text-xs outline-none mb-3"
-                                            style={{ borderColor: '#D1CBC5' }}
-                                        >
-                                            <option value="">Choose a campaign...</option>
-                                            {campaigns.map(c => (
-                                                <option key={c.id} value={c.id}>{c.name} — {c.source_platform?.toUpperCase()}</option>
-                                            ))}
-                                        </select>
+                                        <div className="mb-3">
+                                            <CustomSelect
+                                                value={routeCampaignId}
+                                                onChange={setRouteCampaignId}
+                                                searchable={campaigns.length > 5}
+                                                placeholder="Choose a campaign..."
+                                                options={campaigns.map(c => ({ value: c.id, label: `${c.name} — ${c.source_platform?.toUpperCase()}` }))}
+                                            />
+                                        </div>
                                     ) : (
                                         <div className="p-3 rounded-lg text-xs text-center mb-3" style={{ background: '#FEF3C7', color: '#92400E' }}>
                                             No campaigns found. Connect a sending platform in Settings first, or export your clean list as CSV.

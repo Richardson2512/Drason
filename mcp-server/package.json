@@ -1,0 +1,26 @@
+{
+  "name": "@superkabe/mcp-server",
+  "version": "1.0.0",
+  "description": "Superkabe MCP server — connect Claude to your cold email platform",
+  "type": "module",
+  "bin": {
+    "superkabe-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -58,6 +58,26 @@ export interface Domain {
   consecutive_pauses?: number;
   relapse_count?: number;
 
+  // DNS health snapshot — populated by infrastructureAssessmentService.
+  // Drives the per-row status dots (SPF · DKIM · DMARC · Blacklist) on the
+  // protection-side domains page. `null` everywhere = "never assessed yet".
+  spf_valid?: boolean | null;
+  dkim_valid?: boolean | null;
+  dmarc_policy?: string | null;             // 'none' | 'quarantine' | 'reject' | null
+  // Sending domain's MX records — captured during the same DNS sweep.
+  // [{ priority, exchange }] sorted by priority asc; empty = no MX configured.
+  mx_records?: Array<{ priority: number; exchange: string }> | null;
+  mx_valid?: boolean | null;
+  blacklist_results?: {
+    critical_listed?: number;
+    major_listed?: number;
+    minor_listed?: number;
+    total_checked?: number;
+  } | null;
+  blacklist_score?: number;
+  last_full_blacklist_check?: string | null;
+  dns_checked_at?: string | null;
+
   // Nested relations
   mailboxes?: Mailbox[];
 }
@@ -104,6 +124,24 @@ export interface Mailbox {
   consecutive_pauses?: number;
   relapse_count?: number;
 
+  // Sending-IP blacklist — populated by mailboxIpBlacklistWorker.
+  // For OAuth providers (Gmail / Microsoft) sending_ip stays null and
+  // sending_ip_source = 'oauth_shared' to mean "shared infra, not actionable".
+  sending_ip?: string | null;
+  sending_ip_resolved_at?: string | null;
+  sending_ip_source?: 'smtp_host_dns' | 'oauth_shared' | 'manual' | 'unresolved' | null;
+  ip_blacklist_results?: {
+    critical_listed?: number;
+    critical_checked?: number;
+    major_listed?: number;
+    major_checked?: number;
+    minor_listed?: number;
+    minor_checked?: number;
+    total_checked?: number;
+  } | null;
+  ip_blacklist_score?: number;
+  last_ip_blacklist_check?: string | null;
+
   // Nested relations
   domain?: Pick<Domain, 'id' | 'domain' | 'status'>;
   campaigns?: Pick<Campaign, 'id' | 'name' | 'status'>[];
@@ -145,7 +183,16 @@ export interface Campaign {
 export interface Lead {
   id: string;
   email: string;
+  /** Canonical state-machine status: held | active | paused | completed | blocked. */
   status: string;
+  /**
+   * Backend-derived display status that reflects the lead's outbound lifecycle
+   * across all its campaign enrollments (replied / bounced / unsubscribed /
+   * completed / <raw status>). Set by dashboardController.getLeads enrichment.
+   * Use this for user-facing status messages; use `status` for execution-gate
+   * logic (though the UI almost never makes those calls).
+   */
+  display_status?: string;
   persona?: string;
   source?: string;
   source_platform?: string;
@@ -159,6 +206,8 @@ export interface Lead {
   emails_opened?: number;
   emails_clicked?: number;
   emails_replied?: number;
+  /** True when any send to this lead has hard-bounced (set by bounceProcessingService). */
+  bounced?: boolean;
 
   last_activity_at?: string;
 
@@ -278,8 +327,8 @@ export interface UsageLimits {
 
 export interface SubscriptionData {
   subscription: Subscription;
-  usage: UsageLimits & { emailsValidated?: number };
-  limits: UsageLimits;
+  usage: UsageLimits & { emailsValidated?: number; monthlySends?: number };
+  limits: UsageLimits & { monthlySendLimit?: number };
 }
 
 export interface Invoice {
@@ -522,7 +571,7 @@ export interface DailyData {
 export interface TierInfo {
   name: string;
   price: string;
-  limits: UsageLimits;
+  limits: UsageLimits & { sends?: number; validationCredits?: number };
   color: string;
 }
 

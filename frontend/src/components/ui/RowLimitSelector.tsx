@@ -1,34 +1,29 @@
 'use client';
 
 import React from 'react';
+import CustomSelect from './CustomSelect';
 
 interface RowLimitSelectorProps {
     limit: number;
     onLimitChange: (limit: number) => void;
 }
 
+const OPTIONS = [
+    { value: '20', label: '20' },
+    { value: '50', label: '50' },
+];
+
 export function RowLimitSelector({ limit, onLimitChange }: RowLimitSelectorProps) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{ fontSize: '0.875rem', color: '#6B7280' }}>Rows per page:</span>
-            <select
-                value={limit}
-                onChange={(e) => onLimitChange(Number(e.target.value))}
-                aria-label="Rows per page"
-                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                style={{
-                    padding: '0.25rem 0.5rem',
-                    borderRadius: '0.375rem',
-                    border: '1px solid #E5E7EB',
-                    fontSize: '0.875rem',
-                    color: '#374151',
-                    background: '#FFFFFF',
-                    cursor: 'pointer'
-                }}
-            >
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-            </select>
+            <div style={{ minWidth: 72 }}>
+                <CustomSelect
+                    value={String(limit)}
+                    onChange={(v) => onLimitChange(Number(v))}
+                    options={OPTIONS}
+                />
+            </div>
         </div>
     );
 }

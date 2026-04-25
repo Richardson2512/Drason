@@ -122,7 +122,7 @@ export default function OnboardingPage() {
 
                     <h2 className="text-white text-3xl font-bold mb-4">You're Almost There</h2>
                     <p className="text-white/60 text-sm leading-relaxed mb-8">
-                        Your Google account is verified. Just name your organization and your Superkabe workspace will be ready to protect your email infrastructure.
+                        Your Google account is verified. Name your organization and your Superkabe workspace will be ready — AI cold email sequences, multi-mailbox sending, and built-in deliverability protection.
                     </p>
 
                     <div className="grid grid-cols-3 gap-4 text-center">

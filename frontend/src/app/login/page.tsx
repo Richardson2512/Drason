@@ -243,13 +243,30 @@ export default function LoginPage() {
                                 className={`absolute inset-0 transition-all duration-500 transform ${index === currentSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
                             >
                                 <div className="bg-white rounded-[32px] p-8 pb-0 shadow-2xl overflow-hidden relative h-full flex flex-col">
-                                    <h2 className="text-3xl font-bold text-[#1C4532] mb-3 leading-tight whitespace-pre-line">{slide.title}</h2>
+                                    {/* Floating Stats — anchored to the card's top-right corner,
+                                        permanently out of the way of the title (top-left), the
+                                        "Learn more" CTA (mid-left), and the rotated mockup cards
+                                        (bottom-right). Zero overlap regardless of how long the
+                                        description wraps. */}
+                                    <div className="absolute top-6 right-6 bg-white rounded-2xl px-4 py-3 shadow-lg border border-gray-100 flex items-center gap-3 z-20">
+                                        <div className="w-10 h-10 bg-[#F0FDF4] rounded-full flex items-center justify-center shrink-0">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        </div>
+                                        <div>
+                                            <div className="text-[10px] text-gray-500 font-medium">{slide.stats.label}</div>
+                                            <div className="text-lg font-bold text-[#1C4532] leading-none">{slide.stats.value}</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Title reserves right-side margin so long titles can't
+                                        collide with the stats box anchored at top-right. */}
+                                    <h2 className="text-3xl font-bold text-[#1C4532] mb-3 leading-tight whitespace-pre-line pr-32">{slide.title}</h2>
                                     <p className="text-[#64748B] text-sm mb-6 max-w-xs">{slide.desc}</p>
 
                                     <Link
                                         href={slide.link}
                                         target="_blank"
-                                        className="bg-[#1C4532] text-white px-6 py-2.5 rounded-full text-sm font-medium mb-8 hover:bg-[#143325] transition-colors w-fit flex items-center gap-2"
+                                        className="relative z-30 bg-[#1C4532] text-white px-6 py-2.5 rounded-full text-sm font-medium mb-8 hover:bg-[#143325] transition-colors w-fit flex items-center gap-2"
                                     >
                                         Learn more
                                         <ArrowRight size={16} />
@@ -280,17 +297,6 @@ export default function LoginPage() {
                                         {/* Background Decor Card for depth */}
                                         <div className="absolute right-[-40px] top-12 w-60 h-32 rounded-xl bg-gray-50 border border-gray-100 transform rotate-[4deg] z-0"></div>
                                     </div>
-
-                                    {/* Floating Stats */}
-                                    <div className="absolute bottom-6 left-6 bg-white rounded-2xl p-4 shadow-lg border border-gray-100 flex items-center gap-3 pr-8 z-20">
-                                        <div className="w-10 h-10 bg-[#F0FDF4] rounded-full flex items-center justify-center">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                                        </div>
-                                        <div>
-                                            <div className="text-[10px] text-gray-500 font-medium">{slide.stats.label}</div>
-                                            <div className="text-lg font-bold text-[#1C4532]">{slide.stats.value}</div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -298,9 +304,9 @@ export default function LoginPage() {
 
                     {/* Bottom Content & Indicators */}
                     <div className="mt-12 text-center max-w-md">
-                        <h3 className="text-white text-3xl font-bold mb-4">Protect Your Infrastructure</h3>
+                        <h3 className="text-white text-3xl font-bold mb-4">Send Cold Email. Land in the Inbox.</h3>
                         <p className="text-white/60 text-sm leading-relaxed">
-                            Stop burning domains. Superkabe monitors your health, blocks risks, and auto-heals your infrastructure so you can scale with confidence.
+                            The AI cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes, and let Superkabe auto-heal your senders in the background.
                         </p>
 
                         <div className="flex justify-center gap-2 mt-8">

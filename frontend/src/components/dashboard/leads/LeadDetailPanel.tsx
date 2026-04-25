@@ -31,8 +31,27 @@ function formatRelativeTime(dateString: string | null) {
 }
 
 function getSystemNotice(lead: Lead) {
+    // Prefer the backend-derived display_status when present — it reflects the
+    // lead's actual outbound lifecycle across campaign enrollments, which
+    // Lead.status alone can't capture (e.g. a lead whose only CampaignLead is
+    // in 'replied' state stays Lead.status='held' but has clearly completed
+    // its outbound journey).
+    const effective = lead.display_status || lead.status;
+
     if (lead.validation_status && lead.validation_status === 'invalid') {
         return { type: 'danger', title: 'Invalid Email', msg: lead.is_disposable ? 'This lead was blocked because the email address uses a disposable/temporary domain.' : 'This lead was blocked because email validation determined the address is invalid (no MX records or failed verification). It will not be routed to any campaign.' };
+    }
+    if (effective === 'replied') {
+        return { type: 'success', title: 'Replied', msg: `This lead has replied to the campaign${lead.emails_replied ? ` (${lead.emails_replied} repl${lead.emails_replied === 1 ? 'y' : 'ies'} received)` : ''}. The sequence has stopped for this contact.` };
+    }
+    if (effective === 'bounced' || lead.bounced) {
+        return { type: 'danger', title: 'Bounced', msg: 'This lead\'s address bounced when the campaign attempted to send. No further sends will be attempted — consider removing the contact from your list.' };
+    }
+    if (effective === 'unsubscribed') {
+        return { type: 'warning', title: 'Unsubscribed', msg: 'This contact unsubscribed from the campaign. They will not receive further outreach.' };
+    }
+    if (effective === 'completed') {
+        return { type: 'info', title: 'Sequence Complete', msg: `This lead completed all steps of the campaign${lead.emails_sent ? ` (${lead.emails_sent} email${lead.emails_sent === 1 ? '' : 's'} sent)` : ''} without replying.` };
     }
     if (lead.status === 'blocked' || lead.status === 'failed') {
         return { type: 'danger', title: 'Blocked', msg: 'This lead has been blocked by the health gate or email validation. It will not be routed to any campaign.' };
@@ -44,10 +63,17 @@ function getSystemNotice(lead: Lead) {
         return { type: 'warning', title: 'Unrouted — No Campaign Assigned', msg: 'This lead passed validation but has not been assigned to a campaign. Check your routing rules in Configuration to ensure a rule matches this lead\'s persona.' };
     }
     if (lead.status === 'held' && lead.assigned_campaign_id) {
-        return { type: 'warning', title: 'Pending Platform Push', msg: 'This lead is assigned to a campaign but has not been pushed to the sending platform yet.' };
+        // Lead has been assigned + push attempted? If engagement counters > 0 it
+        // clearly WAS pushed and has received activity. Otherwise it's genuinely
+        // queued waiting for the processor cycle or retry.
+        const hasSends = (lead.emails_sent ?? 0) > 0;
+        if (hasSends) {
+            return { type: 'info', title: 'In Campaign', msg: `This lead has received ${lead.emails_sent} email${lead.emails_sent === 1 ? '' : 's'} from the campaign${(lead.emails_opened ?? 0) > 0 ? `, with ${lead.emails_opened} open${lead.emails_opened === 1 ? '' : 's'}` : ''}. The sequence is still in progress.` };
+        }
+        return { type: 'warning', title: 'Pending Platform Push', msg: 'This lead is assigned to a campaign but has not been pushed to the sending platform yet. The lead processor retries every 10 seconds.' };
     }
     if (lead.status === 'active') {
-        return { type: 'success', title: 'Active Execution', msg: `Lead has passed all health checks and routed to a campaign. It is currently available for outreach by the external sender (${getPlatformLabel(lead.source_platform)}).` };
+        return { type: 'success', title: 'Active Execution', msg: `Lead has passed all health checks and routed to a campaign. It is currently available for outreach by the ${getPlatformLabel(lead.source_platform)} sender.` };
     }
     return null;
 }

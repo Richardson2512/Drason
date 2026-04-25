@@ -14,6 +14,7 @@ import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useCampaignList } from '@/hooks/useCampaignList';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import CustomSelect from '@/components/ui/CustomSelect';
 import { useEntityStats } from '@/hooks/useEntityStats';
 import EntityStatsBar from '@/components/ui/EntityStatsBar';
 
@@ -188,9 +189,9 @@ export default function MailboxesPage() {
     if (!loading && mailboxes.length === 0 && fetchError) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
-                <div className="text-5xl mb-6">⚠️</div>
+                <div className="text-5xl mb-3">⚠️</div>
                 <h2 className="text-2xl font-bold mb-3 text-gray-900">Failed to Load Mailboxes</h2>
-                <p className="text-gray-500 mb-6">{fetchError}</p>
+                <p className="text-gray-500 mb-3">{fetchError}</p>
                 <button
                     onClick={fetchMailboxes}
                     className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-all"
@@ -202,35 +203,36 @@ export default function MailboxesPage() {
     }
 
     return (
-        <div className="flex h-full gap-8">
+        <div className="flex h-full gap-4 p-4">
             {/* Left: List */}
-            <div className="premium-card w-[420px] flex flex-col p-6 h-full overflow-hidden rounded-3xl">
-                <h2 className="text-2xl font-bold mb-3 shrink-0 text-gray-900">Mailboxes</h2>
+            <div className="premium-card w-[380px] flex flex-col p-4 h-full overflow-hidden rounded-2xl">
+                <h1 className="text-xl font-bold mb-3 shrink-0 text-gray-900">Mailboxes</h1>
 
-                {/* Stats Breakdown */}
+                {/* Stats bar — interactive. Clicking a status pill filters the
+                    list; "All" clears. Healing phases appear alongside status
+                    with muted gray dots rather than their own colored pills. */}
                 {entityStats?.mailboxes && (
                     <div className="mb-3">
                         <EntityStatsBar
                             total={entityStats.mailboxes.total}
+                            activeKeys={selectedStatus}
+                            onToggle={(key) => {
+                                if (key === 'all') {
+                                    setSelectedStatus([]);
+                                } else {
+                                    setSelectedStatus(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]);
+                                }
+                                setMeta(prev => ({ ...prev, page: 1 }));
+                            }}
                             stats={[
-                                { label: 'Healthy', value: entityStats.mailboxes.healthy, color: '#22c55e' },
-                                { label: 'Warning', value: entityStats.mailboxes.warning, color: '#f59e0b' },
-                                { label: 'Paused', value: entityStats.mailboxes.paused, color: '#ef4444' },
+                                { key: 'healthy',         label: 'Healthy',    value: entityStats.mailboxes.healthy,         color: '#22c55e' },
+                                { key: 'warning',         label: 'Warning',    value: entityStats.mailboxes.warning,         color: '#f59e0b' },
+                                { key: 'paused',          label: 'Paused',     value: entityStats.mailboxes.paused,          color: '#ef4444' },
+                                { key: 'quarantine',      label: 'Quarantine', value: entityStats.mailboxes.quarantine,      color: '#9ca3af' },
+                                { key: 'restricted_send', label: 'Restricted', value: entityStats.mailboxes.restricted_send, color: '#9ca3af' },
+                                { key: 'warm_recovery',   label: 'Warming',    value: entityStats.mailboxes.warm_recovery,   color: '#9ca3af' },
                             ]}
                         />
-                        {/* Healing Pipeline Stats — always visible */}
-                        <div className="flex items-center gap-2 mt-2 flex-wrap">
-                            <span className="text-[0.65rem] font-semibold text-gray-400 uppercase tracking-wide">Healing:</span>
-                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-200">
-                                {entityStats.mailboxes.quarantine} quarantine
-                            </span>
-                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
-                                {entityStats.mailboxes.restricted_send} restricted
-                            </span>
-                            <span className="text-[0.7rem] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-200">
-                                {entityStats.mailboxes.warm_recovery} warming
-                            </span>
-                        </div>
                     </div>
                 )}
 
@@ -246,21 +248,6 @@ export default function MailboxesPage() {
                             setMeta(prev => ({ ...prev, page: 1 }));
                         }}
                         className="w-full px-4 py-[0.625rem] rounded-xl border border-gray-200 bg-white text-sm outline-none"
-                    />
-
-                    {/* Status Filter */}
-                    <MultiSelectDropdown
-                        options={[
-                            { value: 'healthy', label: 'Healthy' },
-                            { value: 'warning', label: 'Warning' },
-                            { value: 'paused', label: 'Paused' },
-                        ]}
-                        selected={selectedStatus}
-                        onChange={(vals) => {
-                            setSelectedStatus(vals);
-                            setMeta(prev => ({ ...prev, page: 1 }));
-                        }}
-                        placeholder="All Status"
                     />
 
                     {/* Campaign Filter */}
@@ -367,19 +354,19 @@ export default function MailboxesPage() {
                 {selectedMailbox ? (
                     <div className="animate-fade-in">
                         <div className="page-header">
-                            <h1 className="text-4xl font-extrabold mb-2 text-gray-900" style={{ letterSpacing: '-0.025em' }}>{selectedMailbox.email}</h1>
-                            <div className="text-gray-500 text-[1.1rem]">Mailbox Health & Usage</div>
+                            <h1 className="text-xl font-bold mb-0.5 text-gray-900" style={{ letterSpacing: '-0.025em' }}>{selectedMailbox.email}</h1>
+                            <div className="text-xs text-gray-500">Mailbox Health & Usage</div>
                         </div>
 
                         {/* Pause Reason Banner — shown when Superkabe's automation paused the mailbox */}
                         {selectedMailbox.status === 'paused' && selectedMailbox.paused_reason && (
-                            <div className="mb-8 rounded-2xl border border-yellow-300" style={{
+                            <div className="mb-3 rounded-2xl border border-yellow-300" style={{
                                 padding: '1.25rem 1.5rem',
                                 background: 'linear-gradient(135deg, #FFFBEB, #FEF3C7)',
                             }}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <span className="text-2xl">⏸</span>
-                                    <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#92400E' }}>Paused by Superkabe</h3>
+                                    <h3 className="text-base font-bold m-0" style={{ color: '#92400E' }}>Paused by Superkabe</h3>
                                 </div>
                                 <div className="grid gap-2 text-[0.9rem]">
                                     <div className="leading-normal" style={{ color: '#78350F' }}>{selectedMailbox.paused_reason}</div>
@@ -397,7 +384,7 @@ export default function MailboxesPage() {
                         {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
                             const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error, selectedMailbox.source_platform);
                             return (
-                                <div className="mb-8 rounded-2xl" style={{
+                                <div className="mb-3 rounded-2xl" style={{
                                     padding: '1.25rem 1.5rem',
                                     background: 'linear-gradient(135deg, #FEF2F2, #FFF1F2)',
                                     border: '1px solid #FECACA',
@@ -405,7 +392,7 @@ export default function MailboxesPage() {
                                 >
                                     <div className="flex items-center gap-3 mb-4">
                                         <span className="text-2xl">⚠️</span>
-                                        <h3 className="text-[1.1rem] font-bold m-0" style={{ color: '#991B1B' }}>Connection Failed</h3>
+                                        <h3 className="text-base font-bold m-0" style={{ color: '#991B1B' }}>Connection Failed</h3>
                                     </div>
 
                                     <div className="grid gap-3 text-[0.9rem]">
@@ -474,7 +461,7 @@ export default function MailboxesPage() {
                             );
                         })()}
 
-                        <div className="grid grid-cols-2 gap-6 mb-8">
+                        <div className="grid grid-cols-2 gap-6 mb-3">
                             <div className="premium-card overflow-hidden">
                                 <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">Associated Domain</h3>
                                 <div className="text-lg font-bold text-slate-800 mb-2 truncate" title={selectedMailbox.domain?.domain}>{selectedMailbox.domain?.domain}</div>
@@ -495,6 +482,8 @@ export default function MailboxesPage() {
                                     </div>
                                 </div>
                             </div>
+                            <SendingIpHealth mailbox={selectedMailbox} />
+
                             <div className="premium-card">
                                 <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">Activity Stats</h3>
                                 <div className="grid gap-3">
@@ -531,8 +520,8 @@ export default function MailboxesPage() {
                         </div>
 
                         {/* Engagement Metrics Section (SOFT SIGNALS - informational only) */}
-                        <div className="premium-card mb-8">
-                            <div className="mb-6">
+                        <div className="premium-card mb-3">
+                            <div className="mb-3">
                                 <h2 className="text-xl font-bold text-gray-900 mb-1">
                                     Engagement Metrics
                                 </h2>
@@ -541,60 +530,29 @@ export default function MailboxesPage() {
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-4">
-                                {/* Opens */}
-                                <div className="p-4 rounded-xl" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
-                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#1E40AF' }}>
-                                        Total Opens
-                                    </div>
-                                    <div className="text-[1.75rem] font-bold" style={{ color: '#1E3A8A' }}>
-                                        {selectedMailbox.open_count_lifetime?.toLocaleString() || '0'}
-                                    </div>
-                                </div>
-
-                                {/* Clicks */}
-                                <div className="p-4 rounded-xl" style={{ background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#166534' }}>
-                                        Total Clicks
-                                    </div>
-                                    <div className="text-[1.75rem] font-bold" style={{ color: '#15803D' }}>
-                                        {selectedMailbox.click_count_lifetime?.toLocaleString() || '0'}
-                                    </div>
-                                </div>
-
-                                {/* Replies */}
-                                <div className="p-4 rounded-xl" style={{ background: '#FDF4FF', border: '1px solid #F0ABFC' }}>
-                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#86198F' }}>
-                                        Total Replies
-                                    </div>
-                                    <div className="text-[1.75rem] font-bold" style={{ color: '#A21CAF' }}>
-                                        {selectedMailbox.reply_count_lifetime?.toLocaleString() || '0'}
-                                    </div>
-                                </div>
+                            <div className="grid grid-cols-3 gap-3">
+                                <MetricTile label="Opens"   value={selectedMailbox.open_count_lifetime}  dot="#3b82f6" />
+                                <MetricTile label="Clicks"  value={selectedMailbox.click_count_lifetime} dot="#22c55e" />
+                                <MetricTile label="Replies" value={selectedMailbox.reply_count_lifetime} dot="#8b5cf6" />
                             </div>
 
                             {/* Spam & Warmup Row */}
-                            <div className="grid grid-cols-2 gap-4 mt-4">
-                                {/* Spam Count */}
-                                <div className="p-4 rounded-xl" style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}>
-                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#991B1B' }}>
-                                        Spam Reports
-                                    </div>
-                                    <div className="text-[1.75rem] font-bold" style={{ color: '#DC2626' }}>
-                                        {selectedMailbox.spam_count?.toLocaleString() || '0'}
-                                    </div>
-                                </div>
+                            <div className="grid grid-cols-2 gap-3 mt-3">
+                                <MetricTile label="Spam Reports" value={selectedMailbox.spam_count} dot="#ef4444" />
 
                                 {/* Warmup Status */}
-                                <div className="p-4 rounded-xl border border-gray-200" style={{ background: '#F9FAFB' }}>
-                                    <div className="text-xs font-semibold uppercase tracking-wide mb-2 text-gray-500">
-                                        Warmup Status
+                                <div className="p-3 rounded-xl bg-gray-50 border border-gray-200">
+                                    <div className="flex items-center gap-1.5 mb-1">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                                        <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                                            Warmup Status
+                                        </div>
                                     </div>
-                                    <div className="text-base font-semibold text-gray-900 mb-1">
+                                    <div className="text-sm font-semibold text-gray-900">
                                         {selectedMailbox.warmup_status || 'Not configured'}
                                     </div>
                                     {selectedMailbox.warmup_reputation && (
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-[11px] text-gray-500 mt-0.5">
                                             Reputation: {selectedMailbox.warmup_reputation}
                                         </div>
                                     )}
@@ -604,8 +562,8 @@ export default function MailboxesPage() {
 
                         {/* Recovery Status */}
                         {selectedMailbox.recovery_phase && selectedMailbox.recovery_phase !== 'healthy' && (
-                            <div className="premium-card mb-8">
-                                <h2 className="text-xl font-bold mb-6 text-gray-900 flex items-center gap-3">
+                            <div className="premium-card mb-3">
+                                <h2 className="text-xl font-bold mb-3 text-gray-900 flex items-center gap-3">
                                     🔄 Recovery Status
                                     <span className="py-1 px-3 rounded-full text-xs font-semibold uppercase tracking-wide border" style={{
                                         background: selectedMailbox.recovery_phase === 'paused' ? '#FEF2F2' :
@@ -629,7 +587,7 @@ export default function MailboxesPage() {
                                     {/* Resilience Score */}
                                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
                                         <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Resilience</div>
-                                        <div className="text-[1.75rem] font-extrabold" style={{
+                                        <div className="text-2xl font-bold" style={{
                                             color: (selectedMailbox.resilience_score || 0) >= 70 ? '#16A34A' :
                                                 (selectedMailbox.resilience_score || 0) >= 30 ? '#F59E0B' : '#EF4444',
                                         }}>
@@ -640,7 +598,7 @@ export default function MailboxesPage() {
                                     {/* Bounce Rate */}
                                     <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
                                         <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">Bounce Rate</div>
-                                        <div className="text-[1.75rem] font-extrabold" style={{
+                                        <div className="text-2xl font-bold" style={{
                                             color: (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.02 ? '#16A34A' :
                                                 (selectedMailbox.total_sent_count || 0) > 0 && ((selectedMailbox.hard_bounce_count || 0) / (selectedMailbox.total_sent_count || 1)) < 0.03 ? '#F59E0B' : '#EF4444',
                                         }}>
@@ -655,7 +613,7 @@ export default function MailboxesPage() {
                                         <div className="text-xs text-slate-500 mb-2 font-semibold uppercase">
                                             {selectedMailbox.recovery_phase === 'restricted_send' || selectedMailbox.recovery_phase === 'warm_recovery' ? 'Graduation Progress' : 'Clean Sends'}
                                         </div>
-                                        <div className="text-[1.75rem] font-extrabold text-slate-800">
+                                        <div className="text-2xl font-bold text-slate-800">
                                             {selectedMailbox.clean_sends_since_phase || 0}
                                             {selectedMailbox.recovery_phase === 'restricted_send' && `/${(selectedMailbox.consecutive_pauses || 0) > 1 ? 25 : 15}`}
                                             {selectedMailbox.recovery_phase === 'warm_recovery' && `/50`}
@@ -666,7 +624,7 @@ export default function MailboxesPage() {
                                     {(selectedMailbox.relapse_count || 0) > 0 && (
                                         <div className="p-4 rounded-xl" style={{ background: '#FEF2F2', border: '1px solid #FEE2E2' }}>
                                             <div className="text-xs mb-2 font-semibold uppercase" style={{ color: '#DC2626' }}>Relapses</div>
-                                            <div className="text-[1.75rem] font-extrabold" style={{ color: '#DC2626' }}>
+                                            <div className="text-2xl font-bold" style={{ color: '#DC2626' }}>
                                                 {selectedMailbox.relapse_count}
                                             </div>
                                         </div>
@@ -716,8 +674,8 @@ export default function MailboxesPage() {
                             </div>
                         )}
 
-                        <div className="premium-card mb-8">
-                            <h2 className="text-xl font-bold mb-6 text-gray-900">Active Campaigns</h2>
+                        <div className="premium-card mb-3">
+                            <h2 className="text-xl font-bold mb-3 text-gray-900">Active Campaigns</h2>
                             {selectedMailbox.campaigns && selectedMailbox.campaigns.length > 0 ? (
                                 <div className="grid gap-2">
                                     {selectedMailbox.campaigns.map((c: Pick<Campaign, 'id' | 'name' | 'status'>) => (
@@ -741,7 +699,7 @@ export default function MailboxesPage() {
                             );
                             if (rotations.length === 0) return null;
                             return (
-                                <div className="premium-card mb-8">
+                                <div className="premium-card mb-3">
                                     <h2 className="text-xl font-bold mb-4 text-gray-900">Rotation History</h2>
                                     <div className="flex flex-col gap-2">
                                         {rotations.map(r => (
@@ -762,7 +720,7 @@ export default function MailboxesPage() {
                         })()}
 
                         {/* Bounce Event Details */}
-                        <div className="mb-8">
+                        <div className="mb-3">
                             <BounceAnalytics
                                 mailboxId={selectedMailbox.id}
                                 mailboxStats={{
@@ -792,7 +750,7 @@ export default function MailboxesPage() {
                     onClick={() => sortFilter.close()}
                 >
                     <div
-                        className="bg-white rounded-3xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col"
+                        className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col"
                         style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -812,29 +770,28 @@ export default function MailboxesPage() {
                         {/* Modal Body */}
                         <div className="p-6 overflow-y-auto flex-1">
                             {/* Sort By */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Sort By
                                 </label>
-                                <select
-                                    id="modal-sort-by"
+                                <CustomSelect
                                     value={sortFilter.temp.sortBy}
-                                    onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
-                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="email_asc">Email (A-Z)</option>
-                                    <option value="email_desc">Email (Z-A)</option>
-                                    <option value="sent_desc">Sent (High to Low)</option>
-                                    <option value="sent_asc">Sent (Low to High)</option>
-                                    <option value="engagement_desc">Engagement (High to Low)</option>
-                                    <option value="engagement_asc">Engagement (Low to High)</option>
-                                    <option value="bounce_desc">Bounce (High to Low)</option>
-                                    <option value="bounce_asc">Bounce (Low to High)</option>
-                                </select>
+                                    onChange={(v) => sortFilter.setTempValue('sortBy', v)}
+                                    options={[
+                                        { value: 'email_asc', label: 'Email (A-Z)' },
+                                        { value: 'email_desc', label: 'Email (Z-A)' },
+                                        { value: 'sent_desc', label: 'Sent (High to Low)' },
+                                        { value: 'sent_asc', label: 'Sent (Low to High)' },
+                                        { value: 'engagement_desc', label: 'Engagement (High to Low)' },
+                                        { value: 'engagement_asc', label: 'Engagement (Low to High)' },
+                                        { value: 'bounce_desc', label: 'Bounce (High to Low)' },
+                                        { value: 'bounce_asc', label: 'Bounce (Low to High)' },
+                                    ]}
+                                />
                             </div>
 
                             {/* Domain Filter */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Domain
                                 </label>
@@ -847,24 +804,23 @@ export default function MailboxesPage() {
                             </div>
 
                             {/* Warmup Status Filter */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label htmlFor="modal-warmup" className="block text-sm font-semibold text-gray-700 mb-2">
                                     Warmup Status
                                 </label>
-                                <select
-                                    id="modal-warmup"
+                                <CustomSelect
                                     value={sortFilter.temp.warmupStatus}
-                                    onChange={(e) => sortFilter.setTempValue('warmupStatus', e.target.value)}
-                                    className="w-full py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                                >
-                                    <option value="all">All Warmup Status</option>
-                                    <option value="enabled">Enabled</option>
-                                    <option value="disabled">Disabled</option>
-                                </select>
+                                    onChange={(v) => sortFilter.setTempValue('warmupStatus', v)}
+                                    options={[
+                                        { value: 'all', label: 'All Warmup Status' },
+                                        { value: 'enabled', label: 'Enabled' },
+                                        { value: 'disabled', label: 'Disabled' },
+                                    ]}
+                                />
                             </div>
 
                             {/* Engagement Rate Range */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Engagement Rate Range (%)
                                 </label>
@@ -892,7 +848,7 @@ export default function MailboxesPage() {
                             </div>
 
                             {/* Platform Filter */}
-                            <div className="mb-6">
+                            <div className="mb-3">
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Platform
                                 </label>
@@ -956,6 +912,171 @@ export default function MailboxesPage() {
                     </button>
                     <button onClick={() => setSelectedIds(new Set())} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
                 </div>
+            )}
+        </div>
+    );
+}
+
+function MetricTile({ label, value, dot }: { label: string; value: number | null | undefined; dot: string }) {
+    return (
+        <div className="p-3 rounded-xl bg-gray-50 border border-gray-200">
+            <div className="flex items-center gap-1.5 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: dot }} />
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{label}</div>
+            </div>
+            <div className="text-2xl font-bold text-gray-900 tabular-nums">
+                {(value ?? 0).toLocaleString()}
+            </div>
+        </div>
+    );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Sending-IP health card
+// ────────────────────────────────────────────────────────────────────
+//
+// Renders one of four states based on how the backend resolved the IP:
+//   • clean         — IP resolved + zero major/critical listings
+//   • listed        — IP resolved + at least one major or critical listing
+//   • shared_infra  — Gmail / Microsoft OAuth (no per-mailbox IP)
+//   • not_resolved  — SMTP host couldn't be resolved (config issue)
+//
+// "listed" surfaces a Fix CTA that opens the same Spamhaus delisting tool
+// FindingsSection links to. The other three states are informational.
+
+function SendingIpHealth({ mailbox }: { mailbox: import('@/types/api').Mailbox }) {
+    const source = mailbox.sending_ip_source;
+    const r = mailbox.ip_blacklist_results || null;
+    const critical = r?.critical_listed || 0;
+    const major = r?.major_listed || 0;
+    const minor = r?.minor_listed || 0;
+    const totalChecked = r?.total_checked || 0;
+
+    let state: 'clean' | 'listed' | 'shared_infra' | 'not_resolved' | 'never_checked';
+    if (source === 'oauth_shared') state = 'shared_infra';
+    else if (!mailbox.sending_ip) state = 'not_resolved';
+    else if (!mailbox.last_ip_blacklist_check) state = 'never_checked';
+    else if (critical > 0 || major > 0) state = 'listed';
+    else state = 'clean';
+
+    const theme = (() => {
+        switch (state) {
+            case 'clean':         return { bg: '#ECFDF5', border: '#A7F3D0', text: '#065F46', accent: '#10B981', label: 'Healthy' };
+            case 'listed':        return { bg: '#FEF2F2', border: '#FECACA', text: '#991B1B', accent: '#EF4444', label: 'Listed' };
+            case 'shared_infra':  return { bg: '#F8FAFC', border: '#E2E8F0', text: '#475569', accent: '#64748B', label: 'Shared Infrastructure' };
+            case 'not_resolved':  return { bg: '#FFFBEB', border: '#FDE68A', text: '#92400E', accent: '#F59E0B', label: 'Unresolved' };
+            case 'never_checked': return { bg: '#F8FAFC', border: '#E2E8F0', text: '#475569', accent: '#64748B', label: 'Pending' };
+        }
+    })();
+
+    return (
+        <div className="premium-card" style={{ background: theme.bg, borderColor: theme.border }}>
+            <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500">Sending IP</h3>
+                <span
+                    className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border"
+                    style={{ background: '#FFFFFF', color: theme.accent, borderColor: theme.border }}
+                >
+                    {theme.label}
+                </span>
+            </div>
+
+            {state === 'shared_infra' ? (
+                <div>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                        Gmail and Microsoft 365 send through shared provider IPs. Per-mailbox blacklist checks
+                        aren&apos;t actionable — every customer of these providers shares the same IP pools, and you
+                        can&apos;t migrate off them. The domain-level DNS health on the Infrastructure page is the
+                        right signal for OAuth mailboxes.
+                    </p>
+                </div>
+            ) : state === 'not_resolved' ? (
+                <div>
+                    <p className="text-xs text-gray-700 leading-relaxed mb-2">
+                        We couldn&apos;t resolve the SMTP host&apos;s public IP. Verify the SMTP configuration on the
+                        Integrations page, then trigger a manual sync.
+                    </p>
+                    <p className="text-[11px] text-gray-500">
+                        Last attempted {mailbox.sending_ip_resolved_at ? new Date(mailbox.sending_ip_resolved_at).toLocaleString() : 'never'}
+                    </p>
+                </div>
+            ) : state === 'never_checked' ? (
+                <div>
+                    <p className="text-xs text-gray-700 leading-relaxed mb-1">
+                        IP <span className="font-mono font-semibold text-gray-900">{mailbox.sending_ip}</span> is queued
+                        for the next blacklist sweep (runs every 6 hours).
+                    </p>
+                </div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-2 gap-3 text-xs mb-3">
+                        <div>
+                            <div className="text-[10px] uppercase font-semibold text-gray-500 tracking-wider mb-0.5">IP Address</div>
+                            <div className="font-mono font-semibold text-gray-900">{mailbox.sending_ip}</div>
+                        </div>
+                        <div>
+                            <div className="text-[10px] uppercase font-semibold text-gray-500 tracking-wider mb-0.5">Last checked</div>
+                            <div className="text-gray-800">
+                                {mailbox.last_ip_blacklist_check ? new Date(mailbox.last_ip_blacklist_check).toLocaleString() : '—'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                        {[
+                            { tier: 'Critical', listed: critical, color: '#EF4444', bg: '#FEE2E2', border: '#FECACA' },
+                            { tier: 'Major',    listed: major,    color: '#F59E0B', bg: '#FEF3C7', border: '#FDE68A' },
+                            { tier: 'Minor',    listed: minor,    color: '#6B7280', bg: '#F3F4F6', border: '#E5E7EB' },
+                        ].map(t => (
+                            <div key={t.tier} className="flex items-center justify-between p-2 rounded-lg bg-white border border-gray-200">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full" style={{ background: t.listed > 0 ? t.color : '#22C55E' }} />
+                                    <span className="text-xs font-semibold text-gray-700">{t.tier}</span>
+                                </div>
+                                {t.listed > 0 ? (
+                                    <span
+                                        className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-bold"
+                                        style={{ background: t.bg, color: t.color, border: `1px solid ${t.border}` }}
+                                    >
+                                        {t.listed} listed
+                                    </span>
+                                ) : (
+                                    <span className="py-[0.15rem] px-2 rounded-full text-[0.65rem] font-semibold bg-green-50 text-green-700 border border-green-200">
+                                        Clear
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    <p className="text-[10px] text-gray-500 mt-2">
+                        Checked against {totalChecked} blacklist{totalChecked === 1 ? '' : 's'}
+                        {mailbox.sending_ip_source === 'manual' && ' · IP set manually'}
+                    </p>
+
+                    {state === 'listed' && (
+                        <div className="mt-3 pt-3 border-t" style={{ borderColor: theme.border }}>
+                            <p className="text-[11px] text-gray-700 leading-relaxed mb-2">
+                                {critical > 0
+                                    ? `Listed on ${critical} critical blacklist${critical === 1 ? '' : 's'}. Pause sends from this mailbox and request delisting before resuming — major receivers honor critical lists like Spamhaus directly.`
+                                    : `Listed on ${major} major blacklist${major === 1 ? '' : 's'}. Likely affecting inbox placement; request delisting to recover.`}
+                            </p>
+                            <a
+                                href="https://www.spamhaus.org/lookup/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                                style={{ background: theme.accent, color: '#FFFFFF' }}
+                            >
+                                Fix
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M7 17L17 7M17 7H8M17 7V16" />
+                                </svg>
+                            </a>
+                            <span className="ml-2 text-[10px] text-gray-500">Opens Spamhaus delisting tool</span>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );

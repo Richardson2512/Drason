@@ -1,11 +1,29 @@
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import CustomSelect from '@/components/ui/CustomSelect';
 
 interface LeadSortFilterModalProps {
     sortFilter: ReturnType<typeof useSortFilterModal>;
     onApply: () => void;
     onClear: () => void;
 }
+
+const SORT_OPTIONS = [
+    { value: 'created_desc', label: 'Newest First' },
+    { value: 'created_asc', label: 'Oldest First' },
+    { value: 'email_asc', label: 'Email (A-Z)' },
+    { value: 'email_desc', label: 'Email (Z-A)' },
+    { value: 'score_desc', label: 'Score (High to Low)' },
+    { value: 'score_asc', label: 'Score (Low to High)' },
+    { value: 'activity_desc', label: 'Recently Active' },
+    { value: 'activity_asc', label: 'Least Active' },
+];
+
+const ENGAGEMENT_OPTIONS = [
+    { value: 'all', label: 'All Leads' },
+    { value: 'yes', label: 'With Engagement (Opens/Clicks/Replies)' },
+    { value: 'no', label: 'No Engagement Yet' },
+];
 
 export default function LeadSortFilterModal({ sortFilter, onApply, onClear }: LeadSortFilterModalProps) {
     if (!sortFilter.isOpen) return null;
@@ -37,24 +55,14 @@ export default function LeadSortFilterModal({ sortFilter, onApply, onClear }: Le
                 <div className="p-6 overflow-y-auto flex-1">
                     {/* Sort By */}
                     <div className="mb-6">
-                        <label htmlFor="modal-sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Sort By
                         </label>
-                        <select
-                            id="modal-sort-by"
+                        <CustomSelect
                             value={sortFilter.temp.sortBy}
-                            onChange={(e) => sortFilter.setTempValue('sortBy', e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                        >
-                            <option value="created_desc">Newest First</option>
-                            <option value="created_asc">Oldest First</option>
-                            <option value="email_asc">Email (A-Z)</option>
-                            <option value="email_desc">Email (Z-A)</option>
-                            <option value="score_desc">Score (High to Low)</option>
-                            <option value="score_asc">Score (Low to High)</option>
-                            <option value="activity_desc">Recently Active</option>
-                            <option value="activity_asc">Least Active</option>
-                        </select>
+                            onChange={(v) => sortFilter.setTempValue('sortBy', v)}
+                            options={SORT_OPTIONS}
+                        />
                     </div>
 
                     {/* Score Range */}
@@ -87,19 +95,14 @@ export default function LeadSortFilterModal({ sortFilter, onApply, onClear }: Le
 
                     {/* Engagement Filter */}
                     <div className="mb-6">
-                        <label htmlFor="modal-engagement" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Has Engagement
                         </label>
-                        <select
-                            id="modal-engagement"
+                        <CustomSelect
                             value={sortFilter.temp.hasEngagement}
-                            onChange={(e) => sortFilter.setTempValue('hasEngagement', e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 text-sm cursor-pointer outline-none"
-                        >
-                            <option value="all">All Leads</option>
-                            <option value="yes">With Engagement (Opens/Clicks/Replies)</option>
-                            <option value="no">No Engagement Yet</option>
-                        </select>
+                            onChange={(v) => sortFilter.setTempValue('hasEngagement', v)}
+                            options={ENGAGEMENT_OPTIONS}
+                        />
                     </div>
 
                     {/* Platform Filter */}

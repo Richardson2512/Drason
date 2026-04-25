@@ -84,8 +84,8 @@ export default function ProfilePage() {
 
     return (
         <div className="px-4 py-8 max-w-[1200px] mx-auto">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Profile</h1>
-            <p className="text-sm text-gray-500 mb-8">Manage your account details and security</p>
+            <h1 className="text-xl font-bold text-gray-900 mb-0.5">Profile</h1>
+            <p className="text-xs text-gray-500 mb-8">Manage your account details and security</p>
 
             <div className="flex flex-wrap gap-8 items-start">
                 {/* Left Column */}

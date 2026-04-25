@@ -9,6 +9,17 @@ export interface RelatedBlogLink {
     description: string;
 }
 
+export interface FaqEntry {
+    q: string;
+    a: string;
+}
+
+export interface ProductComparisonTable {
+    caption?: string;
+    headers: string[];
+    rows: string[][];
+}
+
 export interface ProductPageData {
     slug: string;
     title: string;
@@ -16,6 +27,16 @@ export interface ProductPageData {
     intro: string;
     sections: ContentSection[];
     relatedBlog?: RelatedBlogLink[];
+    /** Visible TL;DR summary rendered at the top. 40–80 words ideal. */
+    tldr?: string;
+    /** FAQPage JSON-LD is emitted automatically when present. */
+    faq?: FaqEntry[];
+    /** Optional structured table (feature matrix, spec sheet). */
+    comparisonTable?: ProductComparisonTable;
+    /** ISO date for JSON-LD dateModified. Falls back to 2026-04-24 if unset. */
+    dateModified?: string;
+    /** ISO date for JSON-LD datePublished. Falls back to 2025-11-01 if unset. */
+    datePublished?: string;
 }
 
 export const productPages: Record<string, ProductPageData> = {
@@ -23,7 +44,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "automated-bounce-management",
         title: "Automated Bounce Management for Cold Email",
         description: "How Superkabe automates bounce management for cold email teams, intercepting hard bounces in real time to protect sender reputation.",
-        intro: "automates bounce management for cold email teams by intercepting hard bounce signals in real time. Instead of relying on manual spreadsheet checks or delayed platform reports, Superkabe's Deliverability Protection Layer (DPL) ingests SMTP 5xx failure codes directly from your sending engine and autonomously pauses compromised mailboxes before they damage your domain reputation.",
+        intro: "automates bounce management for cold email teams by intercepting hard bounce signals in real time. Instead of relying on manual spreadsheet checks or delayed platform reports, Superkabe's protection engine ingests SMTP 5xx failure codes directly from your sending engine and autonomously pauses compromised mailboxes before they damage your domain reputation.",
         sections: [
             {
                 heading: "Why Does Automated Bounce Management Matter for Cold Email?",
@@ -35,8 +56,8 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "How Does Superkabe's Bounce Interception Work?",
                 paragraphs: [
-                    "Superkabe operates as active middleware between your enrichment layer (Apollo, Clay, Ocean.io) and your sending engine (Smartlead, Instantly, Reply.io). When your sending engine processes an outbound email and receives an SMTP 5xx hard bounce response code, that failure event is instantly pushed to Superkabe via webhook integration.",
-                    "Superkabe's state machine correlates the bounce against the historical velocity of the originating domain. It calculates the current bounce rate in real time by dividing total bounces by total sends for that specific domain within the active campaign window. If the mathematically computed bounce rate breaches the configurable safety threshold (default: 2%), Superkabe issues a direct REST API command to your sending engine to pause the affected mailbox immediately.",
+                    "Superkabe operates as active middleware between your enrichment layer (Apollo, Clay, Ocean.io) and your sending engine (Smartlead, Instantly, EmailBison, or Superkabe's own native sequencer). When your sending engine processes an outbound email and receives an SMTP 5xx hard bounce response code, that failure event is instantly pushed to Superkabe via webhook integration.",
+                    "Superkabe's state machine correlates the bounce against the historical velocity of the originating mailbox. It calculates the rolling bounce rate in real time over the last 100 sends. If the mailbox passes the 60-send minimum and crosses 3% bounce rate, or hits the 5-bounce absolute safety net at lower volume, Superkabe issues a direct REST API command to your sending engine to pause the affected mailbox immediately. A separate 2% warning level fires earlier so the team can investigate before the pause threshold trips.",
                     "This entire process happens autonomously, without any human intervention. The domain is protected before the bounce rate can compound into permanent ISP penalties."
                 ]
             },
@@ -111,7 +132,7 @@ export const productPages: Record<string, ProductPageData> = {
                 paragraphs: [
                     "Superkabe does not passively report reputation metrics after the damage is done. We operate at the infrastructure layer, intercepting the exact events that cause reputation damage before they can accumulate. When a hard bounce occurs, Superkabe catches it in real time via webhook integration and immediately evaluates whether the originating domain is at risk.",
                     "If the domain's computed bounce rate approaches the ISP-defined safety threshold, Superkabe issues autonomous API commands to your sending platform to pause the affected mailbox. This prevents the cascading effect where one bad lead list destroys a domain's reputation and contaminates the broader infrastructure.",
-                    "For teams operating across multiple sending platforms — Smartlead, Instantly, Reply.io — Superkabe consolidates all reputation telemetry into a single governance engine, ensuring consistent reputation defense regardless of which CRM originated the campaign."
+                    "For teams operating across multiple sending platforms — Smartlead, Instantly, EmailBison — Superkabe consolidates all reputation telemetry into a single governance engine, ensuring consistent reputation defense regardless of which CRM originated the campaign."
                 ]
             },
             {
@@ -142,8 +163,8 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "How Does Superkabe Enforce Bounce Rate Safety Thresholds?",
                 paragraphs: [
-                    "Superkabe calculates bounce rates continuously in real time, not in batched daily reports. For every domain in your infrastructure, Superkabe maintains a running ratio of hard bounces to total sends. When this ratio approaches the configured safety threshold (default: 2%), Superkabe triggers an immediate intervention.",
-                    "The intervention is not an alert or a notification. Superkabe issues direct REST API commands to your sending engine — Smartlead, Instantly, or Reply.io — to physically pause the mailbox that is generating the bounces. This automated suspension happens within milliseconds of the threshold breach, preventing any further damage to the domain.",
+                    "Superkabe calculates bounce rates continuously in real time over a rolling 100-send window, not in batched daily reports. For every mailbox in your infrastructure, Superkabe maintains a running ratio of hard bounces to total sends. The pause threshold is 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes; a 2% warning fires earlier so the team can investigate before pause.",
+                    "The intervention is not an alert or a notification. Superkabe issues direct REST API commands to your sending engine — Smartlead, Instantly, or EmailBison — to physically pause the mailbox that is generating the bounces. This automated suspension happens within seconds of the threshold breach, preventing any further damage to the domain.",
                     "The threshold is configurable per workspace, allowing aggressive senders to operate at tighter margins while conservative teams can set wider safety buffers. Regardless of configuration, the mathematical guarantee remains: your domains will never cross the ISP penalty line."
                 ]
             },
@@ -171,7 +192,7 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "How Did Superkabe Solve the Bounce Problem with Real-Time Interception?",
                 paragraphs: [
-                    "The agency deployed Superkabe's Deliverability Protection Layer across their entire Smartlead infrastructure. Superkabe connected via webhook integration and began ingesting every bounce event in real time. For each domain, Superkabe calculated the running bounce rate and compared it against a 2% safety threshold.",
+                    "The agency deployed Superkabe's protection engine across their entire Smartlead infrastructure. Superkabe connected via webhook integration and began ingesting every bounce event in real time. For each domain, Superkabe calculated the running bounce rate and compared it against a 2% safety threshold.",
                     "When any mailbox approached the threshold, Superkabe issued an automatic pause command to Smartlead's API, halting sends from that specific mailbox before the domain could be damaged. The agency's operators received Slack notifications about each pause, but no manual intervention was required."
                 ]
             },
@@ -202,7 +223,7 @@ export const productPages: Record<string, ProductPageData> = {
                 paragraphs: [
                     "Superkabe was integrated directly into the company's Smartlead workspace via API. The first action was to establish a complete traffic freeze on all 40 damaged domains. Superkabe then implemented a phased recovery protocol: each domain entered a calculated rest period based on the severity of its bounce damage.",
                     "During the rest period, Superkabe's monitoring engine tracked each domain's passive reputation signals. As ISP algorithms naturally decayed the negative scoring, Superkabe detected the improvement and began reintroducing each domain to active sending at carefully calibrated volumes — starting at 5 sends per day and gradually increasing based on real-time bounce feedback.",
-                    "Throughout the recovery, Superkabe's DPL enforced strict 1% bounce rate limits on the recovering domains, ensuring that no domain could re-damage itself during the fragile rehabilitation phase."
+                    "Throughout the recovery, Superkabe's protection engine enforced strict 1% bounce rate limits on the recovering domains, ensuring that no domain could re-damage itself during the fragile rehabilitation phase."
                 ]
             },
             {
@@ -275,7 +296,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "domain-burnout-prevention-tool",
         title: "Domain Burnout Prevention Tool",
         description: "How Superkabe prevents domain burnout through real-time bounce interception, predictive fatigue analysis, and autonomous mailbox governance.",
-        intro: "is the definitive domain burnout prevention tool for B2B outbound teams. We prevent burnout by intercepting the exact negative signals — hard bounces, spam complaints, and elevated deferral rates — that cause ISPs to permanently damage your domain's sender reputation. Our Deliverability Protection Layer acts before the damage occurs, not after.",
+        intro: "is the definitive domain burnout prevention tool for B2B outbound teams. We prevent burnout by intercepting the exact negative signals — hard bounces, spam complaints, and elevated deferral rates — that cause ISPs to permanently damage your domain's sender reputation. Our deliverability protection engine acts before the damage occurs, not after.",
         sections: [
             {
                 heading: "What Is Domain Burnout and Why Does It Destroy Revenue?",
@@ -306,8 +327,8 @@ export const productPages: Record<string, ProductPageData> = {
     "email-deliverability-protection": {
         slug: "email-deliverability-protection",
         title: "Email Deliverability Protection",
-        description: "How Superkabe's Deliverability Protection Layer shields email deliverability through real-time SMTP interception and campaign governance.",
-        intro: "provides the foundational Deliverability Protection Layer (DPL) for modern outbound email operations. Unlike passive analytics dashboards that report on past failures, Superkabe actively intercepts the bounce events, spam complaints, and behavioral anomalies that destroy deliverability — and autonomously takes corrective action in real time.",
+        description: "How Superkabe's protection engine shields email deliverability through real-time SMTP interception and campaign governance.",
+        intro: "provides the foundational active deliverability protection for modern outbound email operations. Unlike passive analytics dashboards that report on past failures, Superkabe actively intercepts the bounce events, spam complaints, and behavioral anomalies that destroy deliverability — and autonomously takes corrective action in real time.",
         sections: [
             {
                 heading: "What Makes Superkabe's Protection Active Instead of Passive?",
@@ -319,14 +340,14 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "What Is the Architecture Behind Superkabe's Real-Time Deliverability Defense?",
                 paragraphs: [
-                    "Superkabe's DPL is architected around a high-frequency event ingestion pipeline. Your sending engine (Smartlead, Instantly, Reply.io) pushes every delivery event — sends, opens, bounces, spam complaints — to Superkabe's webhook endpoint. Our state machine processes each event, updates the real-time behavioral profile of the originating domain, and evaluates whether intervention is required.",
+                    "Superkabe's protection engine is architected around a high-frequency event ingestion pipeline. Your sending engine (Smartlead, Instantly, EmailBison) pushes every delivery event — sends, opens, bounces, spam complaints — to Superkabe's webhook endpoint. Our state machine processes each event, updates the real-time behavioral profile of the originating domain, and evaluates whether intervention is required.",
                     "If intervention is required, Superkabe authenticates with your sending engine's API and issues a campaign pause command targeting the specific mailbox causing the issue. This surgical precision means healthy mailboxes on the same domain continue operating normally, while the problematic mailbox is isolated before it can cause domain-level damage."
                 ]
             },
             {
-                heading: "Why Does Every Outbound Team Need a Deliverability Protection Layer?",
+                heading: "Why does every outbound team need active deliverability protection?",
                 paragraphs: [
-                    "Without a DPL, your outbound infrastructure is unprotected. You are relying on human operators to manually catch problems, which is inherently unreliable at scale. Superkabe replaces hope with mathematics. Every domain has a defined safety floor. Every mailbox is governed by autonomous rules. Your infrastructure becomes self-defending."
+                    "Without active protection, your outbound infrastructure is unprotected. You are relying on human operators to manually catch problems, which is inherently unreliable at scale. Superkabe replaces hope with mathematics. Every domain has a defined safety floor. Every mailbox is governed by autonomous rules. Your infrastructure becomes self-defending."
                 ]
             }
         ],
@@ -373,7 +394,7 @@ export const productPages: Record<string, ProductPageData> = {
                 heading: "What Does Comprehensive Email Infrastructure Protection Mean?",
                 paragraphs: [
                     "Email infrastructure protection is not a single feature — it is an architectural philosophy. It means every domain in your fleet is continuously monitored. Every mailbox has defined safety thresholds. Every bounce event is evaluated in real time. Every intervention is executed autonomously. There are no gaps, no blind spots, and no reliance on human vigilance.",
-                    "Superkabe implements this philosophy through its Deliverability Protection Layer, which operates as active middleware between your data sources and your sending engine. Every event that flows through your outbound pipeline is observed, analyzed, and governed by Superkabe's mathematical safety rules."
+                    "Superkabe implements this philosophy through its deliverability protection engine, which operates as active middleware between your data sources and your sending engine. Every event that flows through your outbound pipeline is observed, analyzed, and governed by Superkabe's mathematical safety rules."
                 ]
             },
             {
@@ -398,8 +419,10 @@ export const productPages: Record<string, ProductPageData> = {
     "emailbison-infrastructure-protection": {
         slug: "emailbison-infrastructure-protection",
         title: "EmailBison Infrastructure Protection",
-        description: "How Superkabe protects EmailBison sending environments through real-time bounce interception and autonomous mailbox governance.",
-        intro: "provides dedicated infrastructure protection for EmailBison operators. By monitoring the bounce telemetry and behavioral signals generated by EmailBison-connected mailboxes, Superkabe ensures that distributed sending setups maintain healthy sender reputation without manual oversight.",
+        description: "How Superkabe protects EmailBison sending environments through real-time bounce interception, autonomous mailbox governance, and 5-phase auto-healing.",
+        tldr: "Superkabe wraps EmailBison with real-time bounce interception and autonomous mailbox governance that EmailBison's native tooling does not enforce. Every SMTP 5xx bounce triggers sub-second evaluation; compromised mailboxes are paused via EmailBison's API before they can cascade across the fleet. Existing EmailBison campaigns stay untouched — Superkabe adds the governance layer on top.",
+        dateModified: "2026-04-24",
+        intro: "provides dedicated infrastructure protection for EmailBison operators. By monitoring bounce telemetry and behavioral signals generated by EmailBison-connected mailboxes, Superkabe ensures that distributed sending setups maintain healthy sender reputation without manual oversight. Teams that also want a native sequencer can run Superkabe's AI sequences alongside EmailBison — both sides protected by the same layer.",
         sections: [
             {
                 heading: "How Does Superkabe Protect Distributed EmailBison Environments?",
@@ -421,6 +444,24 @@ export const productPages: Record<string, ProductPageData> = {
                     "For teams using EmailBison alongside Smartlead or Instantly, Superkabe provides a unified governance layer. All sending platforms are monitored through a single dashboard, governed by a single set of safety rules, and protected by a single autonomous decision engine. This eliminates the fragmentation that typically occurs when teams use multiple sending tools."
                 ]
             }
+        ],
+        faq: [
+            {
+                q: "Does Superkabe replace EmailBison's sending engine?",
+                a: "No. EmailBison continues to send. Superkabe observes every send and intervenes when thresholds are breached — pausing mailboxes via EmailBison's API and redistributing volume to healthy senders.",
+            },
+            {
+                q: "Why not rely on EmailBison's built-in monitoring?",
+                a: "EmailBison reports bounce data but does not enforce fleet-wide mathematical thresholds or auto-pause compromised mailboxes in real time. Superkabe adds those guarantees on top.",
+            },
+            {
+                q: "Can I use Superkabe's AI sequencer on top of EmailBison?",
+                a: "Yes. You can run Superkabe's native AI sequences through Google Workspace, Microsoft 365, or custom SMTP mailboxes in parallel with EmailBison campaigns — both protected by the same layer.",
+            },
+        ],
+        relatedBlog: [
+            { slug: "cold-email-infrastructure-protection-for-agencies", title: "Infrastructure Protection for Agencies", description: "How agencies with multi-platform setups keep fleets safe" },
+            { slug: "top-cold-email-infrastructure-tools", title: "Top Cold Email Infrastructure Tools", description: "Compared across sending platforms and governance layers" }
         ]
     },
     "how-to-prevent-domain-burnout": {
@@ -485,7 +526,9 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "instantly-infrastructure-protection",
         title: "Instantly Infrastructure Protection",
         description: "How Superkabe provides dedicated infrastructure protection for Instantly.ai operators through real-time webhook interception and autonomous campaign pausing.",
-        intro: "provides dedicated infrastructure protection designed specifically for Instantly.ai operators. By tapping into Instantly's webhook events and campaign APIs, Superkabe's DPL monitors every outbound transmission, intercepts bounce signals in real time, and autonomously pauses compromised mailboxes before they can damage your sending domains.",
+        tldr: "Superkabe integrates with Instantly via API + webhook to intercept every bounce, delivery, and complaint event in real time. Mailboxes approaching the configured bounce threshold are auto-paused through Instantly's API before domain reputation is damaged. Existing Instantly sequences and sub-accounts continue to run — Superkabe layers governance and 5-phase healing on top without replacing the sending engine.",
+        dateModified: "2026-04-24",
+        intro: "provides dedicated infrastructure protection designed specifically for Instantly.ai operators. By tapping into Instantly's webhook events and campaign APIs, Superkabe's protection engine monitors every outbound transmission, intercepts bounce signals in real time, and autonomously pauses compromised mailboxes before they can damage your sending domains. Teams that want a native sequencer can additionally run Superkabe's AI sequences alongside Instantly campaigns — both protected by the same governance layer.",
         sections: [
             {
                 heading: "How Does Superkabe Integrate with Instantly.ai?",
@@ -507,18 +550,40 @@ export const productPages: Record<string, ProductPageData> = {
                     "Instantly operators managing large mailbox fleets often struggle with deliverability at scale. Superkabe removes this constraint by providing the autonomous governance layer that makes scaling safe. Whether you have 10 mailboxes or 1,000, every single one is protected by the same mathematical safety rules, enforced automatically."
                 ]
             }
+        ],
+        faq: [
+            {
+                q: "Will Superkabe send duplicate emails if I connect Instantly?",
+                a: "No. Superkabe observes Instantly's sends and intervenes; it does not re-send through Instantly. Your Instantly sequences remain the source of truth.",
+            },
+            {
+                q: "Does this work with multi-workspace Instantly setups?",
+                a: "Yes. Each Instantly sub-account is registered in Superkabe independently with its own mailbox fleet and governance thresholds.",
+            },
+            {
+                q: "What happens to queued leads when a mailbox is paused?",
+                a: "They are redistributed across healthy mailboxes in the same campaign or held in Superkabe's routing queue until a qualified mailbox becomes available. No leads are lost.",
+            },
+            {
+                q: "Can I run Superkabe's AI sequencer in parallel?",
+                a: "Yes. Superkabe can run native AI sequences through Google Workspace / Microsoft 365 / custom SMTP mailboxes while still protecting your Instantly infrastructure from the same control plane.",
+            },
+        ],
+        relatedBlog: [
+            { slug: "why-cold-emails-go-to-spam", title: "Why Cold Emails Go to Spam", description: "The infrastructure and content patterns that cause inbox failure" },
+            { slug: "protect-sender-reputation-scaling-outreach", title: "Protect Sender Reputation at Scale", description: "How large fleets stay healthy while volume grows" }
         ]
     },
     "multi-platform-outbound-protection": {
         slug: "multi-platform-outbound-protection",
         title: "Multi-Platform Outbound Protection",
-        description: "How Superkabe provides unified deliverability protection across Smartlead, Instantly, Reply.io, and EmailBison from a single governance layer.",
-        intro: "provides unified multi-platform outbound protection for enterprise teams operating across Smartlead, Instantly, Reply.io, and EmailBison. Instead of managing deliverability separately on each platform, Superkabe consolidates all sending telemetry into a single autonomous governance engine that enforces consistent safety rules across your entire ecosystem.",
+        description: "How Superkabe provides unified deliverability protection across Smartlead, Instantly, and EmailBison from a single governance layer.",
+        intro: "provides unified multi-platform outbound protection for enterprise teams operating across Smartlead, Instantly, and EmailBison. Instead of managing deliverability separately on each platform, Superkabe consolidates all sending telemetry into a single autonomous governance engine that enforces consistent safety rules across your entire ecosystem.",
         sections: [
             {
                 heading: "What Is the Multi-Platform Deliverability Challenge?",
                 paragraphs: [
-                    "Enterprise outbound teams rarely use a single sending platform. Different campaigns, different client accounts, and different use cases often require operating across Smartlead, Instantly, Reply.io, and potentially custom SMTP solutions simultaneously. Each platform has its own analytics, its own bounce reporting methodology, and its own management interface.",
+                    "Enterprise outbound teams rarely use a single sending platform. Different campaigns, different client accounts, and different use cases often require operating across Smartlead, Instantly, EmailBison, and potentially custom SMTP solutions simultaneously. Each platform has its own analytics, its own bounce reporting methodology, and its own management interface.",
                     "This fragmentation creates dangerous blind spots. A domain might be healthy on Smartlead but experiencing elevated bounces on Instantly, and the team managing Smartlead would have no visibility into the cross-platform damage. Without unified monitoring, the domain's aggregate reputation suffers while each platform shows only its partial picture. Superkabe eliminates this fragmentation by consolidating all platforms into a single governance layer."
                 ]
             },
@@ -532,7 +597,7 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "How Does Superkabe Enforce Consistent Safety Rules Across All Platforms?",
                 paragraphs: [
-                    "With Superkabe, your bounce rate threshold is 2% whether the email was sent through Smartlead, Instantly, or Reply.io. Your spam complaint threshold is consistent. Your intervention speed is identical. This consistency is what makes enterprise-scale, multi-platform outbound operationally viable. One platform, one set of rules, total infrastructure protection."
+                    "With Superkabe, your bounce-rate pause threshold is 3% (with a 2% warning level and a 5-bounce safety net for low-volume mailboxes) whether the email was sent through Smartlead, Instantly, or EmailBison. Your spam complaint threshold is consistent. Your intervention speed is identical. This consistency is what makes enterprise-scale, multi-platform outbound operationally viable. One platform, one set of rules, total infrastructure protection."
                 ]
             }
         ]
@@ -595,30 +660,49 @@ export const productPages: Record<string, ProductPageData> = {
     },
     "reply-io-deliverability-protection": {
         slug: "reply-io-deliverability-protection",
-        title: "Reply.io Deliverability Protection",
-        description: "How Superkabe provides dedicated deliverability protection for Reply.io operators through real-time event interception and autonomous campaign governance.",
-        intro: "extends enterprise-grade deliverability protection directly to Reply.io environments. By connecting to Reply.io's event streaming architecture, Superkabe monitors multichannel sequences for bounce anomalies and spam complaints, autonomously pausing vulnerable mailboxes before they can damage your sending domains.",
+        title: "Reply.io Deliverability Protection (Roadmap)",
+        description: "Reply.io support is on the Superkabe roadmap. This page describes the planned integration; the adapter is not yet shipped.",
+        tldr: "Reply.io is on the Superkabe roadmap, targeted for Q2 2026. The Reply.io adapter is not currently available. Today, Superkabe protects deployments running on Smartlead, Instantly, and EmailBison, and runs native AI sequences through Google Workspace, Microsoft 365, or custom SMTP. If you use Reply.io and want to be notified when the adapter ships, contact us.",
+        dateModified: "2026-04-25",
+        intro: "is planning native Reply.io support. Until the adapter ships, Reply.io is not a connected platform inside Superkabe. The shipped Protection-mode integrations are Smartlead, Instantly, and EmailBison; Reply.io users can still run Superkabe's native AI cold email sequences through Google Workspace, Microsoft 365, or custom SMTP mailboxes today, while Reply.io handles other channels in parallel.",
         sections: [
             {
-                heading: "How Does Superkabe Protect Reply.io Multichannel Sequences?",
+                heading: "What's the current status of Reply.io support?",
                 paragraphs: [
-                    "Reply.io's multichannel sequencing capabilities make it a powerful outbound tool, but they also create complex deliverability challenges. A single sequence might span email, LinkedIn, and phone touches, with the email component generating bounce events that need to be monitored and acted upon in real time.",
-                    "Superkabe integrates with Reply.io to capture every email-related event in your sequences. Hard bounces, spam complaints, and delivery failures are processed through Superkabe's autonomous protection engine, which evaluates each event against the originating domain's safety thresholds."
+                    "Reply.io is on the Superkabe roadmap, targeted for Q2 2026. The Reply.io adapter is not currently available, which means Superkabe cannot ingest webhook events from or issue API pause commands to Reply.io mailboxes today.",
+                    "When the adapter ships, Reply.io users will get the same shipped Protection-mode features that Smartlead, Instantly, and EmailBison customers already have: real-time bounce ingestion, threshold-based auto-pause, the 5-phase healing pipeline, and ESP-aware monitoring."
                 ]
             },
             {
-                heading: "How Does Superkabe Autonomously Intervene for Reply.io?",
+                heading: "What can a Reply.io operator do with Superkabe today?",
                 paragraphs: [
-                    "When Superkabe detects that a Reply.io mailbox is approaching dangerous bounce levels, it issues an API command to pause the affected account. The multichannel sequence can continue via non-email channels while the email component is protected from further damage.",
-                    "This targeted intervention preserves the multichannel experience for your prospects while protecting your email infrastructure. The Reply.io sequence adapts to the pause, and email sending resumes automatically once the domain has recovered."
+                    "Reply.io users can adopt Superkabe's native sending sequencer immediately. Connect Google Workspace, Microsoft 365, or custom SMTP mailboxes via OAuth and run multi-step AI-generated sequences with scheduling, A/B variants, tracking, and a unified inbox — all under Superkabe's protection layer. This works in parallel with Reply.io: the prospect experience and multichannel touches stay where they are, and the email cohort moves to mailboxes Superkabe can govern."
                 ]
             },
             {
-                heading: "How Does Superkabe Help Scale Reply.io Operations Safely?",
+                heading: "How will Reply.io protection work once shipped?",
                 paragraphs: [
-                    "Enterprise SDR teams scaling Reply.io operations across dozens of mailboxes need autonomous deliverability governance to prevent infrastructure damage at scale. Superkabe provides exactly that: every Reply.io mailbox is individually protected, individually monitored, and individually governed by the same mathematical safety rules."
+                    "When the adapter ships, Superkabe will connect to Reply.io's event stream over webhooks, intercept every email-related bounce / spam complaint / delivery failure, and evaluate each event against the originating domain's threshold (3% bounce rate at ≥60 sends with a 5-bounce safety net). Mailboxes that breach the threshold will be paused via Reply.io's API while non-email channels in the same sequence continue, then enter Superkabe's 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy)."
                 ]
             }
+        ],
+        faq: [
+            {
+                q: "Can I connect a Reply.io account to Superkabe today?",
+                a: "Not yet. Reply.io is on the roadmap (target Q2 2026). The shipped Protection-mode platforms are Smartlead, Instantly, and EmailBison.",
+            },
+            {
+                q: "What should I do in the meantime if I run Reply.io?",
+                a: "Two options. (1) Move your email cohort to Superkabe's native sequencer through Google Workspace / Microsoft 365 / SMTP mailboxes and run those alongside Reply.io's other channels. (2) Wait — and contact us so we can notify you when the Reply.io adapter ships.",
+            },
+            {
+                q: "Will the planned Reply.io integration cover multichannel sequences?",
+                a: "Yes. Once shipped, only the email component will be paused when bounce thresholds are breached. LinkedIn and phone touches in the same Reply.io sequence will continue uninterrupted.",
+            },
+        ],
+        relatedBlog: [
+            { slug: "cold-email-deliverability-troubleshooting", title: "Cold Email Deliverability Troubleshooting", description: "Diagnose sequences that aren't landing across any platform" },
+            { slug: "how-spam-filters-work", title: "How Spam Filters Work", description: "Why multichannel sequences need infrastructure governance, not just content" }
         ]
     },
     "sender-reputation-monitoring": {
@@ -669,7 +753,7 @@ export const productPages: Record<string, ProductPageData> = {
             {
                 heading: "How Does Superkabe's API-Driven Autonomous Governance Work?",
                 paragraphs: [
-                    "Superkabe operates through direct API integration with Smartlead, Instantly, Reply.io, and EmailBison. This API-level connection gives Superkabe the ability to not just see what is happening, but to physically intervene. When a mailbox's bounce rate approaches the safety threshold, Superkabe authenticates with the platform API and issues a campaign pause command.",
+                    "Superkabe operates through direct API integration with Smartlead, Instantly, and EmailBison. This API-level connection gives Superkabe the ability to not just see what is happening, but to physically intervene. When a mailbox's bounce rate approaches the safety threshold, Superkabe authenticates with the platform API and issues a campaign pause command.",
                     "This API-driven approach ensures that interventions are precise, immediate, and reliable. There are no emails to read, no alerts to act on, no manual steps to perform. The tool operates autonomously, 24/7."
                 ]
             },
@@ -748,28 +832,28 @@ export const productPages: Record<string, ProductPageData> = {
     "what-is-email-deliverability-protection": {
         slug: "what-is-email-deliverability-protection",
         title: "What is Email Deliverability Protection?",
-        description: "What email deliverability protection means and how Superkabe's Deliverability Protection Layer differs from traditional monitoring tools.",
-        intro: "defines email deliverability protection as an active, interceptive middleware layer — a Deliverability Protection Layer (DPL) — that structurally prevents inbox providers from penalizing your sending domains. Unlike monitoring tools that report past failures, a DPL intervenes in real time to ensure failures never accumulate to damaging levels.",
+        description: "What email deliverability protection means and how Superkabe's protection engine differs from traditional monitoring tools.",
+        intro: "defines email deliverability protection as an active, interceptive middleware layer that structurally prevents inbox providers from penalizing your sending domains. Unlike monitoring tools that report past failures, active protection intervenes in real time to ensure failures never accumulate to damaging levels.",
         sections: [
             {
-                heading: "What Is a Deliverability Protection Layer (DPL)?",
+                heading: "What is active deliverability protection?",
                 paragraphs: [
                     "Email deliverability protection is not an analytics dashboard. It is not a lead validation service. It is not a warmup tool. Email deliverability protection, as defined and pioneered by Superkabe, is an active middleware layer that sits between your data sources and your sending engine, monitoring every outbound event and autonomously intervening when domain health is at risk.",
-                    "A Deliverability Protection Layer operates at the infrastructure level, not the campaign level. It does not optimize subject lines or personalization. It protects the foundational assets — your domains and mailboxes — that make outbound email possible in the first place."
+                    "Active deliverability protection operates at the infrastructure level, not the campaign level. It does not optimize subject lines or personalization. It protects the foundational assets — your domains and mailboxes — that make outbound email possible in the first place."
                 ]
             },
             {
-                heading: "How Does a DPL Differ From Traditional Deliverability Tools?",
+                heading: "How does active protection differ from traditional deliverability tools?",
                 paragraphs: [
                     "Traditional deliverability tools are passive. They collect data, generate visualizations, and send reports. Google Postmaster shows you that your domain reputation dropped to 'Low'. Smartlead's analytics show you yesterday's bounce rate was 4.7%. These tools inform you of damage after it has occurred.",
-                    "A DPL is active. It does not wait for damage to occur and then report it. It prevents the damage in real time. When Superkabe's DPL detects a bounce rate approaching the safety threshold, it physically pauses the offending mailbox through API commands to your sending engine. The domain is protected before the bounce rate reaches the critical point.",
+                    "Active protection acts. It does not wait for damage to occur and then report it. It prevents the damage in real time. When Superkabe's protection engine detects a bounce rate approaching the safety threshold, it physically pauses the offending mailbox through API commands to your sending engine. The domain is protected before the bounce rate reaches the critical point.",
                     "This is the fundamental paradigm shift: from reactive reporting to proactive protection. From watching your infrastructure fail to ensuring it cannot."
                 ]
             },
             {
-                heading: "Why Does Every Outbound Team Need a DPL?",
+                heading: "Why does every outbound team need active deliverability protection?",
                 paragraphs: [
-                    "If you send cold email at scale, you need a Deliverability Protection Layer. Without one, your infrastructure is unprotected against the inevitable: bad lead data, unexpected bounce spikes, and the silent accumulation of negative signals that eventually burn your domains. Superkabe provides the DPL that makes scalable outbound operationally safe and financially predictable."
+                    "If you send cold email at scale, you need active deliverability protection. Without it, your infrastructure is unprotected against the inevitable: bad lead data, unexpected bounce spikes, and the silent accumulation of negative signals that eventually burn your domains. Superkabe provides the protection engine that makes scalable outbound operationally safe and financially predictable."
                 ]
             }
         ],
@@ -903,7 +987,7 @@ export const productPages: Record<string, ProductPageData> = {
                 heading: "Works Across All Ingestion Paths",
                 paragraphs: [
                     "ESP-aware scoring runs on every lead entry path. CSV uploads through the Lead Control Plane, Clay webhook ingestion, and direct API calls all classify the recipient ESP and score mailboxes before pushing.",
-                    "For EmailBison and Reply.io which lack native ESP matching, Superkabe is the only layer providing any form of ESP-aware routing. The assigned_email_accounts parameter is Smartlead-specific today, but the scoring data is available for all platforms."
+                    "For EmailBison, which lacks native ESP matching, Superkabe is the only layer providing any form of ESP-aware routing. The assigned_email_accounts parameter is Smartlead-specific today, but the scoring data is available for all connected platforms."
                 ]
             }
         ],
@@ -911,6 +995,293 @@ export const productPages: Record<string, ProductPageData> = {
             { slug: "domain-reputation-vs-ip-reputation", title: "Domain Reputation vs IP Reputation", description: "What matters more for cold email deliverability in 2026" },
             { slug: "reduce-cold-email-bounce-rate", title: "How to Reduce Cold Email Bounce Rate", description: "A practical guide to getting bounce rates below 2%" },
             { slug: "best-domain-reputation-monitoring-tools", title: "Best Domain Reputation Monitoring Tools", description: "Ranked comparison for cold email teams" }
+        ]
+    },
+    "ai-cold-email-sequences": {
+        slug: "ai-cold-email-sequences",
+        title: "AI Cold Email Sequences That Sound Like You",
+        description: "How Superkabe generates multi-step AI cold email sequences against your ICP, variant-tests every step, and surfaces the highest-performing copy — without the generic AI tone.",
+        tldr: "Superkabe drafts complete 4–6 step cold email sequences grounded in your ICP, offer, and prior winning copy, then A/B tests every subject line and opener so the best-performing variant wins. Unlike generic AI copy tools, each step is aware of the others — and every send routes through the same deliverability protection that governs every other campaign on the platform.",
+        datePublished: "2026-04-24",
+        dateModified: "2026-04-24",
+        intro: "drafts multi-step cold email sequences in seconds and continuously variant-tests every step so the highest-performing copy rises to the top. Instead of producing the bland, template-flavored output most AI email tools ship with, Superkabe grounds every subject line and body in your ICP, your offer, and the voice you've already established across prior campaigns.",
+        sections: [
+            {
+                heading: "Why Do Most AI-Generated Cold Emails Fail?",
+                paragraphs: [
+                    "Every outbound team has tried ChatGPT prompts, Jasper templates, or a generic \"AI copywriter\" feature inside a sequencer. The output is recognizable within two sentences: vague value propositions, over-polished transitions, and openers that prospects have now seen hundreds of times. Recipients have learned to filter this voice out, and ISPs have learned to downrank domains that send it at volume.",
+                    "The underlying problem is context. A one-shot prompt doesn't know your buyer, your offer's differentiator, or the specific language your best-performing reps actually use. It fills the gap with the internet's average. Superkabe solves this by conditioning every generation on your campaign's ICP definition, your prior sends, and the reply patterns those sends produced — so the output sounds like your team, not like AI."
+                ]
+            },
+            {
+                heading: "How Does Superkabe Generate Multi-Step Sequences?",
+                paragraphs: [
+                    "When you start a new campaign, Superkabe asks for three anchors: your target persona, your offer, and an optional voice sample (a winning email, a LinkedIn post, or prior campaign copy). From those anchors, it drafts a complete 4–6 step sequence — subject lines, bodies, follow-ups, and break-up notes — in a single pass.",
+                    "Each step is generated with awareness of the others. The second email isn't a standalone message; it references the first without repeating its hook. The fourth email acknowledges prior silence without sounding bitter. This cross-step awareness is what makes a Superkabe sequence read like a thought-out cadence rather than six unrelated emails stapled together.",
+                    "Every draft is editable inline. You can lock phrasing you like, regenerate a single step without touching the rest, or swap out a CTA across the whole sequence with one change."
+                ]
+            },
+            {
+                heading: "How Does Variant Testing Work?",
+                paragraphs: [
+                    "For each step in the sequence, Superkabe can produce multiple variants of the subject line and the opener. When the campaign runs, leads are randomly assigned to a variant, and reply, open, and click rates are tracked per variant. Once statistically meaningful signal accumulates, Superkabe automatically surfaces the winning variant and routes future sends through it.",
+                    "The variant engine is step-scoped, not campaign-scoped. A winning opener on email one can pair with a completely different structure on email three — the system finds the best combination across the entire cadence rather than optimizing a single message in isolation."
+                ]
+            },
+            {
+                heading: "How Does This Tie Back to Deliverability?",
+                paragraphs: [
+                    "AI-sounding copy doesn't just hurt reply rates — it hurts deliverability. Spam filters increasingly score for template-like patterns, and recipients who mark AI-obvious emails as spam feed negative signals straight back to your sending domains. By producing copy that reads like a human and by rotating variants to prevent pattern fingerprinting, Superkabe's sequence engine is also a reputation defense layer.",
+                    "Sequences generated inside Superkabe send through the same protection layer that governs every other campaign on the platform — bounce interception, mailbox health gates, and autonomous pausing all apply. You get the writing speed of AI without the deliverability penalty that usually comes with it."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "why-cold-emails-go-to-spam", title: "Why Cold Emails Go to Spam", description: "The content and infrastructure patterns that trigger spam classification" },
+            { slug: "cold-email-deliverability-troubleshooting", title: "Cold Email Deliverability Troubleshooting", description: "A step-by-step diagnostic for sequences that aren't landing" }
+        ],
+        comparisonTable: {
+            caption: "AI sequence generation: Superkabe vs generic AI copy tools",
+            headers: ["Capability", "Generic AI tools", "Superkabe"],
+            rows: [
+                ["Context grounding", "Single prompt, no persistent memory", "ICP + offer + prior winning copy"],
+                ["Cross-step awareness", "Each email generated independently", "Sequence generated as a cadence"],
+                ["Variant testing", "Manual A/B setup", "Built-in per-step variant engine"],
+                ["Deliverability tie-in", "None — separate sender", "Sends through protection layer"],
+                ["Voice preservation", "Trends toward generic AI tone", "Conditioned on your voice sample"],
+            ],
+        },
+        faq: [
+            {
+                q: "Does Superkabe's AI replace my copywriter?",
+                a: "No. It replaces the blank page. You still review, edit, and lock phrasing — but the draft arrives in seconds instead of hours, and it starts from your ICP, offer, and prior winning copy rather than the internet's average.",
+            },
+            {
+                q: "How does variant testing decide a winner?",
+                a: "Variants are randomly assigned to leads at send time. Once statistically meaningful reply, open, and click signal accumulates per step, Superkabe routes future sends through the winning variant. The decision is step-scoped — step one and step three can have independent winners.",
+            },
+            {
+                q: "Will AI-generated emails hurt my deliverability?",
+                a: "Not when they read like a human and rotate across variants. Superkabe generates copy that breaks template-pattern fingerprinting and sends every message through the same bounce-interception and mailbox-health-gate layer that protects all campaigns on the platform.",
+            },
+            {
+                q: "Can I edit a single step without regenerating the rest?",
+                a: "Yes. Each step is editable inline. You can lock phrasing you like, regenerate a single step, or swap out a CTA across the entire sequence with one change.",
+            },
+        ]
+    },
+    "esp-aware-sending-health-gate": {
+        slug: "esp-aware-sending-health-gate",
+        title: "ESP-Aware Routing and Sending Health Gate",
+        description: "How Superkabe scores every lead GREEN/YELLOW/RED and routes each send to the mailbox with the best historical track record against the recipient's ESP.",
+        tldr: "Superkabe classifies each recipient's ESP at ingest and routes the send through the mailbox with the best historical performance against that ESP. Every send passes a pre-flight health gate — mailboxes in warning, paused, quarantine, restricted-send, or warm-recovery state are removed from the routing pool. Teams typically see 15–25% higher inbox placement on cross-ESP sends without adding mailboxes.",
+        datePublished: "2026-04-24",
+        dateModified: "2026-04-24",
+        intro: "scores every lead GREEN, YELLOW, or RED and routes the send to the mailbox with the best historical track record against that recipient's ESP. Gmail-to-Gmail traffic flows through your best-performing Gmail senders, Outlook-to-Outlook through your best Outlook senders, and risky leads are held at the health gate until a qualified mailbox is available.",
+        sections: [
+            {
+                heading: "Why Does ESP-to-ESP Matching Matter?",
+                paragraphs: [
+                    "Gmail and Microsoft filter inbound email differently, and they treat cross-ecosystem sends with extra suspicion. A Gmail-hosted sending domain with a perfect reputation inside Google's ecosystem often underperforms when sending to Microsoft 365 recipients — and vice versa. The same mailbox can land 80% in primary inbox for Gmail recipients and 30% for Outlook recipients on the same day.",
+                    "Most sequencers ignore this and push sends round-robin across all connected mailboxes, which means every campaign is leaking deliverability on the cross-ESP half of its list. Superkabe instead classifies each lead's ESP at ingest time and routes the send through the mailbox with the strongest recent performance against that specific ESP."
+                ]
+            },
+            {
+                heading: "How Does the Health Gate Decide What to Send?",
+                paragraphs: [
+                    "Every mailbox in your fleet carries a live health score derived from bounce rate, deferral rate, reply rate, and recent complaint signals. The health gate runs as a pre-send check: before any message is handed to the SMTP layer, the gate verifies that the assigned mailbox is currently GREEN for the target ESP.",
+                    "If the best-matched mailbox is YELLOW, the send is queued briefly and retried against the next-best candidate. If no mailbox is currently GREEN for that recipient's ESP, the lead is held in the routing queue rather than forcing a send through a compromised sender. This is the difference between \"send now and hope\" and \"send only when the match is safe.\"",
+                    "The health gate integrates with Superkabe's 5-phase recovery state machine. A mailbox in warning, paused, quarantine, restricted-send, or warm-recovery state is automatically removed from the routing pool for the affected ESP until the recovery protocol promotes it back to healthy."
+                ]
+            },
+            {
+                heading: "What Does GREEN / YELLOW / RED Scoring Actually Measure?",
+                paragraphs: [
+                    "GREEN means the mailbox has a bounce rate under the warning threshold, a reply rate within normal range, and no recent ISP-side negative signals against the recipient's ESP. YELLOW means one or more metrics are drifting — not enough to pause the mailbox, but enough to deprioritize it in the routing queue. RED means the mailbox has breached a safety threshold and has been automatically removed from active sending.",
+                    "Scoring is recomputed continuously as new send telemetry arrives. A mailbox that handled 500 Gmail recipients cleanly this morning and then produced 3 bounces to Outlook recipients this afternoon will be GREEN for Gmail and YELLOW for Outlook at the same time. Routing decisions use the ESP-specific score, not a global average."
+                ]
+            },
+            {
+                heading: "How Does This Change the Economics of Outbound?",
+                paragraphs: [
+                    "Teams that switch to ESP-aware routing typically see 15–25% higher inbox placement on cross-ESP sends without adding a single mailbox. The volume you already have starts performing closer to its theoretical ceiling because the right sender is chosen for every recipient. Combined with the health gate holding risky sends, your overall bounce rate drops while your inbox placement rises — the two metrics that most directly govern how much pipeline your domains produce."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "domain-reputation-vs-ip-reputation", title: "Domain Reputation vs IP Reputation", description: "What ISPs actually score when deciding inbox placement" },
+            { slug: "how-spam-filters-work", title: "How Spam Filters Work", description: "The four layers of spam filtering and how routing decisions affect each" }
+        ],
+        comparisonTable: {
+            caption: "Health gate states and routing behavior",
+            headers: ["Score", "Criteria", "Routing behavior"],
+            rows: [
+                ["GREEN", "Bounce rate under warning threshold, normal reply rate, no recent negative signals against this ESP", "Eligible for immediate send"],
+                ["YELLOW", "One or more metrics drifting but below pause threshold", "Deprioritized; considered only if no GREEN mailbox available"],
+                ["RED", "Breached safety threshold — automatically removed from active sending", "Ineligible; queued lead is held or rerouted"],
+            ],
+        },
+        faq: [
+            {
+                q: "Why does Gmail-to-Gmail perform better than Gmail-to-Outlook?",
+                a: "Google and Microsoft run different spam filters and treat cross-ecosystem sends with extra suspicion. A Gmail-hosted domain with a clean history inside Google's ecosystem often lands 80% in Gmail primary inbox and only 30% in Microsoft inbox on the same day. ESP-aware routing sends each lead through the best-performing mailbox for that specific ESP.",
+            },
+            {
+                q: "How is the health score calculated?",
+                a: "The score is derived from bounce rate, deferral rate, reply rate, and recent complaint signals — computed continuously per mailbox, per ESP. A mailbox can be GREEN for Gmail and YELLOW for Outlook simultaneously. Routing decisions use the ESP-specific score, not a global average.",
+            },
+            {
+                q: "What happens if no mailbox is GREEN for a recipient's ESP?",
+                a: "The lead is held in the routing queue rather than forced through a compromised sender. This prevents risky sends that would further damage mailbox reputation. As soon as a qualified mailbox becomes available, the lead is released.",
+            },
+            {
+                q: "Is this compatible with mailbox rotation and auto-healing?",
+                a: "Yes. The health gate integrates directly with Superkabe's 5-phase recovery state machine. Mailboxes in warning, paused, quarantine, restricted-send, or warm-recovery state are automatically removed from the routing pool until the recovery protocol promotes them back to healthy.",
+            },
+        ]
+    },
+    "unlimited-multi-mailbox-sending": {
+        slug: "unlimited-multi-mailbox-sending",
+        title: "Unlimited Multi-Mailbox Cold Email Sending",
+        description: "How Superkabe lets outbound teams connect Google Workspace, Microsoft 365, and custom SMTP providers with no seat limits — scaling mailboxes without scaling per-sender risk.",
+        tldr: "Superkabe connects unlimited Google Workspace, Microsoft 365, and custom SMTP mailboxes (Zapmail, Scaledmail, MissionInbox, self-hosted) with no per-seat fees. Each mailbox carries independent send limits, warmup state, and pause authority, so the 200th mailbox adds capacity without adding fleet-wide risk. One compromised sender is isolated and auto-paused before it can cascade.",
+        datePublished: "2026-04-24",
+        dateModified: "2026-04-24",
+        intro: "lets you connect Google Workspace, Microsoft 365, and any custom SMTP infrastructure provider — Zapmail, Scaledmail, MissionInbox, or self-hosted — with no seat limits. Scale to hundreds of mailboxes across dozens of domains without increasing the risk profile of any single sender, because Superkabe governs sending volume, warmup progress, and health state per mailbox from one control plane.",
+        sections: [
+            {
+                heading: "Why Do Seat-Based Sequencers Break at Scale?",
+                paragraphs: [
+                    "Most cold email sequencers charge per mailbox seat, which forces outbound teams into a painful tradeoff: either pay escalating platform fees as mailbox count grows, or cram more volume through fewer mailboxes and burn them faster. Agencies running 200+ client mailboxes can easily pay five figures per month in seat fees before sending a single email.",
+                    "Superkabe removes the seat constraint entirely. Connect as many Google Workspace accounts, Microsoft 365 accounts, or custom SMTP mailboxes as your infrastructure supports. The platform scales with your sending fleet, not against it — because the real cost of outbound is domain reputation, not platform seats."
+                ]
+            },
+            {
+                heading: "What Providers Does Superkabe Support?",
+                paragraphs: [
+                    "Superkabe supports three mailbox classes natively. Google Workspace accounts connect via OAuth, with full API-level send and reply tracking. Microsoft 365 accounts connect via MSAL-based OAuth against the Microsoft Graph API, with the same telemetry fidelity. Custom SMTP providers — including Zapmail, Scaledmail, MissionInbox, and any IMAP/SMTP-compatible infrastructure — connect via credentialed connection profiles with send-throttling, DKIM validation, and bounce capture built in.",
+                    "All three classes feed into the same unified sending pipeline. A single campaign can mix Google, Microsoft, and custom SMTP senders in one rotation, and the routing engine chooses the best available mailbox for each lead regardless of provider class."
+                ]
+            },
+            {
+                heading: "How Does Per-Mailbox Governance Prevent Fleet-Wide Damage?",
+                paragraphs: [
+                    "When you connect 100 mailboxes to a traditional sequencer, you are effectively operating 100 independent risk surfaces with no coordinated defense. One bad lead list sent through five mailboxes can simultaneously degrade five domain reputations before anyone logs in to check dashboards.",
+                    "Superkabe enforces mailbox-level governance from the first send. Every mailbox carries independent send limits, warmup state, health score, and pause authority. When one mailbox begins drifting — bounce rate rising, deferral rate spiking, reply rate collapsing — the platform pauses that specific mailbox and redistributes its queued volume across the healthy remainder. The rest of the fleet continues sending uninterrupted, and no single bad send can cascade across your infrastructure.",
+                    "This per-mailbox isolation is what makes unlimited scaling safe. Adding your 200th mailbox does not add 200th-mailbox risk; it adds 200th-mailbox capacity, because the governance layer contains damage at the individual sender level."
+                ]
+            },
+            {
+                heading: "How Is Provisioning Handled for New Mailboxes?",
+                paragraphs: [
+                    "Connecting a new mailbox is a single OAuth flow (Google / Microsoft) or a single credential form (custom SMTP). Superkabe automatically registers the mailbox in the protection layer, initializes its warmup profile, sets starting volume limits based on domain age and prior reputation signals, and enrolls it in the bounce-monitoring pipeline.",
+                    "From the moment a mailbox is connected, it is governed. There is no separate \"add to monitoring\" step and no risk of an orphaned sender operating outside the protection layer."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "domain-warming-methodology", title: "Domain Warming Methodology", description: "Volume ramp schedules for new domains and new mailboxes" },
+            { slug: "how-many-cold-emails-per-day", title: "How Many Cold Emails Per Day", description: "Per-mailbox daily limits that keep reputation intact" }
+        ],
+        comparisonTable: {
+            caption: "Supported mailbox providers and connection methods",
+            headers: ["Provider class", "Connection method", "Telemetry fidelity"],
+            rows: [
+                ["Google Workspace", "OAuth (API-level)", "Full send + reply + bounce + engagement"],
+                ["Microsoft 365", "MSAL OAuth against Microsoft Graph API", "Full send + reply + bounce + engagement"],
+                ["Custom SMTP (Zapmail, Scaledmail, MissionInbox, self-hosted)", "Credentialed connection profile", "Send + DKIM validation + bounce capture"],
+            ],
+        },
+        faq: [
+            {
+                q: "Is there a limit on how many mailboxes I can connect?",
+                a: "No. Superkabe does not charge per seat or cap mailbox count. Agencies running 200+ client mailboxes connect as many as their infrastructure supports. Platform cost scales with sending volume and plan tier, not with mailbox headcount.",
+            },
+            {
+                q: "Can I mix Google, Microsoft, and custom SMTP mailboxes in one campaign?",
+                a: "Yes. A single campaign can rotate across all three provider classes simultaneously. The ESP-aware routing engine picks the best available mailbox for each lead regardless of provider.",
+            },
+            {
+                q: "How are new mailboxes protected from day one?",
+                a: "The moment a mailbox is connected, it is registered in the protection layer: warmup profile initialized, starting volume limits set based on domain age and prior reputation, and enrolled in bounce monitoring. There is no separate 'add to monitoring' step — no sender operates outside governance.",
+            },
+            {
+                q: "What happens when one mailbox out of many starts degrading?",
+                a: "That specific mailbox is paused and its queued volume is redistributed across healthy senders. The rest of the fleet keeps sending uninterrupted. This per-mailbox isolation is what makes unlimited scaling safe — adding the 200th mailbox adds capacity, not risk.",
+            },
+        ]
+    },
+    "cold-email-sending-analytics": {
+        slug: "cold-email-sending-analytics",
+        title: "Cold Email Sending Analytics and Inbox Placement Tracking",
+        description: "How Superkabe tracks sends, opens, clicks, replies, bounces, and inbox placement per campaign and per mailbox — without stitching together a separate BI tool.",
+        tldr: "Superkabe captures every send-funnel metric — sends, opens, clicks, replies, bounces, unsubscribes — per campaign and per mailbox, plus inbox placement indicators and domain health trends. Opens and clicks use HMAC-signed tracking tokens so forged probes can't inflate numbers. The same telemetry drives the automatic routing, pausing, and healing decisions the platform makes — not a passive dashboard.",
+        datePublished: "2026-04-24",
+        dateModified: "2026-04-24",
+        intro: "tracks sends, opens, clicks, replies, and bounces per campaign and per mailbox, and layers inbox placement and domain health trends on top. Every metric an outbound team actually uses to make sending decisions lives in one analytics surface — no data export, no external BI warehouse, no piecing together reports from three different dashboards.",
+        sections: [
+            {
+                heading: "What Do Most Sequencer Dashboards Miss?",
+                paragraphs: [
+                    "Built-in sequencer analytics usually show send and reply counts at the campaign level and stop there. They don't tell you which mailbox produced the replies, which domain's opens are quietly collapsing, or whether last week's placement dip is a content issue or an infrastructure issue. Teams end up exporting raw events into spreadsheets or a BI tool to answer basic operational questions.",
+                    "Superkabe's analytics layer is built for the questions outbound operators actually ask: which senders are pulling their weight, which domains are drifting, which campaigns are generating pipeline, and which are quietly burning reputation. Every metric is queryable per campaign and per mailbox, with domain-level and organization-level rollups."
+                ]
+            },
+            {
+                heading: "What Metrics Are Tracked?",
+                paragraphs: [
+                    "Core send-funnel metrics — sends, opens, clicks, replies, bounces, unsubscribes — are captured for every message and rolled up per campaign and per mailbox. Open and click tracking uses HMAC-signed tracking tokens so forged probes can't inflate your numbers. Replies are ingested via IMAP polling and matched back to the originating campaign lead with sub-minute latency.",
+                    "On top of the funnel, Superkabe tracks inbox placement indicators (primary / promotions / spam signals inferred from engagement patterns), domain health trends (bounce rate history, deferral trend, reputation score drift), and mailbox lifetime counters (cumulative sends, opens, clicks, replies per mailbox across all campaigns). These signals combine to give you an operator-grade picture of where pipeline is coming from and where it is leaking."
+                ]
+            },
+            {
+                heading: "How Are Analytics Scoped?",
+                paragraphs: [
+                    "Every chart supports custom time ranges and can be filtered by campaign, mailbox, domain, or ESP. You can answer questions like \"what was the reply rate for Gmail-to-Outlook sends from Domain A over the last 14 days\" without writing a query or exporting data. The same telemetry powers the routing engine's scoring, so the numbers you see on the analytics page are the numbers the platform is actually making decisions against.",
+                    "Per-mailbox analytics are particularly important for agencies: a mailbox that looks fine at the campaign rollup may be dragging down the average. Mailbox-level drill-downs surface the underperformers so you can warm them down, pause them, or cycle them out before they compromise fleet-wide health."
+                ]
+            },
+            {
+                heading: "How Does This Integrate With the Protection Layer?",
+                paragraphs: [
+                    "The analytics surface is not a read-only dashboard. It is the same data stream that drives automatic pauses, rerouting, and healing across the platform. When you see a domain's bounce rate rising on the chart, Superkabe is already acting on it — adjusting routing, holding risky sends at the health gate, and triggering recovery protocols if thresholds are breached.",
+                    "This tight coupling between reporting and action is why Superkabe's analytics is useful for operating the fleet, not just auditing it. The numbers aren't a post-mortem; they're a live control surface."
+                ]
+            }
+        ],
+        relatedBlog: [
+            { slug: "real-time-email-infrastructure-monitoring", title: "Real-Time Email Infrastructure Monitoring", description: "Why live telemetry matters more than daily reports" },
+            { slug: "email-deliverability-tools-compared", title: "Deliverability Tools Compared", description: "Monitoring, reputation, and protection software compared" }
+        ],
+        comparisonTable: {
+            caption: "Metric coverage: Superkabe analytics vs built-in sequencer dashboards",
+            headers: ["Metric class", "Typical sequencer dashboard", "Superkabe"],
+            rows: [
+                ["Send funnel (sends, opens, clicks, replies, bounces)", "Campaign-level only", "Per campaign + per mailbox + per domain"],
+                ["Inbox placement", "Not tracked", "Inferred from engagement + placement signals"],
+                ["Domain health trends", "Not tracked", "Bounce rate, deferral, reputation drift over custom ranges"],
+                ["Mailbox lifetime counters", "Not tracked", "Cumulative per-mailbox metrics across all campaigns"],
+                ["Tracking token signing", "Unsigned pixels", "HMAC-SHA256 signed, 180-day TTL"],
+                ["Drives automated action", "Read-only report", "Same stream powers routing, pausing, healing"],
+            ],
+        },
+        faq: [
+            {
+                q: "Can I see which mailbox produced which replies?",
+                a: "Yes. Every reply is matched back to the originating campaign lead and the sending mailbox with sub-minute latency. Per-mailbox drill-downs surface underperformers so you can warm them down before they drag the fleet average.",
+            },
+            {
+                q: "How is inbox placement measured without seed testing?",
+                a: "Superkabe infers placement from engagement patterns — open velocity, reply patterns, and delivery timing — rather than running seed lists. For teams that want dedicated seed testing, placement data can be ingested from third-party seed networks via webhook.",
+            },
+            {
+                q: "Can I filter analytics by ESP?",
+                a: "Yes. Every chart supports filtering by campaign, mailbox, domain, or recipient ESP. You can answer questions like 'reply rate for Gmail-to-Outlook sends from Domain A over the last 14 days' without exporting data.",
+            },
+            {
+                q: "Do the analytics drive platform action or just reporting?",
+                a: "They drive action. The same telemetry stream that populates the dashboard powers routing decisions, automatic pauses, and healing transitions. When you see a bounce rate rising on the chart, Superkabe has already acted on it.",
+            },
         ]
     }
 };

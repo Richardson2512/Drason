@@ -3,9 +3,10 @@
 import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Scale, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
+import CustomSelect from '@/components/ui/CustomSelect';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ValidationBanner from '@/components/dashboard/ValidationBanner';
@@ -20,7 +21,35 @@ export default function DashboardShell({
     const router = useRouter();
     const pathname = usePathname();
     const { user, subscription } = useDashboard();
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    // When the recipient preview modal opens we collapse the sidebar so the
+    // pixel-tuned device replicas have full canvas; on close we restore the
+    // user's prior preference.
+    const previousCollapsedRef = useRef<boolean | null>(null);
+    useEffect(() => {
+        const onOpen = () => {
+            if (previousCollapsedRef.current === null) previousCollapsedRef.current = isCollapsed;
+            setIsCollapsed(true);
+        };
+        const onClose = () => {
+            if (previousCollapsedRef.current !== null) {
+                setIsCollapsed(previousCollapsedRef.current);
+                previousCollapsedRef.current = null;
+            }
+        };
+        window.addEventListener('recipient-preview-open', onOpen);
+        window.addEventListener('recipient-preview-close', onClose);
+        return () => {
+            window.removeEventListener('recipient-preview-open', onOpen);
+            window.removeEventListener('recipient-preview-close', onClose);
+        };
+    }, [isCollapsed]);
+    const [activeMode, setActiveMode] = useState<'sequencer' | 'protection' | null>(() => {
+        if (typeof window !== 'undefined') {
+            return (localStorage.getItem('superkabe-dashboard-mode') as 'sequencer' | 'protection') || 'sequencer';
+        }
+        return 'sequencer';
+    });
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [systemMode, setSystemMode] = useState<string>('');
@@ -184,69 +213,146 @@ export default function DashboardShell({
                     </div>
 
                     {(() => {
-                        const sections: Array<{ label?: string; items: Array<{ href: string; label: string; icon: React.ReactNode; badge?: number }> }> = [
-                            { items: [
-                                { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={13} strokeWidth={1.75} />, badge: unreadCount },
-                            ]},
-                            { label: 'Monitoring', items: [
-                                { href: '/dashboard/leads', label: 'Leads', icon: <Users size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/load-balancing', label: 'Load Balancing', icon: <Scale size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/predictive-risks', label: 'Predictive Risks', icon: <Sparkles size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/validation', label: 'Email Validation', icon: <BadgeCheck size={13} strokeWidth={1.75} /> },
-                            ]},
-                            { label: 'System', items: [
-                                { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/configuration', label: 'Routing Config', icon: <Settings size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={13} strokeWidth={1.75} /> },
-                                { href: '/dashboard/settings', label: 'Settings', icon: <Wrench size={13} strokeWidth={1.75} /> },
-                            ]},
+                        const toggleMode = (mode: 'sequencer' | 'protection') => {
+                            const next = activeMode === mode ? null : mode;
+                            setActiveMode(next);
+                            if (next && typeof window !== 'undefined') localStorage.setItem('superkabe-dashboard-mode', next);
+                        };
+
+                        const sequencerItems = [
+                            { href: '/dashboard/sequencer/campaigns', label: 'Campaigns', icon: <Rocket size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/unibox', label: 'Unibox', icon: <Inbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/templates', label: 'Templates', icon: <FileText size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/contacts', label: 'Contacts', icon: <Contact size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/analytics', label: 'Analytics', icon: <BarChart3 size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/accounts', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/settings', label: 'Settings', icon: <Settings size={13} strokeWidth={1.75} /> },
                         ];
+
+                        const protectionItems = [
+                            { href: '/dashboard', label: 'Overview', icon: <LayoutDashboard size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/leads', label: 'Leads', icon: <Users size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/campaigns', label: 'Campaigns', icon: <Rocket size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/mailboxes', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/domains', label: 'Domains', icon: <Globe size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/infrastructure', label: 'Infra Health', icon: <ShieldCheck size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/analytics', label: 'Analytics', icon: <LineChart size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/insights', label: 'Insights', icon: <Sparkles size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/healing', label: 'Healing', icon: <HeartPulse size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/settings', label: 'Configuration', icon: <Wrench size={13} strokeWidth={1.75} /> },
+                        ];
+
+                        const sharedItems = [
+                            { href: '/dashboard/cold-call-list', label: 'Cold Call List', icon: <PhoneCall size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/integrations', label: 'Integrations', icon: <Plug size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/api-mcp', label: 'API & MCP', icon: <Code size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={13} strokeWidth={1.75} />, badge: unreadCount },
+                            { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={13} strokeWidth={1.75} /> },
+                        ];
+
                         const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname?.startsWith(href);
+
+                        const renderNavItem = (item: { href: string; label: string; icon: React.ReactNode; badge?: number }) => {
+                            const active = isActive(item.href);
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className="nav-link"
+                                    data-active={active ? 'true' : undefined}
+                                    title={isCollapsed ? item.label : ''}
+                                >
+                                    <span className="nav-icon">
+                                        {item.icon}
+                                        {item.badge && item.badge > 0 ? (
+                                            <span className="nav-badge">{item.badge > 99 ? '99+' : item.badge}</span>
+                                        ) : null}
+                                    </span>
+                                    {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                                </Link>
+                            );
+                        };
+
                         return (
-                            <nav className="flex flex-col gap-0.5">
-                                {sections.map((section, si) => (
-                                    <div key={si} className="flex flex-col gap-0.5">
-                                        {section.label && !isCollapsed && (
-                                            <div className="px-2.5 mt-3 mb-1 text-[10px] text-gray-400 uppercase tracking-[0.12em] font-semibold">
-                                                {section.label}
-                                            </div>
-                                        )}
-                                        {section.label && isCollapsed && <div className="h-2" />}
-                                        {section.items.map((item) => {
-                                            const active = isActive(item.href);
-                                            return (
-                                                <Link
-                                                    key={item.href}
-                                                    href={item.href}
-                                                    className="nav-link"
-                                                    data-active={active ? 'true' : undefined}
-                                                    title={isCollapsed ? item.label : ''}
-                                                >
-                                                    <span className="nav-icon">
-                                                        {item.icon}
-                                                        {item.badge && item.badge > 0 ? (
-                                                            <span className="nav-badge">{item.badge > 99 ? '99+' : item.badge}</span>
-                                                        ) : null}
-                                                    </span>
-                                                    {!isCollapsed && <span className="nav-label">{item.label}</span>}
-                                                </Link>
-                                            );
-                                        })}
+                            <nav className="flex flex-col gap-0.5 flex-1">
+                                {/* Sequencer Section */}
+                                <button
+                                    onClick={() => toggleMode('sequencer')}
+                                    className="nav-link cursor-pointer w-full text-left"
+                                    style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', background: activeMode === 'sequencer' ? '#F5F1EA' : 'transparent' }}
+                                    title={isCollapsed ? 'Sequencer' : ''}
+                                >
+                                    <span className="nav-icon" style={{ color: activeMode === 'sequencer' ? '#111827' : '#6B7280' }}>
+                                        <Send size={13} strokeWidth={1.75} />
+                                    </span>
+                                    {!isCollapsed && (
+                                        <>
+                                            <span className="nav-label" style={{ fontWeight: activeMode === 'sequencer' ? 600 : 500, color: activeMode === 'sequencer' ? '#111827' : undefined }}>Sequencer</span>
+                                            <ChevronDown size={10} className="ml-auto" style={{ transform: activeMode === 'sequencer' ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s ease', color: '#9CA3AF' }} />
+                                        </>
+                                    )}
+                                </button>
+                                {activeMode === 'sequencer' && !isCollapsed && (
+                                    <div className="flex flex-col gap-0.5 pl-2">
+                                        {sequencerItems.map(renderNavItem)}
                                     </div>
-                                ))}
+                                )}
+
+                                {/* Divider */}
+                                {!isCollapsed && <div className="h-px my-1" style={{ background: '#E8E3DC' }} />}
+                                {isCollapsed && <div className="h-1" />}
+
+                                {/* Protection Section */}
+                                <button
+                                    onClick={() => toggleMode('protection')}
+                                    className="nav-link cursor-pointer w-full text-left"
+                                    style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', background: activeMode === 'protection' ? '#F5F1EA' : 'transparent' }}
+                                    title={isCollapsed ? 'Protection' : ''}
+                                >
+                                    <span className="nav-icon" style={{ color: activeMode === 'protection' ? '#111827' : '#6B7280' }}>
+                                        <Shield size={13} strokeWidth={1.75} />
+                                    </span>
+                                    {!isCollapsed && (
+                                        <>
+                                            <span className="nav-label" style={{ fontWeight: activeMode === 'protection' ? 600 : 500, color: activeMode === 'protection' ? '#111827' : undefined }}>Protection</span>
+                                            <ChevronDown size={10} className="ml-auto" style={{ transform: activeMode === 'protection' ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s ease', color: '#9CA3AF' }} />
+                                        </>
+                                    )}
+                                </button>
+                                {activeMode === 'protection' && !isCollapsed && (
+                                    <div className="flex flex-col gap-0.5 pl-2">
+                                        {protectionItems.map(renderNavItem)}
+                                    </div>
+                                )}
+
+                                {/* Email Validation — standalone, always visible */}
+                                {!isCollapsed && <div className="h-px mt-2 mb-1" style={{ background: '#E8E3DC' }} />}
+                                {isCollapsed && <div className="h-2" />}
+                                {renderNavItem({ href: '/dashboard/validation', label: 'Email Validation', icon: <BadgeCheck size={13} strokeWidth={1.75} /> })}
+
+                                {/* Shared Items — always visible */}
+                                {!isCollapsed && <div className="h-px mt-1 mb-1" style={{ background: '#E8E3DC' }} />}
+                                {isCollapsed && <div className="h-2" />}
+                                {sharedItems.map(renderNavItem)}
                             </nav>
                         );
                     })()}
 
                     <div className="mt-auto flex flex-col gap-1.5 pt-3 border-t border-gray-100">
+                        {/* Raise a Ticket — sidebar-native styling, sits above the profile card */}
+                        <button
+                            onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
+                            className="nav-link w-full text-left cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                            style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
+                            title={isCollapsed ? 'Raise a Ticket' : ''}
+                        >
+                            <span className="min-w-[24px] flex justify-center">
+                                <LifeBuoy size={16} strokeWidth={1.75} />
+                            </span>
+                            {!isCollapsed && <span className="text-xs font-medium">Raise a Ticket</span>}
+                        </button>
+
                         {!isCollapsed && (
                             <Link href="/dashboard/profile" className="no-underline">
                                 <div className="profile-card-hover p-2.5 rounded-xl border border-gray-200 cursor-pointer bg-white hover:bg-gray-50 transition-colors">
@@ -381,29 +487,22 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                <div className="container min-h-full py-2 px-3">
+                {pathname === '/dashboard/sequencer/unibox' ? (
                     <ErrorBoundary resetKey={pathname || ''}>
                         {children}
                     </ErrorBoundary>
-                </div>
+                ) : (
+                    <div className="container min-h-full py-2 px-3">
+                        <ErrorBoundary resetKey={pathname || ''}>
+                            {children}
+                        </ErrorBoundary>
+                    </div>
+                )}
             </main>
 
             {/* Help Panel */}
             <HelpPanel isOpen={helpPanelOpen} onClose={() => setHelpPanelOpen(false)} />
             <HelpPanelTrigger onClick={() => setHelpPanelOpen(true)} />
-
-            {/* Raise a Ticket Button — fixed bottom-right, above Help Panel trigger */}
-            <button
-                onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
-                className="btn-hover-lift btn-hover-lift-blue fixed bottom-[6.5rem] right-6 text-white border-none rounded-xl p-2 px-4 text-[0.8rem] font-semibold cursor-pointer z-30 flex items-center gap-[0.4rem]"
-                style={{
-                    background: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
-                    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
-                }}
-            >
-                <span className="text-[0.9rem]">🎫</span>
-                Raise a Ticket
-            </button>
 
             {/* Support Ticket Modal */}
             {showTicketModal && (
@@ -437,17 +536,17 @@ export default function DashboardShell({
                                 <div className="flex flex-col gap-4">
                                     <div>
                                         <label className="block text-[0.8rem] font-semibold text-gray-700 mb-1.5">Category</label>
-                                        <select
+                                        <CustomSelect
                                             value={ticketForm.category}
-                                            onChange={(e) => setTicketForm(f => ({ ...f, category: e.target.value }))}
-                                            className="w-full py-2.5 px-3 rounded-[10px] border border-gray-300 text-sm text-gray-900 bg-gray-50 outline-none"
-                                        >
-                                            <option value="general">General</option>
-                                            <option value="bug">Bug Report</option>
-                                            <option value="feature">Feature Request</option>
-                                            <option value="billing">Billing</option>
-                                            <option value="urgent">Urgent</option>
-                                        </select>
+                                            onChange={(v) => setTicketForm(f => ({ ...f, category: v }))}
+                                            options={[
+                                                { value: 'general', label: 'General' },
+                                                { value: 'bug', label: 'Bug Report' },
+                                                { value: 'feature', label: 'Feature Request' },
+                                                { value: 'billing', label: 'Billing' },
+                                                { value: 'urgent', label: 'Urgent' },
+                                            ]}
+                                        />
                                     </div>
                                     <div>
                                         <label className="block text-[0.8rem] font-semibold text-gray-700 mb-1.5">Subject *</label>

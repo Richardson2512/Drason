@@ -1,6 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
+import CustomSelect from '@/components/ui/CustomSelect';
+import DatePicker from '@/components/ui/DatePicker';
+
+const BOUNCE_TYPE_OPTIONS = [
+    { value: 'all', label: 'All Types' },
+    { value: 'hard_bounce', label: 'Hard Bounce' },
+    { value: 'soft_bounce', label: 'Soft Bounce' },
+];
 
 interface BounceAnalyticsProps {
     mailboxId?: string;
@@ -97,7 +105,7 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     if (loading) {
         return (
             <div className="premium-card">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">
+                <h2 className="text-xl font-bold mb-3 text-gray-900">
                     Bounce Analytics
                 </h2>
                 <div className="p-8 text-center text-gray-400">
@@ -114,7 +122,7 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
             const bounceRate = ((mailboxStats.hard_bounce_count || 0) / totalSent * 100).toFixed(2);
             return (
                 <div className="premium-card">
-                    <h2 className="text-xl font-bold mb-6 text-gray-900">Bounce Analytics</h2>
+                    <h2 className="text-xl font-bold mb-3 text-gray-900">Bounce Analytics</h2>
                     <div className="grid grid-cols-3 gap-4">
                         <div className="p-4 bg-red-50 rounded-xl border border-red-100">
                             <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Hard Bounces</div>
@@ -140,7 +148,7 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
 
         return (
             <div className="premium-card">
-                <h2 className="text-xl font-bold mb-6 text-gray-900">
+                <h2 className="text-xl font-bold mb-3 text-gray-900">
                     Bounce Analytics
                 </h2>
                 <div className="p-8 text-center text-gray-400">
@@ -151,9 +159,9 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
     }
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
             {/* Summary Cards */}
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-3">
                 <div className="premium-card">
                     <h3 className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">
                         Total Bounces
@@ -197,36 +205,32 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
                             <label className="text-sm font-medium text-gray-500 block mb-2">
                                 Bounce Type
                             </label>
-                            <select
+                            <CustomSelect
                                 value={bounceTypeFilter}
-                                onChange={(e) => setBounceTypeFilter(e.target.value)}
-                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm cursor-pointer"
-                            >
-                                <option value="all">All Types</option>
-                                <option value="hard_bounce">Hard Bounce</option>
-                                <option value="soft_bounce">Soft Bounce</option>
-                            </select>
+                                onChange={setBounceTypeFilter}
+                                options={BOUNCE_TYPE_OPTIONS}
+                            />
                         </div>
                         <div>
                             <label className="text-sm font-medium text-gray-500 block mb-2">
                                 Start Date
                             </label>
-                            <input
-                                type="date"
+                            <DatePicker
                                 value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm"
+                                onChange={setStartDate}
+                                maxDate={endDate || undefined}
+                                placeholder="Any"
                             />
                         </div>
                         <div>
                             <label className="text-sm font-medium text-gray-500 block mb-2">
                                 End Date
                             </label>
-                            <input
-                                type="date"
+                            <DatePicker
                                 value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className="w-full py-2.5 px-4 rounded-xl border border-gray-200 bg-white text-sm"
+                                onChange={setEndDate}
+                                minDate={startDate || undefined}
+                                placeholder="Any"
                             />
                         </div>
                     </div>
@@ -234,7 +238,7 @@ export default function BounceAnalytics({ mailboxId, domainId, campaignId, showF
             )}
 
             {/* Breakdowns */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-3">
                 {/* Mailbox Breakdown */}
                 {!mailboxId && mailboxBreakdown.length > 0 && (
                     <div className="premium-card">

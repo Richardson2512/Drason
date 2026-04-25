@@ -91,8 +91,8 @@ export default function NotificationsPage() {
             <div className="page-header shrink-0 mb-8">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-4xl font-extrabold mb-2 text-gray-900 tracking-tight">Notifications</h1>
-                        <div className="text-gray-500 text-lg">System alerts and updates</div>
+                        <h1 className="text-xl font-bold mb-0.5 text-gray-900 tracking-tight">Notifications</h1>
+                        <div className="text-xs text-gray-500">System alerts and updates</div>
                     </div>
                     <div className="flex gap-4">
                         <div className="flex bg-gray-100 p-1 rounded-xl">

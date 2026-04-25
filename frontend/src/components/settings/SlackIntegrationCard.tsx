@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
 import type { SettingEntry, SlackChannel } from '@/types/api';
+import CustomSelect from '@/components/ui/CustomSelect';
 
 export default function SlackIntegrationCard({ settings: settingsProp }: { settings?: SettingEntry[] } = {}) {
     const [slackConnected, setSlackConnected] = useState(false);
@@ -53,11 +54,11 @@ export default function SlackIntegrationCard({ settings: settingsProp }: { setti
     useEffect(() => {
         if (slackConnected) {
             setLoadingChannels(true);
-            apiClient<{ data: SlackChannel[] }>('/api/slack/channels')
+            apiClient<any>('/api/slack/channels')
                 .then(res => {
-                    if (res?.data) {
-                        setSlackChannels(res.data);
-                    }
+                    // apiClient unwraps `data`, so res is usually the array directly
+                    const list: SlackChannel[] = Array.isArray(res) ? res : (res?.data || []);
+                    setSlackChannels(list);
                 })
                 .catch(err => console.error('Failed to fetch slack channels', err))
                 .finally(() => setLoadingChannels(false));
@@ -158,20 +159,15 @@ export default function SlackIntegrationCard({ settings: settingsProp }: { setti
                         <label className="block text-[0.9rem] font-semibold text-gray-700 mb-2">
                             Alerts Channel
                         </label>
-                        <select
-                            value={slackAlertsChannel}
-                            onChange={(e) => handleSaveSlackChannel(e.target.value)}
-                            disabled={loadingChannels || savingChannel}
-                            className="w-full p-3 rounded-xl border border-gray-200 outline-none text-base text-gray-900"
-                            style={{
-                                background: loadingChannels || savingChannel ? '#F3F4F6' : '#FFFFFF'
-                            }}
-                        >
-                            <option value="">Select a channel...</option>
-                            {slackChannels.map(c => (
-                                <option key={c.id} value={c.id}>#{c.name}</option>
-                            ))}
-                        </select>
+                        <div style={{ opacity: loadingChannels || savingChannel ? 0.6 : 1, pointerEvents: loadingChannels || savingChannel ? 'none' : 'auto' }}>
+                            <CustomSelect
+                                value={slackAlertsChannel}
+                                onChange={handleSaveSlackChannel}
+                                placeholder={loadingChannels ? 'Loading channels...' : 'Select a channel...'}
+                                searchable
+                                options={slackChannels.map(c => ({ value: c.id, label: `#${c.name}` }))}
+                            />
+                        </div>
                     </div>
 
                     <div className="mt-4">

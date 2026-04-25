@@ -1,0 +1,67 @@
+version: '3.8'
+
+# Superkabe Staging Environment
+# Run: docker compose -f docker-compose.staging.yml up
+# Dashboard: http://localhost:3000
+# Backend API: http://localhost:4000
+# Database: localhost:5433 (port 5433 to avoid conflict with any local postgres)
+
+services:
+  # PostgreSQL database (fresh, empty)
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: superkabe
+      POSTGRES_PASSWORD: staging_password_local
+      POSTGRES_DB: superkabe_staging
+    ports:
+      - "5433:5432"
+    volumes:
+      - staging_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U superkabe -d superkabe_staging"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    environment:
+      DATABASE_URL: postgresql://superkabe:staging_password_local@db:5432/superkabe_staging?connection_limit=20
+      FRONTEND_URL: http://localhost:3000
+      NODE_ENV: staging
+      PORT: 4000
+      # Add your API keys here for staging testing:
+      # MILLION_VERIFIER_API_KEY: your_key
+      # POLAR_ACCESS_TOKEN: your_key
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+    command: >
+      sh -c "npx prisma migrate deploy && npx prisma generate && npm run dev"
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    command: npm run dev
+
+volumes:
+  staging_pgdata:

@@ -53,45 +53,28 @@ export default function LeadListPanel({
     entityStats,
 }: LeadListPanelProps) {
     return (
-        <div className="premium-card flex flex-col p-6 h-full overflow-hidden rounded-3xl" style={{ width: '420px' }}>
-            <div className="mb-6 shrink-0">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Leads</h2>
+        <div className="premium-card flex flex-col p-4 h-full overflow-hidden rounded-2xl" style={{ width: '380px' }}>
+            <div className="mb-4 shrink-0">
+                <h1 className="text-xl font-bold text-gray-900 mb-3">Leads</h1>
 
-                {/* Stats Breakdown */}
+                {/* Stats bar — also acts as the status filter. Clicking a pill
+                    filters the list; clicking "All" clears the filter. */}
                 {entityStats && (
                     <div className="mb-4">
                         <EntityStatsBar
                             total={entityStats.total}
+                            activeKeys={leadTab === 'all' ? [] : [leadTab]}
+                            onToggle={(key) => onTabChange(key)}
                             stats={[
-                                { label: 'Active', value: entityStats.active, color: '#22c55e' },
-                                { label: 'Held', value: entityStats.held, color: '#3b82f6' },
-                                { label: 'Paused', value: entityStats.paused, color: '#f59e0b' },
-                                { label: 'Bounced', value: entityStats.bounced, color: '#ef4444' },
-                                { label: 'Invalid', value: entityStats.invalid, color: '#6b7280' },
+                                { key: 'active',   label: 'Active',   value: entityStats.active,   color: '#22c55e' },
+                                { key: 'held',     label: 'Held',     value: entityStats.held,     color: '#3b82f6' },
+                                { key: 'paused',   label: 'Paused',   value: entityStats.paused,   color: '#f59e0b' },
+                                { key: 'bounced',  label: 'Bounced',  value: entityStats.bounced,  color: '#ef4444' },
+                                { key: 'invalid',  label: 'Invalid',  value: entityStats.invalid,  color: '#9ca3af' },
                             ]}
                         />
                     </div>
                 )}
-
-                {/* Status Filter Tabs */}
-                <div className="shrink-0 mb-4">
-                    <div className="flex bg-gray-100 p-1 rounded-xl">
-                        {['all', 'held', 'active', 'paused', 'bounced', 'invalid'].map(t => (
-                            <button
-                                key={t}
-                                onClick={() => onTabChange(t)}
-                                className="px-3 py-1.5 rounded-lg border-none cursor-pointer text-xs font-semibold capitalize transition-all duration-200"
-                                style={{
-                                    background: leadTab === t ? '#FFFFFF' : 'transparent',
-                                    color: leadTab === t ? '#111827' : '#6B7280',
-                                    boxShadow: leadTab === t ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                                }}
-                            >
-                                {t}
-                            </button>
-                        ))}
-                    </div>
-                </div>
 
                 {/* Search Input */}
                 <div className="mb-4">

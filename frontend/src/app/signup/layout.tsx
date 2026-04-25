@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Get Started | Superkabe',
-    description: 'Create your Superkabe account and protect your email infrastructure from domain burnout.',
+    description: 'Create your Superkabe account — the AI cold email platform with native deliverability protection.',
     alternates: { canonical: '/signup' },
     robots: { index: false, follow: false },
 };

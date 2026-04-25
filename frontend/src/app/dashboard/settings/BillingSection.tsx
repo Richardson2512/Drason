@@ -124,7 +124,7 @@ export default function BillingSection() {
 
     if (loading) {
         return (
-            <div className="premium-card mb-10">
+            <div className="premium-card mb-3">
                 <LoadingSkeleton type="card" rows={2} />
             </div>
         );
@@ -132,7 +132,7 @@ export default function BillingSection() {
 
     if (error && !data) {
         return (
-            <div className="premium-card mb-10">
+            <div className="premium-card mb-3">
                 <div className="p-8 text-center text-red-500">{error}</div>
             </div>
         );
@@ -143,9 +143,9 @@ export default function BillingSection() {
     const daysRemaining = getDaysRemaining();
 
     return (
-        <div className="premium-card mb-10" style={{ borderLeft: `6px solid ${tierInfo.color}` }}>
+        <div className="premium-card mb-3" style={{ borderLeft: `6px solid ${tierInfo.color}` }}>
             {/* Header */}
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex justify-between items-start mb-3">
                 <div>
                     <h2 className="text-2xl font-bold mb-2 text-gray-900">Subscription & Billing</h2>
                     <p className="text-slate-500 text-base leading-relaxed">
@@ -159,7 +159,7 @@ export default function BillingSection() {
 
             {/* Trial Warning */}
             {data?.subscription.status === 'trialing' && daysRemaining !== null && daysRemaining < 7 && (
-                <div className="py-4 px-6 bg-amber-50 rounded-xl border border-yellow-300 mb-6 flex items-center gap-4">
+                <div className="py-4 px-6 bg-amber-50 rounded-xl border border-yellow-300 mb-3 flex items-center gap-4">
                     <span className="text-2xl">⏰</span>
                     <div>
                         <p className="text-amber-800 text-[0.9rem] m-0 font-semibold">
@@ -171,19 +171,19 @@ export default function BillingSection() {
 
             {/* Error Message */}
             {error && (
-                <div className="py-4 px-6 bg-red-100 rounded-xl border border-red-300 mb-6 text-red-800 text-[0.9rem]">
+                <div className="py-4 px-6 bg-red-100 rounded-xl border border-red-300 mb-3 text-red-800 text-[0.9rem]">
                     {error}
                 </div>
             )}
 
             {/* Current Plan */}
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
+            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-3">
                 <div className="flex justify-between items-center mb-4">
                     <div>
                         <div className="text-xs text-slate-400 font-semibold uppercase mb-1">Current Plan</div>
-                        <div className="text-2xl font-extrabold" style={{ color: tierInfo.color }}>{tierInfo.name}</div>
+                        <div className="text-2xl font-bold" style={{ color: tierInfo.color }}>{tierInfo.name}</div>
                     </div>
-                    <div className="text-[2rem] font-extrabold text-gray-900">{tierInfo.price}<span className="text-base text-slate-500 font-normal">/mo</span></div>
+                    <div className="text-2xl font-bold text-gray-900">{tierInfo.price}<span className="text-base text-slate-500 font-normal">/mo</span></div>
                 </div>
                 {data?.subscription.nextBillingDate && (
                     <div className="text-sm text-slate-500">
@@ -194,10 +194,10 @@ export default function BillingSection() {
 
             {/* Usage Metrics */}
             <h3 className="text-lg font-bold mb-4 text-slate-800">Resource Usage</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                 {[
                     { label: 'Active Leads', current: data?.usage.leads || 0, limit: data?.limits.leads || 0, icon: '📧' },
-                    { label: 'Domains', current: data?.usage.domains || 0, limit: data?.limits.domains || 0, icon: '🌐' },
+                    { label: 'Domains (protection)', current: data?.usage.domains || 0, limit: data?.limits.domains || 0, icon: '🌐' },
                     { label: 'Mailboxes', current: data?.usage.mailboxes || 0, limit: data?.limits.mailboxes || 0, icon: '📮' }
                 ].map(({ label, current, limit, icon }) => {
                     const percentage = getUsagePercentage(current, limit);
@@ -212,7 +212,7 @@ export default function BillingSection() {
                                 <span className="text-2xl">{icon}</span>
                                 <div>
                                     <div className="text-xs text-slate-400 font-semibold uppercase">{label}</div>
-                                    <div className="text-2xl font-extrabold text-gray-900">
+                                    <div className="text-2xl font-bold text-gray-900">
                                         {current.toLocaleString()} <span className="text-sm text-slate-400 font-normal">/ {limit === Infinity ? '∞' : limit.toLocaleString()}</span>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ export default function BillingSection() {
             {currentTier !== 'scale' && currentTier !== 'enterprise' && data?.subscription.status !== 'canceled' && (
                 <>
                     <h3 className="text-lg font-bold mb-4 text-slate-800">Upgrade Your Plan</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
                         {Object.entries(TIER_INFO)
                             .filter(([key]) => !['trial', 'enterprise'].includes(key) && key !== currentTier)
                             .map(([key, info]) => (
@@ -241,12 +241,12 @@ export default function BillingSection() {
                                     className="p-6 rounded-2xl border border-slate-200 bg-white"
                                 >
                                     <div className="mb-4">
-                                        <div className="text-xl font-extrabold mb-1" style={{ color: info.color }}>{info.name}</div>
-                                        <div className="text-[1.75rem] font-extrabold text-gray-900">{info.price}<span className="text-sm text-slate-500 font-normal">/mo</span></div>
+                                        <div className="text-xl font-bold mb-1" style={{ color: info.color }}>{info.name}</div>
+                                        <div className="text-2xl font-bold text-gray-900">{info.price}<span className="text-sm text-slate-500 font-normal">/mo</span></div>
                                     </div>
-                                    <div className="mb-6 text-sm text-slate-500 leading-relaxed">
+                                    <div className="mb-3 text-sm text-slate-500 leading-relaxed">
                                         <div>✓ {info.limits.leads.toLocaleString()} leads</div>
-                                        <div>✓ {info.limits.domains} domains</div>
+                                        <div>✓ {info.limits.domains} domains <span className="text-xs text-slate-400">(protection limit)</span></div>
                                         <div>✓ {info.limits.mailboxes} mailboxes</div>
                                     </div>
                                     <button

@@ -35,6 +35,11 @@ function getHelpLink(title: string): { url: string; label: string } | null {
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Check blacklist status' };
     if (t.startsWith('blacklist check unreachable'))
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Blacklist checker' };
+    // Mailbox sending-IP blacklist findings (emitted by mailboxIpBlacklistWorker)
+    if (t.startsWith('ip blacklisted (critical)'))
+        return { url: 'https://www.spamhaus.org/lookup/', label: 'Spamhaus: Lookup & delisting' };
+    if (t.startsWith('ip blacklisted (major)'))
+        return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: IP blacklist checker' };
 
     // DNS assessment failure
     if (t.startsWith('dns assessment failed'))

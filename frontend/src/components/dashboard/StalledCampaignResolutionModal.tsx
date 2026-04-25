@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
+import CustomSelect from '@/components/ui/CustomSelect';
 
 interface StalledCampaignResolutionModalProps {
     isOpen: boolean;
@@ -311,20 +312,15 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
                                                         </div>
                                                     </>
                                                 ) : (
-                                                    <select
+                                                    <CustomSelect
                                                         value={targetCampaignId}
-                                                        onChange={(e) => setTargetCampaignId(e.target.value)}
-                                                        className="w-full p-3 rounded-lg border border-gray-300 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                                                        aria-label="Select target campaign"
-                                                    >
-                                                        <option value="">Select Target Campaign...</option>
-                                                        {context.rerouteOptions.list.map((c: any) => (
-                                                            <option key={c.id} value={c.id}>
-                                                                {c.name} ({c.healthyMailboxCount} mailboxes)
-                                                                {c.warning ? ` - ⚠️ ${c.warning}` : ''}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                        onChange={setTargetCampaignId}
+                                                        placeholder="Select Target Campaign..."
+                                                        options={context.rerouteOptions.list.map((c: any) => ({
+                                                            value: c.id,
+                                                            label: `${c.name} (${c.healthyMailboxCount} mailboxes)${c.warning ? ` - ⚠️ ${c.warning}` : ''}`,
+                                                        }))}
+                                                    />
                                                 )}
                                                 {context.rerouteOptions.warnings.length > 0 && (
                                                     <div className="mt-3 p-3 bg-amber-50 border border-amber-300 rounded-md text-xs text-amber-800">
