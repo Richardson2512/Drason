@@ -11,6 +11,7 @@
  *   /dashboard/predictive-risks    → /dashboard/insights?tab=predictive-risks
  */
 
+import { Suspense } from 'react';
 import Tabs, { useTabState, type TabItem } from '@/components/ui/Tabs';
 import { Scale, Sparkles } from 'lucide-react';
 import LoadBalancingPanel from './LoadBalancingPanel';
@@ -22,6 +23,14 @@ const TABS: TabItem[] = [
 ];
 
 export default function InsightsPage() {
+    return (
+        <Suspense fallback={null}>
+            <InsightsPageInner />
+        </Suspense>
+    );
+}
+
+function InsightsPageInner() {
     const [active] = useTabState(TABS, 'load-balancing');
 
     return (

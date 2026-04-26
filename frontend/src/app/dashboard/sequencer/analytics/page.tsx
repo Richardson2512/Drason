@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Send, Eye, MousePointer, MessageSquare, AlertTriangle, UserMinus, TrendingUp, ArrowUpRight, ArrowDownRight, Activity, Heart, FlaskConical } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
@@ -44,6 +44,14 @@ interface CampaignRow {
 }
 
 export default function SequencerAnalyticsPage() {
+    return (
+        <Suspense fallback={null}>
+            <SequencerAnalyticsPageInner />
+        </Suspense>
+    );
+}
+
+function SequencerAnalyticsPageInner() {
     const [activeTab] = useTabState(TABS, 'live');
     const [timeRange, setTimeRange] = useState('30d');
     const [customFrom, setCustomFrom] = useState('');
