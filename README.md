@@ -1,15 +1,12 @@
 # Drason (repo) / Superkabe (platform)
 
-**Superkabe** is an AI-driven cold email platform that does two things at once:
+**Superkabe** is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing.
 
-1. **Sends email campaigns natively** — connect Gmail, Microsoft 365, or SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; unified inbox; full analytics.
-2. **Acts as middleware protection** for existing sending infrastructure — sits between lead sources (Clay, CSV, API) and senders (the native Superkabe sequencer **and/or** Smartlead / Instantly / EmailBison / Reply.io), applying an active Deliverability Protection Layer (DPL) that gates execution, monitors bounces, enforces DNS authentication, and auto-pauses damaged mailboxes before domain reputation burns.
+Native sending and the deliverability protection layer are one product, not two. Every send passes through SMTP transcript capture, RFC 3464 DSN parsing for asynchronous bounces, ARF feedback-loop ingestion (Yahoo, AOL, Microsoft, Comcast), Google Postmaster Tools and Microsoft SNDS reputation lookups, and the auto-pause + 5-phase healing state machine. There is no separate dashboard, no third-party deliverability add-on, no platform middleware to maintain.
 
-Both capabilities run on the same tenant simultaneously. A team can send from a native Superkabe mailbox for one campaign while Superkabe protects a connected Smartlead or Instantly setup for another — one dashboard, one protection layer, two execution paths.
-
-> **Guiding Principle**: Superkabe prevents irreversible outbound damage through conservative, explainable, rule-based control — applied uniformly whether the send originates in Superkabe's own sequencer or on a connected platform.
+> **Guiding Principle**: Superkabe prevents irreversible outbound damage through conservative, explainable, rule-based control — wired directly into the sending pipeline so every send is observed and gated, not retrofitted from a dashboard.
 >
-> *Note: "Drason" is the original repository name. The product is "Superkabe". See staging docs for positioning.*
+> *Note: "Drason" is the original repository name. The product is "Superkabe".*
 
 ---
 
@@ -39,20 +36,22 @@ Both capabilities run on the same tenant simultaneously. A team can send from a 
 4. **Tracks opens, clicks, and replies** with HMAC-signed tracking URLs and IMAP reply polling
 5. **Runs a unified inbox** across every connected mailbox for fast response
 
-**Deliverability protection (applies to native AND connected senders):**
+**Built-in deliverability protection (every native send goes through it):**
 6. **Receives leads** from Clay webhook, CSV upload, or direct API
 7. **Validates every lead** (syntax, MX, disposable, catch-all, optional MillionVerifier probe)
 8. **Routes leads** to appropriate campaigns based on configurable rules (persona + lead score)
 9. **Gates execution** by validating campaign health, domain status, and mailbox availability before a send fires
-10. **Monitors risk signals** (hard bounces, delivery failures, provider throttling) in real-time
-11. **Pauses and heals** mailboxes/domains through a 5-phase recovery pipeline when thresholds are exceeded
-12. **Explains every action** through comprehensive audit logging and state-transition history
+10. **Captures the SMTP transcript** for every send and parses asynchronous DSNs (RFC 3464) returned to the mailbox
+11. **Pulls reputation signals** from Google Postmaster Tools, Microsoft SNDS, and ARF feedback loops (Yahoo, AOL, Microsoft, Comcast)
+12. **Pauses and heals** mailboxes/domains through a 5-phase recovery pipeline when thresholds are exceeded
+13. **Explains every action** through comprehensive audit logging and state-transition history
 
 ### What Superkabe Does NOT Do (By Design)
 
 - Detect spam filter placement (no seed-list testing)
 - Switch channels automatically (email only — no LinkedIn, no SMS)
 - Replace CRM or sales engagement platforms (no deal pipeline, no call tracking)
+- Sit in the middle of someone else's sender. Superkabe sends natively from your own mailboxes; the protection layer is part of every send.
 
 ---
 
@@ -71,26 +70,22 @@ Both capabilities run on the same tenant simultaneously. A team can send from a 
 │                       ▼                                                       │
 │            ┌──────────────────────┐                                           │
 │            │  Validate + Route +  │  <-- Deliverability Protection Layer      │
-│            │   Execution Gate     │      (shared: guards every send path)    │
+│            │   Execution Gate     │      (built into every send)              │
 │            └──────────┬───────────┘                                           │
 │                       │ gate passes                                           │
-│        ┌──────────────┴──────────────┐                                        │
-│        ▼                             ▼                                        │
-│  ┌──────────────┐            ┌──────────────────┐                             │
-│  │  NATIVE      │            │   CONNECTED      │                             │
-│  │  SEQUENCER   │            │   PLATFORM       │                             │
-│  │  Gmail /     │            │   Smartlead /    │                             │
-│  │  Microsoft / │            │   Instantly /    │                             │
-│  │  SMTP        │            │   EmailBison /   │                             │
-│  │              │            │   Reply.io       │                             │
-│  └──────┬───────┘            └────────┬─────────┘                             │
-│         │ SendEvent                   │ webhook events                        │
-│         └───────────────┬─────────────┘                                       │
-│                         ▼                                                     │
-│              ┌─────────────────────┐                                          │
-│              │   Monitoring +      │  <-- Bounces, DNSBL, velocity,           │
-│              │   Healing Engine    │      5-phase recovery, auto-pause        │
-│              └─────────────────────┘                                          │
+│                       ▼                                                       │
+│            ┌──────────────────────┐                                           │
+│            │  NATIVE SEQUENCER    │  Gmail OAuth / Microsoft 365 OAuth /      │
+│            │  sendQueueService    │  Custom SMTP                              │
+│            └──────────┬───────────┘                                           │
+│                       │ SendEvent + SMTP transcript                           │
+│                       ▼                                                       │
+│            ┌──────────────────────┐    ┌─────────────────────────────────┐    │
+│            │  Monitoring +        │ ◄  │ Postmaster Tools / SNDS / ARF / │    │
+│            │  Healing Engine      │    │ DSN parser / DNSBL              │    │
+│            └──────────────────────┘    └─────────────────────────────────┘    │
+│                                                                               │
+│            5-phase recovery pipeline · auto-pause · ESP-aware routing         │
 │                                                                               │
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -100,12 +95,11 @@ Both capabilities run on the same tenant simultaneously. A team can send from a 
 1. **Lead Ingestion**: Leads arrive from Clay webhook (`/api/ingest/clay`), CSV batch upload (`/api/validation`), or direct API (`/api/ingest`).
 2. **Validation**: Hybrid check (syntax → MX → disposable → catch-all → optional MillionVerifier probe). Invalid leads blocked; risky leads flagged.
 3. **Routing**: Matches lead against configured routing rules (persona + min_score) → assigns campaign.
-4. **Execution Gate**: Before any send (native OR connected-platform), validates campaign is active, domain is healthy, at least one mailbox is available, below capacity, risk score below threshold.
-5. **Send** — one of two paths:
-   - **Native sequencer**: `sendQueueService` dispatches the email through Gmail API, Microsoft Graph, or SMTP; writes a `SendEvent`.
-   - **Connected platform**: adapter pushes the lead to Smartlead/Instantly/EmailBison/Reply.io; the platform sends; webhook events come back to us.
-6. **Monitoring**: Both paths produce the same event shape (`SendEvent`, `BounceEvent`, `ReplyEvent`). The Protection layer tracks metrics identically.
-7. **Pause + Heal**: When thresholds are exceeded (5 bounces in window OR 3% bounce rate after 60 sends OR correlation signal), mailbox/domain enters the 5-phase recovery pipeline. Standby mailboxes rotate in automatically.
+4. **Execution Gate**: Before any send, validates campaign is active, domain is healthy, at least one mailbox is available, below capacity, risk score below threshold.
+5. **Send**: `sendQueueService` dispatches through Gmail API, Microsoft Graph, or SMTP. The full SMTP server response is captured; 5xx synchronous bounces become `BounceEvent` rows in real time.
+6. **Async Bounce Handling**: DSNs (RFC 3464) returned to the sending mailbox are picked up by `imapReplyWorker` and parsed; categorized as hard / soft / transient and recorded as `BounceEvent`s with full diagnostic codes.
+7. **Reputation Signals**: A daily worker pulls per-domain reputation from Google Postmaster Tools and per-IP reputation from Microsoft SNDS. ARF feedback-loop emails (Yahoo, AOL, Microsoft, Comcast) are parsed off a dedicated FBL inbox.
+8. **Pause + Heal**: When thresholds are exceeded (5 bounces in window OR 3% bounce rate after 60 sends OR Postmaster reputation drop OR spam-complaint rate above 0.3%), mailbox/domain enters the 5-phase recovery pipeline. Standby mailboxes rotate in automatically.
 
 ---
 

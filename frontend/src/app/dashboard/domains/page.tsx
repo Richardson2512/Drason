@@ -371,22 +371,6 @@ export default function DomainsPage() {
                                 </div>
                             </div>
 
-                            {/* Platform Filter */}
-                            <div className="mb-3">
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Platform
-                                </label>
-                                <MultiSelectDropdown
-                                    options={[
-                                        { value: 'smartlead', label: 'Smartlead' },
-                                        { value: 'instantly', label: 'Instantly' },
-                                        { value: 'emailbison', label: 'EmailBison' },
-                                    ]}
-                                    selected={sortFilter.temp.platform === 'all' ? [] : sortFilter.temp.platform.split(',')}
-                                    onChange={(vals) => sortFilter.setTempValue('platform', vals.length === 0 ? 'all' : vals.join(','))}
-                                    placeholder="All Platforms"
-                                />
-                            </div>
                         </div>
 
                         {/* Modal Footer */}

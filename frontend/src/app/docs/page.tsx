@@ -31,7 +31,7 @@ export default function DocsPage() {
  <div className="bg-white p-8 border border-gray-100 shadow-xl shadow-gray-200/50 mb-16">
  <h2 className="text-2xl font-bold mb-4 text-gray-900">What is Superkabe?</h2>
  <p className="text-gray-600 mb-4">
- Superkabe is an AI-powered cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes, validate every email, route leads by ESP — and let the protection layer auto-pause, reroute, and heal senders in real time. Connect Clay as a lead source, or run Superkabe in Protection Mode alongside Smartlead, Instantly, or EmailBison.
+ Superkabe is an AI-powered cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes (Gmail, Microsoft 365, or SMTP), validate every email, route leads by ESP — and let the protection layer auto-pause, reroute, and heal senders in real time. Connect Clay as a lead source for enriched lead intake.
  </p>
  <p className="text-gray-600 mb-6">
  Every lead that enters Superkabe passes through a multi-stage pipeline before reaching your sender:
@@ -63,7 +63,7 @@ export default function DocsPage() {
  </div>
  </div>
  <p className="text-gray-600 text-sm">
- Superkabe supports Smartlead, Instantly, and EmailBison through a unified platform adapter. Mailbox rotation, load balancing, Slack alerts, reports, and CSV export are included across all plans.
+ Mailbox rotation, ESP-aware load balancing, Slack alerts, reports, and CSV export are included across all plans.
  </p>
  </div>
 
@@ -86,19 +86,14 @@ export default function DocsPage() {
  <DocCard href="/docs/warmup-recovery" icon={<Heart className="text-green-600" size={24} />} title="Warmup & Recovery" description="5-phase healing pipeline and automated mailbox rehabilitation" />
  <DocCard href="/docs/platform-rules" icon={<Shield className="text-blue-600" size={24} />} title="Platform Rules" description="System modes (observe/suggest/enforce), thresholds, and enforcement mechanisms" />
  <DocCard href="/docs/technical-architecture" icon={<Database className="text-blue-600" size={24} />} title="Technical Architecture" description="System design, data flow, and infrastructure overview" />
- <DocCard href="/docs/data-sync-coverage" icon={<Database className="text-gray-600" size={24} />} title="Data Sync Coverage" description="What data syncs from each platform and what starts at zero" />
  </div>
 
  {/* Integrations */}
  <h2 className="text-3xl font-bold mb-6 text-gray-900">Integrations</h2>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
- <DocCard href="/docs/smartlead-integration" icon={<Mail className="text-blue-600" size={24} />} title="Smartlead Integration" description="API key setup, webhook config, campaign sync, and bounce monitoring" />
- <DocCard href="/docs/instantly-integration" icon={<Zap className="text-orange-500" size={24} />} title="Instantly Integration" description="API v2 sync, campaign management, and per-mailbox analytics" />
- <DocCard href="/docs/emailbison-integration" icon={<Mail className="text-teal-600" size={24} />} title="EmailBison Integration" description="Campaign sync, sender-email management, and warmup control" />
  <DocCard href="/docs/clay-integration" icon={<Database className="text-orange-600" size={24} />} title="Clay Integration" description="Webhook ingestion for enriched leads with automatic validation and routing" />
- <DocCard href="/docs/slack-integration" icon={<AlertTriangle className="text-yellow-600" size={24} />} title="Slack Integration" description="Real-time infrastructure alerts delivered to your Slack workspace" />
- <DocCard href="/docs/api-integration" icon={<Plug className="text-blue-600" size={24} />} title="API Integration" description="REST API reference for programmatic lead ingestion and platform access" />
- <DocCard href="/docs/multi-platform-sync" icon={<Activity className="text-purple-600" size={24} />} title="Multi-Platform Sync" description="How Superkabe syncs across Smartlead, Instantly, and EmailBison simultaneously" />
+ <DocCard href="/docs/slack-integration" icon={<AlertTriangle className="text-yellow-600" size={24} />} title="Slack Integration" description="Real-time deliverability alerts delivered to your Slack workspace" />
+ <DocCard href="/docs/api-integration" icon={<Plug className="text-blue-600" size={24} />} title="API & Webhooks" description="REST API reference for programmatic lead ingestion and webhook configuration" />
  </div>
 
  {/* Help Center */}

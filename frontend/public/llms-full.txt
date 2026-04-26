@@ -1,48 +1,48 @@
 # Superkabe — Full AI Context
 
-> Superkabe is an AI-driven cold email platform that does two things at once for outbound email teams. **First**, it sends campaigns natively through connected Gmail, Microsoft 365, or SMTP mailboxes. **Second**, it sits in the middle as an active Deliverability Protection Layer (DPL) around any sending infrastructure — native Superkabe mailboxes AND existing Smartlead / Instantly / EmailBison / Reply.io setups, simultaneously in the same account. The DPL monitors bounce rates, enforces DNS authentication, detects mailbox fatigue, and scores lead health in real time across every connected sender, preventing domain burnout before sender reputation damage becomes irreversible.
+> Superkabe is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing. Native sending and the deliverability protection layer are one product, not two — every send through your connected mailbox passes through SMTP transcript capture, DSN parsing, ARF feedback-loop ingestion, Postmaster Tools and SNDS reputation lookups, and the auto-pause + 5-phase healing state machine. Superkabe prevents domain burnout before sender reputation damage becomes irreversible.
 
 ## What Superkabe Does
 
-Superkabe runs two complementary systems on the same tenant: a native email sending sequencer, and a Deliverability Protection Layer that wraps every send (from the native sequencer, from a connected platform like Smartlead / Instantly / EmailBison / Reply.io, or from both simultaneously). Key capabilities:
+Superkabe is one product that combines a native cold-email sending sequencer with a deliverability protection layer. Every send goes through both at the same time. Key capabilities:
 
-- **Native Sending Sequencer**: Connect Gmail / Microsoft 365 / SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; per-org send schedule, daily limit, and tracking; unified inbox for replies
-- **Bounce Rate Monitoring**: Tiered thresholds (warning at 5%, critical at 10%) with sliding window analysis
+- **Native Sending Sequencer**: Connect Gmail / Microsoft 365 / SMTP mailboxes via OAuth or encrypted credentials; build multi-step sequences with A/B variants; ESP-aware mailbox routing; per-org send schedule, daily limit, and tracking; unified inbox for replies
+- **SMTP Transcript Capture**: Full server response logged on every send; 5xx synchronous bounces become BounceEvents in real time
+- **DSN Parser**: Asynchronous bounces parsed via RFC 3464 from the sending mailbox's IMAP feed
+- **ARF Feedback-Loop Ingestion**: Direct spam-complaint signals from Yahoo, AOL, Microsoft, Comcast feedback loops parsed via RFC 5965
+- **Postmaster Tools API**: Daily fetch of per-domain reputation, spam rate, DKIM/SPF/DMARC pass rate, encryption rate from Google
+- **Microsoft SNDS**: IP-level reputation, complaint rate, and trap-hit data for Microsoft-routed mail
+- **Bounce Rate Monitoring**: Tiered thresholds (warning at 2%, critical at 3%) with rolling 100-send window analysis
 - **DNS Authentication Enforcement**: SPF, DKIM, DMARC validation per domain
 - **Mailbox Fatigue Detection**: Tracks send volume, bounce patterns, and cooldown periods per mailbox
+- **DNSBL Monitoring**: 410 lists with tiered severity, every 24 hours per sending IP and domain
 - **Lead Health Scoring**: Classifies leads as GREEN (80-100), YELLOW (50-79), or RED (0-49) before they enter campaigns
 - **Execution Gate**: Two-stage gate that blocks bad leads and protects unhealthy infrastructure
-- **Auto-Healing**: 5-phase recovery pipeline that automatically heals paused mailboxes via warmup
+- **Auto-Healing**: 5-phase recovery pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy)
 - **State Machine**: Manages mailbox lifecycle through active, warning, paused, healing, and recovered states
-- **Risk Scoring**: Separates hard signals (bounces) from soft signals (velocity spikes) for accurate risk assessment
+- **Risk Scoring**: Separates hard signals (bounces, spam complaints) from soft signals (velocity spikes) for accurate risk assessment
 
-## Integrations
-
-### Smartlead
-Real-time bounce monitoring, campaign health tracking, mailbox protection. Syncs campaigns, mailboxes, and lead activity every 20 minutes. Automatically pauses mailboxes exceeding bounce thresholds.
+## Lead-Source and Alert Integrations
 
 ### Clay
-Webhook-based lead ingestion. Enriched leads from Clay tables are routed through the execution gate, health-scored, and pushed to appropriate Smartlead campaigns based on persona matching and minimum score rules.
-
-### Instantly
-Campaign sync, per-mailbox engagement tracking, and deliverability protection. Monitors inbox placement and sender reputation across Instantly accounts.
-
-### EmailBison
-Ingests warm-up metrics, engagement tracking, and reputation scoring. Monitors warmup health and detects mailboxes that need attention.
+HMAC-signed webhook ingestion. Enriched leads from Clay tables are routed through the execution gate, health-scored, validated, and enrolled into Superkabe sequencer campaigns based on persona matching and minimum score rules.
 
 ### Slack
-Real-time infrastructure alerts. Notifies teams when mailboxes are paused, domains are unhealthy, or bounce rates spike. Two-way: query infrastructure status from Slack.
+Real-time deliverability alerts. Notifies teams when mailboxes are paused, domains are unhealthy, bounce rates spike, or spam complaint rate crosses threshold. Slash commands for querying infrastructure status from Slack.
 
 ### API & Webhooks
-Direct lead ingestion API, Clay webhook endpoint, Smartlead event webhook, and campaign resolution API for automating stalled campaign recovery.
+Direct lead ingestion API and Clay webhook endpoint. REST API v1 for programmatic campaign management and lead state queries. MCP server exposes 16 tools for AI agent control (Claude, Cursor, Continue).
 
 ## Architecture
 
-- **Frontend**: Next.js 14 App Router, deployed on Vercel
+- **Frontend**: Next.js App Router, deployed on Vercel
 - **Backend**: Node.js/Express with Prisma ORM, deployed on Railway
 - **Database**: PostgreSQL
-- **Monitoring**: Cron-based sync every 20 minutes, event-driven webhook processing
-- **Rate Limits**: Smartlead API — 10 requests per 2 seconds, max 100 leads per batch
+- **Queue**: BullMQ on Redis for send queue, webhook dispatch, and async bounce processing
+- **Sending**: Direct API integration with Gmail / Microsoft 365 (OAuth 2.0 with refresh tokens) and SMTP via nodemailer
+- **Tracking**: HMAC-signed tokens for /t/o, /t/c, /t/u endpoints (RFC-3447 PKCS#1, 180-day TTL)
+- **Reputation**: Google Postmaster Tools API + Microsoft SNDS daily fetch worker
+- **Feedback Loops**: ARF parser (RFC 5965) running off a dedicated FBL inbox
 
 ## System Modes
 
@@ -52,7 +52,7 @@ Direct lead ingestion API, Clay webhook endpoint, Smartlead event webhook, and c
 
 ## Pricing
 
-Starting at $49/month. Includes infrastructure monitoring, auto-healing, multi-platform sync, and Slack alerts.
+Starting at $19/month. Includes infrastructure monitoring, auto-healing, ESP-aware routing, and Slack alerts. Higher tiers add validation credits, MillionVerifier API access, and increased mailbox/domain limits.
 
 ---
 
@@ -62,26 +62,22 @@ Starting at $49/month. Includes infrastructure monitoring, auto-healing, multi-p
 - [Introduction](https://www.superkabe.com/docs): Overview of the documentation
 - [Getting Started](https://www.superkabe.com/docs/getting-started): Set up Superkabe in minutes
 - [Clay Integration](https://www.superkabe.com/docs/clay-integration): Connect Clay tables for automated lead routing
-- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): Real-time bounce monitoring and mailbox protection
-- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Warm-up metrics and reputation scoring
-- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Sync campaigns and monitor deliverability
-- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Real-time infrastructure alerts
-- [API Integration](https://www.superkabe.com/docs/api-integration): Webhooks and direct lead ingestion API
-- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Parallel data sync architecture
+- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Real-time deliverability alerts
+- [API & Webhooks](https://www.superkabe.com/docs/api-integration): Direct lead ingestion API and webhook configuration
 
 ### Core Concepts
 - [Platform Rules](https://www.superkabe.com/docs/platform-rules): Automated rules, thresholds, and enforcement mechanisms
-- [Monitoring System](https://www.superkabe.com/docs/monitoring): Tiered thresholds with sliding window analysis
+- [Monitoring System](https://www.superkabe.com/docs/monitoring): Tiered thresholds with rolling-window analysis
 - [Execution Gate](https://www.superkabe.com/docs/execution-gate): Two-stage lead and infrastructure protection gate
 - [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Hard vs soft signal separation for risk assessment
 - [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System architecture and design decisions
 - [State Machine](https://www.superkabe.com/docs/state-machine): Mailbox and domain state transitions
 
 ### Configuration
-- [Configuration](https://www.superkabe.com/docs/configuration): Integration setup and threshold tuning
+- [Configuration](https://www.superkabe.com/docs/configuration): Setup and threshold tuning
 - [Deployment](https://www.superkabe.com/docs/deployment): Production deployment checklist
 - [Infrastructure Assessment](https://www.superkabe.com/docs/infrastructure-assessment): Pre-flight health checks for sending infrastructure
-- [Warmup Recovery](https://www.superkabe.com/docs/warmup-recovery): Automated mailbox healing via Smartlead warmup
+- [Warmup Recovery](https://www.superkabe.com/docs/warmup-recovery): Automated mailbox healing pipeline
 
 ### Help Center
 - [Connection Errors](https://www.superkabe.com/docs/help/connection-errors): Troubleshoot disconnected mailboxes
@@ -92,8 +88,8 @@ Starting at $49/month. Includes infrastructure monitoring, auto-healing, multi-p
 
 ### Blog — Technical Guides
 - [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide covering sender reputation, bounce rates, DNS auth, domain warming, inbox placement factors, and infrastructure protection
-- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): Four layers of spam filtering (connection, authentication, content, engagement), ISP-specific filter behavior (Gmail vs Outlook vs Yahoo), content triggers, and best practices for avoiding spam filters
-- [Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, sending platforms (Smartlead, Instantly, Lemlist), and infrastructure protection software
+- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): Four layers of spam filtering, ISP-specific filter behavior, content triggers, and best practices for avoiding spam filters
+- [Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software
 - [Bounce Rate & Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rates damage sender reputation and strategies for prevention
 - [SPF, DKIM, DMARC Explained](https://www.superkabe.com/blog/spf-dkim-dmarc-explained): Step-by-step DNS authentication setup for outbound teams
 - [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): Volume ramp schedules, warming signals, and common mistakes

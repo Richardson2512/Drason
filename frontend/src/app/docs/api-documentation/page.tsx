@@ -562,7 +562,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
 
  <div className="bg-blue-50 border border-blue-200 p-5 mb-6">
  <h4 className="font-bold text-blue-900 mb-2">Native sequencer only</h4>
- <p className="text-sm text-gray-700">v1 campaign endpoints operate on campaigns where <code>source_platform = &apos;sequencer&apos;</code>. Legacy campaigns synced from Smartlead / Instantly / EmailBison / Reply.io are not exposed through v1 — they live on platform-specific routes.</p>
+ <p className="text-sm text-gray-700">v1 campaign endpoints operate on Superkabe sequencer campaigns. Send, lead, and event data is read directly from the native pipeline.</p>
  </div>
 
  <h4 className="text-xl font-semibold mt-6 mb-2 text-gray-800">Create campaign</h4>

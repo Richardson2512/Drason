@@ -18,13 +18,8 @@ const docSections = [
  { title: 'Introduction', href: '/docs', icon: Book },
  { title: 'Getting Started', href: '/docs/getting-started', icon: Zap },
  { title: 'Clay Integration', href: '/docs/clay-integration', icon: Activity },
- { title: 'Smartlead Integration', href: '/docs/smartlead-integration', icon: Activity },
- { title: 'EmailBison Integration', href: '/docs/emailbison-integration', icon: Activity },
- { title: 'Instantly Integration', href: '/docs/instantly-integration', icon: Activity },
  { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
- { title: 'API Integration (webhooks)', href: '/docs/api-integration', icon: Settings },
- { title: 'Multi-Platform Sync', href: '/docs/multi-platform-sync', icon: GitBranch },
- { title: 'Data Sync Coverage', href: '/docs/data-sync-coverage', icon: Database },
+ { title: 'API & Webhooks', href: '/docs/api-integration', icon: Settings },
  ]
  },
  {

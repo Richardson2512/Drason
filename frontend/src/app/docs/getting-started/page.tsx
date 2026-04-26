@@ -25,7 +25,7 @@ export default function GettingStartedPage() {
 
  <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What is Superkabe?</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- Superkabe is an AI-powered cold email platform with native deliverability protection. Draft sequences with AI, send across unlimited mailboxes (Google Workspace, Microsoft 365, or any SMTP provider), validate every lead, and let the protection layer auto-pause, reroute, and heal your senders in real time. You can also run Superkabe in Protection Mode — connecting Smartlead, Instantly, or EmailBison to wrap the same safety layer around your existing sender.
+ Superkabe is an AI-powered cold email platform with native deliverability protection. Draft sequences with AI, send across unlimited mailboxes (Google Workspace, Microsoft 365, or any SMTP provider), validate every lead, and let the protection layer auto-pause, reroute, and heal your senders in real time. You can also run Superkabe in Protection Mode — connecting your Gmail, Microsoft 365, or SMTP mailboxes to send natively with the same safety layer.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  Every lead that enters Superkabe flows through the same pipeline: email validation (syntax, MX, disposable, catch-all, plus MillionVerifier API on risky leads), the GREEN/YELLOW/RED health gate, ESP-aware mailbox routing, and continuous post-send monitoring with a 5-phase auto-healing recovery pipeline for any mailbox that degrades.
@@ -41,7 +41,7 @@ export default function GettingStartedPage() {
  <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Auto-Pause</strong> — Pauses mailboxes and domains when bounce thresholds are breached, with correlation engine to detect root cause</div>
  <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>5-Phase Healing</strong> — Paused → Quarantine → Restricted Send → Warm Recovery → Healthy. Fully automated with graduation criteria per phase</div>
  <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Mailbox Rotation</strong> — When a mailbox is paused, a healthy standby mailbox is automatically swapped in to keep campaigns sending</div>
- <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Multi-Platform</strong> — Works with Smartlead, Instantly, and EmailBison through a unified platform adapter</div>
+ <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Native sending</strong> — Gmail, Microsoft 365, or SMTP mailboxes connected via OAuth or encrypted credentials</div>
  </div>
  </div>
 
@@ -54,7 +54,7 @@ export default function GettingStartedPage() {
  <li><strong className="text-gray-900">Email Validation:</strong> Every email is checked for syntax, MX records, disposable domains, and catch-all detection. Growth and Scale plans additionally verify risky leads through the MillionVerifier API. Invalid emails are blocked here — they never reach your sender.</li>
  <li><strong className="text-gray-900">Health Gate:</strong> Each lead receives a GREEN (safe), YELLOW (proceed with caution), or RED (block) classification based on validation score, domain health, and engagement signals. RED leads are blocked.</li>
  <li><strong className="text-gray-900">Routing:</strong> GREEN and YELLOW leads are matched to campaigns using your routing rules (persona + minimum score). YELLOW leads are distributed with per-mailbox risk caps — no more than 2 risky leads per 60 sends per mailbox.</li>
- <li><strong className="text-gray-900">Platform Push:</strong> Validated, routed leads are pushed to your sending platform (Smartlead, Instantly, or EmailBison) via API. Lead status changes to ACTIVE on successful push.</li>
+ <li><strong className="text-gray-900">Native Send:</strong> Validated, routed leads enter Superkabe&apos;s sequencer for dispatch through your connected mailboxes. Lead status changes to ACTIVE when enrolled in a sequence.</li>
  <li><strong className="text-gray-900">Monitoring:</strong> Once campaigns are running, Superkabe monitors mailbox health every 60 seconds — bounce rates, SMTP/IMAP connectivity, DNS authentication (SPF, DKIM, DMARC), and domain reputation.</li>
  <li><strong className="text-gray-900">Protection:</strong> When a mailbox exceeds bounce thresholds, Superkabe auto-pauses it and removes it from campaigns on the platform. The correlation engine checks if the root cause is the mailbox, the domain, or a bad campaign before deciding what to pause.</li>
  <li><strong className="text-gray-900">Healing:</strong> Paused mailboxes enter a 5-phase recovery pipeline: Pause (cooldown) → Quarantine (DNS verification) → Restricted Send (conservative warmup) → Warm Recovery (graduated volume) → Healthy (re-added to campaigns). Each phase has specific graduation criteria.</li>
@@ -71,7 +71,7 @@ export default function GettingStartedPage() {
 
  <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">2. Connect Your Sending Platform</h3>
  <p className="text-gray-600 mb-4">
- Navigate to <strong className="text-gray-900">Configuration</strong> and add your sending platform API key (Smartlead, EmailBison, or Instantly):
+ Navigate to <strong className="text-gray-900">Mailboxes</strong> and connect your sending mailboxes via OAuth (Gmail or Microsoft 365) or encrypted SMTP credentials:
  </p>
  <div className="bg-gray-50 border border-gray-200 p-4 mb-4">
  <code className="text-blue-600">Settings → Integrations → Add API Key</code>
@@ -131,7 +131,7 @@ export default function GettingStartedPage() {
  <li>Validate every incoming lead (syntax, MX, disposable, catch-all, MillionVerifier for risky leads)</li>
  <li>Block invalid and disposable emails before they reach your sender</li>
  <li>Classify leads as GREEN/YELLOW/RED and route them to campaigns by persona and score</li>
- <li>Push validated leads to Smartlead, Instantly, or EmailBison via API</li>
+ <li>Enroll validated leads in Superkabe sequencer campaigns for native dispatch</li>
  <li>Monitor mailbox health every 60 seconds (bounce rates, connectivity, DNS)</li>
  <li>Auto-pause mailboxes when bounce thresholds are breached</li>
  <li>Correlate failures across mailboxes, domains, and campaigns to find root cause</li>

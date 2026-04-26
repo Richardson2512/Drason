@@ -542,7 +542,8 @@ function rulesSummary(s: Settings): string {
     parts.push(timeWindowLabel(s.time_window_days).toLowerCase());
     if (s.require_click) parts.push('clicks required');
     if (s.title_filter) parts.push(`title: ${s.title_filter}`);
-    if (s.campaign_filter && s.campaign_filter.length > 0) parts.push(`${s.campaign_filter.length} campaign${s.campaign_filter.length === 1 ? '' : 's'}`);
+    const cf = Array.isArray(s.campaign_filter) ? s.campaign_filter : [];
+    if (cf.length > 0) parts.push(`${cf.length} campaign${cf.length === 1 ? '' : 's'}`);
     parts.push(`top ${s.max_list_size}`);
     return parts.join(' · ');
 }
@@ -564,7 +565,19 @@ function RulesPanel({
     onChange: (next: Partial<Settings>) => void;
     onReset: () => void;
 }) {
-    const selectedCampaigns = settings.campaign_filter ?? [];
+    // Destructure with explicit defaults. Inline `settings.title_filter ?? ''`
+    // tripped a Turbopack TDZ bug ("_settings_title_filter is not defined").
+    const minOpens = settings.min_opens ?? 0;
+    const timeWindowDays = settings.time_window_days ?? 7;
+    const requireClick = settings.require_click ?? false;
+    const requireNoReply = settings.require_no_reply ?? true;
+    const excludeRecentDays = settings.exclude_recent_days ?? 7;
+    const maxListSize = settings.max_list_size ?? 200;
+    const titleFilter = settings.title_filter ?? '';
+
+    // campaign_filter is JSONB on the backend — coerce to array to survive
+    // any stale {} or non-array shape that might be returned.
+    const selectedCampaigns: string[] = Array.isArray(settings.campaign_filter) ? settings.campaign_filter : [];
     const allCampaignsSelected = selectedCampaigns.length === 0;
 
     return (
@@ -575,7 +588,7 @@ function RulesPanel({
                         type="number"
                         min={0}
                         max={50}
-                        value={settings.min_opens}
+                        value={minOpens}
                         onChange={(e) => onChange({ min_opens: parseInt(e.target.value || '0', 10) || 0 })}
                         className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
@@ -583,7 +596,7 @@ function RulesPanel({
 
                 <Field label="Time window for opens">
                     <select
-                        value={settings.time_window_days}
+                        value={timeWindowDays}
                         onChange={(e) => onChange({ time_window_days: parseInt(e.target.value, 10) })}
                         className="rounded-md border border-neutral-200 px-2 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     >
@@ -597,7 +610,7 @@ function RulesPanel({
                     <label className="inline-flex items-center gap-2 text-xs cursor-pointer">
                         <input
                             type="checkbox"
-                            checked={settings.require_click}
+                            checked={requireClick}
                             onChange={(e) => onChange({ require_click: e.target.checked })}
                             className="rounded border-neutral-300"
                         />
@@ -609,7 +622,7 @@ function RulesPanel({
                     <label className="inline-flex items-center gap-2 text-xs cursor-pointer">
                         <input
                             type="checkbox"
-                            checked={settings.require_no_reply}
+                            checked={requireNoReply}
                             onChange={(e) => onChange({ require_no_reply: e.target.checked })}
                             className="rounded border-neutral-300"
                         />
@@ -622,7 +635,7 @@ function RulesPanel({
                         type="number"
                         min={0}
                         max={90}
-                        value={settings.exclude_recent_days}
+                        value={excludeRecentDays}
                         onChange={(e) => onChange({ exclude_recent_days: parseInt(e.target.value || '0', 10) || 0 })}
                         className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
@@ -633,7 +646,7 @@ function RulesPanel({
                         type="number"
                         min={10}
                         max={1000}
-                        value={settings.max_list_size}
+                        value={maxListSize}
                         onChange={(e) => onChange({ max_list_size: parseInt(e.target.value || '0', 10) || 0 })}
                         className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
@@ -643,7 +656,7 @@ function RulesPanel({
                     <input
                         type="text"
                         placeholder='e.g. "VP, Director, Head, Chief"'
-                        value={settings.title_filter ?? ''}
+                        value={titleFilter}
                         onChange={(e) => onChange({ title_filter: e.target.value || null })}
                         className="w-full rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />

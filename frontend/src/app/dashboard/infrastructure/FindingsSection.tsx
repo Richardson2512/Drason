@@ -57,13 +57,13 @@ function getHelpLink(title: string): { url: string; label: string } | null {
     if (t.startsWith('early bounce signal'))
         return { url: 'https://support.google.com/a/answer/81126', label: 'Google: Email sender guidelines' };
 
-    // Campaign health findings
+    // Campaign health findings — link to Superkabe docs
     if (t.startsWith('no mailboxes'))
-        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Assign mailboxes to campaigns' };
+        return { url: '/docs/getting-started', label: 'Connect a mailbox' };
     if (t.startsWith('all mailboxes paused'))
-        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Resolve mailbox issues' };
+        return { url: '/docs/help/connection-errors', label: 'Resolve mailbox issues' };
     if (t.startsWith('degraded infrastructure'))
-        return { url: 'https://help.smartlead.ai/', label: 'Smartlead: Mailbox health management' };
+        return { url: '/docs/help/24-7-monitoring', label: 'Mailbox health monitoring' };
 
     return null;
 }

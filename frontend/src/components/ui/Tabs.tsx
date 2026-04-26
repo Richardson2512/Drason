@@ -8,8 +8,8 @@
  * and browser back/forward stays sane.
  */
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface TabItem {
     key: string;
@@ -29,19 +29,29 @@ interface TabsProps {
 export function useTabState(tabs: TabItem[], defaultKey?: string): [string, (k: string) => void] {
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
-
     const fallback = defaultKey || tabs[0]?.key || '';
-    const fromUrl = searchParams.get('tab');
-    const active = tabs.some(t => t.key === fromUrl) ? (fromUrl as string) : fallback;
+
+    // Read ?tab from window.location after mount to avoid useSearchParams,
+    // which forces a prerender bailout on every page that uses tabs.
+    const [active, setActiveState] = useState<string>(fallback);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const fromUrl = new URLSearchParams(window.location.search).get('tab');
+        if (fromUrl && tabs.some(t => t.key === fromUrl)) {
+            setActiveState(fromUrl);
+        }
+    }, [tabs]);
 
     const setActive = useCallback((key: string) => {
-        const params = new URLSearchParams(searchParams.toString());
+        setActiveState(key);
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
         if (key === fallback) params.delete('tab');
         else params.set('tab', key);
         const qs = params.toString();
         router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-    }, [router, pathname, searchParams, fallback]);
+    }, [router, pathname, fallback]);
 
     return [active, setActive];
 }

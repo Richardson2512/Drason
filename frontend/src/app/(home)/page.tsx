@@ -122,12 +122,12 @@ function FeatureRow({ eyebrow, title, body, link, imageOnLeft, mockup }: Feature
 
 // ─── MOCKUPS ─────────────────────────────────────────────────
 
-function SmartleadMockup() {
+function GmailMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
  <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center gap-3">
- <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} className="object-contain shrink-0" />
- <span className="text-xs font-bold text-gray-900 flex-1">Smartlead</span>
+ <div className="w-6 h-6 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 shrink-0 flex items-center justify-center text-white text-[10px] font-bold">G</div>
+ <span className="text-xs font-bold text-gray-900 flex-1">Gmail · OAuth</span>
  <div className="flex items-center gap-1.5">
  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
  <span className="text-[10px] font-semibold text-green-700">Connected</span>
@@ -135,7 +135,7 @@ function SmartleadMockup() {
  </div>
  <div className="p-4 space-y-2">
  {[
- { type: 'bounce', email: 'lead.42@acme.com', color: 'red' },
+ { type: 'sent', email: 'lead.42@acme.com', color: 'emerald' },
  { type: 'open', email: 'lead.17@corp.io', color: 'blue' },
  { type: 'reply', email: 'lead.08@biz.com', color: 'emerald' },
  { type: 'bounce', email: 'lead.33@dom.com', color: 'red' },
@@ -150,15 +150,18 @@ function SmartleadMockup() {
  );
 }
 
-function InstantlyMockup() {
+function MicrosoftMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-5">
  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
- <Image src="/instantly.png" alt="Instantly" width={24} height={24} className="object-contain shrink-0" />
- <span className="text-xs font-bold text-gray-900 flex-1">Instantly</span>
- <span className="text-[10px] px-2 py-0.5 bg-purple-100 text-purple-700 font-semibold">API v2</span>
+ <div className="w-6 h-6 grid grid-cols-2 gap-[2px] shrink-0">
+ <div className="bg-orange-500" /><div className="bg-green-500" />
+ <div className="bg-blue-500" /><div className="bg-yellow-500" />
  </div>
- <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Campaign</div>
+ <span className="text-xs font-bold text-gray-900 flex-1">Microsoft 365 · OAuth</span>
+ <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 font-semibold">Active</span>
+ </div>
+ <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Native Sequence</div>
  <div className="text-sm font-bold text-gray-900 mb-3">Q2 Enterprise Outbound</div>
  <div className="grid grid-cols-3 gap-2 mb-4">
  {[{ v: '1,847', l: 'Sent' }, { v: '342', l: 'Opens' }, { v: '47', l: 'Replies' }].map((m, i) => (
@@ -169,27 +172,27 @@ function InstantlyMockup() {
  ))}
  </div>
  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
- <div className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" style={{ width: '72%' }} />
+ <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{ width: '72%' }} />
  </div>
- <div className="text-[10px] text-gray-500 mt-2">72% delivered · Bearer auth active</div>
+ <div className="text-[10px] text-gray-500 mt-2">Native send · ESP-aware routing live</div>
  </div>
  );
 }
 
-function EmailBisonMockup() {
+function SmtpMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-5">
  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
- <Image src="/emailbison.png" alt="EmailBison" width={24} height={24} className="object-contain shrink-0" />
- <span className="text-xs font-bold text-gray-900 flex-1">EmailBison</span>
- <span className="text-[10px] px-2 py-0.5 bg-teal-100 text-teal-700 font-semibold">Warmup</span>
+ <div className="w-6 h-6 bg-gray-900 text-white shrink-0 flex items-center justify-center text-[9px] font-bold rounded">SMTP</div>
+ <span className="text-xs font-bold text-gray-900 flex-1">SMTP · Encrypted creds</span>
+ <span className="text-[10px] px-2 py-0.5 bg-teal-100 text-teal-700 font-semibold">3 mailboxes</span>
  </div>
- <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Mailbox Daily Caps</div>
+ <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Daily Send Caps</div>
  <div className="space-y-2.5">
  {[
- { name: 'sarah@acme.co', vol: 85, max: 100, status: 'active' },
- { name: 'mark@acme.co', vol: 45, max: 50, status: 'active' },
- { name: 'lisa@acme.co', vol: 100, max: 100, status: 'full' },
+ { name: 'sarah@acme.co', vol: 85, max: 100 },
+ { name: 'mark@acme.co', vol: 45, max: 50 },
+ { name: 'lisa@acme.co', vol: 100, max: 100 },
  ].map((m, i) => (
  <div key={i} className="flex items-center gap-3 text-xs">
  <span className="font-mono text-gray-700 w-32 truncate">{m.name}</span>
@@ -201,8 +204,8 @@ function EmailBisonMockup() {
  ))}
  </div>
  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px]">
- <span className="text-gray-500">3 mailboxes · warmup active</span>
- <span className="text-teal-700 font-semibold">+Attach mailbox</span>
+ <span className="text-gray-500">3 mailboxes · auto-paused at 3% bounce</span>
+ <span className="text-teal-700 font-semibold">+Add mailbox</span>
  </div>
  </div>
  );
@@ -261,23 +264,6 @@ function SlackMockup() {
  <span className="text-[9px] text-gray-400">now</span>
  </div>
  ))}
- </div>
- </div>
- );
-}
-
-function ReplyIoMockup() {
- return (
- <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-6 text-center">
- <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center p-3">
- <Image src="/replyio.png" alt="Reply.io" width={40} height={40} className="object-contain" />
- </div>
- <div className="text-sm font-bold text-gray-900 mb-1">Reply.io · Q2 2026 Rollout</div>
- <div className="text-xs text-gray-500 mb-4">Reply.io adapter in active development</div>
- <div className="flex items-center justify-center gap-1.5">
- <div className="w-1.5 h-1.5 bg-pink-300 rounded-full animate-pulse" />
- <div className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
- <div className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
  </div>
  </div>
  );
@@ -378,23 +364,18 @@ function ScalingMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-5">
  <div className="flex items-center justify-between mb-4">
- <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Multi-Platform Fleet</span>
+ <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Mailbox Fleet</span>
  <span className="text-[10px] text-gray-700 font-semibold">∞ mailboxes</span>
  </div>
  <div className="space-y-2">
  {[
- { plat: 'Smartlead', c: 42, color: 'blue' },
- { plat: 'Instantly', c: 28, color: 'purple' },
- { plat: 'EmailBison', c: 15, color: 'teal' },
- { plat: 'Reply.io', c: 0, color: 'pink', soon: true },
+ { plat: 'Gmail (OAuth)', c: 42, color: 'blue' },
+ { plat: 'Microsoft 365 (OAuth)', c: 28, color: 'purple' },
+ { plat: 'Custom SMTP', c: 15, color: 'teal' },
  ].map((p, i) => (
  <div key={i} className={`flex items-center justify-between p-2.5 bg-${p.color}-50`}>
  <span className={`text-xs font-bold text-${p.color}-700`}>{p.plat}</span>
- {p.soon ? (
- <span className={`text-[10px] text-${p.color}-700 font-semibold`}>Coming soon</span>
- ) : (
  <span className={`text-xs font-mono text-${p.color}-700`}>{p.c} mailboxes</span>
- )}
  </div>
  ))}
  </div>
@@ -506,7 +487,7 @@ export default function LandingPage() {
  const techSpecs = [
  { label: "Platform Type", value: "AI cold email platform with native deliverability protection" },
  { label: "Sending Providers", value: "Google Workspace, Microsoft 365, Custom SMTP (Zapmail, Scaledmail, MissionInbox, and others)" },
- { label: "Protection Mode Integrations", value: "Smartlead, Instantly, EmailBison, Clay, Slack" },
+ { label: "Lead-source & alert integrations", value: "Clay, Slack" },
  { label: "Scale", value: "Unlimited mailboxes and domains per organization" },
  { label: "Monitoring Cadence", value: "Real-time bounce + reply webhooks plus 60-second dispatcher cycles" },
  { label: "Validation Pipeline", value: "Syntax, MX, disposable, catch-all detection plus MillionVerifier API on Growth and Scale plans" },
@@ -542,10 +523,10 @@ export default function LandingPage() {
  },
  {
  "@type": "Question",
- "name": "Can I use Superkabe with Smartlead or Instantly instead of migrating?",
+ "name": "What mailboxes can I send from?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Superkabe has a Protection Mode that connects to Smartlead, Instantly, and EmailBison via native webhooks and API sync. You keep sending from your existing platform while Superkabe watches every bounce, open, and reply — auto-pausing mailboxes, rotating senders, and pushing validated leads in. When you're ready, you can migrate sending into Superkabe's AI platform without losing history."
+ "text": "Superkabe sends from your own mailboxes — Google Workspace and Microsoft 365 via OAuth, or any SMTP provider with encrypted credentials (Zapmail, Scaledmail, MissionInbox, custom workspaces, and more). You connect mailboxes once; Superkabe handles authentication, rotation, ESP-aware routing, and the deliverability protection layer for every send."
  }
  },
  {
@@ -659,7 +640,7 @@ export default function LandingPage() {
  "url": "https://www.superkabe.com/",
  "applicationCategory": "Cold email sending and deliverability platform",
  "operatingSystem": "Web-based (SaaS)",
- "description": "Superkabe is an AI cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and an auto-healing protection layer into a single product for outbound revenue teams — and also connects to Smartlead, Instantly, and EmailBison in Protection Mode for teams not ready to migrate.",
+ "description": "Superkabe is an AI cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending across Gmail, Microsoft 365, and SMTP, email validation, ESP-aware lead routing, and an auto-healing protection layer (auto-pause, auto-rotate, domain reputation monitoring) into a single product for outbound revenue teams.",
  "offers": {
  "@type": "Offer",
  "price": "19",
@@ -681,7 +662,7 @@ export default function LandingPage() {
  "Predictive campaign risk monitoring and correlation engine",
  "Load balancing across mailboxes and campaigns",
  "Slack integration for real-time alerts and slash commands",
- "Protection Mode connectors for Smartlead, Instantly, EmailBison, and Clay",
+ "Lead-source ingestion from Clay via signed webhooks",
  "Reports and CSV export for leads, campaigns, mailboxes, domains",
  "Dedicated AI agents for cold email tasks (sequence writing, reply classification, send-time optimization)",
  "Public REST API v1 and MCP server for programmatic access"
@@ -1009,34 +990,33 @@ export default function LandingPage() {
  <svg className="w-5 h-5 text-pink-500 absolute rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
  </div>
 
- {/* NODE 3: Sending Platform Train */}
+ {/* NODE 3: Native Mailbox Train (Gmail / Microsoft / SMTP) */}
  <div className="flex flex-col items-center justify-center relative z-10 w-[80px] h-[80px]">
  <div className="w-[80px] h-[80px] min-h-[80px] bg-white shadow-xl border border-gray-100 overflow-hidden relative transform transition-transform group-hover:scale-105 duration-500 z-20">
  <div className="absolute inset-x-0 w-full animate-col-train">
  <div className="h-20 flex items-center justify-center">
- <Image src="/smartlead.webp" alt="Smartlead" width={40} height={40} className="object-contain" />
+ <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold">G</div>
  </div>
  <div className="h-20 flex items-center justify-center">
- <Image src="/instantly.png" alt="Instantly" width={40} height={40} className="object-contain" />
+ <div className="w-10 h-10 grid grid-cols-2 gap-[3px]">
+ <div className="bg-orange-500" /><div className="bg-green-500" />
+ <div className="bg-blue-500" /><div className="bg-yellow-500" />
+ </div>
  </div>
  <div className="h-20 flex items-center justify-center">
- <Image src="/emailbison.png" alt="Email Bison" width={40} height={40} className="object-contain" />
+ <div className="w-10 h-10 bg-gray-900 text-white flex items-center justify-center text-[10px] font-bold rounded">SMTP</div>
  </div>
  <div className="h-20 flex items-center justify-center">
- <Image src="/replyio.png" alt="Reply.io" width={40} height={40} className="object-contain bg-white" />
- </div>
- <div className="h-20 flex items-center justify-center">
- <Image src="/smartlead.webp" alt="Smartlead" width={40} height={40} className="object-contain" />
+ <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold">G</div>
  </div>
  </div>
  </div>
  <div className="absolute -bottom-8 h-4 overflow-hidden w-28 relative">
  <div className="absolute inset-x-0 w-full animate-col-train text-center flex flex-col text-[11px] font-bold text-gray-700 tracking-wide uppercase whitespace-nowrap">
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Smartlead</span>
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Instantly</span>
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Email Bison</span>
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Reply.io</span>
- <span className="h-4 flex items-center justify-center">Smartlead</span>
+ <span className="h-4 flex items-center justify-center mb-[4.1rem]">Gmail</span>
+ <span className="h-4 flex items-center justify-center mb-[4.1rem]">Microsoft 365</span>
+ <span className="h-4 flex items-center justify-center mb-[4.1rem]">SMTP</span>
+ <span className="h-4 flex items-center justify-center">Gmail</span>
  </div>
  </div>
  </div>
@@ -1075,47 +1055,47 @@ export default function LandingPage() {
  {/* Header */}
  <div className="text-center mb-12">
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
- 6+ Integrations
+ Mailboxes · Lead source · Alerts
  </div>
  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
- Send from Superkabe — or protect the platform you already use.
+ Connect your mailboxes. Send from Superkabe.
  </h2>
  <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Use Superkabe as your full AI cold email platform, or connect it to Smartlead, Instantly, or EmailBison to add deliverability protection without migrating. Enrich from Clay, alert to Slack — all configurable in under 5 minutes.
+ Bring your own Gmail, Microsoft 365, or SMTP mailboxes — Superkabe handles the sequencing, ESP-aware routing, and the deliverability protection layer that auto-pauses risky senders before domains burn. Enrich from Clay, alert to Slack — all configurable in under 5 minutes.
  </p>
  </div>
  </div>
 
  {/* Integrations — alternating rows with visible grid lines */}
  <PlatformRow
- eyebrow="Protection Mode"
- title="Deliverability protection for Smartlead"
- body="Already sending from Smartlead? Connect it and let Superkabe watch every bounce, open, and reply in real-time — auto-pause campaigns, rotate mailboxes, and push healed leads back, no migration required."
- tags={['Webhook Sync', 'Auto-Pause', 'CSV Export']}
+ eyebrow="Native Send"
+ title="Connect Gmail with one-click OAuth"
+ body="Authorize once and Superkabe sends through your Gmail mailbox with full DKIM/SPF alignment. Real-time tracking of opens, clicks, replies, and bounces — plus reputation signals direct from Google Postmaster Tools."
+ tags={['OAuth', 'Postmaster Tools', 'Real-Time Tracking']}
  tagColor="blue"
- link="/docs/smartlead-integration"
+ link="/docs/getting-started"
  imageOnLeft={true}
- mockup={<SmartleadMockup />}
+ mockup={<GmailMockup />}
  />
  <PlatformRow
- eyebrow="Protection Mode"
- title="Deliverability protection for Instantly"
- body="Sync Instantly campaigns via API v2 and keep sending there while Superkabe watches sender health. Pause/resume, remap accounts, and track per-mailbox analytics — same protection stack, your choice of sender."
- tags={['API v2', 'Bearer Auth', 'Analytics']}
+ eyebrow="Native Send"
+ title="Connect Microsoft 365 with OAuth"
+ body="Authorize once and Superkabe sends through your Microsoft 365 mailbox. ESP-aware lead routing prefers the mailbox with the strongest 30-day deliverability for each recipient's inbox provider."
+ tags={['OAuth', 'ESP Routing', 'SNDS']}
  tagColor="purple"
- link="/docs/instantly-integration"
+ link="/docs/getting-started"
  imageOnLeft={false}
- mockup={<InstantlyMockup />}
+ mockup={<MicrosoftMockup />}
  />
  <PlatformRow
- eyebrow="Protection Mode"
- title="Deliverability protection for EmailBison"
- body="Campaign + sender-email sync with warmup control. Attach/remove mailboxes from campaigns, protect them all with the same health gate, and manage leads across sequences without leaving Superkabe."
- tags={['REST API', 'Warmup Control', 'Lead Mgmt']}
+ eyebrow="Native Send"
+ title="Bring any SMTP mailbox"
+ body="Encrypted credentials for any SMTP/IMAP provider. Per-mailbox daily caps, automatic pausing at the first signal of bounce-rate drift, and continuous DNSBL monitoring across the sending IP."
+ tags={['Encrypted Creds', 'Daily Caps', 'DNSBL']}
  tagColor="teal"
- link="/docs/emailbison-integration"
+ link="/docs/getting-started"
  imageOnLeft={true}
- mockup={<EmailBisonMockup />}
+ mockup={<SmtpMockup />}
  />
  <PlatformRow
  eyebrow="Lead Source"
@@ -1129,23 +1109,13 @@ export default function LandingPage() {
  />
  <PlatformRow
  eyebrow="Real-Time Alerts"
- title="Instant platform events in Slack"
+ title="Instant deliverability events in Slack"
  body="Real-time alerts for sends, replies, bounces, and healing milestones. Mailbox paused, domain blacklisted, sequence stalled, inbox placement dropped — all surfaced in your Slack channel."
  tags={['Alerts', 'Real-Time', 'Configurable']}
  tagColor="yellow"
  link="/docs/slack-integration"
  imageOnLeft={true}
  mockup={<SlackMockup />}
- />
- <PlatformRow
- eyebrow="Coming Q2 2026"
- title="Reply.io protection in development"
- body="Campaign and mailbox monitoring for Reply.io users — same Superkabe protection stack, available for teams sending from Reply.io. Currently in development."
- tags={['Planned', 'Q2 2026']}
- tagColor="pink"
- link="/product/reply-io-deliverability-protection"
- imageOnLeft={false}
- mockup={<ReplyIoMockup />}
  />
 
  {/* Bottom how it connects — kept as-is for SEO/AEO content */}

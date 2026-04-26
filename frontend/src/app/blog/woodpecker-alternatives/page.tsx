@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import HeroCard from '@/components/blog/HeroCard';
+import AuthorByline from '@/components/blog/AuthorByline';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Woodpecker Alternatives for Cold Email (2026)',
@@ -64,12 +67,19 @@ export default function WoodpeckerAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">Best Woodpecker alternatives for cold email (2026)</h1>
-                <p className="text-gray-400 text-sm mb-8">11 min read · Published April 2026</p>
+                <HeroCard
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="Comparison"
+                    title="Best Woodpecker alternatives for cold email (2026)"
+                    subtitle="Woodpecker has been credible for years, but the category moved fast in 2025-2026. Modern senders ship AI sequence generation, automated deliverability protection, and per-mailbox ESP-aware routing — Woodpecker has not kept pace. Here are seven alternatives ranked."
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    Woodpecker has been a credible cold email platform for years, but the category moved fast in 2025-2026. Modern senders ship AI sequence generation, automated deliverability protection, and per-mailbox ESP-aware routing — Woodpecker has not kept pace on any of the three. Here are seven Woodpecker alternatives ranked.
-                </p>
+                <AuthorByline
+                    name="Edward Sam"
+                    role="Deliverability Specialist, Superkabe"
+                    dateModified="2026-04-25"
+                    readTime="11 min read"
+                />
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -82,15 +92,6 @@ export default function WoodpeckerAlternativesPage() {
                     </ul>
                 </div>
 
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#why-look" style={{ color: '#2563EB', textDecoration: 'none' }}>Why teams leave Woodpecker</a></li>
-                        <li><a href="#alternatives" style={{ color: '#2563EB', textDecoration: 'none' }}>7 Woodpecker alternatives ranked</a></li>
-                        <li><a href="#comparison" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side comparison</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
-                </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="why-look" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why teams leave Woodpecker</h2>
@@ -282,16 +283,14 @@ export default function WoodpeckerAlternativesPage() {
                         Pattern: Woodpecker still wins on if-campaign branching. Everywhere else, modern competitors have moved past it.
                     </p>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">Modernize your cold email stack with Superkabe</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                AI sequencing, multi-mailbox sending, validation, and infrastructure protection in one platform. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="Modernize your cold email stack with Superkabe"
+                    body="AI sequencing, multi-mailbox sending, validation, and infrastructure protection — auto-pause at 3% bounce, 5-phase healing, ESP-aware routing — in one platform."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">

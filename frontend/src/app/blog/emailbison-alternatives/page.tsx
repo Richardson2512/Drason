@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import HeroCard from '@/components/blog/HeroCard';
+import AuthorByline from '@/components/blog/AuthorByline';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best EmailBison Alternatives for Cold Email (2026)',
@@ -66,12 +69,12 @@ export default function EmailBisonAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Does EmailBison have built-in deliverability protection?",
-                "acceptedAnswer": { "@type": "Answer", "text": "No. EmailBison sends well and reports bounces, but does not auto-pause mailboxes at a bounce-rate threshold or run a structured healing pipeline. Teams using EmailBison typically wrap it with an external protection layer (like Superkabe Protection Mode) for that automation." }
+                "acceptedAnswer": { "@type": "Answer", "text": "No. EmailBison sends well and reports bounces, but does not auto-pause mailboxes at a bounce-rate threshold or run a structured healing pipeline. Teams that need that automation typically replace EmailBison with a sender that ships protection natively — Superkabe enforces threshold-based auto-pause, 5-phase healing, and ESP-aware routing as standard." }
             },
             {
                 "@type": "Question",
-                "name": "Can I migrate from EmailBison to Superkabe?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes, in two steps. Step 1: Connect Superkabe to your EmailBison workspace via webhook ingestion (Protection Mode). Superkabe immediately starts monitoring bounce rate, validating leads, auto-pausing mailboxes, and running the 5-phase healing pipeline. Step 2 (optional): Migrate cohorts to Superkabe's native sequencer through your own Google Workspace, Microsoft 365, or SMTP mailboxes." }
+                "name": "How do I migrate from EmailBison to Superkabe?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Connect your Google Workspace, Microsoft 365, or SMTP mailboxes via OAuth or encrypted credentials, re-create sequences in Superkabe's native sequencer (or import from EmailBison via CSV), and Superkabe takes over sending. The deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, DNSBL monitoring) runs against every send from day one." }
             },
             {
                 "@type": "Question",
@@ -88,14 +91,19 @@ export default function EmailBisonAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    Best EmailBison alternatives for cold email (2026)
-                </h1>
-                <p className="text-gray-400 text-sm mb-8">11 min read · Published April 2026</p>
+                <HeroCard
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="Comparison"
+                    title="Best EmailBison alternatives for cold email (2026)"
+                    subtitle="EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse — no ESP-aware routing, no healing pipeline, no built-in protection — and teams running past 30 mailboxes typically need more. Here are seven alternatives ranked."
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse — no ESP-aware routing, no healing pipeline, no built-in protection — and teams running past 30 mailboxes typically need more. Here are seven EmailBison alternatives ranked.
-                </p>
+                <AuthorByline
+                    name="Edward Sam"
+                    role="Deliverability Specialist, Superkabe"
+                    dateModified="2026-04-25"
+                    readTime="11 min read"
+                />
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -104,19 +112,8 @@ export default function EmailBisonAlternativesPage() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines native sending with auto-pause and 5-phase healing — no other alternative does</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead and Instantly offer richer feature surfaces; both still lack automated auto-pause</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Lemlist wins personalization; Saleshandy bundles a lead database; Woodpecker has stronger reply branching</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Most teams keep EmailBison for sending and add Superkabe Protection Mode as the missing layer</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is fast — connect your own Gmail / Microsoft 365 / SMTP mailboxes and sending swaps over same-day</li>
                     </ul>
-                </div>
-
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#why-look" style={{ color: '#2563EB', textDecoration: 'none' }}>Why teams leave EmailBison</a></li>
-                        <li><a href="#alternatives" style={{ color: '#2563EB', textDecoration: 'none' }}>7 EmailBison alternatives ranked</a></li>
-                        <li><a href="#comparison" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side comparison</a></li>
-                        <li><a href="#when-to-stay" style={{ color: '#2563EB', textDecoration: 'none' }}>When to stay with EmailBison</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
                 </div>
 
                 <div className="prose prose-lg max-w-none">
@@ -144,7 +141,7 @@ export default function EmailBisonAlternativesPage() {
                             Superkabe is the only platform that ships per-send pricing AND infrastructure protection. Native sequencing through your own Google Workspace, Microsoft 365, or SMTP mailboxes. ESP-aware routing scores each mailbox by 30-day per-ESP bounce performance and uses a 60% capacity / 40% performance scoring blend. Auto-pause fires at 3% bounce rate over a rolling 100-send window with a 60-send minimum and a 5-bounce safety net. Paused mailboxes enter a 5-phase healing pipeline.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            For teams already on EmailBison: Protection Mode wraps the EmailBison account via webhook ingestion and adds the protection layer without a migration.
+                            Sending happens through your own mailboxes — Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. The deliverability protection layer is part of every send, not a bolt-on tool.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> High-volume teams who want sending economics AND protection</li>
@@ -323,24 +320,22 @@ export default function EmailBisonAlternativesPage() {
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You push 500K+ sends/month single-tenant and per-send economics dominate your decision</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You don&apos;t need agency-grade workspace isolation</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You wrap EmailBison with an external protection layer (Superkabe Protection Mode)</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have an external monitoring layer keeping bounce rates in check</li>
                         </ul>
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        For most EmailBison teams, the answer isn&apos;t "switch" — it&apos;s "add protection." Superkabe Protection Mode wraps EmailBison via webhook ingestion. <Link href="/blog/cold-email-tools-for-agencies" className="text-blue-600 hover:text-blue-800 underline">Read our agency-scale tooling analysis</Link>.
+                        For most EmailBison teams who want sending economics AND deliverability protection in one place, Superkabe is the clean replacement: per-send pricing, native sending through your own mailboxes, and the protection layer running automatically. <Link href="/blog/cold-email-tools-for-agencies" className="text-blue-600 hover:text-blue-800 underline">Read our agency-scale tooling analysis</Link>.
                     </p>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">Add the protection layer EmailBison doesn&apos;t ship</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                Keep EmailBison for sending. Add Superkabe Protection Mode for real-time bounce monitoring, threshold-based auto-pause, ESP-aware monitoring, and a 5-phase healing pipeline. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="Replace EmailBison with Superkabe"
+                    body="Per-send pricing, AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the deliverability protection layer EmailBison doesn't ship — auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, DNSBL monitoring."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">
@@ -358,11 +353,11 @@ export default function EmailBisonAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Does EmailBison have built-in deliverability protection?</h3>
-                        <p className="text-gray-600 text-sm">No. Bounces are reported but not auto-paused. Teams typically wrap EmailBison with an external protection layer.</p>
+                        <p className="text-gray-600 text-sm">No. Bounces are reported but not auto-paused. Teams that need automated protection typically replace EmailBison with a sender that ships protection natively.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">Can I migrate from EmailBison to Superkabe?</h3>
-                        <p className="text-gray-600 text-sm">Yes. Step 1: Connect Superkabe Protection Mode via webhook. Step 2 (optional): migrate cohorts to Superkabe&apos;s native sequencer.</p>
+                        <h3 className="font-bold text-gray-900 mb-2">How do I migrate from EmailBison to Superkabe?</h3>
+                        <p className="text-gray-600 text-sm">Connect your Gmail / Microsoft 365 / SMTP mailboxes via OAuth or encrypted credentials, re-create or import sequences, and Superkabe takes over sending with the deliverability protection layer running on every send.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Which EmailBison alternative is best for agencies?</h3>

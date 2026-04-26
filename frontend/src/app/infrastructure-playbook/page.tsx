@@ -34,7 +34,7 @@ export default function InfrastructurePlaybookPage() {
  {
  "@type": "HowToStep",
  "name": "Activate Built-In Deliverability Protection",
- "text": "Send from Superkabe natively (Google Workspace, Microsoft 365, or SMTP) — or connect Smartlead, Instantly, or EmailBison in Protection Mode. Either way, Superkabe's protection engine captures every bounce, auto-pauses risky mailboxes, and redistributes sending before domain reputation takes damage.",
+ "text": "Send from Superkabe natively (Google Workspace, Microsoft 365, or SMTP) — or send through your own Gmail, Microsoft 365, or SMTP mailboxes. Either way, Superkabe's protection engine captures every bounce, auto-pauses risky mailboxes, and redistributes sending before domain reputation takes damage.",
  "url": "https://www.superkabe.com/infrastructure-playbook#2"
  },
  {
@@ -160,7 +160,7 @@ export default function InfrastructurePlaybookPage() {
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">How Superkabe Executes Active Defense</h3>
  <p className="mb-6 leading-relaxed">
- Superkabe operates via native webhook and API integrations. When a send produces an SMTP 5xx or 4xx hard bounce, the event is captured instantly — either directly from the Superkabe send pipeline, or pushed in from Smartlead/Instantly/EmailBison via webhook when running in Protection Mode. Our state machine correlates each bounce against the historical velocity of the domain.
+ When a send produces an SMTP 5xx or 4xx hard bounce, the event is captured instantly from the Superkabe send pipeline, including full RFC 3464 DSN parsing for asynchronous bounces. Our state machine correlates each bounce against the historical velocity of the domain.
  </p>
  <p className="mb-6 leading-relaxed">
  If the mathematically defined safety threshold is breached (for example, hitting a 2% bounce rate), Superkabe issues physical REST API commands to the sending engine. It instantly and autonomously pauses the affected mailbox, saving the parent domain from cascading reputation damage. This creates a zero-trust envelope around your outbound volume.

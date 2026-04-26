@@ -44,12 +44,16 @@ export default function DashboardShell({
             window.removeEventListener('recipient-preview-close', onClose);
         };
     }, [isCollapsed]);
-    const [activeMode, setActiveMode] = useState<'sequencer' | 'protection' | null>(() => {
-        if (typeof window !== 'undefined') {
-            return (localStorage.getItem('superkabe-dashboard-mode') as 'sequencer' | 'protection') || 'sequencer';
+    // SSR has no localStorage, so the initial value must match between server
+    // and first client render. We sync from localStorage after mount.
+    const [activeMode, setActiveMode] = useState<'sequencer' | 'protection' | null>('sequencer');
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const stored = localStorage.getItem('superkabe-dashboard-mode');
+        if (stored === 'sequencer' || stored === 'protection') {
+            setActiveMode(stored);
         }
-        return 'sequencer';
-    });
+    }, []);
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [systemMode, setSystemMode] = useState<string>('');

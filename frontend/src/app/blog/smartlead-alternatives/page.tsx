@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import HeroCard from '@/components/blog/HeroCard';
+import AuthorByline from '@/components/blog/AuthorByline';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Smartlead Alternatives for Cold Email in 2026',
@@ -67,7 +70,7 @@ export default function SmartleadAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Can I migrate from Smartlead to Superkabe without losing my campaign data?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Superkabe operates in two modes that work in parallel. Protection Mode keeps your existing Smartlead account and adds bounce monitoring, validation, and auto-pause as a layer over it through webhook ingestion. Native Mode lets you build sequencer campaigns directly in Superkabe through Google Workspace, Microsoft 365, or SMTP. Most teams start in Protection Mode, validate the deliverability gains, then migrate cohorts to native sending." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Superkabe imports your campaign sequences, leads, and mailbox configuration when you connect your Google Workspace, Microsoft 365, or SMTP accounts. The native sequencer takes over sending while the deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) runs against every send. Existing Smartlead history can be carried over via CSV export and re-import for analytics continuity." }
             },
             {
                 "@type": "Question",
@@ -89,14 +92,19 @@ export default function SmartleadAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
-                    Best Smartlead alternatives for cold email in 2026
-                </h1>
-                <p className="text-gray-400 text-sm mb-8">12 min read · Published April 2026</p>
+                <HeroCard
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="Comparison"
+                    title="Best Smartlead alternatives for cold email in 2026"
+                    subtitle="Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem — and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked breakdown of the seven Smartlead alternatives that actually compete in 2026."
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem — and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked, opinionated breakdown of the seven Smartlead alternatives that actually compete in 2026.
-                </p>
+                <AuthorByline
+                    name="Edward Sam"
+                    role="Deliverability Specialist, Superkabe"
+                    dateModified="2026-04-25"
+                    readTime="12 min read"
+                />
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -108,19 +116,6 @@ export default function SmartleadAlternativesPage() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> EmailBison undercuts Smartlead on price for high-volume single-tenant teams; Lemlist wins on personalization features</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Woodpecker, Saleshandy, and Mailshake are credible second-tier alternatives with narrower feature sets</li>
                     </ul>
-                </div>
-
-                {/* TOC */}
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#why-look" style={{ color: '#2563EB', textDecoration: 'none' }}>Why teams leave Smartlead</a></li>
-                        <li><a href="#alternatives" style={{ color: '#2563EB', textDecoration: 'none' }}>7 Smartlead alternatives ranked</a></li>
-                        <li><a href="#comparison" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side comparison</a></li>
-                        <li><a href="#when-to-stay" style={{ color: '#2563EB', textDecoration: 'none' }}>When to stay with Smartlead</a></li>
-                        <li><a href="#when-to-switch" style={{ color: '#2563EB', textDecoration: 'none' }}>When to switch</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
                 </div>
 
                 <div className="prose prose-lg max-w-none">
@@ -161,12 +156,12 @@ export default function SmartleadAlternativesPage() {
                             What no other platform on this list does: ESP-aware routing that scores each mailbox by its 30-day bounce rate to a specific recipient ESP (Gmail vs Microsoft vs Yahoo) and blends a 60% capacity / 40% performance scoring model when picking which mailbox sends each lead. A 400+ DNSBL monitoring layer, correlation checks before pause, and the 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) all run automatically.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe also wraps existing Smartlead, Instantly, and EmailBison accounts as a Protection Mode middleware layer — so you can keep your sender and add the protection on top.
+                            Sending happens through your own mailboxes — Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. There is no extra platform to maintain alongside Superkabe; the deliverability protection layer is part of every send, not a separate tool bolted on.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Outbound teams running 10+ domains who care about not burning them</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> Native sequencer is newer than Smartlead&apos;s; large existing teams typically start in Protection Mode and migrate gradually</li>
+                            <li><strong>Limitation:</strong> Native sequencer launched in 2026 — Smartlead has a longer track record at very high single-org volume</li>
                         </ul>
                         <p className="text-sm mt-3">
                             <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link>
@@ -373,7 +368,7 @@ export default function SmartleadAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You run under 10 domains and bounce rates are easy to monitor manually</li>
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have an external monitoring layer (or use Superkabe Protection Mode on top of Smartlead)</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have an external monitoring layer keeping bounce rates in check</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Smartlead&apos;s native ESP matching is sufficient for your mailbox count</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You value Smartlead&apos;s mature webhook coverage and API ecosystem</li>
                         </ul>
@@ -393,23 +388,21 @@ export default function SmartleadAlternativesPage() {
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Most teams don&apos;t cold-switch. They start by adding Superkabe Protection Mode over their existing Smartlead account (Superkabe ingests Smartlead webhooks, runs the same auto-pause logic, and writes pause commands back via Smartlead&apos;s API). After a few weeks of seeing the protection layer catch failures Smartlead missed, they migrate cohorts to native Superkabe sending.
+                        Replacing Smartlead with Superkabe is mostly a same-day move once your mailboxes are reconnected. You bring your Gmail / Microsoft 365 / SMTP accounts, import your existing sequences, and Superkabe takes over sending — with the deliverability protection layer (auto-pause at 3% bounce rate, 5-phase healing, ESP-aware routing) running on every send from day one.
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
                         For deeper context, read <Link href="/blog/best-cold-email-tools-2026" className="text-blue-600 hover:text-blue-800 underline">our 2026 ranking of the best cold email tools</Link> and <Link href="/blog/cold-email-software-compared" className="text-blue-600 hover:text-blue-800 underline">the head-to-head software comparison</Link>.
                     </p>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">Try Superkabe alongside your existing Smartlead account</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                Protection Mode wraps your current Smartlead workspace with real-time bounce monitoring, threshold-based auto-pause, and a 5-phase healing pipeline. Native sending is optional — start with protection. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="Replace Smartlead with Superkabe"
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at a fraction of the cost."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
 
                 {/* FAQ Section */}
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
@@ -428,7 +421,7 @@ export default function SmartleadAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Can I migrate from Smartlead to Superkabe without losing campaign data?</h3>
-                        <p className="text-gray-600 text-sm">Yes. Superkabe Protection Mode wraps your Smartlead account with monitoring + auto-pause via webhook ingestion. Native Mode lets you build sequencer campaigns directly in Superkabe. Most teams start in Protection Mode and migrate cohorts gradually.</p>
+                        <p className="text-gray-600 text-sm">Yes. Connect your Gmail / Microsoft 365 / SMTP mailboxes, re-create or import your sequences, and run Smartlead lead history through Superkabe&apos;s validation + ESP-aware routing. CSV export from Smartlead carries lead status into Superkabe for analytics continuity.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Does Smartlead have built-in email validation?</h3>

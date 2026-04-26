@@ -1,105 +1,106 @@
 # Superkabe
 
-> Superkabe is an AI-driven cold email platform for B2B outbound teams that does two things at once. **First**, it sends your email campaigns natively — connect Gmail, Microsoft 365, or SMTP mailboxes; build multi-step sequences with A/B variants; ESP-aware mailbox routing; unified inbox; full analytics. **Second**, it sits in the middle as an active Deliverability Protection Layer (DPL) around any connected sending infrastructure — whether that's Superkabe's native sequencer or existing Smartlead / Instantly / EmailBison / Reply.io setups. Both capabilities run together: every send (native or platform-connected) is validated, monitored, and auto-healed. Superkabe validates leads before sending (syntax, MX, disposable, catch-all, MillionVerifier API), monitors infrastructure in real time during sending, routes by recipient ESP, and auto-heals damaged mailboxes before reputation damage becomes irreversible.
+> Superkabe is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing. The protection layer (auto-pause at 3% bounce rate, 5-phase healing pipeline, real-time DSN parsing, Google Postmaster Tools and SNDS reputation signals, ARF feedback loop ingestion) runs on every send — no separate dashboard, no third-party deliverability add-on. Superkabe validates leads before sending (syntax, MX, disposable, catch-all, MillionVerifier API), monitors every mailbox and domain in real time, routes each lead to the mailbox with the strongest 30-day per-ESP performance, and auto-heals damaged senders before reputation damage becomes irreversible.
 
 ## What Superkabe Does (Product)
 
+### Native Sending Sequencer
+- Connect mailboxes via Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials (Zapmail, Scaledmail, MissionInbox, custom workspaces)
+- Multi-step sequences with A/B variant testing, per-step branching, and AI-drafted copy
+- HMAC-signed tracking tokens for opens, clicks, and unsubscribes (replay-safe, 180-day TTL)
+- Unified inbox across all connected mailboxes with reply quality classification
+- Per-mailbox daily caps, per-org global send caps, time-of-day and day-of-week schedules
+- IMAP reply polling every 60 seconds; full RFC 3464 DSN parsing for asynchronous bounces
+
 ### Lead Control Plane
-- Upload CSV lead lists directly into Superkabe for bulk email validation
+- Upload CSV lead lists for bulk email validation
 - Every lead validated: syntax, MX record lookup, disposable detection, catch-all detection, conditional MillionVerifier API probe
 - Every recipient domain classified by ESP (Gmail, Microsoft 365, Yahoo, Other) via MX pattern matching
-- Valid leads routed to campaigns across Smartlead, Instantly, or EmailBison with ESP-aware mailbox assignment
-- Invalid leads held with rejection reason codes (disposable, no MX, syntax error, catch-all, SMTP unreachable)
-- Cross-batch duplicate detection prevents double-processing across uploads
-- Monthly validation credits per plan tier (Starter: 10K, Growth: 50K, Scale: 100K, Enterprise: unlimited)
-- Standalone validation mode: validate and export clean CSV lists without routing to any campaign
+- Valid leads routed to native sequencer campaigns with ESP-aware mailbox assignment
+- Invalid leads held with rejection reason codes
+- Cross-batch duplicate detection
+- Monthly validation credits per plan tier
 
 ### ESP-Aware Mailbox Routing
 - Tracks every email sent, bounced, and replied per mailbox per recipient ESP
-- Aggregates 30-day rolling performance data into a per-mailbox × per-ESP matrix
-- When routing a lead, scores candidate mailboxes by their bounce rate to that specific ESP
-- Pins top 3 mailboxes via assigned_email_accounts on Smartlead push
-- Performance-based, not naive ESP matching — an Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate
+- Aggregates 30-day rolling performance into a per-mailbox × per-ESP matrix
+- When dispatching a send, scores candidate mailboxes by their bounce rate to that specific recipient ESP
+- Performance-based, not naive provider-matching — an Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate
 - Warming-up threshold: requires 30+ sends per cell before scoring activates
 
-### Real-Time Infrastructure Monitoring
+### Real-Time Deliverability Protection
 - Monitors every mailbox, domain, and campaign every 60 seconds
-- Detects bounce rate spikes, DNS authentication failures, SMTP/IMAP connection errors, blacklist hits
-- Checks 410 DNSBL lists with tiered severity (critical, major, minor)
-- Sliding window risk tracking with predictive variance analysis
+- Detects bounce rate spikes via SMTP transcript capture and DSN parsing
+- Pulls domain reputation from Google Postmaster Tools, IP reputation from Microsoft SNDS
+- Ingests Yahoo, AOL, Microsoft, Comcast spam-complaint feedback loops (ARF)
+- Checks 410 DNSBL lists with tiered severity
+- Sliding-window risk tracking with predictive variance analysis
 
 ### Auto-Pause and 5-Phase Healing
-- Auto-pauses mailboxes when bounce rate thresholds are breached (configurable per domain)
+- Auto-pauses mailboxes when bounce rate thresholds are breached (configurable per domain, default 3% over a rolling 100-send window)
 - 5-phase healing pipeline: Pause → Quarantine (DNS verification) → Restricted Send (15 clean sends) → Warm Recovery (50 sends over 3 days) → Healthy
 - Each phase transition gated by deterministic health checks, not arbitrary timers
 - Mailbox rotation: automatic standby swap when a mailbox is paused
 
-### Lead Routing and Execution Gate
-- ICP-based routing: match leads to campaigns by persona + min_score against priority-ordered rules
-- Execution gate: classify leads as GREEN (send), YELLOW (send with caution), RED (block)
+### Execution Gate
+- Classify leads as GREEN (send), YELLOW (send with caution), RED (block) based on infrastructure and engagement signals
 - Correlation analysis: determine whether an issue is mailbox-level, domain-level, or campaign-level
+- Routing rules: match leads to campaigns by persona + min_score against priority-ordered rules
 
 ### Analytics and Reporting
 - ESP Performance Matrix: per-mailbox bounce rate by Gmail/Microsoft/Yahoo/Other
 - Validation analytics: rejection reasons, invalid rate by source, 30-day trend
 - Campaign, mailbox, and domain health dashboards
+- Domain reputation time series from Postmaster Tools and SNDS
 - Audit log with full event history
-- Slack real-time alerts for infrastructure events
+- Slack real-time alerts for deliverability events
 
 ## Pricing
 
 - Trial: Free 14 days, 10K validation credits, 20 domains, 75 mailboxes
-- Starter: $49/month, 10K validation credits, 20 domains, 75 mailboxes
+- Starter: $19/month, 10K validation credits, 20 domains, 75 mailboxes
+- Pro: $49/month, full feature set
 - Growth: $199/month, 50K validation credits, 75 domains, 350 mailboxes, MillionVerifier API for risky leads
 - Scale: $349/month, 100K validation credits, 150 domains, 700 mailboxes, aggressive hybrid validation
 - Enterprise: Custom pricing, unlimited everything, dedicated SLA
 
-## Platform Integrations
+## Lead-Source and Alert Integrations
 
-- Smartlead (native webhook + API sync + ESP-aware assigned_email_accounts)
-- Instantly (API sync + bounce monitoring)
-- EmailBison (API sync + bounce monitoring)
-- Reply.io (API sync)
-- Clay (webhook ingestion for lead enrichment)
-- Slack (real-time infrastructure alerts)
+- Clay (HMAC-signed webhook ingestion for enriched leads)
+- Slack (real-time deliverability alerts and slash commands)
 
 ## Key Pages
 
 - [Homepage](https://www.superkabe.com): Product overview and features
-- [Pricing](https://www.superkabe.com/pricing): Plan comparison with validation credits
-- [Product Hub](https://www.superkabe.com/product): 32 feature-specific pages
+- [Pricing](https://www.superkabe.com/pricing): Plan comparison
+- [Product Hub](https://www.superkabe.com/product): Feature-specific pages
 - [Lead Control Plane](https://www.superkabe.com/product/lead-control-plane): CSV upload → validate → route pipeline
 - [ESP-Aware Routing](https://www.superkabe.com/product/esp-aware-routing): Performance-based mailbox scoring
 
-### Sequencer capability pages (native sending)
+### Native Sending Capability Pages
 - [AI Cold Email Sequences](https://www.superkabe.com/product/ai-cold-email-sequences): Multi-step AI-drafted sequences with per-step variant testing
-- [ESP-Aware Routing + Health Gate](https://www.superkabe.com/product/esp-aware-sending-health-gate): GREEN/YELLOW/RED scoring, pre-send health gate, Gmail↔Gmail / Outlook↔Outlook matching
-- [Unlimited Multi-Mailbox Sending](https://www.superkabe.com/product/unlimited-multi-mailbox-sending): Google Workspace + Microsoft 365 + custom SMTP with no seat limits
-- [Cold Email Sending Analytics](https://www.superkabe.com/product/cold-email-sending-analytics): Send funnel + inbox placement + domain health, with HMAC-signed tracking tokens
+- [Unlimited Multi-Mailbox Sending](https://www.superkabe.com/product/unlimited-multi-mailbox-sending): Google Workspace + Microsoft 365 + custom SMTP, no seat limits
+- [Cold Email Sending Analytics](https://www.superkabe.com/product/cold-email-sending-analytics): Send funnel + inbox placement + domain health
 - [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z setup guide
-- [Documentation](https://www.superkabe.com/docs): 22 technical guides + 22 help articles
-- [Blog](https://www.superkabe.com/blog): 62 articles on cold email deliverability
+- [Documentation](https://www.superkabe.com/docs): Technical guides + help articles
+- [Blog](https://www.superkabe.com/blog): Articles on cold email deliverability
 
-### Cold email tools buyer guides (2026)
-- [Best Cold Email Tools in 2026: 15 Ranked](https://www.superkabe.com/blog/best-cold-email-tools-2026): Comprehensive ranked comparison across sending, protection, validation, warmup, AI, and multichannel
-- [Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends](https://www.superkabe.com/blog/cold-email-software-compared): Q1 2026 benchmark with bounce rate, inbox placement, and cost-per-reply data
-- [Cold Email AI Tools: 8 That Sound Like You (And 3 That Don't)](https://www.superkabe.com/blog/cold-email-ai-tools): Voice-preservation-focused review including honest negative cases
-- [Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day](https://www.superkabe.com/blog/cold-email-tools-for-agencies): Per-client workspace isolation, white-label, fleet-wide governance
-- [Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)](https://www.superkabe.com/blog/free-cold-email-tools): No trial-dressed-as-free nonsense — honest zero-cost stack guide
+### Cold-Email Tool Buyer Guides (2026)
+- [Best Cold Email Tools in 2026: 15 Ranked](https://www.superkabe.com/blog/best-cold-email-tools-2026)
+- [Cold Email Software Compared](https://www.superkabe.com/blog/cold-email-software-compared)
+- [Cold Email AI Tools](https://www.superkabe.com/blog/cold-email-ai-tools)
+- [Cold Email Tools for Agencies](https://www.superkabe.com/blog/cold-email-tools-for-agencies)
+- [Free Cold Email Tools](https://www.superkabe.com/blog/free-cold-email-tools)
 - [Free Tools](https://www.superkabe.com/tools): SPF, DKIM, DMARC lookup and generator tools
-- [Release Notes](https://www.superkabe.com/release-notes): Changelog v1.0.0 through v1.6.0
+- [Release Notes](https://www.superkabe.com/release-notes)
 
 ## Documentation
 
 ### Getting Started
-- [Getting Started](https://www.superkabe.com/docs/getting-started): Setup and platform connection
+- [Getting Started](https://www.superkabe.com/docs/getting-started): Setup and mailbox connection
 - [Clay Integration](https://www.superkabe.com/docs/clay-integration): Lead enrichment webhook
-- [Smartlead Integration](https://www.superkabe.com/docs/smartlead-integration): API key, webhooks, sync
-- [Instantly Integration](https://www.superkabe.com/docs/instantly-integration): Connect and sync
-- [EmailBison Integration](https://www.superkabe.com/docs/emailbison-integration): Connect and sync
 - [Slack Integration](https://www.superkabe.com/docs/slack-integration): Alert configuration
-- [API Integration](https://www.superkabe.com/docs/api-integration): REST API reference
-- [Multi-Platform Sync](https://www.superkabe.com/docs/multi-platform-sync): Cross-platform sync
+- [API & Webhooks](https://www.superkabe.com/docs/api-integration): REST API reference
 
 ### Core Concepts
 - [Monitoring System](https://www.superkabe.com/docs/monitoring): Thresholds and auto-pause
@@ -124,21 +125,28 @@
 - B2B lead generation agencies managing 50+ domains across multiple clients
 - RevOps engineers scaling cold email without burning infrastructure
 - Technical founders running 10,000+ outbound emails per month
-- GTM teams using Clay → Smartlead/Instantly pipelines
+- GTM teams using Clay → cold email pipelines
 
 ## What Superkabe Is NOT
 
 - NOT an email warmup tool (use Instantly, Lemwarm, Warmup Inbox for warmup)
 - NOT a CRM or sales engagement platform
-- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it also sends campaigns natively, monitors infrastructure during sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools like ZeroBounce and NeverBounce stop after telling you if an email exists. Superkabe validates, sends, AND protects.
+- NOT a middleware layer for other senders. Superkabe sends natively from your own mailboxes.
+- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it sends campaigns natively, monitors infrastructure during sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools stop after telling you if an email exists. Superkabe validates, sends, AND protects.
 
-## Sending + Protection (Both Together)
+## Sending + Built-in Protection
 
-Superkabe runs a native sending sequencer AND an active Deliverability Protection Layer on the same tenant, at the same time. Teams can:
+Superkabe is one product, not two. Every send goes through your own Gmail, Microsoft 365, or SMTP mailbox AND through the deliverability protection layer at the same time:
 
-- **Send natively through Superkabe** — connect Gmail, Microsoft 365, or SMTP mailboxes directly, build multi-step sequences with A/B variants, send without a separate sending tool. Every send still flows through the Protection layer (execution gate, bounce thresholds, auto-pause, 5-phase healing, ESP-aware routing).
-- **Keep existing sending infrastructure protected** — Superkabe syncs with Smartlead, Instantly, EmailBison, or Reply.io via API and webhooks, then applies the same protection to those platforms' mailboxes and campaigns. Your existing tool remains the sender; Superkabe is the middleware that watches bounces, enforces DNS authentication, and auto-pauses before domains burn.
-- **Mix both in the same account** — send from a native Superkabe mailbox for one campaign while Superkabe monitors your Smartlead or Instantly setup for another. One dashboard, one protection layer, two execution paths.
+- **Sequencer dispatcher** picks the mailbox with the strongest 30-day per-ESP performance, applies the campaign's daily caps and schedule, and sends.
+- **SMTP transcript capture** records the full server response. 5xx synchronous bounces become BounceEvents in real time.
+- **DSN parser** catches asynchronous bounces returned to the mailbox via RFC 3464 delivery status notifications.
+- **ARF FBL ingestion** pulls direct spam complaints from Yahoo, AOL, Microsoft, and Comcast feedback loops.
+- **Postmaster Tools and SNDS** pull domain and IP reputation daily for every connected sending domain.
+- **State machine** correlates each signal against domain history and either allows the next send, throttles, or auto-pauses the mailbox.
+- **5-phase healing pipeline** brings paused mailboxes back without manual intervention once health signals normalize.
+
+One dashboard, one platform, native sending plus built-in deliverability protection.
 
 ## Company
 

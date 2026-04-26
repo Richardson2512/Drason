@@ -289,7 +289,7 @@ export default function RealTimeMonitoringArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Layer 1: Webhook-Based Data Ingestion</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- Superkabe connects to your sending platforms — Smartlead, Instantly, and EmailBison — via webhooks. Every bounce, delivery, open, reply, and complaint event is ingested in real-time. This eliminates polling delays and ensures that Superkabe sees the same data that ISPs see, at the same time.
+ Superkabe sends from your own mailboxes (Gmail, Microsoft 365, or SMTP) so every bounce, delivery, open, reply, and complaint event is captured directly from the SMTP transcript or via Postmaster Tools / SNDS / FBL feedback loops — the same data ISPs see, at the same time.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Bounce events processed within seconds of occurrence</li>

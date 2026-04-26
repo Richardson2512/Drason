@@ -24,44 +24,6 @@ interface Integration {
 }
 
 const INTEGRATIONS: Integration[] = [
-    // Sending Platforms
-    {
-        id: 'smartlead',
-        name: 'Smartlead',
-        description: 'Sync campaigns, mailboxes, and leads. Auto-sync every 20 minutes.',
-        category: 'sending',
-        logo: '/smartlead.webp',
-        configPath: '/dashboard/settings',
-        settingKey: 'SMARTLEAD_API_KEY',
-    },
-    {
-        id: 'instantly',
-        name: 'Instantly',
-        description: 'Sync campaigns and monitor deliverability across your Instantly account.',
-        category: 'sending',
-        logo: '/instantly.png',
-        configPath: '/dashboard/settings',
-        settingKey: 'INSTANTLY_API_KEY',
-    },
-    {
-        id: 'emailbison',
-        name: 'EmailBison',
-        description: 'Sync mailboxes and enable health tracking for your EmailBison account.',
-        category: 'sending',
-        logo: '/emailbison.png',
-        configPath: '/dashboard/settings',
-        settingKey: 'EMAILBISON_API_KEY',
-    },
-    {
-        id: 'replyio',
-        name: 'Reply.io',
-        description: 'Campaign sync and deliverability monitoring for Reply.io.',
-        category: 'sending',
-        logo: '/replyio.png',
-        configPath: '/dashboard/settings',
-        comingSoon: true,
-    },
-
     // Lead Sources
     {
         id: 'clay',
@@ -144,9 +106,8 @@ const INTEGRATIONS: Integration[] = [
 ];
 
 const CATEGORIES: { key: string; label: string }[] = [
-    { key: 'sending', label: 'Sending Platforms' },
+    { key: 'sequencer', label: 'Sending Mailboxes' },
     { key: 'leads', label: 'Lead Sources' },
-    { key: 'sequencer', label: 'Sequencer Mailboxes' },
     { key: 'notifications', label: 'Notifications' },
     { key: 'developer', label: 'Developer' },
     { key: 'crm', label: 'CRM' },

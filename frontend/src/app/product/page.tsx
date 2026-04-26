@@ -53,7 +53,6 @@ export default function ProductIndexPage() {
  { title: 'Lead Control Plane', href: '/product/lead-control-plane', desc: 'Upload CSV leads into Superkabe. Validate, classify by ESP, and route to campaigns with pinned mailboxes.' },
  { title: 'Email Validation Infrastructure Protection', href: '/product/email-validation-infrastructure-protection', desc: 'The hybrid validation layer that filters invalid, disposable, role-based, and catch-all emails before send.' },
  { title: 'ESP-Aware Mailbox Routing', href: '/product/esp-aware-routing', desc: 'Score mailboxes by 30-day per-ESP performance and pin the best performers for each lead.' },
- { title: 'Multi-Platform Email Validation', href: '/product/multi-platform-email-validation', desc: 'Validate leads across Smartlead, Instantly, and EmailBison with a single unified layer.' },
  ]
  },
  {
@@ -74,17 +73,6 @@ export default function ProductIndexPage() {
  { title: 'Domain Burnout Prevention Tool', href: '/product/domain-burnout-prevention-tool', desc: 'Forecast and stop domain burnout before it strikes.' },
  { title: 'How to Prevent Domain Burnout', href: '/product/how-to-prevent-domain-burnout', desc: 'Best practices for sustainable warmups.' },
  { title: 'Automated Domain Healing', href: '/product/automated-domain-healing', desc: 'Auto-pausing and traffic distribution algorithms.' },
- ]
- },
- {
- title: 'Platform Integrations',
- links: [
- { title: 'Smartlead Deliverability Protection', href: '/product/smartlead-deliverability-protection', desc: 'Native Smartlead webhook and API sync.' },
- { title: 'Smartlead Infrastructure Protection', href: '/product/smartlead-infrastructure-protection', desc: 'Protect Smartlead campaigns from cascading bans.' },
- { title: 'Instantly Infrastructure Protection', href: '/product/instantly-infrastructure-protection', desc: 'Deep integration for Instantly.ai operators.' },
- { title: 'Reply.io Deliverability Protection (Roadmap)', href: '/product/reply-io-deliverability-protection', desc: 'Reply.io adapter is on the roadmap — see what shipped support will cover.' },
- { title: 'EmailBison Infrastructure Protection', href: '/product/emailbison-infrastructure-protection', desc: 'Secure your EmailBison infrastructure layer.' },
- { title: 'Multi-platform Outbound Protection', href: '/product/multi-platform-outbound-protection', desc: 'Agnostic protection across all sending CRMs.' },
  ]
  },
  {

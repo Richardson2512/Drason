@@ -25,7 +25,7 @@ export default function ConfigurationPage() {
 
  <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Integration Setup</h2>
  <p className="text-gray-600 mb-6">
- Superkabe integrates with Clay, Smartlead, EmailBison, and Instantly to monitor your outbound infrastructure.
+ Superkabe ingests enriched leads from Clay and sends through your own Gmail, Microsoft 365, or SMTP mailboxes — with the deliverability protection layer running on every send.
  </p>
 
  <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Sending Platform API Keys</h3>

@@ -571,7 +571,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe connects to your existing sending platforms (Smartlead, EmailBison, Instantly) and monitors bounce rates, DNS authentication, and mailbox health in real time. When any metric crosses safe thresholds, it auto-pauses risky mailboxes and gates domain traffic — closing the gap between detection and protection.
+ Superkabe sends from your own mailboxes and monitors bounce rates, DNS authentication, and mailbox health in real time. When any metric crosses safe thresholds, it auto-pauses risky mailboxes and gates domain traffic — closing the gap between detection and protection.
  </p>
  </div>
  </article>

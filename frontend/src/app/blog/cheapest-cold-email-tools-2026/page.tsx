@@ -264,7 +264,7 @@ export default function CheapestColdEmailToolsPage() {
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Warmup add-on.</strong> If your sender doesn&apos;t bundle warmup, you pay $20-50/mo for Lemwarm or Mailreach</li>
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Validation service.</strong> $0.004-$0.008 per email if the platform doesn&apos;t bundle validation. At 60K sends/mo that&apos;s $240-$480/mo extra</li>
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Monitoring + protection.</strong> External monitoring tools charge separately. Or you wear the cost of a burned domain ($200-$500 + 30-45 days of pipeline drag)</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Migration time.</strong> Switching tools = 20-40 hours of recreating sequences and reconnecting mailboxes. Compress this by picking a tool that wraps your existing sender (Superkabe Protection Mode)</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Migration time.</strong> Switching tools = 20-40 hours of recreating sequences and reconnecting mailboxes. Compress this by picking a tool that wraps your existing sender (Superkabe)</li>
                         </ul>
                     </div>
 

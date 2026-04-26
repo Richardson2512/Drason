@@ -10,7 +10,6 @@
  * but the route stays at /dashboard/settings to avoid breaking deep links.
  */
 
-import { Suspense } from 'react';
 import Tabs, { useTabState, type TabItem } from '@/components/ui/Tabs';
 import { Wrench, GitBranch } from 'lucide-react';
 import GeneralSettingsPanel from './GeneralSettingsPanel';
@@ -22,14 +21,6 @@ const TABS: TabItem[] = [
 ];
 
 export default function ConfigurationPage() {
-    return (
-        <Suspense fallback={null}>
-            <ConfigurationPageInner />
-        </Suspense>
-    );
-}
-
-function ConfigurationPageInner() {
     const [active] = useTabState(TABS, 'general');
 
     return (

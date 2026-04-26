@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import HeroCard from '@/components/blog/HeroCard';
+import AuthorByline from '@/components/blog/AuthorByline';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Lemlist Alternatives for Cold Email Teams (2026)',
@@ -64,12 +67,19 @@ export default function LemlistAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">Best Lemlist alternatives for cold email teams (2026)</h1>
-                <p className="text-gray-400 text-sm mb-8">11 min read · Published April 2026</p>
+                <HeroCard
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="Comparison"
+                    title="Best Lemlist alternatives for cold email teams (2026)"
+                    subtitle="Lemlist invented or popularized most of cold email's personalization patterns, and Lemwarm remains a benchmark. But per-user pricing breaks the math past 5-10 reps and the deliverability tooling beyond warmup is thin. Here are seven alternatives ranked."
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    Lemlist invented or popularized most of the cold email personalization patterns in use today, and the Lemwarm network remains a benchmark. But per-user pricing breaks the math past 5-10 reps, and the deliverability tooling beyond warmup is thin. Here are seven Lemlist alternatives ranked.
-                </p>
+                <AuthorByline
+                    name="Edward Sam"
+                    role="Deliverability Specialist, Superkabe"
+                    dateModified="2026-04-25"
+                    readTime="11 min read"
+                />
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -82,15 +92,6 @@ export default function LemlistAlternativesPage() {
                     </ul>
                 </div>
 
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#why-look" style={{ color: '#2563EB', textDecoration: 'none' }}>Why teams leave Lemlist</a></li>
-                        <li><a href="#alternatives" style={{ color: '#2563EB', textDecoration: 'none' }}>7 Lemlist alternatives ranked</a></li>
-                        <li><a href="#comparison" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side comparison</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
-                </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="why-look" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why teams leave Lemlist</h2>

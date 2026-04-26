@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'API & Webhook Integration | Superkabe Docs',
- description: 'Complete API reference for Clay webhooks, platform monitoring, and direct lead ingestion into Superkabe.',
+ description: 'Complete API reference for Clay webhooks and direct lead ingestion into Superkabe.',
  alternates: { canonical: '/docs/api-integration' },
  openGraph: {
  title: 'API & Webhook Integration | Superkabe Docs',
- description: 'Complete API reference for Clay webhooks, platform monitoring, and direct lead ingestion into Superkabe.',
+ description: 'Complete API reference for Clay webhooks and direct lead ingestion into Superkabe.',
  url: '/docs/api-integration',
  siteName: 'Superkabe',
  type: 'article',
@@ -20,7 +20,7 @@ export default function APIIntegrationPage() {
  API & Webhook Integration
  </h1>
  <p className="text-xl text-gray-500 mb-12">
- Complete API reference for integrating Clay webhooks, platform monitoring, and direct lead ingestion
+ Complete API reference for Clay webhooks, direct lead ingestion, and campaign resolution
  </p>
 
  {/* Overview */}
@@ -31,9 +31,8 @@ export default function APIIntegrationPage() {
  </p>
  <ol className="space-y-2 text-gray-600">
  <li><strong>1. Clay Webhook</strong> — Receive enriched leads from Clay tables</li>
- <li><strong>2. Platform Webhooks</strong> — Monitor bounce/sent events from Smartlead, EmailBison, and Instantly</li>
- <li><strong>3. Direct Ingestion API</strong> — Programmatic lead submission</li>
- <li><strong>4. Campaign Resolution API</strong> — Automate stalled campaign recovery</li>
+ <li><strong>2. Direct Ingestion API</strong> — Programmatic lead submission</li>
+ <li><strong>3. Campaign Resolution API</strong> — Automate stalled campaign recovery</li>
  </ol>
  </div>
 
@@ -96,77 +95,8 @@ export default function APIIntegrationPage() {
  </pre>
  </div>
 
- {/* SECTION 2: Smartlead Webhook */}
- <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Smartlead Webhook Integration</h2>
- <p className="text-gray-600 mb-6">
- Smartlead sends real-time bounce and delivery events to Superkabe for monitoring.
- </p>
-
- <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Endpoint</h3>
- <div className="bg-gray-50 border border-gray-200 p-4 mb-6">
- <code className="text-green-600">POST https://api.superkabe.com/api/monitor/smartlead-webhook</code>
- </div>
-
- <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Setup in Smartlead</h3>
- <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm">
- <ol className="space-y-3 text-gray-600">
- <li><strong>1.</strong> Navigate to Smartlead → Settings → Webhooks</li>
- <li><strong>2.</strong> Add webhook URL: <code className="px-2 py-1 bg-gray-100 text-gray-700">https://api.superkabe.com/api/monitor/smartlead-webhook</code></li>
- <li><strong>3.</strong> Add header: <code className="px-2 py-1 bg-gray-100 text-gray-700">x-organization-id: YOUR_ORG_ID</code></li>
- <li><strong>4.</strong> Select events: <code className="px-2 py-1 bg-gray-100 text-gray-700">email_sent</code>, <code className="px-2 py-1 bg-gray-100 text-gray-700">email_bounce</code>, <code className="px-2 py-1 bg-gray-100 text-gray-700">delivery_failure</code></li>
- <li><strong>5.</strong> (Optional) Configure webhook secret in Superkabe Settings for signature validation</li>
- </ol>
- </div>
-
- <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Supported Event Types</h3>
- <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
- <table className="w-full text-left">
- <thead className="bg-gray-50">
- <tr>
- <th className="px-6 py-3 text-gray-600 font-semibold">Smartlead Event</th>
- <th className="px-6 py-3 text-gray-600 font-semibold">Superkabe Action</th>
- </tr>
- </thead>
- <tbody className="divide-y divide-gray-100">
- <tr>
- <td className="px-6 py-4 font-mono text-sm text-blue-600">email_sent</td>
- <td className="px-6 py-4 text-gray-600">Increment mailbox send count</td>
- </tr>
- <tr>
- <td className="px-6 py-4 font-mono text-sm text-red-600">email_bounce</td>
- <td className="px-6 py-4 text-gray-600">Record hard bounce, check thresholds</td>
- </tr>
- <tr>
- <td className="px-6 py-4 font-mono text-sm text-red-600">hard_bounce</td>
- <td className="px-6 py-4 text-gray-600">Record hard bounce, check thresholds</td>
- </tr>
- <tr>
- <td className="px-6 py-4 font-mono text-sm text-amber-600">soft_bounce</td>
- <td className="px-6 py-4 text-gray-600">Log soft bounce (no threshold trigger)</td>
- </tr>
- <tr>
- <td className="px-6 py-4 font-mono text-sm text-red-600">delivery_failure</td>
- <td className="px-6 py-4 text-gray-600">Record failure, update risk score</td>
- </tr>
- </tbody>
- </table>
- </div>
-
- <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Expected Payload Format</h3>
- <div className="bg-gray-50 border border-gray-200 p-4 mb-8">
- <pre className="text-sm text-gray-700">
- {`{
- "event": "email_bounce",
- "mailbox_id": "mailbox_abc123", // or "mailbox": {...}
- "campaign_id": "campaign_xyz",
- "email": "recipient@example.com",
- "timestamp": "2026-02-08T12:00:00Z"
-}`}
- </pre>
- </div>
-
- {/* SECTION 3: Direct Ingestion API */}
- <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">3. Direct Ingestion API</h2>
+ {/* SECTION 2: Direct Ingestion API */}
+ <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Direct Ingestion API</h2>
  <p className="text-gray-600 mb-6">
  Programmatically submit leads to Superkabe from your own systems.
  </p>
@@ -256,7 +186,7 @@ export default function APIIntegrationPage() {
  <strong className="text-green-700">2. Retries:</strong> Implement exponential backoff for 5xx errors
  </li>
  <li>
- <strong className="text-green-700">3. Webhook Security:</strong> Configure webhook secrets in Smartlead and Superkabe for signature validation
+ <strong className="text-green-700">3. Webhook Security:</strong> Configure webhook secrets in Clay and Superkabe for HMAC signature validation
  </li>
  <li>
  <strong className="text-green-700">4. Field Mapping:</strong> Use consistent field names in Clay to avoid case-sensitivity issues
@@ -285,20 +215,6 @@ export default function APIIntegrationPage() {
  </pre>
  </div>
 
- <div className="bg-gray-50 border border-gray-200 p-6 mb-8">
- <h3 className="text-lg font-semibold mb-4 text-gray-900">cURL Example - Smartlead Webhook Test</h3>
- <pre className="text-sm text-blue-600 overflow-x-auto">
- {`curl -X POST https://api.superkabe.com/api/monitor/smartlead-webhook \\
- -H "Content-Type: application/json" \\
- -H "x-organization-id: YOUR_ORG_ID" \\
- -d '{
- "event": "email_bounce",
- "mailbox_id": "mailbox_test_123",
- "campaign_id": "campaign_abc",
- "email": "bounced@example.com"
- }'`}
- </pre>
- </div>
  </div>
  );
 }

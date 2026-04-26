@@ -7,7 +7,6 @@
  * here with ?tab=reports.
  */
 
-import { Suspense } from 'react';
 import Tabs, { useTabState, type TabItem } from '@/components/ui/Tabs';
 import { LineChart, FileText } from 'lucide-react';
 import AnalyticsLivePanel from './AnalyticsLivePanel';
@@ -19,14 +18,6 @@ const TABS: TabItem[] = [
 ];
 
 export default function AnalyticsPage() {
-    return (
-        <Suspense fallback={null}>
-            <AnalyticsPageInner />
-        </Suspense>
-    );
-}
-
-function AnalyticsPageInner() {
     const [active] = useTabState(TABS, 'live');
 
     return (

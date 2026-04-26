@@ -221,37 +221,7 @@ const helpArticles: HelpArticle[] = [
         description: 'How initial infrastructure health assessment works at onboarding — DNS checks, bounce rate analysis, and connection validation',
         tags: ['infrastructure', 'assessment', 'onboarding', 'dns', 'initial', 'first sync', 'evaluation']
     },
-    {
-        title: 'Data Sync Coverage',
-        href: '/docs/data-sync-coverage',
-        description: 'What data syncs from each platform and what starts at zero',
-        tags: ['sync', 'data', 'coverage', 'smartlead', 'instantly', 'emailbison', 'import', 'missing data']
-    },
-    {
-        title: 'Multi-Platform Sync',
-        href: '/docs/multi-platform-sync',
-        description: 'How Superkabe syncs across Smartlead, Instantly, and EmailBison simultaneously',
-        tags: ['multi-platform', 'sync', 'smartlead', 'instantly', 'emailbison', 'parallel', 'multiple']
-    },
     // ── Integration Guides ──
-    {
-        title: 'Smartlead Integration',
-        href: '/docs/smartlead-integration',
-        description: 'Connecting and syncing with Smartlead — API key setup, webhook configuration, and campaign sync',
-        tags: ['smartlead', 'integration', 'sync', 'api key', 'webhook', 'connect']
-    },
-    {
-        title: 'EmailBison Integration',
-        href: '/docs/emailbison-integration',
-        description: 'Connecting and syncing with EmailBison',
-        tags: ['emailbison', 'integration', 'sync', 'connect']
-    },
-    {
-        title: 'Instantly Integration',
-        href: '/docs/instantly-integration',
-        description: 'Connecting and syncing with Instantly',
-        tags: ['instantly', 'integration', 'sync', 'connect']
-    },
     {
         title: 'Clay Integration',
         href: '/docs/clay-integration',
@@ -293,12 +263,12 @@ const contextualHelp: Record<string, string[]> = {
     '/dashboard/domains': ['infrastructure-score-explained', '24-7-monitoring', 'monitoring', 'bounce-classification'],
     '/dashboard/mailboxes': ['connection-errors', '24-7-monitoring', 'monitoring', 'auto-healing', 'warmup-recovery'],
     '/dashboard/notifications': ['notifications', '24-7-monitoring'],
-    '/dashboard/settings': ['smartlead-integration', 'emailbison-integration', 'instantly-integration', 'configuration', 'account-management'],
+    '/dashboard/settings': ['clay-integration', 'slack-integration', 'configuration', 'account-management'],
     '/dashboard/billing': ['billing'],
     '/dashboard/predictive-risks': ['risk-scoring', 'monitoring', '24-7-monitoring', 'bounce-classification'],
     '/dashboard/load-balancing': ['load-balancing', 'campaign-paused', 'monitoring'],
     '/dashboard/audit-logs': ['audit-logs', '24-7-monitoring'],
-    '/dashboard/analytics': ['analytics', 'data-sync-coverage', 'monitoring'],
+    '/dashboard/analytics': ['analytics', 'monitoring'],
 };
 
 interface HelpPanelProps {
