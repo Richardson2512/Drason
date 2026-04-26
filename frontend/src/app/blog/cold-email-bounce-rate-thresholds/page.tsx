@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Cold Email Bounce Rate Thresholds: What Gets You',
@@ -99,15 +102,24 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article className="prose prose-lg max-w-none text-gray-700">
- <header className="mb-12">
- <h1 className="text-4xl font-bold text-gray-900 mb-4">
- Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026
- </h1>
- <p className="text-xl text-gray-600">
+ <BlogHeader
+ tag="Guide"
+ title="Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
+
+ <FeaturedHero
+ badge="GUIDE · 2026"
+ eyebrow="10 min read"
+ tagline="The right bounce thresholds"
+ sub="3% pause · 60-send minimum · 5-bounce safety net · ESP-aware"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  The specific numbers that ISPs use to throttle, filter, and blacklist your domain. No vague advice. Just the thresholds, the timelines, and how to stay under them.
  </p>
- <time className="text-sm text-gray-400 mt-2 block" dateTime="2026-03-27">March 27, 2026</time>
- </header>
 
  <section className="mb-10">
  <p>

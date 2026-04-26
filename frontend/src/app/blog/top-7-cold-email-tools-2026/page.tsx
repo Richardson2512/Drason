@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Top 7 Cold Email Tools of 2026 (Ranked & Compared)',
@@ -66,11 +69,23 @@ export default function Top7ColdEmailToolsPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">Top 7 cold email tools of 2026 (ranked &amp; compared)</h1>
-                <p className="text-gray-400 text-sm mb-8">14 min read · Published April 2026</p>
+                <BlogHeader
+                    tag="Comparison"
+                    title="Top 7 cold email tools of 2026 (ranked & compared)"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    The cold email tooling category split in 2025-2026. Pure senders kept refining their craft; a new layer — infrastructure protection — emerged as the differentiator. This is a ranked review of the 7 cold email tools that actually compete at the top of the category in 2026, scored on the full problem (validation + sending + protection + healing), not just feature surface area.
+                <FeaturedHero
+                    badge="RANKING · 2026"
+                    eyebrow="14 min read"
+                    tagline="The 7 that actually compete"
+                    sub="Validation · Sending · Protection · Healing · Economics"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    The cold email tooling category split in 2025-2026. Pure senders kept refining their craft; a new layer — infrastructure protection — emerged as the differentiator. This is a ranked review of the 7 platforms that compete at the top of the category, scored on the full problem (validation + sending + protection + healing) not just feature surface area.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -84,16 +99,6 @@ export default function Top7ColdEmailToolsPage() {
                     </ul>
                 </div>
 
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#methodology" style={{ color: '#2563EB', textDecoration: 'none' }}>Methodology — what we ranked on</a></li>
-                        <li><a href="#ranked" style={{ color: '#2563EB', textDecoration: 'none' }}>The 7 ranked</a></li>
-                        <li><a href="#comparison" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side feature matrix</a></li>
-                        <li><a href="#how-to-pick" style={{ color: '#2563EB', textDecoration: 'none' }}>How to pick</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
-                </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology — what we ranked on</h2>
@@ -304,13 +309,13 @@ export default function Top7ColdEmailToolsPage() {
                     <h2 id="how-to-pick" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How to pick</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You want sending + protection + AI in one platform:</strong> Superkabe</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You want a mature pure sender with deep API ecosystem:</strong> Smartlead</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You want bundled warmup and lead database:</strong> Instantly</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You push 500K+ sends/month single-tenant:</strong> EmailBison + Superkabe</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You run named-account outbound with heavy personalization:</strong> Lemlist</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You&apos;re a solo founder needing leads + sender bundled:</strong> Saleshandy</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You run reply-driven nurture sequences with if-campaign logic:</strong> Woodpecker</li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want sending + protection + AI in one platform:</strong> Superkabe</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want a mature pure sender with deep API ecosystem:</strong> Smartlead</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want bundled warmup and lead database:</strong> Instantly</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You push 500K+ sends/month single-tenant:</strong> EmailBison + Superkabe</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You run named-account outbound with heavy personalization:</strong> Lemlist</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You&apos;re a solo founder needing leads + sender bundled:</strong> Saleshandy</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You run reply-driven nurture sequences with if-campaign logic:</strong> Woodpecker</span></li>
                         </ul>
                     </div>
 
@@ -318,16 +323,14 @@ export default function Top7ColdEmailToolsPage() {
                         For deeper context, see <Link href="/blog/cold-email-software-compared" className="text-blue-600 hover:text-blue-800 underline">our head-to-head software comparison</Link>, <Link href="/blog/cold-email-tools-for-agencies" className="text-blue-600 hover:text-blue-800 underline">agency-scale tooling analysis</Link>, and <Link href="/blog/cheapest-cold-email-tools-2026" className="text-blue-600 hover:text-blue-800 underline">cheapest tools breakdown</Link>.
                     </p>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">Try the only platform that ships protection natively</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                Superkabe Starter is $19/month and includes AI sequencing, validation, real-time monitoring, threshold-based auto-pause, and the 5-phase healing pipeline. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="Try the only platform that ships protection natively"
+                    body="Superkabe Starter is $19/month and includes AI sequencing, validation, real-time monitoring, threshold-based auto-pause, and the 5-phase healing pipeline."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">

@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Why Do Cold Emails Go to Spam After 2 Weeks?',
@@ -60,14 +63,24 @@ export default function WhyColdEmailsGoToSpamArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Why Do Cold Emails Go to Spam After 2 Weeks?
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Troubleshooting"
+                    title="Why Do Cold Emails Go to Spam After 2 Weeks?"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="snippet-answer text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Cold emails go to spam after 2 weeks because warmup builds artificial engagement that stops once live campaigns begin. Without real replies and low bounce rates, ISPs reclassify your domain as suspicious. The transition from warmup to live sending is the most dangerous period for any cold email domain.
- </p>
+                <FeaturedHero
+                    badge="TROUBLESHOOTING · 2026"
+                    eyebrow="10 min read"
+                    tagline="Why cold emails hit spam"
+                    sub="Authentication · Reputation · Content · Volume · Validation"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Cold emails go to spam after 2 weeks because warmup builds artificial engagement that stops once live campaigns begin. Without real replies and low bounce rates, ISPs reclassify your domain as suspicious. The transition from warmup to live sending is the most dangerous period for any cold email domain.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -175,11 +188,12 @@ export default function WhyColdEmailsGoToSpamArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Stop losing domains to spam after warmup</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors bounce rates in real time, auto-pauses mailboxes before thresholds are breached, validates every lead before it reaches your sender, and heals damaged infrastructure through graduated recovery.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="Stop losing inbox placement"
+                    body="Spam placement is a stack of root causes — authentication, validation, reputation, sending pattern. Superkabe monitors all of them in real time and pauses bad mailboxes before damage compounds."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

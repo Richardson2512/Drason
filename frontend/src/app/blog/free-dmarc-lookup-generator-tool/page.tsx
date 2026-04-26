@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Free DMARC Lookup & Generator Tool – Configure Your",
@@ -109,12 +112,22 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Free DMARC Lookup &amp; Generator Tool &mdash; Configure Your Domain&apos;s Email Policy
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Updated April 2026</p>
+ <BlogHeader
+ tag="Free Tools"
+ title="Free DMARC Lookup & Generator Tool — Configure Your Domain's Email Policy"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="FREE TOOLS · 2026"
+ eyebrow="10 min read"
+ tagline="Configure your DMARC policy"
+ sub="Lookup · Generator · p=none → reject · Aggregate reports"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  DMARC is the policy layer that ties SPF and DKIM together and tells receiving servers what to do when authentication fails. Without DMARC, ISPs have no instructions for handling spoofed emails from your domain. Use our <Link href="/tools/dmarc-lookup" className="underline">free DMARC lookup tool</Link> to check your current policy, or the <Link href="/tools/dmarc-generator" className="underline">DMARC generator</Link> to create one from scratch.
  </p>
 
@@ -130,19 +143,6 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-dmarc" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DMARC and Why Does Every Domain Need It?</a></li>
- <li><a href="#policy-levels" style={{ color: '#2563EB', textDecoration: 'none' }}>DMARC Policy Levels: none, quarantine, reject</a></li>
- <li><a href="#rollout-strategy" style={{ color: '#2563EB', textDecoration: 'none' }}>The Safe DMARC Rollout Strategy</a></li>
- <li><a href="#dmarc-reporting" style={{ color: '#2563EB', textDecoration: 'none' }}>DMARC Reporting: Understanding rua and ruf</a></li>
- <li><a href="#how-to-use-tools" style={{ color: '#2563EB', textDecoration: 'none' }}>How to Use the Free DMARC Lookup and Generator Tools</a></li>
- <li><a href="#alignment-modes" style={{ color: '#2563EB', textDecoration: 'none' }}>DMARC Alignment: Strict vs Relaxed</a></li>
- <li><a href="#google-yahoo-requirements" style={{ color: '#2563EB', textDecoration: 'none' }}>Google and Yahoo DMARC Requirements</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>Frequently Asked Questions</a></li>
- </ol>
- </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
@@ -347,19 +347,14 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop Managing DMARC Manually</h3>
- <p className="text-blue-100 leading-relaxed mb-4">
- The free DMARC tools help you check and create records, but outbound teams running multiple domains need continuous policy monitoring. Superkabe tracks DMARC policies across all your sending domains, alerts you when policies are too permissive, and monitors aggregate report data to catch authentication failures before they compound.
- </p>
- <Link href="/" className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 hover:bg-blue-50 transition-colors">
- See how Superkabe protects your infrastructure &rarr;
- </Link>
  </div>
- </div>
- </div>
+
+ <BottomCtaStrip
+ headline="Stop Managing DMARC Manually"
+ body="The free DMARC tools help you check and create records, but outbound teams running multiple domains need continuous policy monitoring. Superkabe tracks DMARC policies across all your sending domains, alerts you when policies are too permissive, and monitors aggregate report data to catch authentication failures before they compound."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
 
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>

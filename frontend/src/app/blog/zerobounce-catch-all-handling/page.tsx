@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How ZeroBounce Handles Catch-All Domains',
@@ -95,14 +98,24 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How ZeroBounce handles catch-all domains (and what it misses)
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Deep Dive"
+                    title="How ZeroBounce handles catch-all domains (and what it misses)"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- ZeroBounce flags catch-all emails with a dedicated status label. That is genuinely helpful. But the label itself does not solve the problem. You still have to decide what to do with 30-40% of your lead list, and ZeroBounce cannot protect you after you make that decision.
- </p>
+                <FeaturedHero
+                    badge="DEEP DIVE · 2026"
+                    eyebrow="10 min read"
+                    tagline="Catch-all server handling"
+                    sub="Validation limits · SMTP probing · Routing · Real-time healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    ZeroBounce flags catch-all emails with a dedicated status label. That is genuinely helpful. But the label itself does not solve the problem. You still have to decide what to do with 30-40% of your lead list, and ZeroBounce cannot protect you after you make that decision.
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -115,20 +128,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#catch-all-quick-refresher" style={{ color: '#2563EB', textDecoration: 'none' }}>Quick refresher: what catch-all domains are</a></li>
- <li><a href="#how-zerobounce-handles-catch-all" style={{ color: '#2563EB', textDecoration: 'none' }}>How ZeroBounce handles catch-all</a></li>
- <li><a href="#what-zerobounce-does-well" style={{ color: '#2563EB', textDecoration: 'none' }}>What ZeroBounce does well</a></li>
- <li><a href="#the-gap" style={{ color: '#2563EB', textDecoration: 'none' }}>The gap after you press send</a></li>
- <li><a href="#the-numbers" style={{ color: '#2563EB', textDecoration: 'none' }}>The real numbers on catch-all risk</a></li>
- <li><a href="#risk-aware-distribution" style={{ color: '#2563EB', textDecoration: 'none' }}>Risk-aware distribution: the middle ground</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  {/* Section 1 */}
  <h2 id="catch-all-quick-refresher" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Quick refresher: what catch-all domains are</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -168,11 +168,11 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">ZeroBounce strengths</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Non-catch-all accuracy:</strong> Around 98% detection rate for truly invalid addresses on standard domains. Best-in-class</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Spam trap detection:</strong> Identifies known spam trap addresses. Valuable for cold email where one spam trap hit can tank your sender score</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Activity scoring:</strong> Tells you if an email address has been active recently. Helps you prioritize leads beyond just &quot;is this address valid?&quot;</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Data append:</strong> Returns name, gender, location, and account creation date. Useful enrichment if your CRM data is sparse</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Catch-all detection itself:</strong> The fact that ZeroBounce flags catch-all domains at all is valuable. Some cheaper tools just return &quot;valid&quot; for everything on a catch-all domain</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Non-catch-all accuracy:</strong> Around 98% detection rate for truly invalid addresses on standard domains. Best-in-class</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Spam trap detection:</strong> Identifies known spam trap addresses. Valuable for cold email where one spam trap hit can tank your sender score</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Activity scoring:</strong> Tells you if an email address has been active recently. Helps you prioritize leads beyond just &quot;is this address valid?&quot;</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Data append:</strong> Returns name, gender, location, and account creation date. Useful enrichment if your CRM data is sparse</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Catch-all detection itself:</strong> The fact that ZeroBounce flags catch-all domains at all is valuable. Some cheaper tools just return &quot;valid&quot; for everything on a catch-all domain</span></li>
  </ul>
  </div>
 
@@ -210,11 +210,11 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">What is missing after the label</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No bounce monitoring:</strong> If catch-all leads bounce after sending, ZeroBounce does not know and cannot alert you</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No auto-pause:</strong> If bounces from catch-all leads push a mailbox over threshold, nothing stops the bleeding automatically</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No risk distribution:</strong> ZeroBounce has no concept of &quot;this mailbox already has 5 catch-all leads today, send the next one through a different mailbox&quot;</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No domain-level intelligence:</strong> No caching of catch-all status per domain. No tracking of historical bounce rates from specific catch-all domains</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no graduated recovery process</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No bounce monitoring:</strong> If catch-all leads bounce after sending, ZeroBounce does not know and cannot alert you</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No auto-pause:</strong> If bounces from catch-all leads push a mailbox over threshold, nothing stops the bleeding automatically</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No risk distribution:</strong> ZeroBounce has no concept of &quot;this mailbox already has 5 catch-all leads today, send the next one through a different mailbox&quot;</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No domain-level intelligence:</strong> No caching of catch-all status per domain. No tracking of historical bounce rates from specific catch-all domains</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no graduated recovery process</span></li>
  </ul>
  </div>
 
@@ -323,15 +323,12 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  For a broader look at how verification tools compare on catch-all handling, see our <Link href="/blog/catch-all-detection-zerobounce-vs-neverbounce" className="text-blue-600 hover:text-blue-800 underline">ZeroBounce vs NeverBounce vs Superkabe comparison</Link>. And for the complete list of verification options beyond ZeroBounce, check our <Link href="/blog/zerobounce-alternatives-infrastructure-monitoring" className="text-blue-600 hover:text-blue-800 underline">ZeroBounce alternatives guide</Link>.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop choosing between pipeline and safety</h3>
- <p className="text-blue-100 leading-relaxed">
- You should not have to skip 30-40% of your leads because your verification tool cannot protect you after the send. Superkabe lets you send to catch-all leads with per-mailbox risk caps, real-time bounce monitoring, and auto-pause. Keep your pipeline full without burning your domains. <Link href="/" className="text-white underline hover:text-blue-200">See how Superkabe handles catch-all risk</Link>.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Handle catch-all addresses safely"
+                    body="Catch-all servers accept everything then bounce later. Superkabe runs conditional SMTP probing pre-send and threshold-based auto-pause post-send to keep bounce rate safe."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

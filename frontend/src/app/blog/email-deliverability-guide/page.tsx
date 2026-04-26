@@ -2,6 +2,9 @@ import Link from 'next/link';
 
 import { Shield, AlertTriangle, CheckCircle, Zap, Lock, Activity } from 'lucide-react';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to protect and master your outbound email deliverability',
@@ -140,21 +143,24 @@ export default function EmailDeliverabilityGuide() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <div className="mb-4">
- <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full uppercase tracking-wider">Complete Guide</span>
- </div>
+ <BlogHeader
+                        tag="Guide"
+                        title="How to protect and master your outbound email deliverability"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to protect and master your outbound email deliverability
- </h1>
- <p className="text-xl text-gray-500 mb-4 leading-relaxed max-w-3xl">
- Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.
- </p>
- <p className="text-gray-400 text-sm mb-8">25 min read · Updated February 2026</p>
+                    <FeaturedHero
+                        badge="GUIDE · 2026"
+                        eyebrow="25 min read"
+                        tagline="The deliverability playbook"
+                        sub="Authentication · Reputation · Validation · Auto-pause · Healing"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This guide answers a common question from outbound teams: &quot;What are the exact technical requirements and strategies to maintain 95%+ email deliverability at scale?&quot;
- </p>
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        This guide answers a common question from outbound teams: &quot;What are the exact technical requirements and strategies to maintain 95%+ email deliverability at scale?&quot;
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">

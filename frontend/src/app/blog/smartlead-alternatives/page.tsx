@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import HeroCard from '@/components/blog/HeroCard';
-import AuthorByline from '@/components/blog/AuthorByline';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -92,19 +92,24 @@ export default function SmartleadAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <HeroCard
-                    badge="ALTERNATIVES · 2026"
-                    eyebrow="Comparison"
+                <BlogHeader
+                    tag="Alternatives"
                     title="Best Smartlead alternatives for cold email in 2026"
-                    subtitle="Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem — and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked breakdown of the seven Smartlead alternatives that actually compete in 2026."
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
                 />
 
-                <AuthorByline
-                    name="Edward Sam"
-                    role="Deliverability Specialist, Superkabe"
-                    dateModified="2026-04-25"
-                    readTime="12 min read"
+                <FeaturedHero
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="12 min read"
+                    tagline="Smartlead vs the rest"
+                    sub="Pricing · Deliverability · Auto-pause · 5-phase healing"
                 />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem — and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked breakdown of the seven Smartlead alternatives that actually compete in 2026.
+                </p>
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -130,10 +135,10 @@ export default function SmartleadAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The four reasons teams leave</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No native deliverability protection.</strong> Smartlead reports bounces and exposes a "category" field, but it does not auto-pause mailboxes that cross a bounce-rate threshold. Domains burn before anyone notices</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No structured healing.</strong> When a mailbox does get paused, you bring it back manually. There is no quarantine → restricted-send → warm-recovery → healthy pipeline that the platform enforces</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Per-active-lead pricing at scale.</strong> Smartlead&apos;s pricing scales with active leads (12K, 30K, 60K, etc.) — agencies running 100,000+ active leads pay accordingly. Per-send pricing models can be cheaper at high volumes</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>ESP routing is platform-level, not per-mailbox.</strong> Smartlead&apos;s ESP matching treats all Gmail mailboxes as equal. Teams running 200+ mailboxes know that one Gmail mailbox can have 0.1% bounce rate to Gmail recipients while another runs 2% — same provider, different reality</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No native deliverability protection.</strong> Smartlead reports bounces and exposes a "category" field, but it does not auto-pause mailboxes that cross a bounce-rate threshold. Domains burn before anyone notices</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No structured healing.</strong> When a mailbox does get paused, you bring it back manually. There is no quarantine → restricted-send → warm-recovery → healthy pipeline that the platform enforces</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing at scale.</strong> Smartlead&apos;s pricing scales with active leads (12K, 30K, 60K, etc.) — agencies running 100,000+ active leads pay accordingly. Per-send pricing models can be cheaper at high volumes</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>ESP routing is platform-level, not per-mailbox.</strong> Smartlead&apos;s ESP matching treats all Gmail mailboxes as equal. Teams running 200+ mailboxes know that one Gmail mailbox can have 0.1% bounce rate to Gmail recipients while another runs 2% — same provider, different reality</span></li>
                         </ul>
                     </div>
 
@@ -380,10 +385,10 @@ export default function SmartleadAlternativesPage() {
                     </p>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You&apos;ve burned a domain that you should have caught.</strong> If a bounce rate spike or DNS failure took out a domain because no automation paused it, the pattern will repeat. Auto-pause + healing is the structural fix</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You manage 30+ mailboxes per workspace.</strong> Per-mailbox ESP performance routing only matters at scale, but at scale it dramatically changes deliverability</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>Per-active-lead pricing is exceeding your budget.</strong> At 100K active leads Smartlead is a meaningful spend; per-send pricing models can be 2-4× cheaper</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You want native AI sequencing without bolting on third-party tools.</strong> Superkabe&apos;s AI sequencer ships with the platform — you don&apos;t pay extra for OpenAI passes or third-party copy generators</li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You&apos;ve burned a domain that you should have caught.</strong> If a bounce rate spike or DNS failure took out a domain because no automation paused it, the pattern will repeat. Auto-pause + healing is the structural fix</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You manage 30+ mailboxes per workspace.</strong> Per-mailbox ESP performance routing only matters at scale, but at scale it dramatically changes deliverability</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing is exceeding your budget.</strong> At 100K active leads Smartlead is a meaningful spend; per-send pricing models can be 2-4× cheaper</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want native AI sequencing without bolting on third-party tools.</strong> Superkabe&apos;s AI sequencer ships with the platform — you don&apos;t pay extra for OpenAI passes or third-party copy generators</span></li>
                         </ul>
                     </div>
 

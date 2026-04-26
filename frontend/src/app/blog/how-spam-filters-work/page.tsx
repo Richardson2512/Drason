@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How spam filters work and how they affect email',
@@ -91,12 +94,22 @@ export default function HowSpamFiltersWorkArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How spam filters work and how they affect email deliverability
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read &middot; Updated February 2026</p>
+ <BlogHeader
+ tag="Deep Dive"
+ title="How spam filters work and how they affect email deliverability"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="DEEP DIVE · 2026"
+ eyebrow="12 min read"
+ tagline="How spam filters actually work"
+ sub="Reputation · Content · Auth · Engagement signals"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  This guide answers two critical questions from outbound teams: &quot;How do spam filters actually decide what goes to spam?&quot; and &quot;What can I do to avoid them without compromising my outreach?&quot;
  </p>
 
@@ -112,20 +125,6 @@ export default function HowSpamFiltersWorkArticle() {
  </ul>
  </div>
 
- {/* Table of Contents */}
- <div className="bg-white border border-gray-100 p-8 mb-16 shadow-sm">
- <h2 className="font-bold text-gray-900 mb-4 text-lg">Table of Contents</h2>
- <nav className="space-y-2 text-sm">
- <a href="#how-do-spam-filters-evaluate-email" className="block text-blue-600 hover:text-blue-800 transition-colors">1. How Do Spam Filters Evaluate Email?</a>
- <a href="#what-are-the-four-layers-of-spam-filtering" className="block text-blue-600 hover:text-blue-800 transition-colors">2. What Are the Four Layers of Spam Filtering?</a>
- <a href="#how-do-spam-filters-affect-email-deliverability" className="block text-blue-600 hover:text-blue-800 transition-colors">3. How Do Spam Filters Affect Email Deliverability?</a>
- <a href="#how-do-isp-specific-spam-filters-behave" className="block text-blue-600 hover:text-blue-800 transition-colors">4. How Do ISP-Specific Spam Filters Behave?</a>
- <a href="#what-are-the-common-content-level-spam-triggers" className="block text-blue-600 hover:text-blue-800 transition-colors">5. What Are the Common Content-Level Spam Triggers?</a>
- <a href="#what-are-the-best-practices-for-avoiding-spam-filters" className="block text-blue-600 hover:text-blue-800 transition-colors">6. What Are the Best Practices for Avoiding Spam Filters?</a>
- <a href="#infrastructure-vs-content" className="block text-blue-600 hover:text-blue-800 transition-colors">7. Infrastructure vs. Content: What Matters More?</a>
- <a href="#faq" className="block text-blue-600 hover:text-blue-800 transition-colors">8. Frequently Asked Questions</a>
- </nav>
- </div>
 
  <div className="prose prose-lg max-w-none">
 
@@ -461,15 +460,12 @@ export default function HowSpamFiltersWorkArticle() {
  </div>
 
  {/* CTA */}
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Spam filters are multi-layered systems where infrastructure signals outweigh content signals. For cold outbound teams, inbox placement depends more on domain reputation, DNS authentication, and bounce rates than on subject lines or copy. Protect the infrastructure first — the content follows.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+ headline="Key Takeaway"
+ body={`Spam filters are multi-layered systems where infrastructure signals outweigh content signals. For cold outbound teams, inbox placement depends more on domain reputation, DNS authentication, and bounce rates than on subject lines or copy. Protect the infrastructure first — the content follows.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

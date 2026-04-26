@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold',
@@ -103,14 +106,24 @@ export default function CatchAllDomainsColdOutreachArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Catch-all domains: the hidden risk destroying your cold email deliverability
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read &middot; Published March 2026</p>
+ <BlogHeader
+                        tag="Deep Dive"
+                        title="Catch-all domains: the hidden risk destroying your cold email deliverability"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Your verification tool says every email on the list is valid. You send. Bounce rate hits 7%. Two mailboxes get paused. One domain lands on a blacklist. The culprit? Catch-all domains. And your verification tool never stood a chance against them.
- </p>
+                    <FeaturedHero
+                        badge="DEEP DIVE · 2026"
+                        eyebrow="12 min read"
+                        tagline="Catch-all domains explained"
+                        sub="Detection · Risk · Send-or-skip · Bounce math"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Your verification tool says every email on the list is valid. You send. Bounce rate hits 7%. Two mailboxes get paused. One domain lands on a blacklist. The culprit? Catch-all domains. And your verification tool never stood a chance against them.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -124,21 +137,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-are-catch-all" style={{ color: '#2563EB', textDecoration: 'none' }}>What catch-all domains actually are</a></li>
- <li><a href="#why-verification-fails" style={{ color: '#2563EB', textDecoration: 'none' }}>Why verification tools cannot help</a></li>
- <li><a href="#the-numbers" style={{ color: '#2563EB', textDecoration: 'none' }}>The numbers: how bad is the problem?</a></li>
- <li><a href="#damage-pattern" style={{ color: '#2563EB', textDecoration: 'none' }}>The damage pattern</a></li>
- <li><a href="#detection-approaches" style={{ color: '#2563EB', textDecoration: 'none' }}>Detection approaches that work</a></li>
- <li><a href="#superkabe-approach" style={{ color: '#2563EB', textDecoration: 'none' }}>How Superkabe handles catch-all leads</a></li>
- <li><a href="#practical-strategy" style={{ color: '#2563EB', textDecoration: 'none' }}>Practical strategy: distribute risk, do not block</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Every cold outreach team eventually gets burned by catch-all domains. It usually happens the same way: you buy a lead list, run it through ZeroBounce or NeverBounce, see a 97% valid rate, load it into Smartlead, and start sending. Within 48 hours, bounces start climbing. By day three, a mailbox is paused. By day five, the domain is on a blacklist. And you are staring at a verification report that said everything was fine.
  </p>
@@ -349,15 +348,12 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">The bottom line</h3>
- <p className="text-blue-100 leading-relaxed">
- Catch-all domains are not going away. They represent a huge share of the B2B market and blocking them is not realistic. The teams that protect their deliverability are the ones that detect catch-all at the domain level, distribute risk across their infrastructure, and have automated guardrails that trigger before damage accumulates. Verification tells you the domain is catch-all. What you do with that information determines whether your domains survive.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="The bottom line"
+                    body="Catch-all domains are not going away. They represent a huge share of the B2B market and blocking them is not realistic. The teams that protect their deliverability are the ones that detect catch-all at the domain level, distribute risk across their infrastructure, and have automated guardrails that trigger before damage accumulates. Verification tells you the domain is catch-all. What you do with that information determines whether your domains survive."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  </article>
 

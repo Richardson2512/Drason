@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Domain Burned From a Bad Lead List? Complete Recovery',
@@ -103,14 +106,24 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Domain burned from a bad lead list? Complete recovery and prevention guide
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read &middot; Published March 2026</p>
+ <BlogHeader
+                        tag="Guide"
+                        title="Domain burned from a bad lead list? Complete recovery and prevention guide"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- You uploaded a new lead list. Bounces spiked to 8%. Your domain hit a blacklist. Now your entire sending infrastructure is compromised. Here is exactly how to recover — and how to make sure it never happens again.
- </p>
+                    <FeaturedHero
+                        badge="GUIDE · 2026"
+                        eyebrow="14 min read"
+                        tagline="Burned domain recovery"
+                        sub="Detection · Pause · 5-phase healing · Prevention"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        You uploaded a new lead list. Bounces spiked to 8%. Your domain hit a blacklist. Now your entire sending infrastructure is compromised. Here is exactly how to recover — and how to make sure it never happens again.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -124,20 +137,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#the-scenario" style={{ color: '#2563EB', textDecoration: 'none' }}>The scenario: how domains get burned</a></li>
- <li><a href="#step-by-step-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>Step-by-step recovery process</a></li>
- <li><a href="#clay-pipeline-problem" style={{ color: '#2563EB', textDecoration: 'none' }}>The Clay pipeline problem</a></li>
- <li><a href="#adding-validation" style={{ color: '#2563EB', textDecoration: 'none' }}>Adding validation between Clay and your sender</a></li>
- <li><a href="#prevention-checklist" style={{ color: '#2563EB', textDecoration: 'none' }}>Prevention checklist</a></li>
- <li><a href="#cost-math" style={{ color: '#2563EB', textDecoration: 'none' }}>The cost math: prevention vs. recovery</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <h2 id="the-scenario" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The scenario: how domains get burned</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
  It always starts the same way. You have a lead list — maybe from Clay, maybe from a data broker, maybe scraped from LinkedIn. The list looks good. Maybe you ran it through a verification tool. Maybe you did not because the source seemed reliable. You load it into Smartlead or Instantly and launch a campaign.
@@ -418,15 +418,12 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">The bottom line</h3>
- <p className="text-blue-100 leading-relaxed">
- Domain recovery is possible but expensive — in time, money, and pipeline. The teams that never have to recover are the ones that validate every lead, monitor every mailbox, and auto-pause before damage accumulates. If you are pushing leads from Clay or any enrichment tool directly to your sender without validation, you are one bad list away from losing a domain. That is not a scare tactic. It is arithmetic.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="The bottom line"
+                    body="Domain recovery is possible but expensive — in time, money, and pipeline. The teams that never have to recover are the ones that validate every lead, monitor every mailbox, and auto-pause before damage accumulates. If you are pushing leads from Clay or any enrichment tool directly to your sender without validation, you are one bad list away from losing a domain. That is not a scare tactic. It is arithmetic."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  </article>
 

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How bounce rates damage sender reputation',
@@ -95,14 +98,24 @@ export default function BounceRateArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How bounce rates damage sender reputation (and how to prevent it)
- </h1>
- <p className="text-gray-400 text-sm mb-8">8 min read · Updated February 2026</p>
+ <BlogHeader
+                        tag="Deep Dive"
+                        title="How bounce rates damage sender reputation (and how to prevent it)"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This guide answers a common question from outbound teams: &quot;How do bounce rates actually affect my sender reputation over time, and what is a safe threshold?&quot;
- </p>
+                    <FeaturedHero
+                        badge="DEEP DIVE · 2026"
+                        eyebrow="8 min read"
+                        tagline="How bounces wreck deliverability"
+                        sub="Thresholds · Reputation impact · Recovery cost · Auto-pause"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        This guide answers a common question from outbound teams: &quot;How do bounce rates actually affect my sender reputation over time, and what is a safe threshold?&quot;
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -116,17 +129,7 @@ export default function BounceRateArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-email-bounce-rate" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is Email Bounce Rate?</a></li>
- <li><a href="#bounce-rate-thresholds" style={{ color: '#2563EB', textDecoration: 'none' }}>What Are the Bounce Rate Thresholds That Trigger ISP Action?</a></li>
- <li><a href="#cold-outbound-vulnerable" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Is Cold Outbound Particularly Vulnerable to Bounces?</a></li>
- <li><a href="#superkabe-prevents-bounce-damage" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does Superkabe Prevent Bounce-Driven Damage?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Email bounce rate is the percentage of sent emails that fail to reach the recipient&apos;s inbox. It is the single most important metric for outbound email infrastructure health. A bounce rate above 5% on any sending domain triggers reputation scoring downgrades at major ISPs, causing all subsequent emails from that domain to be routed to spam or rejected entirely.
  </p>
@@ -234,15 +237,12 @@ export default function BounceRateArticle() {
  This tiered approach ensures that operators have time to react before irreversible damage occurs. By the time a domain reaches the gate threshold, the sending volume on that domain has already been significantly reduced, preventing the bounce rate from compounding further.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Bounce rate is not just a metric — it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Superkabe provides proactive, real-time protection that blocks damage before it compounds.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Key Takeaway"
+                    body="Bounce rate is not just a metric — it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Superkabe provides proactive, real-time protection that blocks damage before it compounds."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  
  <div className="mt-16 pt-10 border-t border-gray-100">

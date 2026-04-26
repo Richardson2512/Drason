@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Email Validation for Cold Email Agencies: Protect Clients',
@@ -99,15 +102,24 @@ export default function EmailValidationForAgenciesArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article className="prose prose-lg max-w-none text-gray-700">
- <header className="mb-12">
- <h1 className="text-4xl font-bold text-gray-900 mb-4">
- Email Validation for Cold Email Agencies: Protect Clients Without Burning Their Domains
- </h1>
- <p className="text-xl text-gray-600">
+ <BlogHeader
+ tag="Agencies"
+ title="Email Validation for Cold Email Agencies: Protect Clients Without Burning Their Domains"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
+
+ <FeaturedHero
+ badge="AGENCIES · 2026"
+ eyebrow="11 min read"
+ tagline="Protect every client domain"
+ sub="Multi-client · Per-client isolation · ROI math · Healing"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  You are sending on someone else&apos;s domains. If you burn one, the apology call is worse than the lost revenue. Here is how agencies protect client infrastructure at scale.
  </p>
- <time className="text-sm text-gray-400 mt-2 block" dateTime="2026-03-27">March 27, 2026</time>
- </header>
 
  <section className="mb-10">
  <p>

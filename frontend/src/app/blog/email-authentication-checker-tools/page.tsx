@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC',
@@ -118,14 +121,24 @@ export default function EmailAuthenticationCheckerToolsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Free Email Authentication Checker Tools &mdash; SPF, DKIM &amp; DMARC in One Place
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read &middot; Updated April 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Free Email Authentication Checker Tools &mdash; SPF, DKIM &amp; DMARC in One Place"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Email authentication is no longer optional. Google and Yahoo require SPF, DKIM, and DMARC for all bulk senders. We built six free tools &mdash; three lookup tools and three generators &mdash; so you can verify and configure your entire authentication stack from one place, without signing up for anything.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="11 min read"
+                        tagline="Auth checker tools compared"
+                        sub="SPF · DKIM · DMARC · Reporting · Free vs paid"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Email authentication is no longer optional. Google and Yahoo require SPF, DKIM, and DMARC for all bulk senders. We built six free tools &mdash; three lookup tools and three generators &mdash; so you can verify and configure your entire authentication stack from one place, without signing up for anything.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -139,21 +152,7 @@ export default function EmailAuthenticationCheckerToolsArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#all-six-tools" style={{ color: '#2563EB', textDecoration: 'none' }}>All Six Free Email Authentication Tools</a></li>
- <li><a href="#why-authentication-matters" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Email Authentication Matters in 2024 and Beyond</a></li>
- <li><a href="#authentication-stack" style={{ color: '#2563EB', textDecoration: 'none' }}>The Complete Email Authentication Stack Explained</a></li>
- <li><a href="#step-by-step-guide" style={{ color: '#2563EB', textDecoration: 'none' }}>Step-by-Step: How to Check All Three Protocols</a></li>
- <li><a href="#common-issues" style={{ color: '#2563EB', textDecoration: 'none' }}>Common Authentication Issues Across Protocols</a></li>
- <li><a href="#free-tools-vs-superkabe" style={{ color: '#2563EB', textDecoration: 'none' }}>Free Tools vs Superkabe Continuous Monitoring</a></li>
- <li><a href="#multi-domain-challenges" style={{ color: '#2563EB', textDecoration: 'none' }}>Multi-Domain Authentication Challenges</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>Frequently Asked Questions</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Email authentication is the foundation of deliverability. Without properly configured SPF, DKIM, and DMARC records, your emails are more likely to land in spam, get rejected, or be used by attackers to spoof your domain. We built six free tools to help outbound email teams check and configure these protocols without needing to learn DNS query syntax or pay for a third-party service.
  </p>

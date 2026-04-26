@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How Many Cold Emails Can I Send Per Day?',
@@ -60,12 +63,22 @@ export default function HowManyColdEmailsPerDayArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How Many Cold Emails Can I Send Per Day?
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Published April 2026</p>
+ <BlogHeader
+ tag="Guide"
+ title="How Many Cold Emails Can I Send Per Day?"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="snippet-answer text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="GUIDE · 2026"
+ eyebrow="10 min read"
+ tagline="Daily cold email volume limits"
+ sub="Per mailbox · Per domain · Provider caps · Bounce risk"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  For cold email, send 30-50 emails per mailbox per day during the first month. After warmup, scale to 50-75 per mailbox. Never exceed 100 per mailbox per day regardless of provider. Spread volume across multiple mailboxes and domains — 10 mailboxes at 50/day gives you 500 emails/day safely without burning any single domain.
  </p>
 
@@ -278,11 +291,12 @@ export default function HowManyColdEmailsPerDayArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Scale cold email volume safely</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors per-mailbox volume and bounce rates, routes leads by ESP performance, validates every lead before send, and auto-heals mailboxes that show signs of trouble.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+ headline="Scale cold email volume safely"
+ body={`Superkabe monitors per-mailbox volume and bounce rates, routes leads by ESP performance, validates every lead before send, and auto-heals mailboxes that show signs of trouble.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

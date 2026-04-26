@@ -39,6 +39,146 @@ const TAG_COLORS: Record<string, { bg: string; text: string }> = {
  pink: { bg: 'bg-pink-50', text: 'text-pink-700' },
 };
 
+// ─── Integrations marquee ──────────────────────────────────────────────────
+// Vertical scrolling columns of integration cards. Each column renders its
+// items twice in a row inside a `flex flex-col`, then animates from
+// translateY(0) to translateY(-50%) (or the reverse, for "down" columns).
+// Because the second copy is an exact clone of the first, the wrap point is
+// invisible — the marquee reads as a continuous, never-ending feed.
+
+interface MarqueeItem {
+    /** Logo: either an Image src path or a colored chip render */
+    logo:
+        | { kind: 'image'; src: string; alt: string }
+        | { kind: 'chip'; bg: string; fg: string; text: string }
+        | { kind: 'gmailG' }
+        | { kind: 'msGrid' }
+        | { kind: 'slackLogo' };
+    name: string;
+    /** Right-aligned status pill — Live (green) or Soon (gray) */
+    status: 'live' | 'soon';
+    /** Category line under the brand */
+    category: string;
+}
+
+function MarqueeChip({ item }: { item: MarqueeItem }) {
+    const { logo } = item;
+    if (logo.kind === 'image') {
+        // Image-based logo (e.g. Clay, Slack)
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img src={logo.src} alt={logo.alt} width={28} height={28} className="object-contain" />;
+    }
+    if (logo.kind === 'gmailG') {
+        return (
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold text-xs">G</div>
+        );
+    }
+    if (logo.kind === 'msGrid') {
+        return (
+            <div className="w-7 h-7 grid grid-cols-2 gap-[2px]">
+                <div className="bg-orange-500" /><div className="bg-green-500" />
+                <div className="bg-blue-500" /><div className="bg-yellow-500" />
+            </div>
+        );
+    }
+    if (logo.kind === 'slackLogo') {
+        // eslint-disable-next-line @next/next/no-img-element
+        return <img src="/slack-icon.svg" alt="Slack" width={28} height={28} className="object-contain" />;
+    }
+    return (
+        <div
+            className="w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-extrabold tracking-tight"
+            style={{ background: logo.bg, color: logo.fg }}
+        >
+            {logo.text}
+        </div>
+    );
+}
+
+function MarqueeCard({ item }: { item: MarqueeItem }) {
+    return (
+        <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm hover:shadow-md hover:border-gray-300 transition-shadow">
+            <div className="shrink-0">
+                <MarqueeChip item={item} />
+            </div>
+            <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-gray-900 truncate">{item.name}</div>
+                <div className="text-[11px] text-gray-500 truncate">{item.category}</div>
+            </div>
+            <span
+                className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                    item.status === 'live'
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        : 'bg-gray-50 text-gray-500 border border-gray-200'
+                }`}
+            >
+                {item.status === 'live' ? 'Live' : 'Soon'}
+            </span>
+        </div>
+    );
+}
+
+function MarqueeColumn({
+    items,
+    direction,
+    speed,
+}: {
+    items: MarqueeItem[];
+    direction: 'up' | 'down';
+    speed: 'normal' | 'slow';
+}) {
+    const cls =
+        direction === 'up'
+            ? speed === 'slow' ? 'animate-marquee-up-slow' : 'animate-marquee-up'
+            : speed === 'slow' ? 'animate-marquee-down-slow' : 'animate-marquee-down';
+    return (
+        <div className="marquee-col relative h-full overflow-hidden">
+            <div className={`flex flex-col gap-3 ${cls}`}>
+                {[...items, ...items].map((item, i) => (
+                    <MarqueeCard key={`${item.name}-${i}`} item={item} />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+// Column data — distributed so all four columns have similar lengths and a
+// mix of categories to keep the visual balanced.
+const col1: MarqueeItem[] = [
+    { logo: { kind: 'image', src: '/clay.png', alt: 'Clay' }, name: 'Clay', category: 'Lead enrichment', status: 'live' },
+    { logo: { kind: 'gmailG' }, name: 'Gmail', category: 'Mailbox provider', status: 'live' },
+    { logo: { kind: 'chip', bg: '#0E2A47', fg: '#FFFFFF', text: 'Apo' }, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#FF7A59', fg: '#FFFFFF', text: 'HS' }, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#FFB400', fg: '#1F1F1F', text: 'Zap' }, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#13BC92', fg: '#FFFFFF', text: 'JC' }, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+];
+const col2: MarqueeItem[] = [
+    { logo: { kind: 'msGrid' }, name: 'Microsoft 365', category: 'Mailbox provider', status: 'live' },
+    { logo: { kind: 'slackLogo' }, name: 'Slack', category: 'Alerts', status: 'live' },
+    { logo: { kind: 'chip', bg: '#E63946', fg: '#FFFFFF', text: 'ZI' }, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#5951F0', fg: '#FFFFFF', text: 'Or' }, name: 'Outreach', category: 'Sales engagement', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#0F766E', fg: '#FFFFFF', text: 'SM' }, name: 'Scaledmail', category: 'Mailbox import', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#1A6CFF', fg: '#FFFFFF', text: 'HR' }, name: 'Heyreach', category: 'LinkedIn outreach', status: 'soon' },
+];
+const col3: MarqueeItem[] = [
+    { logo: { kind: 'chip', bg: '#1F1F1F', fg: '#FFFFFF', text: 'API' }, name: 'Webhooks', category: 'Developer', status: 'live' },
+    { logo: { kind: 'chip', bg: '#FCB400', fg: '#1F1F1F', text: 'Air' }, name: 'Airtable', category: 'Lead source', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#00A1E0', fg: '#FFFFFF', text: 'SF' }, name: 'Salesforce', category: 'CRM sync', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#1F1F1F', fg: '#FFFFFF', text: 'SMTP' }, name: 'SMTP / Custom', category: 'Mailbox provider', status: 'live' },
+    { logo: { kind: 'image', src: '/clay.png', alt: 'Clay' }, name: 'Clay', category: 'Lead enrichment', status: 'live' },
+    { logo: { kind: 'chip', bg: '#FF7A59', fg: '#FFFFFF', text: 'HS' }, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
+];
+const col4: MarqueeItem[] = [
+    { logo: { kind: 'gmailG' }, name: 'Google Workspace', category: 'Mailbox provider', status: 'live' },
+    { logo: { kind: 'chip', bg: '#0E2A47', fg: '#FFFFFF', text: 'Apo' }, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#FFB400', fg: '#1F1F1F', text: 'Zap' }, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#13BC92', fg: '#FFFFFF', text: 'JC' }, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+    { logo: { kind: 'chip', bg: '#E63946', fg: '#FFFFFF', text: 'ZI' }, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
+    { logo: { kind: 'slackLogo' }, name: 'Slack', category: 'Alerts', status: 'live' },
+];
+
+// ─── End integrations marquee ──────────────────────────────────────────────
+
 function PlatformRow({ eyebrow, title, body, tags, tagColor, link, imageOnLeft, mockup }: PlatformRowProps) {
  const tc = TAG_COLORS[tagColor];
  return (
@@ -723,8 +863,8 @@ export default function LandingPage() {
  </div>
 
  {/* Superkabe product demo video (looping, 16:9 maintained) */}
- <div className="relative w-full md: overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
- <div className="relative w-full aspect-video overflow-hidden">
+ <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
+ <div className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl">
  <video
  src="/Superkabe.mp4"
  autoPlay
@@ -733,7 +873,7 @@ export default function LandingPage() {
  playsInline
  preload="metadata"
  aria-label="Superkabe AI cold email platform demo — sequence builder, sending dashboard, and deliverability protection walkthrough"
- className="w-full h-full object-contain bg-white"
+ className="w-full h-full object-contain bg-white rounded-2xl md:rounded-3xl"
  >
  Your browser does not support the video tag.
  </video>
@@ -890,6 +1030,7 @@ export default function LandingPage() {
  </div>
  </div>
  </div>
+ </div>
 
  <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
  AI-powered sending with a 99%+ inbox rate baked in.
@@ -923,127 +1064,33 @@ export default function LandingPage() {
 
 
 
- {/* ================= INTEGRATION SEQUENCE ================= */}
- <div className="mt-16 sm:mt-24 mb-6 relative w-full pt-8 pb-8 flex flex-col items-center w-full">
- <div className="text-center mb-10 px-6 max-w-3xl">
+ {/* ================= INTEGRATIONS GRID (vertical marquee) ================= */}
+ <div className="mt-16 sm:mt-24 mb-6 relative w-full pt-8 pb-8 flex flex-col items-center">
+ <div className="text-center mb-12 px-6 max-w-3xl">
+ <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-5">
+ Native Integrations
+ </div>
  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
- From lead to inbox — with protection built in.
+ Plugs into your stack — no middleman.
  </h2>
  <p className="text-lg text-gray-600 leading-relaxed">
- Push enriched leads in from Clay or any source, let Superkabe write, route, and send — and watch the same platform auto-pause bad mailboxes, reroute around ESP issues, and heal domains before they burn. No separate protection tool, no middleman.
+ Pull leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack — all native, all configurable in minutes.
  </p>
  </div>
- <div className="relative flex flex-col md:flex-row items-center w-full max-w-[100%] lg:max-w-5xl bg-white/10 backdrop-blur-3xl border border-white/20 p-6 lg:p-10 shadow-2xl overflow-hidden group">
 
- {/* Animated Background glow inside the glass box */}
- <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40 transition-opacity duration-1000">
- <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-blue-500/20 blur-[80px] rounded-full mix-blend-multiply"></div>
- <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full mix-blend-multiply"></div>
- <div className="absolute top-1/2 right-0 -translate-y-1/2 w-64 h-64 bg-pink-500/20 blur-[80px] rounded-full mix-blend-multiply"></div>
- </div>
+ {/* Marquee grid: four vertical columns alternating direction. Each column
+ duplicates its cards so the translateY 0 → -50% loop wraps seamlessly.
+ Edge fades + hover-pause are handled in globals.css. */}
+ <div className="relative w-full max-w-6xl px-4">
+ {/* Top + bottom fade so the cards fade in/out instead of clipping hard. */}
+ <div className="pointer-events-none absolute top-0 left-0 right-0 h-20 z-10 bg-gradient-to-b from-[#FAF6F0] to-transparent" />
+ <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 z-10 bg-gradient-to-t from-[#FAF6F0] to-transparent" />
 
- {/* Container for the sequence */}
- <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full gap-2 md:gap-0">
-
- {/* NODE 1: Clay */}
- <div className="flex flex-col items-center justify-center relative z-10 w-20 h-20">
- <div className="w-20 h-20 bg-white shadow-xl border border-gray-100 flex items-center justify-center transform transition-transform group-hover:scale-105 duration-500 relative z-20">
- <Image src="/clay.png" alt="Clay" width={40} height={40} className="object-contain drop-shadow-sm" />
- </div>
- <span className="absolute -bottom-8 text-sm font-bold text-gray-700 tracking-wide uppercase text-[11px] whitespace-nowrap">Enrich</span>
- </div>
-
- {/* Link 1 */}
- <div className="hidden md:flex flex-1 items-center justify-center relative z-0 -mx-3 opacity-100 w-full">
- <div className="h-[3px] w-full bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 relative flex items-center justify-center shadow-sm -mt-[1.5px]">
- <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)] z-10"></div>
- <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)] z-10"></div>
- <svg className="w-4 h-4 text-indigo-500 absolute drop-shadow-sm" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
- </div>
- {/* Mobile Link */}
- <div className="md:hidden h-12 w-[3px] bg-gradient-to-b from-blue-400 to-purple-500 my-1 opacity-100 flex items-center justify-center relative">
- <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[10px] h-[10px] rounded-full bg-purple-500"></div>
- <svg className="w-5 h-5 text-indigo-500 absolute rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
-
- {/* NODE 2: Superkabe */}
- <div className="flex flex-col items-center justify-center relative z-20 w-[80px] h-[80px]">
- <div className="w-[80px] h-[80px] min-h-[80px] bg-gray-900 shadow-[0_8px_20px_-8px_rgba(148,3,253,0.4)] border border-gray-800 flex items-center justify-center relative overflow-hidden transform transition-transform group-hover:scale-110 duration-500 z-20">
- <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-blue-500/10 mix-blend-overlay"></div>
- <Image src="/image/logo-v2.png" alt="Superkabe" width={40} height={40} className="relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] object-contain" />
- </div>
- <span className="absolute -bottom-8 text-sm font-bold text-gray-900 tracking-wide uppercase text-[11px] whitespace-nowrap">Send + Protect</span>
- </div>
-
- {/* Link 2 */}
- <div className="hidden md:flex flex-1 items-center justify-center relative z-0 -mx-3 opacity-100 w-full">
- <div className="h-[3px] w-full bg-gradient-to-r from-purple-500 via-pink-400 to-rose-400 relative flex items-center justify-center shadow-sm -mt-[1.5px]">
- <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.8)] z-10"></div>
- <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-purple-500 z-10"></div>
- <svg className="w-4 h-4 text-pink-500 absolute drop-shadow-sm" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
- </div>
- {/* Mobile Link */}
- <div className="md:hidden h-12 w-[3px] bg-gradient-to-b from-purple-500 to-rose-400 my-1 opacity-100 flex items-center justify-center relative">
- <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[10px] h-[10px] rounded-full bg-rose-400"></div>
- <svg className="w-5 h-5 text-pink-500 absolute rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
-
- {/* NODE 3: Native Mailbox Train (Gmail / Microsoft / SMTP) */}
- <div className="flex flex-col items-center justify-center relative z-10 w-[80px] h-[80px]">
- <div className="w-[80px] h-[80px] min-h-[80px] bg-white shadow-xl border border-gray-100 overflow-hidden relative transform transition-transform group-hover:scale-105 duration-500 z-20">
- <div className="absolute inset-x-0 w-full animate-col-train">
- <div className="h-20 flex items-center justify-center">
- <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold">G</div>
- </div>
- <div className="h-20 flex items-center justify-center">
- <div className="w-10 h-10 grid grid-cols-2 gap-[3px]">
- <div className="bg-orange-500" /><div className="bg-green-500" />
- <div className="bg-blue-500" /><div className="bg-yellow-500" />
- </div>
- </div>
- <div className="h-20 flex items-center justify-center">
- <div className="w-10 h-10 bg-gray-900 text-white flex items-center justify-center text-[10px] font-bold rounded">SMTP</div>
- </div>
- <div className="h-20 flex items-center justify-center">
- <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold">G</div>
- </div>
- </div>
- </div>
- <div className="absolute -bottom-8 h-4 overflow-hidden w-28 relative">
- <div className="absolute inset-x-0 w-full animate-col-train text-center flex flex-col text-[11px] font-bold text-gray-700 tracking-wide uppercase whitespace-nowrap">
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Gmail</span>
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">Microsoft 365</span>
- <span className="h-4 flex items-center justify-center mb-[4.1rem]">SMTP</span>
- <span className="h-4 flex items-center justify-center">Gmail</span>
- </div>
- </div>
- </div>
-
- {/* Link 3 */}
- <div className="hidden md:flex flex-[0.7] items-center justify-center relative z-0 -mx-3 opacity-100 w-full">
- <div className="h-[3px] w-full bg-gradient-to-r from-rose-400 via-orange-400 to-amber-400 relative flex items-center justify-center shadow-sm -mt-[1.5px]">
- <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] z-10"></div>
- <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[8px] h-[8px] rounded-full bg-rose-400 z-10"></div>
- <svg className="w-4 h-4 text-orange-500 absolute drop-shadow-sm" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
- </div>
- {/* Mobile Link */}
- <div className="md:hidden h-12 w-[3px] bg-gradient-to-b from-rose-400 to-amber-400 my-1 opacity-100 flex items-center justify-center relative">
- <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[10px] h-[10px] rounded-full bg-amber-400"></div>
- <svg className="w-5 h-5 text-orange-500 absolute rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
- </div>
-
- {/* NODE 4: Slack */}
- <div className="flex flex-col items-center justify-center relative z-10 w-20 h-20">
- <div className="w-20 h-20 bg-white shadow-xl border border-gray-100 flex items-center justify-center transform transition-transform group-hover:scale-105 duration-500 relative z-20">
- <Image src="/slack-icon.svg" alt="Slack" width={40} height={40} className="object-contain drop-shadow-sm" />
- </div>
- <span className="absolute -bottom-8 text-sm font-bold text-gray-700 tracking-wide uppercase text-[11px] whitespace-nowrap">Alerts</span>
- </div>
-
- </div>
+ <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-[520px] overflow-hidden">
+ <MarqueeColumn direction="up" speed="normal" items={col1} />
+ <MarqueeColumn direction="down" speed="slow" items={col2} />
+ <MarqueeColumn direction="up" speed="slow" items={col3} />
+ <MarqueeColumn direction="down" speed="normal" items={col4} />
  </div>
  </div>
  </div>
@@ -1055,13 +1102,13 @@ export default function LandingPage() {
  {/* Header */}
  <div className="text-center mb-12">
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
- Mailboxes · Lead source · Alerts
+ Lead Sources · Mailboxes · Alerts
  </div>
  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
  Connect your mailboxes. Send from Superkabe.
  </h2>
  <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Bring your own Gmail, Microsoft 365, or SMTP mailboxes — Superkabe handles the sequencing, ESP-aware routing, and the deliverability protection layer that auto-pauses risky senders before domains burn. Enrich from Clay, alert to Slack — all configurable in under 5 minutes.
+ Pipe enriched leads in from Clay, Apollo, ZoomInfo or Airtable, route them through your own Gmail, Microsoft 365, SMTP, Zapmail or Scaledmail mailboxes — Superkabe handles the sequencing, ESP-aware routing, and the deliverability protection layer that auto-pauses risky senders before domains burn. Sync activity back to Slack, Salesforce, HubSpot, Outreach, Heyreach or Justcall — all native, configurable in under 5 minutes.
  </p>
  </div>
  </div>

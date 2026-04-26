@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Email Validation vs Email Verification: What's Actually",
@@ -87,12 +90,22 @@ export default function EmailValidationVsVerificationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Email validation vs email verification: what&apos;s actually different
- </h1>
- <p className="text-gray-400 text-sm mb-8">9 min read · Published March 2026</p>
+ <BlogHeader
+ tag="Comparison"
+ title="Email validation vs email verification: what's actually different"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="COMPARISON · 2026"
+ eyebrow="9 min read"
+ tagline="Validation vs verification"
+ sub="Syntax · MX · SMTP probe · Catch-all · Infrastructure"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  These two terms get used interchangeably in every cold email forum, every SaaS landing page, every &quot;ultimate guide.&quot; They are not the same thing. The difference matters when your domains are on the line.
  </p>
 
@@ -108,19 +121,6 @@ export default function EmailValidationVsVerificationArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#the-confusion" style={{ color: '#2563EB', textDecoration: 'none' }}>Why the confusion exists</a></li>
- <li><a href="#what-validation-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What email validation actually checks</a></li>
- <li><a href="#what-verification-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What email verification actually checks</a></li>
- <li><a href="#side-by-side" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side comparison table</a></li>
- <li><a href="#when-validation-only" style={{ color: '#2563EB', textDecoration: 'none' }}>When you need validation only</a></li>
- <li><a href="#when-verification" style={{ color: '#2563EB', textDecoration: 'none' }}>When you need verification</a></li>
- <li><a href="#when-both-plus" style={{ color: '#2563EB', textDecoration: 'none' }}>When you need both + infrastructure protection</a></li>
- <li><a href="#superkabe-approach" style={{ color: '#2563EB', textDecoration: 'none' }}>How Superkabe combines both</a></li>
- </ol>
- </div>
 
  <div className="prose prose-lg max-w-none">
  <h2 id="the-confusion" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why the confusion exists</h2>

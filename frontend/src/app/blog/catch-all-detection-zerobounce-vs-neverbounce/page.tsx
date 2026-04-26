@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Catch-All Domain Detection: ZeroBounce vs NeverBounce vs',
@@ -103,14 +106,24 @@ export default function CatchAllDetectionComparisonArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Catch-all domain detection: ZeroBounce vs NeverBounce vs Superkabe (2026 comparison)
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read &middot; Published April 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Catch-all domain detection: ZeroBounce vs NeverBounce vs Superkabe (2026 comparison)"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Three tools. Three different approaches to the same problem. ZeroBounce labels catch-all and leaves the decision to you. NeverBounce labels catch-all and says don&apos;t send. Superkabe detects catch-all and lets you send safely with risk caps and monitoring. Here is how they compare for outbound teams that cannot afford to skip a third of their pipeline.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="12 min read"
+                        tagline="ZeroBounce vs NeverBounce"
+                        sub="Catch-all detection · SMTP probing · Pricing · Accuracy"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Three tools. Three different approaches to the same problem. ZeroBounce labels catch-all and leaves the decision to you. NeverBounce labels catch-all and says don&apos;t send. Superkabe detects catch-all and lets you send safely with risk caps and monitoring. Here is how they compare for outbound teams that cannot afford to skip a third of their pipeline.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -123,20 +136,7 @@ export default function CatchAllDetectionComparisonArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#the-catch-all-problem" style={{ color: '#2563EB', textDecoration: 'none' }}>The catch-all problem in one paragraph</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Head-to-head comparison table</a></li>
- <li><a href="#detection-approaches" style={{ color: '#2563EB', textDecoration: 'none' }}>How each tool detects catch-all</a></li>
- <li><a href="#after-detection" style={{ color: '#2563EB', textDecoration: 'none' }}>What happens after detection</a></li>
- <li><a href="#when-to-use" style={{ color: '#2563EB', textDecoration: 'none' }}>When to use each tool</a></li>
- <li><a href="#layered-approach" style={{ color: '#2563EB', textDecoration: 'none' }}>The layered approach (recommended)</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  {/* Section 1 */}
  <h2 id="the-catch-all-problem" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The catch-all problem in one paragraph</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -369,15 +369,12 @@ export default function CatchAllDetectionComparisonArticle() {
  For more on the pricing differences between verification tools and infrastructure monitoring, see our <Link href="/blog/email-validation-pricing-guide" className="text-blue-600 hover:text-blue-800 underline">email validation pricing guide</Link>.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Catch-all leads are pipeline, not risk</h3>
- <p className="text-blue-100 leading-relaxed">
- Verification tools flag catch-all and walk away. Superkabe turns catch-all leads into safe sends. Per-mailbox risk caps. 60-second bounce monitoring. Auto-pause before damage. Keep your verification tool for pre-send filtering. Add Superkabe for everything after. <Link href="/" className="text-white underline hover:text-blue-200">Start protecting your catch-all pipeline</Link>.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Catch-all leads are pipeline, not risk"
+                    body="Verification tools flag catch-all and walk away. Superkabe turns catch-all leads into safe sends. Per-mailbox risk caps. 60-second bounce monitoring. Auto-pause before damage. Keep your verification tool for pre-send filtering. Add Superkabe for everything after."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

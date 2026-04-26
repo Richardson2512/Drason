@@ -8,6 +8,7 @@ import SystemModeCard from '@/components/settings/SystemModeCard';
 import SlackIntegrationCard from '@/components/settings/SlackIntegrationCard';
 import OrganizationDetailsCard from '@/components/settings/OrganizationDetailsCard';
 import ClayIntegrationCard from '@/components/settings/ClayIntegrationCard';
+import PostmasterToolsCard from '@/components/settings/PostmasterToolsCard';
 
 export default function Settings() {
     const router = useRouter();
@@ -88,6 +89,9 @@ export default function Settings() {
 
                     {/* Slack — alerts */}
                     <SlackIntegrationCard settings={settingsData} />
+
+                    {/* Postmaster Tools — Google reputation API */}
+                    <PostmasterToolsCard />
                 </div>
             </div>
 

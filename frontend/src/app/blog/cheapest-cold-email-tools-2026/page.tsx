@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)',
@@ -65,11 +68,23 @@ export default function CheapestColdEmailToolsPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">Cheapest cold email tools of 2026 (ranked by cost-to-value)</h1>
-                <p className="text-gray-400 text-sm mb-8">12 min read · Published April 2026</p>
+                <BlogHeader
+                    tag="Pricing"
+                    title="Cheapest cold email tools of 2026 (ranked by cost-to-value)"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
-                <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
-                    "Cheap" depends on volume model. A tool with the lowest starting price can become expensive at scale; a tool with a higher entry tier can be the cheapest option at agency volume. This ranking compares the cheapest cold email tools of 2026 across three real-world tiers — solo, growing team, agency — using total cost of ownership rather than starting price alone.
+                <FeaturedHero
+                    badge="PRICING · 2026"
+                    eyebrow="12 min read"
+                    tagline="Total cost of ownership"
+                    sub="Solo · Growing team · Agency volume tiers"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    &ldquo;Cheap&rdquo; depends on volume model. A tool with the lowest starting price can become expensive at scale; a tool with a higher entry tier can be the cheapest option at agency volume. This ranking compares the cheapest cold email tools of 2026 across solo, growing-team, and agency tiers using total cost of ownership rather than starting price alone.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -83,16 +98,6 @@ export default function CheapestColdEmailToolsPage() {
                     </ul>
                 </div>
 
-                <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
-                    <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
-                        <li><a href="#methodology" style={{ color: '#2563EB', textDecoration: 'none' }}>Methodology — what "cheapest" means here</a></li>
-                        <li><a href="#ranked" style={{ color: '#2563EB', textDecoration: 'none' }}>7 cheapest tools ranked</a></li>
-                        <li><a href="#tco-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Total cost of ownership at 3 volume tiers</a></li>
-                        <li><a href="#hidden-costs" style={{ color: '#2563EB', textDecoration: 'none' }}>Hidden costs nobody talks about</a></li>
-                        <li><a href="#faqs" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQs</a></li>
-                    </ol>
-                </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology — what &quot;cheapest&quot; means here</h2>
@@ -261,10 +266,10 @@ export default function CheapestColdEmailToolsPage() {
                     <h2 id="hidden-costs" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Hidden costs nobody talks about</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Warmup add-on.</strong> If your sender doesn&apos;t bundle warmup, you pay $20-50/mo for Lemwarm or Mailreach</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Validation service.</strong> $0.004-$0.008 per email if the platform doesn&apos;t bundle validation. At 60K sends/mo that&apos;s $240-$480/mo extra</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Monitoring + protection.</strong> External monitoring tools charge separately. Or you wear the cost of a burned domain ($200-$500 + 30-45 days of pipeline drag)</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Migration time.</strong> Switching tools = 20-40 hours of recreating sequences and reconnecting mailboxes. Compress this by picking a tool that wraps your existing sender (Superkabe)</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Warmup add-on.</strong> If your sender doesn&apos;t bundle warmup, you pay $20-50/mo for Lemwarm or Mailreach</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Validation service.</strong> $0.004-$0.008 per email if the platform doesn&apos;t bundle validation. At 60K sends/mo that&apos;s $240-$480/mo extra</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Monitoring + protection.</strong> External monitoring tools charge separately. Or you wear the cost of a burned domain ($200-$500 + 30-45 days of pipeline drag)</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Migration time.</strong> Switching tools = 20-40 hours of recreating sequences and reconnecting mailboxes. Compress this by picking a tool that wraps your existing sender (Superkabe)</span></li>
                         </ul>
                     </div>
 
@@ -272,16 +277,14 @@ export default function CheapestColdEmailToolsPage() {
                         For more detail on the hidden cost of unmonitored infrastructure, see <Link href="/blog/cost-of-unmonitored-cold-email-infrastructure" className="text-blue-600 hover:text-blue-800 underline">our analysis of what one burned domain actually costs</Link>.
                     </p>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">$19/month with everything included</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                Superkabe Starter ships AI sequencing, validation, monitoring, auto-pause, and 5-phase healing for $19/month. <Link href="/pricing" className="text-white underline hover:text-blue-200">See pricing</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="$19/month with everything included"
+                    body="Superkabe Starter ships AI sequencing, validation, monitoring, auto-pause, and 5-phase healing for $19/month flat. No per-active-lead, no per-user, no add-ons."
+                    primaryCta={{ label: 'See pricing', href: '/pricing' }}
+                    secondaryCta={{ label: 'Start free trial', href: '/signup' }}
+                />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">

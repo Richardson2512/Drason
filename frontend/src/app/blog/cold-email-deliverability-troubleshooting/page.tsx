@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Cold email deliverability problems: how to diagnose and fix',
@@ -107,14 +110,24 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Cold email deliverability problems: how to diagnose and fix infrastructure failures
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read · Published March 2026</p>
+ <BlogHeader
+                        tag="Troubleshooting"
+                        title="Cold email deliverability problems: how to diagnose and fix infrastructure failures"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Something broke in your cold email infrastructure. Bounce rates spiked, emails are landing in spam, or a domain got blacklisted. This guide walks through the seven most common failure scenarios with specific diagnosis steps and fixes.
- </p>
+                    <FeaturedHero
+                        badge="TROUBLESHOOTING · 2026"
+                        eyebrow="12 min read"
+                        tagline="Diagnose deliverability fast"
+                        sub="Bounce categories · DNS · Reputation · Recovery moves"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Something broke in your cold email infrastructure. Bounce rates spiked, emails are landing in spam, or a domain got blacklisted. This guide walks through the seven most common failure scenarios with specific diagnosis steps and fixes.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -129,20 +142,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#bounce-rate-spike" style={{ color: '#2563EB', textDecoration: 'none' }}>Why did my bounce rate spike overnight?</a></li>
- <li><a href="#emails-landing-in-spam" style={{ color: '#2563EB', textDecoration: 'none' }}>Why are my cold emails landing in spam after weeks of good delivery?</a></li>
- <li><a href="#mailbox-health-monitoring" style={{ color: '#2563EB', textDecoration: 'none' }}>How do I know which mailboxes are in trouble before campaigns fail?</a></li>
- <li><a href="#blacklist-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>My domain got blacklisted — can I recover it?</a></li>
- <li><a href="#dns-authentication-broken" style={{ color: '#2563EB', textDecoration: 'none' }}>How do I tell if my DNS authentication is broken?</a></li>
- <li><a href="#smartlead-vs-instantly" style={{ color: '#2563EB', textDecoration: 'none' }}>Why do my campaigns perform differently on Smartlead vs Instantly?</a></li>
- <li><a href="#abandon-vs-recover" style={{ color: '#2563EB', textDecoration: 'none' }}>When should I abandon a domain vs try to recover it?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Cold email infrastructure fails in predictable ways. The seven scenarios below cover the problems that outbound teams encounter most frequently — from sudden bounce rate spikes to gradual reputation erosion to platform-specific inconsistencies. Each section starts with the direct answer, followed by diagnosis steps and specific fixes.
  </p>
@@ -463,15 +463,12 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </table>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Most cold email deliverability problems are preventable. Bounce rate spikes, spam placement drops, blacklisting, and DNS failures all produce early warning signals before they cause irreversible damage. Superkabe monitors these signals in real time across all your domains and mailboxes, auto-pausing before thresholds are breached and alerting you with specific diagnosis information. The cost of prevention is a fraction of the cost of recovery.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Key Takeaway"
+                    body="Most cold email deliverability problems are preventable. Bounce rate spikes, spam placement drops, blacklisting, and DNS failures all produce early warning signals before they cause irreversible damage. Superkabe monitors these signals in real time across all your domains and mailboxes, auto-pausing before thresholds are breached and alerting you with specific diagnosis information. The cost of prevention is a fraction of the cost of recovery."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

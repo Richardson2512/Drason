@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How Do I Remove My Domain From a Blacklist?',
@@ -70,12 +73,22 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How Do I Remove My Domain From a Blacklist?
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read &middot; Published April 2026</p>
+ <BlogHeader
+ tag="Troubleshooting"
+ title="How Do I Remove My Domain From a Blacklist?"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="snippet-answer text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="TROUBLESHOOTING · 2026"
+ eyebrow="12 min read"
+ tagline="Get off email blacklists"
+ sub="Spamhaus · Barracuda · SORBS · Delisting playbook"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Check your domain against major blacklists (Spamhaus, Barracuda, SORBS) using a DNSBL lookup tool. Submit a delisting request to each one. Fix the root cause — bounce rate, spam complaints, or open relay — before requesting removal. Most blacklists will re-list you within 24 hours if the underlying problem persists.
  </p>
 
@@ -214,11 +227,12 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Monitor 410 blacklists automatically</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe checks your domains against 410 DNSBLs continuously, alerts you on new listings with severity classification, and auto-pauses sending before blacklisting escalates.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+ headline="Monitor 410 blacklists automatically"
+ body={`Superkabe checks your domains against 410 DNSBLs continuously, alerts you on new listings with severity classification, and auto-pauses sending before blacklisting escalates.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

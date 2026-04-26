@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Why Your Verified Emails Still Bounce',
@@ -95,14 +98,24 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Why your verified emails still bounce (and what to do about it)
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+                    tag="Troubleshooting"
+                    title="Why your verified emails still bounce (and what to do about it)"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- You paid for verification. You ran every email through ZeroBounce or NeverBounce. Everything came back &quot;valid.&quot; Then you sent a campaign and 6% bounced. Your domain reputation dropped. What happened?
- </p>
+                <FeaturedHero
+                    badge="TROUBLESHOOTING · 2026"
+                    eyebrow="10 min read"
+                    tagline="Why verified emails still bounce"
+                    sub="Verification limits · Catch-all · ESP behavior · Real-time healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    You paid for verification. You ran every email through ZeroBounce or NeverBounce. Everything came back &quot;valid.&quot; Then you sent a campaign and 6% bounced. Your domain reputation dropped. What happened?
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -116,21 +129,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#catch-all-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 1: Catch-all domains</a></li>
- <li><a href="#stale-data" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 2: Stale data</a></li>
- <li><a href="#greylisting" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 3: Greylisting</a></li>
- <li><a href="#spam-traps" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 4: Spam traps</a></li>
- <li><a href="#role-based" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 5: Role-based emails</a></li>
- <li><a href="#accuracy-gaps" style={{ color: '#2563EB', textDecoration: 'none' }}>Reason 6: Verification accuracy gaps</a></li>
- <li><a href="#what-to-do" style={{ color: '#2563EB', textDecoration: 'none' }}>What to do about it</a></li>
- <li><a href="#infrastructure-layer" style={{ color: '#2563EB', textDecoration: 'none' }}>The infrastructure protection layer</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Email verification is table stakes for cold outreach. Every serious team does it. But verification creates a false sense of security. Teams verify their lists, see &quot;100% valid,&quot; and assume they are safe. Then bounces happen anyway, and they have no idea why. The reasons are specific, predictable, and largely unavoidable through verification alone.
  </p>
@@ -323,15 +322,12 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  For more on how bounce rates compound into domain damage, read our guide on <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">how bounce rates damage sender reputation</Link>. To understand the difference between validation and verification layers, see <Link href="/docs/help/email-validation" className="text-blue-600 hover:text-blue-800 underline">our email validation documentation</Link>.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">The bottom line</h3>
- <p className="text-blue-100 leading-relaxed">
- Verification catches the emails that should never be sent. Infrastructure protection catches the damage from the ones that were sent anyway. If you are running cold outreach at any meaningful scale, you need both layers. Verification without infrastructure protection is like cleaning your list and then hoping nothing goes wrong.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Verification is not a guarantee"
+                    body="Even verified emails bounce — catch-all servers, mailbox-full responses, and ESP behavior shifts all happen post-verification. Superkabe monitors every send and reacts in real time."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  </article>
 

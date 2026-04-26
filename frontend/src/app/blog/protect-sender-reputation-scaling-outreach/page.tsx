@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Protect Your Sender Reputation While Scaling Cold',
@@ -87,12 +90,22 @@ export default function ProtectSenderReputationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to protect your sender reputation while scaling cold outreach
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+ tag="Strategy"
+ title="How to protect your sender reputation while scaling cold outreach"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="STRATEGY · 2026"
+ eyebrow="10 min read"
+ tagline="Protect sender reputation at scale"
+ sub="Per mailbox · Per domain · Volume ramp · Recovery"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Scaling outbound is when things break. 10 mailboxes works fine. 50 starts showing cracks. 100+ without automation is a domain graveyard. Here is how to scale without burning your infrastructure.
  </p>
 
@@ -105,17 +118,6 @@ export default function ProtectSenderReputationArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Safe sending: 30-50 emails per mailbox per day, 150-250 per domain per day</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Infrastructure protection (validate, monitor, pause, correlate, heal, balance) is required above 20 mailboxes</li>
  </ul>
- </div>
-
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-sender-reputation-is" style={{ color: '#2563EB', textDecoration: 'none' }}>What sender reputation actually is</a></li>
- <li><a href="#what-destroys-reputation" style={{ color: '#2563EB', textDecoration: 'none' }}>The 5 things that destroy reputation at scale</a></li>
- <li><a href="#infrastructure-protection" style={{ color: '#2563EB', textDecoration: 'none' }}>The infrastructure protection approach</a></li>
- <li><a href="#safe-volumes" style={{ color: '#2563EB', textDecoration: 'none' }}>Safe sending volumes</a></li>
- <li><a href="#putting-it-together" style={{ color: '#2563EB', textDecoration: 'none' }}>Putting it together</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">
@@ -335,15 +337,12 @@ export default function ProtectSenderReputationArticle() {
  For more on the specific monitoring capabilities, see our <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring documentation</Link>. For how healing works, check the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800 underline">auto-healing guide</Link>.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Scale with confidence</h3>
- <p className="text-blue-100 leading-relaxed">
- Scaling outbound does not have to mean burning domains. With the right infrastructure protection, you can go from 10 mailboxes to 100 without sacrificing deliverability. Validate, monitor, pause, correlate, heal, and balance. Automate all six. That is the difference between a domain graveyard and a sustainable outbound engine.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+ headline="Scale with confidence"
+ body={`Scaling outbound does not have to mean burning domains. With the right infrastructure protection, you can go from 10 mailboxes to 100 without sacrificing deliverability. Validate, monitor, pause, correlate, heal, and balance. Automate all six. That is the difference between a domain graveyard and a sustainable outbound engine.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

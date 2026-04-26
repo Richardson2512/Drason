@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Email Deliverability Tools Compared: Testing vs Protection',
@@ -112,14 +115,24 @@ export default function DeliverabilityToolsComparedArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Email deliverability tools compared: monitoring, reputation, and protection software
- </h1>
- <p className="text-gray-400 text-sm mb-8">16 min read &middot; Updated March 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Email deliverability tools compared: monitoring, reputation, and protection software"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This guide answers five common questions from outbound teams: what tools exist for monitoring deliverability, checking sender reputation, maintaining inbox placement, and how the major email platforms compare.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="16 min read"
+                        tagline="Deliverability tools compared"
+                        sub="Monitoring · Validation · Auto-pause · Pricing · Cold-email fit"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        This guide answers five common questions from outbound teams: what tools exist for monitoring deliverability, checking sender reputation, maintaining inbox placement, and how the major email platforms compare.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -557,15 +570,12 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
 
  {/* CTA */}
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Most deliverability tools either monitor or test — but don&apos;t protect. The gap between detecting a problem and preventing damage is where domains get burned. Superkabe fills this gap with real-time monitoring and automated infrastructure protection for outbound email teams.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Key Takeaway"
+                    body="Most deliverability tools either monitor or test — but don't protect. The gap between detecting a problem and preventing damage is where domains get burned. Superkabe fills this gap with real-time monitoring and automated infrastructure protection for outbound email teams."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

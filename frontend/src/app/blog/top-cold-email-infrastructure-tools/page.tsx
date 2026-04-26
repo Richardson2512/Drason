@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Top 7 Cold Email Infrastructure Tools (2026)',
@@ -66,14 +69,24 @@ export default function TopColdEmailInfrastructureToolsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Top 7 Cold Email Infrastructure Tools (2026)
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Comparison"
+                    title="Top 7 Cold Email Infrastructure Tools (2026)"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Cold email infrastructure is what makes or breaks your outbound operation. Domains burn, mailboxes get blacklisted, and DNS records silently fail — all while your campaigns keep firing. Here are the 7 tools that monitor, protect, and repair your cold email infrastructure in 2026.
- </p>
+                <FeaturedHero
+                    badge="COMPARISON · 2026"
+                    eyebrow="14 min read"
+                    tagline="Cold email infrastructure stack"
+                    sub="Sending · Validation · Monitoring · Healing · Routing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Cold email infrastructure is what makes or breaks your outbound operation. Domains burn, mailboxes get blacklisted, and DNS records silently fail — all while your campaigns keep firing. Here are the 7 tools that monitor, protect, and repair your cold email infrastructure in 2026.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -170,11 +183,12 @@ export default function TopColdEmailInfrastructureToolsArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Stop burning cold email infrastructure</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors bounce rates in real time, auto-pauses at-risk mailboxes, heals damaged infrastructure through 5-phase recovery, and validates every lead before it reaches your sender.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="One stack for cold-email infrastructure"
+                    body="Run sequencing, validation, real-time monitoring, auto-pause, and 5-phase healing on a single platform — built for outbound at scale."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

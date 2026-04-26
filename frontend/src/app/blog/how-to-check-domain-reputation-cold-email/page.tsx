@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Check Your Domain Reputation for Cold Email',
@@ -111,12 +114,22 @@ export default function HowToCheckDomainReputationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to check your domain reputation for cold email (2026 guide)
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read · Published April 2026</p>
+ <BlogHeader
+ tag="Guide"
+ title="How to check your domain reputation for cold email (2026 guide)"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="GUIDE · 2026"
+ eyebrow="14 min read"
+ tagline="Check your domain reputation"
+ sub="Postmaster · Sender Score · Blacklists · Bounce rate"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Your domain reputation determines whether your cold emails land in the inbox or disappear into spam. The problem is that reputation is invisible until it breaks. Here is how to actually check it, which tools matter, and what to do when the numbers look bad.
  </p>
 
@@ -129,18 +142,6 @@ export default function HowToCheckDomainReputationArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Free tools show you yesterday&apos;s reputation. Real-time monitoring catches problems before ISP dashboards update</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> &quot;Bad&quot; reputation in Google Postmaster means sub-10% inbox placement at Gmail. Recovery takes 2-8 weeks</li>
  </ul>
- </div>
-
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-domain-reputation-is" style={{ color: '#2563EB', textDecoration: 'none' }}>What domain reputation actually is</a></li>
- <li><a href="#what-isps-evaluate" style={{ color: '#2563EB', textDecoration: 'none' }}>What ISPs evaluate when scoring your domain</a></li>
- <li><a href="#six-tools" style={{ color: '#2563EB', textDecoration: 'none' }}>6 tools to check domain reputation</a></li>
- <li><a href="#tools-compared" style={{ color: '#2563EB', textDecoration: 'none' }}>Tools compared: which one to trust</a></li>
- <li><a href="#bad-reputation-fix" style={{ color: '#2563EB', textDecoration: 'none' }}>Google Postmaster shows bad reputation — now what</a></li>
- <li><a href="#reactive-vs-realtime" style={{ color: '#2563EB', textDecoration: 'none' }}>Reactive checking vs real-time monitoring</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">

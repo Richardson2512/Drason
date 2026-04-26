@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import HeroCard from '@/components/blog/HeroCard';
-import AuthorByline from '@/components/blog/AuthorByline';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -67,19 +67,24 @@ export default function LemlistAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <HeroCard
-                    badge="ALTERNATIVES · 2026"
-                    eyebrow="Comparison"
+                <BlogHeader
+                    tag="Alternatives"
                     title="Best Lemlist alternatives for cold email teams (2026)"
-                    subtitle="Lemlist invented or popularized most of cold email's personalization patterns, and Lemwarm remains a benchmark. But per-user pricing breaks the math past 5-10 reps and the deliverability tooling beyond warmup is thin. Here are seven alternatives ranked."
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
                 />
 
-                <AuthorByline
-                    name="Edward Sam"
-                    role="Deliverability Specialist, Superkabe"
-                    dateModified="2026-04-25"
-                    readTime="11 min read"
+                <FeaturedHero
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="11 min read"
+                    tagline="Past per-user pricing"
+                    sub="Flat-tier · AI sequencing · Built-in protection"
                 />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Lemlist invented or popularized most of cold email&apos;s personalization patterns, and Lemwarm remains a benchmark. But per-user pricing breaks the math past 5-10 reps and the deliverability tooling beyond warmup is thin. Here are seven alternatives ranked.
+                </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -102,10 +107,10 @@ export default function LemlistAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The four reasons teams move on</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Per-user pricing.</strong> At $59-99/user/mo, a 20-rep team pays $1,200-$2,000/month for Lemlist alone. Flat-tier platforms are dramatically cheaper at this scale</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Limited mailbox-fleet tooling.</strong> Managing 100+ mailboxes per workspace is not where Lemlist optimizes. Smartlead, Instantly, and Superkabe all have stronger mailbox-rotation and routing tooling</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No automated auto-pause.</strong> Lemwarm helps with warmup but does not replace threshold-based bounce-rate auto-pause once campaigns are running</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Light agency tooling.</strong> Per-workspace isolation, per-client billing, and white-label reporting are weaker than purpose-built agency platforms</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-user pricing.</strong> At $59-99/user/mo, a 20-rep team pays $1,200-$2,000/month for Lemlist alone. Flat-tier platforms are dramatically cheaper at this scale</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Limited mailbox-fleet tooling.</strong> Managing 100+ mailboxes per workspace is not where Lemlist optimizes. Smartlead, Instantly, and Superkabe all have stronger mailbox-rotation and routing tooling</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No automated auto-pause.</strong> Lemwarm helps with warmup but does not replace threshold-based bounce-rate auto-pause once campaigns are running</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Light agency tooling.</strong> Per-workspace isolation, per-client billing, and white-label reporting are weaker than purpose-built agency platforms</span></li>
                         </ul>
                     </div>
 
@@ -282,16 +287,14 @@ export default function LemlistAlternativesPage() {
                         </table>
                     </div>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-xl mb-3">Scale past Lemlist&apos;s per-user pricing</h3>
-                            <p className="text-blue-100 leading-relaxed">
-                                Flat-tier pricing, AI sequencing, and built-in deliverability protection — Superkabe&apos;s economics work past 10 reps and into agency scale. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
-                            </p>
-                        </div>
-                    </div>
                 </div>
+
+                <BottomCtaStrip
+                    headline="Scale past Lemlist's per-user pricing"
+                    body="Flat-tier pricing, AI sequencing, and built-in deliverability protection — Superkabe's economics work past 10 reps and into agency scale."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">

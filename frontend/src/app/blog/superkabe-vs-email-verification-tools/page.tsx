@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Email Verification vs Email Infrastructure Protection",
@@ -87,14 +90,24 @@ export default function SuperkabeVsEmailVerificationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Email verification vs email infrastructure protection: understanding the difference
- </h1>
- <p className="text-gray-400 text-sm mb-8">8 min read · Published March 2026</p>
+ <BlogHeader
+                    tag="Comparison"
+                    title="Email verification vs email infrastructure protection: understanding the difference"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Verification checks if the email address is real. Infrastructure protection keeps your domains and mailboxes alive. These are different jobs. Teams that confuse them end up with verified lists and burned domains. Here is how both layers work and why you need them together.
- </p>
+                <FeaturedHero
+                    badge="COMPARISON · 2026"
+                    eyebrow="8 min read"
+                    tagline="Verification vs protection"
+                    sub="Pre-send checks · Real-time monitoring · Auto-pause · Healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Verification checks if the email address is real. Infrastructure protection keeps your domains and mailboxes alive. These are different jobs. Teams that confuse them end up with verified lists and burned domains. Here is how both layers work and why you need them together.
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -107,19 +120,7 @@ export default function SuperkabeVsEmailVerificationArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-verification-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What email verification tools actually do</a></li>
- <li><a href="#verification-limits" style={{ color: '#2563EB', textDecoration: 'none' }}>Where verification falls short</a></li>
- <li><a href="#what-superkabe-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What infrastructure protection covers</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Verification vs protection: side-by-side</a></li>
- <li><a href="#superkabe-verification" style={{ color: '#2563EB', textDecoration: 'none' }}>How Superkabe uses verification as part of its stack</a></li>
- <li><a href="#both-layers" style={{ color: '#2563EB', textDecoration: 'none' }}>Building a complete protection stack</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Email verification is one of the most well-understood tools in cold email. You upload a list, the tool checks each address, you remove the invalid ones. Simple. Effective. And not enough. Because verification answers a narrow question: does this address exist? It does not answer: is my sending infrastructure safe?
  </p>
@@ -318,9 +319,16 @@ export default function SuperkabeVsEmailVerificationArticle() {
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Already verifying your lists? Good start. Now protect the infrastructure that sends to them. <Link href="/signup" className="text-blue-600 hover:text-blue-800 underline">Start with Superkabe</Link>.
+ Already verifying your lists? Good start. Now protect the infrastructure that sends to them.
  </p>
  </div>
+
+ <BottomCtaStrip
+ headline="Verification is the start. Protection is the rest."
+ body="Superkabe ships verification, real-time bounce monitoring, threshold-based auto-pause, and the 5-phase healing pipeline as one platform. Stop bolting on tools."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BreadcrumbSchema, AuthorSchema, QuickAnswer, buildEnhancedBlogPosting } from '@/components/seo/AeoGeoSchema';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Cold Email AI Tools: 8 Options That Actually Sound Like You (And 3 That Don't)",
@@ -72,14 +75,24 @@ export default function ColdEmailAiToolsArticle() {
  <AuthorSchema author={author} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Cold Email AI Tools: 8 Options That Actually Sound Like You (And 3 That Don&apos;t)
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read &middot; Published April 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Cold Email AI Tools: 8 Options That Actually Sound Like You (And 3 That Don't)"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Most AI cold email tools fail the same test: a recipient can spot the output as AI-generated in two sentences. The 8 tools below pass that test. The 3 at the end don&apos;t — and they&apos;re widely used, which is a problem.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="14 min read"
+                        tagline="AI tools for cold email"
+                        sub="Personalization · Sequence gen · Pricing · Native vs bolt-on"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Most AI cold email tools fail the same test: a recipient can spot the output as AI-generated in two sentences. The 8 tools below pass that test. The 3 at the end don&apos;t — and they&apos;re widely used, which is a problem.
+                    </p>
 
  <div className="aeo-takeaways bg-blue-50 border border-blue-200 p-6 mb-12" data-aeo="takeaways">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Email Validation Pricing: What It Actually Costs',
@@ -103,12 +106,22 @@ export default function EmailValidationPricingGuideArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Email validation pricing: what it actually costs (and what it saves you)
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read &middot; Published March 2026</p>
+ <BlogHeader
+ tag="Pricing"
+ title="Email validation pricing: what it actually costs (and what it saves you)"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="PRICING · 2026"
+ eyebrow="11 min read"
+ tagline="What validation really costs"
+ sub="Per-email · Subscription · Hidden costs · ROI math"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Email validation pricing ranges from $0.004 to $0.009 per email for pay-per-use tools, or $49-349/month for subscription platforms. But the real question is not what validation costs. It is what skipping validation costs. One burned domain wipes out years of validation spend in a single week.
  </p>
 
@@ -124,19 +137,6 @@ export default function EmailValidationPricingGuideArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#pricing-models" style={{ color: '#2563EB', textDecoration: 'none' }}>Pricing models explained</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side cost comparison</a></li>
- <li><a href="#hidden-costs" style={{ color: '#2563EB', textDecoration: 'none' }}>The hidden cost of NOT validating</a></li>
- <li><a href="#roi-calculation" style={{ color: '#2563EB', textDecoration: 'none' }}>ROI calculation</a></li>
- <li><a href="#when-pay-per-email" style={{ color: '#2563EB', textDecoration: 'none' }}>When pay-per-email makes sense</a></li>
- <li><a href="#when-subscription" style={{ color: '#2563EB', textDecoration: 'none' }}>When subscription makes sense</a></li>
- <li><a href="#beyond-validation" style={{ color: '#2563EB', textDecoration: 'none' }}>What is included beyond validation</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
@@ -444,16 +444,14 @@ export default function EmailValidationPricingGuideArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">The bottom line</h3>
- <p className="text-blue-100 leading-relaxed">
- Email validation is the cheapest insurance in outbound sales. At $0.004-0.009 per email or $49-349/month, it costs less than a single team lunch. One domain burn costs more than a year of any tool on this list. The question is not whether validation is worth it. It is whether you want to pay $49/month for prevention or $20,000+ for recovery. Visit our <Link href="/pricing" className="text-white underline hover:text-blue-200">pricing page</Link> to see which plan fits your volume.
- </p>
  </div>
- </div>
- </div>
+
+ <BottomCtaStrip
+ headline="The bottom line"
+ body="Email validation is the cheapest insurance in outbound sales. At $0.004-0.009 per email or $49-349/month, it costs less than a single team lunch. One domain burn costs more than a year of any tool on this list. The question is not whether validation is worth it. It is whether you want to pay $49/month for prevention or $20,000+ for recovery."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
 
  {/* Internal Link Mesh */}

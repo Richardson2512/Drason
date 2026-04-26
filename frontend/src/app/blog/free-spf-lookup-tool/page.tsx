@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Free SPF Record Lookup Tool – Check Your Domain's Email",
@@ -109,12 +112,22 @@ export default function FreeSpfLookupToolArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Free SPF Record Lookup Tool &mdash; Check Your Domain&apos;s Email Authentication
- </h1>
- <p className="text-gray-400 text-sm mb-8">9 min read &middot; Updated April 2026</p>
+ <BlogHeader
+ tag="Free Tools"
+ title="Free SPF Record Lookup Tool — Check Your SPF Records"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="FREE TOOLS · 2026"
+ eyebrow="9 min read"
+ tagline="Free SPF lookup that works"
+ sub="10-lookup limit · Includes · Qualifiers · Common errors"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Your SPF record is the first line of defense in email authentication. If it&apos;s misconfigured &mdash; or missing entirely &mdash; every email you send is at risk of landing in spam. Use our <Link href="/tools/spf-lookup" className="underline">free SPF lookup tool</Link> to check your domain in seconds.
  </p>
 
@@ -128,19 +141,6 @@ export default function FreeSpfLookupToolArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Missing third-party includes (Smartlead, Google, SendGrid) cause authentication failures</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> The <Link href="/tools/spf-lookup" className="underline">free SPF lookup tool</Link> parses your record and flags issues instantly</li>
  </ul>
- </div>
-
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-spf" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is SPF and Why Does It Matter?</a></li>
- <li><a href="#how-spf-works" style={{ color: '#2563EB', textDecoration: 'none' }}>How SPF Works Under the Hood</a></li>
- <li><a href="#how-to-use-tool" style={{ color: '#2563EB', textDecoration: 'none' }}>How to Use the Free SPF Lookup Tool</a></li>
- <li><a href="#common-spf-issues" style={{ color: '#2563EB', textDecoration: 'none' }}>Common SPF Issues and How to Fix Them</a></li>
- <li><a href="#spf-in-auth-stack" style={{ color: '#2563EB', textDecoration: 'none' }}>How SPF Fits Into the Authentication Stack</a></li>
- <li><a href="#lookup-vs-generator" style={{ color: '#2563EB', textDecoration: 'none' }}>SPF Lookup vs SPF Generator: When to Use Each</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>Frequently Asked Questions</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">
@@ -337,18 +337,12 @@ export default function FreeSpfLookupToolArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop Checking SPF Manually</h3>
- <p className="text-blue-100 leading-relaxed mb-4">
- The free SPF lookup tool is great for spot checks, but outbound teams running multiple domains need continuous monitoring. Superkabe automatically validates SPF records across all your sending domains, alerts you when configurations drift, and prevents deliverability damage before it starts.
- </p>
- <Link href="/" className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 hover:bg-blue-50 transition-colors">
- See how Superkabe protects your infrastructure &rarr;
- </Link>
- </div>
- </div>
+ <BottomCtaStrip
+ headline="Stop Checking SPF Manually"
+ body={`The free SPF lookup tool is great for spot checks, but outbound teams running multiple domains need continuous monitoring. Superkabe automatically validates SPF records across all your sending domains, alerts you when configurations drift, and prevents deliverability damage before it starts.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

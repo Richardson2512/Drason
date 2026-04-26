@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'The real cost of unmonitored cold email infrastructure',
@@ -99,14 +102,24 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- The real cost of unmonitored cold email infrastructure
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+                        tag="ROI"
+                        title="The real cost of unmonitored cold email infrastructure"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Most agencies track reply rates and open rates. Almost none track how much money they lose when a domain burns out. This guide puts real dollar figures on the cost of unmonitored cold email infrastructure.
- </p>
+                    <FeaturedHero
+                        badge="ROI · 2026"
+                        eyebrow="10 min read"
+                        tagline="The cost of going blind"
+                        sub="Burned domains · Lost pipeline · Recovery weeks · ROI math"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Most agencies track reply rates and open rates. Almost none track how much money they lose when a domain burns out. This guide puts real dollar figures on the cost of unmonitored cold email infrastructure.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -120,19 +133,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#burned-domain-cost" style={{ color: '#2563EB', textDecoration: 'none' }}>How much does a burned domain actually cost?</a></li>
- <li><a href="#reactive-monitoring-cost" style={{ color: '#2563EB', textDecoration: 'none' }}>What is the hidden cost of reactive deliverability monitoring?</a></li>
- <li><a href="#burned-domains-revenue-cascade" style={{ color: '#2563EB', textDecoration: 'none' }}>How do burned domains cascade into lost revenue?</a></li>
- <li><a href="#replacement-cost-breakdown" style={{ color: '#2563EB', textDecoration: 'none' }}>What does an agency spend replacing burned infrastructure?</a></li>
- <li><a href="#proactive-protection-roi" style={{ color: '#2563EB', textDecoration: 'none' }}>How does proactive infrastructure protection compare to replacement costs?</a></li>
- <li><a href="#agency-infrastructure-budget" style={{ color: '#2563EB', textDecoration: 'none' }}>What should an agency budget for cold email infrastructure in 2026?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Cold email infrastructure is not free. Domains cost money. Google Workspace seats cost money. Warmup tools cost money. But the biggest cost is the one most agencies never calculate: the cost of infrastructure failure. When a domain burns out because no one was watching the bounce rate, the loss is not $12 for a new domain. It is thousands of dollars in lost pipeline, wasted SDR time, and campaigns that have to restart from zero.
  </p>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import HeroCard from '@/components/blog/HeroCard';
-import AuthorByline from '@/components/blog/AuthorByline';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -92,19 +92,24 @@ export default function InstantlyAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <HeroCard
-                    badge="ALTERNATIVES · 2026"
-                    eyebrow="Comparison"
+                <BlogHeader
+                    tag="Alternatives"
                     title="Best Instantly alternatives for cold email teams (2026)"
-                    subtitle="Instantly is genuinely polished — bundled warmup, B2B lead database, AI features, unified inbox. But teams running serious volume hit the same three walls: per-active-lead pricing at scale, no automated bounce-rate auto-pause, and provider-level ESP routing that treats all Gmail mailboxes as equal. Here are seven alternatives ranked for the teams that have outgrown those limits."
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
                 />
 
-                <AuthorByline
-                    name="Edward Sam"
-                    role="Deliverability Specialist, Superkabe"
-                    dateModified="2026-04-25"
-                    readTime="12 min read"
+                <FeaturedHero
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="12 min read"
+                    tagline="Beyond per-active-lead pricing"
+                    sub="Auto-pause · ESP-aware routing · Healing pipeline"
                 />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Instantly is genuinely polished — bundled warmup, B2B lead database, AI features, unified inbox. But teams running serious volume hit the same three walls: per-active-lead pricing at scale, no automated bounce-rate auto-pause, and provider-level ESP routing that treats all Gmail mailboxes as equal. Here are seven alternatives ranked for the teams that have outgrown those limits.
+                </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -126,9 +131,9 @@ export default function InstantlyAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The three reasons teams leave</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Per-active-lead pricing.</strong> Hyperscale at 100K leads is $358/mo. At 500K leads agencies cross $1K+/mo on Instantly alone. Per-send pricing models can be 2-4× cheaper at this volume</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No automated auto-pause.</strong> Bounce rate is visible in the dashboard. There is no "pause when bounce rate crosses 3% over the last 60 sends" rule that the platform enforces. The team has to notice and act manually — which fails at scale</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Provider-level ESP routing.</strong> Instantly groups all Gmail mailboxes as a class. In practice one Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5% — same provider, very different reputation. Per-mailbox ESP performance routing isolates this</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing.</strong> Hyperscale at 100K leads is $358/mo. At 500K leads agencies cross $1K+/mo on Instantly alone. Per-send pricing models can be 2-4× cheaper at this volume</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No automated auto-pause.</strong> Bounce rate is visible in the dashboard. There is no "pause when bounce rate crosses 3% over the last 60 sends" rule that the platform enforces. The team has to notice and act manually — which fails at scale</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Provider-level ESP routing.</strong> Instantly groups all Gmail mailboxes as a class. In practice one Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5% — same provider, very different reputation. Per-mailbox ESP performance routing isolates this</span></li>
                         </ul>
                     </div>
 
@@ -362,10 +367,10 @@ export default function InstantlyAlternativesPage() {
                     <h2 id="when-to-switch" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When to switch</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You have 100K+ active leads.</strong> Hyperscale pricing dominates. Per-send platforms (Superkabe, EmailBison) are 2-4× cheaper at this volume</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You&apos;ve burned a domain that you should have caught.</strong> Manual bounce monitoring fails at scale. Auto-pause + healing is the structural fix</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You manage 30+ mailboxes per workspace.</strong> Per-mailbox ESP performance routing only matters at scale, but at scale it changes deliverability dramatically</li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>You want native AI sequences, validation, monitoring, and protection in one platform.</strong> Superkabe is the only option that ships all four</li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You have 100K+ active leads.</strong> Hyperscale pricing dominates. Per-send platforms (Superkabe, EmailBison) are 2-4× cheaper at this volume</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You&apos;ve burned a domain that you should have caught.</strong> Manual bounce monitoring fails at scale. Auto-pause + healing is the structural fix</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You manage 30+ mailboxes per workspace.</strong> Per-mailbox ESP performance routing only matters at scale, but at scale it changes deliverability dramatically</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want native AI sequences, validation, monitoring, and protection in one platform.</strong> Superkabe is the only option that ships all four</span></li>
                         </ul>
                     </div>
 

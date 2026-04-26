@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BreadcrumbSchema, AuthorSchema, DatasetSchema, QuickAnswer, buildEnhancedBlogPosting } from '@/components/seo/AeoGeoSchema';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends',
@@ -85,14 +88,24 @@ export default function ColdEmailSoftwareComparedArticle() {
  <DatasetSchema dataset={datasetSchema} url="https://www.superkabe.com/blog/cold-email-software-compared" />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends
- </h1>
- <p className="text-gray-400 text-sm mb-8">16 min read &middot; Published April 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- We ran 500 sends through 12 cold email platforms over 6 weeks in Q1 2026 — matched mailboxes, identical copy, same pre-validated lead list. Here is what the data says about which platform actually delivers, which one has the best cost-per-reply, and where a protection layer changes the ranking.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="16 min read"
+                        tagline="Cold email software compared"
+                        sub="Sending · Validation · Auto-pause · Healing · Pricing"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        We ran 500 sends through 12 cold email platforms over 6 weeks in Q1 2026 — matched mailboxes, identical copy, same pre-validated lead list. Here is what the data says about which platform actually delivers, which one has the best cost-per-reply, and where a protection layer changes the ranking.
+                    </p>
 
  <div className="aeo-takeaways bg-blue-50 border border-blue-200 p-6 mb-12" data-aeo="takeaways">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>

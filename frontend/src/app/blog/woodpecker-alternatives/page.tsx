@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import HeroCard from '@/components/blog/HeroCard';
-import AuthorByline from '@/components/blog/AuthorByline';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -67,19 +67,24 @@ export default function WoodpeckerAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <HeroCard
-                    badge="ALTERNATIVES · 2026"
-                    eyebrow="Comparison"
+                <BlogHeader
+                    tag="Alternatives"
                     title="Best Woodpecker alternatives for cold email (2026)"
-                    subtitle="Woodpecker has been credible for years, but the category moved fast in 2025-2026. Modern senders ship AI sequence generation, automated deliverability protection, and per-mailbox ESP-aware routing — Woodpecker has not kept pace. Here are seven alternatives ranked."
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
                 />
 
-                <AuthorByline
-                    name="Edward Sam"
-                    role="Deliverability Specialist, Superkabe"
-                    dateModified="2026-04-25"
-                    readTime="11 min read"
+                <FeaturedHero
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="11 min read"
+                    tagline="Modern senders move past Woodpecker"
+                    sub="AI sequencing · Auto-pause · Per-mailbox ESP routing"
                 />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Woodpecker has been credible for years, but the category moved fast in 2025-2026. Modern senders ship AI sequence generation, automated deliverability protection, and per-mailbox ESP-aware routing — Woodpecker has not kept pace. Here are seven alternatives ranked.
+                </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -102,10 +107,10 @@ export default function WoodpeckerAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The four reasons teams move on</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No AI sequence generation.</strong> Modern competitors draft 4-6 step sequences grounded in your ICP and offer in seconds; Woodpecker still mostly hand-crafted</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No threshold-based auto-pause.</strong> Bounce shield catches invalid addresses pre-send but the platform does not auto-pause a mailbox when its rolling bounce rate crosses a threshold</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No ESP-aware mailbox routing.</strong> Per-mailbox bounce performance against Gmail, Microsoft 365, or Yahoo recipients is not part of routing</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Pricing not as competitive at scale.</strong> Per-active-lead pricing tiers underprice Smartlead/Instantly for some workloads but lose to per-send platforms at high volume</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No AI sequence generation.</strong> Modern competitors draft 4-6 step sequences grounded in your ICP and offer in seconds; Woodpecker still mostly hand-crafted</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No threshold-based auto-pause.</strong> Bounce shield catches invalid addresses pre-send but the platform does not auto-pause a mailbox when its rolling bounce rate crosses a threshold</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No ESP-aware mailbox routing.</strong> Per-mailbox bounce performance against Gmail, Microsoft 365, or Yahoo recipients is not part of routing</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Pricing not as competitive at scale.</strong> Per-active-lead pricing tiers underprice Smartlead/Instantly for some workloads but lose to per-send platforms at high volume</span></li>
                         </ul>
                     </div>
 

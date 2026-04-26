@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "NeverBounce Catch-All Detection: What It Does",
@@ -95,12 +98,22 @@ export default function NeverBounceCatchAllDetectionArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- NeverBounce catch-all detection: what it does and what it does not
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Published April 2026</p>
+ <BlogHeader
+ tag="Deep Dive"
+ title="NeverBounce catch-all detection: what it does and what it does not"
+ dateModified="2026-04-25"
+ authorName="Robert Smith"
+ authorRole="Email Infrastructure Engineer · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="DEEP DIVE · 2026"
+ eyebrow="10 min read"
+ tagline="NeverBounce on catch-all domains"
+ sub="accept_all · unknown · Bounce risk · What it misses"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  NeverBounce flags catch-all domains with an &quot;accept_all&quot; status. Their recommendation? Do not send to those addresses. That is technically the safe move. But when 30-40% of your B2B leads are on catch-all domains, &quot;do not send&quot; is not a strategy. It is a pipeline killer.
  </p>
 
@@ -113,19 +126,6 @@ export default function NeverBounceCatchAllDetectionArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> NeverBounce has no post-send monitoring, auto-pause, or risk distribution for catch-all leads</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> The practical approach: use NeverBounce for pre-send filtering, then layer Superkabe for catch-all protection during and after sending</li>
  </ul>
- </div>
-
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#neverbounce-catch-all-handling" style={{ color: '#2563EB', textDecoration: 'none' }}>How NeverBounce handles catch-all domains</a></li>
- <li><a href="#what-neverbounce-does-well" style={{ color: '#2563EB', textDecoration: 'none' }}>What NeverBounce does well</a></li>
- <li><a href="#the-dont-send-problem" style={{ color: '#2563EB', textDecoration: 'none' }}>The &quot;don&apos;t send&quot; problem</a></li>
- <li><a href="#the-gap" style={{ color: '#2563EB', textDecoration: 'none' }}>The gap after verification</a></li>
- <li><a href="#practical-approach" style={{ color: '#2563EB', textDecoration: 'none' }}>The practical approach for NeverBounce users</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>What NeverBounce checks vs what Superkabe adds</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">
@@ -161,11 +161,11 @@ export default function NeverBounceCatchAllDetectionArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">NeverBounce strengths</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Fast bulk processing:</strong> Handles large lists quickly. Upload a 50,000-email CSV and get results back in minutes, not hours</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Reliable real-time API:</strong> The API is well-documented and fast. Good for teams integrating verification into automated workflows</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Good accuracy:</strong> Around 96-97% detection rate for invalid addresses on non-catch-all domains. Not quite ZeroBounce level, but close</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Competitive pricing:</strong> Roughly $0.80 per 1,000 at volume. Cheaper than ZeroBounce ($3-4 per 1,000), more expensive than MillionVerifier ($0.50 per 1,000)</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <strong>Good integrations:</strong> Native connections with HubSpot, Zapier, and several other platforms. Makes it easy to plug into existing workflows</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Fast bulk processing:</strong> Handles large lists quickly. Upload a 50,000-email CSV and get results back in minutes, not hours</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Reliable real-time API:</strong> The API is well-documented and fast. Good for teams integrating verification into automated workflows</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Good accuracy:</strong> Around 96-97% detection rate for invalid addresses on non-catch-all domains. Not quite ZeroBounce level, but close</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Competitive pricing:</strong> Roughly $0.80 per 1,000 at volume. Cheaper than ZeroBounce ($3-4 per 1,000), more expensive than MillionVerifier ($0.50 per 1,000)</span></li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> <span><strong>Good integrations:</strong> Native connections with HubSpot, Zapier, and several other platforms. Makes it easy to plug into existing workflows</span></li>
  </ul>
  </div>
 
@@ -200,11 +200,11 @@ export default function NeverBounceCatchAllDetectionArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">What NeverBounce cannot do after verification</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No post-send monitoring:</strong> NeverBounce does not watch your bounce rates. If catch-all leads bounce at 8%, you will not hear about it from NeverBounce</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No infrastructure protection:</strong> If bounces from catch-all leads push a mailbox past its threshold, nothing stops the sending automatically</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No risk distribution:</strong> NeverBounce does not know which mailbox will send to which lead. It cannot spread catch-all risk across your infrastructure</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No domain intelligence:</strong> If a particular catch-all domain has historically caused bounces, NeverBounce has no memory of that. It checks the same domain fresh each time</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no recovery system. You are on your own figuring out when and how to resume sending</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No post-send monitoring:</strong> NeverBounce does not watch your bounce rates. If catch-all leads bounce at 8%, you will not hear about it from NeverBounce</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No infrastructure protection:</strong> If bounces from catch-all leads push a mailbox past its threshold, nothing stops the sending automatically</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No risk distribution:</strong> NeverBounce does not know which mailbox will send to which lead. It cannot spread catch-all risk across your infrastructure</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No domain intelligence:</strong> If a particular catch-all domain has historically caused bounces, NeverBounce has no memory of that. It checks the same domain fresh each time</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>No healing:</strong> If a mailbox or domain takes damage from catch-all bounces, there is no recovery system. You are on your own figuring out when and how to resume sending</span></li>
  </ul>
  </div>
 
@@ -314,15 +314,12 @@ export default function NeverBounceCatchAllDetectionArticle() {
  For a side-by-side look at how NeverBounce and ZeroBounce compare on catch-all handling (and where Superkabe fits in), read our <Link href="/blog/catch-all-detection-zerobounce-vs-neverbounce" className="text-blue-600 hover:text-blue-800 underline">three-way comparison</Link>.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Send to catch-all leads. Safely.</h3>
- <p className="text-blue-100 leading-relaxed">
- NeverBounce says do not send. But you need those leads. Superkabe lets you send to catch-all addresses with per-mailbox risk caps, real-time bounce monitoring, and auto-pause protection. Keep NeverBounce for pre-send cleaning. Add Superkabe for everything after. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+ headline="Send to catch-all leads. Safely."
+ body={`NeverBounce says do not send. But you need those leads. Superkabe lets you send to catch-all addresses with per-mailbox risk caps, real-time bounce monitoring, and auto-pause protection. Keep NeverBounce for pre-send cleaning. Add Superkabe for everything after. <Link href="/" className="text-white underline hover:text-blue-200">See how it works</Link>.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

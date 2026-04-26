@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'SPF, DKIM & DMARC Setup Guide for Outbound Email Teams',
@@ -116,14 +119,24 @@ export default function SpfDkimDmarcArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Updated February 2026</p>
+ <BlogHeader
+                    tag="Technical"
+                    title="Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This guide answers a common question from outbound teams: &quot;How exactly do I configure SPF, DKIM, and DMARC to ensure my cold emails land in the primary inbox?&quot;
- </p>
+                <FeaturedHero
+                    badge="TECHNICAL · 2026"
+                    eyebrow="10 min read"
+                    tagline="SPF, DKIM, DMARC — clearly"
+                    sub="Authentication · Alignment · Policy · Reporting"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    This guide answers a common question from outbound teams: &quot;How exactly do I configure SPF, DKIM, and DMARC to ensure my cold emails land in the primary inbox?&quot;
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -137,18 +150,7 @@ export default function SpfDkimDmarcArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-spf" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is SPF (Sender Policy Framework) and How Does It Work?</a></li>
- <li><a href="#what-is-dkim" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DKIM (DomainKeys Identified Mail) and Why Does It Matter?</a></li>
- <li><a href="#what-is-dmarc" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DMARC and How Does It Protect Your Domain?</a></li>
- <li><a href="#authentication-decision-flow" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does the Email Authentication Decision Flow Work?</a></li>
- <li><a href="#why-it-matters-for-outbound" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Does Email Authentication Matter for Outbound Teams?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  SPF, DKIM, and DMARC are the three email authentication protocols that verify sender identity and prevent domain spoofing. Together, they form the trust layer that ISPs use to decide whether an email should reach the inbox, be routed to spam, or be rejected entirely. For outbound email operators running multiple domains, correct configuration of all three protocols is non-negotiable.
  </p>
@@ -224,15 +226,12 @@ export default function SpfDkimDmarcArticle() {
  Superkabe monitors DNS authentication health across all your sending domains. When SPF records approach the 10-lookup limit, DKIM keys are missing, or DMARC policies are too permissive, Superkabe flags these issues before they cause deliverability failures.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- SPF authorizes your sending servers. DKIM proves each email is genuine. DMARC enforces what happens when either fails. All three must be configured correctly on every sending domain. Missing any one creates a gap that ISPs will penalize.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Authenticate every domain — automatically"
+                    body="Superkabe verifies SPF, DKIM, and DMARC for every sending domain in real time and pauses any mailbox whose authentication breaks before reputation damage compounds."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  
  <div className="mt-16 pt-10 border-t border-gray-100">

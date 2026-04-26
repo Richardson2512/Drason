@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'The Complete Email Warmup Guide 2026: Domains, Mailboxes',
@@ -136,14 +139,24 @@ export default function CompleteEmailWarmupGuide() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- The Complete Email Warmup Guide 2026: Domains, Mailboxes, and What Happens After
- </h1>
- <p className="text-gray-400 text-sm mb-8">18 min read · Published April 2026</p>
+ <BlogHeader
+                        tag="Guide"
+                        title="The Complete Email Warmup Guide 2026: Domains, Mailboxes, and What Happens After"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Email warmup is the one thing every cold email team does. It is also the one thing most teams think is enough. This guide covers everything: domain warmup, mailbox warmup, day-by-day schedules, how warmup tools work, what warmup cannot protect against, and the full protection stack that keeps domains alive past the first campaign.
- </p>
+                    <FeaturedHero
+                        badge="GUIDE · 2026"
+                        eyebrow="18 min read"
+                        tagline="Email warmup, end-to-end"
+                        sub="Day-by-day ramp · Volume curves · Engagement · Recovery"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Email warmup is the one thing every cold email team does. It is also the one thing most teams think is enough. This guide covers everything: domain warmup, mailbox warmup, day-by-day schedules, how warmup tools work, what warmup cannot protect against, and the full protection stack that keeps domains alive past the first campaign.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -158,22 +171,8 @@ export default function CompleteEmailWarmupGuide() {
  </div>
 
  {/* Table of Contents */}
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-email-warmup" style={{ color: '#2563EB', textDecoration: 'none' }}>What is email warmup (and why cold email teams cannot skip it)</a></li>
- <li><a href="#domain-vs-mailbox-warmup" style={{ color: '#2563EB', textDecoration: 'none' }}>Domain warmup vs mailbox warmup</a></li>
- <li><a href="#warmup-schedule" style={{ color: '#2563EB', textDecoration: 'none' }}>The warmup schedule (day by day)</a></li>
- <li><a href="#how-warmup-tools-work" style={{ color: '#2563EB', textDecoration: 'none' }}>How warmup tools work</a></li>
- <li><a href="#what-warmup-doesnt-do" style={{ color: '#2563EB', textDecoration: 'none' }}>What warmup does not do (the critical gap)</a></li>
- <li><a href="#full-stack" style={{ color: '#2563EB', textDecoration: 'none' }}>The full stack: warmup + validation + monitoring + healing</a></li>
- <li><a href="#common-mistakes" style={{ color: '#2563EB', textDecoration: 'none' }}>Common warmup mistakes</a></li>
- <li><a href="#warmup-for-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>Warmup for recovery (healing damaged mailboxes)</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>Frequently asked questions</a></li>
- </ol>
- </div>
 
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
 
  {/* Section 1 */}
  <h2 id="what-is-email-warmup" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What is email warmup (and why cold email teams cannot skip it)</h2>
@@ -420,12 +419,12 @@ export default function CompleteEmailWarmupGuide() {
  <div className="bg-red-50 border border-red-200 p-6 mb-8">
  <h3 className="font-bold text-red-900 mb-3">What warmup cannot protect against</h3>
  <ul className="space-y-2 text-red-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>Bad lead lists:</strong> Warmup does not validate email addresses. An unverified list with 8% invalids will spike your bounce rate past ISP thresholds in one send</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>Bounce rate spikes during campaigns:</strong> No warmup tool monitors your live campaign bounces or takes action when they spike</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>DNS failures:</strong> A broken DKIM record or missing SPF entry will degrade deliverability overnight. Warmup tools do not check DNS</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>Auto-pausing degraded mailboxes:</strong> When a mailbox starts accumulating bounces, warmup tools take no protective action</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>Cross-mailbox correlation:</strong> If 3 mailboxes on the same domain all show rising bounce rates, that is a domain-level problem. Warmup tools do not correlate signals across mailboxes</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <strong>Healing damaged infrastructure:</strong> Once a mailbox or domain is burned, warmup cannot recover it. Recovery requires a structured protocol: stop sending, diagnose, quarantine, restricted warmup, graduated re-entry</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>Bad lead lists:</strong> Warmup does not validate email addresses. An unverified list with 8% invalids will spike your bounce rate past ISP thresholds in one send</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>Bounce rate spikes during campaigns:</strong> No warmup tool monitors your live campaign bounces or takes action when they spike</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>DNS failures:</strong> A broken DKIM record or missing SPF entry will degrade deliverability overnight. Warmup tools do not check DNS</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>Auto-pausing degraded mailboxes:</strong> When a mailbox starts accumulating bounces, warmup tools take no protective action</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>Cross-mailbox correlation:</strong> If 3 mailboxes on the same domain all show rising bounce rates, that is a domain-level problem. Warmup tools do not correlate signals across mailboxes</span></li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-0.5">▸</span> <span><strong>Healing damaged infrastructure:</strong> Once a mailbox or domain is burned, warmup cannot recover it. Recovery requires a structured protocol: stop sending, diagnose, quarantine, restricted warmup, graduated re-entry</span></li>
  </ul>
  </div>
 

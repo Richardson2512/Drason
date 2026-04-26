@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Why Does Email Warmup Stop Working?',
@@ -56,14 +59,24 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Why Does Email Warmup Stop Working?
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Troubleshooting"
+                    title="Why Does Email Warmup Stop Working?"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Email warmup stops working because warmup creates artificial engagement signals — automated opens, replies, and inbox moves — that vanish the moment you switch to real cold outreach. ISPs notice the engagement drop and reclassify your domain. The solution is not more warmup — it is monitoring and protecting your infrastructure during live sending.
- </p>
+                <FeaturedHero
+                    badge="TROUBLESHOOTING · 2026"
+                    eyebrow="11 min read"
+                    tagline="When warmup stops working"
+                    sub="Reputation decay · Bounce spikes · Send patterns · Healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Email warmup stops working because warmup creates artificial engagement signals — automated opens, replies, and inbox moves — that vanish the moment you switch to real cold outreach. ISPs notice the engagement drop and reclassify your domain. The solution is not more warmup — it is monitoring and protecting your infrastructure during live sending.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -210,11 +223,12 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Bridge the warmup gap</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe picks up where warmup tools leave off — monitoring live campaign deliverability, auto-pausing at-risk mailboxes, and healing damaged infrastructure through a 5-phase recovery pipeline.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="When warmup stops working, protection takes over"
+                    body="Warmup builds reputation. When sending begins, Superkabe defends it — auto-pause, ESP-aware routing, and 5-phase healing keep your mailboxes alive."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

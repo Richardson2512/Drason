@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Repair Sender Reputation: The Complete Email',
@@ -103,12 +106,22 @@ export default function EmailReputationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read · Updated February 2026</p>
+ <BlogHeader
+ tag="Guide"
+ title="How to Repair Sender Reputation: The Complete Email Reputation Guide (2026)"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="GUIDE · 2026"
+ eyebrow="11 min read"
+ tagline="The reputation lifecycle"
+ sub="Build · Maintain · Damage · Recover · Point of no return"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  This guide answers a common question from outbound teams: &quot;Is it possible to recover a burned domain, and how exactly are ISP reputation scores calculated?&quot;
  </p>
 
@@ -122,18 +135,6 @@ export default function EmailReputationArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Not all domains can be recovered — severe blacklisting may require domain replacement</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Proactive protection is the only cost-effective strategy vs. reactive recovery</li>
  </ul>
- </div>
-
- {/* Table of Contents */}
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#build-email-reputation" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Build Email Reputation in Weeks 1-8?</a></li>
- <li><a href="#maintain-email-reputation" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Maintain Email Reputation Long-Term?</a></li>
- <li><a href="#email-reputation-damage" style={{ color: '#2563EB', textDecoration: 'none' }}>How Quickly Can Email Reputation Be Damaged?</a></li>
- <li><a href="#email-reputation-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>How Long Does Email Reputation Recovery Take?</a></li>
- <li><a href="#point-of-no-return" style={{ color: '#2563EB', textDecoration: 'none' }}>When Does Email Reputation Reach the Point of No Return?</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">
@@ -246,16 +247,14 @@ export default function EmailReputationArticle() {
  This is the core value proposition of Superkabe: preventing domains from ever reaching the point of no return. By monitoring bounce rates, engagement signals, and authentication health in real-time, Superkabe triggers protective action (mailbox pausing, domain gating, traffic redistribution) before damage becomes irreversible.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Email reputation is not a static score — it is a living metric that moves through distinct lifecycle phases. Building takes weeks, maintaining requires constant discipline, damage happens in hours, and recovery — if possible — takes weeks or months. The only sustainable strategy is proactive protection that prevents damage before it occurs.
- </p>
  </div>
- </div>
- </div>
+
+ <BottomCtaStrip
+ headline="Key Takeaway"
+ body="Email reputation is not a static score — it is a living metric that moves through distinct lifecycle phases. Building takes weeks, maintaining requires constant discipline, damage happens in hours, and recovery — if possible — takes weeks or months. The only sustainable strategy is proactive protection that prevents damage before it occurs."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>

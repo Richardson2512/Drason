@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Top 7 Email Warmup Tools for Cold Outreach (2026)',
@@ -66,14 +69,24 @@ export default function TopEmailWarmupToolsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Top 7 Email Warmup Tools for Cold Outreach (2026)
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Comparison"
+                    title="Top 7 Email Warmup Tools for Cold Outreach (2026)"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Email warmup is the first step in building a cold email infrastructure that lasts. New mailboxes need 2-3 weeks of graduated engagement before they can safely send cold emails at scale. But warmup only builds the initial reputation — protecting it during live campaigns is a separate problem. Here are the 7 tools that handle warmup, plus the one that handles what comes after.
- </p>
+                <FeaturedHero
+                    badge="COMPARISON · 2026"
+                    eyebrow="14 min read"
+                    tagline="Best warmup tools in 2026"
+                    sub="Networks · Reputation · Bounce protection · Healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Email warmup is the first step in building a cold email infrastructure that lasts. New mailboxes need 2-3 weeks of graduated engagement before they can safely send cold emails at scale. But warmup only builds the initial reputation — protecting it during live campaigns is a separate problem. Here are the 7 tools that handle warmup, plus the one that handles what comes after.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -170,11 +183,12 @@ export default function TopEmailWarmupToolsArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Protect what warmup builds</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe picks up where warmup leaves off. Real-time bounce monitoring, auto-pause, 5-phase healing, ESP-aware routing, and lead validation — so your warmed-up mailboxes stay healthy during live campaigns.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="Warmup is just the start"
+                    body="Warmup networks build reputation. Superkabe protects it — with real-time bounce monitoring, threshold-based auto-pause, and the 5-phase healing pipeline."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

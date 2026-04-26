@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 import type { Metadata } from 'next';
 
 
@@ -114,31 +115,30 @@ export default function ProductIndexPage() {
  };
 
  return (
- <div className="relative bg-[#F7F2EB] text-[#1E1E2F] overflow-hidden font-sans min-h-screen flex flex-col">
+ <div className="bg-[#F7F2EB] text-gray-900 font-sans min-h-screen flex flex-col">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
-
- <main className="flex-1 max-w-6xl mx-auto px-6 w-full mb-20 z-10 pt-32 md:pt-36">
- <div className="text-center mb-20 mt-10">
- <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 tracking-tight">
+ <main className="flex-1 max-w-6xl mx-auto px-6 w-full pt-32 md:pt-40 pb-16">
+ {/* Mailivery-style header — tag pill + huge H1 + subtitle */}
+ <div className="mb-20">
+ <div className="mb-8">
+ <span className="inline-block px-5 py-1.5 rounded-full bg-gray-900 text-white text-sm font-medium">
  Product Hub
+ </span>
+ </div>
+ <h1
+ className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ style={{ letterSpacing: '-0.02em' }}
+ >
+ The AI cold email platform — every layer, one product
  </h1>
- <p className="text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
+ <p className="text-lg md:text-xl text-gray-600 max-w-3xl leading-relaxed">
  Superkabe is an AI cold email platform with native deliverability protection. Explore the full product — AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and the healing layer that keeps senders alive.
  </p>
+ <hr className="mt-10 border-0 border-t border-gray-900" />
  </div>
 
  <div className="space-y-16 md:space-y-20">
@@ -154,25 +154,25 @@ export default function ProductIndexPage() {
  </div>
 
  {/* Popl-style grid with continuous border lines */}
- <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5` }}>
+ <div style={{ borderTop: `1px solid #E5E7EB`, borderLeft: `1px solid #E5E7EB` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
  {category.links.map((link) => (
  <Link
  key={link.href}
  href={link.href}
- className="group block p-8 md:p-10 hover:bg-white transition-colors duration-300"
+ className="group block p-8 md:p-10 hover:bg-gray-50 transition-colors duration-300"
  style={{
- borderRight: `1px solid #D1CBC5`,
- borderBottom: `1px solid #D1CBC5`,
+ borderRight: `1px solid #E5E7EB`,
+ borderBottom: `1px solid #E5E7EB`,
  }}
  >
- <h3 className="font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors text-base md:text-lg leading-[1.3] tracking-tight">
+ <h3 className="font-bold text-gray-900 mb-3 group-hover:text-gray-700 transition-colors text-base md:text-lg leading-[1.3] tracking-tight">
  {link.title}
  </h3>
  <p className="text-sm text-gray-500 leading-relaxed line-clamp-3 mb-5">
  {link.desc}
  </p>
- <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-900 group-hover:gap-2.5 group-hover:text-blue-600 transition-all">
+ <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-900 group-hover:gap-2.5 transition-all">
  Learn more
  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
  </span>
@@ -183,6 +183,13 @@ export default function ProductIndexPage() {
  </section>
  ))}
  </div>
+
+ <BottomCtaStrip
+ headline="One platform — every layer of cold email"
+ body="AI sequences, multi-mailbox sending, validation, real-time monitoring, threshold-based auto-pause, and the 5-phase healing pipeline. 14-day free trial, no credit card required."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See pricing', href: '/pricing' }}
+ />
  </main>
 
  <Footer />

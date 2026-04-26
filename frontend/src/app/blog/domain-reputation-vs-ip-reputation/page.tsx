@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Domain Reputation vs IP Reputation: What Actually Matters',
@@ -103,14 +106,24 @@ export default function DomainReputationVsIpReputationArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Domain reputation vs IP reputation: what actually matters for cold email in 2026
- </h1>
- <p className="text-gray-400 text-sm mb-8">15 min read &middot; Published April 2026</p>
+ <BlogHeader
+                        tag="Deep Dive"
+                        title="Domain reputation vs IP reputation: what actually matters for cold email in 2026"
+                        dateModified="2026-04-25"
+                        authorName="Robert Smith"
+                        authorRole="Email Infrastructure Engineer · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Short answer: domain reputation matters more. It has mattered more since Gmail shifted its filtering algorithms to domain-based weighting, and the 2024 DMARC mandate sealed the deal. Here is exactly why, what the data shows, and what it means for how you protect your cold email infrastructure.
- </p>
+                    <FeaturedHero
+                        badge="DEEP DIVE · 2026"
+                        eyebrow="15 min read"
+                        tagline="Domain vs IP reputation"
+                        sub="Signals · Weighting · Shared IPs · What ESPs score"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Short answer: domain reputation matters more. It has mattered more since Gmail shifted its filtering algorithms to domain-based weighting, and the 2024 DMARC mandate sealed the deal. Here is exactly why, what the data shows, and what it means for how you protect your cold email infrastructure.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -124,21 +137,7 @@ export default function DomainReputationVsIpReputationArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#the-shift" style={{ color: '#2563EB', textDecoration: 'none' }}>The shift from IP to domain reputation</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Domain vs IP reputation: factor-by-factor comparison</a></li>
- <li><a href="#why-domain-matters" style={{ color: '#2563EB', textDecoration: 'none' }}>Why cold email focuses on domain reputation</a></li>
- <li><a href="#dmarc-impact" style={{ color: '#2563EB', textDecoration: 'none' }}>How DMARC changed everything</a></li>
- <li><a href="#deliverability-data" style={{ color: '#2563EB', textDecoration: 'none' }}>Real data: domain reputation and deliverability</a></li>
- <li><a href="#what-you-control" style={{ color: '#2563EB', textDecoration: 'none' }}>What you can actually control</a></li>
- <li><a href="#monitoring-domain" style={{ color: '#2563EB', textDecoration: 'none' }}>Monitoring domain reputation with Superkabe</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>FAQ</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <h2 id="the-shift" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The shift from IP to domain reputation</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
  Before 2020, IP reputation was king. Spam filters weighted the sending IP address heavily in their filtering decisions. Senders invested in dedicated IPs, carefully warmed them over weeks, and guarded their IP reputation like it was the crown jewels. Sender Score — an IP-based metric — was the gold standard metric everyone referenced.
@@ -399,10 +398,10 @@ export default function DomainReputationVsIpReputationArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">Domain-level monitoring capabilities</h3>
  <ul className="space-y-3 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>Per-domain bounce tracking:</strong> Bounce rates calculated per domain, not blended across your account. If one domain is accumulating bounces while others are clean, you see it immediately. Most sending platforms only show account-wide bounce rates which mask domain-specific problems.</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>DNS compliance monitoring:</strong> Continuous checking of SPF, DKIM, and DMARC records for every sending domain. If a record changes, expires, or misconfigures, you are alerted before it impacts deliverability. DNS changes are a common cause of sudden reputation drops that teams struggle to diagnose.</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>Domain-level escalation:</strong> When a mailbox on a domain breaches thresholds, the system evaluates whether the problem is mailbox-specific or domain-wide. If multiple mailboxes on the same domain are degrading simultaneously, the escalation targets the domain — not just individual mailboxes. This prevents the whack-a-mole pattern where you pause one mailbox while others on the same domain continue accumulating damage.</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <strong>Correlation engine:</strong> Cross-campaign pattern detection identifies when a domain&apos;s reputation is degrading across multiple campaigns simultaneously. If your domain is being used in 5 campaigns and 3 of them show rising bounce rates, the correlation engine flags the domain as the common factor — not the individual campaigns.</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Per-domain bounce tracking:</strong> Bounce rates calculated per domain, not blended across your account. If one domain is accumulating bounces while others are clean, you see it immediately. Most sending platforms only show account-wide bounce rates which mask domain-specific problems.</span></li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>DNS compliance monitoring:</strong> Continuous checking of SPF, DKIM, and DMARC records for every sending domain. If a record changes, expires, or misconfigures, you are alerted before it impacts deliverability. DNS changes are a common cause of sudden reputation drops that teams struggle to diagnose.</span></li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Domain-level escalation:</strong> When a mailbox on a domain breaches thresholds, the system evaluates whether the problem is mailbox-specific or domain-wide. If multiple mailboxes on the same domain are degrading simultaneously, the escalation targets the domain — not just individual mailboxes. This prevents the whack-a-mole pattern where you pause one mailbox while others on the same domain continue accumulating damage.</span></li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Correlation engine:</strong> Cross-campaign pattern detection identifies when a domain&apos;s reputation is degrading across multiple campaigns simultaneously. If your domain is being used in 5 campaigns and 3 of them show rising bounce rates, the correlation engine flags the domain as the common factor — not the individual campaigns.</span></li>
  </ul>
  </div>
 

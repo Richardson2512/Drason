@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Why Is My SPF or DMARC Failing?',
@@ -56,14 +59,24 @@ export default function WhySpfDmarcFailingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Why Is My SPF or DMARC Failing?
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Troubleshooting"
+                    title="Why Is My SPF or DMARC Failing?"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- SPF fails when your sending server IP is not included in your domain&apos;s SPF record, or when you exceed the 10 DNS lookup limit. DMARC fails when neither SPF nor DKIM passes with domain alignment. Both cause emails to land in spam or get rejected entirely.
- </p>
+                <FeaturedHero
+                    badge="TROUBLESHOOTING · 2026"
+                    eyebrow="12 min read"
+                    tagline="Diagnose SPF and DMARC failures"
+                    sub="Authentication · Alignment · Reporting · Real-time monitoring"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    SPF fails when your sending server IP is not included in your domain&apos;s SPF record, or when you exceed the 10 DNS lookup limit. DMARC fails when neither SPF nor DKIM passes with domain alignment. Both cause emails to land in spam or get rejected entirely.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -260,11 +273,12 @@ export default function WhySpfDmarcFailingArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Never send unauthenticated emails again</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe continuously monitors SPF, DKIM, and DMARC across all your sending domains. When a record breaks, you know before your next campaign sends — not weeks later when deliverability has already collapsed.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="Catch SPF and DMARC failures in real time"
+                    body="Authentication breakage causes silent reputation decline. Superkabe verifies SPF, DKIM, and DMARC continuously and pauses mailboxes before ISPs notice."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

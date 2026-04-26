@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Automated cold email infrastructure protection for lead',
@@ -99,14 +102,24 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Automated cold email infrastructure protection for lead generation agencies
- </h1>
- <p className="text-gray-400 text-sm mb-8">12 min read · Published March 2026</p>
+ <BlogHeader
+                        tag="Agencies"
+                        title="Automated cold email infrastructure protection for lead generation agencies"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Lead gen agencies operate hundreds of domains and mailboxes across multiple sending platforms. This guide explains how automated infrastructure protection prevents domain burnout, reduces replacement costs, and keeps reply rates stable at scale.
- </p>
+                    <FeaturedHero
+                        badge="AGENCIES · 2026"
+                        eyebrow="12 min read"
+                        tagline="Protection at agency scale"
+                        sub="Per-workspace isolation · Auto-pause · Healing · Multi-client"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Lead gen agencies operate hundreds of domains and mailboxes across multiple sending platforms. This guide explains how automated infrastructure protection prevents domain burnout, reduces replacement costs, and keeps reply rates stable at scale.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -120,19 +133,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#why-agencies-burn-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>Why do lead gen agencies burn through domains faster than anyone else?</a></li>
- <li><a href="#what-automated-protection-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What does automated infrastructure protection actually do?</a></li>
- <li><a href="#how-superkabe-protects" style={{ color: '#2563EB', textDecoration: 'none' }}>How does Superkabe protect agency cold email infrastructure?</a></li>
- <li><a href="#domains-mailboxes-sizing" style={{ color: '#2563EB', textDecoration: 'none' }}>How many domains and mailboxes does a 50-client agency need?</a></li>
- <li><a href="#multi-platform-monitoring" style={{ color: '#2563EB', textDecoration: 'none' }}>Can one tool monitor infrastructure across Smartlead, Instantly, and Reply.io?</a></li>
- <li><a href="#roi-automated-protection" style={{ color: '#2563EB', textDecoration: 'none' }}>What&apos;s the ROI of automated deliverability protection for agencies?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Lead generation agencies face a unique infrastructure challenge: they operate sending infrastructure at a scale that makes manual monitoring impossible, while each client&apos;s reputation depends on every other client&apos;s sending behavior across shared domains and IP addresses. Without automated protection, agencies lose an average of 15-25% of their active domains every quarter to preventable deliverability failures.
  </p>
@@ -375,15 +376,12 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  The biggest ROI driver that agencies underestimate is client retention. When deliverability degrades, reply rates drop, meetings decline, and clients leave. A single enterprise client churning due to preventable deliverability issues often costs more than a full year of automated protection. Superkabe keeps reply rates stable by preventing the infrastructure failures that cause deliverability decay.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop losing domains to preventable bounce damage</h3>
- <p className="text-blue-100 leading-relaxed">
- Superkabe gives agencies automated, real-time infrastructure protection across every domain, mailbox, and sending platform. No more morning dashboard checks revealing overnight domain burns. No more clients leaving because reply rates collapsed. Protect your infrastructure before damage compounds — not after.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Stop losing domains to preventable bounce damage"
+                    body="Superkabe gives agencies automated, real-time infrastructure protection across every domain, mailbox, and sending platform. No more morning dashboard checks revealing overnight domain burns. No more clients leaving because reply rates collapsed. Protect your infrastructure before damage compounds — not after."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

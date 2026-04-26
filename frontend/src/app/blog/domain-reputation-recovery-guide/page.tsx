@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Domain Reputation Dropped? The Complete Recovery Playbook',
@@ -103,14 +106,24 @@ export default function DomainReputationRecoveryGuideArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Domain reputation dropped? The complete recovery playbook
- </h1>
- <p className="text-gray-400 text-sm mb-8">13 min read · Published April 2026</p>
+ <BlogHeader
+                        tag="Guide"
+                        title="Domain reputation dropped? The complete recovery playbook"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Your domain reputation tanked. Reply rates crashed. Google Postmaster shows &quot;Low&quot; or &quot;Bad.&quot; Maybe you are on a blacklist. Maybe you pushed a bad lead list. Either way, the domain that was generating pipeline last week is now generating spam folder placements. Here is how to fix it.
- </p>
+                    <FeaturedHero
+                        badge="GUIDE · 2026"
+                        eyebrow="13 min read"
+                        tagline="Recover domain reputation"
+                        sub="Pause · Quarantine · Warm recovery · Healthy state"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Your domain reputation tanked. Reply rates crashed. Google Postmaster shows &quot;Low&quot; or &quot;Bad.&quot; Maybe you are on a blacklist. Maybe you pushed a bad lead list. Either way, the domain that was generating pipeline last week is now generating spam folder placements. Here is how to fix it.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -123,20 +136,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#three-causes" style={{ color: '#2563EB', textDecoration: 'none' }}>The 3 common causes of reputation drops</a></li>
- <li><a href="#severity-assessment" style={{ color: '#2563EB', textDecoration: 'none' }}>Severity assessment: how bad is it?</a></li>
- <li><a href="#five-phase-recovery" style={{ color: '#2563EB', textDecoration: 'none' }}>The 5-phase recovery process</a></li>
- <li><a href="#recovery-timelines" style={{ color: '#2563EB', textDecoration: 'none' }}>Recovery timelines by ISP</a></li>
- <li><a href="#rewarming-schedule" style={{ color: '#2563EB', textDecoration: 'none' }}>Re-warming schedule</a></li>
- <li><a href="#bad-list-deep-dive" style={{ color: '#2563EB', textDecoration: 'none' }}>The bad lead list deep dive</a></li>
- <li><a href="#manual-vs-automated" style={{ color: '#2563EB', textDecoration: 'none' }}>Why manual recovery fails at scale</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Domain reputation recovery is not a mystery. It is a process. But most teams get it wrong because they either skip steps (jumping straight to re-warming without fixing the cause) or lose patience (ramping volume too fast and triggering the same damage again). This guide walks through the complete playbook: diagnosing the cause, assessing severity, executing recovery, and building the systems to prevent it from happening again.
  </p>

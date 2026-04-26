@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Why Are My Smartlead Emails Going to Spam?',
@@ -56,14 +59,24 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Why Are My Smartlead Emails Going to Spam?
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Troubleshooting"
+                    title="Why Are My Smartlead Emails Going to Spam?"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Smartlead emails go to spam when your sending domains lack proper DNS authentication (SPF/DKIM/DMARC), warmup was insufficient, bounce rates exceeded ISP thresholds, or you are sending too many emails per mailbox per day. Smartlead itself does not cause spam — your infrastructure configuration does.
- </p>
+                <FeaturedHero
+                    badge="TROUBLESHOOTING · 2026"
+                    eyebrow="10 min read"
+                    tagline="Smartlead inbox placement issues"
+                    sub="Authentication · Bounce monitoring · ESP routing · Healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Smartlead emails go to spam when your sending domains lack proper DNS authentication (SPF/DKIM/DMARC), warmup was insufficient, bounce rates exceeded ISP thresholds, or you are sending too many emails per mailbox per day. Smartlead itself does not cause spam — your infrastructure configuration does.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -201,11 +214,12 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Stop Smartlead emails from hitting spam</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors your Smartlead infrastructure in real time — auto-pausing mailboxes before bounce thresholds breach, checking DNS health continuously, and healing damaged mailboxes automatically.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="Stop Smartlead emails from hitting spam"
+                    body="Smartlead sends well but does not auto-pause or heal. Superkabe ships infrastructure protection that runs on every send — auto-pause at 3% bounce, 5-phase healing, ESP-aware routing."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

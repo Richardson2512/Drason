@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BreadcrumbSchema, AuthorSchema, QuickAnswer, buildEnhancedBlogPosting } from '@/components/seo/AeoGeoSchema';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)',
@@ -65,12 +68,22 @@ export default function FreeColdEmailToolsArticle() {
  <AuthorSchema author={author} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read &middot; Published April 2026</p>
+ <BlogHeader
+ tag="Free Tools"
+ title="Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="FREE TOOLS · 2026"
+ eyebrow="11 min read"
+ tagline="Actually-free cold email tools"
+ sub="7 tools · Real free tiers · Paywall maps · Graduation triggers"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Most &quot;free&quot; cold email tools are 14-day trials with a 95% markup attached. These 7 are actually free — with a caveat in each that you should read before you start. We tell you exactly what is free, exactly where the paywall lands, and when you should graduate.
  </p>
 
@@ -168,11 +181,12 @@ export default function FreeColdEmailToolsArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Ready to graduate from the free stack?</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe adds the bounce protection and auto-healing that no free tool provides — starting at $49/mo with validation credits bundled in. Works alongside whichever sending tool you&apos;re already using.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+ headline="Ready to graduate from the free stack?"
+ body="Superkabe adds the bounce protection and auto-healing that no free tool provides — starting at $49/mo with validation credits bundled in. Works alongside whichever sending tool you're already using."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

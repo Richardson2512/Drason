@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Real-time domain and mailbox health monitoring for cold',
@@ -99,14 +102,24 @@ export default function RealTimeMonitoringArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Real-time domain and mailbox health monitoring for cold email
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+                    tag="Monitoring"
+                    title="Real-time domain and mailbox health monitoring for cold email"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Cold email infrastructure can degrade from healthy to blacklisted in hours, not days. This guide explains why continuous real-time monitoring is the only way to protect your domains and mailboxes from irreversible reputation damage.
- </p>
+                <FeaturedHero
+                    badge="MONITORING · 2026"
+                    eyebrow="10 min read"
+                    tagline="Watch every send in real time"
+                    sub="Bounce rates · DNS health · Auto-pause · 5-phase healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Cold email infrastructure can degrade from healthy to blacklisted in hours, not days. This guide explains why continuous real-time monitoring is the only way to protect your domains and mailboxes from irreversible reputation damage.
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -120,19 +133,7 @@ export default function RealTimeMonitoringArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-real-time-monitoring" style={{ color: '#2563EB', textDecoration: 'none' }}>What is real-time email infrastructure monitoring?</a></li>
- <li><a href="#periodic-testing-not-enough" style={{ color: '#2563EB', textDecoration: 'none' }}>Why is periodic testing not enough for cold email?</a></li>
- <li><a href="#metrics-to-monitor" style={{ color: '#2563EB', textDecoration: 'none' }}>What metrics should you monitor in real-time?</a></li>
- <li><a href="#how-superkabe-monitoring-works" style={{ color: '#2563EB', textDecoration: 'none' }}>How does Superkabe&apos;s real-time monitoring work?</a></li>
- <li><a href="#monitoring-vs-testing-vs-protection" style={{ color: '#2563EB', textDecoration: 'none' }}>What is the difference between monitoring, testing, and protection?</a></li>
- <li><a href="#setup-real-time-monitoring" style={{ color: '#2563EB', textDecoration: 'none' }}>How do you set up real-time infrastructure monitoring for cold email?</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Real-time email infrastructure monitoring is the continuous tracking of domain reputation, mailbox health, DNS authentication status, and bounce rates across every sending account in your outbound operation. Unlike one-time infrastructure assessments or periodic inbox placement tests, real-time monitoring detects problems as they happen and can trigger automated protection before reputation damage becomes irreversible.
  </p>
@@ -403,18 +404,12 @@ export default function RealTimeMonitoringArticle() {
  Once configured, Superkabe begins monitoring immediately. The infrastructure assessment score provides an at-a-glance view of your overall sending health, while drill-down views show individual domain and mailbox metrics. The system runs continuously with no manual intervention required — you only need to respond to alerts for investigation and remediation.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop checking dashboards. Start protecting infrastructure.</h3>
- <p className="text-blue-100 leading-relaxed mb-4">
- Your domains and mailboxes are under pressure every hour they are sending. Periodic testing and manual dashboard checks leave hours-long gaps where reputation damage compounds unchecked. Superkabe provides continuous, real-time monitoring with automated enforcement — so your infrastructure is protected even when you are not watching.
- </p>
- <Link href="/" className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 hover:bg-blue-50 transition-colors">
- See how Superkabe protects your infrastructure
- </Link>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Stop checking dashboards. Start protecting infrastructure."
+                    body="Periodic testing leaves hours-long gaps where reputation damage compounds. Superkabe runs continuous, real-time monitoring with automated enforcement so your domains and mailboxes are protected even when you are not watching."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

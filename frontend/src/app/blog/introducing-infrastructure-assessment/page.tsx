@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Assess Your Email Infrastructure Before Your First Campaign',
@@ -41,12 +44,23 @@ export default function InfrastructureAssessmentPost() {
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
  <article className="prose prose-lg text-gray-700 max-w-none">
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to assess your outbound email infrastructure before sending your first campaign
- </h1>
+ <BlogHeader
+ tag="New Feature"
+ title="How to assess your outbound email infrastructure before sending your first campaign"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="lead text-xl text-gray-500 mb-8">
- You wouldn't fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?
+ <FeaturedHero
+ badge="NEW FEATURE · 2026"
+ eyebrow="10 min read"
+ tagline="Audit your sending stack first"
+ sub="DNS · Auth · Mailbox health · Pre-launch checklist"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
+ You wouldn&apos;t fly a plane without a pre-flight check. Why are you launching cold email campaigns without one?
  </p>
 
  {/* Key Takeaways */}
@@ -74,17 +88,6 @@ export default function InfrastructureAssessmentPost() {
  </div>
 
  {/* Table of Contents */}
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#silent-killer" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is the Silent Killer of Outbound Campaigns?</a></li>
- <li><a href="#automated-assessment" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is Automated Email Infrastructure Assessment?</a></li>
- <li><a href="#what-it-scans" style={{ color: '#2563EB', textDecoration: 'none' }}>What Does the Infrastructure Assessment Scan?</a></li>
- <li><a href="#health-score" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does the 0-100 Infrastructure Health Score Work?</a></li>
- <li><a href="#first-audit" style={{ color: '#2563EB', textDecoration: 'none' }}>How Do You Run Your First Infrastructure Audit?</a></li>
- </ol>
- </div>
-
  <p>
  We've seen it happen hundreds of times: A team spends weeks crafting the perfect offer, writing compelling copy, and scraping high-quality leads. They launch the campaign, and... crickets.
  </p>

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BreadcrumbSchema, AuthorSchema, QuickAnswer, buildEnhancedBlogPosting } from '@/components/seo/AeoGeoSchema';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Best Cold Email Tools in 2026: 15 Ranked by Deliverability, Price, and Use Case',

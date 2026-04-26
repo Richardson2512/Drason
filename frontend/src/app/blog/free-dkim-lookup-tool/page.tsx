@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
@@ -109,12 +112,22 @@ export default function FreeDkimLookupToolArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Free DKIM Record Lookup Tool &mdash; Verify Your Email Signatures Are Valid
- </h1>
- <p className="text-gray-400 text-sm mb-8">9 min read &middot; Updated April 2026</p>
+ <BlogHeader
+ tag="Free Tools"
+ title="Free DKIM Record Lookup Tool — Verify Your Email Signatures Are Valid"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="FREE TOOLS · 2026"
+ eyebrow="9 min read"
+ tagline="Verify your DKIM in seconds"
+ sub="Lookup · Selectors · Key length · Provider matrix"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  DKIM proves that every email you send is authentic and unaltered. If your DKIM key is missing, expired, or misconfigured, your emails lose their cryptographic seal of trust. Use our <Link href="/tools/dkim-lookup" className="underline">free DKIM lookup tool</Link> to verify your domain&apos;s signatures in seconds.
  </p>
 
@@ -130,19 +143,6 @@ export default function FreeDkimLookupToolArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#what-is-dkim" style={{ color: '#2563EB', textDecoration: 'none' }}>What Is DKIM and How Do Email Signatures Work?</a></li>
- <li><a href="#finding-selector" style={{ color: '#2563EB', textDecoration: 'none' }}>How to Find Your DKIM Selector</a></li>
- <li><a href="#how-to-use-tool" style={{ color: '#2563EB', textDecoration: 'none' }}>How to Use the Free DKIM Lookup Tool</a></li>
- <li><a href="#common-dkim-problems" style={{ color: '#2563EB', textDecoration: 'none' }}>Common DKIM Problems and How to Fix Them</a></li>
- <li><a href="#provider-selectors" style={{ color: '#2563EB', textDecoration: 'none' }}>Provider-Specific DKIM Selectors</a></li>
- <li><a href="#dkim-in-auth-stack" style={{ color: '#2563EB', textDecoration: 'none' }}>How DKIM Fits Into the Authentication Stack</a></li>
- <li><a href="#lookup-vs-generator" style={{ color: '#2563EB', textDecoration: 'none' }}>DKIM Lookup vs DKIM Generator: When to Use Each</a></li>
- <li><a href="#faq" style={{ color: '#2563EB', textDecoration: 'none' }}>Frequently Asked Questions</a></li>
- </ol>
- </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
@@ -369,19 +369,14 @@ export default function FreeDkimLookupToolArticle() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Stop Checking DKIM Manually</h3>
- <p className="text-blue-100 leading-relaxed mb-4">
- The free DKIM lookup tool is useful for spot checks, but outbound teams running multiple domains need continuous monitoring. Superkabe automatically validates DKIM keys across all your sending domains and selectors, alerts you when keys are missing or expiring, and prevents authentication failures before they impact deliverability.
- </p>
- <Link href="/" className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 hover:bg-blue-50 transition-colors">
- See how Superkabe protects your infrastructure &rarr;
- </Link>
  </div>
- </div>
- </div>
+
+ <BottomCtaStrip
+ headline="Stop Checking DKIM Manually"
+ body="The free DKIM lookup tool is useful for spot checks, but outbound teams running multiple domains need continuous monitoring. Superkabe automatically validates DKIM keys across all your sending domains and selectors, alerts you when keys are missing or expiring, and prevents authentication failures before they impact deliverability."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
 
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>

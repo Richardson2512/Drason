@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Get Your Cold Email Bounce Rate Below 2%',
@@ -95,14 +98,24 @@ export default function ReduceBounceRateArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to get your cold email bounce rate below 2% (step by step)
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+                    tag="Strategy"
+                    title="How to get your cold email bounce rate below 2% (step by step)"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Google and Yahoo now enforce a 2% bounce rate threshold. Go above it and your emails land in spam. Stay above it and your domain gets blacklisted. Here are seven steps to stay under that line permanently.
- </p>
+                <FeaturedHero
+                    badge="STRATEGY · 2026"
+                    eyebrow="10 min read"
+                    tagline="Cut bounces below 3%"
+                    sub="Validation · Warmup · Auto-pause · Real-time healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Google and Yahoo now enforce a 2% bounce rate threshold. Go above it and your emails land in spam. Stay above it and your domain gets blacklisted. Here are seven steps to stay under that line permanently.
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -116,22 +129,7 @@ export default function ReduceBounceRateArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#why-2-percent" style={{ color: '#2563EB', textDecoration: 'none' }}>The 2% threshold and why it matters</a></li>
- <li><a href="#step-1-validate" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 1: Validate every email before it touches a sender</a></li>
- <li><a href="#step-2-api-verification" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 2: Use API verification for risky leads</a></li>
- <li><a href="#step-3-realtime-monitoring" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 3: Set up real-time bounce monitoring</a></li>
- <li><a href="#step-4-auto-pause" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 4: Auto-pause mailboxes at threshold</a></li>
- <li><a href="#step-5-risk-routing" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 5: Distribute risky leads across mailboxes</a></li>
- <li><a href="#step-6-domain-health" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 6: Monitor domain-level health</a></li>
- <li><a href="#step-7-healing" style={{ color: '#2563EB', textDecoration: 'none' }}>Step 7: Implement healing for paused mailboxes</a></li>
- <li><a href="#the-math" style={{ color: '#2563EB', textDecoration: 'none' }}>The math: what happens without validation</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Most cold email teams know they should keep bounce rates low. Fewer know exactly how low, or what happens at each threshold. And almost nobody has a systematic process for staying under the line. They verify a list, load it into Smartlead or Instantly, and hope for the best. That works until it doesn&apos;t. Here is a step-by-step approach that actually holds up at scale.
  </p>
@@ -290,15 +288,12 @@ export default function ReduceBounceRateArticle() {
  The cost of that process? MillionVerifier runs about $5 for 10,000 verifications. Superkabe handles the monitoring, auto-pause, and healing. The cost of not having it? Burned domains that take 4-8 weeks to recover, if they recover at all. New domains cost $10-15 each, take 2-4 weeks to warm, and the whole cycle starts over.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">The bottom line</h3>
- <p className="text-blue-100 leading-relaxed">
- Staying under 2% is not about doing one thing well. It is about seven things working together: validate, verify, monitor, auto-pause, distribute risk, track domains, and heal. Skip any one of them and you are relying on luck. Luck runs out at scale.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Keep bounce rates below 3% automatically"
+                    body="Validation, ESP-aware routing, and threshold-based auto-pause work together to keep your bounce rate inside ISP-safe limits without manual cleanup cycles."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
 
  <div className="mt-16 pt-10 border-t border-gray-100">

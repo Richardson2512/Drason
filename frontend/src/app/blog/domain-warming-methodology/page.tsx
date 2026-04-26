@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Warmup Email Domains for Cold Outreach (2026)',
@@ -109,14 +112,24 @@ export default function DomainWarmingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to Warmup Email Domains for Cold Outreach (2026)
- </h1>
- <p className="text-gray-400 text-sm mb-8">9 min read · Updated February 2026</p>
+ <BlogHeader
+                        tag="Guide"
+                        title="How to Warmup Email Domains for Cold Outreach (2026)"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This guide answers a common question from outbound teams: &quot;What is the correct schedule and methodology for warming up new domains without burning them?&quot;
- </p>
+                    <FeaturedHero
+                        badge="GUIDE · 2026"
+                        eyebrow="9 min read"
+                        tagline="Domain warming, done right"
+                        sub="DNS · Engagement · Volume curves · Day-by-day plan"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        This guide answers a common question from outbound teams: &quot;What is the correct schedule and methodology for warming up new domains without burning them?&quot;
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -131,18 +144,8 @@ export default function DomainWarmingArticle() {
  </div>
 
  {/* Table of Contents */}
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#why-is-domain-warming-required" style={{ color: '#2563EB', textDecoration: 'none' }}>Why Is Domain Warming Required for Cold Email?</a></li>
- <li><a href="#warming-ramp-schedule" style={{ color: '#2563EB', textDecoration: 'none' }}>What Does a Domain Warming Ramp Schedule Look Like?</a></li>
- <li><a href="#warming-signals-that-matter" style={{ color: '#2563EB', textDecoration: 'none' }}>Which Warming Signals Matter Most for Deliverability?</a></li>
- <li><a href="#common-mistakes-that-burn-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>What Are the Common Mistakes That Burn Domains?</a></li>
- <li><a href="#how-superkabe-protects-warming-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>How Does Superkabe Protect Warming Domains?</a></li>
- </ol>
- </div>
 
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Domain warming is the process of gradually building sender reputation on a new or inactive email domain by systematically increasing sending volume over time. A properly warmed domain can sustain 40–50 cold outbound emails per mailbox per day with strong inbox placement. A domain that skips or rushes the warming process will be flagged, throttled, and potentially blacklisted within days.
  </p>
@@ -258,15 +261,12 @@ export default function DomainWarmingArticle() {
  Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
  </p>
 
- <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 shadow-xl relative overflow-hidden">
- <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
- <div className="relative z-10">
- <h3 className="font-bold text-xl mb-3">Key Takeaway</h3>
- <p className="text-blue-100 leading-relaxed">
- Domain warming is not optional — it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Superkabe enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it.
- </p>
- </div>
- </div>
+ <BottomCtaStrip
+                    headline="Key Takeaway"
+                    body="Domain warming is not optional — it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Superkabe enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </div>
  
  <div className="mt-16 pt-10 border-t border-gray-100">

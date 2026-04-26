@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Best Email Validation Tools for Cold Outreach in 2026',
@@ -95,14 +98,24 @@ export default function BestEmailValidationToolsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Best email validation tools for cold outreach in 2026
- </h1>
- <p className="text-gray-400 text-sm mb-8">10 min read · Published March 2026</p>
+ <BlogHeader
+                        tag="Comparison"
+                        title="Best email validation tools for cold outreach in 2026"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Cold outreach teams burn domains because they skip validation or pick tools built for marketing email. This is a ranked breakdown of the 6 tools that actually work for outbound in 2026, with real pricing, catch-all handling, and integration details.
- </p>
+                    <FeaturedHero
+                        badge="COMPARISON · 2026"
+                        eyebrow="10 min read"
+                        tagline="Validation tools, ranked"
+                        sub="Catch-all detection · Pricing · API speed · Bounce reduction"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Cold outreach teams burn domains because they skip validation or pick tools built for marketing email. This is a ranked breakdown of the 6 tools that actually work for outbound in 2026, with real pricing, catch-all handling, and integration details.
+                    </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -116,18 +129,7 @@ export default function BestEmailValidationToolsArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#why-cold-outreach-different" style={{ color: '#2563EB', textDecoration: 'none' }}>Why cold outreach needs different validation</a></li>
- <li><a href="#what-to-look-for" style={{ color: '#2563EB', textDecoration: 'none' }}>What to look for in a validation tool</a></li>
- <li><a href="#ranked-tools" style={{ color: '#2563EB', textDecoration: 'none' }}>The 6 best tools, ranked</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Feature and pricing comparison</a></li>
- <li><a href="#validation-not-enough" style={{ color: '#2563EB', textDecoration: 'none' }}>When validation alone is not enough</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Most email validation tool reviews are written for marketers cleaning newsletter lists. That is a different problem. Marketing teams validate opted-in subscribers. Cold outreach teams validate addresses they have never contacted before, sourced from enrichment tools like Clay or Apollo, sent through platforms like Smartlead or Instantly. The failure modes are different. The tools that matter are different.
  </p>

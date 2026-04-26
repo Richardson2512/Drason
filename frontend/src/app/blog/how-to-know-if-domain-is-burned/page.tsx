@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How Do I Know If My Email Domain Is Burned?',
@@ -60,12 +63,22 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How Do I Know If My Email Domain Is Burned?
- </h1>
- <p className="text-gray-400 text-sm mb-8">11 min read &middot; Published April 2026</p>
+ <BlogHeader
+ tag="Troubleshooting"
+ title="How Do I Know If My Email Domain Is Burned?"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="snippet-answer text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="TROUBLESHOOTING · 2026"
+ eyebrow="11 min read"
+ tagline="Spot a burned cold email domain"
+ sub="Symptoms · Tests · Recovery odds · Replace vs revive"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  A burned domain shows these signs: bounce rates above 3%, emails consistently landing in spam, Google Postmaster showing LOW or BAD reputation, blacklisted on Spamhaus or Barracuda, and open/reply rates near zero despite good copy. If you see 3 or more of these, the domain is likely burned and you need to decide between recovery and replacement.
  </p>
 
@@ -248,11 +261,12 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Detect domain burnout before it happens</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors every warning sign of domain burnout in real time — bounce rates, blacklists, DNS health — and auto-pauses mailboxes before the damage becomes permanent.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+ headline="Detect domain burnout before it happens"
+ body={`Superkabe monitors every warning sign of domain burnout in real time — bounce rates, blacklists, DNS health — and auto-pauses mailboxes before the damage becomes permanent.`}
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

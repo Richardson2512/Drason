@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import HeroCard from '@/components/blog/HeroCard';
-import AuthorByline from '@/components/blog/AuthorByline';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -91,19 +91,24 @@ export default function EmailBisonAlternativesPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <article>
-                <HeroCard
-                    badge="ALTERNATIVES · 2026"
-                    eyebrow="Comparison"
+                <BlogHeader
+                    tag="Alternatives"
                     title="Best EmailBison alternatives for cold email (2026)"
-                    subtitle="EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse — no ESP-aware routing, no healing pipeline, no built-in protection — and teams running past 30 mailboxes typically need more. Here are seven alternatives ranked."
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
                 />
 
-                <AuthorByline
-                    name="Edward Sam"
-                    role="Deliverability Specialist, Superkabe"
-                    dateModified="2026-04-25"
-                    readTime="11 min read"
+                <FeaturedHero
+                    badge="ALTERNATIVES · 2026"
+                    eyebrow="11 min read"
+                    tagline="Volume economics + protection"
+                    sub="ESP-aware routing · Healing · Per-workspace isolation"
                 />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse — no ESP-aware routing, no healing pipeline, no built-in protection — and teams running past 30 mailboxes typically need more. Here are seven alternatives ranked.
+                </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -125,10 +130,10 @@ export default function EmailBisonAlternativesPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The four reasons teams leave</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No deliverability protection.</strong> Bounces are reported but not auto-paused. No threshold-based enforcement at the mailbox level</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No ESP-aware routing.</strong> Mailboxes are picked round-robin. Per-mailbox bounce performance against specific recipient ESPs is not part of the routing decision</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>Sparse agency tooling.</strong> Per-workspace isolation and white-label reporting are weaker than Smartlead, Instantly, or Superkabe</li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <strong>No healing pipeline.</strong> A paused mailbox stays paused until a human brings it back. There&apos;s no quarantine → restricted-send → warm-recovery → healthy progression</li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No deliverability protection.</strong> Bounces are reported but not auto-paused. No threshold-based enforcement at the mailbox level</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No ESP-aware routing.</strong> Mailboxes are picked round-robin. Per-mailbox bounce performance against specific recipient ESPs is not part of the routing decision</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Sparse agency tooling.</strong> Per-workspace isolation and white-label reporting are weaker than Smartlead, Instantly, or Superkabe</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No healing pipeline.</strong> A paused mailbox stays paused until a human brings it back. There&apos;s no quarantine → restricted-send → warm-recovery → healthy progression</span></li>
                         </ul>
                     </div>
 

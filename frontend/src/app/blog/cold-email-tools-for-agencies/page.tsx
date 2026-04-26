@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BreadcrumbSchema, AuthorSchema, QuickAnswer, buildEnhancedBlogPosting } from '@/components/seo/AeoGeoSchema';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day',
@@ -68,14 +71,24 @@ export default function ColdEmailToolsForAgenciesArticle() {
  <AuthorSchema author={author} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day
- </h1>
- <p className="text-gray-400 text-sm mb-8">15 min read &middot; Published April 2026</p>
+ <BlogHeader
+                        tag="Agencies"
+                        title="Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day"
+                        dateModified="2026-04-25"
+                        authorName="Edward Sam"
+                        authorRole="Deliverability Specialist · Superkabe"
+                    />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Most cold email tools work fine for one team sending to one list. Agencies break them. Managing 30 clients, 1,500 mailboxes, and 100K+ daily sends requires platforms built for isolation, white-label delivery, and fleet-wide governance. These 10 survive the scale test.
- </p>
+                    <FeaturedHero
+                        badge="AGENCIES · 2026"
+                        eyebrow="15 min read"
+                        tagline="Tools for outbound agencies"
+                        sub="Workspace isolation · Per-mailbox routing · Healing · Scale"
+                    />
+
+                    <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                        Most cold email tools work fine for one team sending to one list. Agencies break them. Managing 30 clients, 1,500 mailboxes, and 100K+ daily sends requires platforms built for isolation, white-label delivery, and fleet-wide governance. These 10 survive the scale test.
+                    </p>
 
  <div className="aeo-takeaways bg-blue-50 border border-blue-200 p-6 mb-12" data-aeo="takeaways">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>

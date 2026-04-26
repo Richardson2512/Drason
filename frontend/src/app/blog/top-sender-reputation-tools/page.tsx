@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Top 7 Sender Reputation Monitoring Tools (2026)',
@@ -66,14 +69,24 @@ export default function TopSenderReputationToolsArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Top 7 Sender Reputation Monitoring Tools (2026)
- </h1>
- <p className="text-gray-400 text-sm mb-8">13 min read &middot; Published April 2026</p>
+ <BlogHeader
+                    tag="Comparison"
+                    title="Top 7 Sender Reputation Monitoring Tools (2026)"
+                    dateModified="2026-04-25"
+                    authorName="Robert Smith"
+                    authorRole="Email Infrastructure Engineer · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- Sender reputation is the invisible score that determines whether your cold emails reach the inbox or vanish into spam. ISPs like Gmail and Outlook assign reputation scores to your domains and IPs based on bounce rates, complaints, and engagement. Here are the 7 tools that let you monitor, understand, and protect your sender reputation in 2026.
- </p>
+                <FeaturedHero
+                    badge="COMPARISON · 2026"
+                    eyebrow="13 min read"
+                    tagline="Best sender-reputation tools"
+                    sub="Postmaster signals · Real-time scoring · Auto-pause · Healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    Sender reputation is the invisible score that determines whether your cold emails reach the inbox or vanish into spam. ISPs like Gmail and Outlook assign reputation scores to your domains and IPs based on bounce rates, complaints, and engagement. Here are the 7 tools that let you monitor, understand, and protect your sender reputation in 2026.
+                </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
@@ -170,11 +183,12 @@ export default function TopSenderReputationToolsArticle() {
  </div>
  </div>
 
- <div className="bg-gray-900 text-white p-8 mt-12">
- <h3 className="text-xl font-bold mb-3">Monitor and protect your sender reputation</h3>
- <p className="text-gray-300 text-sm mb-4">Superkabe monitors reputation signals in real time across all your sending platforms. Auto-pause before domains burn, heal damaged mailboxes through graduated recovery, and track per-ESP health with the ESP Performance Matrix.</p>
- <Link href="/pricing" className="inline-block px-6 py-2.5 bg-white text-gray-900 font-semibold text-sm hover:bg-gray-100 transition-colors">View Pricing &rarr;</Link>
- </div>
+ <BottomCtaStrip
+                    headline="Track and defend sender reputation"
+                    body="Most reputation tools watch. Superkabe watches AND acts — auto-pause, gating, and recovery on every domain and mailbox in your stack."
+                    primaryCta={{ label: 'Start free trial', href: '/signup' }}
+                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                />
  </article>
  </>
  );

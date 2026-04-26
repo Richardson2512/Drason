@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: "Superkabe vs Manual Email Infrastructure Monitoring",
@@ -87,14 +90,24 @@ export default function SuperkabeVsManualMonitoringArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- Superkabe vs manual email infrastructure monitoring: why spreadsheets don&apos;t scale
- </h1>
- <p className="text-gray-400 text-sm mb-8">8 min read · Published March 2026</p>
+ <BlogHeader
+                    tag="Comparison"
+                    title="Superkabe vs manual email infrastructure monitoring: why spreadsheets don&apos;t scale"
+                    dateModified="2026-04-25"
+                    authorName="Edward Sam"
+                    authorRole="Deliverability Specialist · Superkabe"
+                />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- You started with a spreadsheet. Columns for each domain, rows for bounce rates, a color-coded system for &quot;pause this one.&quot; It worked when you had 10 domains. It stopped working around 30. Here is why manual monitoring breaks down and what to do about it.
- </p>
+                <FeaturedHero
+                    badge="COMPARISON · 2026"
+                    eyebrow="8 min read"
+                    tagline="Manual checks vs automation"
+                    sub="Webhooks · Health scoring · Auto-pause · 5-phase healing"
+                />
+
+                <p className="text-lg text-gray-700 leading-relaxed mb-12">
+                    You started with a spreadsheet. Columns for each domain, rows for bounce rates, a color-coded system for &quot;pause this one.&quot; It worked when you had 10 domains. It stopped working around 30. Here is why manual monitoring breaks down and what to do about it.
+                </p>
 
  {/* Key Takeaways */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -107,19 +120,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
  </ul>
  </div>
 
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#manual-monitoring-reality" style={{ color: '#2563EB', textDecoration: 'none' }}>What manual monitoring actually looks like at scale</a></li>
- <li><a href="#overnight-scenario" style={{ color: '#2563EB', textDecoration: 'none' }}>The overnight scenario: what happens when you are asleep</a></li>
- <li><a href="#time-cost" style={{ color: '#2563EB', textDecoration: 'none' }}>The time cost of spreadsheet monitoring</a></li>
- <li><a href="#comparison-table" style={{ color: '#2563EB', textDecoration: 'none' }}>Side-by-side: manual vs Superkabe</a></li>
- <li><a href="#when-to-switch" style={{ color: '#2563EB', textDecoration: 'none' }}>When to switch from manual to automated</a></li>
- <li><a href="#what-superkabe-does" style={{ color: '#2563EB', textDecoration: 'none' }}>What Superkabe actually does differently</a></li>
- </ol>
- </div>
-
- <div className="prose prose-lg max-w-none">
+<div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
  Every cold email agency starts with manual monitoring. You log into Smartlead, check bounce rates, maybe pull the data into a Google Sheet. When something looks bad, you pause the mailbox. This works. Until it doesn&apos;t.
  </p>
@@ -344,9 +345,16 @@ export default function SuperkabeVsManualMonitoringArticle() {
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Ready to stop babysitting spreadsheets? <Link href="/signup" className="text-blue-600 hover:text-blue-800 underline">Start with Superkabe</Link> and let the system do the watching.
+ Ready to stop babysitting spreadsheets? Let the system do the watching.
  </p>
  </div>
+
+ <BottomCtaStrip
+ headline="Stop babysitting spreadsheets"
+ body="Superkabe monitors every mailbox, every domain, every send — auto-pauses at 3% bounce, runs the 5-phase healing pipeline, and alerts on real anomalies. Manual monitoring stops scaling at 30 mailboxes."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
  </article>
  </>
  );

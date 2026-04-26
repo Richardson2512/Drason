@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
 import type { Metadata } from 'next';
+import BlogHeader from '@/components/blog/BlogHeader';
+import FeaturedHero from '@/components/blog/FeaturedHero';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Protect Your Domain Reputation While Scaling Cold',
@@ -111,12 +114,22 @@ export default function ProtectDomainReputationScalingArticle() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
- How to protect your domain reputation while scaling cold email
- </h1>
- <p className="text-gray-400 text-sm mb-8">14 min read · Published April 2026</p>
+ <BlogHeader
+ tag="Strategy"
+ title="How to protect your domain reputation while scaling cold email"
+ dateModified="2026-04-25"
+ authorName="Edward Sam"
+ authorRole="Deliverability Specialist · Superkabe"
+ />
 
- <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
+ <FeaturedHero
+ badge="STRATEGY · 2026"
+ eyebrow="14 min read"
+ tagline="Protect domain reputation at scale"
+ sub="Domains · Mailboxes · Bounce caps · Cascade failure"
+ />
+
+ <p className="text-lg text-gray-700 leading-relaxed mb-12">
  Every cold email operation hits the same wall. 10 mailboxes works fine — you eyeball the metrics, catch problems manually, and nothing breaks. At 50, cracks appear. At 100+ without automated protection, you are running a domain graveyard. Here is how to scale without burning your infrastructure.
  </p>
 
@@ -129,19 +142,6 @@ export default function ProtectDomainReputationScalingArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Always use separate domains for outreach. Never risk your primary business domain</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> 7 protection layers: validation, DNS auth, separate domains, volume limits, monitoring, auto-pause, healing</li>
  </ul>
- </div>
-
- <div style={{ background: '#F8FAFC', borderRadius: '12px', padding: '1.5rem 2rem', marginBottom: '2rem', border: '1px solid #E2E8F0' }}>
- <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1E293B', marginBottom: '1rem' }}>Table of Contents</h2>
- <ol style={{ margin: 0, paddingLeft: '1.25rem', lineHeight: 2 }}>
- <li><a href="#scaling-trap" style={{ color: '#2563EB', textDecoration: 'none' }}>The scaling trap</a></li>
- <li><a href="#bounce-thresholds" style={{ color: '#2563EB', textDecoration: 'none' }}>Bounce rate thresholds by ISP</a></li>
- <li><a href="#safe-volumes" style={{ color: '#2563EB', textDecoration: 'none' }}>Safe sending volumes</a></li>
- <li><a href="#separate-domains" style={{ color: '#2563EB', textDecoration: 'none' }}>The separate domain strategy</a></li>
- <li><a href="#seven-layers" style={{ color: '#2563EB', textDecoration: 'none' }}>7 protection layers</a></li>
- <li><a href="#compound-damage" style={{ color: '#2563EB', textDecoration: 'none' }}>Compound damage timeline</a></li>
- <li><a href="#preventing-cascade" style={{ color: '#2563EB', textDecoration: 'none' }}>Preventing cascade failure</a></li>
- </ol>
  </div>
 
  <div className="prose prose-lg max-w-none">
