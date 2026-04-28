@@ -24,6 +24,16 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Bare-domain → www, served by Next.js so our vercel.json headers
+      // (HSTS with includeSubDomains + preload, CSP, etc.) apply to the
+      // redirect response itself. Required for HSTS preload list eligibility,
+      // which checks both the apex and the canonical hostname.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'superkabe.com' }],
+        destination: 'https://www.superkabe.com/:path*',
+        permanent: true,
+      },
       {
         source: '/knowledge',
         destination: '/blog',
