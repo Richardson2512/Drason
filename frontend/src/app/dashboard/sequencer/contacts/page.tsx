@@ -5,6 +5,7 @@ import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loa
 import { apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import { DualEnrollmentModal, type DualEnrollmentReport } from '@/components/sequencer/DualEnrollmentModal';
 import toast from 'react-hot-toast';
 import Papa from 'papaparse';
 
@@ -85,6 +86,10 @@ export default function ContactsPage() {
     const [campaignsList, setCampaignsList] = useState<Array<{ id: string; name: string; status: string }>>([]);
     const [loadingCampaigns, setLoadingCampaigns] = useState(false);
     const campaignMenuRef = useRef<HTMLDivElement>(null);
+
+    // Dual-enrollment preview modal
+    const [dualReport, setDualReport] = useState<DualEnrollmentReport | null>(null);
+    const [pendingAssignCampaign, setPendingAssignCampaign] = useState<{ id: string; name: string } | null>(null);
 
     // Add Contact modal
     const [showAddModal, setShowAddModal] = useState(false);
@@ -360,28 +365,85 @@ export default function ContactsPage() {
         }
     };
 
+    /**
+     * Two-step flow: preview first to surface dual-enrollment conflicts, then
+     * commit with the operator's exclude_dual_enrolled choice. If the preview
+     * shows zero conflicts and zero suppressed leads, we skip the modal and
+     * commit immediately.
+     */
     const assignToCampaign = async (campaignId: string) => {
         if (selectedIds.size === 0) return;
+        const campaign = campaignsList.find(c => c.id === campaignId);
+        if (!campaign) return;
+
         setAssigning(true);
         setShowCampaignMenu(false);
         try {
+            const preview = await apiClient<{ report: DualEnrollmentReport }>(
+                '/api/sequencer/contacts/assign-campaign/preview',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ ids: Array.from(selectedIds), campaign_id: campaignId }),
+                }
+            );
+            const report = preview?.report;
+            if (!report) {
+                throw new Error('Empty preview response');
+            }
+
+            const hasConflicts =
+                report.activeConflictCount > 0 ||
+                report.historicalConflictCount > 0 ||
+                report.suppressedCount > 0;
+
+            if (!hasConflicts) {
+                // No conflicts — commit directly with default exclude=true (no-op anyway)
+                await commitAssign(campaignId, true);
+                return;
+            }
+
+            // Show modal — operator decides
+            setDualReport(report);
+            setPendingAssignCampaign({ id: campaignId, name: campaign.name });
+        } catch {
+            // auto-toast
+            setAssigning(false);
+        }
+    };
+
+    const commitAssign = async (campaignId: string, excludeDualEnrolled: boolean) => {
+        try {
             const res = await apiClient<any>('/api/sequencer/contacts/assign-campaign', {
                 method: 'POST',
-                body: JSON.stringify({ ids: Array.from(selectedIds), campaign_id: campaignId }),
+                body: JSON.stringify({
+                    ids: Array.from(selectedIds),
+                    campaign_id: campaignId,
+                    exclude_dual_enrolled: excludeDualEnrolled,
+                }),
             });
             const added = res?.added ?? 0;
             const skipped = res?.skipped_duplicates ?? 0;
             const blocked = res?.blocked_red ?? 0;
+            const excludedDual = res?.excluded_dual_enrolled ?? 0;
             const parts = [`${added} added`];
             if (skipped > 0) parts.push(`${skipped} already in campaign`);
             if (blocked > 0) parts.push(`${blocked} blocked (health)`);
+            if (excludedDual > 0) parts.push(`${excludedDual} excluded (dual-enrolled)`);
             toast.success(parts.join(', '));
+            setDualReport(null);
+            setPendingAssignCampaign(null);
             await fetchContacts(meta.page, searchQuery, statusFilter);
         } catch {
             // auto-toast
         } finally {
             setAssigning(false);
         }
+    };
+
+    const cancelDualEnrollment = () => {
+        setDualReport(null);
+        setPendingAssignCampaign(null);
+        setAssigning(false);
     };
 
     // Close campaign menu on outside click
@@ -809,6 +871,17 @@ export default function ContactsPage() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {dualReport && pendingAssignCampaign && (
+                <DualEnrollmentModal
+                    open
+                    campaignName={pendingAssignCampaign.name}
+                    report={dualReport}
+                    submitting={assigning}
+                    onConfirm={(excludeDualEnrolled) => commitAssign(pendingAssignCampaign.id, excludeDualEnrolled)}
+                    onCancel={cancelDualEnrollment}
+                />
             )}
         </div>
     );
