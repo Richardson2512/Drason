@@ -58,7 +58,7 @@ export default function ValidationCreditsPage() {
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Growth</td>
- <td className="px-6 py-4 text-gray-600">50,000</td>
+ <td className="px-6 py-4 text-gray-600">60,000</td>
  <td className="px-6 py-4 text-gray-500 text-sm">Internal + MillionVerifier API for risky leads</td>
  </tr>
  <tr>

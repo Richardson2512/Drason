@@ -47,7 +47,7 @@ export const docsPageSeo: Record<string, DocsPageSeo> = {
         faq: [
             {
                 q: "Does Superkabe charge for leads Clay already validated?",
-                a: "Superkabe runs its own validation pipeline (syntax, MX, disposable, catch-all, optional MillionVerifier) because Clay's enrichment does not include deliverability-grade validation. Validation consumes credits from your Superkabe plan (Starter: 10K/mo, Growth: 50K/mo, Scale: 100K/mo).",
+                a: "Superkabe runs its own validation pipeline (syntax, MX, disposable, catch-all, optional MillionVerifier) because Clay's enrichment does not include deliverability-grade validation. Validation consumes credits from your Superkabe plan (Starter: 10K/mo, Growth: 60K/mo, Scale: 100K/mo).",
             },
             {
                 q: "Can a single Clay webhook route to multiple campaigns?",
@@ -226,7 +226,7 @@ export const docsPageSeo: Record<string, DocsPageSeo> = {
         ],
     },
     '/docs/help/validation-credits': {
-        tldr: "Validation credits meter MillionVerifier API probes for risky leads (syntax-only checks, MX lookups, and catch-all detection are free and uncounted). Starter: 10K/mo, Growth: 50K/mo, Scale: 100K/mo, Enterprise: unlimited. Credits reset on billing anniversary.",
+        tldr: "Validation credits meter MillionVerifier API probes for risky leads (syntax-only checks, MX lookups, and catch-all detection are free and uncounted). Starter: 10K/mo, Growth: 60K/mo, Scale: 100K/mo, Enterprise: unlimited. Credits reset on billing anniversary.",
         faq: [
             { q: "Do unused credits roll over?", a: "No. Credits reset monthly. Usage reports help plan an upgrade if you're consistently hitting the cap." },
             { q: "Which leads consume a credit?", a: "Only leads classified as risky by the internal validation pipeline — typically catch-all domains, temporary pattern-matched domains, or domains with ambiguous MX configurations." },

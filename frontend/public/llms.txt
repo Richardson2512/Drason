@@ -64,7 +64,7 @@ at every tier.
 - Trial: Free 14 days, 60K sends/mo, 10K validation credits
 - Starter: $19/month, 20K sends/mo, 3K validation credits
 - Pro: $49/month, 60K sends/mo, 10K validation credits (volume dropdown up to 250K sends)
-- Growth: $199/month, 300K sends/mo, 50K validation credits, MillionVerifier API for risky leads
+- Growth: $199/month, 300K sends/mo, 60K validation credits, MillionVerifier API for risky leads
 - Scale: $349/month, 600K sends/mo, 100K validation credits, aggressive hybrid validation
 - Enterprise: Custom pricing, unlimited sends + validation credits, dedicated SLA
 

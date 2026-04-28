@@ -9,7 +9,7 @@ const TIER_INFO: Record<string, TierInfo> = {
     trial:      { name: 'Free Trial', price: '$0',     limits: { sends: 60000,    validationCredits: 10000 },    color: '#6B7280' },
     starter:    { name: 'Starter',    price: '$19',    limits: { sends: 20000,    validationCredits: 3000 },     color: '#3b82f6' },
     pro:        { name: 'Pro',        price: '$49',    limits: { sends: 60000,    validationCredits: 10000 },    color: '#6366f1' },
-    growth:     { name: 'Growth',     price: '$199',   limits: { sends: 300000,   validationCredits: 50000 },    color: '#8b5cf6' },
+    growth:     { name: 'Growth',     price: '$199',   limits: { sends: 300000,   validationCredits: 60000 },    color: '#8b5cf6' },
     scale:      { name: 'Scale',      price: '$349',   limits: { sends: 600000,   validationCredits: 100000 },   color: '#22c55e' },
     enterprise: { name: 'Enterprise', price: 'Custom', limits: { sends: Infinity, validationCredits: Infinity }, color: '#f59e0b' },
 };

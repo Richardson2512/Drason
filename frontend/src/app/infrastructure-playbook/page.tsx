@@ -132,7 +132,7 @@ export default function InfrastructurePlaybookPage() {
  Leads uploaded directly into Smartlead or Instantly bypass validation entirely. The Lead Control Plane closes this gap. Upload CSV files directly into Superkabe&apos;s Email Validation dashboard. Every lead is validated, classified by recipient ESP (Gmail, Microsoft 365, Yahoo, or Other via MX record pattern matching), and routed to campaigns with ESP-aware mailbox assignment. Results show exactly which leads were caught as invalid, disposable, or duplicate — with rejection reasons and validation scores.
  </p>
  <p className="mb-6 leading-relaxed">
- Each plan includes monthly validation credits (Starter: 10K, Growth: 50K, Scale: 100K, Enterprise: unlimited). One credit equals one unique email validated. Cached results and duplicates do not consume credits. Track usage on the Billing page alongside active leads, domains, and mailboxes.
+ Each plan includes monthly validation credits (Starter: 10K, Growth: 60K, Scale: 100K, Enterprise: unlimited). One credit equals one unique email validated. Cached results and duplicates do not consume credits. Track usage on the Billing page alongside active leads, domains, and mailboxes.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Health Gate: Lead Triage Before Routing</h3>

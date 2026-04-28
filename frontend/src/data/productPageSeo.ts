@@ -209,7 +209,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
             },
             {
                 q: "Are MillionVerifier credits separate from plan credits?",
-                a: "MillionVerifier probes are metered against the plan's monthly validation credit budget (Starter 10K, Growth 50K, Scale 100K, Enterprise unlimited). Only risky leads trigger the deep probe.",
+                a: "MillionVerifier probes are metered against the plan's monthly validation credit budget (Starter 10K, Growth 60K, Scale 100K, Enterprise unlimited). Only risky leads trigger the deep probe.",
             },
         ],
     },

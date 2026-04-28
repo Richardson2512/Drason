@@ -69,7 +69,7 @@ export const releaseNotes: ReleaseNote[] = [
                 title: 'Validation Credits and Enforcement',
                 description: 'Validation credits are now enforced per tier with monthly limits.',
                 items: [
-                    { title: 'Tier-based credit limits', detail: 'Trial and Starter: 10,000 credits/month. Growth: 50,000. Scale: 100,000. Enterprise: unlimited. One credit equals one email validated.' },
+                    { title: 'Tier-based credit limits', detail: 'Trial and Starter: 10,000 credits/month. Growth: 60,000. Scale: 100,000. Enterprise: unlimited. One credit equals one email validated.' },
                     { title: 'Monthly enforcement', detail: 'When credits are exhausted mid-batch, remaining leads are flagged with a credit limit message instead of being validated. Duplicates do not consume credits.' },
                     { title: 'Usage tracking on billing page', detail: 'The Emails Validated stat card on the billing page shows lifetime validation count. The analytics dashboard shows monthly usage by source.' },
                 ],

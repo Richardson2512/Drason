@@ -132,7 +132,7 @@ export default function PricingPage() {
  "@type": "Offer",
  "@id": "https://www.superkabe.com/pricing#growth",
  "name": "Growth",
- "description": "Scaling outbound. Unlimited domains, mailboxes, and leads. 300K sends + 50K validation credits + API access. Correlation engine and priority support.",
+ "description": "Scaling outbound. Unlimited domains, mailboxes, and leads. 300K sends + 60K validation credits + API access. Correlation engine and priority support.",
  "price": "199",
  "priceCurrency": "USD",
  "availability": "https://schema.org/InStock",
@@ -357,7 +357,7 @@ export default function PricingPage() {
  sequencerFeatures={[
  "Unlimited domains, mailboxes, leads",
  "300,000 email sends/month",
- "50,000 email validation credits + API",
+ "60,000 email validation credits + API",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
