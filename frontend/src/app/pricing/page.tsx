@@ -660,15 +660,29 @@ export default function PricingPage() {
      page) is met. Question phrasing also doubles as AEO-targeted H3s
      for "how much does Superkabe cost" / "do all plans include
      protection" style queries. */}
- <section className="px-4 md:px-6 pb-16">
+ <section className="relative z-10 px-4 md:px-6 pt-20 md:pt-24 pb-20">
  <div className="max-w-3xl mx-auto">
- <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Pricing FAQ</h2>
- <div className="space-y-5">
+ <div className="text-center mb-10">
+ <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Pricing FAQ</p>
+ <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Common questions about Superkabe pricing</h2>
+ </div>
+ <div className="space-y-3">
  {faqSchema.mainEntity.map((q, i) => (
- <div key={i} className="bg-white border border-[#D1CBC5] rounded-xl p-5">
- <h3 className="text-base font-bold text-gray-900 mb-2">{q.name}</h3>
+ <details
+ key={i}
+ className="group bg-white border border-[#D1CBC5] rounded-xl overflow-hidden"
+ {...(i === 0 ? { open: true } : {})}
+ >
+ <summary className="cursor-pointer list-none p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+ <h3 className="text-base font-bold text-gray-900">{q.name}</h3>
+ <svg className="shrink-0 w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+ </svg>
+ </summary>
+ <div className="px-5 pb-5 -mt-1">
  <p className="text-sm text-gray-600 leading-relaxed">{q.acceptedAnswer.text}</p>
  </div>
+ </details>
  ))}
  </div>
  </div>
