@@ -235,7 +235,7 @@ function TableOfContents() {
  if (headings.length === 0) return null;
 
  return (
- <aside className="hidden xl:block fixed top-32 right-8 w-52 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
+ <aside className="hidden xl:block sticky top-32 self-start shrink-0 w-52 mr-8 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-hide z-30">
  <div className="bg-white border border-[#D1CBC5] p-4">
  <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100">
  <List size={14} className="text-gray-400" />
@@ -283,7 +283,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
  };
 
  return (
- <div className="docs-body relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+ <div className="docs-body relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
 
  {/* ================= JSON-LD (TechArticle + BreadcrumbList per page) ================= */}
  <DocJsonLd />
@@ -364,7 +364,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
  </aside>
 
  {/* Main content - offset for fixed sidebars on desktop */}
- <main className="flex-1 lg:ml-80 xl:mr-64 px-6 lg:px-12">
+ <main className="flex-1 min-w-0 lg:ml-80 px-6 lg:px-12">
  <div className="max-w-4xl py-4 lg:py-6">
  {pageSeo?.tldr && <TldrBlock text={pageSeo.tldr} />}
  {children}

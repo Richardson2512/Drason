@@ -221,11 +221,11 @@ export default function BounceRateArticle() {
  <ul className="space-y-3 text-gray-600 mb-8">
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
- <span><strong>Warning (3 bounces):</strong> Operators receive alerts. The affected mailbox is flagged for monitoring. No traffic is blocked yet.</span>
+ <span><strong>Warning (2% bounce rate):</strong> Operators receive alerts. The affected mailbox is flagged for monitoring. No traffic is blocked yet.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
- <span><strong>Pause (5 bounces):</strong> The mailbox is automatically paused. Traffic is redistributed to healthy mailboxes on the same domain using weight-balanced routing.</span>
+ <span><strong>Pause (3% bounce rate after 60 sends, with a 5-bounce safety net for low-volume mailboxes):</strong> The mailbox is automatically paused. Traffic is redistributed to healthy mailboxes on the same domain using weight-balanced routing.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>

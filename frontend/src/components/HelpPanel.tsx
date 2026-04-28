@@ -212,7 +212,7 @@ const helpArticles: HelpArticle[] = [
     {
         title: 'Platform Rules',
         href: '/docs/platform-rules',
-        description: 'Platform-specific sending rules, rate limits, and API constraints for Smartlead, Instantly, and EmailBison',
+        description: 'Sending rules, rate limits, and ESP-specific constraints Superkabe applies — plus how connected import sources (Smartlead, Instantly, EmailBison) are handled',
         tags: ['rules', 'platform', 'rate limits', 'sending', 'limits', 'api', 'constraints', 'daily limit']
     },
     {

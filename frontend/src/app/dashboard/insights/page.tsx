@@ -22,7 +22,7 @@ const TABS: TabItem[] = [
 ];
 
 export default function InsightsPage() {
-    const [active] = useTabState(TABS, 'load-balancing');
+    const [active, setActive] = useTabState(TABS, 'load-balancing');
 
     return (
         <div className="px-6 py-6">
@@ -31,7 +31,7 @@ export default function InsightsPage() {
                 <p className="text-xs text-gray-500 mt-0.5">Forward-looking guidance — load distribution and campaign-stall risk forecasts.</p>
             </div>
 
-            <Tabs tabs={TABS} defaultTab="load-balancing" />
+            <Tabs tabs={TABS} defaultTab="load-balancing" activeTab={active} onChange={setActive} />
 
             {active === 'load-balancing' && <LoadBalancingPanel />}
             {active === 'predictive-risks' && <PredictiveRisksPanel />}

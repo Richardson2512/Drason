@@ -7,10 +7,10 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Automated cold email infrastructure protection for lead',
- description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.',
+ description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and EmailBison with automated deliverability monitoring.',
  openGraph: {
  title: 'Automated cold email infrastructure protection for lead',
- description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.',
+ description: 'How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and EmailBison with automated deliverability monitoring.',
  url: '/blog/cold-email-infrastructure-protection-for-agencies',
  siteName: 'Superkabe',
  type: 'article',
@@ -26,7 +26,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  "@context": "https://schema.org",
  "@type": "BlogPosting",
  "headline": "Automated cold email infrastructure protection for lead",
- "description": "How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and Reply.io with automated deliverability monitoring.",
+ "description": "How lead gen agencies protect domains, mailboxes, and sender reputation across Smartlead, Instantly, and EmailBison with automated deliverability monitoring.",
  "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": {
  "@type": "Organization",
@@ -66,7 +66,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  "name": "How do agencies manage cold email infrastructure across multiple platforms?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Agencies use Superkabe as a centralized infrastructure protection layer that monitors domains, mailboxes, and DNS health across Smartlead, Instantly, Reply.io, and EmailBison from a single dashboard."
+ "text": "Agencies use Superkabe as a centralized infrastructure protection layer that monitors domains, mailboxes, and DNS health across Smartlead, Instantly, and EmailBison from a single dashboard."
  }
  },
  {
@@ -82,7 +82,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  "name": "Does Superkabe integrate with Smartlead and Instantly?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Superkabe integrates natively with Smartlead, Instantly, Reply.io, and EmailBison. It syncs campaign data, monitors bounce rates, and can auto-pause campaigns across platforms when deliverability thresholds are breached."
+ "text": "Yes. Superkabe integrates natively with Smartlead, Instantly, and EmailBison. It syncs campaign data, monitors bounce rates, and can auto-pause campaigns across platforms when deliverability thresholds are breached."
  }
  },
  {
@@ -221,7 +221,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  {/* Section 3 */}
  <h2 id="how-superkabe-protects" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How does Superkabe protect agency cold email infrastructure?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe acts as a protection layer between your sending platforms and your domain infrastructure. It ingests bounce data, campaign metrics, and DNS records from all connected platforms, applies rule-based health scoring, and automatically pauses or gates sending when thresholds are breached. Agencies connect their Smartlead, Instantly, Reply.io, or EmailBison accounts, and Superkabe begins monitoring within minutes.
+ Superkabe acts as a protection layer between your sending platforms and your domain infrastructure. It ingests bounce data, campaign metrics, and DNS records from all connected platforms, applies rule-based health scoring, and automatically pauses or gates sending when thresholds are breached. Agencies connect their Smartlead, Instantly, or EmailBison accounts, and Superkabe begins monitoring within minutes.
  </p>
 
  <ul className="space-y-3 text-gray-600 mb-8">
@@ -300,9 +300,9 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  </p>
 
  {/* Section 5 */}
- <h2 id="multi-platform-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Can one tool monitor infrastructure across Smartlead, Instantly, and Reply.io?</h2>
+ <h2 id="multi-platform-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Can one tool monitor infrastructure across Smartlead, Instantly, and EmailBison?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Yes. Superkabe integrates natively with Smartlead, Instantly, Reply.io, and EmailBison, providing a single unified dashboard for all sending infrastructure regardless of which platform each campaign runs on. This eliminates the most dangerous blind spot agencies face: domains accumulating bounce damage across multiple platforms that no single platform dashboard reveals.
+ Yes. Superkabe integrates natively with Smartlead, Instantly, and EmailBison, providing a single unified dashboard for all sending infrastructure regardless of which platform each campaign runs on. This eliminates the most dangerous blind spot agencies face: domains accumulating bounce damage across multiple platforms that no single platform dashboard reveals.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Most agencies use multiple sending platforms — often Smartlead for high-volume campaigns and Instantly for specific client workflows. A domain might be used in Smartlead for Client A and Instantly for Client B. If Client B&apos;s campaign generates bounces in Instantly, the Smartlead dashboard shows no issues for that domain. But ISPs don&apos;t care which platform sent the email — they track reputation per domain. The damage from Instantly affects Smartlead deliverability, and the agency doesn&apos;t see it until both clients&apos; campaigns are landing in spam.
@@ -316,7 +316,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Smartlead</strong> — Campaign sync, bounce rate monitoring, auto-pause, mailbox health tracking</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Instantly</strong> — Campaign sync, domain-level bounce aggregation, automated campaign controls</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Reply.io</strong> — Bounce monitoring, deliverability alerts, cross-platform domain correlation</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Reply.io</strong> — On the roadmap (target Q2 2026); not yet a connected platform</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>EmailBison</strong> — Full infrastructure sync, bounce tracking, automated protection rules</li>
  </ul>
  </div>
@@ -387,7 +387,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe monitors every domain and mailbox across your connected sending platforms in real-time. It auto-pauses mailboxes at bounce thresholds, gates domains before ISPs flag them, and provides a single dashboard for infrastructure health across Smartlead, Instantly, Reply.io, and EmailBison — so agencies can scale sending without scaling risk.
+ Superkabe monitors every domain and mailbox across your connected sending platforms in real-time. It auto-pauses mailboxes at bounce thresholds, gates domains before ISPs flag them, and provides a single dashboard for infrastructure health across Smartlead, Instantly, and EmailBison — so agencies can scale sending without scaling risk.
  </p>
  </div>
  </article>

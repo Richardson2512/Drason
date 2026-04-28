@@ -403,8 +403,8 @@ export default function ConnectionErrorsPage() {
  <a href="/docs/help/auto-healing" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
  → How Auto-Healing Works (5-Phase Pipeline)
  </a>
- <a href="/docs/smartlead-integration" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
- → Platform Integration Guides
+ <a href="/docs/getting-started" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
+ → Getting Started Guide
  </a>
  </div>
  </div>

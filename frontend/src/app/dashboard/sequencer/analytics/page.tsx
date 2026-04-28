@@ -44,7 +44,7 @@ interface CampaignRow {
 }
 
 export default function SequencerAnalyticsPage() {
-    const [activeTab] = useTabState(TABS, 'live');
+    const [activeTab, setActiveTab] = useTabState(TABS, 'live');
     const [timeRange, setTimeRange] = useState('30d');
     const [customFrom, setCustomFrom] = useState('');
     const [customTo, setCustomTo] = useState('');
@@ -162,7 +162,7 @@ export default function SequencerAnalyticsPage() {
                 </div>
             </div>
 
-            <Tabs tabs={TABS} defaultTab="live" />
+            <Tabs tabs={TABS} defaultTab="live" activeTab={activeTab} onChange={setActiveTab} />
 
             {activeTab === 'reply-quality' && <ReplyQualityPanel days={replyQualityDays} />}
 

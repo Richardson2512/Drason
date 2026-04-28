@@ -436,7 +436,7 @@ export default function ProtectDomainReputationScalingArticle() {
  Cascade failure is the real danger at scale. It is not a single mailbox bouncing — that is manageable. It is one mailbox degrading a domain, that domain degrading all its mailboxes, and those mailboxes pulling down campaigns that include mailboxes on other domains. One weak link cascades outward until the entire infrastructure is compromised.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe prevents cascade at three levels. First, <strong>60-second detection</strong>: bounce events and complaint signals are tracked continuously. A mailbox hitting 3 bounces triggers a flag. At 5 bounces, it pauses. The problematic mailbox is isolated before the domain absorbs enough damage to degrade.
+ Superkabe prevents cascade at three levels. First, <strong>60-second detection</strong>: bounce events and complaint signals are tracked continuously over a rolling 100-send window. A mailbox crossing 2% bounce rate enters the warning state; pause kicks in at 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. The problematic mailbox is isolated before the domain absorbs enough damage to degrade.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Second, <strong>cross-entity correlation</strong>: if multiple mailboxes on the same domain show elevated bounces simultaneously, the system identifies the domain as the common factor and can pause all mailboxes on that domain preventatively. If the same lead list is causing bounces across multiple domains, the system catches the list-level issue rather than treating each domain as an independent problem.

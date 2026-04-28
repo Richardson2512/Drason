@@ -6,6 +6,25 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import {
+    GmailLogo as GmailLogoSvg,
+    GoogleWorkspaceLogo,
+    MicrosoftLogo,
+    SmtpLogo,
+    ApolloLogo,
+    ZoomInfoLogo,
+    ClayLogo,
+    AirtableLogo,
+    HubSpotLogo,
+    SalesforceLogo,
+    OutreachLogo,
+    HeyreachLogo,
+    JustcallLogo,
+    ZapmailLogo,
+    ScaledmailLogo,
+    SlackLogo,
+    WebhooksLogo,
+} from '@/components/marketing/BrandLogos';
 
 // ─── POPL-STYLE GRID ROW COMPONENTS ───────────────────────────────
 
@@ -47,13 +66,8 @@ const TAG_COLORS: Record<string, { bg: string; text: string }> = {
 // invisible — the marquee reads as a continuous, never-ending feed.
 
 interface MarqueeItem {
-    /** Logo: either an Image src path or a colored chip render */
-    logo:
-        | { kind: 'image'; src: string; alt: string }
-        | { kind: 'chip'; bg: string; fg: string; text: string }
-        | { kind: 'gmailG' }
-        | { kind: 'msGrid' }
-        | { kind: 'slackLogo' };
+    /** Inline SVG brand-logo component — rendered at 28px in the card. */
+    Logo: React.ComponentType<{ size?: number }>;
     name: string;
     /** Right-aligned status pill — Live (green) or Soon (gray) */
     status: 'live' | 'soon';
@@ -61,45 +75,12 @@ interface MarqueeItem {
     category: string;
 }
 
-function MarqueeChip({ item }: { item: MarqueeItem }) {
-    const { logo } = item;
-    if (logo.kind === 'image') {
-        // Image-based logo (e.g. Clay, Slack)
-        // eslint-disable-next-line @next/next/no-img-element
-        return <img src={logo.src} alt={logo.alt} width={28} height={28} className="object-contain" />;
-    }
-    if (logo.kind === 'gmailG') {
-        return (
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 flex items-center justify-center text-white font-bold text-xs">G</div>
-        );
-    }
-    if (logo.kind === 'msGrid') {
-        return (
-            <div className="w-7 h-7 grid grid-cols-2 gap-[2px]">
-                <div className="bg-orange-500" /><div className="bg-green-500" />
-                <div className="bg-blue-500" /><div className="bg-yellow-500" />
-            </div>
-        );
-    }
-    if (logo.kind === 'slackLogo') {
-        // eslint-disable-next-line @next/next/no-img-element
-        return <img src="/slack-icon.svg" alt="Slack" width={28} height={28} className="object-contain" />;
-    }
-    return (
-        <div
-            className="w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-extrabold tracking-tight"
-            style={{ background: logo.bg, color: logo.fg }}
-        >
-            {logo.text}
-        </div>
-    );
-}
-
 function MarqueeCard({ item }: { item: MarqueeItem }) {
+    const { Logo } = item;
     return (
         <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm hover:shadow-md hover:border-gray-300 transition-shadow">
-            <div className="shrink-0">
-                <MarqueeChip item={item} />
+            <div className="shrink-0 w-7 h-7 flex items-center justify-center">
+                <Logo size={28} />
             </div>
             <div className="flex-1 min-w-0">
                 <div className="text-sm font-semibold text-gray-900 truncate">{item.name}</div>
@@ -145,36 +126,36 @@ function MarqueeColumn({
 // Column data — distributed so all four columns have similar lengths and a
 // mix of categories to keep the visual balanced.
 const col1: MarqueeItem[] = [
-    { logo: { kind: 'image', src: '/clay.png', alt: 'Clay' }, name: 'Clay', category: 'Lead enrichment', status: 'live' },
-    { logo: { kind: 'gmailG' }, name: 'Gmail', category: 'Mailbox provider', status: 'live' },
-    { logo: { kind: 'chip', bg: '#0E2A47', fg: '#FFFFFF', text: 'Apo' }, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#FF7A59', fg: '#FFFFFF', text: 'HS' }, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#FFB400', fg: '#1F1F1F', text: 'Zap' }, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#13BC92', fg: '#FFFFFF', text: 'JC' }, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+    { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
+    { Logo: GmailLogoSvg, name: 'Gmail', category: 'Mailbox provider', status: 'live' },
+    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
+    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
 ];
 const col2: MarqueeItem[] = [
-    { logo: { kind: 'msGrid' }, name: 'Microsoft 365', category: 'Mailbox provider', status: 'live' },
-    { logo: { kind: 'slackLogo' }, name: 'Slack', category: 'Alerts', status: 'live' },
-    { logo: { kind: 'chip', bg: '#E63946', fg: '#FFFFFF', text: 'ZI' }, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#5951F0', fg: '#FFFFFF', text: 'Or' }, name: 'Outreach', category: 'Sales engagement', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#0F766E', fg: '#FFFFFF', text: 'SM' }, name: 'Scaledmail', category: 'Mailbox import', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#1A6CFF', fg: '#FFFFFF', text: 'HR' }, name: 'Heyreach', category: 'LinkedIn outreach', status: 'soon' },
+    { Logo: MicrosoftLogo, name: 'Microsoft 365', category: 'Mailbox provider', status: 'live' },
+    { Logo: SlackLogo, name: 'Slack', category: 'Alerts', status: 'live' },
+    { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: OutreachLogo, name: 'Outreach', category: 'Sales engagement', status: 'soon' },
+    { Logo: ScaledmailLogo, name: 'Scaledmail', category: 'Mailbox import', status: 'soon' },
+    { Logo: HeyreachLogo, name: 'Heyreach', category: 'LinkedIn outreach', status: 'soon' },
 ];
 const col3: MarqueeItem[] = [
-    { logo: { kind: 'chip', bg: '#1F1F1F', fg: '#FFFFFF', text: 'API' }, name: 'Webhooks', category: 'Developer', status: 'live' },
-    { logo: { kind: 'chip', bg: '#FCB400', fg: '#1F1F1F', text: 'Air' }, name: 'Airtable', category: 'Lead source', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#00A1E0', fg: '#FFFFFF', text: 'SF' }, name: 'Salesforce', category: 'CRM sync', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#1F1F1F', fg: '#FFFFFF', text: 'SMTP' }, name: 'SMTP / Custom', category: 'Mailbox provider', status: 'live' },
-    { logo: { kind: 'image', src: '/clay.png', alt: 'Clay' }, name: 'Clay', category: 'Lead enrichment', status: 'live' },
-    { logo: { kind: 'chip', bg: '#FF7A59', fg: '#FFFFFF', text: 'HS' }, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
+    { Logo: WebhooksLogo, name: 'Webhooks', category: 'Developer', status: 'live' },
+    { Logo: AirtableLogo, name: 'Airtable', category: 'Lead source', status: 'soon' },
+    { Logo: SalesforceLogo, name: 'Salesforce', category: 'CRM sync', status: 'soon' },
+    { Logo: SmtpLogo, name: 'SMTP / Custom', category: 'Mailbox provider', status: 'live' },
+    { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
+    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
 ];
 const col4: MarqueeItem[] = [
-    { logo: { kind: 'gmailG' }, name: 'Google Workspace', category: 'Mailbox provider', status: 'live' },
-    { logo: { kind: 'chip', bg: '#0E2A47', fg: '#FFFFFF', text: 'Apo' }, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#FFB400', fg: '#1F1F1F', text: 'Zap' }, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#13BC92', fg: '#FFFFFF', text: 'JC' }, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
-    { logo: { kind: 'chip', bg: '#E63946', fg: '#FFFFFF', text: 'ZI' }, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
-    { logo: { kind: 'slackLogo' }, name: 'Slack', category: 'Alerts', status: 'live' },
+    { Logo: GoogleWorkspaceLogo, name: 'Google Workspace', category: 'Mailbox provider', status: 'live' },
+    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+    { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: SlackLogo, name: 'Slack', category: 'Alerts', status: 'live' },
 ];
 
 // ─── End integrations marquee ──────────────────────────────────────────────
@@ -658,7 +639,7 @@ export default function LandingPage() {
  "name": "How is Superkabe different from Smartlead, Instantly, or Lemlist?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Traditional cold email platforms focus on sending and sequencing; deliverability is typically a dashboard you glance at. Superkabe flips that — protection is a continuous system (auto-pausing risky mailboxes, routing leads by ESP match, gating domains at unsafe bounce thresholds, running graduated recovery) wired directly into the sending pipeline. On top, an AI layer writes and optimizes sequences. You get the send platform and the protection layer from the same product."
+ "text": "Traditional cold email platforms focus on sending and sequencing; deliverability is typically a dashboard you glance at after the damage is done. Superkabe is the AI cold email platform with deliverability protection built directly into the send pipeline — every send passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation lookups, and the auto-pause + 5-phase healing state machine before it leaves. Sending and protection are one product, not two. Migrating off another platform? Use the one-time import to bring your campaigns, sequences, leads, and mailbox metadata across in a single click."
  }
  },
  {
@@ -1065,7 +1046,7 @@ export default function LandingPage() {
 
 
  {/* ================= INTEGRATIONS GRID (vertical marquee) ================= */}
- <div className="mt-16 sm:mt-24 mb-6 relative w-full pt-8 pb-8 flex flex-col items-center">
+ <div className="mt-12 sm:mt-16 mb-0 relative w-full pt-8 pb-2 flex flex-col items-center">
  <div className="text-center mb-12 px-6 max-w-3xl">
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-5">
  Native Integrations
@@ -1097,7 +1078,7 @@ export default function LandingPage() {
  </section>
 
  {/* ================= INTEGRATIONS SECTION (popl-inspired row grid) ================= */}
- <section className="relative z-10 py-14 lg:py-20 px-6">
+ <section className="relative z-10 pt-4 pb-14 lg:pt-6 lg:pb-20 px-6">
  <div className="max-w-6xl mx-auto">
  {/* Header */}
  <div className="text-center mb-12">
@@ -1108,7 +1089,7 @@ export default function LandingPage() {
  Connect your mailboxes. Send from Superkabe.
  </h2>
  <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Pipe enriched leads in from Clay, Apollo, ZoomInfo or Airtable, route them through your own Gmail, Microsoft 365, SMTP, Zapmail or Scaledmail mailboxes — Superkabe handles the sequencing, ESP-aware routing, and the deliverability protection layer that auto-pauses risky senders before domains burn. Sync activity back to Slack, Salesforce, HubSpot, Outreach, Heyreach or Justcall — all native, configurable in under 5 minutes.
+ Pipe enriched leads from your enrichment stack — Clay, Apollo, ZoomInfo, Airtable, CSV upload, the API, or any tool that can hit a webhook — route them through your own Gmail, Microsoft 365, SMTP, Zapmail, Scaledmail or any IMAP/SMTP-compatible provider, and sync activity back to Slack, Salesforce, HubSpot, Outreach, Heyreach, Justcall or your own systems via webhooks. Native integrations are configurable in under 5 minutes; everything else connects through generic SMTP, IMAP, CSV, REST API, or webhooks.
  </p>
  </div>
  </div>

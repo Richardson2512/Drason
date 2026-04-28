@@ -545,7 +545,7 @@ export default function ContactsPage() {
                                 <ChevronDown size={11} />
                             </button>
                             {showCampaignMenu && (
-                                <div className="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
+                                <div className="absolute left-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
                                     {loadingCampaigns ? (
                                         <div className="flex items-center justify-center py-6">
                                             <Loader2 size={14} className="animate-spin text-gray-400" />

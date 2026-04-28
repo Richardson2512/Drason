@@ -10,8 +10,8 @@ export default function AssessmentProgressOverlay({ isVisible, stage = 'syncing'
 
   const stageInfo = {
     syncing: {
-      title: 'Syncing with Smartlead',
-      description: 'Fetching campaigns, mailboxes, domains, and leads...',
+      title: 'Loading your infrastructure',
+      description: 'Pulling domains, mailboxes, campaigns, and leads from your workspace...',
       icon: '🔄',
       progress: 33
     },

@@ -37,53 +37,11 @@ export const docsPageSeo: Record<string, DocsPageSeo> = {
             },
         ],
     },
-    '/docs/smartlead-integration': {
-        tldr: "Connect Smartlead to Superkabe by adding your API key and pointing Smartlead's webhook at Superkabe's bounce/reply endpoints. Superkabe then intercepts every SMTP 5xx bounce in real time and can auto-pause mailboxes or entire campaigns via Smartlead's REST API before reputation damage accrues.",
-        faq: [
-            {
-                q: "Does Superkabe replace Smartlead?",
-                a: "No. Superkabe sits around Smartlead as a governance layer. Your campaigns, mailboxes, and sequences continue to live in Smartlead; Superkabe adds real-time bounce interception, ESP-aware routing suggestions, and autonomous pausing/rerouting that Smartlead does not do natively.",
-            },
-            {
-                q: "What permissions does Superkabe need on my Smartlead workspace?",
-                a: "API key access to read campaigns, mailboxes, and send events, plus permission to update mailbox status (pause/resume) and assigned_email_accounts on leads. No content-level access to email bodies is required.",
-            },
-            {
-                q: "How fast does Superkabe react to a bounce spike?",
-                a: "Sub-second. Smartlead webhooks fire on bounce, Superkabe's state machine evaluates the running bounce rate, and if it breaches threshold the pause API call is issued within milliseconds. No polling, no batched intervals.",
-            },
-        ],
-    },
-    '/docs/instantly-integration': {
-        tldr: "Point Instantly's webhook at Superkabe and share your Instantly API key. Superkabe ingests every send, bounce, and reply event and can auto-pause accounts or campaigns through Instantly's API the moment a mailbox's bounce rate crosses the safety threshold.",
-        faq: [
-            {
-                q: "Will Superkabe send duplicate emails if I connect Instantly?",
-                a: "No. Superkabe runs in observation + control mode — it does not send through Instantly; it watches Instantly's sends and intervenes when thresholds are breached. Your existing sequences remain the source of truth.",
-            },
-            {
-                q: "Does this work with Instantly's sub-accounts?",
-                a: "Yes. Superkabe supports multi-workspace Instantly setups. Each sub-account is registered independently with its own mailbox fleet and governance rules.",
-            },
-            {
-                q: "What happens to paused Instantly leads during a pause event?",
-                a: "Leads queued to a paused mailbox are either redistributed across healthy mailboxes in the same campaign or held in Superkabe's routing queue until a qualified mailbox is available. No leads are lost.",
-            },
-        ],
-    },
-    '/docs/emailbison-integration': {
-        tldr: "Connect EmailBison to Superkabe by providing API credentials and routing EmailBison webhooks to Superkabe's ingest endpoint. Superkabe then enforces cross-mailbox bounce thresholds that EmailBison's native tooling does not apply and auto-pauses compromised senders before reputation damage accrues.",
-        faq: [
-            {
-                q: "Why use Superkabe with EmailBison instead of EmailBison alone?",
-                a: "EmailBison provides solid sending infrastructure but does not enforce fleet-wide bounce governance or automatic mailbox pausing based on real-time thresholds. Superkabe layers that governance on top without replacing EmailBison's sending engine.",
-            },
-            {
-                q: "Does ESP-aware routing work with EmailBison?",
-                a: "Scoring data is available, but direct ESP-based mailbox pinning at send time is currently Smartlead-specific via assigned_email_accounts. For EmailBison, Superkabe's routing influence comes through mailbox pause/resume decisions rather than per-lead pinning.",
-            },
-        ],
-    },
+    // Smartlead/Instantly/EmailBison sync integrations were removed on 2026-04-26.
+    // Superkabe is the AI cold email platform now — sending + protection are one
+    // product. The only Smartlead-related entry point is the one-time import wizard
+    // at /dashboard/migration/from-smartlead, documented in the Clay-integration
+    // and getting-started guides.
     '/docs/clay-integration': {
         tldr: "Wire Clay's HTTP webhook to Superkabe's ingest endpoint to route every enriched lead through validation, health-gate scoring, and ESP-aware routing before it reaches your sending platform. Invalid or RED-scored leads are blocked at Superkabe; GREEN and YELLOW leads are pushed to the right campaign automatically.",
         faq: [

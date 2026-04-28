@@ -335,7 +335,7 @@ export default function OutboundInfrastructureStackGuide() {
  <strong>What happens when this layer is missing:</strong> You cannot send email at scale. Manual sending through Gmail does not support sequences, rotation, or campaign management. This is the other layer nobody skips.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- For platform-specific integration details, see the <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Smartlead integration docs</Link> and <Link href="/docs/instantly-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Instantly integration docs</Link>.
+ If you&apos;re currently on a third-party sending platform like Smartlead or Instantly, Superkabe provides a one-time import to bring your campaigns, sequences, leads, and mailbox metadata across — see <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link>.
  </p>
 
  {/* Layer 4 */}

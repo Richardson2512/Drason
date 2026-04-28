@@ -250,18 +250,19 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <li><strong>Health gate classification:</strong> Every lead gets scored as GREEN, YELLOW, or RED based on email validity, domain reputation, catch-all status, and historical bounce data for that domain.</li>
  <li><strong>RED leads blocked:</strong> Invalid addresses, known bouncing domains, disposable emails — these never touch your sending platform.</li>
  <li><strong>GREEN/YELLOW leads routed:</strong> Valid leads get matched to the right campaign based on persona, scoring rules, and available mailbox capacity.</li>
- <li><strong>Platform push:</strong> Approved leads are pushed directly to Smartlead or Instantly via API. No CSV exports. No manual uploads.</li>
- <li><strong>Ongoing monitoring:</strong> After sending starts, Superkabe monitors bounce rates every 60 seconds. If a mailbox crosses your threshold, it auto-pauses and begins healing.</li>
+ <li><strong>Native send:</strong> Approved leads enroll into your Superkabe campaign and the dispatcher sends through your connected mailboxes — no platform push, no CSV exports.</li>
+ <li><strong>Ongoing monitoring:</strong> Superkabe monitors bounce rates every 60 seconds. If a mailbox crosses your threshold, it auto-pauses and enters the 5-phase healing pipeline.</li>
  </ol>
  <p>
- The details on how this integration works are in our{' '}
- <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800 underline">
- Smartlead integration docs
+ If you&apos;re currently on Smartlead or Instantly, you can run a one-time import of campaigns, sequences, leads, and mailbox metadata via{' '}
+ <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline">
+ Import from Smartlead
+ </Link>
+ . For new setups, the{' '}
+ <Link href="/docs/getting-started" className="text-blue-600 hover:text-blue-800 underline">
+ Getting started guide
  </Link>{' '}
- and{' '}
- <Link href="/docs/instantly-integration" className="text-blue-600 hover:text-blue-800 underline">
- Instantly integration docs
- </Link>.
+ walks you through connecting mailboxes and launching your first campaign.
  </p>
  </section>
 

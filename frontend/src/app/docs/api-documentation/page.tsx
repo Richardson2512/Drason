@@ -777,7 +777,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  "id": "mbx_abc",
  "email": "sender@yourdomain.com",
  "status": "active", // active | paused | quarantine | restricted | healing
- "source_platform": "sequencer", // sequencer | smartlead | instantly | emailbison | replyio
+ "provider": "google", // google | microsoft | smtp
  "smtp_status": "ok", // ok | degraded | failing | unknown
  "imap_status": "ok",
  "total_sent_count": 1204,

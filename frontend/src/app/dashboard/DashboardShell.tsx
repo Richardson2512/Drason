@@ -9,6 +9,7 @@ import { logout as serverLogout, apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import ConsentReacceptanceModal from '@/components/ConsentReacceptanceModal';
 import ValidationBanner from '@/components/dashboard/ValidationBanner';
 import { useDashboard } from '@/contexts/DashboardContext';
 import type { AssessmentStatusResponse, Organization, UnreadCountResponse } from '@/types/api';
@@ -598,6 +599,9 @@ export default function DashboardShell({
                     </div>
                 </div>
             )}
+
+            {/* Consent re-acceptance modal — fires on 412 from any /api request */}
+            <ConsentReacceptanceModal />
 
             {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
             {showUpgradeModal && pathname !== '/dashboard/billing' && (

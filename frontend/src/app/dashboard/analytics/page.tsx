@@ -18,7 +18,7 @@ const TABS: TabItem[] = [
 ];
 
 export default function AnalyticsPage() {
-    const [active] = useTabState(TABS, 'live');
+    const [active, setActive] = useTabState(TABS, 'live');
 
     return (
         <div className="px-6 py-6">
@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
                 <p className="text-xs text-gray-500 mt-0.5">Live performance metrics and exportable reports.</p>
             </div>
 
-            <Tabs tabs={TABS} defaultTab="live" />
+            <Tabs tabs={TABS} defaultTab="live" activeTab={active} onChange={setActive} />
 
             {active === 'live' && <AnalyticsLivePanel />}
             {active === 'reports' && <ReportsPanel />}

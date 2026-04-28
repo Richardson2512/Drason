@@ -20,36 +20,197 @@ export default function PricingPage() {
  }, {});
  setIsLoggedIn(!!cookies.token);
  }, []);
- const pricingSchema = {
+ // ─── Pricing JSON-LD ────────────────────────────────────────────────
+ // Two scripts (rendered separately below):
+ // 1. SoftwareApplication w/ AggregateOffer — gives Google's pricing rich
+ // results enough to render price ranges. Each plan is a typed Offer
+ // with a UnitPriceSpecification that pins billingDuration/Increment.
+ // 2. WebPage that references the SoftwareApplication as mainEntity —
+ // gives the page itself proper context (name, description, breadcrumbs
+ // already injected by BreadcrumbJsonLd elsewhere).
+ // The Trial is included as Offer with price "0" so it shows up in price
+ // listings. Enterprise is a sibling Offer without a `price` field —
+ // schema-valid for "custom pricing" tiers.
+
+ const SOFTWARE_ID = 'https://www.superkabe.com/#software';
+
+ const softwareSchema = {
  "@context": "https://schema.org",
- "@type": "WebPage",
- "name": "Superkabe Pricing",
- "description": "Transparent pricing for Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, and the full protection stack, all in one plan.",
- "url": "https://www.superkabe.com/pricing",
- "publisher": {
- "@type": "Organization",
+ "@type": "SoftwareApplication",
+ "@id": SOFTWARE_ID,
  "name": "Superkabe",
  "url": "https://www.superkabe.com",
- "logo": "https://www.superkabe.com/image/logo-v2.png"
+ "image": "https://www.superkabe.com/image/logo-v2.png",
+ "description": "AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, validation, ESP-aware routing, and the full healing pipeline in one platform.",
+ "applicationCategory": "BusinessApplication",
+ "applicationSubCategory": "Email Marketing Software",
+ "operatingSystem": "Web",
+ "brand": { "@type": "Brand", "name": "Superkabe" },
+ "publisher": {
+ "@type": "Organization",
+ "@id": "https://www.superkabe.com/#organization",
+ "name": "Superkabe",
+ "url": "https://www.superkabe.com",
+ "logo": {
+ "@type": "ImageObject",
+ "url": "https://www.superkabe.com/image/logo-v2.png"
+ }
  },
- "mainEntity": {
- "@type": "ItemList",
- "itemListElement": [
- { "@type": "ListItem", "position": 1, "name": "Trial", "item": { "@type": "Offer", "name": "Trial", "description": "Free 14-day trial — unlimited sending infra, 10k leads / 20 domains / 75 mailboxes monitored, full AI sequence + sending + protection stack", "url": "https://www.superkabe.com/pricing#trial" } },
- { "@type": "ListItem", "position": 2, "name": "Starter", "item": { "@type": "Offer", "name": "Starter", "description": "$19/month — unlimited sending infra, 3k leads / 7 domains / 25 mailboxes monitored, 20K sends, 3K validation credits, AI sequences + protection", "url": "https://www.superkabe.com/pricing#starter", "price": "19", "priceCurrency": "USD" } },
- { "@type": "ListItem", "position": 3, "name": "Pro", "item": { "@type": "Offer", "name": "Pro", "description": "From $49/month — unlimited sending infra, 10k leads / 20 domains / 75 mailboxes monitored, 60K–250K sends (volume dropdown), AI sequences + protection", "url": "https://www.superkabe.com/pricing#pro", "price": "49", "priceCurrency": "USD" } },
- { "@type": "ListItem", "position": 4, "name": "Growth", "item": { "@type": "Offer", "name": "Growth", "description": "$199/month — unlimited sending infra, 50k leads / 75 domains / 350 mailboxes monitored, 300K sends, 50K validation credits + API, AI sequences + protection", "url": "https://www.superkabe.com/pricing#growth", "price": "199", "priceCurrency": "USD" } },
- { "@type": "ListItem", "position": 5, "name": "Scale", "item": { "@type": "Offer", "name": "Scale", "description": "$349/month — unlimited sending infra, 100k leads / 150 domains / 700 mailboxes monitored, 600K sends, 100K validation credits + API, AI sequences + protection", "url": "https://www.superkabe.com/pricing#scale", "price": "349", "priceCurrency": "USD" } },
- { "@type": "ListItem", "position": 6, "name": "Enterprise", "item": { "@type": "Offer", "name": "Enterprise", "description": "Custom pricing — unlimited everything, dedicated SLA", "url": "https://www.superkabe.com/pricing#enterprise" } }
+ "featureList": [
+ "AI multi-step cold email sequences",
+ "Unlimited mailbox connections (Gmail / Microsoft 365 / SMTP)",
+ "Hybrid email validation (syntax / MX / disposable / catch-all / MillionVerifier)",
+ "Real-time bounce monitoring with auto-pause at 3% bounce rate",
+ "5-phase healing pipeline",
+ "ESP-aware mailbox routing",
+ "DNSBL + Postmaster + ESP monitoring",
+ "Protection Mode for Smartlead / Instantly / EmailBison"
+ ],
+ "offers": {
+ "@type": "AggregateOffer",
+ "priceCurrency": "USD",
+ "lowPrice": "0",
+ "highPrice": "349",
+ "offerCount": "5",
+ "availability": "https://schema.org/InStock",
+ "offers": [
+ {
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#trial",
+ "name": "Trial",
+ "description": "14-day free trial. Full platform access — no credit card required.",
+ "price": "0",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/signup",
+ "category": "Free trial",
+ "eligibleDuration": { "@type": "QuantitativeValue", "value": 14, "unitCode": "DAY" }
+ },
+ {
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#starter",
+ "name": "Starter",
+ "description": "Solo founders sending 1k–3k emails/month. Unlimited domains, mailboxes, and leads. 20K sends + 3K validation credits per month. Auto-pause + 5-phase healing included.",
+ "price": "19",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/pricing#starter",
+ "category": "Subscription",
+ "priceSpecification": {
+ "@type": "UnitPriceSpecification",
+ "price": "19",
+ "priceCurrency": "USD",
+ "billingDuration": "P1M",
+ "billingIncrement": "1",
+ "unitText": "MONTH",
+ "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "MON" }
+ }
+ },
+ {
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#pro",
+ "name": "Pro",
+ "description": "Founder-led teams running structured outbound. Unlimited domains, mailboxes, and leads. 60K–250K sends + 10K–50K validation credits (volume tiers).",
+ "price": "49",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/pricing#pro",
+ "category": "Subscription",
+ "priceSpecification": {
+ "@type": "UnitPriceSpecification",
+ "price": "49",
+ "priceCurrency": "USD",
+ "minPrice": "49",
+ "maxPrice": "169",
+ "billingDuration": "P1M",
+ "billingIncrement": "1",
+ "unitText": "MONTH",
+ "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "MON" }
+ }
+ },
+ {
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#growth",
+ "name": "Growth",
+ "description": "Scaling outbound. Unlimited domains, mailboxes, and leads. 300K sends + 50K validation credits + API access. Correlation engine and priority support.",
+ "price": "199",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/pricing#growth",
+ "category": "Subscription",
+ "priceSpecification": {
+ "@type": "UnitPriceSpecification",
+ "price": "199",
+ "priceCurrency": "USD",
+ "billingDuration": "P1M",
+ "billingIncrement": "1",
+ "unitText": "MONTH",
+ "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "MON" }
+ }
+ },
+ {
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#scale",
+ "name": "Scale",
+ "description": "Agencies managing large domain fleets at volume. Unlimited domains, mailboxes, and leads. 600K sends + 100K validation credits + API access. Advanced correlation, rotation, and priority Slack alerts.",
+ "price": "349",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/pricing#scale",
+ "category": "Subscription",
+ "priceSpecification": {
+ "@type": "UnitPriceSpecification",
+ "price": "349",
+ "priceCurrency": "USD",
+ "billingDuration": "P1M",
+ "billingIncrement": "1",
+ "unitText": "MONTH",
+ "referenceQuantity": { "@type": "QuantitativeValue", "value": "1", "unitCode": "MON" }
+ }
+ }
  ]
+ }
+ };
+
+ // Sibling Offer (not part of AggregateOffer because it has no price).
+ // Schema.org permits an Offer without `price` for "contact us" tiers.
+ const enterpriseOffer = {
+ "@context": "https://schema.org",
+ "@type": "Offer",
+ "@id": "https://www.superkabe.com/pricing#enterprise",
+ "name": "Enterprise",
+ "description": "Custom pricing — unlimited domains and mailboxes, super-admin console, dedicated support team, and a guaranteed deliverability SLA.",
+ "priceCurrency": "USD",
+ "availability": "https://schema.org/InStock",
+ "url": "https://www.superkabe.com/contact",
+ "itemOffered": { "@id": SOFTWARE_ID },
+ "category": "Enterprise"
+ };
+
+ const pageSchema = {
+ "@context": "https://schema.org",
+ "@type": "WebPage",
+ "@id": "https://www.superkabe.com/pricing",
+ "name": "Superkabe Pricing",
+ "url": "https://www.superkabe.com/pricing",
+ "description": "Transparent pricing for Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, and the full healing pipeline in every plan. From $19/month, with a 14-day free trial.",
+ "isPartOf": {
+ "@type": "WebSite",
+ "@id": "https://www.superkabe.com/#website",
+ "name": "Superkabe",
+ "url": "https://www.superkabe.com"
  },
+ "publisher": { "@id": "https://www.superkabe.com/#organization" },
+ "mainEntity": { "@id": SOFTWARE_ID },
  "datePublished": "2025-11-01",
- "dateModified": "2026-04-23"
+ "dateModified": "2026-04-28"
  };
 
  return (
  <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
- <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(enterpriseOffer) }} />
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
@@ -141,18 +302,14 @@ export default function PricingPage() {
  price="$19"
  period="/ month"
  sequencerFeatures={[
- "Unlimited domains",
- "Unlimited mailboxes",
- "Unlimited contacts",
+ "Unlimited domains, mailboxes, leads",
  "20,000 email sends/month",
  "3,000 email validation credits",
  ]}
  protectionFeatures={[
- "3,000 active leads monitored",
- "7 domains monitored",
- "25 mailboxes monitored",
- "Basic auto-pause protection",
- "Smartlead / Instantly / EmailBison sync",
+ "Unlimited protection coverage",
+ "Auto-pause + 5-phase healing",
+ "DNSBL + Postmaster + ESP monitoring",
  ]}
  bestFor="Solo founders sending 1k–3k emails/month"
  ctaText="Start free trial"
@@ -167,18 +324,15 @@ export default function PricingPage() {
  price="$49"
  period="/ month"
  sequencerFeatures={[
- "Unlimited domains",
- "Unlimited mailboxes",
- "Unlimited contacts",
+ "Unlimited domains, mailboxes, leads",
  "60,000 email sends/month",
  "10,000 email validation credits",
  ]}
  protectionFeatures={[
- "10,000 active leads monitored",
- "20 domains monitored",
- "75 mailboxes monitored",
+ "Unlimited protection coverage",
  "5-phase healing pipeline",
  "ESP-aware routing",
+ "DNSBL + Postmaster + ESP monitoring",
  ]}
  bestFor="Teams sending 5k–10k leads/month across domains"
  ctaText="Start free trial"
@@ -201,16 +355,12 @@ export default function PricingPage() {
  price="$199"
  period="/ month"
  sequencerFeatures={[
- "Unlimited domains",
- "Unlimited mailboxes",
- "Unlimited contacts",
+ "Unlimited domains, mailboxes, leads",
  "300,000 email sends/month",
  "50,000 email validation credits + API",
  ]}
  protectionFeatures={[
- "50,000 active leads monitored",
- "75 domains monitored",
- "350 mailboxes monitored",
+ "Unlimited protection coverage",
  "Correlation engine",
  "Priority support",
  ]}
@@ -228,16 +378,12 @@ export default function PricingPage() {
  price="$349"
  period="/ month"
  sequencerFeatures={[
- "Unlimited domains",
- "Unlimited mailboxes",
- "Unlimited contacts",
+ "Unlimited domains, mailboxes, leads",
  "600,000 email sends/month",
  "100,000 email validation credits + API",
  ]}
  protectionFeatures={[
- "100,000 active leads monitored",
- "150 domains monitored",
- "700 mailboxes monitored",
+ "Unlimited protection coverage",
  "Advanced correlation + rotation",
  "Priority Slack alerts",
  ]}
@@ -278,10 +424,10 @@ export default function PricingPage() {
 
  <ul className="space-y-3 mb-8">
  {[
- 'Unlimited active leads, domains, and mailboxes',
+ 'Unlimited sends, validation credits, and protection coverage',
  'Super admin console with multi-workspace controls',
  'Custom healing pipeline configuration',
- 'Unlimited email validation credits with custom thresholds',
+ 'Custom validation thresholds + bulk-buy credits',
  'Dedicated CSM + SLA guarantees',
  'Custom integrations & white-glove onboarding',
  ].map((benefit) => (
@@ -334,15 +480,15 @@ export default function PricingPage() {
  <p className="text-xs text-gray-500">Completed leads are not counted.</p>
  </div>
  <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderBottom: `1px solid #D1CBC5` }}>
- <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">Active leads</p>
+ <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-4">What we meter</p>
  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-4 leading-[1.2]">
- What &quot;Active Leads&quot; means
+ Two meters. That&apos;s it.
  </h3>
  <p className="text-sm text-gray-600 leading-relaxed mb-4">
- You can process more leads over time — we bill based on <strong className="text-gray-900">concurrent exposure</strong>, not lifetime volume. Leads roll off once completed, freeing capacity for new entries.
+ We charge for <strong className="text-gray-900">monthly send volume</strong> and <strong className="text-gray-900">email validation credits</strong>. Domains, mailboxes, leads, sequences, and protection coverage are <strong className="text-gray-900">unlimited at every tier</strong>.
  </p>
  <p className="text-sm text-gray-600 leading-relaxed">
- This aligns pricing with risk: a campaign holding 10k leads in-flight costs the same as a campaign with 10k leads fully processed and archived.
+ Protection isn&apos;t a feature we throttle by plan size — every connected mailbox gets the full state-machine, DNSBL, Postmaster, and ESP-aware healing pipeline. Scale up your infra without scaling up your bill.
  </p>
  </div>
  </div>
@@ -357,10 +503,10 @@ export default function PricingPage() {
  Why we don&apos;t charge per email sent
  </h3>
  <p className="text-sm text-gray-600 leading-relaxed mb-4">
- You pay based on <strong className="text-gray-900">concurrent leads + mailboxes</strong>, not throughput. Every plan includes unlimited sends within your send limit — so scaling a healthy campaign never multiplies the bill.
+ You pay for <strong className="text-gray-900">monthly send volume</strong>, not throughput. Every plan includes unlimited sends within your monthly cap — so scaling a healthy campaign never multiplies the bill.
  </p>
  <p className="text-sm text-gray-600 leading-relaxed">
- Per-email pricing penalizes scale. Our tiers match the shape of a healthy cold email program — AI sequences, multi-mailbox sending, and protection included at every tier.
+ Per-email pricing penalizes scale. Our tiers match the shape of a healthy cold email program — AI sequences, unlimited multi-mailbox sending, and full protection coverage included at every tier.
  </p>
  </div>
  <div

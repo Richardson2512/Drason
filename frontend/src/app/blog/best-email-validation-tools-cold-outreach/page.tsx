@@ -177,7 +177,7 @@ export default function BestEmailValidationToolsArticle() {
  Superkabe is not a standalone validation tool. It is an outbound infrastructure control layer that includes validation as part of a larger protection stack. Leads ingested through Superkabe pass through MillionVerifier for SMTP-level validation, then get health-scored based on catch-all status, role-based detection, and disposable email filtering. Green leads route to campaigns automatically. Red leads get blocked.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- What makes it different: Superkabe keeps working after the email is sent. It monitors bounce rates across every mailbox and domain in real-time. If a domain hits 3 bounces, the mailbox gets flagged. At 5 bounces, it auto-pauses. If 30% of a domain&apos;s mailboxes are bouncing, the entire domain gets gated. No other validation tool does this.
+ What makes it different: Superkabe keeps working after the email is sent. It monitors bounce rates across every mailbox and domain in real-time over a rolling 100-send window. A 2% bounce rate fires the warning state; pause kicks in at 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. If 30% of a domain&apos;s mailboxes go unhealthy, the entire domain gets gated. No other validation tool does this.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  It integrates directly with Smartlead. Leads flow from Clay through Superkabe&apos;s validation layer and into Smartlead campaigns without manual CSV handling. DNS health (SPF, DKIM, DMARC) is monitored continuously.

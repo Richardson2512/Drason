@@ -28,16 +28,16 @@ export default function ClayIntegrationPage() {
  {/* ==================== Section 1: What This Guide Covers ==================== */}
  <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What This Guide Covers</h2>
  <p className="text-gray-600 mb-8">
- This guide covers the complete journey of a lead from Clay enrichment through Superkabe's email validation,
- health gate classification, and rule-based routing to your sender platform — whether that is Smartlead, Instantly,
- or EmailBison. By the end, you will have a fully automated pipeline where enriched leads flow from Clay into your
- sender platform's campaigns with quality controls at every stage.
+ This guide covers the complete journey of a lead from Clay enrichment through Superkabe&apos;s email validation,
+ health gate classification, rule-based routing, and native send via your connected Google Workspace, Microsoft 365,
+ or SMTP mailboxes. By the end, you will have a fully automated pipeline where enriched leads flow from Clay into
+ your Superkabe campaigns with quality controls at every stage.
  </p>
 
  {/* ==================== Section 2: The Complete Flow (Visual) ==================== */}
  <h2 className="text-3xl font-bold mb-6 mt-16 text-gray-900">The Complete Flow</h2>
  <p className="text-gray-600 mb-6">
- Every lead passes through these stages before reaching your sender platform. Here is the full pipeline:
+ Every lead passes through these stages before being dispatched. Here is the full pipeline:
  </p>
 
  <div className="space-y-0 mb-12 not-prose">
@@ -128,29 +128,9 @@ export default function ClayIntegrationPage() {
  <div className="w-0.5 h-6 bg-green-300"></div>
  </div>
 
- {/* Step 7: Push to Platform */}
- <div className="flex gap-3">
- <div className="flex-1 border-2 border-gray-300 p-3 bg-gray-50 flex items-center gap-2">
- <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} className="flex-shrink-0" />
- <div>
- <p className="font-bold text-gray-900 text-xs">Smartlead</p>
- <p className="text-gray-500 text-[10px]">Push to campaign</p>
- </div>
- </div>
- <div className="flex-1 border-2 border-gray-300 p-3 bg-gray-50 flex items-center gap-2">
- <Image src="/instantly.png" alt="Instantly" width={24} height={24} className="flex-shrink-0" />
- <div>
- <p className="font-bold text-gray-900 text-xs">Instantly</p>
- <p className="text-gray-500 text-[10px]">Push to campaign</p>
- </div>
- </div>
- <div className="flex-1 border-2 border-gray-300 p-3 bg-gray-50 flex items-center gap-2">
- <Image src="/emailbison.png" alt="EmailBison" width={24} height={24} className="flex-shrink-0" />
- <div>
- <p className="font-bold text-gray-900 text-xs">EmailBison</p>
- <p className="text-gray-500 text-[10px]">Push to campaign</p>
- </div>
- </div>
+ {/* Step 7: Native Send */}
+ <div className="border-2 border-blue-400 p-4 flex items-center justify-center gap-2 bg-blue-50">
+ <p className="font-bold text-blue-700 text-sm">Send via your connected Superkabe mailbox (Google / Microsoft / SMTP) — passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation checks before leaving</p>
  </div>
  <div className="flex justify-center py-1">
  <div className="w-0.5 h-6 bg-green-300"></div>
@@ -179,106 +159,53 @@ export default function ClayIntegrationPage() {
  </li>
  <li className="flex items-start gap-3">
  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">3</span>
- <span>At least one sender platform connected — <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800 underline">Smartlead</Link>, <Link href="/docs/instantly-integration" className="text-blue-600 hover:text-blue-800 underline">Instantly</Link>, or <Link href="/docs/emailbison-integration" className="text-blue-600 hover:text-blue-800 underline">EmailBison</Link></span>
+ <span>At least one sending mailbox connected to Superkabe — Google Workspace, Microsoft 365, or SMTP (Dashboard → Sequencer → Accounts)</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">4</span>
- <span>Platform API key configured in Superkabe Settings</span>
+ <span>At least one campaign created in Superkabe with a sequence + the connected mailboxes attached</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">5</span>
- <span>Platform synced — campaigns and mailboxes pulled into Superkabe</span>
- </li>
- <li className="flex items-start gap-3">
- <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">6</span>
- <span>At least one active campaign with mailboxes in your sender platform</span>
- </li>
- <li className="flex items-start gap-3">
- <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">7</span>
  <span>At least one routing rule configured in Superkabe (<Link href="/docs/configuration" className="text-blue-600 hover:text-blue-800 underline">Configuration guide</Link>)</span>
  </li>
  </ol>
  </div>
 
- {/* ==================== Section 4: Connect Your Sender Platform ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 1 — Connect Your Sender Platform</h2>
+ {/* ==================== Section 4: Connect Your Mailboxes ==================== */}
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 1 — Connect Your Mailboxes</h2>
  <p className="text-gray-600 mb-6">
- Superkabe supports three sender platforms. Connect at least one to start routing leads.
+ Superkabe sends from your own infrastructure. Connect at least one mailbox before creating a campaign.
  </p>
 
- {/* Smartlead */}
  <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm not-prose">
- <div className="flex items-center gap-3 mb-4">
- <Image src="/smartlead.webp" alt="Smartlead" width={32} height={32} />
- <h3 className="text-xl font-bold text-gray-900">Smartlead</h3>
- </div>
- <ol className="space-y-2 text-gray-600 text-sm">
- <li><strong>1.</strong> Get your API key from the Smartlead dashboard (Settings → API Keys)</li>
- <li><strong>2.</strong> In Superkabe: go to <strong>Settings → Smartlead</strong> → paste your API key → click <strong>Save</strong></li>
- <li><strong>3.</strong> Click <strong>Sync</strong> to pull your campaigns and mailboxes into Superkabe</li>
+ <ol className="space-y-3 text-gray-600 text-sm">
+ <li><strong>1.</strong> Open <strong>Dashboard → Sequencer → Accounts</strong></li>
+ <li><strong>2.</strong> Click <strong>Connect</strong> and pick a provider:
+ <ul className="ml-5 mt-1 space-y-1">
+ <li>– <strong>Google Workspace</strong> — OAuth flow, no credentials stored</li>
+ <li>– <strong>Microsoft 365</strong> — OAuth flow, no credentials stored</li>
+ <li>– <strong>SMTP</strong> — paste host, port, username, password (encrypted at rest)</li>
+ </ul>
+ </li>
+ <li><strong>3.</strong> Repeat for as many mailboxes as you want — there&apos;s no per-tier mailbox limit</li>
  </ol>
  <div className="mt-3">
- <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
- View detailed Smartlead setup guide →
- </Link>
- </div>
- </div>
-
- {/* Instantly */}
- <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm not-prose">
- <div className="flex items-center gap-3 mb-4">
- <Image src="/instantly.png" alt="Instantly" width={32} height={32} />
- <h3 className="text-xl font-bold text-gray-900">Instantly</h3>
- </div>
- <ol className="space-y-2 text-gray-600 text-sm">
- <li><strong>1.</strong> Get your API key from the Instantly dashboard (Settings → Integrations → API)</li>
- <li><strong>2.</strong> In Superkabe: go to <strong>Settings → Instantly</strong> → paste your API key → click <strong>Save</strong></li>
- <li><strong>3.</strong> Click <strong>Sync</strong> to pull your campaigns and mailboxes into Superkabe</li>
- </ol>
- <div className="mt-3">
- <Link href="/docs/instantly-integration" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
- View detailed Instantly setup guide →
- </Link>
- </div>
- </div>
-
- {/* EmailBison */}
- <div className="bg-white border border-gray-200 p-6 mb-8 shadow-sm not-prose">
- <div className="flex items-center gap-3 mb-4">
- <Image src="/emailbison.png" alt="EmailBison" width={32} height={32} />
- <h3 className="text-xl font-bold text-gray-900">EmailBison</h3>
- </div>
- <ol className="space-y-2 text-gray-600 text-sm">
- <li><strong>1.</strong> Get your API key from the EmailBison dashboard</li>
- <li><strong>2.</strong> In Superkabe: go to <strong>Settings → EmailBison</strong> → paste your API key → click <strong>Save</strong></li>
- <li><strong>3.</strong> Click <strong>Sync</strong> to pull your campaigns and mailboxes into Superkabe</li>
- </ol>
- <div className="mt-3">
- <Link href="/docs/emailbison-integration" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
- View detailed EmailBison setup guide →
+ <Link href="/docs/getting-started" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+ View the full getting-started guide →
  </Link>
  </div>
  </div>
 
  {/* ==================== Section 5: Create Campaigns ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 2 — Create Campaigns in Your Sender Platform</h2>
-
- <div className="bg-amber-50 border border-amber-200 p-6 mb-6">
- <h3 className="text-lg font-bold text-amber-700 mb-2">Important: Superkabe Does Not Create Campaigns</h3>
- <p className="text-gray-600">
- Superkabe is a routing and protection layer — it does <strong>not</strong> create campaigns. You must create your email
- campaigns (with sequences, mailboxes, and sending settings) inside Smartlead, Instantly, or EmailBison first.
- Then sync Superkabe so it can see those campaigns and route leads into them.
- </p>
- </div>
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 2 — Create a Campaign in Superkabe</h2>
 
  <div className="bg-gray-50 border border-gray-200 p-6 mb-12">
- <p className="text-gray-700 font-semibold mb-3">After creating campaigns in your sender platform:</p>
  <ol className="space-y-2 text-gray-600 text-sm">
- <li><strong>1.</strong> Go to Superkabe <strong>Settings</strong></li>
- <li><strong>2.</strong> Click <strong>Sync</strong> for your platform (Smartlead, Instantly, or EmailBison)</li>
- <li><strong>3.</strong> Your campaigns will appear in the routing rule target campaign dropdown</li>
- <li><strong>4.</strong> If you add new campaigns later, run Sync again to pull them in</li>
+ <li><strong>1.</strong> Open <strong>Dashboard → Campaigns → New campaign</strong></li>
+ <li><strong>2.</strong> Configure the sequence (steps + variants), schedule windows, and stop rules</li>
+ <li><strong>3.</strong> Attach the mailboxes you connected in Step 1</li>
+ <li><strong>4.</strong> Save the campaign — it will appear in the routing-rule target dropdown for Step 3</li>
  </ol>
  </div>
 
@@ -315,7 +242,6 @@ export default function ClayIntegrationPage() {
  <th className="px-4 py-3 text-gray-600 font-semibold">Persona</th>
  <th className="px-4 py-3 text-gray-600 font-semibold">Min Score</th>
  <th className="px-4 py-3 text-gray-600 font-semibold">Target Campaign</th>
- <th className="px-4 py-3 text-gray-600 font-semibold">Platform</th>
  </tr>
  </thead>
  <tbody className="divide-y divide-gray-100">
@@ -324,21 +250,18 @@ export default function ClayIntegrationPage() {
  <td className="px-4 py-3 text-purple-600 font-medium">VP Engineering</td>
  <td className="px-4 py-3 text-gray-700">70</td>
  <td className="px-4 py-3 text-gray-700">Enterprise Outreach</td>
- <td className="px-4 py-3"><span className="inline-flex items-center gap-1"><Image src="/smartlead.webp" alt="Smartlead" width={16} height={16} /> Smartlead</span></td>
  </tr>
  <tr>
  <td className="px-4 py-3 text-gray-700 font-mono">2</td>
  <td className="px-4 py-3 text-purple-600 font-medium">CTO</td>
  <td className="px-4 py-3 text-gray-700">60</td>
  <td className="px-4 py-3 text-gray-700">Technical Leaders</td>
- <td className="px-4 py-3"><span className="inline-flex items-center gap-1"><Image src="/instantly.png" alt="Instantly" width={16} height={16} /> Instantly</span></td>
  </tr>
  <tr>
  <td className="px-4 py-3 text-gray-700 font-mono">3</td>
  <td className="px-4 py-3 text-purple-600 font-medium">*</td>
  <td className="px-4 py-3 text-gray-700">50</td>
  <td className="px-4 py-3 text-gray-700">General Outbound</td>
- <td className="px-4 py-3"><span className="inline-flex items-center gap-1"><Image src="/smartlead.webp" alt="Smartlead" width={16} height={16} /> Smartlead</span></td>
  </tr>
  </tbody>
  </table>
@@ -347,8 +270,8 @@ export default function ClayIntegrationPage() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h3 className="text-lg font-bold text-blue-700 mb-2">How Priority Works</h3>
  <p className="text-gray-600 text-sm">
- Priority 1 is checked first. If a lead with persona &quot;VP Engineering&quot; and score 85 arrives, it matches rule 1 and goes to
- the Enterprise Outreach campaign on Smartlead. The <code className="px-2 py-1 bg-white text-purple-600 text-xs">*</code> wildcard
+ Priority 1 is checked first. If a lead with persona &quot;VP Engineering&quot; and score 85 arrives, it matches rule 1 and is enrolled
+ in the Enterprise Outreach campaign. The <code className="px-2 py-1 bg-white text-purple-600 text-xs">*</code> wildcard
  at priority 3 catches all remaining leads that did not match a more specific rule above it.
  </p>
  <div className="mt-3">
@@ -588,32 +511,26 @@ x-organization-id: YOUR_ORG_ID`}</pre>
  </div>
  </div>
 
- {/* Stage 4: Platform Push */}
+ {/* Stage 4: Native Send */}
  <div className="bg-green-50 border-2 border-green-300 p-6 mb-12">
- <h3 className="text-xl font-bold text-green-800 mb-3">Stage 4: Platform Push</h3>
+ <h3 className="text-xl font-bold text-green-800 mb-3">Stage 4: Native Send</h3>
  <p className="text-gray-700 mb-3">
- After routing, Superkabe pushes the lead directly into the target campaign on your sender platform:
+ After routing, the lead is enrolled in the target Superkabe campaign as a <code className="px-2 py-0.5 bg-white text-green-700 text-xs font-bold">CampaignLead</code> row.
+ The send-queue dispatcher picks it up on the next cycle and sends step 1 through one of the campaign&apos;s connected mailboxes.
+ Every send passes through:
  </p>
- <div className="space-y-3 text-sm text-gray-600 not-prose">
- <div className="flex items-center gap-2">
- <Image src="/smartlead.webp" alt="Smartlead" width={20} height={20} />
- <span><strong>Smartlead:</strong> POST /campaigns/{'{id}'}/leads with email, name, and company fields</span>
- </div>
- <div className="flex items-center gap-2">
- <Image src="/instantly.png" alt="Instantly" width={20} height={20} />
- <span><strong>Instantly:</strong> POST /leads with campaign mapping and contact data</span>
- </div>
- <div className="flex items-center gap-2">
- <Image src="/emailbison.png" alt="EmailBison" width={20} height={20} />
- <span><strong>EmailBison:</strong> POST /leads with sender assignment and contact data</span>
- </div>
- </div>
+ <ul className="space-y-1 text-sm text-gray-600 ml-4">
+ <li>– <strong>Execution gate</strong> — verifies mailbox is healthy + below daily/warmup cap</li>
+ <li>– <strong>SMTP transcript capture</strong> — records the SMTP exchange for diagnostics</li>
+ <li>– <strong>DSN parsing</strong> — async bounces routed back to the bounce monitor</li>
+ <li>– <strong>State machine</strong> — pauses the mailbox immediately on bounce-rate breach</li>
+ </ul>
  <div className="mt-4 space-y-2 text-sm">
- <p className="text-green-700 font-medium">If push succeeds: lead is marked <code className="px-2 py-0.5 bg-green-100 text-green-800 text-xs font-bold">ACTIVE</code> — it is now in the campaign and will be sent to.</p>
- <p className="text-amber-700 font-medium">If push fails: the campaign assignment is rolled back. The lead stays <code className="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-bold">HELD</code> for automatic retry.</p>
+ <p className="text-green-700 font-medium">Once enrolled: lead is marked <code className="px-2 py-0.5 bg-green-100 text-green-800 text-xs font-bold">ACTIVE</code> — it is in the campaign queue.</p>
+ <p className="text-amber-700 font-medium">If enrollment fails: the lead stays <code className="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-bold">HELD</code> for automatic retry.</p>
  </div>
  <p className="text-gray-500 text-sm mt-3">
- <strong>Where to see it:</strong> Leads page → lead status changes from HELD → ACTIVE upon successful push
+ <strong>Where to see it:</strong> Leads page → lead status changes from HELD → ACTIVE upon successful enrollment
  </p>
  </div>
 
@@ -730,25 +647,18 @@ x-organization-id: YOUR_ORG_ID`}</pre>
  <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Next Steps</h2>
  <div className="bg-white border border-gray-200 p-6 shadow-sm not-prose">
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
- <Link href="/docs/smartlead-integration" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">
- <Image src="/smartlead.webp" alt="Smartlead" width={24} height={24} />
+ <Link href="/docs/getting-started" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">
+ <Image src="/image/logo-v2.png" alt="Getting started" width={24} height={24} />
  <div>
- <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">Smartlead Integration</p>
- <p className="text-xs text-gray-500">Detailed setup and webhook config</p>
+ <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">Getting Started</p>
+ <p className="text-xs text-gray-500">Connect mailboxes, build a sequence, launch your first campaign</p>
  </div>
  </Link>
- <Link href="/docs/instantly-integration" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">
- <Image src="/instantly.png" alt="Instantly" width={24} height={24} />
+ <Link href="/dashboard/migration/from-smartlead" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">
+ <Image src="/image/logo-v2.png" alt="Import" width={24} height={24} />
  <div>
- <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">Instantly Integration</p>
- <p className="text-xs text-gray-500">Detailed setup and webhook config</p>
- </div>
- </Link>
- <Link href="/docs/emailbison-integration" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">
- <Image src="/emailbison.png" alt="EmailBison" width={24} height={24} />
- <div>
- <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">EmailBison Integration</p>
- <p className="text-xs text-gray-500">Detailed setup and webhook config</p>
+ <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">Import from Smartlead</p>
+ <p className="text-xs text-gray-500">One-time migration of campaigns, sequences, leads, and mailbox metadata</p>
  </div>
  </Link>
  <Link href="/docs/monitoring" className="flex items-center gap-3 p-4 border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group">

@@ -107,10 +107,10 @@ export default function AssessmentConfirmationModal({
           </div>
           <div className="text-sm text-slate-600 leading-relaxed mb-4">
             To protect your domain reputation, we recommend immediately pausing affected campaigns
-            in Smartlead until these issues are resolved. This prevents further reputation damage.
+            until these issues are resolved. This prevents further reputation damage.
           </div>
           <ul className="text-sm text-slate-600 leading-loose pl-6 m-0">
-            <li>Affected campaigns will be paused in Smartlead</li>
+            <li>Affected campaigns will be paused</li>
             <li>No new leads will be pushed to paused campaigns</li>
             <li>You can resume campaigns after fixing the issues</li>
             <li>All actions will be logged in your audit trail</li>

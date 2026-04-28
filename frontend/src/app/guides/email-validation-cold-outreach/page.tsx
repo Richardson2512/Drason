@@ -462,27 +462,17 @@ export default function EmailValidationColdOutreachGuide() {
  How you integrate validation depends on your sending platform. Here is how to set it up for the most common cold outreach stacks.
  </p>
 
- <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Smartlead users</h3>
+ <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Migrating from Smartlead, Instantly, or EmailBison</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- Smartlead does not include built-in email validation. Leads go straight into campaigns, and if they bounce, Smartlead records the bounce but the damage to your sender reputation is already done. You need validation between your lead source and Smartlead.
+ Most third-party sending platforms either skip validation entirely or run a basic SMTP check that misses catch-all domains, role addresses, and risky sends. The damage shows up as bounces, and by then your sender reputation has already taken a hit.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- With Superkabe, the flow is: Clay (or any enrichment source) sends leads to Superkabe via webhook. Superkabe validates the email, health-scores the lead, and pushes it directly to the appropriate Smartlead campaign via API. No CSV exports, no manual imports. The validation is invisible to your team &mdash; leads just arrive in Smartlead already clean. See the <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Smartlead integration docs</Link> for the full setup.
- </p>
-
- <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Instantly users</h3>
- <p className="text-gray-600 leading-relaxed mb-6">
- Instantly has basic built-in verification but it only checks SMTP validity. No catch-all detection, no risk scoring, no infrastructure monitoring. For teams sending more than a few hundred emails daily, you need external validation. Superkabe connects to Instantly the same way it connects to Smartlead &mdash; leads flow through the validation pipeline and get pushed to Instantly campaigns via API. Full details in the <Link href="/docs/instantly-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Instantly integration docs</Link>.
- </p>
-
- <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">EmailBison users</h3>
- <p className="text-gray-600 leading-relaxed mb-6">
- EmailBison is newer to the market and growing fast among outbound teams. Like Smartlead, it relies on external validation. Superkabe supports EmailBison as a sending platform with the same inline validation and auto-push workflow. Check the <Link href="/docs/emailbison-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">EmailBison integration docs</Link> for setup.
+ Superkabe is the AI cold email platform with this same hybrid validation built in front of every send — internal checks (syntax, MX, disposable, catch-all) on every lead, MillionVerifier API for risky leads on Growth/Scale plans. If you&apos;re currently on Smartlead, Instantly, or EmailBison, you can run a one-time import via <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link> to bring your campaigns, sequences, leads, and mailbox metadata across.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Clay pipeline users</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- If you are running Clay as your enrichment engine, the integration is straightforward. Clay sends enriched lead data to Superkabe via webhook. Superkabe validates, scores, and routes. The entire pipeline from Clay enrichment to Smartlead campaign takes seconds with no manual intervention. See <Link href="/docs/clay-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Clay integration docs</Link> for webhook configuration.
+ If you are running Clay as your enrichment engine, the integration is straightforward. Clay sends enriched lead data to Superkabe via webhook. Superkabe validates, scores, routes through your routing rules, and dispatches via your connected mailboxes. See <Link href="/docs/clay-integration" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Clay integration docs</Link> for webhook configuration.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For a broader look at how these platforms work together, read <Link href="/blog/email-validation-smartlead-instantly" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">email validation for Smartlead and Instantly</Link>.

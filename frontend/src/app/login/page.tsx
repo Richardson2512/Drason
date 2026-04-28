@@ -133,12 +133,6 @@ export default function LoginPage() {
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                        {error && (
-                            <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm text-center border border-red-100">
-                                {error}
-                            </div>
-                        )}
-
                         <div className="space-y-1.5">
                             <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">E-mail</label>
                             <input

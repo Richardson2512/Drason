@@ -4,37 +4,14 @@ import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import type { SubscriptionData, TierInfo } from '@/types/api';
 
+// Two-meter pricing — only sends + validation credits are tracked.
 const TIER_INFO: Record<string, TierInfo> = {
-    trial: {
-        name: 'Free Trial',
-        price: '$0',
-        limits: { leads: 10000, domains: 20, mailboxes: 75 },
-        color: '#6B7280'
-    },
-    starter: {
-        name: 'Starter',
-        price: '$49',
-        limits: { leads: 10000, domains: 20, mailboxes: 75 },
-        color: '#3b82f6'
-    },
-    growth: {
-        name: 'Growth',
-        price: '$199',
-        limits: { leads: 50000, domains: 75, mailboxes: 350 },
-        color: '#8b5cf6'
-    },
-    scale: {
-        name: 'Scale',
-        price: '$349',
-        limits: { leads: 100000, domains: 150, mailboxes: 700 },
-        color: '#22c55e'
-    },
-    enterprise: {
-        name: 'Enterprise',
-        price: 'Custom',
-        limits: { leads: Infinity, domains: Infinity, mailboxes: Infinity },
-        color: '#f59e0b'
-    }
+    trial:      { name: 'Free Trial', price: '$0',     limits: { sends: 60000,    validationCredits: 10000 },    color: '#6B7280' },
+    starter:    { name: 'Starter',    price: '$19',    limits: { sends: 20000,    validationCredits: 3000 },     color: '#3b82f6' },
+    pro:        { name: 'Pro',        price: '$49',    limits: { sends: 60000,    validationCredits: 10000 },    color: '#6366f1' },
+    growth:     { name: 'Growth',     price: '$199',   limits: { sends: 300000,   validationCredits: 50000 },    color: '#8b5cf6' },
+    scale:      { name: 'Scale',      price: '$349',   limits: { sends: 600000,   validationCredits: 100000 },   color: '#22c55e' },
+    enterprise: { name: 'Enterprise', price: 'Custom', limits: { sends: Infinity, validationCredits: Infinity }, color: '#f59e0b' },
 };
 
 export default function BillingSection() {
@@ -192,13 +169,12 @@ export default function BillingSection() {
                 )}
             </div>
 
-            {/* Usage Metrics */}
-            <h3 className="text-lg font-bold mb-4 text-slate-800">Resource Usage</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+            {/* Usage Metrics — only sends + validation credits are metered */}
+            <h3 className="text-lg font-bold mb-4 text-slate-800">Resource Usage (last 30 days)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                 {[
-                    { label: 'Active Leads', current: data?.usage.leads || 0, limit: data?.limits.leads || 0, icon: '📧' },
-                    { label: 'Domains (protection)', current: data?.usage.domains || 0, limit: data?.limits.domains || 0, icon: '🌐' },
-                    { label: 'Mailboxes', current: data?.usage.mailboxes || 0, limit: data?.limits.mailboxes || 0, icon: '📮' }
+                    { label: 'Emails Sent',     current: data?.usage.monthlySends    || 0, limit: tierInfo.limits.sends            || 0, icon: '🚀' },
+                    { label: 'Emails Validated', current: data?.usage.emailsValidated || 0, limit: tierInfo.limits.validationCredits || 0, icon: '✉️' },
                 ].map(({ label, current, limit, icon }) => {
                     const percentage = getUsagePercentage(current, limit);
                     const isNearLimit = percentage > 80;
@@ -245,9 +221,9 @@ export default function BillingSection() {
                                         <div className="text-2xl font-bold text-gray-900">{info.price}<span className="text-sm text-slate-500 font-normal">/mo</span></div>
                                     </div>
                                     <div className="mb-3 text-sm text-slate-500 leading-relaxed">
-                                        <div>✓ {info.limits.leads.toLocaleString()} leads</div>
-                                        <div>✓ {info.limits.domains} domains <span className="text-xs text-slate-400">(protection limit)</span></div>
-                                        <div>✓ {info.limits.mailboxes} mailboxes</div>
+                                        <div>✓ {info.limits.sends === Infinity ? 'Unlimited' : (info.limits.sends || 0).toLocaleString()} sends/mo</div>
+                                        <div>✓ {info.limits.validationCredits === Infinity ? 'Unlimited' : (info.limits.validationCredits || 0).toLocaleString()} validation credits</div>
+                                        <div>✓ Unlimited domains, mailboxes, leads</div>
                                     </div>
                                     <button
                                         onClick={() => handleUpgrade(key)}

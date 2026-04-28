@@ -269,6 +269,8 @@ export interface Organization {
   name: string;
   slug: string;
   system_mode?: string;
+  mailing_address?: string | null;
+  mailing_address_updated_at?: string | null;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -319,16 +321,12 @@ export interface Subscription {
   nextBillingDate: string | null;
 }
 
-export interface UsageLimits {
-  leads: number;
-  domains: number;
-  mailboxes: number;
-}
-
+// Two-meter pricing — only sends + validation credits are metered.
+// Leads / domains / mailboxes / protection coverage are unlimited.
 export interface SubscriptionData {
   subscription: Subscription;
-  usage: UsageLimits & { emailsValidated?: number; monthlySends?: number };
-  limits: UsageLimits & { monthlySendLimit?: number };
+  usage: { emailsValidated?: number; monthlySends?: number };
+  limits: { monthlySendLimit?: number; validationCredits?: number };
 }
 
 export interface Invoice {
@@ -571,7 +569,7 @@ export interface DailyData {
 export interface TierInfo {
   name: string;
   price: string;
-  limits: UsageLimits & { sends?: number; validationCredits?: number };
+  limits: { sends?: number; validationCredits?: number };
   color: string;
 }
 

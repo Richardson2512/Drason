@@ -425,7 +425,15 @@ export default function NewCampaignPage() {
     const [stopOnBounce, setStopOnBounce] = useState(true);
     const [trackOpens, setTrackOpens] = useState(true);
     const [trackClicks, setTrackClicks] = useState(true);
+    // Default ON — required for CAN-SPAM § 5(a)(4)(A) one-click unsubscribe and
+    // Gmail's bulk-sender requirements (Feb 2024). Customer can toggle off if
+    // they're sending purely transactional/internal mail; we surface a clear
+    // warning when they do.
     const [includeUnsubscribe, setIncludeUnsubscribe] = useState(true);
+    // EU compliance mode — when on, suppresses open-tracking pixel and adds
+    // an explicit "no engagement tracking" line to the footer for ePrivacy
+    // alignment. Default off; opt-in per campaign for EU-targeted sends.
+    const [euComplianceMode, setEuComplianceMode] = useState(false);
     const [trackingDomain, setTrackingDomain] = useState('');
 
     // ========== EDIT MODE PREFILL ==========
@@ -482,6 +490,7 @@ export default function NewCampaignPage() {
                 if (typeof c.track_opens === 'boolean') setTrackOpens(c.track_opens);
                 if (typeof c.track_clicks === 'boolean') setTrackClicks(c.track_clicks);
                 if (typeof c.include_unsubscribe === 'boolean') setIncludeUnsubscribe(c.include_unsubscribe);
+                if (typeof c.eu_compliance_mode === 'boolean') setEuComplianceMode(c.eu_compliance_mode);
                 if (c.tracking_domain) setTrackingDomain(c.tracking_domain);
 
                 // Leads count (read-only in edit mode)
@@ -957,7 +966,7 @@ export default function NewCampaignPage() {
             })),
             accountIds: Array.from(selectedMailboxIds),
             schedule: { timezone, start_time: startTime, end_time: endTime, days: activeDays, sendGapMinutes },
-            settings: { espRouting, daily_limit: dailyLimit, stop_on_reply: stopOnReply, stop_on_bounce: true, track_opens: trackOpens, track_clicks: trackClicks, include_unsubscribe: includeUnsubscribe },
+            settings: { espRouting, daily_limit: dailyLimit, stop_on_reply: stopOnReply, stop_on_bounce: true, track_opens: trackOpens, track_clicks: trackClicks, include_unsubscribe: includeUnsubscribe, eu_compliance_mode: euComplianceMode },
             skipDuplicatesAcrossCampaigns,
             leadSource,
             ...(leadSourceFile ? { leadSourceFile } : {}),
@@ -2300,7 +2309,8 @@ export default function NewCampaignPage() {
                             {[
                                 { label: 'Track opens', desc: 'Embed a tracking pixel to detect when emails are opened', value: trackOpens, onChange: setTrackOpens },
                                 { label: 'Track clicks', desc: 'Wrap links to detect when recipients click', value: trackClicks, onChange: setTrackClicks },
-                                { label: 'Include unsubscribe link', desc: 'Add a one-click unsubscribe link at the bottom (CAN-SPAM)', value: includeUnsubscribe, onChange: setIncludeUnsubscribe },
+                                { label: 'Include unsubscribe link', desc: 'Required by law (CAN-SPAM, CASL, GDPR). Adds one-click unsubscribe + List-Unsubscribe headers. Default ON — turn off only for purely transactional/internal mail.', value: includeUnsubscribe, onChange: setIncludeUnsubscribe },
+                                { label: 'EU compliance mode (ePrivacy)', desc: 'Recommended for campaigns sent to EU recipients. Suppresses open-tracking pixel and adds an explicit no-tracking notice to the footer.', value: euComplianceMode, onChange: setEuComplianceMode },
                             ].map(item => (
                                 <div key={item.label} className="flex items-center justify-between p-3 rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
                                     <div>

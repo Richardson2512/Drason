@@ -11,7 +11,7 @@
  * that opens the same external help docs FindingsSection links to. Cards
  * stay clean (no Fix button) when the check is healthy across all domains.
  *
- * Data source: GET /api/domains. Pure aggregation — no new backend.
+ * Data source: GET /api/dashboard/domains. Pure aggregation — no new backend.
  */
 
 import { useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export default function DnsHealthPanel() {
         // Pull a generous page so we cover most orgs in one round trip. The
         // numbers we surface are aggregate, not paginated, so we deliberately
         // overfetch here vs. paging through.
-        apiClient<DomainsResponse>('/api/domains?limit=500&page=1')
+        apiClient<DomainsResponse>('/api/dashboard/domains?limit=500&page=1')
             .then(res => {
                 if (cancelled) return;
                 const list = (res as any)?.data ?? (res as any)?.domains ?? [];

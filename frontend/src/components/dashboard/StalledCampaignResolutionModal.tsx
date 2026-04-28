@@ -394,7 +394,7 @@ export default function StalledCampaignResolutionModal({ isOpen, onClose, campai
                                     </label>
                                     {resolutionType === 'manual' && (
                                         <p className="text-sm text-gray-600" style={{ margin: '0.5rem 0 0 2.25rem' }}>
-                                            Acknowledge this warning. Superkabe will stop alerting you, and you can resolve the campaign directly in Smartlead.
+                                            Acknowledge this warning. Superkabe will stop alerting you, and you&apos;ll handle the campaign manually outside the platform.
                                         </p>
                                     )}
                                 </div>

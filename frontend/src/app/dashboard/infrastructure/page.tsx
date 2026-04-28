@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
@@ -26,7 +26,7 @@ export default function InfrastructureHealthPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [reassessing, setReassessing] = useState(false);
-    const [reassessResult, setReassessResult] = useState<string | null>(null);
+    const [reassessResult, setReassessResult] = useState<{ kind: 'success' | 'error'; message: string } | null>(null);
     const [assessmentStage, setAssessmentStage] = useState<'syncing' | 'assessing' | 'finalizing'>('syncing');
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
@@ -160,29 +160,108 @@ export default function InfrastructureHealthPage() {
         }
     };
 
-    const handleReassess = async () => {
-        setReassessing(true);
-        setReassessResult(null);
-        setAssessmentStage('syncing');
-        try {
-            setTimeout(() => setAssessmentStage('assessing'), 2000);
-            setTimeout(() => setAssessmentStage('finalizing'), 5000);
-            await apiClient('/api/assessment/run', { method: 'POST' });
-            setReassessResult('Assessment completed successfully! Refreshing report...');
-            setTimeout(fetchReport, 1000);
+    // Async assessment flow:
+    //   1. POST /api/assessment/run → 202 (job kicked off server-side)
+    //   2. Poll GET /api/assessment/status every 3s
+    //   3. When status flips to completed/failed, stop polling + react
+    // The user can navigate away mid-run; polling resumes on next mount via
+    // the on-mount status check below.
+    type AssessmentStatus = {
+        status: 'idle' | 'running' | 'completed' | 'failed';
+        startedAt: string | null;
+        finishedAt: string | null;
+        lastError: string | null;
+        hasReport: boolean;
+    };
 
-            // Show confirmation modal if there are critical findings
-            const findingsData = await apiClient<{ findings: InfraFinding[] }>('/api/findings').catch(() => null);
-            const criticalFindings = (findingsData?.findings || []).filter((f: InfraFinding) => f.severity === 'critical' || f.severity === 'warning');
-            if (criticalFindings.length > 0) {
-                setShowConfirmModal(true);
+    const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const stopPolling = useCallback(() => {
+        if (pollRef.current) {
+            clearInterval(pollRef.current);
+            pollRef.current = null;
+        }
+    }, []);
+
+    const onAssessmentFinished = useCallback(async (finalStatus: AssessmentStatus) => {
+        stopPolling();
+        setReassessing(false);
+        if (finalStatus.status === 'failed') {
+            setReassessResult({ kind: 'error', message: `Assessment failed: ${finalStatus.lastError || 'Unknown error'}` });
+            return;
+        }
+        setReassessResult({ kind: 'success', message: 'Assessment completed. Refreshing report…' });
+        await fetchReport();
+        // Show confirmation modal if there are critical findings
+        const findingsData = await apiClient<{ findings: InfraFinding[] }>('/api/findings').catch(() => null);
+        const criticalFindings = (findingsData?.findings || []).filter(
+            (f: InfraFinding) => f.severity === 'critical' || f.severity === 'warning',
+        );
+        if (criticalFindings.length > 0) {
+            setShowConfirmModal(true);
+        }
+    }, [fetchReport, stopPolling]);
+
+    const startPolling = useCallback(() => {
+        stopPolling();
+        // Stage progression — purely cosmetic now, since the backend doesn't
+        // expose granular phases. Keep the existing animation feel.
+        setAssessmentStage('syncing');
+        setTimeout(() => setAssessmentStage('assessing'), 2000);
+        setTimeout(() => setAssessmentStage('finalizing'), 8000);
+
+        const tick = async () => {
+            try {
+                const s = await apiClient<AssessmentStatus>('/api/assessment/status');
+                if (s.status === 'completed' || s.status === 'failed') {
+                    await onAssessmentFinished(s);
+                }
+            } catch (err) {
+                console.error('Status poll failed', err);
             }
-        } catch (err: any) {
-            setReassessResult(`Assessment failed: ${err.message || 'Unknown error'}`);
-        } finally {
+        };
+        tick();
+        pollRef.current = setInterval(tick, 3000);
+    }, [onAssessmentFinished, stopPolling]);
+
+    const handleReassess = async () => {
+        setReassessResult(null);
+        setReassessing(true);
+        try {
+            await apiClient('/api/assessment/run', { method: 'POST' });
+            startPolling();
+        } catch (err: unknown) {
+            const e = err as { message?: string };
+            const msg = e?.message || 'Unknown error';
+            // 409 from backend when a run is already in flight — pick up the
+            // existing run rather than telling the user it failed.
+            if (msg.toLowerCase().includes('already running')) {
+                startPolling();
+                return;
+            }
+            setReassessResult({ kind: 'error', message: `Could not start assessment: ${msg}` });
             setReassessing(false);
         }
     };
+
+    // On mount: ask the backend whether a run is already in progress (started
+    // by another tab, or surviving a hard refresh) and resume polling if so.
+    useEffect(() => {
+        let cancelled = false;
+        apiClient<AssessmentStatus>('/api/assessment/status')
+            .then((s) => {
+                if (cancelled) return;
+                if (s.status === 'running') {
+                    setReassessing(true);
+                    startPolling();
+                }
+            })
+            .catch(() => { /* status fetch failure is non-fatal */ });
+        return () => {
+            cancelled = true;
+            stopPolling();
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const fetchDNSDetails = async (domainId: string) => {
         if (expandedDomain === domainId) {
@@ -260,7 +339,7 @@ export default function InfrastructureHealthPage() {
                 </button>
                 {reassessResult && (
                     <div className="premium-card px-6 py-4 max-w-[500px] text-center">
-                        {reassessResult}
+                        {reassessResult.message}
                     </div>
                 )}
             </div>
@@ -323,11 +402,11 @@ export default function InfrastructureHealthPage() {
 
             {reassessResult && (
                 <div className="premium-card px-6 py-4 flex items-center gap-3" style={{
-                    background: reassessResult.includes('success') ? '#F0FDF4' : '#FEF2F2',
-                    border: `1px solid ${reassessResult.includes('success') ? '#BBF7D0' : '#FECACA'}`,
+                    background: reassessResult.kind === 'success' ? '#F0FDF4' : '#FEF2F2',
+                    border: `1px solid ${reassessResult.kind === 'success' ? '#BBF7D0' : '#FECACA'}`,
                 }}>
-                    <span>{reassessResult.includes('success') ? '✅' : '❌'}</span>
-                    <span className="text-[0.9rem] font-medium">{reassessResult}</span>
+                    <span>{reassessResult.kind === 'success' ? '✅' : '❌'}</span>
+                    <span className="text-[0.9rem] font-medium">{reassessResult.message}</span>
                 </div>
             )}
 

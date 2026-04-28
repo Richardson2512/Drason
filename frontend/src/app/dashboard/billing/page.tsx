@@ -6,13 +6,15 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import type { SubscriptionData, Invoice, TierInfo } from '@/types/api';
 
 // Fallback used if the API fetch fails — keeps the page renderable.
+// Only two metered counters today: monthly sends + validation credits.
+// Domains, mailboxes, and leads are unlimited at every tier.
 const FALLBACK_TIER_INFO: Record<string, TierInfo> = {
-    trial: { name: 'Free Trial', price: '$0', limits: { leads: 10000, domains: 20, mailboxes: 75, sends: 60000, validationCredits: 10000 }, color: '#6B7280' },
-    starter: { name: 'Starter', price: '$19', limits: { leads: 3000, domains: 7, mailboxes: 25, sends: 20000, validationCredits: 3000 }, color: '#3b82f6' },
-    pro: { name: 'Pro', price: '$49', limits: { leads: 10000, domains: 20, mailboxes: 75, sends: 60000, validationCredits: 10000 }, color: '#6366f1' },
-    growth: { name: 'Growth', price: '$199', limits: { leads: 50000, domains: 75, mailboxes: 350, sends: 300000, validationCredits: 50000 }, color: '#8b5cf6' },
-    scale: { name: 'Scale', price: '$349', limits: { leads: 100000, domains: 150, mailboxes: 700, sends: 600000, validationCredits: 100000 }, color: '#22c55e' },
-    enterprise: { name: 'Enterprise', price: 'Custom', limits: { leads: Infinity, domains: Infinity, mailboxes: Infinity, sends: Infinity, validationCredits: Infinity }, color: '#f59e0b' },
+    trial: { name: 'Free Trial', price: '$0', limits: { sends: 60000, validationCredits: 10000 }, color: '#6B7280' },
+    starter: { name: 'Starter', price: '$19', limits: { sends: 20000, validationCredits: 3000 }, color: '#3b82f6' },
+    pro: { name: 'Pro', price: '$49', limits: { sends: 60000, validationCredits: 10000 }, color: '#6366f1' },
+    growth: { name: 'Growth', price: '$199', limits: { sends: 300000, validationCredits: 50000 }, color: '#8b5cf6' },
+    scale: { name: 'Scale', price: '$349', limits: { sends: 600000, validationCredits: 100000 }, color: '#22c55e' },
+    enterprise: { name: 'Enterprise', price: 'Custom', limits: { sends: Infinity, validationCredits: Infinity }, color: '#f59e0b' },
 };
 
 interface ApiTier {
@@ -22,9 +24,6 @@ interface ApiTier {
     priceValue: number;
     color: string;
     limits: {
-        leads: number | null;
-        domains: number | null;
-        mailboxes: number | null;
         validationCredits: number | null;
         monthlySendLimit: number | null;
     };
@@ -38,9 +37,6 @@ function mapApiTiersToInfo(apiTiers: ApiTier[]): Record<string, TierInfo> {
             price: t.price,
             color: t.color,
             limits: {
-                leads: t.limits.leads ?? Infinity,
-                domains: t.limits.domains ?? Infinity,
-                mailboxes: t.limits.mailboxes ?? Infinity,
                 sends: t.limits.monthlySendLimit ?? Infinity,
                 validationCredits: t.limits.validationCredits ?? Infinity,
             },
@@ -60,11 +56,6 @@ function BillingContent() {
     const [actionLoading, setActionLoading] = useState(false);
     const [refreshingUsage, setRefreshingUsage] = useState(false);
     const [activeTab, setActiveTab] = useState<'usage' | 'billing'>('usage');
-    const [downgradeModal, setDowngradeModal] = useState<{
-        show: boolean;
-        tier: string;
-        warnings: string[];
-    }>({ show: false, tier: '', warnings: [] });
 
     useEffect(() => {
         const handlePageShow = (event: PageTransitionEvent) => {
@@ -119,13 +110,11 @@ function BillingContent() {
         }
     };
 
-    const handleChangePlan = async (tier: string, confirm = false) => {
+    const handleChangePlan = async (tier: string) => {
         setActionLoading(true);
         setError('');
         try {
             const result = await apiClient<{
-                requiresConfirmation?: boolean;
-                warnings?: string[];
                 newTier?: string;
                 direction?: string;
                 effective?: string;
@@ -133,29 +122,15 @@ function BillingContent() {
                 previousTier?: string;
             }>('/api/billing/change-plan', {
                 method: 'POST',
-                body: JSON.stringify({ tier, confirm })
+                body: JSON.stringify({ tier })
             });
-
-            // Backend says downgrade needs confirmation — show modal
-            if (result.requiresConfirmation && result.warnings) {
-                setDowngradeModal({ show: true, tier, warnings: result.warnings });
-                setActionLoading(false);
-                return;
-            }
-
-            // Success — refresh subscription data
             await fetchSubscription();
-            setDowngradeModal({ show: false, tier: '', warnings: [] });
             setError(result.message || `Plan changed to ${tier} successfully.`);
         } catch (err: any) {
             setError(err.message || 'Failed to change plan');
         } finally {
             setActionLoading(false);
         }
-    };
-
-    const handleConfirmDowngrade = async () => {
-        await handleChangePlan(downgradeModal.tier, true);
     };
 
     const handlePlanAction = (tier: string) => {
@@ -394,13 +369,10 @@ function BillingContent() {
                                 {refreshingUsage ? 'Refreshing...' : 'Refresh Usage'}
                             </button>
                         </div>
-                        <div className="grid grid-cols-5 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             {[
-                                { label: 'Active Leads', current: data?.usage?.leads || 0, limit: data?.limits?.leads || 0, icon: '📧' },
-                                { label: 'Domains (protection)', current: data?.usage?.domains || 0, limit: data?.limits?.domains || 0, icon: '🌐' },
-                                { label: 'Mailboxes', current: data?.usage?.mailboxes || 0, limit: data?.limits?.mailboxes || 0, icon: '📮' },
-                                { label: 'Emails Sent', current: data?.usage?.monthlySends || 0, limit: tierInfo.limits.sends || 0, icon: '🚀' },
-                                { label: 'Emails Validated', current: data?.usage?.emailsValidated || 0, limit: tierInfo.limits.validationCredits || 0, icon: '✉️' }
+                                { label: 'Emails Sent (30d)',     current: data?.usage?.monthlySends || 0,    limit: tierInfo.limits.sends || 0,            icon: '🚀' },
+                                { label: 'Emails Validated (30d)', current: data?.usage?.emailsValidated || 0, limit: tierInfo.limits.validationCredits || 0, icon: '✉️' },
                             ].map((stat) => {
                                 const label = stat.label;
                                 const current = stat.current;
@@ -470,11 +442,10 @@ function BillingContent() {
                                                     <div className="font-extrabold text-gray-900 text-[1.75rem]">{info.price}<span className="text-sm font-normal text-slate-500">/mo</span></div>
                                                 </div>
                                                 <div className="mb-6 text-sm leading-relaxed text-slate-500">
-                                                    <div>✓ {info.limits.leads === Infinity ? 'Unlimited' : info.limits.leads.toLocaleString()} leads</div>
-                                                    <div>✓ {info.limits.domains === Infinity ? 'Unlimited' : info.limits.domains} domains <span className="text-xs text-slate-400">(protection limit)</span></div>
-                                                    <div>✓ {info.limits.mailboxes === Infinity ? 'Unlimited' : info.limits.mailboxes} mailboxes</div>
                                                     <div>✓ {info.limits.sends === Infinity ? 'Unlimited' : (info.limits.sends || 0).toLocaleString()} sends/mo</div>
                                                     <div>✓ {info.limits.validationCredits === Infinity ? 'Unlimited' : (info.limits.validationCredits || 0).toLocaleString()} validation credits</div>
+                                                    <div>✓ Unlimited domains, mailboxes, leads</div>
+                                                    <div>✓ Full protection coverage</div>
                                                 </div>
                                                 <button
                                                     onClick={() => !isCurrentTier && handlePlanAction(key)}
@@ -496,52 +467,6 @@ function BillingContent() {
                             </div>
                         </div>
                     )}
-                </div>
-            )}
-
-            {/* Downgrade Confirmation Modal */}
-            {downgradeModal.show && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-0 overflow-hidden">
-                        <div className="p-6 border-b border-slate-100">
-                            <h3 className="text-lg font-bold text-gray-900 mb-1">Confirm Downgrade</h3>
-                            <p className="text-sm text-slate-500">
-                                Switching to <strong>{TIER_INFO[downgradeModal.tier]?.name || downgradeModal.tier}</strong> ({TIER_INFO[downgradeModal.tier]?.price}/mo). This takes effect at the end of your billing period.
-                            </p>
-                        </div>
-                        <div className="p-6">
-                            <div className="mb-4">
-                                <div className="text-xs font-semibold uppercase text-amber-600 mb-2">Usage Warnings</div>
-                                <div className="space-y-2">
-                                    {downgradeModal.warnings.map((warning, i) => (
-                                        <div key={i} className="flex gap-2 p-3 rounded-lg bg-amber-50 border border-amber-200">
-                                            <span className="text-amber-500 mt-0.5 shrink-0">⚠</span>
-                                            <span className="text-sm text-amber-800">{warning}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <p className="text-xs text-slate-400 mb-4">
-                                Excess resources will be paused or made read-only. You can remove them before the change takes effect.
-                            </p>
-                        </div>
-                        <div className="flex gap-3 p-4 border-t border-slate-100 bg-slate-50">
-                            <button
-                                onClick={() => setDowngradeModal({ show: false, tier: '', warnings: [] })}
-                                className="flex-1 py-2.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-600 cursor-pointer transition-colors hover:bg-slate-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleConfirmDowngrade}
-                                disabled={actionLoading}
-                                className="flex-1 py-2.5 rounded-lg border-none bg-amber-500 text-white text-sm font-bold cursor-pointer transition-colors hover:bg-amber-600"
-                                style={{ opacity: actionLoading ? 0.6 : 1, cursor: actionLoading ? 'not-allowed' : 'pointer' }}
-                            >
-                                {actionLoading ? 'Processing...' : 'Confirm Downgrade'}
-                            </button>
-                        </div>
-                    </div>
                 </div>
             )}
 

@@ -15,12 +15,14 @@ interface Integration {
     id: string;
     name: string;
     description: string;
-    category: 'sending' | 'leads' | 'crm' | 'notifications' | 'sequencer' | 'developer';
+    category: 'sending' | 'leads' | 'crm' | 'notifications' | 'sequencer' | 'developer' | 'migration';
     logo: string;           // path to /public asset or inline
     configPath: string;     // deep-link to configure
     settingKey?: string;    // key in settings API to check connection
     statusKey?: string;     // secondary key for status check
     comingSoon?: boolean;
+    /** When true, the card is only rendered if the migration feature flag is on. */
+    requiresMigrationFlag?: boolean;
 }
 
 const INTEGRATIONS: Integration[] = [
@@ -84,6 +86,26 @@ const INTEGRATIONS: Integration[] = [
         settingKey: '_WEBHOOKS_ALWAYS_ON_',
     },
 
+    // Migration — one-time imports from competing platforms
+    {
+        id: 'smartlead-import',
+        name: 'Import from Smartlead',
+        description: 'One-time import of campaigns, sequences, leads, and mailbox metadata. API key auto-discards after 24 hours.',
+        category: 'migration',
+        logo: '/smartlead.webp',
+        configPath: '/dashboard/migration/from-smartlead',
+        requiresMigrationFlag: true,
+    },
+    {
+        id: 'instantly-import',
+        name: 'Import from Instantly',
+        description: 'One-time import of campaigns, sequences, leads, block list, and mailbox metadata from Instantly v2. API key auto-discards after 24 hours. Mailboxes must be re-authenticated after import.',
+        category: 'migration',
+        logo: '/instantly.png',
+        configPath: '/dashboard/migration/from-instantly',
+        requiresMigrationFlag: true,
+    },
+
     // CRM — Future
     {
         id: 'hubspot',
@@ -110,6 +132,7 @@ const CATEGORIES: { key: string; label: string }[] = [
     { key: 'leads', label: 'Lead Sources' },
     { key: 'notifications', label: 'Notifications' },
     { key: 'developer', label: 'Developer' },
+    { key: 'migration', label: 'One-time Imports' },
     { key: 'crm', label: 'CRM' },
 ];
 
@@ -213,6 +236,11 @@ function getConnectionStatus(
         return count > 0 ? 'connected' : 'not_connected';
     }
 
+    // Smartlead / Instantly import — feature is "available" when the flag is on;
+    // per-org status (key on file? job running?) is reflected inside the wizard.
+    if (integration.id === 'smartlead-import') return 'not_connected';
+    if (integration.id === 'instantly-import') return 'not_connected';
+
     // Slack — check SLACK_CONNECTED + status
     if (integration.id === 'slack') {
         const isConnected = settings.find(s => s.key === 'SLACK_CONNECTED')?.value === 'true';
@@ -244,6 +272,7 @@ const STATUS_CONFIG = {
 export default function IntegrationsPage() {
     const [settings, setSettings] = useState<SettingEntry[]>([]);
     const [providerCounts, setProviderCounts] = useState<Record<string, number>>({});
+    const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -267,8 +296,15 @@ export default function IntegrationsPage() {
                     setProviderCounts(counts);
                 })
                 .catch(() => setProviderCounts({})),
+            apiClient<{ enabled: boolean }>('/api/migration/from-smartlead/feature')
+                .then(res => setMigrationEnabled(!!res?.enabled))
+                .catch(() => setMigrationEnabled(false)),
         ]).finally(() => setLoading(false));
     }, []);
+
+    const visibleIntegrations = INTEGRATIONS.filter(i =>
+        !i.requiresMigrationFlag || migrationEnabled,
+    );
 
     if (loading) {
         return (
@@ -282,7 +318,7 @@ export default function IntegrationsPage() {
         );
     }
 
-    const connectedCount = INTEGRATIONS.filter(i => {
+    const connectedCount = visibleIntegrations.filter(i => {
         const s = getConnectionStatus(i, settings, providerCounts);
         return s === 'connected';
     }).length;
@@ -297,7 +333,7 @@ export default function IntegrationsPage() {
             i.category.toLowerCase().includes(q)
         );
     };
-    const totalMatches = INTEGRATIONS.filter(matchesSearch).length;
+    const totalMatches = visibleIntegrations.filter(matchesSearch).length;
 
     return (
         <div className="p-8">
@@ -346,7 +382,7 @@ export default function IntegrationsPage() {
             {/* Categories */}
             <div className="flex flex-col gap-8">
                 {CATEGORIES.map(cat => {
-                    const items = INTEGRATIONS.filter(i => i.category === cat.key && matchesSearch(i));
+                    const items = visibleIntegrations.filter(i => i.category === cat.key && matchesSearch(i));
                     if (items.length === 0) return null;
 
                     return (

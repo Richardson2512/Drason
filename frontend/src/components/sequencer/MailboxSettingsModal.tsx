@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { X, Globe, CheckCircle2, AlertTriangle, Loader2, RefreshCw, Copy } from 'lucide-react';
+import { X, Globe, CheckCircle2, AlertTriangle, Loader2, RefreshCw, Copy, Gauge } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 
@@ -25,6 +25,8 @@ import toast from 'react-hot-toast';
 interface MailboxSettings {
     id: string;
     email: string;
+    daily_send_limit: number;
+    sends_today: number;
     tracking_domain?: string | null;
     tracking_domain_verified?: boolean;
     tracking_domain_verified_at?: string | null;
@@ -47,7 +49,9 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
     const [account, setAccount] = useState<MailboxSettings | null>(null);
     const [loading, setLoading] = useState(true);
     const [domainInput, setDomainInput] = useState('');
+    const [limitInput, setLimitInput] = useState<string>('');
     const [saving, setSaving] = useState(false);
+    const [savingLimit, setSavingLimit] = useState(false);
     const [verifying, setVerifying] = useState(false);
     const [report, setReport] = useState<VerificationReport | null>(null);
 
@@ -60,6 +64,7 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
             const found = arr.find(a => a.id === accountId) || null;
             setAccount(found);
             setDomainInput(found?.tracking_domain || '');
+            setLimitInput(found ? String(found.daily_send_limit) : '');
         } catch {
             setAccount(null);
         } finally {
@@ -85,6 +90,32 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
             toast.error(e?.message || 'Failed to save tracking domain');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const saveLimit = async () => {
+        const parsed = parseInt(limitInput, 10);
+        if (!Number.isFinite(parsed) || parsed < 1) {
+            toast.error('Enter a number ≥ 1');
+            return;
+        }
+        if (parsed > 2000) {
+            toast.error('Max 2000/day per mailbox. Higher limits risk reputation damage.');
+            return;
+        }
+        setSavingLimit(true);
+        try {
+            await apiClient(`/api/sequencer/accounts/${accountId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ dailySendLimit: parsed }),
+            });
+            toast.success('Daily limit updated');
+            await refresh();
+        } catch (err: unknown) {
+            const e = err as { message?: string };
+            toast.error(e?.message || 'Failed to update limit');
+        } finally {
+            setSavingLimit(false);
         }
     };
 
@@ -136,6 +167,47 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                         <div className="text-xs text-red-600">Mailbox not found</div>
                     ) : (
                         <>
+                            {/* Daily sending limit */}
+                            <section className="flex flex-col gap-3">
+                                <div className="flex items-center gap-2">
+                                    <Gauge size={14} strokeWidth={1.75} className="text-gray-700" />
+                                    <h3 className="text-sm font-semibold text-gray-900 m-0">Daily sending limit</h3>
+                                </div>
+                                <p className="text-xs text-gray-500 leading-relaxed">
+                                    The maximum number of emails this mailbox can send per day across <strong>all</strong> campaigns combined. Each campaign also has its own per-day cap; the dispatcher uses the smallest applicable limit. If this mailbox is in a recovery phase, the warmup limit may temporarily override this value until it graduates back to healthy.
+                                </p>
+
+                                <div className="flex gap-2 items-end">
+                                    <div className="flex-1">
+                                        <label className="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                            Emails per day
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min={1}
+                                            max={2000}
+                                            value={limitInput}
+                                            onChange={(e) => setLimitInput(e.target.value)}
+                                            className="w-full px-3 py-1.5 rounded-lg text-xs outline-none"
+                                            style={{ border: '1px solid #D1CBC5' }}
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={saveLimit}
+                                        disabled={savingLimit || !limitInput || parseInt(limitInput, 10) === account.daily_send_limit}
+                                        className="px-4 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold cursor-pointer hover:bg-gray-800 disabled:opacity-30"
+                                    >
+                                        {savingLimit ? 'Saving…' : 'Save'}
+                                    </button>
+                                </div>
+
+                                <div className="text-[11px] text-gray-500">
+                                    Today: <span className="font-mono text-gray-700">{account.sends_today}</span> / <span className="font-mono text-gray-700">{account.daily_send_limit}</span> sent
+                                </div>
+                            </section>
+
+                            <div style={{ borderTop: '1px solid #E8E3DC' }} />
+
                             {/* Tracking domain */}
                             <section className="flex flex-col gap-3">
                                 <div className="flex items-center gap-2">

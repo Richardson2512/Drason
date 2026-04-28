@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import Script from 'next/script';
+import CookieBanner from '@/components/CookieBanner';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -111,7 +112,7 @@ export default function RootLayout({
       'DNS authentication monitoring (SPF, DKIM, DMARC)',
       'Load balancing with effective load metric',
       'Unified inbox for replies across all connected mailboxes',
-      'Protection Mode for Smartlead, Instantly, and EmailBison integrations',
+      'One-time import from Smartlead — campaigns, sequences, leads, and mailbox metadata',
       'Slack integration for real-time alerts',
       'Reports and CSV export',
       'Dedicated AI agents for cold email tasks (sequence writing, reply classification, send-time optimization)',
@@ -133,19 +134,66 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/*
+          Google Consent Mode v2.
+
+          The inline script below MUST execute synchronously before gtag.js loads.
+          It sets the default consent state to "denied" for every storage category
+          except security_storage (strictly necessary). With Consent Mode v2,
+          gtag.js respects these defaults and will NOT write persistent cookies
+          (_ga, _ga_*) or send identifying pings until consent is granted.
+          When consent IS granted, it sends cookieless pings ("consent signals")
+          so basic pageview/event counts are still captured for measurement.
+
+          For returning visitors, prior consent is restored from localStorage
+          (sk-cookie-consent-v1) BEFORE gtag.js loads — so they aren't re-prompted
+          and tracking re-engages exactly as they previously chose.
+
+          GDPR Art. 6 + ePrivacy Directive Art. 5(3) compliance: cookies are
+          gated behind consent, not loaded eagerly. CCPA/CPRA "do not sell"
+          obligations are satisfied by ad_storage defaulting to denied.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+
+                gtag('consent', 'default', {
+                  ad_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                  analytics_storage: 'denied',
+                  functionality_storage: 'denied',
+                  personalization_storage: 'denied',
+                  security_storage: 'granted',
+                  wait_for_update: 500
+                });
+
+                try {
+                  var raw = localStorage.getItem('sk-cookie-consent-v1');
+                  if (raw) {
+                    var c = JSON.parse(raw);
+                    gtag('consent', 'update', {
+                      analytics_storage: c.analytics ? 'granted' : 'denied',
+                      functionality_storage: c.functional ? 'granted' : 'denied',
+                      personalization_storage: c.functional ? 'granted' : 'denied'
+                    });
+                  }
+                } catch (e) { /* localStorage unavailable — keep defaults */ }
+
+                gtag('js', new Date());
+                gtag('config', 'G-C36CG3CRSJ', { anonymize_ip: true });
+              })();
+            `,
+          }}
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-C36CG3CRSJ"
           strategy="afterInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-C36CG3CRSJ');
-          `}
-        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
@@ -161,6 +209,7 @@ export default function RootLayout({
           since the body itself is a pure layout shell. */}
       <body className={`${plusJakartaSans.className} ${plusJakartaSans.variable}`} suppressHydrationWarning>
         {children}
+        <CookieBanner />
         <Toaster
           position="top-right"
           toastOptions={{

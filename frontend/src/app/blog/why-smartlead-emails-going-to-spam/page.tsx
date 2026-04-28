@@ -194,7 +194,7 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  <li><strong>Automatic healing:</strong> When a mailbox is paused due to deliverability issues, Superkabe&apos;s 5-phase healing pipeline automatically begins recovery — reducing volume, re-warming, and gradually restoring sending capacity once metrics improve.</li>
  </ul>
  <p className="text-gray-600 leading-relaxed mb-6">
- The goal is not to replace Smartlead — it is to protect the infrastructure Smartlead sends through. Read the <Link href="/docs/smartlead-integration" className="text-blue-600 hover:text-blue-800">Smartlead integration guide</Link> for setup instructions.
+ If you&apos;re ready to move off Smartlead, Superkabe is the AI cold email platform with this same protection logic built into the send pipeline. You can run a one-time import via <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800">Import from Smartlead</Link> to bring your campaigns, sequences, leads, and mailbox metadata across.
  </p>
 
  <h2 id="faq" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Frequently Asked Questions</h2>

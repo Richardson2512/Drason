@@ -38,8 +38,8 @@ export function Tooltip({
 }: TooltipProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [adjustedPosition, setAdjustedPosition] = useState(position);
-    const tooltipRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLDivElement>(null);
+    const tooltipRef = useRef<HTMLSpanElement>(null);
+    const triggerRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         if (isVisible && tooltipRef.current && triggerRef.current) {
@@ -79,9 +79,14 @@ export function Tooltip({
         right: 'right-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-l-transparent border-r-gray-900'
     };
 
+    // Use span elements throughout so the Tooltip can be embedded inside <p>
+    // and other phrasing-content parents without producing invalid HTML
+    // (which causes hydration errors). inline-flex on a span renders the
+    // same as on a div for our usage; absolute-positioned popup is detached
+    // from inline flow visually either way.
     return (
-        <div className="relative inline-flex items-center">
-            <div
+        <span className="relative inline-flex items-center">
+            <span
                 ref={triggerRef}
                 onMouseEnter={() => setIsVisible(true)}
                 onMouseLeave={() => setIsVisible(false)}
@@ -94,10 +99,10 @@ export function Tooltip({
                         className="text-gray-400 hover:text-blue-600 transition-colors flex-shrink-0"
                     />
                 )}
-            </div>
+            </span>
 
             {isVisible && (
-                <div
+                <span
                     ref={tooltipRef}
                     role="tooltip"
                     id={id}
@@ -110,15 +115,15 @@ export function Tooltip({
                     style={{ maxWidth }}
                 >
                     {content}
-                    <div
+                    <span
                         className={`
                             absolute w-0 h-0 border-4
                             ${arrowClasses[adjustedPosition]}
                         `}
                     />
-                </div>
+                </span>
             )}
-        </div>
+        </span>
     );
 }
 

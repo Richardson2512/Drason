@@ -451,8 +451,8 @@ export default function MonitoringPage() {
  <a href="/docs/help/campaign-paused" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
  → Why Is My Campaign Paused?
  </a>
- <a href="/docs/smartlead-integration" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
- → Platform Integration Guides
+ <a href="/docs/getting-started" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
+ → Getting Started Guide
  </a>
  <a href="/docs/monitoring" className="block p-3 bg-white hover:bg-blue-50 transition-colors text-blue-600 hover:text-blue-700 text-sm font-medium">
  → Monitoring Thresholds

@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { Zap } from 'lucide-react';
 import BlogArticleGrid from '@/components/BlogArticleGrid';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -506,40 +506,43 @@ export default function BlogPage() {
  };
 
  return (
- <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-hidden">
+ <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
- {/* ================= NAVBAR ================= */}
  <Navbar />
 
- {/* Hero */}
- <section className="relative pt-32 md:pt-36 pb-10 text-center">
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
- <div className="relative z-10 max-w-4xl mx-auto px-6">
- <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
- <Zap size={14} className="inline mr-1.5" />
+ <main className="pt-32 md:pt-40 pb-16">
+ {/* Mailivery-style header — width-locked to match BlogArticleGrid's max-w-6xl */}
+ <header className="max-w-6xl mx-auto px-6 mb-16">
+ <div className="max-w-3xl">
+ <div className="mb-8">
+ <span className="inline-block px-5 py-1.5 rounded-full bg-gray-900 text-white text-sm font-medium">
  Superkabe Blog
+ </span>
  </div>
- <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6 tracking-tight">
- Email Infrastructure Intelligence
+ <h1
+ className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ style={{ letterSpacing: '-0.02em' }}
+ >
+ Email infrastructure intelligence
  </h1>
- <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Deep technical guides on deliverability, authentication, domain health, and reputation management for outbound email operators.
+ <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+ Deep technical guides on AI cold email, deliverability, authentication, domain health, and reputation management for outbound operators. Written by the team that ships Superkabe.
  </p>
  </div>
- </section>
+ <hr className="mt-10 border-0 border-t border-gray-900" />
+ </header>
 
  {/* Articles Grid */}
  <BlogArticleGrid articles={articles.map(a => ({ slug: a.slug, title: a.title, description: a.description, readTime: a.readTime, tag: a.tag }))} />
+ </main>
+
+ <BottomCtaStrip
+ headline="Stop hoping. Start engineering."
+ body="Superkabe ships AI sequencing, validation, real-time monitoring, threshold-based auto-pause, and the 5-phase healing pipeline in one platform. 14-day free trial, no credit card required."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See pricing', href: '/pricing' }}
+ />
 
  <Footer />
  </div>

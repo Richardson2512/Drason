@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Free Email Authentication Tools – SPF, DKIM | Superkabe',
@@ -136,47 +137,39 @@ export default function ToolsPage() {
  };
 
  return (
- <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans overflow-x-hidden">
+ <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <Navbar />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
-
- {/* Hero */}
- <div className="relative">
- <div className="relative z-10 pt-36 md:pt-44 pb-16 md:pb-24 px-6">
- <div className="max-w-4xl mx-auto text-center">
- <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-xs font-medium text-gray-600 mb-8">
+ {/* Mailivery-style header — width-locked to match blog index (max-w-6xl) */}
+ <header className="max-w-6xl mx-auto px-6 pt-32 md:pt-40 pb-10">
+ <div className="max-w-3xl">
+ <div className="mb-8 inline-flex items-center gap-3">
+ <span className="inline-block px-5 py-1.5 rounded-full bg-gray-900 text-white text-sm font-medium">
+ Free Tools
+ </span>
+ <span className="inline-flex items-center gap-2 text-xs font-medium text-gray-600">
  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
- 100% Free &middot; No Signup Required
+ 100% Free · No signup
+ </span>
  </div>
-
- <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
- Free Email Authentication Tools
+ <h1
+ className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ style={{ letterSpacing: '-0.02em' }}
+ >
+ Free email authentication tools
  </h1>
- <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-4">
- Check and generate SPF, DKIM, and DMARC records for your domain. Identify misconfigurations before they damage your sender reputation.
+ <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+ Check and generate SPF, DKIM, and DMARC records for your domain. Identify misconfigurations before they damage your sender reputation. Used by outbound teams to validate DNS authentication before scaling campaigns.
  </p>
- <p className="text-sm text-gray-400">
- Used by outbound teams to validate DNS authentication before scaling campaigns
- </p>
+ <hr className="mt-10 border-0 border-t border-gray-900" />
  </div>
- </div>
- </div>
+ </header>
 
  {/* Tools Grid */}
- <section className="relative z-10 px-6 pb-20">
+ <section className="px-6 pb-20">
  <div className="max-w-5xl mx-auto">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
  {tools.map((tool) => {
@@ -211,7 +204,7 @@ export default function ToolsPage() {
  </section>
 
  {/* Why Authentication Matters */}
- <section className="relative z-10 px-6 pb-20">
+ <section className="px-6 pb-20">
  <div className="max-w-4xl mx-auto">
  <div className="bg-white p-10 md:p-14 shadow-lg shadow-gray-200/50 border border-gray-100">
  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
@@ -260,7 +253,7 @@ export default function ToolsPage() {
  </section>
 
  {/* FAQ Section */}
- <section className="relative z-10 px-6 pb-20">
+ <section className="px-6 pb-20">
  <div className="max-w-4xl mx-auto">
  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
  Frequently Asked Questions
@@ -303,7 +296,7 @@ export default function ToolsPage() {
  </section>
 
  {/* Related Blog Posts */}
- <section className="relative z-10 px-6 pb-20">
+ <section className="px-6 pb-20">
  <div className="max-w-4xl mx-auto">
  <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -332,6 +325,13 @@ export default function ToolsPage() {
  </div>
  </div>
  </section>
+
+ <BottomCtaStrip
+ headline="Stop checking DNS by hand"
+ body="These free tools check on demand. Superkabe monitors SPF, DKIM, DMARC, and bounce health across every sending domain — every 60 seconds — and auto-pauses before damage compounds."
+ primaryCta={{ label: 'Start free trial', href: '/signup' }}
+ secondaryCta={{ label: 'See how it works', href: '/' }}
+ />
 
  <Footer />
  </div>

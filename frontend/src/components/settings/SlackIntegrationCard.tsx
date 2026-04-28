@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
 import type { SettingEntry, SlackChannel } from '@/types/api';
 import CustomSelect from '@/components/ui/CustomSelect';
+import PostmasterToolsCard from '@/components/settings/PostmasterToolsCard';
 
 export default function SlackIntegrationCard({ settings: settingsProp }: { settings?: SettingEntry[] } = {}) {
     const [slackConnected, setSlackConnected] = useState(false);
@@ -187,6 +188,8 @@ export default function SlackIntegrationCard({ settings: settingsProp }: { setti
                     </div>
                 </div>
             )}
+
+            <PostmasterToolsCard embedded />
         </div>
     );
 }

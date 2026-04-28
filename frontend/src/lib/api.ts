@@ -96,14 +96,35 @@ export async function apiClient<T>(
             throw new Error(data.message || 'Subscription required');
         }
 
+        // Global Consent Gate — show re-acceptance modal when ToS / Privacy
+        // version has bumped. Backend returns 412 with { requires_consent_update,
+        // missing: ['tos'|'privacy'], current_versions: { tos, privacy } }.
+        if (response.status === 412 && data?.requires_consent_update) {
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('consent-required', {
+                    detail: {
+                        missing: data.missing || [],
+                        currentVersions: data.current_versions || {},
+                        message: data.message,
+                    },
+                }));
+            }
+            throw new Error(data.message || 'Consent required');
+        }
+
         if (!response.ok) {
             // Handle standardized error format { success: false, error: ... }
             const errorMessage = data?.error || data?.message || `Request failed with status ${response.status}`;
             throw new Error(errorMessage);
         }
 
-            // Return data.data if it exists (standardized), otherwise data (legacy)
-            return (data?.success && data?.data) ? data.data : data;
+            // Return data.data when the standardized envelope is present, even
+            // if data.data is null/0/''/false — those are real values an
+            // endpoint might intentionally return. Falling back to the wrapper
+            // object on falsy data.data caused empty-state pages to crash on
+            // `wrapper.someField` reads. Legacy responses (no `success` field)
+            // are returned as-is.
+            return (data && typeof data === 'object' && 'success' in data && 'data' in data) ? data.data : data;
 
         } catch (error: any) {
             clearTimeout(id);

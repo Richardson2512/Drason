@@ -52,7 +52,7 @@ Direct lead ingestion API and Clay webhook endpoint. REST API v1 for programmati
 
 ## Pricing
 
-Starting at $19/month. Includes infrastructure monitoring, auto-healing, ESP-aware routing, and Slack alerts. Higher tiers add validation credits, MillionVerifier API access, and increased mailbox/domain limits.
+Two-meter pricing — only monthly send volume and email-validation credits are metered. Domains, mailboxes, leads, and protection coverage are unlimited at every tier. Starting at $19/month. Higher tiers add more sends, more validation credits, MillionVerifier API access for risky leads, and aggressive hybrid validation.
 
 ---
 

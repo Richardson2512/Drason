@@ -21,7 +21,7 @@ const TABS: TabItem[] = [
 ];
 
 export default function ConfigurationPage() {
-    const [active] = useTabState(TABS, 'general');
+    const [active, setActive] = useTabState(TABS, 'general');
 
     return (
         <div className="px-6 py-6">
@@ -30,7 +30,7 @@ export default function ConfigurationPage() {
                 <p className="text-xs text-gray-500 mt-0.5">Account-level settings and routing rules.</p>
             </div>
 
-            <Tabs tabs={TABS} defaultTab="general" />
+            <Tabs tabs={TABS} defaultTab="general" activeTab={active} onChange={setActive} />
 
             {active === 'general' && <GeneralSettingsPanel />}
             {active === 'routing' && <RoutingPanel />}

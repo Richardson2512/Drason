@@ -19,6 +19,11 @@ function SignupContent() {
     const [loading, setLoading] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    // Pinned at the moment the page loaded so the value submitted with the
+    // form matches exactly what the user saw and clicked. Backend rejects on
+    // version drift between page-render and submit.
+    const [legalVersions, setLegalVersions] = useState<{ tos: string; privacy: string } | null>(null);
 
     // Get backend URL for Google OAuth redirect
     const getBackendUrl = () => {
@@ -44,6 +49,13 @@ function SignupContent() {
             setError(oauthError);
         }
     }, [searchParams]);
+
+    // Fetch current TOS / Privacy versions so the form pins them at submit.
+    useEffect(() => {
+        apiClient<{ tos: string; privacy: string }>('/api/auth/legal-versions')
+            .then(res => setLegalVersions({ tos: res.tos, privacy: res.privacy }))
+            .catch(() => { /* keep null; submit will fail with a clear error */ });
+    }, []);
 
     const handleGoogleSignup = () => {
         const backendUrl = getBackendUrl();
@@ -91,17 +103,29 @@ function SignupContent() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        if (!acceptedTerms) {
+            setError('You must accept the Terms of Service and Privacy Policy to create an account.');
+            return;
+        }
+        if (!legalVersions) {
+            setError('Could not load the current Terms / Privacy Policy versions. Please refresh and try again.');
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const data = await apiClient<{ token?: string }>('/api/auth/register', {
+            await apiClient<{ token?: string }>('/api/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
                     email,
                     password,
                     organizationName: orgName,
-                    tier: selectedPlan // Pass selected tier to backend for tier-specific trial
+                    tier: selectedPlan,
+                    acceptedTosVersion: legalVersions.tos,
+                    acceptedPrivacyVersion: legalVersions.privacy,
                 }),
             });
 
@@ -123,7 +147,7 @@ function SignupContent() {
         <div className="min-h-screen w-full flex overflow-hidden font-sans">
 
             {/* LEFT SIDE - FORM */}
-            <div className="w-full lg:w-1/2 relative flex flex-col items-center justify-center p-8 lg:p-12 xl:p-16 bg-[#F7F2EB]">
+            <div className="w-full lg:w-1/2 relative flex flex-col items-center justify-center p-4 lg:p-6 xl:p-8 bg-[#F7F2EB]">
 
                 {/* Background Blobs */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -131,36 +155,34 @@ function SignupContent() {
                     <div className="auth-blob auth-blob-orange"></div>
                 </div>
 
-                {/* Content Container - NOW IN A CARD */}
-                <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 md:p-10">
-                    <Link href="/" className="flex items-center gap-2 mb-8 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={32} height={32} />
-                        <span className="font-bold text-xl text-[#171923]">Superkabe</span>
+                {/* Content Container - compact card */}
+                <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-5 md:p-6">
+                    <Link href="/" className="flex items-center gap-2 mb-4 w-fit mx-auto">
+                        <Image src="/image/logo-v2.png" alt="Superkabe" width={26} height={26} />
+                        <span className="font-bold text-base text-[#171923]">Superkabe</span>
                     </Link>
 
-                    <div className="mb-8 text-center">
-                        <h1 className="text-3xl font-bold text-[#171923] mb-2">Get Started</h1>
-                        <p className="text-[#718096] text-sm">
+                    <div className="mb-4 text-center">
+                        <h1 className="text-xl font-bold text-[#171923] mb-0.5">Get Started</h1>
+                        <p className="text-[#718096] text-xs">
                             Create your Superkabe account
                         </p>
                         {selectedPlan && (
-                            <div className="mt-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-xl">
-                                <p className="text-blue-700 text-sm font-semibold">
+                            <div className="mt-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-xl">
+                                <p className="text-blue-700 text-xs font-semibold">
                                     Selected: {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan
                                 </p>
-                                <p className="text-blue-600 text-xs mt-1">14-day free trial • No credit card required</p>
+                                <p className="text-blue-600 text-[10px] mt-0.5">14-day free trial • No credit card required</p>
                             </div>
                         )}
                     </div>
 
-                    {error && <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm text-center border border-red-100 mb-6">{error}</div>}
-
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                        <div className="space-y-1.5">
-                            <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Full Name</label>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
+                        <div className="space-y-1">
+                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Full Name</label>
                             <input
                                 type="text"
-                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
+                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm text-sm"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="John Doe"
@@ -168,11 +190,11 @@ function SignupContent() {
                             />
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Organization Name</label>
+                        <div className="space-y-1">
+                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Organization Name</label>
                             <input
                                 type="text"
-                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
+                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm text-sm"
                                 value={orgName}
                                 onChange={(e) => setOrgName(e.target.value)}
                                 placeholder="Acme Corp"
@@ -180,11 +202,11 @@ function SignupContent() {
                             />
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Email Address</label>
+                        <div className="space-y-1">
+                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Email Address</label>
                             <input
                                 type="email"
-                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
+                                className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm text-sm"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="you@company.com"
@@ -192,12 +214,12 @@ function SignupContent() {
                             />
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Password</label>
+                        <div className="space-y-1">
+                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Password</label>
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
-                                    className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm pr-12"
+                                    className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm text-sm pr-11"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
@@ -208,36 +230,62 @@ function SignupContent() {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0AEC0] hover:text-[#718096] p-1"
                                 >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
                         </div>
 
-                        <button type="submit" className="w-full bg-[#1C4532] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#1C4532]/20 hover:shadow-[#1C4532]/30 hover:-translate-y-0.5 transition-all text-base mt-2" disabled={loading}>
+                        {/* Required ToS + Privacy consent — captured per GDPR Art. 7(1) */}
+                        <label className="flex items-start gap-1.5 cursor-pointer select-none">
+                            <input
+                                type="checkbox"
+                                checked={acceptedTerms}
+                                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                                className="mt-0.5 shrink-0"
+                                required
+                            />
+                            <span className="text-[11px] text-[#4A5568] leading-snug">
+                                I agree to the{' '}
+                                <Link href="/terms" target="_blank" className="text-[#1C4532] font-semibold underline hover:text-green-800">
+                                    Terms of Service
+                                </Link>
+                                {' '}and{' '}
+                                <Link href="/privacy" target="_blank" className="text-[#1C4532] font-semibold underline hover:text-green-800">
+                                    Privacy Policy
+                                </Link>
+                                .
+                            </span>
+                        </label>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-[#1C4532] text-white font-bold py-2.5 rounded-xl shadow-lg shadow-[#1C4532]/20 hover:shadow-[#1C4532]/30 hover:-translate-y-0.5 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                            disabled={loading || !acceptedTerms || !legalVersions}
+                        >
                             {loading ? 'Creating Account...' : 'Create Account'}
                         </button>
 
-                        <div className="flex items-center gap-4 py-2">
+                        <div className="flex items-center gap-3">
                             <div className="h-px bg-[#E2E8F0] flex-1"></div>
-                            <span className="text-[#A0AEC0] text-xs font-medium uppercase">OR CONTINUE WITH</span>
+                            <span className="text-[#A0AEC0] text-[10px] font-medium uppercase tracking-wider">OR CONTINUE WITH</span>
                             <div className="h-px bg-[#E2E8F0] flex-1"></div>
                         </div>
 
                         <button
                             type="button"
                             onClick={handleGoogleSignup}
-                            className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm"
+                            className="w-full bg-white border border-[#E2E8F0] text-[#718096] font-medium py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors shadow-sm"
                         >
-                            <div className="w-5 h-5 relative">
+                            <div className="w-4 h-4 relative">
                                 <Image src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" fill />
                             </div>
-                            <span className="text-sm">Sign up with Google</span>
+                            <span className="text-xs">Sign up with Google</span>
                         </button>
                     </form>
 
-                    <div className="text-center mt-6">
-                        <span className="text-[#718096] text-sm">Already have an account? </span>
-                        <Link href="/login" className="text-[#1C4532] font-semibold underline hover:text-green-800 text-sm">Sign in</Link>
+                    <div className="text-center mt-3">
+                        <span className="text-[#718096] text-xs">Already have an account? </span>
+                        <Link href="/login" className="text-[#1C4532] font-semibold underline hover:text-green-800 text-xs">Sign in</Link>
                     </div>
                 </div>
             </div>

@@ -150,23 +150,20 @@ export default function SequencerSettingsPage() {
     const tier = subscription?.tier || 'trial';
 
     // Fetch tier catalog from the backend (single source of truth shared with billing page)
-    const [tierStats, setTierStats] = useState<Record<string, { name: string; leads: string; domains: string; mailboxes: string; sends: string; validation: string; color: string }>>({
-        trial: { name: 'Free Trial', leads: '—', domains: '—', mailboxes: '—', sends: '—', validation: '—', color: '#6B7280' },
+    const [tierStats, setTierStats] = useState<Record<string, { name: string; sends: string; validation: string; color: string }>>({
+        trial: { name: 'Free Trial', sends: '—', validation: '—', color: '#6B7280' },
     });
 
     useEffect(() => {
-        apiClient<{ tiers?: Array<{ key: string; name: string; color: string; limits: { leads: number | null; domains: number | null; mailboxes: number | null; monthlySendLimit: number | null; validationCredits: number | null } }> }>('/api/billing/tiers')
+        apiClient<{ tiers?: Array<{ key: string; name: string; color: string; limits: { monthlySendLimit: number | null; validationCredits: number | null } }> }>('/api/billing/tiers')
             .then(res => {
                 if (!res?.tiers) return;
                 const formatNum = (n: number | null) => n === null ? 'Unlimited' : n.toLocaleString();
-                const stats: any = {};
+                const stats: Record<string, { name: string; sends: string; validation: string; color: string }> = {};
                 for (const t of res.tiers) {
                     stats[t.key] = {
                         name: t.name,
                         color: t.color,
-                        leads: formatNum(t.limits.leads),
-                        domains: formatNum(t.limits.domains),
-                        mailboxes: formatNum(t.limits.mailboxes),
                         sends: formatNum(t.limits.monthlySendLimit),
                         validation: formatNum(t.limits.validationCredits),
                     };

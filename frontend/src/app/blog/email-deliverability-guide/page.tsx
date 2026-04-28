@@ -403,11 +403,11 @@ export default function EmailDeliverabilityGuide() {
  <div className="space-y-4 mb-8">
  <div className="bg-yellow-50 border border-yellow-200 p-6">
  <h3 className="font-bold text-yellow-800 mb-2">Tier 1: Warning</h3>
- <p className="text-yellow-700 text-sm">Triggered at 3 bounces per mailbox. Operator receives alerts. Mailbox flagged for monitoring. No traffic blocked.</p>
+ <p className="text-yellow-700 text-sm">Triggered at 2% bounce rate (or 3 bounces in the rolling 100-send window). Operator receives alerts. Mailbox flagged for monitoring. No traffic blocked.</p>
  </div>
  <div className="bg-orange-50 border border-orange-200 p-6">
  <h3 className="font-bold text-orange-800 mb-2">Tier 2: Mailbox Pause</h3>
- <p className="text-orange-700 text-sm">Triggered at 5 bounces. Mailbox auto-paused. Traffic redistributed to healthy mailboxes on the same domain via weight-balanced routing.</p>
+ <p className="text-orange-700 text-sm">Triggered at 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. Mailbox auto-paused. Traffic redistributed to healthy mailboxes on the same domain via weight-balanced routing.</p>
  </div>
  <div className="bg-red-50 border border-red-200 p-6">
  <h3 className="font-bold text-red-800 mb-2">Tier 3: Domain Gate</h3>

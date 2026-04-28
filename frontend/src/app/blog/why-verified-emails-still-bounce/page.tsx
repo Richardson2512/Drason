@@ -78,7 +78,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  "name": "Can infrastructure protection prevent bounces from verified lists?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Infrastructure protection cannot prevent the individual bounces, but it prevents them from causing lasting damage. Tools like Superkabe monitor bounce rates in real-time and auto-pause mailboxes before ISP thresholds are breached. If a batch of catch-all addresses starts bouncing, Superkabe pauses the affected mailbox at 5 bounces instead of letting it hit 20+ bounces and burn the domain."
+ "text": "Infrastructure protection cannot prevent the individual bounces, but it prevents them from causing lasting damage. Tools like Superkabe monitor bounce rates in real-time over a rolling 100-send window and auto-pause mailboxes before ISP thresholds are breached. If a batch of catch-all addresses starts bouncing, Superkabe pauses the affected mailbox at 3% bounce rate (after a 60-send minimum) — or sooner via the 5-bounce safety net for low-volume mailboxes — instead of letting it hit 20+ bounces and burn the domain."
  }
  },
  {
@@ -303,7 +303,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  <h3 className="font-bold text-gray-900 mb-3">Post-send protection capabilities</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Real-time bounce monitoring:</strong> Tracks bounces across every mailbox and domain as they happen. Not in a daily report. In real-time</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Auto-pause on threshold breach:</strong> When a mailbox hits 5 bounces, it gets paused automatically before it can send more emails into a wall of rejections</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Auto-pause on threshold breach:</strong> When a mailbox crosses 3% bounce rate (after 60 sends) or hits the 5-bounce safety net at lower volume, it gets paused automatically before it can send more emails into a wall of rejections</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Domain-level gating:</strong> If 30% of a domain&apos;s mailboxes are bouncing, all sending from that domain stops. One bad batch does not burn the whole domain</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>DNS health monitoring:</strong> Verification checks the recipient. Infrastructure protection checks the sender. SPF, DKIM, DMARC monitored continuously</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Healing pipeline:</strong> Domains that take damage enter structured recovery instead of being abandoned. Phased re-engagement rebuilds reputation over time</li>

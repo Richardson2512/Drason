@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans, usage limits, trial periods, invoices, and how to manage your billing settings.',
+ description: 'Learn about Superkabe subscription plans — two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
  alternates: { canonical: '/docs/help/billing' },
  openGraph: {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans, usage limits, trial periods, invoices, and how to manage your billing settings.',
+ description: 'Learn about Superkabe subscription plans — two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
  url: '/docs/help/billing',
  siteName: 'Superkabe',
  type: 'article',
@@ -27,9 +27,9 @@ export default function BillingPage() {
  <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-12 ">
  <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
  <p className="text-blue-800 mb-4">
- Superkabe offers tiered plans based on the number of <strong>active leads</strong>, <strong>domains</strong> (protection limit), and <strong>mailboxes</strong> you monitor.
- Every paid plan also includes <strong>email validation credits</strong> for the hybrid validation layer that checks every lead before send.
- Every account starts with a <strong>free trial</strong>. Usage is tracked in real-time and you can upgrade, downgrade, or cancel at any time.
+ Superkabe runs on a <strong>two-meter pricing model</strong>: monthly send volume and email-validation credits.
+ Domains, mailboxes, leads, and the deliverability protection layer are <strong>unlimited at every paid tier</strong>.
+ Every account starts with a <strong>free trial</strong>. Usage is tracked in real-time and you can upgrade, downgrade, or cancel any time.
  </p>
  <p className="text-blue-700 text-sm">
  Access it from <strong>Dashboard &rarr; Billing</strong>.
@@ -44,57 +44,50 @@ export default function BillingPage() {
  <tr>
  <th className="px-6 py-3 text-gray-700 font-semibold">Plan</th>
  <th className="px-6 py-3 text-gray-700 font-semibold">Price</th>
- <th className="px-6 py-3 text-gray-700 font-semibold">Leads</th>
- <th className="px-6 py-3 text-gray-700 font-semibold">Domains <span className="text-xs font-normal text-gray-400">(protection only)</span></th>
- <th className="px-6 py-3 text-gray-700 font-semibold">Mailboxes</th>
- <th className="px-6 py-3 text-gray-700 font-semibold">Validation Credits</th>
+ <th className="px-6 py-3 text-gray-700 font-semibold">Sends / month</th>
+ <th className="px-6 py-3 text-gray-700 font-semibold">Validation Credits / month</th>
+ <th className="px-6 py-3 text-gray-700 font-semibold">Domains / Mailboxes / Leads</th>
  </tr>
  </thead>
  <tbody className="divide-y divide-gray-100">
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Trial</td>
  <td className="px-6 py-4 text-green-700 font-medium">Free</td>
+ <td className="px-6 py-4 text-gray-600">60,000</td>
  <td className="px-6 py-4 text-gray-600">10,000</td>
- <td className="px-6 py-4 text-gray-600">20</td>
- <td className="px-6 py-4 text-gray-600">75</td>
- <td className="px-6 py-4 text-gray-600">10,000</td>
+ <td className="px-6 py-4 text-gray-600">Unlimited</td>
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Starter</td>
  <td className="px-6 py-4 text-gray-700 font-medium">$19/mo</td>
+ <td className="px-6 py-4 text-gray-600">20,000</td>
  <td className="px-6 py-4 text-gray-600">3,000</td>
- <td className="px-6 py-4 text-gray-600">7</td>
- <td className="px-6 py-4 text-gray-600">25</td>
- <td className="px-6 py-4 text-gray-600">3,000/mo</td>
+ <td className="px-6 py-4 text-gray-600">Unlimited</td>
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Pro</td>
  <td className="px-6 py-4 text-gray-700 font-medium">$49/mo</td>
- <td className="px-6 py-4 text-gray-600">10,000</td>
- <td className="px-6 py-4 text-gray-600">20</td>
- <td className="px-6 py-4 text-gray-600">75</td>
- <td className="px-6 py-4 text-gray-600">10,000/mo</td>
+ <td className="px-6 py-4 text-gray-600">60,000 (up to 250K)</td>
+ <td className="px-6 py-4 text-gray-600">10,000 (up to 50K)</td>
+ <td className="px-6 py-4 text-gray-600">Unlimited</td>
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Growth</td>
  <td className="px-6 py-4 text-gray-700 font-medium">$199/mo</td>
+ <td className="px-6 py-4 text-gray-600">300,000</td>
  <td className="px-6 py-4 text-gray-600">50,000</td>
- <td className="px-6 py-4 text-gray-600">75</td>
- <td className="px-6 py-4 text-gray-600">350</td>
- <td className="px-6 py-4 text-gray-600">50,000/mo</td>
+ <td className="px-6 py-4 text-gray-600">Unlimited</td>
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Scale</td>
  <td className="px-6 py-4 text-gray-700 font-medium">$349/mo</td>
+ <td className="px-6 py-4 text-gray-600">600,000</td>
  <td className="px-6 py-4 text-gray-600">100,000</td>
- <td className="px-6 py-4 text-gray-600">150</td>
- <td className="px-6 py-4 text-gray-600">700</td>
- <td className="px-6 py-4 text-gray-600">100,000/mo</td>
+ <td className="px-6 py-4 text-gray-600">Unlimited</td>
  </tr>
  <tr>
  <td className="px-6 py-4 font-bold text-gray-900">Enterprise</td>
  <td className="px-6 py-4 text-gray-700 font-medium">Custom</td>
- <td className="px-6 py-4 text-gray-600">Unlimited</td>
  <td className="px-6 py-4 text-gray-600">Unlimited</td>
  <td className="px-6 py-4 text-gray-600">Unlimited</td>
  <td className="px-6 py-4 text-gray-600">Unlimited</td>
@@ -106,8 +99,9 @@ export default function BillingPage() {
  {/* How Do Usage Limits Work */}
  <h2 className="text-3xl font-bold mb-6 text-gray-900">How Do Usage Limits Work?</h2>
  <p className="text-gray-600 mb-4">
- Your plan determines the maximum number of active leads, domains (protection limit), mailboxes, and email validation credits Superkabe monitors.
- Usage is tracked in real-time with visual progress bars on the billing page, including a lifetime count of emails validated.
+ Your plan defines two caps: monthly email sends and email-validation credits.
+ Usage is tracked in real-time on the billing page with rolling 30-day counts, and once you hit either cap that resource is paused until the cap resets.
+ Domains, mailboxes, leads, and protection coverage are unlimited at every tier &mdash; scale your infra without scaling your bill.
  </p>
 
  {/* Email Validation Credits */}
@@ -151,7 +145,7 @@ export default function BillingPage() {
  <div className="space-y-4 mb-12">
  <div className="bg-white border border-gray-200 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Full Access</h3>
- <p className="text-gray-600 text-sm">During your trial, you get full access to all Superkabe features with Pro-level limits (10K leads, 20 domains (protection limit), 75 mailboxes).</p>
+ <p className="text-gray-600 text-sm">During your trial, you get full access to all Superkabe features with Pro-tier sending volume (60K sends/mo, 10K validation credits) and unlimited domains, mailboxes, leads, and protection coverage.</p>
  </div>
  <div className="bg-white border border-gray-200 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Trial Countdown</h3>
