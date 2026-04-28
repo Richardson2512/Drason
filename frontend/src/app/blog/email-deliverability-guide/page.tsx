@@ -17,6 +17,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2025-11-01',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How to protect and master your outbound email deliverability',
+     description: 'Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/email-deliverability-guide',
  },
@@ -28,14 +34,11 @@ export default function EmailDeliverabilityGuide() {
  "@type": "BlogPosting",
  "headline": "How to protect and master your outbound email deliverability",
  "description": "Everything outbound email operators need to know about sending infrastructure, sender reputation, DNS authentication, domain warming, and protecting deliverability at scale.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
- "publisher": {
- "@type": "Organization",
- "name": "Superkabe",
- "url": "https://www.superkabe.com"
- },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2025-11-01",
- "dateModified": "2026-03-26",
+ "dateModified": "2026-04-25",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/email-deliverability-guide"
@@ -140,6 +143,7 @@ export default function EmailDeliverabilityGuide() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to protect and master your outbound email deliverability", "item": "https://www.superkabe.com/blog/email-deliverability-guide"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -147,7 +151,7 @@ export default function EmailDeliverabilityGuide() {
                         tag="Guide"
                         title="How to protect and master your outbound email deliverability"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 
@@ -677,6 +681,8 @@ export default function EmailDeliverabilityGuide() {
  </Link>
  </div>
  </section>
+            <BottomCtaStrip secondaryCta={{ label: "See pricing", href: "/pricing" }} />
+
 
  </>
  );

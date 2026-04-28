@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2025-11-20',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How to Warmup Email Domains for Cold Outreach (2026)',
+     description: 'Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/domain-warming-methodology',
  },
@@ -29,7 +35,8 @@ export default function DomainWarmingArticle() {
  "description": "Step-by-step domain warmup guide for cold email. Volume ramp schedules, warming signals, and common mistakes that burn domains in 2026.",
  "datePublished": "2025-11-20",
  "dateModified": "2026-04-07",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
@@ -108,6 +115,7 @@ export default function DomainWarmingArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to Warmup Email Domains for Cold Outreach (2026)", "item": "https://www.superkabe.com/blog/domain-warming-methodology"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -116,7 +124,7 @@ export default function DomainWarmingArticle() {
                         tag="Guide"
                         title="How to Warmup Email Domains for Cold Outreach (2026)"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-01',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Best Domain Reputation Monitoring Tools for Cold Email',
+     description: 'Ranked comparison of 6 domain reputation monitoring tools for cold email. Real-time alerts, multi-domain support, auto-pause, and pricing for outbound teams.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/best-domain-reputation-monitoring-tools',
  },
@@ -34,7 +40,8 @@ export default function BestDomainReputationMonitoringToolsArticle() {
  "@id": "https://www.superkabe.com/blog/best-domain-reputation-monitoring-tools"
  },
  "datePublished": "2026-04-01",
- "dateModified": "2026-04-01"
+ "dateModified": "2026-04-01",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -111,6 +118,7 @@ export default function BestDomainReputationMonitoringToolsArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Best domain reputation monitoring tools for cold email teams (2026)", "item": "https://www.superkabe.com/blog/best-domain-reputation-monitoring-tools"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

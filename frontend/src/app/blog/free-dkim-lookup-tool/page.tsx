@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-09',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Free DKIM Record Lookup Tool – Verify Your Email Signatures',
+     description: 'Use our free DKIM lookup tool to verify your domain',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/free-dkim-lookup-tool',
  },
@@ -27,10 +33,11 @@ export default function FreeDkimLookupToolArticle() {
  "@type": "BlogPosting",
  "headline": "Free DKIM Record Lookup Tool – Verify Your Email Signatures",
  "description": "Use our free DKIM lookup tool to verify your domain's DKIM signatures. Find missing keys, wrong selectors, and weak key lengths before they cause deliverability failures.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-04-09",
  "dateModified": "2026-04-09",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/free-dkim-lookup-tool"
@@ -108,6 +115,7 @@ export default function FreeDkimLookupToolArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Free DKIM Record Lookup Tool – Verify Your Email Signatures", "item": "https://www.superkabe.com/blog/free-dkim-lookup-tool"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -116,7 +124,7 @@ export default function FreeDkimLookupToolArticle() {
  tag="Free Tools"
  title="Free DKIM Record Lookup Tool — Verify Your Email Signatures Are Valid"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-24',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day',
+     description: '10 agency-grade cold email platforms that handle 100K+ sends/day without burning client domains. 2026 comparison.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/cold-email-tools-for-agencies' },
 };
 
@@ -75,7 +81,7 @@ export default function ColdEmailToolsForAgenciesArticle() {
                         tag="Agencies"
                         title="Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

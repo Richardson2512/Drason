@@ -16,6 +16,13 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-25',
  },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Superkabe vs Manual Email Infrastructure Monitoring",
+        description: "Manual bounce tracking in spreadsheets vs automated infrastructure protection. See what happens when you're asleep and bounce rates spike across 50+ domains.",
+        images: ['/image/og-image.png'],
+    },
+
  alternates: {
  canonical: '/blog/superkabe-vs-manual-monitoring',
  },
@@ -27,14 +34,15 @@ export default function SuperkabeVsManualMonitoringArticle() {
  "@type": "BlogPosting",
  "headline": "Superkabe vs manual email infrastructure monitoring: why spreadsheets don't scale",
  "description": "Compare manual cold email monitoring (spreadsheets, daily bounce checks, manual pausing) vs Superkabe's automated infrastructure protection. Real scenarios show why manual monitoring fails at scale.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/superkabe-vs-manual-monitoring"
  },
  "datePublished": "2026-03-25",
- "dateModified": "2026-03-26"
+ "dateModified": "2026-03-26",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -87,6 +95,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Superkabe vs manual email infrastructure monitoring: why spreadsheets don\'t scale", "item": "https://www.superkabe.com/blog/superkabe-vs-manual-monitoring"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -94,7 +103,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
                     tag="Comparison"
                     title="Superkabe vs manual email infrastructure monitoring: why spreadsheets don&apos;t scale"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 

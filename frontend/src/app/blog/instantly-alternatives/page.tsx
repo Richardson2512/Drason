@@ -15,6 +15,12 @@ export const metadata: Metadata = {
         type: 'article',
         publishedTime: '2026-04-25',
     },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Best Instantly Alternatives for Cold Email Teams (2026)',
+        description: 'Instantly is feature-rich but per-active-lead pricing and lack of native auto-pause push teams to look elsewhere. Here are 7 ranked Instantly alternatives.',
+        images: ['/image/og-image.png'],
+    },
     alternates: { canonical: '/blog/instantly-alternatives' },
 };
 
@@ -26,7 +32,8 @@ export default function InstantlyAlternativesPage() {
         "description": "Ranked Instantly.ai alternatives for cold email teams. Compares Superkabe, Smartlead, EmailBison, Lemlist, Woodpecker, Saleshandy, and Mailshake on pricing, deliverability protection, and AI sequencing.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
-        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/instantly-alternatives" }
     };
@@ -88,6 +95,7 @@ export default function InstantlyAlternativesPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Best Instantly Alternatives for Cold Email Teams (2026)", "item": "https://www.superkabe.com/blog/instantly-alternatives"}]}) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -96,7 +104,7 @@ export default function InstantlyAlternativesPage() {
                     tag="Alternatives"
                     title="Best Instantly alternatives for cold email teams (2026)"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 

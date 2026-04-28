@@ -124,6 +124,12 @@ function DocJsonLd() {
  articleSection: isHelpPage ? 'Help Center' : sectionTitle,
  };
 
+ // Section URL — first item in the section is conventionally the
+ // section landing/intro page, so we use its href as the position-2
+ // breadcrumb URL. Without `item` Google's BreadcrumbList parser
+ // rejects the markup entirely (Sept 2024 spec change).
+ const sectionHref = section?.items?.[0]?.href || '/docs';
+
  const breadcrumb = {
  '@context': 'https://schema.org',
  '@type': 'BreadcrumbList',
@@ -138,6 +144,7 @@ function DocJsonLd() {
  '@type': 'ListItem',
  position: 2,
  name: sectionTitle,
+ item: `https://www.superkabe.com${sectionHref}`,
  },
  {
  '@type': 'ListItem',

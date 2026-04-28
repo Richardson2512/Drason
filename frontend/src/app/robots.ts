@@ -13,16 +13,21 @@ export default function robots(): MetadataRoute.Robots {
             },
             // Major AI crawlers — explicitly allowed on all public content
             ...[
-                'GPTBot',           // OpenAI
+                'GPTBot',           // OpenAI training crawler
+                'OAI-SearchBot',    // OpenAI live-search crawler (ChatGPT browsing) — separate from GPTBot
+                'ChatGPT-User',     // OpenAI on-demand fetcher when a user asks ChatGPT to read a URL
                 'Google-Extended',  // Google Gemini
-                'ClaudeBot',        // Anthropic Claude
+                'ClaudeBot',        // Anthropic Claude training
+                'Claude-Web',       // Anthropic Claude live-fetch
                 'PerplexityBot',    // Perplexity AI
-                'Bingbot',          // Microsoft Copilot
+                'Perplexity-User',  // Perplexity on-demand fetcher
+                'Bingbot',          // Microsoft Copilot / Bing
                 'Applebot-Extended', // Apple Intelligence
                 'Amazonbot',        // Amazon Alexa AI
                 'meta-externalagent', // Meta AI (Llama)
                 'YouBot',           // You.com AI search
                 'cohere-ai',        // Cohere enterprise AI
+                'Bytespider',       // ByteDance / TikTok AI
             ].map(bot => ({
                 userAgent: bot,
                 allow: publicAllow,

@@ -15,6 +15,13 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Email Validation for Cold Email Agencies: Protect Clients",
+        description: "You send on client domains, not yours. Here's how agencies protect multiple clients' infrastructure at scale without burning through domains or losing accounts.",
+        images: ['/image/og-image.png'],
+    },
+
  alternates: {
  canonical: '/blog/email-validation-for-agencies',
  },
@@ -28,6 +35,7 @@ export default function EmailValidationForAgenciesArticle() {
  "description": "Agency-specific guide to email validation for cold outreach. Covers multi-client domain protection, ROI math, per-client isolation, and how to make.",
  "datePublished": "2026-03-27",
  "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/email-validation-for-agencies" }
@@ -99,6 +107,7 @@ export default function EmailValidationForAgenciesArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Email Validation for Cold Email Agencies: Protect Clients", "item": "https://www.superkabe.com/blog/email-validation-for-agencies"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article className="prose prose-lg max-w-none text-gray-700">

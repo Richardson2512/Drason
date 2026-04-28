@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-01',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Domain Reputation Dropped? The Complete Recovery Playbook',
+     description: 'Your domain reputation tanked after outreach. Here is the complete recovery playbook: diagnosis, root cause fixes, ISP reset timelines, and re-warming schedules.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/domain-reputation-recovery-guide',
  },
@@ -27,14 +33,15 @@ export default function DomainReputationRecoveryGuideArticle() {
  "@type": "BlogPosting",
  "headline": "Domain reputation dropped? The complete recovery playbook",
  "description": "Step-by-step domain reputation recovery after cold email damage. Covers diagnosis, blacklist removal, re-warming schedules, recovery timelines for Gmail.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/domain-reputation-recovery-guide"
  },
  "datePublished": "2026-04-01",
- "dateModified": "2026-04-01"
+ "dateModified": "2026-04-01",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -103,6 +110,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Domain reputation dropped? The complete recovery playbook", "item": "https://www.superkabe.com/blog/domain-reputation-recovery-guide"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -110,7 +118,7 @@ export default function DomainReputationRecoveryGuideArticle() {
                         tag="Guide"
                         title="Domain reputation dropped? The complete recovery playbook"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

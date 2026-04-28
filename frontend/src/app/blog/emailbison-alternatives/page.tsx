@@ -15,6 +15,12 @@ export const metadata: Metadata = {
         type: 'article',
         publishedTime: '2026-04-25',
     },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Best EmailBison Alternatives for Cold Email (2026)',
+        description: 'EmailBison wins on raw send volume but lacks ESP routing, healing, and a polished UI. Here are 7 ranked EmailBison alternatives for teams that need more.',
+        images: ['/image/og-image.png'],
+    },
     alternates: { canonical: '/blog/emailbison-alternatives' },
 };
 
@@ -26,7 +32,8 @@ export default function EmailBisonAlternativesPage() {
         "description": "Ranked EmailBison alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, Lemlist, Saleshandy, Woodpecker, and Mailshake.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
-        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/emailbison-alternatives" }
     };
@@ -87,6 +94,7 @@ export default function EmailBisonAlternativesPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Best EmailBison Alternatives for Cold Email (2026)", "item": "https://www.superkabe.com/blog/emailbison-alternatives"}]}) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -95,7 +103,7 @@ export default function EmailBisonAlternativesPage() {
                     tag="Alternatives"
                     title="Best EmailBison alternatives for cold email (2026)"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 

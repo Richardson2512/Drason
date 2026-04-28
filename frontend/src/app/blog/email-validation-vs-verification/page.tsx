@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Email Validation vs Email Verification: What',
+     description: 'Validation checks if an email can theoretically receive mail. Verification checks if the specific mailbox exists. Cold outreach teams that confuse the two end up with burned domains.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/email-validation-vs-verification',
  },
@@ -27,14 +33,15 @@ export default function EmailValidationVsVerificationArticle() {
  "@type": "BlogPosting",
  "headline": "Email validation vs email verification: what's actually different",
  "description": "Email validation and email verification are not the same thing. Validation checks format and domain existence. Verification probes the mailbox via SMTP.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/email-validation-vs-verification"
  },
  "datePublished": "2026-03-27",
- "dateModified": "2026-03-27"
+ "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -87,6 +94,7 @@ export default function EmailValidationVsVerificationArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Email validation vs email verification: what\'s actually different", "item": "https://www.superkabe.com/blog/email-validation-vs-verification"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -94,7 +102,7 @@ export default function EmailValidationVsVerificationArticle() {
  tag="Comparison"
  title="Email validation vs email verification: what's actually different"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

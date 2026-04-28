@@ -16,6 +16,13 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-07',
  },
+    twitter: {
+        card: 'summary_large_image',
+        title: "NeverBounce Catch-All Detection: What It Does",
+        description: "NeverBounce flags catch-all domains as accept_all. Their recommendation: don't send. But 30-40% of B2B leads are catch-all. Here is a practical approach that actually works.",
+        images: ['/image/og-image.png'],
+    },
+
  alternates: {
  canonical: '/blog/neverbounce-catch-all-detection',
  },
@@ -31,6 +38,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-04-07",
  "dateModified": "2026-04-07",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/neverbounce-catch-all-detection"
@@ -95,6 +103,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "NeverBounce Catch-All Detection: What It Does and What It Doesn\'t", "item": "https://www.superkabe.com/blog/neverbounce-catch-all-detection"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

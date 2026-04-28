@@ -16,6 +16,13 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-07',
  },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs",
+        description: "ZeroBounce labels catch-all. NeverBounce says don't send. Superkabe lets you send safely. Here is the full comparison for outbound teams dealing with catch-all domains.",
+        images: ['/image/og-image.png'],
+    },
+
  alternates: {
  canonical: '/blog/catch-all-detection-zerobounce-vs-neverbounce',
  },
@@ -27,10 +34,11 @@ export default function CatchAllDetectionComparisonArticle() {
  "@type": "BlogPosting",
  "headline": "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs",
  "description": "A head-to-head comparison of how ZeroBounce, NeverBounce, and Superkabe handle catch-all domains.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-04-07",
  "dateModified": "2026-04-07",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/catch-all-detection-zerobounce-vs-neverbounce"
@@ -103,6 +111,7 @@ export default function CatchAllDetectionComparisonArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Catch-All Domain Detection: ZeroBounce vs NeverBounce vs", "item": "https://www.superkabe.com/blog/catch-all-detection-zerobounce-vs-neverbounce"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -110,7 +119,7 @@ export default function CatchAllDetectionComparisonArticle() {
                         tag="Comparison"
                         title="Catch-all domain detection: ZeroBounce vs NeverBounce vs Superkabe (2026 comparison)"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

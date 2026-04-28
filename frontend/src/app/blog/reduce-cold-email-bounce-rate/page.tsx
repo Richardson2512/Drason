@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How to Get Your Cold Email Bounce Rate Below 2%',
+     description: 'Seven concrete steps to get your cold email bounce rate under the 2% threshold that Google and Yahoo enforce. Includes the math on what happens when you skip validation.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/reduce-cold-email-bounce-rate',
  },
@@ -31,6 +37,7 @@ export default function ReduceBounceRateArticle() {
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-03-27",
  "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/reduce-cold-email-bounce-rate"
@@ -95,6 +102,7 @@ export default function ReduceBounceRateArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to Get Your Cold Email Bounce Rate Below 2%", "item": "https://www.superkabe.com/blog/reduce-cold-email-bounce-rate"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

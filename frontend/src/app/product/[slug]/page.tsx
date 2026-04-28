@@ -148,7 +148,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                                 tag="Product"
                                 title={data.title}
                                 dateModified={dateModified}
-                                authorName="Edward Sam"
+                                authorName="Robert Smith"
                                 authorRole="Deliverability Specialist · Superkabe"
                             />
 

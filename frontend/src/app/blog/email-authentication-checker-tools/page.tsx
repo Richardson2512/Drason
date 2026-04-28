@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-09',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Free Email Authentication Checker Tools – SPF, DKIM & DMARC',
+     description: 'Use our free email authentication tools to check SPF, DKIM, and DMARC records for any domain.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/email-authentication-checker-tools',
  },
@@ -31,6 +37,7 @@ export default function EmailAuthenticationCheckerToolsArticle() {
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-04-09",
  "dateModified": "2026-04-09",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/email-authentication-checker-tools"
@@ -117,6 +124,7 @@ export default function EmailAuthenticationCheckerToolsArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Free Email Authentication Checker Tools – SPF, DKIM & DMARC", "item": "https://www.superkabe.com/blog/email-authentication-checker-tools"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 

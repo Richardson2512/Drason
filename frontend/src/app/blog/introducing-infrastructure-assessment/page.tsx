@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-02-01',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Infrastructure Assessment: Pre-Flight Cold Email Checks',
+     description: 'Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/introducing-infrastructure-assessment',
  },
@@ -28,12 +34,9 @@ export default function InfrastructureAssessmentPost() {
  "description": "Stop guessing about your deliverability. Our new Infrastructure Assessment scores your domains, DNS, and mailbox health before you send a single email.",
  "datePublished": "2026-02-01",
  "dateModified": "2026-03-26",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
- "publisher": {
- "@type": "Organization",
- "name": "Superkabe",
- "url": "https://www.superkabe.com"
- },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/introducing-infrastructure-assessment"
@@ -43,12 +46,13 @@ export default function InfrastructureAssessmentPost() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to assess your outbound email infrastructure before sending your first campaign", "item": "https://www.superkabe.com/blog/introducing-infrastructure-assessment"}]}) }} />
  <article className="prose prose-lg text-gray-700 max-w-none">
  <BlogHeader
  tag="New Feature"
  title="How to assess your outbound email infrastructure before sending your first campaign"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

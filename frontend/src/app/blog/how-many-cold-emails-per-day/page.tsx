@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-18',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How Many Cold Emails Can I Send Per Day?',
+     description: 'Safe daily sending limits per mailbox and domain for cold email. Volume guidelines for Google Workspace, Outlook 365, and Smartlead.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/how-many-cold-emails-per-day' },
 };
 
@@ -29,6 +35,7 @@ export default function HowManyColdEmailsPerDayArticle() {
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/how-many-cold-emails-per-day" },
  "datePublished": "2026-04-18",
  "dateModified": "2026-04-18",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "speakable": {
  "@type": "SpeakableSpecification",
  "cssSelector": [".snippet-answer"]
@@ -60,6 +67,7 @@ export default function HowManyColdEmailsPerDayArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How Many Cold Emails Can I Send Per Day?", "item": "https://www.superkabe.com/blog/how-many-cold-emails-per-day"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

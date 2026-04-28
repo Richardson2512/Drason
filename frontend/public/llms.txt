@@ -1,160 +1,83 @@
 # Superkabe
 
-> Superkabe is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing. The protection layer (auto-pause at 3% bounce rate, 5-phase healing pipeline, real-time DSN parsing, Google Postmaster Tools and SNDS reputation signals, ARF feedback loop ingestion) runs on every send — no separate dashboard, no third-party deliverability add-on. Superkabe validates leads before sending (syntax, MX, disposable, catch-all, MillionVerifier API), monitors every mailbox and domain in real time, routes each lead to the mailbox with the strongest 30-day per-ESP performance, and auto-heals damaged senders before reputation damage becomes irreversible.
+> AI-powered cold email platform with native deliverability protection. AI sequence generation, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, hybrid email validation, ESP-aware lead routing, and a 5-phase auto-healing pipeline that pauses and recovers damaged senders before they burn. Pricing from $19/month with a 14-day free trial. Founded 2024 by Balaji Jayakumar.
 
-## What Superkabe Does (Product)
+## Core pages
 
-### Native Sending Sequencer
-- Connect mailboxes via Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials (Zapmail, Scaledmail, MissionInbox, custom workspaces)
-- Multi-step sequences with A/B variant testing, per-step branching, and AI-drafted copy
-- HMAC-signed tracking tokens for opens, clicks, and unsubscribes (replay-safe, 180-day TTL)
-- Unified inbox across all connected mailboxes with reply quality classification
-- Per-mailbox daily caps, per-org global send caps, time-of-day and day-of-week schedules
-- IMAP reply polling every 60 seconds; full RFC 3464 DSN parsing for asynchronous bounces
+- [Pricing](https://www.superkabe.com/pricing): Flat monthly tiers from $19 (Starter) to $349 (Scale), plus Enterprise. Every tier includes the full deliverability protection layer.
+- [Product overview](https://www.superkabe.com/product): All capabilities in one place — AI sequences, mailbox warmup, validation, healing pipeline, ESP routing, integrations.
+- [Documentation hub](https://www.superkabe.com/docs): Help center, API reference, MCP server reference.
+- [Public REST API v1](https://www.superkabe.com/docs/api-documentation): Endpoint reference for leads, campaigns, mailboxes, domains, replies, validation, webhooks.
+- [Infrastructure playbook](https://www.superkabe.com/infrastructure-playbook): Long-form operator's guide to running cold email infrastructure at scale.
 
-### Lead Control Plane
-- Upload CSV lead lists for bulk email validation
-- Every lead validated: syntax, MX record lookup, disposable detection, catch-all detection, conditional MillionVerifier API probe
-- Every recipient domain classified by ESP (Gmail, Microsoft 365, Yahoo, Other) via MX pattern matching
-- Valid leads routed to native sequencer campaigns with ESP-aware mailbox assignment
-- Invalid leads held with rejection reason codes
-- Cross-batch duplicate detection
-- Monthly validation credits per plan tier
+## Pricing tiers (verified 2026-04-29)
 
-### ESP-Aware Mailbox Routing
-- Tracks every email sent, bounced, and replied per mailbox per recipient ESP
-- Aggregates 30-day rolling performance into a per-mailbox × per-ESP matrix
-- When dispatching a send, scores candidate mailboxes by their bounce rate to that specific recipient ESP
-- Performance-based, not naive provider-matching — an Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate
-- Warming-up threshold: requires 30+ sends per cell before scoring activates
+- Trial — Free 14 days, 60K sends/mo, 10K validation credits.
+- Starter — $19/month, 20K sends/mo, 3K validation credits.
+- Pro — $49/month base, 60K sends + 10K credits. Volume dropdown adds 80K / 100K / 150K / 200K / 250K sends at $59 / $79 / $109 / $139 / $169 with proportional credits up to 50K.
+- Growth — $199/month, 300K sends/mo, 60K validation credits, MillionVerifier API for risky leads.
+- Scale — $349/month, 600K sends/mo, 100K validation credits, advanced hybrid validation.
+- Enterprise — Custom pricing, unlimited sends + credits, dedicated SLA.
 
-### Real-Time Deliverability Protection
-- Monitors every mailbox, domain, and campaign every 60 seconds
-- Detects bounce rate spikes via SMTP transcript capture and DSN parsing
-- Pulls domain reputation from Google Postmaster Tools, IP reputation from Microsoft SNDS
-- Ingests Yahoo, AOL, Microsoft, Comcast spam-complaint feedback loops (ARF)
-- Checks 410 DNSBL lists with tiered severity
-- Sliding-window risk tracking with predictive variance analysis
+## Foundational guides
 
-### Auto-Pause and 5-Phase Healing
-- Auto-pauses mailboxes when bounce rate thresholds are breached (configurable per domain, default 3% over a rolling 100-send window)
-- 5-phase healing pipeline: Pause → Quarantine (DNS verification) → Restricted Send (15 clean sends) → Warm Recovery (50 sends over 3 days) → Healthy
-- Each phase transition gated by deterministic health checks, not arbitrary timers
-- Mailbox rotation: automatic standby swap when a mailbox is paused
+- [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Complete operator's reference for deliverability — sender reputation, DNS auth, bounce thresholds, warmup, infrastructure protection.
+- [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): Four-layer breakdown of how Gmail / Microsoft / Yahoo classify cold email.
+- [Domain Warming Methodology](https://www.superkabe.com/blog/domain-warming-methodology): Day-by-day warmup curves with real-world thresholds.
+- [Cold Email Bounce Rate Thresholds](https://www.superkabe.com/blog/cold-email-bounce-rate-thresholds): Per-ISP bounce rate thresholds and the SMTP code escalation pattern.
+- [Bounce Rate vs Deliverability](https://www.superkabe.com/blog/bounce-rate-deliverability): How bounce rate maps to spam folder placement.
+- [Email Reputation Lifecycle](https://www.superkabe.com/blog/email-reputation-lifecycle): How sender reputation accumulates, decays, and recovers.
+- [SPF / DKIM / DMARC Explained](https://www.superkabe.com/blog/email-authentication-checker-tools): DNS authentication primer with verification tools.
+- [Domain Reputation Recovery Guide](https://www.superkabe.com/blog/domain-reputation-recovery-guide): How to recover a domain after a deliverability incident.
+- [Domain Burned: Recovery and Prevention](https://www.superkabe.com/blog/domain-burned-recovery-prevention): What "burned" means at the ISP level and how to bring it back.
+- [Real-time Email Infrastructure Monitoring](https://www.superkabe.com/blog/real-time-email-infrastructure-monitoring): What to monitor and why 60-second cycles matter.
+- [How to Remove Domain From Blacklist](https://www.superkabe.com/blog/how-to-remove-domain-from-blacklist): Per-blacklist delisting playbook.
 
-### Execution Gate
-- Classify leads as GREEN (send), YELLOW (send with caution), RED (block) based on infrastructure and engagement signals
-- Correlation analysis: determine whether an issue is mailbox-level, domain-level, or campaign-level
-- Routing rules: match leads to campaigns by persona + min_score against priority-ordered rules
+## Comparisons
 
-### Analytics and Reporting
-- ESP Performance Matrix: per-mailbox bounce rate by Gmail/Microsoft/Yahoo/Other
-- Validation analytics: rejection reasons, invalid rate by source, 30-day trend
-- Campaign, mailbox, and domain health dashboards
-- Domain reputation time series from Postmaster Tools and SNDS
-- Audit log with full event history
-- Slack real-time alerts for deliverability events
+- [Smartlead Alternatives](https://www.superkabe.com/blog/smartlead-alternatives): 7 platforms ranked by deliverability protection.
+- [Email Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Category-by-category comparison of monitoring, validation, and protection tools.
+- [Best Email Validation Tools (Cold Outreach)](https://www.superkabe.com/blog/best-email-validation-tools-cold-outreach): MillionVerifier vs ZeroBounce vs NeverBounce vs others.
+- [ZeroBounce Alternatives](https://www.superkabe.com/blog/zerobounce-alternatives): Lower-cost alternatives + tradeoffs.
+- [NeverBounce Alternatives](https://www.superkabe.com/blog/neverbounce-alternatives): Same for NeverBounce.
+- [Email Validation: Smartlead vs Instantly](https://www.superkabe.com/blog/email-validation-smartlead-instantly): Where each platform's built-in validation falls short.
+- [Catch-All Detection: ZeroBounce vs NeverBounce](https://www.superkabe.com/blog/catch-all-detection-zerobounce-vs-neverbounce): Catch-all-specific accuracy comparison.
 
-## Pricing
+## Troubleshooting
 
-Two-meter pricing — only monthly send volume and email-validation credits
-are metered. Domains, mailboxes, leads, and protection coverage are unlimited
-at every tier.
+- [Why Smartlead Emails Are Going to Spam](https://www.superkabe.com/blog/why-smartlead-emails-going-to-spam): Six concrete causes + fixes.
+- [Why Verified Emails Still Bounce](https://www.superkabe.com/blog/why-verified-emails-still-bounce): The validation gap that catch-all detection misses.
+- [Cold Email Deliverability Troubleshooting](https://www.superkabe.com/blog/cold-email-deliverability-troubleshooting): Symptom-to-cause decision tree.
+- [How to Check Domain Reputation (Cold Email)](https://www.superkabe.com/blog/how-to-check-domain-reputation-cold-email): Tools and signals to monitor.
+- [How to Know if a Domain Is Burned](https://www.superkabe.com/blog/how-to-know-if-domain-is-burned): Diagnostic indicators.
+- [Catch-All Domains in Cold Outreach](https://www.superkabe.com/blog/catch-all-domains-cold-outreach): Why catch-alls inflate validation pass rates and hurt sender reputation.
 
-- Trial: Free 14 days, 60K sends/mo, 10K validation credits
-- Starter: $19/month, 20K sends/mo, 3K validation credits
-- Pro: $49/month, 60K sends/mo, 10K validation credits (volume dropdown up to 250K sends)
-- Growth: $199/month, 300K sends/mo, 60K validation credits, MillionVerifier API for risky leads
-- Scale: $349/month, 600K sends/mo, 100K validation credits, aggressive hybrid validation
-- Enterprise: Custom pricing, unlimited sends + validation credits, dedicated SLA
+## Help & docs
 
-## Lead-Source and Alert Integrations
+- [Validation Credits](https://www.superkabe.com/docs/help/validation-credits): How credits are consumed and per-tier limits.
+- [Bounce Classification](https://www.superkabe.com/docs/help/bounce-classification): Hard vs soft bounce handling.
+- [Auto-healing](https://www.superkabe.com/docs/help/auto-healing): How the 5-phase pipeline works.
+- [Analytics](https://www.superkabe.com/docs/help/analytics): Open / click / reply / bounce dashboards.
+- [Clay integration](https://www.superkabe.com/docs/clay-integration): How to ingest Clay-enriched leads.
+- [Slack integration](https://www.superkabe.com/docs/slack-integration): How to receive operational alerts in Slack.
+- [API & Webhooks](https://www.superkabe.com/docs/api-webhooks): Programmatic access overview.
+- [MCP Server](https://www.superkabe.com/docs/mcp-server): Model Context Protocol server for Claude / OpenAI agents.
 
-- Clay (HMAC-signed webhook ingestion for enriched leads)
-- Slack (real-time deliverability alerts and slash commands)
+## Free tools
 
-## Key Pages
+- [SPF Lookup](https://www.superkabe.com/tools/spf-lookup) · [SPF Generator](https://www.superkabe.com/tools/spf-generator)
+- [DKIM Lookup](https://www.superkabe.com/tools/dkim-lookup) · [DKIM Generator](https://www.superkabe.com/tools/dkim-generator)
+- [DMARC Lookup](https://www.superkabe.com/tools/dmarc-lookup) · [DMARC Generator](https://www.superkabe.com/tools/dmarc-generator)
+- [Email Deliverability Glossary](https://www.superkabe.com/guides/email-deliverability-glossary)
 
-- [Homepage](https://www.superkabe.com): Product overview and features
-- [Pricing](https://www.superkabe.com/pricing): Plan comparison
-- [Product Hub](https://www.superkabe.com/product): Feature-specific pages
-- [Lead Control Plane](https://www.superkabe.com/product/lead-control-plane): CSV upload → validate → route pipeline
-- [ESP-Aware Routing](https://www.superkabe.com/product/esp-aware-routing): Performance-based mailbox scoring
+## Trust & compliance
 
-### Native Sending Capability Pages
-- [AI Cold Email Sequences](https://www.superkabe.com/product/ai-cold-email-sequences): Multi-step AI-drafted sequences with per-step variant testing
-- [Unlimited Multi-Mailbox Sending](https://www.superkabe.com/product/unlimited-multi-mailbox-sending): Google Workspace + Microsoft 365 + custom SMTP, no seat limits
-- [Cold Email Sending Analytics](https://www.superkabe.com/product/cold-email-sending-analytics): Send funnel + inbox placement + domain health
-- [Infrastructure Playbook](https://www.superkabe.com/infrastructure-playbook): A-Z setup guide
-- [Documentation](https://www.superkabe.com/docs): Technical guides + help articles
-- [Blog](https://www.superkabe.com/blog): Articles on cold email deliverability
+- [Privacy Policy](https://www.superkabe.com/privacy): GDPR / CCPA / DPDP / PDPA compliance posture, data subject rights.
+- [Terms of Service](https://www.superkabe.com/terms): Customer obligations including CAN-SPAM § 5(a)(5) postal address requirement.
+- [Cookie consent](https://www.superkabe.com/privacy#cookies): Google Consent Mode v2 — analytics cookies are gated by explicit opt-in.
 
-### Cold-Email Tool Buyer Guides (2026)
-- [Best Cold Email Tools in 2026: 15 Ranked](https://www.superkabe.com/blog/best-cold-email-tools-2026)
-- [Cold Email Software Compared](https://www.superkabe.com/blog/cold-email-software-compared)
-- [Cold Email AI Tools](https://www.superkabe.com/blog/cold-email-ai-tools)
-- [Cold Email Tools for Agencies](https://www.superkabe.com/blog/cold-email-tools-for-agencies)
-- [Free Cold Email Tools](https://www.superkabe.com/blog/free-cold-email-tools)
-- [Free Tools](https://www.superkabe.com/tools): SPF, DKIM, DMARC lookup and generator tools
-- [Release Notes](https://www.superkabe.com/release-notes)
+## Optional
 
-## Documentation
-
-### Getting Started
-- [Getting Started](https://www.superkabe.com/docs/getting-started): Setup and mailbox connection
-- [Clay Integration](https://www.superkabe.com/docs/clay-integration): Lead enrichment webhook
-- [Slack Integration](https://www.superkabe.com/docs/slack-integration): Alert configuration
-- [API & Webhooks](https://www.superkabe.com/docs/api-integration): REST API reference
-
-### Core Concepts
-- [Monitoring System](https://www.superkabe.com/docs/monitoring): Thresholds and auto-pause
-- [Execution Gate](https://www.superkabe.com/docs/execution-gate): GREEN/YELLOW/RED classification
-- [Risk Scoring](https://www.superkabe.com/docs/risk-scoring): Multi-signal scoring model
-- [State Machine](https://www.superkabe.com/docs/state-machine): Entity lifecycle transitions
-- [Technical Architecture](https://www.superkabe.com/docs/technical-architecture): System design
-
-### Help Center
-- [Email Validation](https://www.superkabe.com/docs/help/email-validation): How validation works
-- [CSV Lead Upload](https://www.superkabe.com/docs/help/csv-upload): Upload format and workflow
-- [ESP-Aware Routing](https://www.superkabe.com/docs/help/esp-routing): Mailbox scoring by ESP
-- [Validation Credits](https://www.superkabe.com/docs/help/validation-credits): Credit mechanics and limits
-- [Auto-Healing](https://www.superkabe.com/docs/help/auto-healing): 5-phase healing pipeline
-- [DNS Setup](https://www.superkabe.com/docs/help/dns-setup): SPF, DKIM, DMARC configuration
-- [Status Colors](https://www.superkabe.com/docs/help/status-colors): Green/yellow/red indicators
-- [Billing](https://www.superkabe.com/docs/help/billing): Plans, credits, invoices
-- [Bounce Classification](https://www.superkabe.com/docs/help/bounce-classification): Hard vs soft vs transient
-
-## Who Uses Superkabe
-
-- B2B lead generation agencies managing 50+ domains across multiple clients
-- RevOps engineers scaling cold email without burning infrastructure
-- Technical founders running 10,000+ outbound emails per month
-- GTM teams using Clay → cold email pipelines
-
-## What Superkabe Is NOT
-
-- NOT an email warmup tool (use Instantly, Lemwarm, Warmup Inbox for warmup)
-- NOT a CRM or sales engagement platform
-- NOT a middleware layer for other senders. Superkabe sends natively from your own mailboxes.
-- Superkabe INCLUDES email validation as a core feature (hybrid validation with syntax, MX, disposable, catch-all, and MillionVerifier API) but goes beyond verification — it sends campaigns natively, monitors infrastructure during sending, auto-pauses on problems, heals damaged mailboxes, and routes leads by ESP performance. Verification-only tools stop after telling you if an email exists. Superkabe validates, sends, AND protects.
-
-## Sending + Built-in Protection
-
-Superkabe is one product, not two. Every send goes through your own Gmail, Microsoft 365, or SMTP mailbox AND through the deliverability protection layer at the same time:
-
-- **Sequencer dispatcher** picks the mailbox with the strongest 30-day per-ESP performance, applies the campaign's daily caps and schedule, and sends.
-- **SMTP transcript capture** records the full server response. 5xx synchronous bounces become BounceEvents in real time.
-- **DSN parser** catches asynchronous bounces returned to the mailbox via RFC 3464 delivery status notifications.
-- **ARF FBL ingestion** pulls direct spam complaints from Yahoo, AOL, Microsoft, and Comcast feedback loops.
-- **Postmaster Tools and SNDS** pull domain and IP reputation daily for every connected sending domain.
-- **State machine** correlates each signal against domain history and either allows the next send, throttles, or auto-pauses the mailbox.
-- **5-phase healing pipeline** brings paused mailboxes back without manual intervention once health signals normalize.
-
-One dashboard, one platform, native sending plus built-in deliverability protection.
-
-## Company
-
-- Founded: 2024
-- Founder: Balaji Jayakumar
-- Website: https://www.superkabe.com
-- G2: https://g2.com/products/superkabe
+- [Blog index](https://www.superkabe.com/blog): Full post archive.
+- [Sitemap](https://www.superkabe.com/sitemap.xml): Machine-readable URL set.
+- [llms-full.txt](https://www.superkabe.com/llms-full.txt): Long-form export with full content.

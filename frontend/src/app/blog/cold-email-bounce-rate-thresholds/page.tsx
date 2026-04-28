@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Cold Email Bounce Rate Thresholds: What Gets You',
+     description: 'ISP bounce thresholds, DMARC requirements, and the compounding damage timeline that gets cold email domains blacklisted. Real numbers, real consequences.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/cold-email-bounce-rate-thresholds',
  },
@@ -28,7 +34,8 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  "description": "The exact bounce rate thresholds that trigger throttling, spam folder placement, and blacklisting at Google, Microsoft, and Yahoo.",
  "datePublished": "2026-03-27",
  "dateModified": "2026-03-27",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/cold-email-bounce-rate-thresholds" }
  };
@@ -99,6 +106,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Cold Email Bounce Rate Thresholds: What Gets You", "item": "https://www.superkabe.com/blog/cold-email-bounce-rate-thresholds"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article className="prose prose-lg max-w-none text-gray-700">
@@ -106,7 +114,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  tag="Guide"
  title="Cold Email Bounce Rate Thresholds: What Gets You Blacklisted in 2026"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 
@@ -498,6 +506,12 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  </div>
  </section>
  </article>
+            <BottomCtaStrip headline="Bounce rate is a sender-reputation problem, not a list-quality problem alone." body="Superkabe ships per-mailbox bounce monitoring with auto-pause at 3% and a 5-phase healing pipeline. From 
+ </>
+ );
+}
+9/month with a 14-day free trial." secondaryCta={{ label: "See pricing", href: "/pricing" }} />
+
  </>
  );
 }

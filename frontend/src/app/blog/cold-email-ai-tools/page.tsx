@@ -16,12 +16,18 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-24',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Cold Email AI Tools: 8 Options That Actually Sound Like You (And 3 That Don',
+     description: 'AI cold email tools ranked by voice preservation and reply rate. 2026 honest review with negative cases.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/cold-email-ai-tools' },
 };
 
 export default function ColdEmailAiToolsArticle() {
  const author = {
- name: "Edward Sam",
+ name: "Robert Smith",
  jobTitle: "Deliverability Specialist",
  url: "https://www.superkabe.com",
  sameAs: ["https://www.linkedin.com/company/superkabe"],
@@ -79,7 +85,7 @@ export default function ColdEmailAiToolsArticle() {
                         tag="Comparison"
                         title="Cold Email AI Tools: 8 Options That Actually Sound Like You (And 3 That Don't)"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

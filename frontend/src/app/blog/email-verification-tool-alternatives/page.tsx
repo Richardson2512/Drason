@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-07',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Beyond Email Verification: Why Cold Email Teams',
+     description: 'Verification tools filter bad addresses. But domains still burn. The shift to infrastructure protection covers what verification misses: monitoring, auto-pause, healing, and routing.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/email-verification-tool-alternatives',
  },
@@ -29,6 +35,7 @@ export default function EmailVerificationToolAlternativesPage() {
  "description": "Email verification catches invalid addresses. Infrastructure protection catches everything else.",
  "datePublished": "2026-04-07",
  "dateModified": "2026-04-07",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
@@ -103,6 +110,7 @@ export default function EmailVerificationToolAlternativesPage() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Beyond Email Verification: Why Cold Email Teams", "item": "https://www.superkabe.com/blog/email-verification-tool-alternatives"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

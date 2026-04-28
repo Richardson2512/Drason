@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How to Protect Your Sender Reputation While Scaling Cold',
+     description: 'Scaling outbound is when things break. Here is how to protect sender reputation across 50-100+ mailboxes without burning domains.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/protect-sender-reputation-scaling-outreach',
  },
@@ -31,6 +37,7 @@ export default function ProtectSenderReputationArticle() {
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-03-27",
  "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/protect-sender-reputation-scaling-outreach"
@@ -87,6 +94,7 @@ export default function ProtectSenderReputationArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to Protect Your Sender Reputation While Scaling Cold", "item": "https://www.superkabe.com/blog/protect-sender-reputation-scaling-outreach"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

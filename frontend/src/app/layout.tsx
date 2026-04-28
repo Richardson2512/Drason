@@ -67,12 +67,23 @@ export default function RootLayout({
     '@id': 'https://www.superkabe.com/#organization',
     name: 'Superkabe',
     url: 'https://www.superkabe.com',
-    logo: 'https://www.superkabe.com/image/logo-v2.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.superkabe.com/image/logo-v2.png',
+      width: 512,
+      height: 512,
+    },
     description: 'Superkabe is an AI cold email platform with native deliverability protection. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders — all from a single product.',
     foundingDate: '2024',
     founder: {
       '@type': 'Person',
+      '@id': 'https://www.superkabe.com/about#balaji-jayakumar',
       name: 'Balaji Jayakumar',
+      jobTitle: 'Founder & CEO',
+      worksFor: { '@id': 'https://www.superkabe.com/#organization' },
+      sameAs: [
+        'https://www.linkedin.com/in/balajijayakumar',
+      ],
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -80,6 +91,8 @@ export default function RootLayout({
       email: 'support@superkabe.com',
     },
     sameAs: [
+      'https://www.linkedin.com/company/superkabe',
+      'https://twitter.com/superkabe',
       'https://github.com/Superkabereal/Superkabe',
       'https://www.crunchbase.com/organization/superkabe',
       'https://g2.com/products/superkabe',
@@ -118,16 +131,42 @@ export default function RootLayout({
       'Dedicated AI agents for cold email tasks (sequence writing, reply classification, send-time optimization)',
       'Public REST API v1 and MCP server for programmatic access',
     ],
+    // Authoritative pricing schema lives on /pricing as AggregateOffer.
+    // Reference it here so crawlers consolidate the entity, rather than
+    // re-declaring an outdated single-Offer that drifts from the real lineup.
     offers: {
-      '@type': 'Offer',
-      price: '19',
+      '@type': 'AggregateOffer',
+      lowPrice: '0',
+      highPrice: '349',
       priceCurrency: 'USD',
+      offerCount: 5,
+      url: 'https://www.superkabe.com/pricing',
     },
     publisher: {
       '@id': 'https://www.superkabe.com/#organization',
     },
     isPartOf: {
       '@id': 'https://www.superkabe.com/#organization',
+    },
+  };
+
+  // WebSite entity with SearchAction — unlocks the Google Sitelinks Searchbox
+  // for navigational queries ("superkabe ..."). The blog index supports a `q`
+  // param for in-site search, so the action target points there.
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://www.superkabe.com/#website',
+    name: 'Superkabe',
+    url: 'https://www.superkabe.com',
+    publisher: { '@id': 'https://www.superkabe.com/#organization' },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://www.superkabe.com/blog?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
     },
   };
 
@@ -201,6 +240,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       {/* suppressHydrationWarning: some browser extensions (grammarly, password managers,

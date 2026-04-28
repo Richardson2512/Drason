@@ -26,7 +26,8 @@ export default function CheapestColdEmailToolsPage() {
         "description": "The cheapest cold email tools of 2026 ranked by real cost at scale, including Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, and Mailshake.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
-        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/cheapest-cold-email-tools-2026" }
     };
@@ -64,6 +65,7 @@ export default function CheapestColdEmailToolsPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)", "item": "https://www.superkabe.com/blog/cheapest-cold-email-tools-2026"}]}) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -72,7 +74,7 @@ export default function CheapestColdEmailToolsPage() {
                     tag="Pricing"
                     title="Cheapest cold email tools of 2026 (ranked by cost-to-value)"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 

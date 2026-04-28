@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-09',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Free SPF Record Lookup Tool – Check Your Domain',
+     description: 'Use our free SPF record lookup tool to check your domain',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/free-spf-lookup-tool',
  },
@@ -27,10 +33,11 @@ export default function FreeSpfLookupToolArticle() {
  "@type": "BlogPosting",
  "headline": "Free SPF Record Lookup Tool – Check Your Domain's Email",
  "description": "Use our free SPF record lookup tool to check your domain's SPF configuration. Find missing includes, lookup limit violations, and wrong qualifiers before they damage deliverability.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2026-04-09",
  "dateModified": "2026-04-09",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/free-spf-lookup-tool"
@@ -108,6 +115,7 @@ export default function FreeSpfLookupToolArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Free SPF Record Lookup Tool – Check Your Domain\'s Email", "item": "https://www.superkabe.com/blog/free-spf-lookup-tool"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -116,7 +124,7 @@ export default function FreeSpfLookupToolArticle() {
  tag="Free Tools"
  title="Free SPF Record Lookup Tool — Check Your SPF Records"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

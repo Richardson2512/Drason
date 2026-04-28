@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-24',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends',
+     description: 'Head-to-head data on 12 cold email platforms — bounce rate, inbox placement, cost per reply. 2026 benchmark.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/cold-email-software-compared' },
 };
 
@@ -92,7 +98,7 @@ export default function ColdEmailSoftwareComparedArticle() {
                         tag="Comparison"
                         title="Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 

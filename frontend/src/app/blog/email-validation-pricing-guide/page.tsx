@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Email Validation Pricing: What It Actually Costs',
+     description: 'We compared email validation pricing across 5 tools at real volumes. Pay-per-email vs subscription, hidden costs, and why one burned domain costs more than a year of validation.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/email-validation-pricing-guide',
  },
@@ -27,14 +33,15 @@ export default function EmailValidationPricingGuideArticle() {
  "@type": "BlogPosting",
  "headline": "Email validation pricing: what it actually costs (and what it saves you)",
  "description": "Side-by-side pricing comparison of ZeroBounce, NeverBounce, MillionVerifier, Clearout, and Superkabe.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/email-validation-pricing-guide"
  },
  "datePublished": "2026-03-27",
- "dateModified": "2026-03-27"
+ "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -103,6 +110,7 @@ export default function EmailValidationPricingGuideArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Email validation pricing: what it actually costs (and what it saves you)", "item": "https://www.superkabe.com/blog/email-validation-pricing-guide"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -110,7 +118,7 @@ export default function EmailValidationPricingGuideArticle() {
  tag="Pricing"
  title="Email validation pricing: what it actually costs (and what it saves you)"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

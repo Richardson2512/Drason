@@ -41,19 +41,13 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
         <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
             <Navbar />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com" },
-                            { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog" }
-                        ]
-                    })
-                }}
-            />
+            {/*
+              Per-post BreadcrumbList (3 levels: Home > Blog > <post title>) is
+              emitted by each blog post page so the post title appears in the
+              SERP breadcrumb display. The previously-emitted 2-level layout
+              breadcrumb was removed to avoid duplicate / less-specific markup
+              taking precedence over the per-post version.
+            */}
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-16">
                 <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10 lg:gap-16">

@@ -21,6 +21,10 @@ import * as React from 'react';
 type Props = { size?: number };
 
 function LogoImg({ src, alt, size = 28 }: { src: string; alt: string; size?: number }) {
+    // Below-the-fold integration logos. `loading="lazy"` + `decoding="async"`
+    // tells React/Next 19 not to emit a `<link rel="preload" as="image">` for
+    // each — those preloads were stealing LCP bandwidth from the hero font
+    // and competing with the actual above-the-fold critical resources.
     // eslint-disable-next-line @next/next/no-img-element
     return (
         <img
@@ -28,6 +32,8 @@ function LogoImg({ src, alt, size = 28 }: { src: string; alt: string; size?: num
             alt={alt}
             width={size}
             height={size}
+            loading="lazy"
+            decoding="async"
             className="object-contain"
             style={{ width: size, height: size }}
         />

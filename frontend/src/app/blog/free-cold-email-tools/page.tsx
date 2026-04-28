@@ -16,12 +16,18 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-24',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)',
+     description: '7 actually-free cold email tools rated honestly — with the specific catch in each, not marketing claims.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/free-cold-email-tools' },
 };
 
 export default function FreeColdEmailToolsArticle() {
  const author = {
- name: "Edward Sam",
+ name: "Robert Smith",
  jobTitle: "Deliverability Specialist",
  url: "https://www.superkabe.com",
  sameAs: ["https://www.linkedin.com/company/superkabe"],
@@ -72,7 +78,7 @@ export default function FreeColdEmailToolsArticle() {
  tag="Free Tools"
  title="Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

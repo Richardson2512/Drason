@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-18',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Why Are My Smartlead Emails Going to Spam?',
+     description: 'Your Smartlead campaigns are landing in spam. Here are the 6 most common causes and step-by-step fixes for each one.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/why-smartlead-emails-going-to-spam' },
 };
 
@@ -24,11 +30,12 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  "@type": "BlogPosting",
  "headline": "Why Are My Smartlead Emails Going to Spam?",
  "description": "Your Smartlead campaigns are landing in spam. Here are the 6 most common causes and step-by-step fixes for each one.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/why-smartlead-emails-going-to-spam" },
  "datePublished": "2026-04-18",
- "dateModified": "2026-04-18"
+ "dateModified": "2026-04-18",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -56,6 +63,7 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Why Are My Smartlead Emails Going to Spam?", "item": "https://www.superkabe.com/blog/why-smartlead-emails-going-to-spam"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -63,7 +71,7 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
                     tag="Troubleshooting"
                     title="Why Are My Smartlead Emails Going to Spam?"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 
@@ -218,7 +226,7 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
                     headline="Stop Smartlead emails from hitting spam"
                     body="Smartlead sends well but does not auto-pause or heal. Superkabe ships infrastructure protection that runs on every send — auto-pause at 3% bounce, 5-phase healing, ESP-aware routing."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
-                    secondaryCta={{ label: 'See how it works', href: '/' }}
+                    secondaryCta={{ label: 'See pricing', href: '/pricing' }}
                 />
  </article>
  </>

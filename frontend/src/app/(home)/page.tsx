@@ -336,7 +336,7 @@ function ClayMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
  <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-3 border-b border-orange-100 flex items-center gap-3">
- <Image src="/clay.png" alt="Clay" width={24} height={24} className="object-contain shrink-0" />
+ <Image src="/clay.png" alt="Clay" width={24} height={24} loading="lazy" className="object-contain shrink-0" />
  <span className="text-xs font-bold text-gray-900 flex-1">Clay</span>
  <span className="text-[10px] text-orange-700 font-mono font-bold">POST</span>
  </div>
@@ -366,7 +366,7 @@ function SlackMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
  <div className="bg-[#4A154B] text-white px-4 py-3 flex items-center gap-3">
- <Image src="/slack-icon.svg" alt="Slack" width={20} height={20} className="object-contain shrink-0 brightness-0 invert" />
+ <Image src="/slack-icon.svg" alt="Slack" width={20} height={20} loading="lazy" className="object-contain shrink-0 brightness-0 invert" />
  <span className="text-xs font-bold flex-1">#superkabe-alerts</span>
  <span className="text-[10px] font-mono bg-white/10 px-2 py-0.5 ">live</span>
  </div>
@@ -852,7 +852,8 @@ export default function LandingPage() {
  loop
  muted
  playsInline
- preload="metadata"
+ preload="none"
+ poster="/Superkabe-poster.jpg"
  aria-label="Superkabe AI cold email platform demo — sequence builder, sending dashboard, and deliverability protection walkthrough"
  className="w-full h-full object-contain bg-white rounded-2xl md:rounded-3xl"
  >

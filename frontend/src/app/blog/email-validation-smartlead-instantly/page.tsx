@@ -15,6 +15,13 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Email Validation for Smartlead and Instantly Users",
+        description: "Your sending platform doesn't validate leads. Here's how to add the missing layer between enrichment and sending — whether you use Smartlead, Instantly, or both.",
+        images: ['/image/og-image.png'],
+    },
+
  alternates: {
  canonical: '/blog/email-validation-smartlead-instantly',
  },
@@ -28,6 +35,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  "description": "Smartlead and Instantly send emails. They don't validate them. Learn how to add a validation layer between Clay and your sending platform to prevent bounces, protect domains, and keep mailboxes alive.",
  "datePublished": "2026-03-27",
  "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/email-validation-smartlead-instantly" }
@@ -99,6 +107,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Email Validation for Smartlead and Instantly Users", "item": "https://www.superkabe.com/blog/email-validation-smartlead-instantly"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article className="prose prose-lg max-w-none text-gray-700">

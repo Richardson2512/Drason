@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Domain Burned From a Bad Lead List? Complete Recovery',
+     description: 'Step-by-step domain recovery after a bounce spike: blacklist removal, DNS fixes, re-warming, and how to add validation between Clay and your sender so it never happens again.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/domain-burned-recovery-prevention',
  },
@@ -34,7 +40,8 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "@id": "https://www.superkabe.com/blog/domain-burned-recovery-prevention"
  },
  "datePublished": "2026-03-27",
- "dateModified": "2026-03-27"
+ "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -103,6 +110,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Domain burned from a bad lead list? Complete recovery and prevention guide", "item": "https://www.superkabe.com/blog/domain-burned-recovery-prevention"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

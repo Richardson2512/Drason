@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-18',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How Do I Know If My Email Domain Is Burned?',
+     description: '7 warning signs your sending domain is burned and the exact steps to diagnose, recover, or replace it.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/how-to-know-if-domain-is-burned' },
 };
 
@@ -24,11 +30,12 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  "@type": "BlogPosting",
  "headline": "How Do I Know If My Email Domain Is Burned?",
  "description": "7 warning signs your sending domain is burned and the exact steps to diagnose, recover, or replace it.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/how-to-know-if-domain-is-burned" },
  "datePublished": "2026-04-18",
  "dateModified": "2026-04-18",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "speakable": {
  "@type": "SpeakableSpecification",
  "cssSelector": [".snippet-answer"]
@@ -60,6 +67,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How Do I Know If My Email Domain Is Burned?", "item": "https://www.superkabe.com/blog/how-to-know-if-domain-is-burned"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -67,7 +75,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  tag="Troubleshooting"
  title="How Do I Know If My Email Domain Is Burned?"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

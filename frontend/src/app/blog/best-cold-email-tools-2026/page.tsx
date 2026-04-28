@@ -16,12 +16,18 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-24',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Best Cold Email Tools in 2026: 15 Ranked by Deliverability, Price, and Use Case',
+     description: '15 cold email tools ranked across sending, protection, validation, warmup, and AI. Three-axis comparison for 2026 post-Gmail-enforcement outbound.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/best-cold-email-tools-2026' },
 };
 
 export default function BestColdEmailTools2026Article() {
  const author = {
- name: "Edward Sam",
+ name: "Robert Smith",
  jobTitle: "Deliverability Specialist",
  url: "https://www.superkabe.com",
  sameAs: [

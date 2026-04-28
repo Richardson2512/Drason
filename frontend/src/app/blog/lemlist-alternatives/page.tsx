@@ -15,6 +15,12 @@ export const metadata: Metadata = {
         type: 'article',
         publishedTime: '2026-04-25',
     },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Best Lemlist Alternatives for Cold Email Teams (2026)',
+        description: 'Lemlist nails personalization but per-user pricing breaks at scale. Here are 7 ranked Lemlist alternatives that compete on AI sequencing, deliverability, and economics.',
+        images: ['/image/og-image.png'],
+    },
     alternates: { canonical: '/blog/lemlist-alternatives' },
 };
 
@@ -26,7 +32,8 @@ export default function LemlistAlternativesPage() {
         "description": "Ranked Lemlist alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, EmailBison, Woodpecker, Saleshandy, and Mailshake.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
-        "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
+        "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
         "publisher": { "@id": "https://www.superkabe.com/#organization" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/lemlist-alternatives" }
     };
@@ -63,6 +70,7 @@ export default function LemlistAlternativesPage() {
     return (
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Best Lemlist Alternatives for Cold Email Teams (2026)", "item": "https://www.superkabe.com/blog/lemlist-alternatives"}]}) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -71,7 +79,7 @@ export default function LemlistAlternativesPage() {
                     tag="Alternatives"
                     title="Best Lemlist alternatives for cold email teams (2026)"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 

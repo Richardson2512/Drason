@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-18',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Top 7 Email Validation Tools for Agencies (2026)',
+     description: 'Ranked comparison of 7 email validation tools for lead gen agencies.',
+     images: ['/image/og-image.png'],
+ },
  alternates: { canonical: '/blog/top-email-validation-tools-agencies' },
 };
 
@@ -28,7 +34,8 @@ export default function TopEmailValidationToolsAgenciesArticle() {
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.superkabe.com/blog/top-email-validation-tools-agencies" },
  "datePublished": "2026-04-18",
- "dateModified": "2026-04-18"
+ "dateModified": "2026-04-18",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -66,6 +73,7 @@ export default function TopEmailValidationToolsAgenciesArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Top 7 Email Validation Tools for Agencies (2026)", "item": "https://www.superkabe.com/blog/top-email-validation-tools-agencies"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>

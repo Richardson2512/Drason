@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-03-27',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Best Email Validation Tools for Cold Outreach in 2026',
+     description: 'We ranked 6 email validation tools for cold outreach teams. Catch-all handling, pricing per email, API speed, and sending platform integrations compared side by side.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/best-email-validation-tools-cold-outreach',
  },
@@ -27,14 +33,15 @@ export default function BestEmailValidationToolsArticle() {
  "@type": "BlogPosting",
  "headline": "Best email validation tools for cold outreach in 2026",
  "description": "Ranked comparison of the best email validation tools for cold outreach in 2026. Covers catch-all detection, pricing, Smartlead/Instantly integration,.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/best-email-validation-tools-cold-outreach"
  },
  "datePublished": "2026-03-27",
- "dateModified": "2026-03-27"
+ "dateModified": "2026-03-27",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -95,6 +102,7 @@ export default function BestEmailValidationToolsArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Best email validation tools for cold outreach in 2026", "item": "https://www.superkabe.com/blog/best-email-validation-tools-cold-outreach"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -102,7 +110,7 @@ export default function BestEmailValidationToolsArticle() {
                         tag="Comparison"
                         title="Best email validation tools for cold outreach in 2026"
                         dateModified="2026-04-25"
-                        authorName="Edward Sam"
+                        authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"
                     />
 
@@ -401,6 +409,12 @@ export default function BestEmailValidationToolsArticle() {
  <Link href="/" className="text-blue-600 text-sm font-medium hover:underline">&larr; See how Superkabe protects your infrastructure</Link>
  </div>
  </section>
+            <BottomCtaStrip headline="Stop choosing between validation and protection." body="Every Superkabe plan includes hybrid validation + the full deliverability protection stack. Starts at 
+ </>
+ );
+}
+9/month." secondaryCta={{ label: "See pricing", href: "/pricing" }} />
+
  </>
  );
 }

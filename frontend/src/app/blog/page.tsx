@@ -15,6 +15,12 @@ export const metadata: Metadata = {
  siteName: 'Superkabe',
  type: 'website',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'Blog – Superkabe',
+     description: 'Deep technical guides on AI cold email, sender reputation, and deliverability protection.',
+     images: ['/image/og-image.png'],
+ },
 };
 
 const articles = [

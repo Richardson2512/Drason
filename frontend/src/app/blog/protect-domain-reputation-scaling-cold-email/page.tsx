@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2026-04-01',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'How to Protect Your Domain Reputation While Scaling Cold',
+     description: 'The scaling trap hits every cold email operation. 10 mailboxes is fine. 100+ without protection is a domain graveyard. Here is how to protect reputation while scaling.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/protect-domain-reputation-scaling-cold-email',
  },
@@ -27,14 +33,15 @@ export default function ProtectDomainReputationScalingArticle() {
  "@type": "BlogPosting",
  "headline": "How to protect your domain reputation while scaling cold email",
  "description": "Protect domain reputation at scale with bounce rate thresholds, safe sending volumes, separate domain strategy, 7 protection layers, and automated.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/protect-domain-reputation-scaling-cold-email"
  },
  "datePublished": "2026-04-01",
- "dateModified": "2026-04-01"
+ "dateModified": "2026-04-01",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 }
  };
 
  const faqSchema = {
@@ -111,6 +118,7 @@ export default function ProtectDomainReputationScalingArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "How to protect your domain reputation while scaling cold email", "item": "https://www.superkabe.com/blog/protect-domain-reputation-scaling-cold-email"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <article>
@@ -118,7 +126,7 @@ export default function ProtectDomainReputationScalingArticle() {
  tag="Strategy"
  title="How to protect your domain reputation while scaling cold email"
  dateModified="2026-04-25"
- authorName="Edward Sam"
+ authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
  />
 

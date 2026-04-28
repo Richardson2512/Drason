@@ -46,16 +46,7 @@ export default function PricingPage() {
  "applicationSubCategory": "Email Marketing Software",
  "operatingSystem": "Web",
  "brand": { "@type": "Brand", "name": "Superkabe" },
- "publisher": {
- "@type": "Organization",
- "@id": "https://www.superkabe.com/#organization",
- "name": "Superkabe",
- "url": "https://www.superkabe.com",
- "logo": {
- "@type": "ImageObject",
- "url": "https://www.superkabe.com/image/logo-v2.png"
- }
- },
+ "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "featureList": [
  "AI multi-step cold email sequences",
  "Unlimited mailbox connections (Gmail / Microsoft 365 / SMTP)",
@@ -81,6 +72,7 @@ export default function PricingPage() {
  "description": "14-day free trial. Full platform access — no credit card required.",
  "price": "0",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/signup",
  "category": "Free trial",
@@ -93,6 +85,7 @@ export default function PricingPage() {
  "description": "Solo founders sending 1k–3k emails/month. Unlimited domains, mailboxes, and leads. 20K sends + 3K validation credits per month. Auto-pause + 5-phase healing included.",
  "price": "19",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/pricing#starter",
  "category": "Subscription",
@@ -113,6 +106,7 @@ export default function PricingPage() {
  "description": "Founder-led teams running structured outbound. Unlimited domains, mailboxes, and leads. 60K–250K sends + 10K–50K validation credits (volume tiers).",
  "price": "49",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/pricing#pro",
  "category": "Subscription",
@@ -135,6 +129,7 @@ export default function PricingPage() {
  "description": "Scaling outbound. Unlimited domains, mailboxes, and leads. 300K sends + 60K validation credits + API access. Correlation engine and priority support.",
  "price": "199",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/pricing#growth",
  "category": "Subscription",
@@ -155,6 +150,7 @@ export default function PricingPage() {
  "description": "Agencies managing large domain fleets at volume. Unlimited domains, mailboxes, and leads. 600K sends + 100K validation credits + API access. Advanced correlation, rotation, and priority Slack alerts.",
  "price": "349",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/pricing#scale",
  "category": "Subscription",
@@ -181,6 +177,7 @@ export default function PricingPage() {
  "name": "Enterprise",
  "description": "Custom pricing — unlimited domains and mailboxes, super-admin console, dedicated support team, and a guaranteed deliverability SLA.",
  "priceCurrency": "USD",
+ "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
  "url": "https://www.superkabe.com/contact",
  "itemOffered": { "@id": SOFTWARE_ID },
@@ -194,23 +191,78 @@ export default function PricingPage() {
  "name": "Superkabe Pricing",
  "url": "https://www.superkabe.com/pricing",
  "description": "Transparent pricing for Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, and the full healing pipeline in every plan. From $19/month, with a 14-day free trial.",
- "isPartOf": {
- "@type": "WebSite",
- "@id": "https://www.superkabe.com/#website",
- "name": "Superkabe",
- "url": "https://www.superkabe.com"
- },
+ "isPartOf": { "@id": "https://www.superkabe.com/#website" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntity": { "@id": SOFTWARE_ID },
  "datePublished": "2025-11-01",
- "dateModified": "2026-04-28"
+ "dateModified": "2026-04-29"
+ };
+
+ const breadcrumbSchema = {
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com" },
+ { "@type": "ListItem", "position": 2, "name": "Pricing", "item": "https://www.superkabe.com/pricing" }
+ ]
+ };
+
+ // FAQPage — visible answers below also use this exact copy so the
+ // structured-content / visible-content dedup requirement is satisfied.
+ const faqSchema = {
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "How much does Superkabe cost?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Superkabe starts at $19/month for the Starter plan (20K sends + 3K validation credits). Pro is $49–$169/month depending on send volume (60K–250K sends + 10K–50K credits). Growth is $199/month (300K sends + 60K credits + API). Scale is $349/month (600K sends + 100K credits). A 14-day free trial is available with no credit card required."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Does every plan include the deliverability protection layer?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Yes. Auto-pause at 3% bounce rate, the 5-phase healing pipeline, ESP-aware routing, DNSBL monitoring, and the correlation engine are unmetered features included in every plan from Starter up. Tier pricing only meters monthly send volume and email validation credits — protection is not a paywalled add-on."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Why does Superkabe charge a flat monthly fee instead of per email?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Per-email pricing penalizes outbound teams for healthy volume and creates a perverse incentive to skip validation to save credits. A flat monthly fee with included send + validation credits aligns the platform with the customer's deliverability outcome, not the volume that put it at risk."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "Can I upgrade or downgrade my plan anytime?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "Yes. Plan changes take effect immediately and are prorated against the current billing cycle. Upgrading mid-month adds the new tier's send + validation budget for the remainder of the cycle. Downgrading retains the higher tier until the next renewal."
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "What counts as one email send?",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "One outbound email message dispatched from a connected mailbox to one recipient. Bounces and unsubscribes do not refund a send. Replies received do not consume sends. Validation checks are metered separately as validation credits, not sends."
+ }
+ }
+ ]
  };
 
  return (
  <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }} />
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(enterpriseOffer) }} />
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
@@ -256,7 +308,7 @@ export default function PricingPage() {
  <div className="bg-white border border-gray-200 p-10 md:p-14">
  <div className="text-center mb-10">
  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">What&apos;s included in every plan</p>
- <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Every tier ships with the full platform — sending, AI, and protection</h2>
+ <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">What does every Superkabe plan include?</h2>
  </div>
  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5">
  {[
@@ -289,7 +341,7 @@ export default function PricingPage() {
  {/* Pricing Tiers — popl grid-line style, 3 public tiers */}
  <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10">
  <div className="text-center mb-10">
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Pick the tier that matches your scale</h2>
+ <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">How much does Superkabe cost?</h2>
  <p className="text-base text-gray-500">Transparent, flat-rate pricing. Upgrade or downgrade anytime.</p>
  </div>
 
@@ -602,6 +654,25 @@ export default function PricingPage() {
  </div>
  </div>
  </div>
+
+ {/* FAQ — visible content matches the FAQPage JSON-LD above so the
+     structured-data requirement (FAQPage answers must appear on the
+     page) is met. Question phrasing also doubles as AEO-targeted H3s
+     for "how much does Superkabe cost" / "do all plans include
+     protection" style queries. */}
+ <section className="px-4 md:px-6 pb-16">
+ <div className="max-w-3xl mx-auto">
+ <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Pricing FAQ</h2>
+ <div className="space-y-5">
+ {faqSchema.mainEntity.map((q, i) => (
+ <div key={i} className="bg-white border border-[#D1CBC5] rounded-xl p-5">
+ <h3 className="text-base font-bold text-gray-900 mb-2">{q.name}</h3>
+ <p className="text-sm text-gray-600 leading-relaxed">{q.acceptedAnswer.text}</p>
+ </div>
+ ))}
+ </div>
+ </div>
+ </section>
 
  <div className="h-16"></div>
 

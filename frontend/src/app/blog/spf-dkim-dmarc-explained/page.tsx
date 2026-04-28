@@ -16,6 +16,12 @@ export const metadata: Metadata = {
  type: 'article',
  publishedTime: '2025-11-10',
  },
+ twitter: {
+     card: 'summary_large_image',
+     title: 'SPF, DKIM & DMARC Setup Guide for Outbound Email Teams',
+     description: 'How SPF, DKIM, and DMARC protect sender identity and why misconfiguration causes inbox placement failure for outbound email teams.',
+     images: ['/image/og-image.png'],
+ },
  alternates: {
  canonical: '/blog/spf-dkim-dmarc-explained',
  },
@@ -27,10 +33,11 @@ export default function SpfDkimDmarcArticle() {
  "@type": "BlogPosting",
  "headline": "Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams",
  "description": "Technical breakdown of email authentication protocols SPF, DKIM, and DMARC. How they protect sender identity and why misconfiguration causes inbox placement failure.",
- "author": { "@type": "Person", "name": "Edward Sam", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
+ "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "datePublished": "2025-11-10",
  "dateModified": "2026-03-26",
+        "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },
  "mainEntityOfPage": {
  "@type": "WebPage",
  "@id": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"
@@ -115,6 +122,7 @@ export default function SpfDkimDmarcArticle() {
  return (
  <>
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.superkabe.com"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.superkabe.com/blog"}, {"@type": "ListItem", "position": 3, "name": "Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams", "item": "https://www.superkabe.com/blog/spf-dkim-dmarc-explained"}]}) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -123,7 +131,7 @@ export default function SpfDkimDmarcArticle() {
                     tag="Technical"
                     title="Step-by-step DNS authentication (SPF, DKIM, DMARC) setup for outbound teams"
                     dateModified="2026-04-25"
-                    authorName="Edward Sam"
+                    authorName="Robert Smith"
                     authorRole="Deliverability Specialist · Superkabe"
                 />
 
