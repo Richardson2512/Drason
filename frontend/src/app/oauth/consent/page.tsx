@@ -48,10 +48,10 @@ function ConsentInner() {
         }
         (async () => {
             try {
-                const resp = await apiClient<{ data: ConsentDetails }>(
+                const resp = await apiClient<ConsentDetails>(
                     `/api/oauth/consent/details?session=${encodeURIComponent(session)}`,
                 );
-                setDetails(resp.data);
+                setDetails(resp);
             } catch (err: any) {
                 setError(err.message || 'Failed to load consent details');
             } finally {
@@ -65,11 +65,11 @@ function ConsentInner() {
         setSubmitting('approve');
         setError('');
         try {
-            const resp = await apiClient<{ data: { redirect_to: string } }>(
+            const resp = await apiClient<{ redirect_to: string }>(
                 '/api/oauth/consent/approve',
                 { method: 'POST', body: JSON.stringify({ session }) },
             );
-            window.location.href = resp.data.redirect_to;
+            window.location.href = resp.redirect_to;
         } catch (err: any) {
             const msg = err.message || 'Failed to approve';
             if (/login|auth|unauthor/i.test(msg)) {
@@ -86,11 +86,11 @@ function ConsentInner() {
         if (!session) return;
         setSubmitting('deny');
         try {
-            const resp = await apiClient<{ data: { redirect_to: string } }>(
+            const resp = await apiClient<{ redirect_to: string }>(
                 '/api/oauth/consent/deny',
                 { method: 'POST', body: JSON.stringify({ session }) },
             );
-            window.location.href = resp.data.redirect_to;
+            window.location.href = resp.redirect_to;
         } catch (err: any) {
             setError(err.message || 'Failed to deny');
             setSubmitting(null);
