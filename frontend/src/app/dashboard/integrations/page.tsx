@@ -81,7 +81,7 @@ const INTEGRATIONS: Integration[] = [
         name: 'Claude',
         description: 'Connect Claude.ai (browser) to Superkabe via OAuth. Run leads, campaigns, and replies from any Claude conversation — no install needed.',
         category: 'ai',
-        logo: '_claude_',
+        logo: '/brands/claude.svg',
         configPath: '/dashboard/api-mcp',
     },
 
@@ -122,7 +122,7 @@ const INTEGRATIONS: Integration[] = [
         name: 'HubSpot',
         description: 'Bi-directional CRM sync for contacts and deal stages.',
         category: 'crm',
-        logo: '_hubspot_',
+        logo: '/brands/hubspot.svg',
         configPath: '/dashboard/integrations',
         comingSoon: true,
     },
@@ -131,7 +131,7 @@ const INTEGRATIONS: Integration[] = [
         name: 'Salesforce',
         description: 'Push lead activity and replies back to your Salesforce CRM.',
         category: 'crm',
-        logo: '_salesforce_',
+        logo: '/brands/salesforce.svg',
         configPath: '/dashboard/integrations',
         comingSoon: true,
     },
@@ -206,51 +206,9 @@ function IntegrationLogo({ integration }: { integration: Integration }) {
     if (integration.logo === '_slack_') return <SlackLogo />;
     if (integration.logo === '_smtp_') return <SmtpIcon />;
     if (integration.logo === '_webhook_') return <WebhookLogo />;
-    if (integration.logo === '_claude_') return <ClaudeLogo />;
-    if (integration.logo === '_hubspot_') return <HubSpotLogo />;
-    if (integration.logo === '_salesforce_') return <SalesforceLogo />;
     if (integration.logo.startsWith('_')) return <PlaceholderLogo name={integration.name} />;
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={integration.logo} alt={integration.name} width={20} height={20} className="rounded" />;
-}
-
-function ClaudeLogo() {
-    // Anthropic's Claude mark — 4-pointed sunburst with concave sides in coral.
-    return (
-        <svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <path
-                fill="#D97757"
-                d="M16 0c.83 6.77 5.23 11.17 12 12-6.77.83-11.17 5.23-12 12-.83-6.77-5.23-11.17-12-12C10.77 11.17 15.17 6.77 16 0z"
-            />
-        </svg>
-    );
-}
-
-function HubSpotLogo() {
-    // HubSpot's sprocket — 6 nodes around a hollow ring in their signature orange.
-    return (
-        <svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="16" cy="16" r="5.5" fill="none" stroke="#FF7A59" strokeWidth="3" />
-            <circle cx="16" cy="3.5" r="2.5" fill="#FF7A59" />
-            <circle cx="27" cy="9.5" r="2.5" fill="#FF7A59" />
-            <circle cx="27" cy="22.5" r="2.5" fill="#FF7A59" />
-            <circle cx="16" cy="28.5" r="2.5" fill="#FF7A59" />
-            <circle cx="5" cy="22.5" r="2.5" fill="#FF7A59" />
-            <circle cx="5" cy="9.5" r="2.5" fill="#FF7A59" />
-        </svg>
-    );
-}
-
-function SalesforceLogo() {
-    // Salesforce cloud — stylized cloud in their signature blue.
-    return (
-        <svg width="22" height="20" viewBox="0 0 32 22" xmlns="http://www.w3.org/2000/svg">
-            <path
-                fill="#00A1E0"
-                d="M13.4 3.6C14.6 2.4 16.3 1.7 18.2 1.7c2.5 0 4.7 1.4 5.8 3.5.7-.4 1.5-.6 2.4-.6 2.6 0 4.7 2.1 4.7 4.7 0 .8-.2 1.5-.5 2.1 1.6.8 2.7 2.5 2.7 4.5 0 2.8-2.2 5-5 5H6c-3.3 0-6-2.7-6-6 0-2.7 1.8-5 4.3-5.8-.1-.4-.1-.9-.1-1.4C4.2 4.5 7.5 1 11.5 1c1 0 1.9.2 2.7.6-.5.6-.7 1.3-.8 2z"
-            />
-        </svg>
-    );
 }
 
 function WebhookLogo() {
