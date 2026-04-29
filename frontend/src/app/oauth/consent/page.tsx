@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { apiClient } from '@/lib/api';
@@ -30,7 +30,7 @@ const SCOPE_DESCRIPTIONS: Record<string, string> = {
     'reports:read': 'View campaign performance reports',
 };
 
-export default function ConsentPage() {
+function ConsentInner() {
     const router = useRouter();
     const params = useSearchParams();
     const session = params.get('session');
@@ -160,5 +160,13 @@ export default function ConsentPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function ConsentPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen w-full flex items-center justify-center bg-[#F7F2EB] text-sm text-gray-500">Loading…</div>}>
+            <ConsentInner />
+        </Suspense>
     );
 }
