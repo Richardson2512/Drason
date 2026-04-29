@@ -82,7 +82,7 @@ export default function PricingPage() {
  "@type": "Offer",
  "@id": "https://www.superkabe.com/pricing#starter",
  "name": "Starter",
- "description": "Solo founders sending 1k–3k emails/month. Unlimited domains, mailboxes, and leads. 20K sends + 3K validation credits per month. Auto-pause + 5-phase healing included.",
+ "description": "Solo founders sending 1k–3k emails/month. Unlimited domains, mailboxes, and leads. 20K sends + 3K validation credits + API per month. Auto-pause + 5-phase healing included.",
  "price": "19",
  "priceCurrency": "USD",
  "priceValidUntil": "2026-12-31",
@@ -103,7 +103,7 @@ export default function PricingPage() {
  "@type": "Offer",
  "@id": "https://www.superkabe.com/pricing#pro",
  "name": "Pro",
- "description": "Founder-led teams running structured outbound. Unlimited domains, mailboxes, and leads. 60K–250K sends + 10K–50K validation credits (volume tiers).",
+ "description": "Founder-led teams running structured outbound. Unlimited domains, mailboxes, and leads. 60K–250K sends + 10K–50K validation credits + API (volume tiers).",
  "price": "49",
  "priceCurrency": "USD",
  "priceValidUntil": "2026-12-31",
@@ -218,7 +218,7 @@ export default function PricingPage() {
  "name": "How much does Superkabe cost?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe starts at $19/month for the Starter plan (20K sends + 3K validation credits). Pro is $49–$169/month depending on send volume (60K–250K sends + 10K–50K credits). Growth is $199/month (300K sends + 60K credits + API). Scale is $349/month (600K sends + 100K credits). A 14-day free trial is available with no credit card required."
+ "text": "Superkabe starts at $19/month for the Starter plan (20K sends + 3K validation credits + API). Pro is $49–$169/month depending on send volume (60K–250K sends + 10K–50K credits + API). Growth is $199/month (300K sends + 60K credits + API). Scale is $349/month (600K sends + 100K credits + API). A 14-day free trial is available with no credit card required."
  }
  },
  {
@@ -356,7 +356,7 @@ export default function PricingPage() {
  sequencerFeatures={[
  "Unlimited domains, mailboxes, leads",
  "20,000 email sends/month",
- "3,000 email validation credits",
+ "3,000 email validation credits + API",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
@@ -378,7 +378,7 @@ export default function PricingPage() {
  sequencerFeatures={[
  "Unlimited domains, mailboxes, leads",
  "60,000 email sends/month",
- "10,000 email validation credits",
+ "10,000 email validation credits + API",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
@@ -898,7 +898,7 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  </div>
  ) : isCreditsLine && selectedOption ? (
  <span className="leading-relaxed">
- {formatCredits(selectedOption.credits)} email validation credits
+ {formatCredits(selectedOption.credits)} email validation credits + API
  </span>
  ) : (
  <span className="leading-relaxed">{feature}</span>
