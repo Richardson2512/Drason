@@ -88,6 +88,7 @@ export default function DocsPage() {
             {/* Core Concepts */}
             <h2 className="text-3xl font-bold mb-6 text-gray-900">Core Concepts</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+                <DocCard href="/docs/sequencer-overview" icon={<Zap className="text-indigo-600" size={24} />} title="Sequencer Overview" description="The sending half end-to-end — campaigns, sequences, variants, dispatcher, and the protection-layer handoff" />
                 <DocCard href="/docs/platform-rules" icon={<Shield className="text-blue-600" size={24} />} title="Platform Rules" description="System modes (observe/suggest/enforce), thresholds, and enforcement mechanisms" />
                 <DocCard href="/docs/state-machine" icon={<GitBranch className="text-blue-600" size={24} />} title="State Machine" description="Entity lifecycle states and valid transitions for mailboxes, domains, and leads" />
                 <DocCard href="/docs/email-validation" icon={<Activity className="text-green-600" size={24} />} title="Email Validation" description="Validation pipeline, status meanings, credit consumption rules per tier" />

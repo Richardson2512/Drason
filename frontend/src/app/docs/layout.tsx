@@ -34,6 +34,7 @@ const docSections = [
  {
  title: 'Core Concepts',
  items: [
+ { title: 'Sequencer Overview', href: '/docs/sequencer-overview', icon: Zap },
  { title: 'Platform Rules', href: '/docs/platform-rules', icon: Shield },
  { title: 'State Machine', href: '/docs/state-machine', icon: GitBranch },
  { title: 'Email Validation', href: '/docs/email-validation', icon: Activity },
