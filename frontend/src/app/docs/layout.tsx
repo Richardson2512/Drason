@@ -16,37 +16,55 @@ const docSections = [
  title: 'Getting Started',
  items: [
  { title: 'Introduction', href: '/docs', icon: Book },
- { title: 'Getting Started', href: '/docs/getting-started', icon: Zap },
- { title: 'Clay Integration', href: '/docs/clay-integration', icon: Activity },
- { title: 'Slack Integration', href: '/docs/slack-integration', icon: Settings },
- { title: 'API & Webhooks', href: '/docs/api-integration', icon: Settings },
+ { title: 'Quick Start', href: '/docs/getting-started', icon: Zap },
+ { title: 'Onboarding & Account Setup', href: '/docs/onboarding', icon: HelpCircle },
  ]
  },
  {
- title: 'Developers',
+ title: 'Integrations',
  items: [
- { title: 'API Documentation (v1)', href: '/docs/api-documentation', icon: Code },
- { title: 'MCP Server', href: '/docs/mcp-server', icon: Cpu },
+ { title: 'Claude (MCP)', href: '/docs/mcp-server', icon: Cpu },
+ { title: 'Slack', href: '/docs/slack-integration', icon: Settings },
+ { title: 'Clay', href: '/docs/clay-integration', icon: Activity },
+ { title: 'Webhooks', href: '/docs/webhooks', icon: Code },
+ { title: 'Migrate from Smartlead', href: '/docs/migration/from-smartlead', icon: Database },
+ { title: 'Migrate from Instantly', href: '/docs/migration/from-instantly', icon: Database },
  ]
  },
  {
  title: 'Core Concepts',
  items: [
  { title: 'Platform Rules', href: '/docs/platform-rules', icon: Shield },
- { title: 'Monitoring System', href: '/docs/monitoring', icon: Activity },
+ { title: 'State Machine', href: '/docs/state-machine', icon: GitBranch },
+ { title: 'Email Validation', href: '/docs/email-validation', icon: Activity },
+ { title: 'ESP-Aware Routing', href: '/docs/esp-aware-routing', icon: GitBranch },
  { title: 'Execution Gate', href: '/docs/execution-gate', icon: GitBranch },
  { title: 'Risk Scoring', href: '/docs/risk-scoring', icon: TrendingUp },
- { title: 'Technical Architecture', href: '/docs/technical-architecture', icon: GitBranch },
- { title: 'State Machine', href: '/docs/state-machine', icon: GitBranch },
+ { title: 'Monitoring System', href: '/docs/monitoring', icon: Activity },
+ { title: 'Warmup & Recovery', href: '/docs/warmup-recovery', icon: Activity },
  ]
  },
  {
- title: 'Configuration',
+ title: 'API Reference',
+ items: [
+ { title: 'REST API v1', href: '/docs/api-documentation', icon: Code },
+ { title: 'API Integration Guide', href: '/docs/api-integration', icon: Settings },
+ ]
+ },
+ {
+ title: 'Operations',
  items: [
  { title: 'Configuration', href: '/docs/configuration', icon: Settings },
  { title: 'Deployment', href: '/docs/deployment', icon: Settings },
  { title: 'Infrastructure Assessment', href: '/docs/infrastructure-assessment', icon: TrendingUp },
- { title: 'Warmup Recovery', href: '/docs/warmup-recovery', icon: Activity },
+ { title: 'Technical Architecture', href: '/docs/technical-architecture', icon: GitBranch },
+ { title: 'Disconnecting Integrations', href: '/docs/disconnecting', icon: AlertTriangle },
+ ]
+ },
+ {
+ title: 'Changelog',
+ items: [
+ { title: "What's New", href: '/docs/changelog', icon: Activity },
  ]
  },
  {

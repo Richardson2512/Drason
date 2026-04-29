@@ -559,7 +559,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                     {/* Setup instructions */}
                     <div className="premium-card">
                         <h3 className="text-base font-bold text-gray-900 mb-1">Setup with Claude Desktop, Code, or Cursor</h3>
-                        <p className="text-xs text-slate-500 mb-4">Same JSON works in Claude Code, Cursor, and Continue — only the config-file path differs. <a href="/docs/mcp-server#configure" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">See all client paths →</a></p>
+                        <p className="text-xs text-slate-500 mb-4">Local clients spawn the MCP server as a stdio process and authenticate with one of your API keys above. <a href="/docs/mcp-server" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">Full Claude / MCP docs →</a></p>
                         <div className="space-y-4">
                             <div className="flex gap-3">
                                 <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">1</div>
@@ -571,8 +571,8 @@ curl /api/v1/campaigns/:id/report`}</pre>
                             <div className="flex gap-3">
                                 <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">2</div>
                                 <div>
-                                    <div className="text-sm font-semibold text-gray-900">Add to Claude Desktop config</div>
-                                    <p className="text-xs text-slate-500 m-0 mt-1">Add this to your <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">claude_desktop_config.json</code>:</p>
+                                    <div className="text-sm font-semibold text-gray-900">Add to your client config</div>
+                                    <p className="text-xs text-slate-500 m-0 mt-1">Same JSON works for Claude Desktop, Claude Code, Cursor, and Continue — only the config-file path differs. <a href="/docs/mcp-server#local-clients" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">See client paths →</a></p>
                                     <div className="bg-gray-900 rounded-xl p-4 mt-2 overflow-x-auto relative">
                                         <div className="absolute top-2 right-2">
                                             <CopyBtn text={`{
@@ -582,7 +582,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
       "args": ["-y", "@superkabe/mcp-server"],
       "env": {
         "SUPERKABE_API_KEY": "sk_live_your_key_here",
-        "SUPERKABE_API_URL": "${typeof window !== 'undefined' ? window.location.origin : 'https://api.superkabe.com'}"
+        "SUPERKABE_API_URL": "https://api.superkabe.com"
       }
     }
   }
@@ -595,7 +595,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
       "args": ["-y", "@superkabe/mcp-server"],
       "env": {
         "SUPERKABE_API_KEY": "sk_live_your_key_here",
-        "SUPERKABE_API_URL": "${typeof window !== 'undefined' ? window.location.origin : 'https://api.superkabe.com'}"
+        "SUPERKABE_API_URL": "https://api.superkabe.com"
       }
     }
   }
