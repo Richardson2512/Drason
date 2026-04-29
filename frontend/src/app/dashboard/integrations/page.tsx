@@ -15,7 +15,7 @@ interface Integration {
     id: string;
     name: string;
     description: string;
-    category: 'sending' | 'leads' | 'crm' | 'notifications' | 'sequencer' | 'developer' | 'migration';
+    category: 'sending' | 'leads' | 'crm' | 'notifications' | 'sequencer' | 'developer' | 'migration' | 'ai';
     logo: string;           // path to /public asset or inline
     configPath: string;     // deep-link to configure
     settingKey?: string;    // key in settings API to check connection
@@ -75,6 +75,16 @@ const INTEGRATIONS: Integration[] = [
         statusKey: 'SLACK_ALERTS_STATUS',
     },
 
+    // AI Assistants
+    {
+        id: 'claude',
+        name: 'Claude',
+        description: 'Connect Claude.ai (browser) to Superkabe via OAuth. Run leads, campaigns, and replies from any Claude conversation — no install needed.',
+        category: 'ai',
+        logo: '_claude_',
+        configPath: '/dashboard/api-mcp',
+    },
+
     // Developer
     {
         id: 'webhooks',
@@ -130,6 +140,7 @@ const INTEGRATIONS: Integration[] = [
 const CATEGORIES: { key: string; label: string }[] = [
     { key: 'sequencer', label: 'Sending Mailboxes' },
     { key: 'leads', label: 'Lead Sources' },
+    { key: 'ai', label: 'AI Assistants' },
     { key: 'notifications', label: 'Notifications' },
     { key: 'developer', label: 'Developer' },
     { key: 'migration', label: 'One-time Imports' },
@@ -195,9 +206,20 @@ function IntegrationLogo({ integration }: { integration: Integration }) {
     if (integration.logo === '_slack_') return <SlackLogo />;
     if (integration.logo === '_smtp_') return <SmtpIcon />;
     if (integration.logo === '_webhook_') return <WebhookLogo />;
+    if (integration.logo === '_claude_') return <ClaudeLogo />;
     if (integration.logo.startsWith('_')) return <PlaceholderLogo name={integration.name} />;
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={integration.logo} alt={integration.name} width={20} height={20} className="rounded" />;
+}
+
+function ClaudeLogo() {
+    return (
+        <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#D97757' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.5 14.5l-2-4-2 4h-2l3.5-7h1l3.5 7h-2zm5.5-7v7h-1.5v-7H16z" />
+            </svg>
+        </div>
+    );
 }
 
 function WebhookLogo() {
@@ -219,7 +241,8 @@ function WebhookLogo() {
 function getConnectionStatus(
     integration: Integration,
     settings: SettingEntry[],
-    providerCounts: Record<string, number>
+    providerCounts: Record<string, number>,
+    oauthClientCount: number,
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
@@ -227,6 +250,11 @@ function getConnectionStatus(
     if (integration.id === 'clay') return 'connected';
     // Webhooks are always available — connection state lives per-endpoint inside the webhooks page.
     if (integration.id === 'webhooks') return 'connected';
+    // Claude (and any future OAuth-MCP client) — connected when the user
+    // has at least one active OAuth grant.
+    if (integration.id === 'claude') {
+        return oauthClientCount > 0 ? 'connected' : 'not_connected';
+    }
 
     // Sequencer mailbox providers — check the specific provider's connected account count.
     // Each provider (google / microsoft / smtp) is shown as its own card, so we can't
@@ -272,6 +300,7 @@ const STATUS_CONFIG = {
 export default function IntegrationsPage() {
     const [settings, setSettings] = useState<SettingEntry[]>([]);
     const [providerCounts, setProviderCounts] = useState<Record<string, number>>({});
+    const [oauthClientCount, setOauthClientCount] = useState(0);
     const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -299,6 +328,9 @@ export default function IntegrationsPage() {
             apiClient<{ enabled: boolean }>('/api/migration/from-smartlead/feature')
                 .then(res => setMigrationEnabled(!!res?.enabled))
                 .catch(() => setMigrationEnabled(false)),
+            apiClient<Array<{ client_id: string }>>('/api/oauth/connections')
+                .then(res => setOauthClientCount(Array.isArray(res) ? res.length : 0))
+                .catch(() => setOauthClientCount(0)),
         ]).finally(() => setLoading(false));
     }, []);
 
@@ -319,7 +351,7 @@ export default function IntegrationsPage() {
     }
 
     const connectedCount = visibleIntegrations.filter(i => {
-        const s = getConnectionStatus(i, settings, providerCounts);
+        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount);
         return s === 'connected';
     }).length;
 
@@ -390,7 +422,7 @@ export default function IntegrationsPage() {
                             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">{cat.label}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {items.map(integration => {
-                                    const status = getConnectionStatus(integration, settings, providerCounts);
+                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount);
                                     const cfg = STATUS_CONFIG[status];
                                     const isClickable = !integration.comingSoon;
 
