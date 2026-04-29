@@ -34,7 +34,7 @@ export default function DocsPage() {
  Superkabe is an AI-powered cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes (Gmail, Microsoft 365, or SMTP), validate every email, route leads by ESP — and let the protection layer auto-pause, reroute, and heal senders in real time. Connect Clay as a lead source for enriched lead intake.
  </p>
  <p className="text-gray-600 mb-6">
- Every lead that enters Superkabe passes through a multi-stage pipeline before reaching your sender:
+ Two halves working together: the <strong className="text-gray-900">Sequencer</strong> drafts AI sequences and dispatches mail across your connected mailboxes; the <strong className="text-gray-900">Protection layer</strong> watches every send in real time and auto-heals damaged senders before they burn. Every lead and every send passes through this pipeline:
  </p>
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
  <div className="bg-blue-50 border border-blue-100 p-4">
@@ -48,6 +48,10 @@ export default function DocsPage() {
  <div className="bg-purple-50 border border-purple-100 p-4">
  <div className="font-bold text-gray-900 text-sm mb-1">Risk-Aware Routing</div>
  <p className="text-gray-600 text-sm">Rule-based routing by persona and minimum score. Priority ordering with wildcard catch-all rules. Leads pushed to the right campaign on the right platform.</p>
+ </div>
+ <div className="bg-indigo-50 border border-indigo-100 p-4">
+ <div className="font-bold text-gray-900 text-sm mb-1">AI Sequencing &amp; Sending</div>
+ <p className="text-gray-600 text-sm">Multi-step AI sequences with variant testing dispatch from Gmail, Microsoft 365, and SMTP mailboxes. ESP-aware routing assigns each lead to the mailbox most likely to land in their inbox. Per-campaign send caps, sticky pinning, and rotation handled automatically.</p>
  </div>
  <div className="bg-amber-50 border border-amber-100 p-4">
  <div className="font-bold text-gray-900 text-sm mb-1">Real-Time Monitoring</div>
