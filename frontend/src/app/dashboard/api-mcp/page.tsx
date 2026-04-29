@@ -531,9 +531,34 @@ curl /api/v1/campaigns/:id/report`}</pre>
                         </p>
                     </div>
 
+                    {/* Remote MCP — Claude.ai browser */}
+                    <div className="premium-card" style={{ borderLeft: '6px solid #10B981' }}>
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-9 h-9 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                <Code size={18} className="text-emerald-600" />
+                            </div>
+                            <div>
+                                <h3 className="text-base font-bold text-gray-900 m-0">Connect to Claude.ai (browser)</h3>
+                                <p className="text-xs text-slate-500 m-0">No install required — paste this URL into Claude.ai Integrations</p>
+                            </div>
+                        </div>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                            In Claude.ai, go to <strong>Settings → Integrations → Add Integration</strong>, paste the URL below, and use one of your API keys above when prompted for credentials. The 17 Superkabe tools become available in any conversation.
+                        </p>
+                        <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto relative">
+                            <div className="absolute top-2 right-2">
+                                <CopyBtn text="https://api.superkabe.com/mcp" />
+                            </div>
+                            <pre className="text-sm font-mono text-emerald-400 m-0 whitespace-pre">https://api.superkabe.com/mcp</pre>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-3 mb-0">
+                            Auth: <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">Authorization: Bearer sk_live_…</code> — the key&apos;s scopes determine which tools Claude can call.
+                        </p>
+                    </div>
+
                     {/* Setup instructions */}
                     <div className="premium-card">
-                        <h3 className="text-base font-bold text-gray-900 mb-1">Setup with Claude Desktop</h3>
+                        <h3 className="text-base font-bold text-gray-900 mb-1">Setup with Claude Desktop, Code, or Cursor</h3>
                         <p className="text-xs text-slate-500 mb-4">Same JSON works in Claude Code, Cursor, and Continue — only the config-file path differs. <a href="/docs/mcp-server#configure" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">See all client paths →</a></p>
                         <div className="space-y-4">
                             <div className="flex gap-3">
