@@ -47,6 +47,7 @@ export function middleware(request: NextRequest) {
         pathname === '/login' ||
         pathname === '/signup' ||
         pathname === '/onboarding' ||
+        pathname === '/oauth/consent' ||
         pathname === '/pricing' ||
         pathname.startsWith('/blog') ||
         pathname === '/privacy' ||
