@@ -640,16 +640,48 @@ function TemplateCard({ template, onEdit, onDuplicate, onDelete }: {
     onDuplicate: () => void;
     onDelete: () => void;
 }) {
+    // Outer container is role="button" instead of <button> because nesting
+    // <button> inside <button> is invalid HTML and React 19 throws a
+    // hydration error. Inner action buttons (Duplicate / Delete) keep their
+    // <button> semantics; their onClick stops propagation so the outer
+    // edit-handler doesn't fire when they're clicked.
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onEdit();
+        }
+    };
     return (
-        <button onClick={onEdit} className="text-left flex flex-col cursor-pointer transition-colors bg-white hover:bg-[#FAF7F1] p-3 rounded-xl" style={{ border: '1px solid #D1CBC5' }}>
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={onEdit}
+            onKeyDown={handleKeyDown}
+            className="text-left flex flex-col cursor-pointer transition-colors bg-white hover:bg-[#FAF7F1] p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+            style={{ border: '1px solid #D1CBC5' }}
+        >
             <div className="flex items-start justify-between mb-2">
                 <div className="min-w-0 flex-1">
                     <h3 className="text-xs font-bold text-gray-900 truncate">{template.name}</h3>
                     <span className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 capitalize mt-1 inline-block">{template.category}</span>
                 </div>
-                <div className="flex items-center gap-0.5 shrink-0" onClick={e => e.stopPropagation()}>
-                    <button onClick={onDuplicate} className="p-1 rounded-md hover:bg-gray-100 cursor-pointer" title="Duplicate"><Copy size={11} className="text-gray-400" /></button>
-                    <button onClick={onDelete} className="p-1 rounded-md hover:bg-red-50 cursor-pointer" title="Delete"><Trash2 size={11} className="text-red-400" /></button>
+                <div className="flex items-center gap-0.5 shrink-0">
+                    <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
+                        className="p-1 rounded-md hover:bg-gray-100 cursor-pointer"
+                        title="Duplicate"
+                    >
+                        <Copy size={11} className="text-gray-400" />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); onDelete(); }}
+                        className="p-1 rounded-md hover:bg-red-50 cursor-pointer"
+                        title="Delete"
+                    >
+                        <Trash2 size={11} className="text-red-400" />
+                    </button>
                 </div>
             </div>
             <div className="text-[10px] text-gray-700 font-medium mb-1 truncate">Subject: {template.subject}</div>
@@ -657,7 +689,7 @@ function TemplateCard({ template, onEdit, onDuplicate, onDelete }: {
             <div className="text-[9px] text-gray-300 mt-2 flex items-center gap-1">
                 <Edit3 size={9} /> Click to edit · {new Date(template.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </div>
-        </button>
+        </div>
     );
 }
 
@@ -667,24 +699,52 @@ function SignatureCard({ signature, onEdit, onDelete, onSetDefault }: {
     onDelete: () => void;
     onSetDefault: () => void;
 }) {
+    // role="button" wrapper — see TemplateCard above for why.
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onEdit();
+        }
+    };
     return (
-        <button onClick={onEdit} className="text-left flex flex-col cursor-pointer transition-colors bg-white hover:bg-[#FAF7F1] p-3 rounded-xl" style={{ border: '1px solid #D1CBC5' }}>
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={onEdit}
+            onKeyDown={handleKeyDown}
+            className="text-left flex flex-col cursor-pointer transition-colors bg-white hover:bg-[#FAF7F1] p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+            style={{ border: '1px solid #D1CBC5' }}
+        >
             <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                     <h3 className="text-xs font-bold text-gray-900 truncate">{signature.name}</h3>
                     {signature.is_default && <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold shrink-0">DEFAULT</span>}
                 </div>
-                <div className="flex items-center gap-0.5 shrink-0" onClick={e => e.stopPropagation()}>
+                <div className="flex items-center gap-0.5 shrink-0">
                     {!signature.is_default && (
-                        <button onClick={onSetDefault} className="p-1 rounded-md hover:bg-amber-50 cursor-pointer" title="Set as default"><Star size={11} className="text-amber-400" /></button>
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); onSetDefault(); }}
+                            className="p-1 rounded-md hover:bg-amber-50 cursor-pointer"
+                            title="Set as default"
+                        >
+                            <Star size={11} className="text-amber-400" />
+                        </button>
                     )}
-                    <button onClick={onDelete} className="p-1 rounded-md hover:bg-red-50 cursor-pointer" title="Delete"><Trash2 size={11} className="text-red-400" /></button>
+                    <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); onDelete(); }}
+                        className="p-1 rounded-md hover:bg-red-50 cursor-pointer"
+                        title="Delete"
+                    >
+                        <Trash2 size={11} className="text-red-400" />
+                    </button>
                 </div>
             </div>
             <div className="text-[10px] text-gray-600 flex-1 overflow-hidden pt-2 mt-1 max-h-[120px]" style={{ borderTop: '1px solid #F0EBE3' }} dangerouslySetInnerHTML={{ __html: signature.html_content }} />
             <div className="text-[9px] text-gray-300 mt-2 flex items-center gap-1">
                 <Edit3 size={9} /> Click to edit · {new Date(signature.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </div>
-        </button>
+        </div>
     );
 }
