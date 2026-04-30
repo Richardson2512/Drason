@@ -847,7 +847,7 @@ export default function LandingPage() {
  <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
  <div className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl">
  <video
- src="/Superkabe.mp4"
+ src="/Superkabe-Final.mp4"
  autoPlay
  loop
  muted
