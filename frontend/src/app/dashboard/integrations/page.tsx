@@ -120,20 +120,18 @@ const INTEGRATIONS: Integration[] = [
     {
         id: 'hubspot',
         name: 'HubSpot',
-        description: 'Bi-directional CRM sync for contacts and deal stages.',
+        description: 'Import contacts from HubSpot lists, push activity to the contact timeline, sync the suppression list.',
         category: 'crm',
         logo: '/brands/hubspot.svg',
-        configPath: '/dashboard/integrations',
-        comingSoon: true,
+        configPath: '/dashboard/integrations/crm',
     },
     {
         id: 'salesforce',
         name: 'Salesforce',
-        description: 'Push lead activity and replies back to your Salesforce CRM.',
+        description: 'Import contacts via SOQL or list view, write Tasks for activity, pull do-not-contact flags.',
         category: 'crm',
         logo: '/brands/salesforce.svg',
-        configPath: '/dashboard/integrations',
-        comingSoon: true,
+        configPath: '/dashboard/integrations/crm',
     },
 ];
 
@@ -232,6 +230,7 @@ function getConnectionStatus(
     settings: SettingEntry[],
     providerCounts: Record<string, number>,
     oauthClientCount: number,
+    crmActiveProviders: Set<string>,
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
@@ -243,6 +242,11 @@ function getConnectionStatus(
     // has at least one active OAuth grant.
     if (integration.id === 'claude') {
         return oauthClientCount > 0 ? 'connected' : 'not_connected';
+    }
+    // CRM providers (hubspot, salesforce) — connected when an active
+    // CrmConnection exists for that provider in the org.
+    if (integration.id === 'hubspot' || integration.id === 'salesforce') {
+        return crmActiveProviders.has(integration.id) ? 'connected' : 'not_connected';
     }
 
     // Sequencer mailbox providers — check the specific provider's connected account count.
@@ -290,6 +294,7 @@ export default function IntegrationsPage() {
     const [settings, setSettings] = useState<SettingEntry[]>([]);
     const [providerCounts, setProviderCounts] = useState<Record<string, number>>({});
     const [oauthClientCount, setOauthClientCount] = useState(0);
+    const [crmActiveProviders, setCrmActiveProviders] = useState<Set<string>>(new Set());
     const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -320,6 +325,17 @@ export default function IntegrationsPage() {
             apiClient<Array<{ client_id: string }>>('/api/oauth/connections')
                 .then(res => setOauthClientCount(Array.isArray(res) ? res.length : 0))
                 .catch(() => setOauthClientCount(0)),
+            apiClient<Array<{ provider: string; status: string }>>('/api/integrations/crm/connections')
+                .then(res => {
+                    const active = new Set<string>();
+                    if (Array.isArray(res)) {
+                        for (const c of res) {
+                            if (c.status === 'active') active.add(c.provider);
+                        }
+                    }
+                    setCrmActiveProviders(active);
+                })
+                .catch(() => setCrmActiveProviders(new Set())),
         ]).finally(() => setLoading(false));
     }, []);
 
@@ -340,7 +356,7 @@ export default function IntegrationsPage() {
     }
 
     const connectedCount = visibleIntegrations.filter(i => {
-        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount);
+        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders);
         return s === 'connected';
     }).length;
 
@@ -411,7 +427,7 @@ export default function IntegrationsPage() {
                             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">{cat.label}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {items.map(integration => {
-                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount);
+                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders);
                                     const cfg = STATUS_CONFIG[status];
                                     const isClickable = !integration.comingSoon;
 
