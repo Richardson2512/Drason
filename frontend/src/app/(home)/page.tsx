@@ -847,13 +847,14 @@ export default function LandingPage() {
  <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
  <div className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl">
  <video
- src="/Superkabe-intro.mp4"
+ src="/Superkabe.mp4"
  autoPlay
  loop
  muted
  playsInline
- preload="metadata"
- aria-label="Superkabe AI cold email platform intro — protection layer, ESP-aware routing, and 5-phase healing pipeline overview"
+ preload="none"
+ poster="/Superkabe-poster.jpg"
+ aria-label="Superkabe AI cold email platform demo — sequence builder, sending dashboard, and deliverability protection walkthrough"
  className="w-full h-full object-contain bg-white rounded-2xl md:rounded-3xl"
  >
  Your browser does not support the video tag.
