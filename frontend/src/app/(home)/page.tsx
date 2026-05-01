@@ -129,8 +129,8 @@ const col1: MarqueeItem[] = [
     { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
     { Logo: GmailLogoSvg, name: 'Gmail', category: 'Mailbox provider', status: 'live' },
     { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
-    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
-    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'live' },
+    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'live' },
     { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
 ];
 const col2: MarqueeItem[] = [
@@ -144,15 +144,15 @@ const col2: MarqueeItem[] = [
 const col3: MarqueeItem[] = [
     { Logo: WebhooksLogo, name: 'Webhooks', category: 'Developer', status: 'live' },
     { Logo: AirtableLogo, name: 'Airtable', category: 'Lead source', status: 'soon' },
-    { Logo: SalesforceLogo, name: 'Salesforce', category: 'CRM sync', status: 'soon' },
+    { Logo: SalesforceLogo, name: 'Salesforce', category: 'CRM sync', status: 'live' },
     { Logo: SmtpLogo, name: 'SMTP / Custom', category: 'Mailbox provider', status: 'live' },
     { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
-    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'soon' },
+    { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'live' },
 ];
 const col4: MarqueeItem[] = [
     { Logo: GoogleWorkspaceLogo, name: 'Google Workspace', category: 'Mailbox provider', status: 'live' },
     { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
-    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'soon' },
+    { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'live' },
     { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
     { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
     { Logo: SlackLogo, name: 'Slack', category: 'Alerts', status: 'live' },
@@ -847,7 +847,7 @@ export default function LandingPage() {
  <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
  <div className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl">
  <video
- src="/Superkabe-Final.mp4"
+ src="/Superkabe.mp4"
  autoPlay
  loop
  muted
