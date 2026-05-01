@@ -60,6 +60,13 @@ SALESFORCE_REDIRECT_URI=https://api.superkabe.com/api/integrations/salesforce/ca
             <p className="text-gray-600">Restart the backend. Logs should show <code>[CRM_REGISTRY] registered provider salesforce</code>.</p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">User flow (per customer)</h2>
+
+            <div className="bg-amber-50 border border-amber-200 p-4 mb-6 rounded-lg">
+                <p className="text-sm text-amber-900 m-0 leading-relaxed">
+                    <strong>What you&apos;ll see during consent:</strong> Salesforce displays a security warning on the consent screen for any third-party app that isn&apos;t AppExchange-verified — text along the lines of &quot;If someone contacted you via phone or email and instructed you to use this app, do not proceed.&quot; This is Salesforce&apos;s standard anti-phishing protection (added 2023) — it shows for every legitimate B2B integration on first connect to a new org. Since you arrived at the screen by clicking <strong>Connect Salesforce</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen. Enterprise admins who want to skip the warning entirely for their org can pre-authorize Superkabe via Profile permissions in Setup.
+                </p>
+            </div>
+
             <ol className="list-decimal list-inside space-y-3 text-gray-600 mb-6">
                 <li><strong>Connect.</strong> Dashboard → Integrations → CRM → Connect Salesforce → choose <strong>Production</strong> or <strong>Sandbox</strong>. User is bounced through Salesforce&apos;s OAuth screen, approves, lands back with their <code>instance_url</code> persisted.</li>
                 <li><strong>Import.</strong> Manage Import → choose <strong>List view</strong> (recommended) or <strong>Custom SOQL</strong>. Map fields, click Start. The worker pages through results via Salesforce&apos;s <code>nextRecordsUrl</code>.</li>

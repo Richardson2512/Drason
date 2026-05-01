@@ -67,6 +67,13 @@ HUBSPOT_REDIRECT_URI=https://api.superkabe.com/api/integrations/hubspot/callback
             <p className="text-gray-600">Restart the backend. On boot you should see <code>[CRM_REGISTRY] registered provider hubspot</code> in the logs — that confirms the env vars were picked up.</p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">User flow (per customer)</h2>
+
+            <div className="bg-amber-50 border border-amber-200 p-4 mb-6 rounded-lg">
+                <p className="text-sm text-amber-900 m-0 leading-relaxed">
+                    <strong>What you&apos;ll see during consent:</strong> HubSpot displays a security warning on the consent screen for any third-party app that isn&apos;t Marketplace-verified, asking you to confirm you initiated the connection yourself. This is HubSpot&apos;s standard anti-phishing protection — it shows for every legitimate B2B integration on first connect to a new portal. Since you arrived at the screen by clicking <strong>Connect HubSpot</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen.
+                </p>
+            </div>
+
             <ol className="list-decimal list-inside space-y-3 text-gray-600 mb-6">
                 <li><strong>Connect.</strong> Dashboard → Integrations → CRM → Connect HubSpot. The user is bounced to HubSpot, picks a portal, approves the scopes, and lands back on Superkabe with a green &quot;Connected&quot; badge.</li>
                 <li><strong>Import.</strong> Click Manage Import on the connected card. Pick a HubSpot list, map fields (defaults are auto-suggested for email/first_name/last_name/company/title/phone), click <strong>Start Import</strong>. The contact-import worker pulls 100 contacts per tick.</li>
