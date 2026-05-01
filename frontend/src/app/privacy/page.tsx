@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white p-10 md:p-14 shadow-xl shadow-gray-200/50 border border-gray-100">
                         <h1 className="text-4xl font-bold mb-2 text-gray-900">Privacy Policy</h1>
-                        <p className="text-gray-500 mb-8">Last updated: April 28, 2026</p>
+                        <p className="text-gray-500 mb-8">Last updated: April 30, 2026</p>
 
                         <div className="prose prose-gray max-w-none">
 
@@ -75,6 +75,7 @@ export default function PrivacyPolicyPage() {
                                     <li><strong>Account Information:</strong> name, business email, organization name, password (stored as bcrypt hash), authentication tokens.</li>
                                     <li><strong>Billing Information:</strong> processed by our payments provider (Polar.sh); we receive only billing reference identifiers, plan tier, and transaction status.</li>
                                     <li><strong>Mailbox Connection Data:</strong> OAuth tokens for Google Workspace and Microsoft 365 mailboxes (encrypted at rest with AES-256-GCM); SMTP credentials for self-hosted mailboxes (encrypted at rest with AES-256-GCM).</li>
+                                    <li><strong>CRM Connection Data:</strong> if you connect HubSpot or Salesforce via OAuth, we store the access token, refresh token, and provider-specific identifiers (HubSpot portal_id, Salesforce instance_url) — all encrypted at rest with AES-256-GCM. Scope of contact data read/written is detailed in §6.1.</li>
                                     <li><strong>One-Time Import Keys:</strong> if you import campaigns from another platform, we hold your admin API key encrypted at rest for at most 72 hours, then auto-discard.</li>
                                     <li><strong>Usage Telemetry:</strong> sequence performance metrics, mailbox health metrics, send/bounce/reply counts, audit logs of administrative actions.</li>
                                     <li><strong>Support Data:</strong> records of support correspondence, screenshots you share, and feature requests.</li>
@@ -140,6 +141,47 @@ export default function PrivacyPolicyPage() {
                                 <p className="text-gray-600 leading-relaxed">
                                     We may also disclose information (a) to comply with applicable law, regulation, or binding legal process; (b) to protect the rights, property, or safety of Superkabe, our customers, or others; and (c) in connection with a merger, acquisition, financing, or sale of assets, subject to confidentiality undertakings and continued protection consistent with this policy.
                                 </p>
+
+                                <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">6.1 Optional CRM Integrations (HubSpot, Salesforce)</h3>
+                                <p className="text-gray-600 leading-relaxed mb-4">
+                                    Customers may optionally connect their HubSpot or Salesforce account to Superkabe via OAuth. These services are not Superkabe sub-processors — your contractual relationship with HubSpot or Salesforce governs that data. When connected, the following data flows occur:
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we read from your CRM:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>Contact email, first name, last name, full name</li>
+                                    <li>Contact company, job title, phone number</li>
+                                    <li>Email-opt-out / suppression flags (e.g., HubSpot <code>hs_email_optout</code>, Salesforce <code>HasOptedOutOfEmail</code>)</li>
+                                    <li>Lists / List Views the connecting user selects for import</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-4">
+                                    We do not read deals, opportunities, notes, conversations, files, custom objects, or any data unrelated to outbound email. The OAuth scopes we request are limited to the minimum surface needed for the integration to function and are documented per-provider in our developer docs.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we write to your CRM:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>One Note (HubSpot) or Task (Salesforce) per Superkabe activity event — sent, opened, clicked, replied, bounced — attached to the matching contact via the standard contact-association mechanism.</li>
+                                    <li>We do not modify contact properties, create or delete contacts, or write to any other object.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Token storage and security:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>OAuth access tokens and refresh tokens are encrypted at rest with AES-256-GCM, decrypted only at the moment a per-organization API call is made.</li>
+                                    <li>Tokens are never written to logs or surfaced in error messages; defensive truncation is applied to provider error responses.</li>
+                                    <li>Disconnecting a CRM integration immediately wipes the encrypted token blob and cancels all pending activity-push items for that connection.</li>
+                                    <li>OAuth refresh failures mark the connection <code>expired</code>; further sync stops until the user re-authorizes.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>GDPR right-to-erasure (HubSpot):</strong></p>
+                                <p className="text-gray-600 leading-relaxed mb-4">
+                                    Superkabe subscribes to HubSpot&apos;s <code>contact.privacyDeletion</code> webhook. When a HubSpot user permanently deletes a contact for GDPR reasons, HubSpot fires the event to a signed endpoint at Superkabe (HMAC-SHA256, with replay protection). Within seconds we (a) locate every Superkabe lead linked to that HubSpot contact, (b) cancel any pending activity-push items for those leads, (c) block the lead from outbound sending across all campaigns, (d) delete the contact-link mapping, and (e) audit-log the action. The underlying Superkabe lead record is retained but blocked, because the same person may exist in your account from another lawful processing basis. For full Lead-level erasure use the <a href="/dashboard/data-rights" className="text-blue-600 hover:text-blue-800">Data Rights</a> page, which handles GDPR Article 17 across all Superkabe data regardless of CRM origin.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Salesforce equivalent:</strong></p>
+                                <p className="text-gray-600 leading-relaxed mb-4">
+                                    Salesforce does not currently expose a real-time GDPR-deletion webhook. We respect the Salesforce <code>HasOptedOutOfEmail</code> flag at every read and decline to process any contact marked opted-out. For Salesforce-side hard deletions, the customer should also disconnect or rotate the Superkabe lead via the Data Rights page.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Customer responsibilities:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>You remain the data controller for contact data inside your CRM and are responsible for compliance with your contractual relationship with HubSpot or Salesforce.</li>
+                                    <li>You are responsible for ensuring that contacts you import into Superkabe have an appropriate lawful basis (consent, legitimate interest, contract) for outbound email under your jurisdiction&apos;s rules.</li>
+                                    <li>You may disconnect at any time from <a href="/dashboard/integrations/crm" className="text-blue-600 hover:text-blue-800">/dashboard/integrations/crm</a>; tokens are wiped and pending pushes cancelled within seconds.</li>
+                                </ul>
                             </section>
 
                             {/* 7. International Transfers */}

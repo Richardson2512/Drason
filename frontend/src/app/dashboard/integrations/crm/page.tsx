@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { ChevronLeft, ExternalLink, Trash2, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 
 type Provider = 'hubspot' | 'salesforce';
 type ConnStatus = 'active' | 'error' | 'expired' | 'disconnected' | 'not_connected';
@@ -55,6 +56,37 @@ const STATUS_STYLE: Record<ConnStatus, { label: string; bg: string; fg: string; 
     not_connected: { label: 'Not Connected', bg: '#F3F4F6', fg: '#6B7280', dot: '#9CA3AF' },
 };
 
+function SalesforceConnectButton() {
+    const [open, setOpen] = useState(false);
+    return (
+        <div className="relative inline-block">
+            <button
+                onClick={() => setOpen(o => !o)}
+                className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5"
+            >
+                Connect Salesforce
+                <ExternalLink size={10} />
+            </button>
+            {open && (
+                <div className="absolute left-0 top-5 z-10 bg-white border border-[#E2E8F0] rounded-lg shadow-lg p-2 w-44">
+                    <a
+                        href="/api/integrations/salesforce/authorize?env=production"
+                        className="block px-3 py-1.5 text-xs hover:bg-slate-50 rounded text-slate-700"
+                    >
+                        Production org
+                    </a>
+                    <a
+                        href="/api/integrations/salesforce/authorize?env=sandbox"
+                        className="block px-3 py-1.5 text-xs hover:bg-slate-50 rounded text-slate-700"
+                    >
+                        Sandbox org
+                    </a>
+                </div>
+            )}
+        </div>
+    );
+}
+
 function formatDate(iso: string | null): string {
     if (!iso) return '—';
     return new Date(iso).toLocaleString(undefined, {
@@ -68,6 +100,7 @@ export default function CrmIntegrationsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [busyId, setBusyId] = useState<string | null>(null);
+    const [pendingDisconnect, setPendingDisconnect] = useState<CrmConnection | null>(null);
 
     const refresh = async () => {
         try {
@@ -95,11 +128,17 @@ export default function CrmIntegrationsPage() {
 
     const handleDisconnect = async (conn: CrmConnection) => {
         if (!conn.id) return;
-        if (!confirm(`Disconnect ${PROVIDER_META[conn.provider].name}? Pending activity pushes will be cancelled. You can reconnect anytime.`)) return;
+        setPendingDisconnect(conn);
+    };
+
+    const confirmDisconnect = async () => {
+        if (!pendingDisconnect?.id) return;
+        const conn = pendingDisconnect;
         setBusyId(conn.id);
         try {
             await apiClient(`/api/integrations/crm/connections/${conn.id}/disconnect`, { method: 'POST' });
             await refresh();
+            setPendingDisconnect(null);
         } catch (err: any) {
             alert(err.message || 'Failed to disconnect');
         } finally {
@@ -124,13 +163,14 @@ export default function CrmIntegrationsPage() {
                 </p>
             </div>
 
-            {/* Phase-1 disclosure banner — keeps user expectations honest */}
             <div className="bg-blue-50 border border-blue-100 px-4 py-3 mb-6 text-xs text-blue-900 rounded-xl flex items-start gap-2">
                 <CheckCircle2 size={14} className="mt-0.5 shrink-0" />
                 <div>
-                    <strong>Foundation in place.</strong> Connection management, activity-push queue, and the sync framework
-                    are wired up. HubSpot and Salesforce OAuth + import flows are landing in upcoming releases — see the
-                    <Link href="/docs/changelog" className="underline ml-1">changelog</Link> for status.
+                    <strong>How sync works.</strong> Once connected, Superkabe pulls contacts via OAuth and pushes
+                    every send/open/click/reply/bounce event to the contact&apos;s timeline. See the
+                    <Link href="/docs/integrations/hubspot" className="underline mx-1">HubSpot</Link> /
+                    <Link href="/docs/integrations/salesforce" className="underline mx-1">Salesforce</Link>
+                    docs for setup details.
                 </div>
             </div>
 
@@ -223,16 +263,25 @@ export default function CrmIntegrationsPage() {
                                 {/* Actions */}
                                 <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
                                     {conn.status === 'not_connected' || conn.status === 'disconnected' ? (
-                                        <button
-                                            disabled
-                                            title="Connect flow ships in the upcoming HubSpot/Salesforce release"
-                                            className="text-[11px] font-semibold text-slate-400 cursor-not-allowed flex items-center gap-1.5"
-                                        >
-                                            Connect {meta.name}
-                                            <ExternalLink size={10} />
-                                        </button>
+                                        conn.provider === 'salesforce' ? (
+                                            <SalesforceConnectButton />
+                                        ) : (
+                                            <a
+                                                href="/api/integrations/hubspot/authorize"
+                                                className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5"
+                                            >
+                                                Connect HubSpot
+                                                <ExternalLink size={10} />
+                                            </a>
+                                        )
                                     ) : (
-                                        <span className="text-[11px] text-slate-500">Connection ID: <code className="text-[10px]">{conn.id.slice(0, 8)}…</code></span>
+                                        <Link
+                                            href={`/dashboard/integrations/crm/${conn.id}`}
+                                            className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
+                                        >
+                                            Manage import
+                                            <ExternalLink size={10} />
+                                        </Link>
                                     )}
 
                                     {isLive && conn.id && (
@@ -251,6 +300,25 @@ export default function CrmIntegrationsPage() {
                     })}
                 </div>
             )}
+
+            <ConfirmActionModal
+                isOpen={!!pendingDisconnect}
+                title={pendingDisconnect ? `Disconnect ${PROVIDER_META[pendingDisconnect.provider].name}?` : ''}
+                icon="🔌"
+                message={pendingDisconnect ? `You're about to disconnect ${PROVIDER_META[pendingDisconnect.provider].name} from this Superkabe workspace.` : ''}
+                consequences={[
+                    'Pending activity pushes will be cancelled',
+                    'OAuth tokens will be wiped from our database',
+                    'Imported leads stay — only the connection mapping is removed',
+                    'You can reconnect anytime by clicking Connect again',
+                ]}
+                confirmLabel={busyId === pendingDisconnect?.id ? 'Disconnecting…' : 'Disconnect'}
+                cancelLabel="Cancel"
+                variant="danger"
+                loading={busyId === pendingDisconnect?.id}
+                onConfirm={confirmDisconnect}
+                onCancel={() => setPendingDisconnect(null)}
+            />
         </div>
     );
 }

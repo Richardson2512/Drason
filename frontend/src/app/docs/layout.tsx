@@ -27,6 +27,8 @@ const docSections = [
  { title: 'Slack', href: '/docs/slack-integration', icon: Settings },
  { title: 'Clay', href: '/docs/clay-integration', icon: Activity },
  { title: 'Webhooks', href: '/docs/webhooks', icon: Code },
+ { title: 'HubSpot CRM', href: '/docs/integrations/hubspot', icon: Database },
+ { title: 'Salesforce CRM', href: '/docs/integrations/salesforce', icon: Database },
  { title: 'Migrate from Smartlead', href: '/docs/migration/from-smartlead', icon: Database },
  { title: 'Migrate from Instantly', href: '/docs/migration/from-instantly', icon: Database },
  ]
