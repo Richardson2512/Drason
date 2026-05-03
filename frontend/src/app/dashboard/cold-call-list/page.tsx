@@ -29,6 +29,7 @@ import {
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import ExportToOutreachModal from '@/components/ExportToOutreachModal';
+import ExportToJustCallModal from '@/components/ExportToJustCallModal';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -118,8 +119,15 @@ export default function ColdCallListPage() {
     const [customGeneratedAt, setCustomGeneratedAt] = useState<string | null>(null);
     const [customDownloadLoading, setCustomDownloadLoading] = useState(false);
 
-    // Export-to-Outreach modal state — shared between Today's List and Custom List.
+    // Export modal state — shared between Today's List and Custom List for
+    // both Outreach and JustCall. Only one of {outreach,justcall}Export is
+    // non-null at a time since the buttons live in the same row.
     const [outreachExport, setOutreachExport] = useState<{
+        prospectIds: string[];
+        sourceKind: 'todays_list' | 'custom_list';
+        sourceLabel: string;
+    } | null>(null);
+    const [justcallExport, setJustcallExport] = useState<{
         prospectIds: string[];
         sourceKind: 'todays_list' | 'custom_list';
         sourceLabel: string;
@@ -295,6 +303,14 @@ export default function ColdCallListPage() {
                         sourceLabel: `Today's list · ${systemList.snapshot_date}`,
                     });
                 }}
+                onExportJustCall={() => {
+                    if (!systemList || systemList.prospects.length === 0) return;
+                    setJustcallExport({
+                        prospectIds: systemList.prospects.map(p => p.campaign_lead_id),
+                        sourceKind: 'todays_list',
+                        sourceLabel: `Today's list · ${systemList.snapshot_date}`,
+                    });
+                }}
             />
 
             {/* Section 2: Custom List */}
@@ -319,6 +335,14 @@ export default function ColdCallListPage() {
                         sourceLabel: 'Custom call list',
                     });
                 }}
+                onExportJustCall={() => {
+                    if (!customList || customList.length === 0) return;
+                    setJustcallExport({
+                        prospectIds: customList.map(p => p.campaign_lead_id),
+                        sourceKind: 'custom_list',
+                        sourceLabel: 'Custom call list',
+                    });
+                }}
             />
 
             <ExportToOutreachModal
@@ -327,6 +351,14 @@ export default function ColdCallListPage() {
                 prospectIds={outreachExport ? outreachExport.prospectIds : []}
                 sourceKind={outreachExport ? outreachExport.sourceKind : 'custom_list'}
                 sourceLabel={outreachExport ? outreachExport.sourceLabel : undefined}
+            />
+
+            <ExportToJustCallModal
+                isOpen={!!justcallExport}
+                onClose={() => setJustcallExport(null)}
+                prospectIds={justcallExport ? justcallExport.prospectIds : []}
+                sourceKind={justcallExport ? justcallExport.sourceKind : 'custom_list'}
+                sourceLabel={justcallExport ? justcallExport.sourceLabel : undefined}
             />
         </div>
     );
@@ -340,12 +372,14 @@ function SystemListSection({
     onDownload,
     onRefresh,
     onExportOutreach,
+    onExportJustCall,
 }: {
     data: SystemListResponse | null;
     loading: boolean;
     onDownload: () => void;
     onRefresh: () => void;
     onExportOutreach: () => void;
+    onExportJustCall: () => void;
 }) {
     const generatedHuman = useMemo(() => {
         if (!data?.generated_at) return null;
@@ -395,6 +429,15 @@ function SystemListSection({
                     >
                         <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
                         Export to Outreach
+                    </button>
+                    <button
+                        onClick={onExportJustCall}
+                        disabled={!data || data.prospects.length === 0}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        title="Push these prospects to a JustCall sales-dialer campaign"
+                    >
+                        <img src="/logos/justcall-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
+                        Export to JustCall
                     </button>
                     <button
                         onClick={onDownload}
@@ -469,6 +512,7 @@ function CustomListSection({
     onGenerate,
     onDownload,
     onExportOutreach,
+    onExportJustCall,
 }: {
     settings: Settings | null;
     campaigns: CampaignOption[];
@@ -483,6 +527,7 @@ function CustomListSection({
     onGenerate: () => void;
     onDownload: () => void;
     onExportOutreach: () => void;
+    onExportJustCall: () => void;
 }) {
     return (
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
@@ -554,6 +599,15 @@ function CustomListSection({
                     >
                         <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
                         Export to Outreach
+                    </button>
+                    <button
+                        onClick={onExportJustCall}
+                        disabled={!customList || customList.length === 0}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        title="Push these prospects to a JustCall sales-dialer campaign"
+                    >
+                        <img src="/logos/justcall-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
+                        Export to JustCall
                     </button>
                     <button
                         onClick={onDownload}

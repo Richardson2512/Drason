@@ -133,6 +133,14 @@ const INTEGRATIONS: Integration[] = [
         logo: '/logos/outreach-icon.png',
         configPath: '/dashboard/integrations/outreach',
     },
+    {
+        id: 'justcall',
+        name: 'JustCall',
+        description: 'Export your cold call list to a JustCall sales-dialer campaign. Bulk import in batches of 250 — JustCall dedupes by phone, so re-runs are safe.',
+        category: 'dialer',
+        logo: '/logos/justcall-icon.png',
+        configPath: '/dashboard/integrations/justcall',
+    },
 
     // CRM — Future
     {
@@ -253,6 +261,7 @@ function getConnectionStatus(
     leadSourceActiveProviders: Set<string>,
     outreachActive: boolean,
     webhookCount: number,
+    justcallActive: boolean,
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
@@ -277,6 +286,9 @@ function getConnectionStatus(
     }
     if (integration.id === 'outreach') {
         return outreachActive ? 'connected' : 'not_connected';
+    }
+    if (integration.id === 'justcall') {
+        return justcallActive ? 'connected' : 'not_connected';
     }
 
     // Sequencer mailbox providers — check the specific provider's connected account count.
@@ -327,6 +339,7 @@ export default function IntegrationsPage() {
     const [crmActiveProviders, setCrmActiveProviders] = useState<Set<string>>(new Set());
     const [leadSourceActiveProviders, setLeadSourceActiveProviders] = useState<Set<string>>(new Set());
     const [outreachActive, setOutreachActive] = useState(false);
+    const [justcallActive, setJustcallActive] = useState(false);
     const [webhookCount, setWebhookCount] = useState(0);
     const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -383,6 +396,9 @@ export default function IntegrationsPage() {
             apiClient<{ status?: string } | null>('/api/integrations/outreach/connection')
                 .then(res => setOutreachActive(!!res && res.status === 'active'))
                 .catch(() => setOutreachActive(false)),
+            apiClient<{ status?: string } | null>('/api/integrations/justcall/connection')
+                .then(res => setJustcallActive(!!res && res.status === 'active'))
+                .catch(() => setJustcallActive(false)),
             apiClient<Array<any>>('/api/webhooks')
                 .then(res => setWebhookCount(Array.isArray(res) ? res.length : 0))
                 .catch(() => setWebhookCount(0)),
@@ -406,7 +422,7 @@ export default function IntegrationsPage() {
     }
 
     const connectedCount = visibleIntegrations.filter(i => {
-        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount);
+        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount, justcallActive);
         return s === 'connected';
     }).length;
 
@@ -477,7 +493,7 @@ export default function IntegrationsPage() {
                             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">{cat.label}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {items.map(integration => {
-                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount);
+                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount, justcallActive);
                                     const cfg = STATUS_CONFIG[status];
                                     const isClickable = !integration.comingSoon;
 
