@@ -132,7 +132,10 @@ function SignupContent() {
                     email,
                     password,
                     organizationName: orgName,
-                    tier: selectedPlan,
+                    // Only include `tier` when a plan was actually selected.
+                    // Sending `null` would fail Zod's .optional() check
+                    // (which accepts undefined but not null).
+                    ...(selectedPlan ? { tier: selectedPlan } : {}),
                     acceptedTosVersion: legalVersions.tos,
                     acceptedPrivacyVersion: legalVersions.privacy,
                 }),
