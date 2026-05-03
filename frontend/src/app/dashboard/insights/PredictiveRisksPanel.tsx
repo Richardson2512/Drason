@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import Link from 'next/link';
 import type { RiskSignal, PredictiveRecommendation, CampaignRiskScore, PredictiveReport } from '@/types/api';
 
@@ -39,10 +40,10 @@ export default function PredictiveRisksPage() {
             await apiClient('/api/dashboard/campaigns/predictive-alerts', {
                 method: 'POST'
             });
-            alert('Predictive alerts sent successfully!');
+            toast.success('Predictive alerts sent successfully');
         } catch (err: any) {
             console.error('Failed to send alerts', err);
-            alert(`Failed to send alerts: ${err.message}`);
+            toast.error(`Failed to send alerts: ${err.message}`);
         } finally {
             setSendingAlerts(false);
         }

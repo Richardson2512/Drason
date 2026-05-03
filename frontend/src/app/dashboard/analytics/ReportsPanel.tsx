@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useCampaignList } from '@/hooks/useCampaignList';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import DatePicker from '@/components/ui/DatePicker';
 
 // ---- Types ----
@@ -184,7 +185,7 @@ export default function ReportsPage() {
             saveRecentReport(newReport);
             setRecentReports(loadRecentReports());
         } catch (err: any) {
-            alert(err.message || 'Failed to generate report');
+            toast.error(err.message || 'Failed to generate report');
         } finally {
             setGenerating(false);
         }

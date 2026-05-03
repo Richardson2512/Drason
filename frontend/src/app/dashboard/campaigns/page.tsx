@@ -8,6 +8,7 @@ import StalledCampaignResolutionModal from '@/components/dashboard/StalledCampai
 import CampaignTopLeads from '@/components/dashboard/CampaignTopLeads';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import type { Campaign, Mailbox, DashboardStats, PaginatedResponse } from '@/types/api';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
@@ -27,7 +28,7 @@ export default function CampaignsPage() {
     const [loading, setLoading] = useState(true);
     const [meta, setMeta] = useState({ total: 0, page: 1, limit: 20, totalPages: 1 });
 
-    const { selectedIds: selectedCampaignIds, toggleSelection: toggleCampaignSelection, toggleSelectAll, isAllSelected } = usePagination();
+    const { selectedIds: selectedCampaignIds, toggleSelection: toggleCampaignSelection, toggleSelectAll, isAllSelected, clearSelection: clearCampaignSelection } = usePagination();
     const entityStats = useEntityStats();
 
     // Filter states
@@ -164,6 +165,7 @@ export default function CampaignsPage() {
             await fetchCampaigns();
         } catch (err: any) {
             console.error(`Failed to ${confirmAction} campaign:`, err);
+            toast.error(err?.message || `Failed to ${confirmAction} campaign`);
         } finally {
             setCampaignActionLoading(false);
             setConfirmAction(null);
@@ -758,7 +760,7 @@ export default function CampaignsPage() {
                     >
                         📥 Export CSV
                     </button>
-                    <button onClick={() => { selectedCampaignIds.clear(); window.dispatchEvent(new Event('clear-selection')); }} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
+                    <button onClick={clearCampaignSelection} className="px-2 py-1.5 rounded-lg text-white/60 hover:text-white text-xs">✕</button>
                 </div>
             )}
         </div>

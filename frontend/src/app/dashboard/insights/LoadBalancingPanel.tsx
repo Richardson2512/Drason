@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
@@ -59,7 +60,7 @@ export default function LoadBalancingPage() {
             await fetchReport();
         } catch (err: any) {
             console.error('Failed to apply suggestion', err);
-            alert(`Failed to apply suggestion: ${err.message}`);
+            toast.error(`Failed to apply suggestion: ${err.message}`);
         } finally {
             setApplying(null);
         }

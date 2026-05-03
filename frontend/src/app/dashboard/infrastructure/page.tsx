@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import type { InfraFinding, InfraRecommendation, InfraSummaryData, InfraReport } from '@/types/api';
 import { HelpLink } from '@/components/HelpLink';
 import { Tooltip } from '@/components/Tooltip';
@@ -361,8 +362,24 @@ export default function InfrastructureHealthPage() {
                     entity: f.entity || f.category || '',
                     entityName: f.entityName || f.details || ''
                 }))}
-                onConfirm={() => { setShowConfirmModal(false); }}
-                onReview={() => { setShowConfirmModal(false); }}
+                onConfirm={async () => {
+                    setShowConfirmModal(false);
+                    const t = toast.loading('Pausing all campaigns…');
+                    try {
+                        const res = await apiClient<{ success: boolean; message?: string; paused?: number }>(
+                            '/api/dashboard/campaigns/pause-all',
+                            { method: 'POST' },
+                        );
+                        toast.success(res?.message || `Paused ${res?.paused ?? 'all'} campaigns`, { id: t });
+                        await fetchReport();
+                    } catch (e: any) {
+                        toast.error(e?.message || 'Failed to pause campaigns', { id: t });
+                    }
+                }}
+                onReview={() => {
+                    setShowConfirmModal(false);
+                    document.getElementById('findings-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
             />
             <div className="flex justify-between items-start flex-wrap gap-3">
                 <div>
@@ -643,6 +660,7 @@ export default function InfrastructureHealthPage() {
             <DnsHealthPanel />
 
             {/* Findings Distribution + Findings List */}
+            <div id="findings-section" className="scroll-mt-24" />
             <FindingsSection
                 findings={findings}
                 expandedDomain={expandedDomain}
