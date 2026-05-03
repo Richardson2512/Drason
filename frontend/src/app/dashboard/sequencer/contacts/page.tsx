@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { Suspense, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon } from 'lucide-react';
@@ -88,7 +88,7 @@ interface ContactsResponse {
 
 const PAGE_SIZE = 50;
 
-export default function ContactsPage() {
+function ContactsPageContent() {
     const searchParams = useSearchParams();
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [meta, setMeta] = useState<ContactsMeta>({ total: 0, page: 1, limit: PAGE_SIZE, totalPages: 1 });
@@ -1330,4 +1330,17 @@ function sourceMeta(source: string): { label: string; bg: string; fg: string; bo
         case 'zoominfo':  return { label: 'ZoomInfo', bg: '#FEF2F2', fg: '#9F1239', border: '#FECDD3' };
         default:          return { label: source.length > 12 ? source.slice(0, 10) + '…' : source.toUpperCase(), bg: '#F5F5F4', fg: '#57534E', border: '#E7E5E4' };
     }
+}
+
+// Suspense wrapper — required by Next.js 16 because ContactsPageContent calls
+// useSearchParams() (to pre-fill the search box from `?email=` when the user
+// arrives from the cold-call-list View link). Without the boundary, the
+// production build's static-page generator (`next build`) bails out with
+// "useSearchParams() should be wrapped in a suspense boundary at page".
+export default function ContactsPage() {
+    return (
+        <Suspense fallback={null}>
+            <ContactsPageContent />
+        </Suspense>
+    );
 }
