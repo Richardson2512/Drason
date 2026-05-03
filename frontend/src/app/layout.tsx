@@ -75,15 +75,15 @@ export default function RootLayout({
       height: 512,
     },
     description: 'Superkabe is an AI cold email platform with native deliverability protection. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders — all from a single product.',
-    foundingDate: '2024',
+    foundingDate: '2026-01-20',
     founder: {
       '@type': 'Person',
-      '@id': 'https://www.superkabe.com/about#balaji-jayakumar',
-      name: 'Balaji Jayakumar',
+      '@id': 'https://www.superkabe.com/about#richardson-eugin-simon',
+      name: 'Richardson Eugin Simon',
       jobTitle: 'Founder & CEO',
       worksFor: { '@id': 'https://www.superkabe.com/#organization' },
       sameAs: [
-        'https://www.linkedin.com/in/balajijayakumar',
+        'https://www.linkedin.com/in/richardson-eugin-simon',
       ],
     },
     contactPoint: {
@@ -93,10 +93,8 @@ export default function RootLayout({
     },
     sameAs: [
       'https://www.linkedin.com/company/superkabe',
-      'https://twitter.com/superkabe',
       'https://github.com/Superkabereal/Superkabe',
       'https://www.crunchbase.com/organization/superkabe',
-      'https://g2.com/products/superkabe',
     ],
   };
 
