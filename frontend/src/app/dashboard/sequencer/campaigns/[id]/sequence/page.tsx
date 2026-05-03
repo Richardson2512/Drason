@@ -86,7 +86,7 @@ export default function CampaignSequenceDiagramPage({ params }: { params: Promis
         : undefined;
 
     return (
-        <div className="px-6 py-6 max-w-7xl mx-auto">
+        <div className="px-6 py-6 w-full">
             {/* Breadcrumb + Header */}
             <div className="mb-5">
                 <Link

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -88,9 +89,10 @@ interface ContactsResponse {
 const PAGE_SIZE = 50;
 
 export default function ContactsPage() {
+    const searchParams = useSearchParams();
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [meta, setMeta] = useState<ContactsMeta>({ total: 0, page: 1, limit: PAGE_SIZE, totalPages: 1 });
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(() => searchParams?.get('email') ?? '');
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [statusFilter, setStatusFilter] = useState('all');
     const [validationFilter, setValidationFilter] = useState('all');
@@ -181,6 +183,8 @@ export default function ContactsPage() {
     const [newCompany, setNewCompany] = useState('');
     const [newWebsite, setNewWebsite] = useState('');
     const [newTitle, setNewTitle] = useState('');
+    const [newPhone, setNewPhone] = useState('');
+    const [newLinkedin, setNewLinkedin] = useState('');
     const [newSource, setNewSource] = useState('manual');
     const [creatingContact, setCreatingContact] = useState(false);
 
@@ -391,6 +395,8 @@ export default function ContactsPage() {
                     company: newCompany.trim() || undefined,
                     website: newWebsite.trim() || undefined,
                     title: newTitle.trim() || undefined,
+                    phone: newPhone.trim() || undefined,
+                    linkedin_url: newLinkedin.trim() || undefined,
                     source: newSource,
                 }),
             });
@@ -402,6 +408,8 @@ export default function ContactsPage() {
             setNewCompany('');
             setNewWebsite('');
             setNewTitle('');
+            setNewPhone('');
+            setNewLinkedin('');
             setNewSource('manual');
             await fetchContacts(1, searchQuery, statusFilter);
             fetchFacets();
@@ -1085,6 +1093,30 @@ export default function ContactsPage() {
                                         value={newSource}
                                         onChange={e => setNewSource(e.target.value)}
                                         placeholder="manual, referral, linkedin..."
+                                        className="w-full px-3 py-2 text-xs rounded-lg outline-none"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-[10px] font-semibold text-gray-500 uppercase mb-1">Phone</label>
+                                    <input
+                                        type="tel"
+                                        value={newPhone}
+                                        onChange={e => setNewPhone(e.target.value)}
+                                        placeholder="+1 555 123 4567"
+                                        className="w-full px-3 py-2 text-xs rounded-lg outline-none"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-semibold text-gray-500 uppercase mb-1">LinkedIn</label>
+                                    <input
+                                        type="url"
+                                        value={newLinkedin}
+                                        onChange={e => setNewLinkedin(e.target.value)}
+                                        placeholder="https://linkedin.com/in/..."
                                         className="w-full px-3 py-2 text-xs rounded-lg outline-none"
                                         style={{ border: '1px solid #D1CBC5' }}
                                     />

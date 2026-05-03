@@ -250,6 +250,8 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
                         company: pick(row, 'company', 'Company', 'company_name', 'Company Name', 'organization'),
                         website: pick(row, 'website', 'Website', 'url', 'URL', 'domain'),
                         title: pick(row, 'title', 'Title', 'job_title', 'Job Title', 'role'),
+                        phone: pick(row, 'phone', 'Phone', 'phone_number', 'Phone Number', 'mobile', 'Mobile', 'mobile_number', 'Mobile Number', 'cell', 'Cell'),
+                        linkedin_url: pick(row, 'linkedin_url', 'linkedin', 'LinkedIn', 'LinkedIn URL', 'LinkedIn Profile', 'linkedin profile', 'linkedin_profile'),
                         persona: pick(row, 'persona', 'Persona'),
                         source: pick(row, 'source', 'Source') || 'csv',
                     };
@@ -717,7 +719,7 @@ function CsvStep({ importing, onFile }: { importing: boolean; onFile: (f: File) 
         <div className="flex flex-col gap-3">
             <p className="text-xs text-gray-500">
                 CSV must have an <code className="px-1 rounded bg-gray-100">email</code> column. Optional columns:
-                {' '}<code className="px-1 rounded bg-gray-100">first_name</code>, <code className="px-1 rounded bg-gray-100">last_name</code>, <code className="px-1 rounded bg-gray-100">company</code>, <code className="px-1 rounded bg-gray-100">title</code>, <code className="px-1 rounded bg-gray-100">website</code>, <code className="px-1 rounded bg-gray-100">source</code>.
+                {' '}<code className="px-1 rounded bg-gray-100">first_name</code>, <code className="px-1 rounded bg-gray-100">last_name</code>, <code className="px-1 rounded bg-gray-100">company</code>, <code className="px-1 rounded bg-gray-100">title</code>, <code className="px-1 rounded bg-gray-100">website</code>, <code className="px-1 rounded bg-gray-100">phone</code>, <code className="px-1 rounded bg-gray-100">linkedin_url</code>, <code className="px-1 rounded bg-gray-100">source</code>.
             </p>
             <label
                 className={`flex flex-col items-center justify-center gap-2 py-10 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${importing ? 'opacity-50 cursor-wait' : 'hover:bg-gray-50'}`}

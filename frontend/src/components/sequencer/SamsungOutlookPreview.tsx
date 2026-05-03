@@ -255,6 +255,7 @@ function MessageRow({
     avatar,
     avatarBg,
     avatarFg,
+    avatarSrc,
     sender,
     subject,
     preview,
@@ -265,6 +266,11 @@ function MessageRow({
     avatar: string;
     avatarBg: string;
     avatarFg: string;
+    /** When set, the avatar circle renders this image instead of the
+     *  initials letterform. Used for the user's pinned preview row so it
+     *  reads as a real Superkabe-managed send rather than another
+     *  inbox decoy. */
+    avatarSrc?: string;
     sender: string;
     subject: string;
     preview: string;
@@ -280,15 +286,38 @@ function MessageRow({
                 background: highlight ? 'rgba(63, 160, 255, 0.06)' : 'transparent',
             }}
         >
-            <div
-                style={{
-                    width: 44, height: 44, borderRadius: 999, background: avatarBg,
-                    color: avatarFg, fontSize: 14, fontWeight: 700,
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}
-            >
-                {avatar}
-            </div>
+            {avatarSrc ? (
+                <div
+                    style={{
+                        width: 44, height: 44, borderRadius: 999,
+                        background: '#FFFFFF',
+                        // Faint border so the cream-on-white logo edge stays
+                        // visible against the row background.
+                        border: '0.5px solid rgba(0,0,0,0.08)',
+                        overflow: 'hidden',
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}
+                >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={avatarSrc}
+                        alt={sender}
+                        width={36}
+                        height={36}
+                        style={{ display: 'block', width: 36, height: 36, objectFit: 'contain' }}
+                    />
+                </div>
+            ) : (
+                <div
+                    style={{
+                        width: 44, height: 44, borderRadius: 999, background: avatarBg,
+                        color: avatarFg, fontSize: 14, fontWeight: 700,
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}
+                >
+                    {avatar}
+                </div>
+            )}
             <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
                     <span style={{ fontSize: 15, fontWeight: 700, color: TOK.textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -434,6 +463,7 @@ function OutlookMobileInbox({
                     avatar={av.letters}
                     avatarBg={av.bg}
                     avatarFg={av.fg}
+                    avatarSrc="/image/logo-v2.png"
                     highlight
                 />
                 {NEIGHBORS_TODAY.map((n, i) => (
@@ -449,7 +479,6 @@ function OutlookMobileInbox({
                 <SectionHeader label="Last week" />
                 {NEIGHBORS_LASTWEEK.map((n, i) => <MessageRow key={`l${i}`} {...n} />)}
             </div>
-            <SignInToast />
             <InboxFloatingActions />
             <BottomNav />
         </div>

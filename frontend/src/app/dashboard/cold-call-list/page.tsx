@@ -19,6 +19,7 @@ import {
     Download,
     RefreshCw,
     ChevronDown,
+    ChevronLeft,
     ChevronRight,
     Loader2,
     Sparkles,
@@ -36,6 +37,7 @@ import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 interface Prospect {
     campaign_lead_id: string;
+    lead_id: string | null;
     email: string;
     full_name: string | null;
     company: string | null;
@@ -277,7 +279,7 @@ export default function ColdCallListPage() {
     };
 
     return (
-        <div className="px-6 py-6 max-w-[1400px] mx-auto flex flex-col gap-8">
+        <div className="px-6 py-6 w-full flex flex-col gap-8">
             {/* Page header */}
             <div>
                 <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
@@ -393,6 +395,21 @@ function SystemListSection({
         });
     }, [data?.generated_at]);
 
+    const PAGE_SIZE = 25;
+    const [page, setPage] = useState(1);
+    const total = data?.prospects.length ?? 0;
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    useEffect(() => {
+        // Reset to page 1 whenever the underlying data changes (refresh / new snapshot).
+        setPage(1);
+    }, [data?.generated_at, total]);
+    const pagedProspects = useMemo(
+        () => (data?.prospects ?? []).slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+        [data?.prospects, page],
+    );
+    const rangeStart = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+    const rangeEnd = Math.min(page * PAGE_SIZE, total);
+
     return (
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -486,9 +503,34 @@ function SystemListSection({
                 ) : (
                     <>
                         <div className="text-xs text-gray-500 mb-2">
-                            <span className="text-gray-900 font-semibold">{data.prospects.length}</span> prospect{data.prospects.length === 1 ? '' : 's'} ready to call today
+                            Showing <span className="text-gray-900 font-semibold">{rangeStart}</span>–<span className="text-gray-900 font-semibold">{rangeEnd}</span> of <span className="text-gray-900 font-semibold">{total}</span> prospect{total === 1 ? '' : 's'} ready to call today
                         </div>
-                        <ProspectTable prospects={data.prospects} />
+                        <ProspectTable prospects={pagedProspects} />
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-neutral-200">
+                                <div className="text-xs text-gray-500">
+                                    Page <span className="text-gray-900 font-semibold">{page}</span> of <span className="text-gray-900 font-semibold">{totalPages}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <button
+                                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                                        disabled={page === 1}
+                                        className="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    >
+                                        <ChevronLeft size={12} />
+                                        Previous
+                                    </button>
+                                    <button
+                                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={page === totalPages}
+                                        className="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                    >
+                                        Next
+                                        <ChevronRight size={12} />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
             </div>
@@ -867,7 +909,7 @@ function ProspectTable({ prospects }: { prospects: Prospect[] }) {
                             </td>
                             <td className="px-3 py-2">
                                 <a
-                                    href={`/dashboard/leads?email=${encodeURIComponent(p.email)}`}
+                                    href={p.lead_id ? `/dashboard/sequencer/contacts/${p.lead_id}` : `/dashboard/sequencer/contacts?email=${encodeURIComponent(p.email)}`}
                                     className="text-[11px] text-neutral-600 hover:text-neutral-900 underline"
                                 >
                                     View

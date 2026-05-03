@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Mail, Building2, Briefcase, Globe, Phone, Linkedin, Loader2, Calendar, Activity, StickyNote, Check, Tag as TagIcon } from 'lucide-react';
+import { ArrowLeft, Mail, Building2, Briefcase, Globe, Phone, Linkedin, Loader2, Calendar, Activity, StickyNote, Check, Tag as TagIcon, Pencil, X, User as UserIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
@@ -65,6 +65,17 @@ export default function ContactDetailPage() {
     const [notesDraft, setNotesDraft] = useState('');
     const [savingNotes, setSavingNotes] = useState(false);
     const [notesDirty, setNotesDirty] = useState(false);
+    const [editing, setEditing] = useState(false);
+    const [savingDetails, setSavingDetails] = useState(false);
+    const [drafts, setDrafts] = useState({
+        first_name: '',
+        last_name: '',
+        company: '',
+        title: '',
+        website: '',
+        phone: '',
+        linkedin_url: '',
+    });
     const [allTags, setAllTags] = useState<TagItem[]>([]);
 
     const refreshTags = async () => {
@@ -108,6 +119,19 @@ export default function ContactDetailPage() {
                 setHistory(res?.enrollment_history || []);
                 setNotesDraft(res?.contact?.notes || '');
                 setNotesDirty(false);
+                const c = res?.contact;
+                if (c) {
+                    setDrafts({
+                        first_name: c.first_name || '',
+                        last_name: c.last_name || '',
+                        company: c.company || '',
+                        title: c.title || '',
+                        website: c.website || '',
+                        phone: c.phone || '',
+                        linkedin_url: c.linkedin_url || '',
+                    });
+                }
+                setEditing(false);
             } catch {
                 if (alive) setNotFound(true);
             } finally {
@@ -124,6 +148,83 @@ export default function ContactDetailPage() {
             </div>
         );
     }
+
+    // Compute which draft fields differ from the canonical contact. Only the
+    // dirty ones are sent on Save so we don't churn server-side timestamps
+    // for fields the user didn't touch.
+    const dirtyFields = (Object.keys(drafts) as Array<keyof typeof drafts>).filter(
+        (k) => (((contact as any)?.[k] as string | null | undefined) || '') !== drafts[k],
+    );
+    const detailsDirty = dirtyFields.length > 0;
+
+    const enterEditMode = () => {
+        if (!contact) return;
+        setDrafts({
+            first_name: contact.first_name || '',
+            last_name: contact.last_name || '',
+            company: contact.company || '',
+            title: contact.title || '',
+            website: contact.website || '',
+            phone: contact.phone || '',
+            linkedin_url: contact.linkedin_url || '',
+        });
+        setEditing(true);
+    };
+
+    const cancelEdit = () => {
+        if (!contact) return;
+        setDrafts({
+            first_name: contact.first_name || '',
+            last_name: contact.last_name || '',
+            company: contact.company || '',
+            title: contact.title || '',
+            website: contact.website || '',
+            phone: contact.phone || '',
+            linkedin_url: contact.linkedin_url || '',
+        });
+        setEditing(false);
+    };
+
+    const saveDetails = async () => {
+        if (!contact || savingDetails) return;
+        if (!detailsDirty) {
+            setEditing(false);
+            return;
+        }
+        setSavingDetails(true);
+        try {
+            const body: Record<string, string> = {};
+            for (const k of dirtyFields) body[k] = drafts[k];
+            await apiClient(`/api/sequencer/contacts/${contact.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify(body),
+            });
+            setContact((c) => {
+                if (!c) return c;
+                const next: any = { ...c };
+                for (const k of dirtyFields) {
+                    next[k] = drafts[k].trim() ? drafts[k].trim() : null;
+                }
+                // Backend re-derives full_name from first/last when those change
+                // and full_name itself wasn't sent — mirror that locally.
+                if (
+                    !Object.prototype.hasOwnProperty.call(body, 'full_name') &&
+                    (Object.prototype.hasOwnProperty.call(body, 'first_name') ||
+                        Object.prototype.hasOwnProperty.call(body, 'last_name'))
+                ) {
+                    const joined = [next.first_name, next.last_name].filter(Boolean).join(' ').trim();
+                    next.full_name = joined || null;
+                }
+                return next;
+            });
+            setEditing(false);
+            toast.success('Contact updated');
+        } catch {
+            // apiClient auto-toasts
+        } finally {
+            setSavingDetails(false);
+        }
+    };
 
     const saveNotes = async () => {
         if (!contact || savingNotes) return;
@@ -203,14 +304,59 @@ export default function ContactDetailPage() {
             {/* Info grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="premium-card p-4">
-                    <h2 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-3">Contact info</h2>
+                    <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Contact info</h2>
+                        {!editing ? (
+                            <button
+                                onClick={enterEditMode}
+                                className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
+                            >
+                                <Pencil size={10} />
+                                Edit
+                            </button>
+                        ) : (
+                            <div className="flex items-center gap-1.5">
+                                <button
+                                    onClick={cancelEdit}
+                                    disabled={savingDetails}
+                                    className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+                                >
+                                    <X size={10} />
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={saveDetails}
+                                    disabled={savingDetails || !detailsDirty}
+                                    className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50"
+                                >
+                                    {savingDetails ? <Loader2 size={10} className="animate-spin" /> : <Check size={10} />}
+                                    Save
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     <div className="flex flex-col gap-2 text-xs">
                         <Field icon={<Mail size={12} />} label="Email" value={contact.email} />
-                        <Field icon={<Building2 size={12} />} label="Company" value={contact.company} />
-                        <Field icon={<Briefcase size={12} />} label="Title" value={contact.title} />
-                        <Field icon={<Globe size={12} />} label="Website" value={contact.website} link={contact.website ? toUrl(contact.website) : null} />
-                        <Field icon={<Phone size={12} />} label="Phone" value={contact.phone} />
-                        <Field icon={<Linkedin size={12} />} label="LinkedIn" value={contact.linkedin_url} link={contact.linkedin_url} />
+                        {editing ? (
+                            <>
+                                <EditableField icon={<UserIcon size={12} />} label="First name" value={drafts.first_name} onChange={(v) => setDrafts(d => ({ ...d, first_name: v }))} placeholder="Jane" />
+                                <EditableField icon={<UserIcon size={12} />} label="Last name" value={drafts.last_name} onChange={(v) => setDrafts(d => ({ ...d, last_name: v }))} placeholder="Doe" />
+                                <EditableField icon={<Building2 size={12} />} label="Company" value={drafts.company} onChange={(v) => setDrafts(d => ({ ...d, company: v }))} placeholder="Acme Inc." />
+                                <EditableField icon={<Briefcase size={12} />} label="Title" value={drafts.title} onChange={(v) => setDrafts(d => ({ ...d, title: v }))} placeholder="Head of Sales" />
+                                <EditableField icon={<Globe size={12} />} label="Website" value={drafts.website} onChange={(v) => setDrafts(d => ({ ...d, website: v }))} placeholder="acme.com" type="url" />
+                                <EditableField icon={<Phone size={12} />} label="Phone" value={drafts.phone} onChange={(v) => setDrafts(d => ({ ...d, phone: v }))} placeholder="+1 555 123 4567" type="tel" />
+                                <EditableField icon={<Linkedin size={12} />} label="LinkedIn" value={drafts.linkedin_url} onChange={(v) => setDrafts(d => ({ ...d, linkedin_url: v }))} placeholder="https://linkedin.com/in/..." type="url" />
+                            </>
+                        ) : (
+                            <>
+                                <Field icon={<UserIcon size={12} />} label="Name" value={[contact.first_name, contact.last_name].filter(Boolean).join(' ') || contact.full_name} />
+                                <Field icon={<Building2 size={12} />} label="Company" value={contact.company} />
+                                <Field icon={<Briefcase size={12} />} label="Title" value={contact.title} />
+                                <Field icon={<Globe size={12} />} label="Website" value={contact.website} link={contact.website ? toUrl(contact.website) : null} />
+                                <Field icon={<Phone size={12} />} label="Phone" value={contact.phone} />
+                                <Field icon={<Linkedin size={12} />} label="LinkedIn" value={contact.linkedin_url} link={contact.linkedin_url} />
+                            </>
+                        )}
                         <Field icon={<Calendar size={12} />} label="Added" value={new Date(contact.created_at).toLocaleString()} />
                     </div>
                 </div>
@@ -338,6 +484,36 @@ function Field({ icon, label, value, link }: { icon?: React.ReactNode; label: st
             ) : (
                 <span className="text-gray-300">—</span>
             )}
+        </div>
+    );
+}
+
+function EditableField({
+    icon,
+    label,
+    value,
+    onChange,
+    placeholder,
+    type = 'text',
+}: {
+    icon?: React.ReactNode;
+    label: string;
+    value: string;
+    onChange: (v: string) => void;
+    placeholder?: string;
+    type?: string;
+}) {
+    return (
+        <div className="flex items-center gap-2">
+            {icon && <span className="text-gray-400">{icon}</span>}
+            <span className="text-gray-500 w-20 flex-shrink-0">{label}</span>
+            <input
+                type={type}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className="flex-1 min-w-0 px-2 py-1 text-xs rounded-md outline-none bg-transparent hover:bg-gray-50 focus:bg-white focus:border-gray-300 border border-transparent text-gray-900 placeholder-gray-300"
+            />
         </div>
     );
 }

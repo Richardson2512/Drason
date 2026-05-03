@@ -218,8 +218,12 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
 
     const insertSignature = useCallback((signature: Signature) => {
         if (!editor) return;
-        const separator = '<br/><div style="margin-top:16px;border-top:1px solid #e5e5e5;padding-top:12px">';
-        editor.chain().focus().insertContent(`${separator}${signature.html_content}</div>`).run();
+        // Empty paragraph forces a real blank line above the signature in
+        // TipTap (a bare <br/> would get absorbed by the preceding paragraph
+        // when followed by a block-level element). No horizontal rule —
+        // matches modern email client behavior (Gmail / Outlook / Apple
+        // Mail) and keeps cold sends looking personal rather than templated.
+        editor.chain().focus().insertContent(`<p></p>${signature.html_content}`).run();
         setShowSignatureMenu(false);
     }, [editor]);
 

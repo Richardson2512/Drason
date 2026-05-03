@@ -67,15 +67,22 @@ export default function ProfilePage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
-            setPasswordMessage({ type: 'success', text: 'Password changed successfully' });
+            // Backend clears the auth cookie on success — every subsequent
+            // API call would 401 — so push the user to /login explicitly
+            // instead of leaving them on a half-broken page until the next
+            // fetch fires.
+            setPasswordMessage({ type: 'success', text: 'Password changed. Redirecting to sign in…' });
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
-        } catch {
-            setPasswordMessage({ type: 'error', text: 'Failed to change password' });
-        } finally {
+            setTimeout(() => {
+                window.location.assign('/login?reset=1');
+            }, 1500);
+        } catch (err: any) {
+            setPasswordMessage({ type: 'error', text: err?.message || 'Failed to change password' });
             setPasswordLoading(false);
             setTimeout(() => setPasswordMessage(null), 4000);
+            return;
         }
     };
 
