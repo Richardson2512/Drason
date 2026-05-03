@@ -12,7 +12,12 @@ import { Key, Copy, Check, Trash2, Plus, Shield, Eye, EyeOff, Code, Cpu } from '
 // ────────────────────────────────────────────────────────────────────
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.superkabe.com';
-const MCP_URL = `${API_BASE.replace(/\/$/, '')}/mcp`;
+const API_BASE_NORMALIZED = API_BASE.replace(/\/$/, '');
+// The bare /mcp URL is back-compat. The per-org `/mcp/<slug>` URL is the
+// recommended shape (binds the resulting OAuth grant to a specific org so
+// agencies can wire one Claude.ai account up to multiple client orgs as
+// separate connectors). The current org's slug is fetched at mount time.
+const MCP_URL_BARE = `${API_BASE_NORMALIZED}/mcp`;
 
 interface ApiKeyData {
     id: string;
@@ -139,6 +144,10 @@ export default function ApiMcpPage() {
     const [showRawKey, setShowRawKey] = useState(false);
     const [activeTab, setActiveTab] = useState<'keys' | 'endpoints' | 'mcp'>('keys');
     const [revoking, setRevoking] = useState<string | null>(null);
+    const [orgSlug, setOrgSlug] = useState<string | null>(null);
+    const [orgName, setOrgName] = useState<string | null>(null);
+
+    const mcpUrl = orgSlug ? `${API_BASE_NORMALIZED}/mcp/${orgSlug}` : MCP_URL_BARE;
 
     const fetchKeys = async () => {
         try {
@@ -152,6 +161,26 @@ export default function ApiMcpPage() {
     };
 
     useEffect(() => { fetchKeys(); }, []);
+
+    // Pull the current org's slug so we can render the per-org MCP URL.
+    // Falls back to the bare /mcp URL if /me 404s for any reason — the
+    // page stays usable rather than blocking on this lookup.
+    useEffect(() => {
+        (async () => {
+            try {
+                const me = await apiClient<{
+                    success: boolean;
+                    data: { organization?: { slug?: string; name?: string } };
+                }>('/api/user/me');
+                const slug = me?.data?.organization?.slug || null;
+                const name = me?.data?.organization?.name || null;
+                if (slug) setOrgSlug(slug);
+                if (name) setOrgName(name);
+            } catch {
+                // Leave orgSlug null; UI shows the bare URL.
+            }
+        })();
+    }, []);
 
     const handleCreate = async () => {
         if (!newKeyName.trim()) return;
@@ -549,21 +578,29 @@ curl /api/v1/campaigns/:id/report`}</pre>
                             </div>
                             <div>
                                 <h3 className="text-base font-bold text-gray-900 m-0">Connect to Claude.ai (browser)</h3>
-                                <p className="text-xs text-slate-500 m-0">No install required — paste this URL into Claude.ai Integrations</p>
+                                <p className="text-xs text-slate-500 m-0">
+                                    {orgName
+                                        ? <>This URL is scoped to <strong>{orgName}</strong>. Paste it into Claude.ai → Settings → Integrations.</>
+                                        : <>Paste this URL into Claude.ai → Settings → Integrations.</>}
+                                </p>
                             </div>
                         </div>
                         <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                            In Claude.ai, go to <strong>Settings → Integrations → Add Integration</strong>, paste the URL below, and use one of your API keys above when prompted for credentials. The 17 Superkabe tools become available in any conversation.
+                            In Claude.ai, go to <strong>Settings → Integrations → Add Integration</strong> and paste the URL below. Claude redirects you to a Superkabe consent screen — sign in (if you aren&apos;t already) and click Authorize. The 17 Superkabe tools become available in any conversation.
                         </p>
                         <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto relative">
                             <div className="absolute top-2 right-2">
-                                <CopyBtn text={MCP_URL} />
+                                <CopyBtn text={mcpUrl} />
                             </div>
-                            <pre className="text-sm font-mono text-emerald-400 m-0 whitespace-pre">{MCP_URL}</pre>
+                            <pre className="text-sm font-mono text-emerald-400 m-0 whitespace-pre">{mcpUrl}</pre>
                         </div>
-                        <p className="text-xs text-slate-500 mt-3 mb-0">
-                            Auth: <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">Authorization: Bearer sk_live_…</code> — the key&apos;s scopes determine which tools Claude can call.
-                        </p>
+                        {orgSlug && (
+                            <div className="mt-3 p-3 rounded-lg bg-indigo-50 border border-indigo-100">
+                                <p className="text-xs text-indigo-900 m-0 leading-relaxed">
+                                    <strong>Managing multiple orgs from one Claude.ai account?</strong> Each org has its own URL, so you can add them as separate connectors in Claude (e.g. &quot;Acme&quot;, &quot;Beta&quot;) and pick the right one per conversation. Switching connectors never requires re-authorizing — each holds its own grant.
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Setup instructions */}

@@ -13,6 +13,10 @@ interface ConsentDetails {
     };
     scopes: string[];
     supported_scopes: string[];
+    // Set when the MCP client used a per-org URL like /mcp/<slug>. Null
+    // for the bare /mcp URL (back-compat — the user's current org wins
+    // at approve time).
+    target_org?: { id: string; name: string; slug: string } | null;
 }
 
 const SCOPE_DESCRIPTIONS: Record<string, string> = {
@@ -72,7 +76,12 @@ function ConsentInner() {
             window.location.href = resp.redirect_to;
         } catch (err: any) {
             const msg = err.message || 'Failed to approve';
-            if (/login|auth|unauthor/i.test(msg)) {
+            // 401 / "login required" → bounce to login then back here.
+            // 403 / "different organization" → DO NOT redirect to login;
+            // the user is already signed in but to the wrong org.
+            // Show the error so they can sign out + sign back in to the
+            // org the MCP URL targets.
+            if (/login required|not authenticated|^unauthor/i.test(msg)) {
                 const here = `/oauth/consent?session=${encodeURIComponent(session)}`;
                 router.push(`/login?redirect=${encodeURIComponent(here)}`);
                 return;
@@ -121,7 +130,11 @@ function ConsentInner() {
                             Authorize {details.client.name}
                         </h1>
                         <p className="text-sm text-gray-600 text-center mb-6">
-                            wants to access your Superkabe account
+                            {details.target_org ? (
+                                <>wants to access your <strong className="text-[#171923]">{details.target_org.name}</strong> Superkabe account</>
+                            ) : (
+                                <>wants to access your Superkabe account</>
+                            )}
                         </p>
 
                         <div className="bg-gray-50 rounded-2xl p-4 mb-6">
@@ -142,7 +155,11 @@ function ConsentInner() {
                                 disabled={!!submitting}
                                 className="w-full bg-[#1C4532] text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-60"
                             >
-                                {submitting === 'approve' ? 'Approving…' : `Authorize ${details.client.name}`}
+                                {submitting === 'approve'
+                                    ? 'Approving…'
+                                    : details.target_org
+                                        ? `Authorize for ${details.target_org.name}`
+                                        : `Authorize ${details.client.name}`}
                             </button>
                             <button
                                 onClick={handleDeny}
