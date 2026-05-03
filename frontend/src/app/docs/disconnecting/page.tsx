@@ -103,9 +103,10 @@ export default function DisconnectingDocsPage() {
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">What happens to Claude</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-12">
-                <li>Claude.ai will receive a <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">401</code> on its next call to <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp</code></li>
+                <li>Claude.ai will receive a <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">401</code> on its next call to the connector URL — both bare <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp</code> and per-org <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp/&lt;org-slug&gt;</code> tokens are revoked together (the revoke is keyed on <code>(org, client_id)</code>, not on URL).</li>
                 <li>The user is prompted by Claude to re-authorize Superkabe — the standard OAuth consent flow</li>
                 <li>Re-authorizing creates a fresh grant; the old grant remains in the audit log marked <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">revoked</code></li>
+                <li>If the customer has multiple per-org connectors in Claude (e.g. an agency with several client orgs), disconnecting from one org&apos;s dashboard only revokes that org&apos;s grant — connectors for other orgs are unaffected.</li>
             </ul>
 
             {/* ==================== 3. Mailbox ==================== */}

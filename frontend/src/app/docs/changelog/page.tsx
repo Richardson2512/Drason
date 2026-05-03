@@ -36,13 +36,32 @@ function TagPill({ tag }: { tag: NonNullable<Entry['tag']> }) {
 
 const ENTRIES: Entry[] = [
     {
+        date: '2026-05-04',
+        title: 'Per-org MCP URLs — agency-friendly Claude connectors',
+        tag: 'new',
+        body: (
+            <>
+                <p className="text-gray-600 leading-relaxed mb-3">
+                    Each organization now has its own MCP URL — <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-org-slug&gt;</code>. The dashboard <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">API &amp; MCP</a> tab shows the right URL for your org; agencies running multiple Superkabe orgs from one Claude.ai account can add each as a separate connector and pick per conversation. No more revoke/re-authorize churn when switching between client orgs.
+                </p>
+                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
+                    <li>OAuth grants are now audience-bound to the URL slug. Presenting an Acme token at <code>/mcp/beta</code> returns <code>403</code> — no cross-org cross-talk.</li>
+                    <li>Consent screen names the target org (&quot;Authorize Claude for <strong>Acme Inc.</strong>&quot;) so the user always sees which org they&apos;re binding before approving.</li>
+                    <li>Per-slug RFC 9728 metadata at <code>/.well-known/oauth-protected-resource/mcp/&lt;slug&gt;</code>. Discovered via <code>WWW-Authenticate</code> header on every <code>/mcp/&lt;slug&gt;</code> probe.</li>
+                    <li>Bare <code>/mcp</code> still works for back-compat — existing single-org connectors keep working with no changes required.</li>
+                </ul>
+                <p className="text-sm text-gray-500 mt-3">Read the <a href="/docs/mcp-server#claude-ai" className="text-blue-600 hover:underline">Claude (MCP Server) docs</a>.</p>
+            </>
+        ),
+    },
+    {
         date: '2026-04-29',
         title: 'Claude (browser) integration via OAuth 2.0',
         tag: 'new',
         body: (
             <>
                 <p className="text-gray-600 leading-relaxed mb-3">
-                    Claude.ai (browser) can now connect to Superkabe directly. Paste <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp</code> into Claude.ai → Settings → Integrations → Add Integration. The OAuth flow handles consent, scoping, and token issuance entirely in-browser — no API key copy/paste, no install. The 17 Superkabe tools become available in any Claude conversation immediately.
+                    Claude.ai (browser) can now connect to Superkabe directly. Grab your per-org URL from <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">Dashboard → API &amp; MCP</a> (looks like <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-slug&gt;</code>) and paste into Claude.ai → Settings → Integrations → Add Integration. The OAuth flow handles consent, scoping, and token issuance entirely in-browser — no API key copy/paste, no install. The 17 Superkabe tools become available in any Claude conversation immediately.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
                     <li>Full RFC 6749 / 7591 / 7636 / 8414 / 9728 implementation — Dynamic Client Registration, PKCE, RFC 9728 protected-resource metadata.</li>
