@@ -359,7 +359,7 @@ function SkeletonCard() {
 export default function HealingPipelinePage() {
     const [recoveryData, setRecoveryData] = useState<Record<string, any> | null>(null);
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
-    const [auditLogs, setAuditLogs] = useState<Array<Record<string, any>>>([]);
+    const [recentlyRecovered, setRecentlyRecovered] = useState<Array<Record<string, any>>>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -373,10 +373,10 @@ export default function HealingPipelinePage() {
         setLoading(true);
         setError(null);
         try {
-            const [recovery, warmup, logs] = await Promise.allSettled([
+            const [recovery, warmup, recovered] = await Promise.allSettled([
                 apiClient<Record<string, any>>('/api/healing/recovery-status'),
                 apiClient<Record<string, any>>('/api/dashboard/warmup-status'),
-                apiClient<Array<Record<string, any>>>('/api/dashboard/audit-logs?action=phase_transitioned&limit=20'),
+                apiClient<Array<Record<string, any>>>('/api/dashboard/healing/recently-recovered?days=7'),
             ]);
 
             if (recovery.status === 'fulfilled' && recovery.value) {
@@ -385,8 +385,8 @@ export default function HealingPipelinePage() {
             if (warmup.status === 'fulfilled' && warmup.value) {
                 setWarmupData(warmup.value);
             }
-            if (logs.status === 'fulfilled' && logs.value) {
-                setAuditLogs(Array.isArray(logs.value) ? logs.value : []);
+            if (recovered.status === 'fulfilled' && recovered.value) {
+                setRecentlyRecovered(Array.isArray(recovered.value) ? recovered.value : []);
             }
         } catch (err: any) {
             setError(err.message || 'Failed to load healing data');
@@ -435,15 +435,9 @@ export default function HealingPipelinePage() {
         warm_recovery: allEntities.filter(e => e.recovery_phase === 'warm_recovery').length,
     };
 
-    // Recently recovered: audit logs with transition to healthy in last 7 days
-    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const recentlyRecovered = auditLogs.filter(log => {
-        const meta = log.metadata || log.details || {};
-        const toPhase = meta.to_phase || meta.new_phase || meta.toPhase || '';
-        const createdAt = new Date(log.created_at || log.timestamp || 0).getTime();
-        return toPhase === 'healthy' && createdAt > sevenDaysAgo;
-    });
-
+    // Recently recovered: served by /api/dashboard/healing/recently-recovered.
+    // Backend already filters by to_state='healthy' and the ?days window, so
+    // we render the response directly — no client-side filtering needed.
     const recoveredCount = recentlyRecovered.length;
 
     const totalRecovering = (recoveryData?.summary?.totalRecovering ?? 0);
@@ -596,14 +590,11 @@ export default function HealingPipelinePage() {
                     <div className="premium-card rounded-[20px]">
                         <div className="flex flex-col divide-y divide-gray-100">
                             {recentlyRecovered.map((log, idx) => {
-                                const meta = log.metadata || log.details || {};
-                                const entityName = meta.email || meta.domain || meta.entity_name || 'Unknown';
-                                const recoveredAt = log.created_at || log.timestamp;
-                                const fromPhase = meta.from_phase || meta.old_phase || meta.fromPhase || '';
-                                const resilience = meta.resilience_score;
-                                const duration = meta.recovery_duration_ms
-                                    ? formatDuration(meta.recovery_duration_ms)
-                                    : meta.recovery_duration || null;
+                                const entityName = log.entity_name || 'Unknown';
+                                const recoveredAt = log.recovered_at;
+                                const fromPhase = log.from_phase || '';
+                                const resilience = log.resilience_score;
+                                const duration = null;
 
                                 return (
                                     <div key={log.id || idx} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
