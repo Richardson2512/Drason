@@ -165,15 +165,18 @@ export default function ApiMcpPage() {
     // Pull the current org's slug so we can render the per-org MCP URL.
     // Falls back to the bare /mcp URL if /me 404s for any reason — the
     // page stays usable rather than blocking on this lookup.
+    //
+    // apiClient auto-unwraps the `{ success, data: <body> }` envelope, so
+    // the typed return shape here is the inner body (the user record),
+    // not the envelope itself.
     useEffect(() => {
         (async () => {
             try {
                 const me = await apiClient<{
-                    success: boolean;
-                    data: { organization?: { slug?: string; name?: string } };
+                    organization?: { slug?: string; name?: string } | null;
                 }>('/api/user/me');
-                const slug = me?.data?.organization?.slug || null;
-                const name = me?.data?.organization?.name || null;
+                const slug = me?.organization?.slug || null;
+                const name = me?.organization?.name || null;
                 if (slug) setOrgSlug(slug);
                 if (name) setOrgName(name);
             } catch {
