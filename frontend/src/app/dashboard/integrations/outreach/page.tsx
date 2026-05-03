@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { ChevronLeft, ExternalLink, Trash2, AlertTriangle, CheckCircle2, RotateCw } from 'lucide-react';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
@@ -101,7 +102,7 @@ export default function OutreachIntegrationPage() {
             await refresh();
             setPendingDisconnect(false);
         } catch (err: any) {
-            alert(err?.message || 'Failed to disconnect');
+            toast.error(err?.message || 'Failed to disconnect');
         } finally {
             setBusy(false);
         }

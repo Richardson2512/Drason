@@ -3,6 +3,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import type { SubscriptionData, Invoice, TierInfo } from '@/types/api';
 
 // Fallback used if the API fetch fails — keeps the page renderable.
@@ -142,15 +143,15 @@ function BillingContent() {
         }
     };
 
-    const handleCancel = async () => {
-        if (!confirm('Are you sure you want to cancel your subscription? You\'ll retain access until the end of your billing period.')) {
-            return;
-        }
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const handleCancel = () => setShowCancelModal(true);
+    const confirmCancel = async () => {
         setActionLoading(true);
         try {
             await apiClient('/api/billing/cancel', { method: 'POST' });
             setError('Subscription canceled. Access will continue until billing period ends.');
             await fetchSubscription();
+            setShowCancelModal(false);
         } catch (err: any) {
             setError(err.message || 'Failed to cancel subscription');
         } finally {
@@ -613,6 +614,22 @@ function BillingContent() {
                     )}
                 </div>
             )}
+            <ConfirmActionModal
+                isOpen={showCancelModal}
+                title="Cancel subscription"
+                icon="⚠️"
+                message="Are you sure you want to cancel? Your subscription will end at the close of the current billing period."
+                consequences={[
+                    'You\'ll retain full access until the period ends',
+                    'No further charges will be made',
+                    'Stored data and connected mailboxes are preserved — re-subscribe anytime to resume',
+                ]}
+                confirmLabel="Cancel subscription"
+                variant="danger"
+                loading={actionLoading}
+                onConfirm={confirmCancel}
+                onCancel={() => setShowCancelModal(false)}
+            />
         </div>
     );
 }

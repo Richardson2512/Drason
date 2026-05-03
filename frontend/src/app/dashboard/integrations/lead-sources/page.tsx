@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { ChevronLeft, ExternalLink, Trash2, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
@@ -176,7 +177,7 @@ export default function LeadSourcesPage() {
             await refresh();
             setPendingDisconnect(null);
         } catch (err: any) {
-            alert(err?.message || 'Failed to disconnect');
+            toast.error(err?.message || 'Failed to disconnect');
         } finally {
             setBusyId(null);
         }

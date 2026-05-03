@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import type { Notification, PaginatedResponse } from '@/types/api';
@@ -44,8 +45,9 @@ export default function NotificationsPage() {
         try {
             await apiClient<{ success: boolean }>(`/api/dashboard/notifications/${id}/read`, { method: 'POST' });
             setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to mark as read:', error);
+            toast.error(error?.message || 'Failed to mark as read');
         }
     };
 
@@ -53,8 +55,10 @@ export default function NotificationsPage() {
         try {
             await apiClient<{ success: boolean }>('/api/dashboard/notifications/read-all', { method: 'POST' });
             fetchNotifications();
-        } catch (error) {
+            toast.success('All notifications marked as read');
+        } catch (error: any) {
             console.error('Failed to mark all as read:', error);
+            toast.error(error?.message || 'Failed to mark all as read');
         }
     };
 

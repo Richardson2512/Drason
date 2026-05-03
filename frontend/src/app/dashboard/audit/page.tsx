@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import type { AuditLog } from '@/types/api';
 import { useSimplePagination } from '@/hooks/usePagination';
 
@@ -24,7 +25,10 @@ export default function Audit() {
                     setLogs(Array.isArray(data) ? data : []);
                 }
             })
-            .catch(() => setLogs([]));
+            .catch((err: any) => {
+                setLogs([]);
+                toast.error(err?.message || 'Failed to load audit log');
+            });
     }, [meta.page, meta.limit, activeTab, setMeta]);
 
     useEffect(() => {

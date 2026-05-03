@@ -2,12 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import { Key, Copy, Check, Trash2, Plus, Shield, Eye, EyeOff, Code, Cpu } from 'lucide-react';
 
 // ────────────────────────────────────────────────────────────────────
 // Types
 // ────────────────────────────────────────────────────────────────────
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.superkabe.com';
+const MCP_URL = `${API_BASE.replace(/\/$/, '')}/mcp`;
 
 interface ApiKeyData {
     id: string;
@@ -164,20 +169,25 @@ export default function ApiMcpPage() {
             setShowRawKey(true);
             await fetchKeys();
         } catch (err: any) {
-            alert(err.message || 'Failed to create API key');
+            toast.error(err.message || 'Failed to create API key');
         } finally {
             setCreating(false);
         }
     };
 
-    const handleRevoke = async (id: string) => {
-        if (!confirm('Revoke this API key? Any integrations using it will stop working.')) return;
+    const [revokeTarget, setRevokeTarget] = useState<ApiKeyData | null>(null);
+    const handleRevoke = (key: ApiKeyData) => setRevokeTarget(key);
+    const confirmRevoke = async () => {
+        if (!revokeTarget) return;
+        const id = revokeTarget.id;
         setRevoking(id);
         try {
             await apiClient(`/api/api-keys/${id}`, { method: 'DELETE' });
+            toast.success('API key revoked');
             await fetchKeys();
-        } catch {
-            // ignore
+            setRevokeTarget(null);
+        } catch (err: any) {
+            toast.error(err?.message || 'Failed to revoke API key');
         } finally {
             setRevoking(null);
         }
@@ -395,7 +405,7 @@ export default function ApiMcpPage() {
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => handleRevoke(key.id)}
+                                            onClick={() => handleRevoke(key)}
                                             disabled={revoking === key.id}
                                             className="p-2 rounded-lg border border-red-200 bg-white text-red-500 cursor-pointer hover:bg-red-50 transition-colors"
                                             title="Revoke key"
@@ -547,9 +557,9 @@ curl /api/v1/campaigns/:id/report`}</pre>
                         </p>
                         <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto relative">
                             <div className="absolute top-2 right-2">
-                                <CopyBtn text="https://api.superkabe.com/mcp" />
+                                <CopyBtn text={MCP_URL} />
                             </div>
-                            <pre className="text-sm font-mono text-emerald-400 m-0 whitespace-pre">https://api.superkabe.com/mcp</pre>
+                            <pre className="text-sm font-mono text-emerald-400 m-0 whitespace-pre">{MCP_URL}</pre>
                         </div>
                         <p className="text-xs text-slate-500 mt-3 mb-0">
                             Auth: <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">Authorization: Bearer sk_live_…</code> — the key&apos;s scopes determine which tools Claude can call.
@@ -582,7 +592,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
       "args": ["-y", "@superkabe/mcp-server"],
       "env": {
         "SUPERKABE_API_KEY": "sk_live_your_key_here",
-        "SUPERKABE_API_URL": "https://api.superkabe.com"
+        "SUPERKABE_API_URL": "${API_BASE}"
       }
     }
   }
@@ -595,7 +605,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
       "args": ["-y", "@superkabe/mcp-server"],
       "env": {
         "SUPERKABE_API_KEY": "sk_live_your_key_here",
-        "SUPERKABE_API_URL": "https://api.superkabe.com"
+        "SUPERKABE_API_URL": "${API_BASE}"
       }
     }
   }
@@ -637,7 +647,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                     {/* Available tools */}
                     <div className="premium-card">
                         <h3 className="text-base font-bold text-gray-900 mb-3">Tools Available to Claude</h3>
-                        <p className="text-xs text-slate-500 mb-4">When connected via MCP, Claude can use these 16 tools. Each tool is gated by the matching scope on your API key — grant only what the agent needs.</p>
+                        <p className="text-xs text-slate-500 mb-4">When connected via MCP, Claude can use these 17 tools. Each tool is gated by the matching scope on your API key — grant only what the agent needs.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {[
                                 { tool: 'get_account', desc: 'Check usage, limits, and plan info' },
@@ -667,6 +677,22 @@ curl /api/v1/campaigns/:id/report`}</pre>
                     </div>
                 </div>
             )}
+            <ConfirmActionModal
+                isOpen={!!revokeTarget}
+                title="Revoke API key"
+                icon="🔑"
+                message={`Revoke "${revokeTarget?.name ?? ''}"? Any integrations using this key will stop working immediately.`}
+                consequences={[
+                    'All requests using this key will return 401',
+                    'Connected MCP clients (Claude, ChatGPT) will lose access',
+                    'This action cannot be undone',
+                ]}
+                confirmLabel="Revoke key"
+                variant="danger"
+                loading={revoking === revokeTarget?.id}
+                onConfirm={confirmRevoke}
+                onCancel={() => setRevokeTarget(null)}
+            />
         </div>
     );
 }

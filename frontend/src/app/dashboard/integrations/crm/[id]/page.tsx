@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { ChevronLeft, AlertTriangle, Trash2, RefreshCw, Play, CheckCircle2 } from 'lucide-react';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
@@ -218,7 +219,7 @@ export default function CrmConnectionDetailPage() {
             await apiClient(`/api/integrations/crm/connections/${conn.id}/disconnect`, { method: 'POST' });
             router.push('/dashboard/integrations/crm');
         } catch (err: any) {
-            alert(err.message || 'Failed to disconnect');
+            toast.error(err.message || 'Failed to disconnect');
             setDisconnecting(false);
         }
     };

@@ -33,7 +33,7 @@ const INTEGRATIONS: Integration[] = [
         description: 'Ingest enriched leads directly from Clay tables via webhook.',
         category: 'lead_sources',
         logo: '/clay.png',
-        configPath: '/dashboard/settings',
+        configPath: '/docs/clay-integration',
         settingKey: '_CLAY_ALWAYS_ON_', // Clay is always available once org exists
     },
     {
@@ -252,13 +252,16 @@ function getConnectionStatus(
     crmActiveProviders: Set<string>,
     leadSourceActiveProviders: Set<string>,
     outreachActive: boolean,
+    webhookCount: number,
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
     // Clay is always available
     if (integration.id === 'clay') return 'connected';
-    // Webhooks are always available — connection state lives per-endpoint inside the webhooks page.
-    if (integration.id === 'webhooks') return 'connected';
+    // Webhooks — connected only if at least one endpoint is registered.
+    if (integration.id === 'webhooks') {
+        return webhookCount > 0 ? 'connected' : 'not_connected';
+    }
     // Claude (and any future OAuth-MCP client) — connected when the user
     // has at least one active OAuth grant.
     if (integration.id === 'claude') {
@@ -324,6 +327,7 @@ export default function IntegrationsPage() {
     const [crmActiveProviders, setCrmActiveProviders] = useState<Set<string>>(new Set());
     const [leadSourceActiveProviders, setLeadSourceActiveProviders] = useState<Set<string>>(new Set());
     const [outreachActive, setOutreachActive] = useState(false);
+    const [webhookCount, setWebhookCount] = useState(0);
     const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -379,6 +383,9 @@ export default function IntegrationsPage() {
             apiClient<{ status?: string } | null>('/api/integrations/outreach/connection')
                 .then(res => setOutreachActive(!!res && res.status === 'active'))
                 .catch(() => setOutreachActive(false)),
+            apiClient<Array<any>>('/api/webhooks')
+                .then(res => setWebhookCount(Array.isArray(res) ? res.length : 0))
+                .catch(() => setWebhookCount(0)),
         ]).finally(() => setLoading(false));
     }, []);
 
@@ -399,7 +406,7 @@ export default function IntegrationsPage() {
     }
 
     const connectedCount = visibleIntegrations.filter(i => {
-        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive);
+        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount);
         return s === 'connected';
     }).length;
 
@@ -470,7 +477,7 @@ export default function IntegrationsPage() {
                             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">{cat.label}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {items.map(integration => {
-                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive);
+                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive, webhookCount);
                                     const cfg = STATUS_CONFIG[status];
                                     const isClickable = !integration.comingSoon;
 
