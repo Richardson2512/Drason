@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { consumeIntendedReturnTo } from '@/lib/auth-client';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -479,28 +479,48 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                {/* Trial Countdown Floating Popup */}
+                {/* Trial Countdown Floating Popup — dashboard-native styling.
+                    Cream-bordered white card matches premium-card pattern, brand-green
+                    accent for the primary action, lucide icons (not emoji), compact
+                    sizing so it sits naturally next to the trial pill in the overview
+                    header rather than dominating the canvas. */}
                 {subscription?.status === 'trialing' && daysRemaining !== null && !trialBannerDismissed && (
-                    <div className="fixed top-16 right-4 border-2 border-yellow-400 rounded-2xl p-4 px-5 flex items-center gap-4 z-50 max-w-[400px]" style={{
-                        background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE047 100%)',
-                        boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                        animation: 'slideIn 0.3s ease-out'
-                    }}>
-                        <span className="text-2xl shrink-0">⏰</span>
-                        <div className="flex-1">
-                            <p className="m-0 text-[0.9rem] text-[#92400E] font-semibold mb-1">
-                                Trial ends in <strong className="text-base text-[#78350F]">{daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}</strong>
+                    <div
+                        className="fixed top-4 right-4 z-50 max-w-[320px] bg-white rounded-xl py-3 pr-2 pl-3 flex items-center gap-3"
+                        style={{
+                            border: '1px solid #D1CBC5',
+                            boxShadow: '0 4px 14px rgba(28, 69, 50, 0.08)',
+                            animation: 'slideIn 0.3s ease-out',
+                        }}
+                    >
+                        <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                            style={{ background: '#F5F1EA' }}
+                        >
+                            <Clock size={15} strokeWidth={1.75} style={{ color: '#1C4532' }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="m-0 text-[11px] leading-tight text-gray-500">
+                                Trial ends in{' '}
+                                <strong className="text-gray-900 font-semibold">
+                                    {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}
+                                </strong>
                             </p>
-                            <Link href="/dashboard/billing" className="banner-link-hover text-[0.8rem] text-[#78350F] underline font-bold">
-                                Upgrade now →
+                            <Link
+                                href="/dashboard/billing"
+                                className="text-[11px] font-semibold hover:underline mt-0.5 inline-block"
+                                style={{ color: '#1C4532' }}
+                            >
+                                Upgrade →
                             </Link>
                         </div>
                         <button
                             onClick={() => setTrialBannerDismissed(true)}
-                            className="banner-dismiss-hover bg-transparent border-none text-[#92400E] cursor-pointer text-xl p-1 flex items-center justify-center rounded-full w-7 h-7 shrink-0"
+                            className="bg-transparent border-none cursor-pointer p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-50 shrink-0 flex items-center justify-center"
                             title="Dismiss"
+                            aria-label="Dismiss trial reminder"
                         >
-                            ✕
+                            <XIcon size={14} strokeWidth={1.75} />
                         </button>
                     </div>
                 )}
