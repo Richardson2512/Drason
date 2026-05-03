@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Plus, Mail, Shield, Wifi, WifiOff, Trash2, RefreshCw, Settings, X, Upload, Download, Loader2, Search, Zap } from 'lucide-react';
+import { Plus, Mail, Shield, Wifi, WifiOff, Trash2, RefreshCw, Settings, X, Upload, Download, Loader2, Search, Zap, PlugZap } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -253,7 +253,7 @@ export default function ConnectedAccountsPage() {
 
     const connectSMTP = async () => {
         if (!smtpForm.email || !smtpForm.host || !smtpForm.username || !smtpForm.password) {
-            alert('Fill in all required SMTP fields');
+            toast.error('Fill in all required SMTP fields');
             return;
         }
         setSubmitting(true);
@@ -289,6 +289,22 @@ export default function ConnectedAccountsPage() {
             await fetchAccounts();
         } catch {
             // apiClient already handles error toasts
+        }
+    };
+
+    const [testingId, setTestingId] = useState<string | null>(null);
+    const testAccount = async (id: string, email: string) => {
+        if (testingId) return;
+        setTestingId(id);
+        const t = toast.loading(`Testing ${email}...`);
+        try {
+            const res: any = await apiClient(`/api/sequencer/accounts/${id}/test`, { method: 'POST' });
+            const message = res?.message || 'Connection OK';
+            toast.success(message, { id: t });
+        } catch (e: any) {
+            toast.error(e?.message || 'Connection test failed', { id: t, duration: 6000 });
+        } finally {
+            setTestingId(null);
         }
     };
 
@@ -468,6 +484,16 @@ export default function ConnectedAccountsPage() {
                                     <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                                         <div className="h-full rounded-full" style={{ width: `${Math.min((account.sendsToday / account.dailySendLimit) * 100, 100)}%`, background: account.sendsToday > account.dailySendLimit * 0.8 ? '#DC2626' : '#059669' }} />
                                     </div>
+                                    <button
+                                        onClick={() => testAccount(account.id, account.email)}
+                                        disabled={testingId === account.id}
+                                        className="p-1.5 rounded-md hover:bg-gray-100 cursor-pointer disabled:opacity-50"
+                                        title="Test connection"
+                                    >
+                                        {testingId === account.id
+                                            ? <Loader2 size={12} className="text-gray-400 animate-spin" />
+                                            : <PlugZap size={12} className="text-gray-400 hover:text-gray-700" />}
+                                    </button>
                                     <button onClick={() => setSettingsAccountId(account.id)} className="p-1.5 rounded-md hover:bg-gray-100 cursor-pointer" title="Mailbox settings">
                                         <Settings size={12} className="text-gray-400 hover:text-gray-700" />
                                     </button>

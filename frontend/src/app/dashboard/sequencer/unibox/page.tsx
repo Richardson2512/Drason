@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { apiClient } from '@/lib/api';
-import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText, Square, CheckSquare } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
@@ -228,6 +229,50 @@ export default function UniboxPage() {
         setThreads(prev => prev.map(t => t.id === threadId ? { ...t, is_read: false } : t));
     };
 
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+    const [bulkPending, setBulkPending] = useState(false);
+
+    const toggleSelect = (threadId: string) => {
+        setSelectedIds(prev => {
+            const next = new Set(prev);
+            if (next.has(threadId)) next.delete(threadId); else next.add(threadId);
+            return next;
+        });
+    };
+
+    const allVisibleSelected = threads.length > 0 && threads.every(t => selectedIds.has(t.id));
+    const toggleSelectAllVisible = () => {
+        if (allVisibleSelected) setSelectedIds(new Set());
+        else setSelectedIds(new Set(threads.map(t => t.id)));
+    };
+
+    const bulkUpdate = async (patch: { is_read?: boolean; is_starred?: boolean; status?: string }) => {
+        if (selectedIds.size === 0 || bulkPending) return;
+        const ids = Array.from(selectedIds);
+        setBulkPending(true);
+        try {
+            await apiClient(`/api/unibox/threads/bulk`, {
+                method: 'PATCH',
+                body: JSON.stringify({ threadIds: ids, ...patch }),
+            });
+            if (patch.status === 'archived') {
+                setThreads(prev => prev.filter(t => !selectedIds.has(t.id)));
+                if (selectedThread && selectedIds.has(selectedThread.id)) {
+                    setSelectedThread(null);
+                    setLeadContext(null);
+                }
+            } else {
+                setThreads(prev => prev.map(t => selectedIds.has(t.id) ? { ...t, ...patch } : t));
+            }
+            toast.success(`Updated ${ids.length} thread${ids.length === 1 ? '' : 's'}`);
+            setSelectedIds(new Set());
+        } catch (e: any) {
+            toast.error(e?.message || 'Bulk update failed');
+        } finally {
+            setBulkPending(false);
+        }
+    };
+
     const sendReplyAction = async () => {
         if (!selectedThread || !replyHtml.trim()) return;
         setSending(true);
@@ -353,11 +398,40 @@ export default function UniboxPage() {
                 {/* ==================== LEFT: Thread List ==================== */}
                 <div className="w-[320px] shrink-0 flex flex-col bg-white" style={{ borderRight: '1px solid #D1CBC5' }}>
                     {/* Column header — compact label + count */}
-                    <div className="px-3 py-2 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #E8E3DC', background: '#FAFAF8' }}>
-                        <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">
-                            {view === 'inbox' ? 'Replies' : view === 'sent' ? 'Sent' : 'All threads'}
-                        </span>
-                        <span className="text-[10px] text-gray-400">{threads.length}</span>
+                    <div className="px-3 py-2 flex items-center justify-between shrink-0 gap-2" style={{ borderBottom: '1px solid #E8E3DC', background: '#FAFAF8' }}>
+                        <div className="flex items-center gap-2 min-w-0">
+                            <button
+                                onClick={toggleSelectAllVisible}
+                                disabled={threads.length === 0}
+                                className="p-0.5 rounded hover:bg-gray-200 cursor-pointer disabled:opacity-30 disabled:cursor-default"
+                                title={allVisibleSelected ? 'Clear selection' : 'Select all visible'}
+                            >
+                                {allVisibleSelected
+                                    ? <CheckSquare size={12} className="text-gray-700" />
+                                    : <Square size={12} className="text-gray-400" />}
+                            </button>
+                            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">
+                                {selectedIds.size > 0 ? `${selectedIds.size} selected` : (view === 'inbox' ? 'Replies' : view === 'sent' ? 'Sent' : 'All threads')}
+                            </span>
+                        </div>
+                        {selectedIds.size > 0 ? (
+                            <div className="flex items-center gap-1 shrink-0">
+                                <button onClick={() => bulkUpdate({ is_read: true })} disabled={bulkPending} className="p-1 rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50" title="Mark read">
+                                    <MailOpen size={11} className="text-gray-600" />
+                                </button>
+                                <button onClick={() => bulkUpdate({ is_read: false })} disabled={bulkPending} className="p-1 rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50" title="Mark unread">
+                                    <Mail size={11} className="text-gray-600" />
+                                </button>
+                                <button onClick={() => bulkUpdate({ is_starred: true })} disabled={bulkPending} className="p-1 rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50" title="Star">
+                                    <Star size={11} className="text-gray-600" />
+                                </button>
+                                <button onClick={() => bulkUpdate({ status: 'archived' })} disabled={bulkPending} className="p-1 rounded hover:bg-gray-200 cursor-pointer disabled:opacity-50" title="Archive">
+                                    <Archive size={11} className="text-gray-600" />
+                                </button>
+                            </div>
+                        ) : (
+                            <span className="text-[10px] text-gray-400">{threads.length}</span>
+                        )}
                     </div>
 
                 {/* Thread list */}
@@ -382,8 +456,25 @@ export default function UniboxPage() {
                         </div>
                     ) : (
                         threads.map(thread => (
-                            <button key={thread.id} onClick={() => fetchThread(thread.id)} className="w-full text-left p-3 cursor-pointer transition-colors hover:bg-[#F5F1EA]" style={{ borderBottom: '1px solid #F0EBE3', background: selectedThread?.id === thread.id ? '#F5F1EA' : thread.is_read ? 'transparent' : '#FAFAF5' }}>
+                            <div
+                                key={thread.id}
+                                onClick={() => fetchThread(thread.id)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter') fetchThread(thread.id); }}
+                                className="w-full text-left p-3 cursor-pointer transition-colors hover:bg-[#F5F1EA]"
+                                style={{ borderBottom: '1px solid #F0EBE3', background: selectedThread?.id === thread.id ? '#F5F1EA' : selectedIds.has(thread.id) ? '#FFF7E6' : thread.is_read ? 'transparent' : '#FAFAF5' }}
+                            >
                                 <div className="flex items-start gap-2.5">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); toggleSelect(thread.id); }}
+                                        className="p-0.5 rounded hover:bg-gray-200 cursor-pointer shrink-0 mt-1"
+                                        title={selectedIds.has(thread.id) ? 'Deselect' : 'Select'}
+                                    >
+                                        {selectedIds.has(thread.id)
+                                            ? <CheckSquare size={12} className="text-gray-700" />
+                                            : <Square size={12} className="text-gray-400" />}
+                                    </button>
                                     <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold text-white" style={{ background: thread.is_read ? '#9CA3AF' : '#111827' }}>
                                         {(thread.contact_name || thread.contact_email)[0]?.toUpperCase()}
                                     </div>
@@ -401,7 +492,7 @@ export default function UniboxPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </button>
+                            </div>
                         ))
                     )}
                 </div>
