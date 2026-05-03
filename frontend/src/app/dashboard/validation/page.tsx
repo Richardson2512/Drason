@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { Upload, FileSpreadsheet, CheckCircle, XCircle, AlertTriangle, Copy, Download, Send, ChevronDown, ChevronRight, Search, X, Tag as TagIcon, Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
@@ -261,12 +262,12 @@ function ValidationPageContent() {
                 setColumnMapping(mapping);
                 setUploadStep('mapping');
             },
-            error: () => { alert('Failed to parse CSV'); }
+            error: () => { toast.error('Failed to parse CSV'); }
         });
     };
 
     const handleConfirmUpload = async () => {
-        if (!columnMapping.email) { alert('Email column mapping is required'); return; }
+        if (!columnMapping.email) { toast.error('Email column mapping is required'); return; }
         setUploading(true);
 
         // Parse full CSV
@@ -333,7 +334,7 @@ function ValidationPageContent() {
                         } catch { /* continue polling */ }
                     }, 2000);
                 } catch (err: any) {
-                    alert(err.message || 'Upload failed');
+                    toast.error(err.message || 'Upload failed');
                     setUploadStep('select');
                 }
                 setUploading(false);
@@ -367,7 +368,7 @@ function ValidationPageContent() {
             fetchBatchLeads(selectedBatch.id, batchMeta.page);
             fetchBatches();
         } catch (err: any) {
-            alert(err.message || 'Routing failed');
+            toast.error(err.message || 'Routing failed');
         }
         setRouting(false);
     };
@@ -383,6 +384,14 @@ function ValidationPageContent() {
                 credentials: 'include',
                 body: JSON.stringify({ statusFilter: filter }),
             });
+            if (!res.ok) {
+                let message = `Export failed (${res.status})`;
+                try {
+                    const errBody = await res.json();
+                    if (errBody?.error) message = errBody.error;
+                } catch { /* response wasn't JSON */ }
+                throw new Error(message);
+            }
             const blob = await res.blob();
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -390,7 +399,9 @@ function ValidationPageContent() {
             a.download = `validation-${selectedBatch.id.slice(0, 8)}.csv`;
             a.click();
             URL.revokeObjectURL(url);
-        } catch { alert('Export failed'); }
+        } catch (err: any) {
+            toast.error(err?.message || 'Export failed');
+        }
     };
 
     // ========== SELECTION ==========
