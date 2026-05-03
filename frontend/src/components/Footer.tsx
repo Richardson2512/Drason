@@ -41,6 +41,7 @@ export default function Footer() {
  <div className="flex flex-col gap-4">
  <h4 className="font-bold text-gray-900 mb-2 text-base">Free Tools</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
+ <Link href="/cold-email-templates" className="hover:text-blue-600 transition-colors whitespace-nowrap">Cold Email Templates</Link>
  <Link href="/tools/spf-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">SPF Lookup</Link>
  <Link href="/tools/spf-generator" className="hover:text-blue-600 transition-colors whitespace-nowrap">SPF Generator</Link>
  <Link href="/tools/dkim-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">DKIM Lookup</Link>
