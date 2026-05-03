@@ -677,22 +677,32 @@ curl /api/v1/campaigns/:id/report`}</pre>
                     </div>
                 </div>
             )}
-            <ConfirmActionModal
-                isOpen={!!revokeTarget}
-                title="Revoke API key"
-                icon="🔑"
-                message={`Revoke "${revokeTarget?.name ?? ''}"? Any integrations using this key will stop working immediately.`}
-                consequences={[
-                    'All requests using this key will return 401',
-                    'Connected MCP clients (Claude, ChatGPT) will lose access',
-                    'This action cannot be undone',
-                ]}
-                confirmLabel="Revoke key"
-                variant="danger"
-                loading={revoking === revokeTarget?.id}
-                onConfirm={confirmRevoke}
-                onCancel={() => setRevokeTarget(null)}
-            />
+            {/* Mount the revoke confirmation modal only when there's a
+                target. Always-mounting with optional-chained props
+                (revokeTarget?.name / revokeTarget?.id) was the suspected
+                source of a `ReferenceError: _ref is not defined` thrown
+                during prod render — Next 16 + Turbopack emits destructured-
+                param wrappers that can mis-handle nullable prop reads
+                routed through forwardRef children. Conditional mount sidesteps
+                the null path entirely. */}
+            {revokeTarget && (
+                <ConfirmActionModal
+                    isOpen={true}
+                    title="Revoke API key"
+                    icon="🔑"
+                    message={`Revoke "${revokeTarget.name}"? Any integrations using this key will stop working immediately.`}
+                    consequences={[
+                        'All requests using this key will return 401',
+                        'Connected MCP clients (Claude, ChatGPT) will lose access',
+                        'This action cannot be undone',
+                    ]}
+                    confirmLabel="Revoke key"
+                    variant="danger"
+                    loading={revoking === revokeTarget.id}
+                    onConfirm={confirmRevoke}
+                    onCancel={() => setRevokeTarget(null)}
+                />
+            )}
         </div>
     );
 }
