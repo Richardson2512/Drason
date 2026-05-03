@@ -28,6 +28,8 @@ import {
 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
+import ExportToOutreachModal from '@/components/ExportToOutreachModal';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -115,6 +117,13 @@ export default function ColdCallListPage() {
     const [customLoading, setCustomLoading] = useState(false);
     const [customGeneratedAt, setCustomGeneratedAt] = useState<string | null>(null);
     const [customDownloadLoading, setCustomDownloadLoading] = useState(false);
+
+    // Export-to-Outreach modal state — shared between Today's List and Custom List.
+    const [outreachExport, setOutreachExport] = useState<{
+        prospectIds: string[];
+        sourceKind: 'todays_list' | 'custom_list';
+        sourceLabel: string;
+    } | null>(null);
 
     const fetchSystemList = useCallback(async () => {
         setSystemLoading(true);
@@ -278,6 +287,14 @@ export default function ColdCallListPage() {
                 loading={systemLoading}
                 onDownload={downloadSystemCsv}
                 onRefresh={fetchSystemList}
+                onExportOutreach={() => {
+                    if (!systemList || systemList.prospects.length === 0) return;
+                    setOutreachExport({
+                        prospectIds: systemList.prospects.map(p => p.campaign_lead_id),
+                        sourceKind: 'todays_list',
+                        sourceLabel: `Today's list · ${systemList.snapshot_date}`,
+                    });
+                }}
             />
 
             {/* Section 2: Custom List */}
@@ -294,6 +311,22 @@ export default function ColdCallListPage() {
                 customDownloadLoading={customDownloadLoading}
                 onGenerate={generateCustom}
                 onDownload={downloadCustomCsv}
+                onExportOutreach={() => {
+                    if (!customList || customList.length === 0) return;
+                    setOutreachExport({
+                        prospectIds: customList.map(p => p.campaign_lead_id),
+                        sourceKind: 'custom_list',
+                        sourceLabel: 'Custom call list',
+                    });
+                }}
+            />
+
+            <ExportToOutreachModal
+                isOpen={!!outreachExport}
+                onClose={() => setOutreachExport(null)}
+                prospectIds={outreachExport ? outreachExport.prospectIds : []}
+                sourceKind={outreachExport ? outreachExport.sourceKind : 'custom_list'}
+                sourceLabel={outreachExport ? outreachExport.sourceLabel : undefined}
             />
         </div>
     );
@@ -306,11 +339,13 @@ function SystemListSection({
     loading,
     onDownload,
     onRefresh,
+    onExportOutreach,
 }: {
     data: SystemListResponse | null;
     loading: boolean;
     onDownload: () => void;
     onRefresh: () => void;
+    onExportOutreach: () => void;
 }) {
     const generatedHuman = useMemo(() => {
         if (!data?.generated_at) return null;
@@ -351,6 +386,15 @@ function SystemListSection({
                     >
                         {loading ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
                         Refresh
+                    </button>
+                    <button
+                        onClick={onExportOutreach}
+                        disabled={!data || data.prospects.length === 0}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        title="Push these prospects to an Outreach sequence"
+                    >
+                        <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
+                        Export to Outreach
                     </button>
                     <button
                         onClick={onDownload}
@@ -424,6 +468,7 @@ function CustomListSection({
     customDownloadLoading,
     onGenerate,
     onDownload,
+    onExportOutreach,
 }: {
     settings: Settings | null;
     campaigns: CampaignOption[];
@@ -437,6 +482,7 @@ function CustomListSection({
     customDownloadLoading: boolean;
     onGenerate: () => void;
     onDownload: () => void;
+    onExportOutreach: () => void;
 }) {
     return (
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
@@ -464,11 +510,12 @@ function CustomListSection({
                 </div>
             </div>
 
-            {/* Rules panel */}
-            <div className="mt-4 rounded-lg border border-neutral-200 overflow-hidden">
+            {/* Rules panel — overflow-visible so the campaigns MultiSelectDropdown
+                isn't clipped when its panel expands below the field. */}
+            <div className="mt-4 rounded-lg border border-neutral-200">
                 <button
                     onClick={onToggleRules}
-                    className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-50 cursor-pointer bg-transparent border-none"
+                    className={`w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-50 cursor-pointer bg-transparent border-none ${rulesOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
                 >
                     <span className="text-xs font-semibold text-gray-700 inline-flex items-center gap-1.5">
                         {rulesOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
@@ -498,6 +545,15 @@ function CustomListSection({
                     >
                         {customLoading ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                         {customList ? 'Re-generate' : 'Generate List'}
+                    </button>
+                    <button
+                        onClick={onExportOutreach}
+                        disabled={!customList || customList.length === 0}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        title="Push these prospects to an Outreach sequence"
+                    >
+                        <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
+                        Export to Outreach
                     </button>
                     <button
                         onClick={onDownload}
@@ -662,33 +718,19 @@ function RulesPanel({
                     />
                 </Field>
 
-                <Field label="Campaigns" hint={allCampaignsSelected ? 'All active campaigns' : `${selectedCampaigns.length} selected`}>
-                    <div className="flex flex-wrap gap-1.5">
-                        <button
-                            onClick={() => onChange({ campaign_filter: null })}
-                            className={`px-2 py-0.5 rounded text-[10px] font-medium border ${allCampaignsSelected ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'}`}
-                        >
-                            All
-                        </button>
-                        {campaigns.map((c) => {
-                            const sel = selectedCampaigns.includes(c.id);
-                            return (
-                                <button
-                                    key={c.id}
-                                    onClick={() => {
-                                        const next = sel ? selectedCampaigns.filter((x) => x !== c.id) : [...selectedCampaigns, c.id];
-                                        onChange({ campaign_filter: next.length > 0 ? next : null });
-                                    }}
-                                    className={`px-2 py-0.5 rounded text-[10px] font-medium border ${sel ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'}`}
-                                >
-                                    {c.name}
-                                </button>
-                            );
-                        })}
-                        {campaigns.length === 0 && (
-                            <span className="text-[10px] text-gray-400 italic">No active sequencer campaigns</span>
-                        )}
-                    </div>
+                <Field label="Campaigns" hint={allCampaignsSelected ? 'All active campaigns' : `${selectedCampaigns.length} of ${campaigns.length} selected`}>
+                    {campaigns.length === 0 ? (
+                        <p className="text-[10px] text-gray-400 italic">No active sequencer campaigns</p>
+                    ) : (
+                        <MultiSelectDropdown
+                            options={campaigns.map((c) => ({ value: c.id, label: c.name }))}
+                            selected={selectedCampaigns}
+                            onChange={(next) => onChange({ campaign_filter: next.length > 0 ? next : null })}
+                            placeholder="All active campaigns"
+                            searchable="auto"
+                            searchPlaceholder="Search campaigns…"
+                        />
+                    )}
                 </Field>
             </div>
 

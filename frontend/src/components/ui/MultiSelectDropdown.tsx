@@ -5,6 +5,11 @@ import { ChevronDown, Search } from 'lucide-react';
 interface Option {
     value: string;
     label: string;
+    /** Optional leading icon shown before the label in the menu rows AND
+     *  in the trigger when only this option is selected. Useful for
+     *  per-option color indicators (e.g., colored tag-icon swatches in
+     *  the All tags filter). */
+    icon?: React.ReactNode;
 }
 
 interface MultiSelectDropdownProps {
@@ -101,8 +106,18 @@ export default function MultiSelectDropdown({
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full px-3 py-2 rounded-lg text-xs text-left bg-white flex items-center justify-between gap-2 cursor-pointer transition-colors hover:bg-[#FAFAF8] border border-[#D1CBC5]"
             >
-                <span className={`truncate ${isAllSelected ? 'text-gray-400' : 'text-gray-900'}`}>
-                    {displayLabel}
+                <span className="flex items-center gap-1.5 min-w-0">
+                    {/* When exactly one option is selected, show its icon (if any)
+                        next to the label so the trigger reflects the chosen
+                        item's visual identity (e.g., a colored tag swatch). */}
+                    {selected.length === 1 && options.find(o => o.value === selected[0])?.icon && (
+                        <span className="shrink-0 flex items-center">
+                            {options.find(o => o.value === selected[0])?.icon}
+                        </span>
+                    )}
+                    <span className={`truncate ${isAllSelected ? 'text-gray-400' : 'text-gray-900'}`}>
+                        {displayLabel}
+                    </span>
                 </span>
                 <ChevronDown
                     size={12}
@@ -214,6 +229,9 @@ export default function MultiSelectDropdown({
                                                 </svg>
                                             )}
                                         </span>
+                                        {opt.icon && (
+                                            <span className="shrink-0 flex items-center">{opt.icon}</span>
+                                        )}
                                         <span className="truncate">{opt.label}</span>
                                     </button>
                                 );

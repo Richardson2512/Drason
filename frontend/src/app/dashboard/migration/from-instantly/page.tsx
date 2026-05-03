@@ -10,13 +10,11 @@
  *   4. Mailbox handoff → list imported mailboxes (all need re-authentication)
  *
  * Page is feature-flag gated client-side (probes /feature on mount).
- * Specific to Instantly:
- *   • Whoami returns the workspace name — we surface it so the user can
- *     confirm they pasted the right key for the right workspace.
- *   • Every mailbox lands disconnected (Instantly does not export creds), so
+ * Instantly-specific:
+ *   • Whoami returns the workspace name — surfaced so the user can confirm
+ *     they pasted the right key for the right workspace.
+ *   • Every mailbox lands disconnected (Instantly doesn't export creds), so
  *     the handoff step is universal: every imported mailbox needs reconnection.
- *   • 402 status from Instantly is a real "plan inactive" state — surfaced
- *     with explicit copy rather than a generic error.
  */
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -71,13 +69,15 @@ const formatMinutesRemaining = (mins: number | null): string => {
     if (mins == null) return '—';
     if (mins < 60) return `${mins}m`;
     const h = Math.floor(mins / 60);
-    return `${h}h ${mins % 60}m`;
+    const m = mins % 60;
+    return `${h}h ${m}m`;
 };
 
 const providerLabel = (p: string): string => {
-    if (p === 'google') return 'Google';
-    if (p === 'microsoft') return 'Microsoft';
-    if (p === 'smtp') return 'SMTP';
+    const u = (p || '').toLowerCase();
+    if (u === 'google' || u === 'gmail') return 'Google';
+    if (u === 'microsoft' || u === 'outlook') return 'Microsoft';
+    if (u === 'smtp') return 'SMTP';
     return p;
 };
 
@@ -99,11 +99,11 @@ export default function ImportFromInstantlyPage() {
 
     const [apiKey, setApiKey] = useState('');
     const [validatingKey, setValidatingKey] = useState(false);
-    const [acknowledged, setAcknowledged] = useState(false);
+    const [acknowledgedAuthorization, setAcknowledgedAuthorization] = useState(false);
 
     const [preview, setPreview] = useState<PreviewData | null>(null);
     const [previewLoading, setPreviewLoading] = useState(false);
-    const [confirmedAck, setConfirmedAck] = useState(false);
+    const [confirmedPause, setConfirmedPause] = useState(false);
     const [starting, setStarting] = useState(false);
     const [mode, setMode] = useState<ImportMode>('aggressive');
     const [includeRecentContacts, setIncludeRecentContacts] = useState(false);
@@ -111,7 +111,7 @@ export default function ImportFromInstantlyPage() {
     const [job, setJob] = useState<ImportJob | null>(null);
     const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    // ── Initial probe ───────────────────────────────────────────────────────
+    // ── Initial probe: feature flag + key/job state ──────────────────────────
     useEffect(() => {
         (async () => {
             try {
@@ -125,13 +125,14 @@ export default function ImportFromInstantlyPage() {
                 ]);
                 if (ks) setKeyStatus(ks);
 
-                const j = jobRes?.job || null;
-                if (j) {
-                    setJob(j);
-                    if (j.status === 'pending' || j.status === 'running' || j.status === 'paused_source') {
-                        setStep('importing');
-                    } else if (j.status === 'complete') {
+                if (jobRes?.job) {
+                    setJob(jobRes.job);
+                    if (jobRes.job.status === 'complete') {
                         setStep('handoff');
+                    } else if (['running', 'pending', 'paused_source'].includes(jobRes.job.status)) {
+                        setStep('importing');
+                    } else if (ks?.connected) {
+                        setStep('preview');
                     }
                 } else if (ks?.connected) {
                     setStep('preview');
@@ -140,370 +141,798 @@ export default function ImportFromInstantlyPage() {
                 setEnabled(false);
             }
         })();
+    }, []);
+
+    // ── Step 3: poll job status ──────────────────────────────────────────────
+    useEffect(() => {
+        if (step !== 'importing') return;
+        const tick = async () => {
+            try {
+                const r = await apiClient<{ success: boolean; job: ImportJob | null }>('/api/migration/from-instantly/status');
+                if (r?.job) setJob(r.job);
+                if (r?.job?.status === 'complete') {
+                    setStep('handoff');
+                } else if (r?.job?.status === 'failed' || r?.job?.status === 'cancelled') {
+                    if (pollRef.current) clearInterval(pollRef.current);
+                }
+            } catch {
+                /* poll errors are non-fatal */
+            }
+        };
+        tick();
+        pollRef.current = setInterval(tick, POLL_INTERVAL_MS);
         return () => {
             if (pollRef.current) clearInterval(pollRef.current);
         };
-    }, []);
+    }, [step]);
 
-    // ── Status polling for in-flight job ────────────────────────────────────
-    const startPolling = useCallback(() => {
-        if (pollRef.current) clearInterval(pollRef.current);
-        pollRef.current = setInterval(async () => {
-            try {
-                const res = await apiClient<{ success: boolean; job: ImportJob | null }>('/api/migration/from-instantly/status');
-                const j = res?.job;
-                if (!j) return;
-                setJob(j);
-                if (j.status === 'complete' || j.status === 'failed' || j.status === 'cancelled') {
-                    if (pollRef.current) clearInterval(pollRef.current);
-                    pollRef.current = null;
-                    if (j.status === 'complete') {
-                        setStep('handoff');
-                        toast.success('Import complete');
-                    } else if (j.status === 'failed') {
-                        toast.error(`Import failed: ${j.error || 'unknown error'}`);
-                    }
-                }
-            } catch { /* keep polling */ }
-        }, POLL_INTERVAL_MS);
-    }, []);
-
-    // ── Key step ────────────────────────────────────────────────────────────
-    const handleStoreKey = async () => {
-        const trimmed = apiKey.trim();
-        if (!trimmed) { toast.error('Paste your Instantly API key first'); return; }
-        if (!acknowledged) { toast.error('Acknowledge the import behavior to continue'); return; }
+    // ── Action handlers ──────────────────────────────────────────────────────
+    const handleValidateAndStore = useCallback(async () => {
+        if (!apiKey.trim()) {
+            toast.error('Paste your Instantly API key first');
+            return;
+        }
+        if (!acknowledgedAuthorization) {
+            toast.error('Please confirm authorization before continuing');
+            return;
+        }
         setValidatingKey(true);
         try {
-            const res = await apiClient<{ success: boolean; expiresAt: string; workspace: { id: string; name: string } }>('/api/migration/from-instantly/store-key', {
-                method: 'POST',
-                body: JSON.stringify({ apiKey: trimmed, acknowledged: true }),
-            });
-            toast.success(`Key stored — workspace "${res.workspace.name}"`);
+            const stored = await apiClient<{ success: boolean; expiresAt: string; workspace: { id: string; name: string } }>(
+                '/api/migration/from-instantly/store-key',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ apiKey: apiKey.trim(), acknowledged: true }),
+                },
+            );
+            if (!stored?.success) throw new Error('store-key returned unsuccessful');
+            toast.success(`API key stored — workspace "${stored.workspace.name}"`);
+            setApiKey('');
             const ks = await apiClient<KeyStatus & { success: boolean }>('/api/migration/from-instantly/key-status');
             setKeyStatus(ks);
-            setApiKey('');
             setStep('preview');
         } catch (err: any) {
-            toast.error(err?.message || 'Could not store key');
+            toast.error(err?.message || 'Failed to validate key');
         } finally {
             setValidatingKey(false);
         }
-    };
+    }, [apiKey, acknowledgedAuthorization]);
 
-    const handleDiscardKey = async () => {
-        if (!confirm('Discard the stored Instantly API key now? You\'ll need to paste it again to retry the import.')) return;
+    const handleLoadPreview = useCallback(async () => {
+        setPreviewLoading(true);
+        try {
+            const r = await apiClient<{ success: boolean; data: PreviewData }>(
+                '/api/migration/from-instantly/preview',
+                { method: 'POST' },
+            );
+            setPreview(r.data);
+        } catch (err: any) {
+            toast.error(err?.message || 'Preview failed');
+        } finally {
+            setPreviewLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (step === 'preview' && !preview && !previewLoading) {
+            handleLoadPreview();
+        }
+    }, [step, preview, previewLoading, handleLoadPreview]);
+
+    const handleStart = useCallback(async () => {
+        if (!confirmedPause) {
+            toast.error('Confirm the migration policy first');
+            return;
+        }
+        setStarting(true);
+        try {
+            const r = await apiClient<{ success: boolean; jobId: string }>(
+                '/api/migration/from-instantly/start',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        mode,
+                        includeRecentContacts: mode === 'aggressive' && includeRecentContacts,
+                    }),
+                },
+            );
+            if (!r?.success) throw new Error('start returned unsuccessful');
+            setStep('importing');
+        } catch (err: any) {
+            toast.error(err?.message || 'Failed to start import');
+        } finally {
+            setStarting(false);
+        }
+    }, [confirmedPause, mode, includeRecentContacts]);
+
+    const handleDiscardKey = useCallback(async () => {
+        if (!confirm('Discard your Instantly API key now? You can paste it again later.')) return;
         try {
             await apiClient('/api/migration/from-instantly/discard-key', { method: 'POST' });
             toast.success('Key discarded');
             setKeyStatus({ connected: false, platform: null, expiresAt: null, minutesRemaining: null });
             setStep('key');
         } catch (err: any) {
-            toast.error(err?.message || 'Discard failed');
+            toast.error(err?.message || 'Failed to discard key');
         }
-    };
+    }, []);
 
-    // ── Preview step ────────────────────────────────────────────────────────
-    const handlePreview = async () => {
-        setPreviewLoading(true);
-        try {
-            const res = await apiClient<{ success: boolean; data: PreviewData }>('/api/migration/from-instantly/preview', { method: 'POST' });
-            setPreview(res.data);
-        } catch (err: any) {
-            toast.error(err?.message || 'Preview failed');
-        } finally {
-            setPreviewLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (step === 'preview' && !preview && keyStatus?.connected) {
-            handlePreview();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [step, keyStatus]);
-
-    // ── Start import ────────────────────────────────────────────────────────
-    const handleStart = async () => {
-        if (!confirmedAck) { toast.error('Confirm the migration policy first'); return; }
-        setStarting(true);
-        try {
-            const res = await apiClient<{ success: boolean; jobId: string }>('/api/migration/from-instantly/start', {
-                method: 'POST',
-                body: JSON.stringify({ mode, includeRecentContacts }),
-            });
-            toast.success('Import started');
-            setStep('importing');
-            const jobRes = await apiClient<{ success: boolean; job: ImportJob | null }>('/api/migration/from-instantly/status');
-            if (jobRes?.job) setJob(jobRes.job);
-            startPolling();
-            void res;
-        } catch (err: any) {
-            toast.error(err?.message || 'Could not start import');
-        } finally {
-            setStarting(false);
-        }
-    };
-
-    // ── Render ──────────────────────────────────────────────────────────────
+    // ── Loading / disabled gates ─────────────────────────────────────────────
     if (enabled === null) {
-        return <div className="p-8 text-sm text-gray-500">Loading…</div>;
+        return <div className="px-6 py-10"><p className="text-sm text-gray-500">Loading…</p></div>;
     }
-    if (!enabled) {
+    if (enabled === false) {
         return (
-            <div className="p-8">
-                <h1 className="text-xl font-bold text-gray-900">Import from Instantly</h1>
-                <p className="text-sm text-gray-500 mt-2">This feature isn&apos;t enabled in your environment yet. Contact your admin.</p>
+            <div className="px-6 py-10 max-w-2xl mx-auto">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">Migration tool unavailable</h1>
+                <p className="text-sm text-gray-500">
+                    The Instantly import wizard is not enabled in this environment.
+                </p>
             </div>
         );
     }
 
+    // ── Render ───────────────────────────────────────────────────────────────
     return (
-        <div className="p-8 max-w-4xl">
-            <div className="flex items-center justify-between mb-6">
-                <div>
-                    <h1 className="text-xl font-bold text-gray-900">Import from Instantly</h1>
-                    <p className="text-sm text-gray-500 mt-1">One-time import of campaigns, leads, mailboxes, and block list. Your API key auto-discards after the import completes.</p>
-                </div>
-                <Link href="/dashboard/integrations" className="text-xs text-gray-500 hover:text-gray-900">← Integrations</Link>
-            </div>
+        <div className="px-6 py-8 max-w-3xl mx-auto">
+            <Link
+                href="/dashboard/integrations"
+                className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 mb-4"
+            >
+                <span aria-hidden>←</span>
+                Back to Integrations
+            </Link>
+            <header className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-900">Import from Instantly</h1>
+                <p className="text-sm text-gray-500 mt-1">
+                    One-time migration. Your campaigns, sequences, leads, mailbox metadata, and
+                    block list move to Superkabe. Your Instantly API key is held encrypted for at
+                    most 72 hours, then automatically wiped. Mailboxes will need re-authentication
+                    after import — Instantly does not export sender credentials.
+                </p>
+            </header>
 
-            {/* Stepper */}
-            <div className="flex items-center gap-2 mb-6 text-xs">
-                {(['key', 'preview', 'importing', 'handoff'] as Step[]).map((s, i) => (
-                    <div key={s} className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${step === s ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-500 border-gray-200'}`}>
-                        <span className="font-bold">{i + 1}</span>
-                        <span className="capitalize">{s === 'handoff' ? 'Reconnect mailboxes' : s}</span>
+            <Stepper currentStep={step} />
+
+            {keyStatus?.connected && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-3">
+                    <div className="text-sm text-amber-900">
+                        <span className="font-semibold">Key on file</span> — auto-discards in{' '}
+                        <span className="font-mono">{formatMinutesRemaining(keyStatus.minutesRemaining)}</span>
                     </div>
-                ))}
-            </div>
-
-            {/* ────── Step 1: Key ────── */}
-            {step === 'key' && (
-                <section className="bg-white border border-gray-200 rounded-xl p-6">
-                    <h2 className="text-base font-bold text-gray-900 mb-1">1. Paste your Instantly API key</h2>
-                    <p className="text-xs text-gray-500 mb-4">
-                        Generate a key inside <a href="https://app.instantly.ai" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">Instantly → Integrations → API Keys</a> with read access to <code className="px-1 bg-gray-100 rounded">campaigns</code>, <code className="px-1 bg-gray-100 rounded">leads</code>, <code className="px-1 bg-gray-100 rounded">accounts</code>, <code className="px-1 bg-gray-100 rounded">block_lists</code>, <code className="px-1 bg-gray-100 rounded">custom_tags</code>, and <code className="px-1 bg-gray-100 rounded">lead_labels</code>. We never write to your Instantly workspace.
-                    </p>
-
-                    <input
-                        type="password"
-                        value={apiKey}
-                        onChange={(e) => setApiKey(e.target.value)}
-                        placeholder="instantly_xxx..."
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm font-mono mb-4"
-                        autoComplete="off"
-                    />
-
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
-                        <h3 className="text-xs font-bold text-amber-900 mb-1">Before you proceed</h3>
-                        <ul className="text-[11px] text-amber-900 list-disc pl-4 space-y-0.5">
-                            <li>Instantly does <strong>not</strong> export mailbox passwords or OAuth tokens. After the import, every mailbox lands disconnected and you must re-authenticate it in Superkabe before it can send.</li>
-                            <li>Bounce reasons and per-event open/click history are not exposed by Instantly&apos;s API. We can mark a lead as bounced but can&apos;t reconstruct hard-vs-soft classifications.</li>
-                            <li>Your key is stored encrypted, never logged in plaintext, and auto-deleted within 24 hours of completion (72-hour hard ceiling).</li>
-                        </ul>
-                    </div>
-
-                    <label className="flex items-start gap-2 mb-4 text-xs text-gray-700 cursor-pointer">
-                        <input type="checkbox" checked={acknowledged} onChange={(e) => setAcknowledged(e.target.checked)} className="mt-0.5" />
-                        <span>I understand Superkabe will read campaigns, leads, mailbox metadata, block list, and tags from my Instantly workspace, and that imported mailboxes will need re-authentication.</span>
-                    </label>
-
                     <button
-                        onClick={handleStoreKey}
-                        disabled={!apiKey.trim() || !acknowledged || validatingKey}
-                        className="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg disabled:opacity-30"
+                        onClick={handleDiscardKey}
+                        className="text-xs font-semibold text-amber-900 underline hover:text-amber-700"
                     >
-                        {validatingKey ? 'Validating…' : 'Validate & store key'}
+                        Discard now
                     </button>
-                </section>
+                </div>
             )}
 
-            {/* ────── Step 2: Preview ────── */}
+            {step === 'key' && (
+                <StepKey
+                    apiKey={apiKey}
+                    setApiKey={setApiKey}
+                    acknowledged={acknowledgedAuthorization}
+                    setAcknowledged={setAcknowledgedAuthorization}
+                    validating={validatingKey}
+                    onSubmit={handleValidateAndStore}
+                />
+            )}
+
             {step === 'preview' && (
-                <section className="bg-white border border-gray-200 rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-base font-bold text-gray-900">2. Preview what we&apos;ll import</h2>
-                        {keyStatus?.connected && (
-                            <button onClick={handleDiscardKey} className="text-xs text-rose-600 hover:underline">Discard key</button>
+                <StepPreview
+                    preview={preview}
+                    loading={previewLoading}
+                    mode={mode}
+                    setMode={setMode}
+                    includeRecentContacts={includeRecentContacts}
+                    setIncludeRecentContacts={setIncludeRecentContacts}
+                    confirmedPause={confirmedPause}
+                    setConfirmedPause={setConfirmedPause}
+                    starting={starting}
+                    onStart={handleStart}
+                    onReload={handleLoadPreview}
+                />
+            )}
+
+            {step === 'importing' && <StepImporting job={job} />}
+
+            {step === 'handoff' && <StepHandoff job={job} />}
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Stepper (visual only)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function Stepper({ currentStep }: { currentStep: Step }) {
+    const steps: { id: Step; label: string }[] = [
+        { id: 'key',       label: '1. API key' },
+        { id: 'preview',   label: '2. Preview' },
+        { id: 'importing', label: '3. Import' },
+        { id: 'handoff',   label: '4. Reconnect mailboxes' },
+    ];
+    const idx = steps.findIndex(s => s.id === currentStep);
+    return (
+        <ol className="flex items-center gap-2 mb-8 text-xs font-semibold">
+            {steps.map((s, i) => {
+                const done = i < idx;
+                const active = i === idx;
+                return (
+                    <li
+                        key={s.id}
+                        className={`px-3 py-1.5 rounded-full border ${
+                            done
+                                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                : active
+                                    ? 'bg-gray-900 text-white border-gray-900'
+                                    : 'bg-white text-gray-400 border-gray-200'
+                        }`}
+                    >
+                        {s.label}
+                    </li>
+                );
+            })}
+        </ol>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Step 1 — paste API key
+// ─────────────────────────────────────────────────────────────────────────────
+
+function StepKey(props: {
+    apiKey: string;
+    setApiKey: (v: string) => void;
+    acknowledged: boolean;
+    setAcknowledged: (v: boolean) => void;
+    validating: boolean;
+    onSubmit: () => void;
+}) {
+    const { apiKey, setApiKey, acknowledged, setAcknowledged, validating, onSubmit } = props;
+    return (
+        <section className="bg-white rounded-2xl p-8 border border-gray-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-1">Paste your Instantly API key</h2>
+            <p className="text-sm text-gray-500 mb-6">
+                Generate a key in{' '}
+                <a href="https://app.instantly.ai" target="_blank" rel="noreferrer" className="font-mono text-gray-700 hover:underline">
+                    Instantly → Integrations → API Keys
+                </a>{' '}
+                with read access to <code className="text-gray-700">campaigns</code>,{' '}
+                <code className="text-gray-700">leads</code>, <code className="text-gray-700">accounts</code>,{' '}
+                <code className="text-gray-700">block_lists</code>, <code className="text-gray-700">custom_tags</code>,
+                and <code className="text-gray-700">lead_labels</code>. We validate it immediately, encrypt at
+                rest, and auto-discard 24 hours after import completes (or 72 hours after paste).
+            </p>
+            <input
+                type="password"
+                autoComplete="off"
+                value={apiKey}
+                onChange={e => setApiKey(e.target.value)}
+                placeholder="instantly_..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm font-mono focus:outline-none focus:border-gray-700 mb-4"
+            />
+
+            <label className="flex items-start gap-2 p-4 bg-amber-50 border border-amber-200 rounded-xl cursor-pointer mb-4">
+                <input
+                    type="checkbox"
+                    checked={acknowledged}
+                    onChange={(e) => setAcknowledged(e.target.checked)}
+                    className="mt-0.5 shrink-0"
+                />
+                <span className="text-sm text-amber-900">
+                    <strong>I authorize Superkabe</strong> to use this API key on my behalf to: read
+                    campaigns, sequences, leads, mailbox metadata, block list, custom tags, and lead
+                    labels from my Instantly workspace. I understand that imported mailboxes will land
+                    disconnected and need re-authentication before any sending happens. We never write
+                    to my Instantly workspace. Authorization expires automatically when the key is wiped.
+                </span>
+            </label>
+
+            <button
+                onClick={onSubmit}
+                disabled={validating || !apiKey.trim() || !acknowledged}
+                className="px-5 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {validating ? 'Validating…' : 'Validate & continue'}
+            </button>
+        </section>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Step 2 — preview
+// ─────────────────────────────────────────────────────────────────────────────
+
+function StepPreview(props: {
+    preview: PreviewData | null;
+    loading: boolean;
+    mode: ImportMode;
+    setMode: (m: ImportMode) => void;
+    includeRecentContacts: boolean;
+    setIncludeRecentContacts: (v: boolean) => void;
+    confirmedPause: boolean;
+    setConfirmedPause: (v: boolean) => void;
+    starting: boolean;
+    onStart: () => void;
+    onReload: () => void;
+}) {
+    const {
+        preview, loading, mode, setMode,
+        includeRecentContacts, setIncludeRecentContacts,
+        confirmedPause, setConfirmedPause, starting, onStart, onReload,
+    } = props;
+
+    if (loading || !preview) {
+        return (
+            <section className="bg-white rounded-2xl p-8 border border-gray-200">
+                <p className="text-sm text-gray-500">Reading your Instantly workspace…</p>
+            </section>
+        );
+    }
+
+    const L = preview.leads;
+    const threshold = preview.recentContactThresholdDays;
+
+    const importing = (() => {
+        if (mode === 'conservative') return L.neverContacted;
+        const base = L.neverContacted + L.staleContact + L.completed;
+        return base + (includeRecentContacts ? L.recentContact : 0);
+    })();
+
+    return (
+        <section className="bg-white rounded-2xl p-8 border border-gray-200 space-y-6">
+            <div>
+                <h2 className="text-lg font-bold text-gray-900 mb-1">Preview</h2>
+                <p className="text-sm text-gray-500">Here&apos;s what we found in your Instantly workspace.</p>
+            </div>
+
+            {/* Workspace identity — confirms the right key for the right workspace */}
+            <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                <div className="text-[10px] font-bold uppercase tracking-wide text-gray-500 mb-1">Workspace</div>
+                <div className="text-sm font-bold text-gray-900">{preview.workspace.name}</div>
+                <div className="text-[10px] font-mono text-gray-400 mt-0.5">{preview.workspace.id}</div>
+            </div>
+
+            {/* Top totals */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Stat label="Campaigns" value={preview.campaigns.total} />
+                <Stat label="Mailboxes" value={preview.mailboxes.total} sub="all need re-auth" />
+                <Stat label="Sequence steps" value={preview.sequenceSteps} />
+                <Stat label="Leads (total)" value={L.total} />
+                <Stat label="Block list" value={preview.blockListEntries} />
+                <Stat label="Custom tags" value={preview.customTags} />
+                <Stat label="Lead labels" value={preview.leadLabels} />
+            </div>
+
+            {/* What Instantly does NOT export */}
+            {preview.warnings.length > 0 && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <h3 className="text-sm font-bold text-amber-900 mb-2">What Instantly does NOT export</h3>
+                    <ul className="list-disc pl-5 text-sm text-amber-900 space-y-1">
+                        {preview.warnings.map((w, i) => <li key={i}>{w}</li>)}
+                    </ul>
+                </div>
+            )}
+
+            {/* Lead-bucket breakdown */}
+            <div className="border border-gray-200 rounded-xl overflow-hidden">
+                <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-600 uppercase tracking-wide">
+                    Lead breakdown
+                </div>
+                <ul className="divide-y divide-gray-100 text-sm">
+                    <BucketRow
+                        label="Never contacted"
+                        sublabel="No email has gone out yet — always safe to import"
+                        value={L.neverContacted}
+                        tag="always imports"
+                        tagColor="emerald"
+                    />
+                    <BucketRow
+                        label={`Last contacted more than ${threshold} days ago`}
+                        sublabel="Recipients unlikely to remember — safe to restart fresh from step 1"
+                        value={L.staleContact}
+                        tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
+                        tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
+                    />
+                    <BucketRow
+                        label={`Last contacted in the last ${threshold} days`}
+                        sublabel="Recipients likely to remember — duplicate first-touch may hurt reply rate"
+                        value={L.recentContact}
+                        tag={
+                            mode === 'aggressive' && includeRecentContacts
+                                ? 'aggressive + recent'
+                                : 'skipped'
+                        }
+                        tagColor={mode === 'aggressive' && includeRecentContacts ? 'amber' : 'gray'}
+                    />
+                    <BucketRow
+                        label="Sequence completed"
+                        sublabel="Worked the lead, no reply — restart counts as a fresh outreach"
+                        value={L.completed}
+                        tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
+                        tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
+                    />
+                    <BucketRow
+                        label="Opted out / Bounced"
+                        sublabel="Suppressed by Instantly — never imported"
+                        value={L.optedOut}
+                        tag="never imports"
+                        tagColor="rose"
+                    />
+                </ul>
+            </div>
+
+            {/* Mode picker */}
+            <div className="space-y-3">
+                <h3 className="text-sm font-bold text-gray-900">How should we handle in-flight leads?</h3>
+                <ModeRadio
+                    selected={mode === 'aggressive'}
+                    onSelect={() => setMode('aggressive')}
+                    title="Aggressive — import everything, restart from step 1"
+                    body={
+                        <>
+                            Best when you want to <strong>fully decommission Instantly</strong> and stop
+                            paying for two platforms. We import never-contacted, stale, and completed
+                            leads (recent contacts default to <strong>skipped</strong>). Every imported
+                            lead starts at step 1 in Superkabe — recipients who already received emails
+                            in Instantly may receive step 1 again, possibly from a different mailbox.
+                            Threading on existing sequences is broken.
+                        </>
+                    }
+                    badge="Most common"
+                />
+                <ModeRadio
+                    selected={mode === 'conservative'}
+                    onSelect={() => setMode('conservative')}
+                    title="Conservative — only never-contacted leads"
+                    body={
+                        <>
+                            Best when you want <strong>existing sequences to finish on Instantly</strong>{' '}
+                            and start fresh on Superkabe with new leads. Mid-sequence leads stay in
+                            Instantly until they finish naturally — recipients keep receiving follow-ups
+                            from the original sender in the original thread. You&apos;ll keep Instantly
+                            live for 1-3 months until those sequences drain.
+                        </>
+                    }
+                />
+            </div>
+
+            {/* Recent-contact toggle — only relevant in aggressive mode */}
+            {mode === 'aggressive' && L.recentContact > 0 && (
+                <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-xl cursor-pointer hover:bg-amber-100/50">
+                    <input
+                        type="checkbox"
+                        checked={includeRecentContacts}
+                        onChange={e => setIncludeRecentContacts(e.target.checked)}
+                        className="mt-0.5"
+                    />
+                    <div className="text-sm text-amber-900">
+                        <div className="font-semibold">
+                            Also import the {L.recentContact.toLocaleString()} leads contacted in the last {threshold} days
+                        </div>
+                        <div className="text-xs text-amber-800 mt-1">
+                            They&apos;ll restart at step 1 in Superkabe. Recipients are likely to remember
+                            the prior outreach — leave this off if you have any high-touch / named accounts
+                            in this bucket.
+                        </div>
+                    </div>
+                </label>
+            )}
+
+            {/* Mode-aware summary */}
+            <div className="p-5 bg-gray-900 rounded-xl text-white">
+                <div className="text-xs uppercase tracking-wide font-bold opacity-60 mb-1">
+                    To import
+                </div>
+                <div className="text-3xl font-bold">{importing.toLocaleString()} leads</div>
+                <div className="text-xs opacity-75 mt-1">
+                    {mode === 'aggressive'
+                        ? `Aggressive mode${includeRecentContacts ? ' + recent contacts' : ''} — imported leads start at step 1.`
+                        : 'Conservative mode — only never-contacted leads.'}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs">
+                <Bucket
+                    label="Campaigns by status"
+                    data={preview.campaigns.byStatus}
+                    keyLabel={(k) => STATUS_CODE_LABEL[k] || `Status ${k}`}
+                />
+                <Bucket
+                    label="Mailboxes by provider"
+                    data={preview.mailboxes.byProvider}
+                    keyLabel={providerLabel}
+                />
+            </div>
+
+            <label className="flex items-start gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                <input
+                    type="checkbox"
+                    checked={confirmedPause}
+                    onChange={e => setConfirmedPause(e.target.checked)}
+                    className="mt-0.5"
+                />
+                <span className="text-sm text-gray-700">
+                    I&apos;ve reviewed the counts above. I understand <strong>imported campaigns will
+                    land paused in Superkabe</strong> and <strong>every mailbox will need
+                    re-authentication</strong> before any sending happens.
+                </span>
+            </label>
+
+            <div className="flex justify-between gap-3">
+                <button
+                    onClick={onReload}
+                    className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900"
+                >
+                    Refresh preview
+                </button>
+                <button
+                    onClick={onStart}
+                    disabled={!confirmedPause || starting}
+                    className="px-5 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 disabled:opacity-50"
+                >
+                    {starting ? 'Starting…' : `Import ${importing.toLocaleString()} lead${importing === 1 ? '' : 's'}`}
+                </button>
+            </div>
+        </section>
+    );
+}
+
+function BucketRow(props: {
+    label: string;
+    sublabel: string;
+    value: number;
+    tag: string;
+    tagColor: 'emerald' | 'blue' | 'amber' | 'rose' | 'gray';
+}) {
+    const colors: Record<typeof props.tagColor, string> = {
+        emerald: 'bg-emerald-100 text-emerald-800',
+        blue:    'bg-blue-100 text-blue-800',
+        amber:   'bg-amber-100 text-amber-800',
+        rose:    'bg-rose-100 text-rose-800',
+        gray:    'bg-gray-100 text-gray-600',
+    };
+    return (
+        <li className="px-4 py-3 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+                <div className="font-semibold text-gray-900">{props.label}</div>
+                <div className="text-xs text-gray-500 mt-0.5">{props.sublabel}</div>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+                <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${colors[props.tagColor]}`}>
+                    {props.tag}
+                </span>
+                <span className="font-mono font-semibold text-gray-900 w-16 text-right">
+                    {props.value.toLocaleString()}
+                </span>
+            </div>
+        </li>
+    );
+}
+
+function ModeRadio(props: {
+    selected: boolean;
+    onSelect: () => void;
+    title: string;
+    body: React.ReactNode;
+    badge?: string;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={props.onSelect}
+            className={`w-full text-left p-4 rounded-xl border-2 transition-colors ${
+                props.selected
+                    ? 'border-gray-900 bg-gray-50'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+            }`}
+        >
+            <div className="flex items-start gap-3">
+                <div
+                    className={`w-4 h-4 rounded-full border-2 mt-0.5 shrink-0 ${
+                        props.selected ? 'border-gray-900 bg-gray-900' : 'border-gray-300'
+                    }`}
+                >
+                    {props.selected && <div className="w-1.5 h-1.5 bg-white rounded-full m-auto mt-[3px]" />}
+                </div>
+                <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-gray-900">{props.title}</span>
+                        {props.badge && (
+                            <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">
+                                {props.badge}
+                            </span>
                         )}
                     </div>
-
-                    {keyStatus?.minutesRemaining != null && (
-                        <p className="text-[11px] text-gray-500 mb-4">Key expires in {formatMinutesRemaining(keyStatus.minutesRemaining)}.</p>
-                    )}
-
-                    {previewLoading && <p className="text-sm text-gray-500">Reading from Instantly…</p>}
-
-                    {preview && (
-                        <>
-                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
-                                <div className="text-[10px] font-bold uppercase text-gray-500">Workspace</div>
-                                <div className="text-sm font-semibold text-gray-900">{preview.workspace.name}</div>
-                                <div className="text-[10px] text-gray-400 font-mono mt-0.5">{preview.workspace.id}</div>
-                            </div>
-
-                            {preview.warnings.length > 0 && (
-                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
-                                    <h3 className="text-xs font-bold text-amber-900 mb-1.5">What Instantly does NOT export</h3>
-                                    <ul className="text-[11px] text-amber-900 list-disc pl-4 space-y-1">
-                                        {preview.warnings.map((w, i) => <li key={i}>{w}</li>)}
-                                    </ul>
-                                </div>
-                            )}
-
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                                <Stat label="Campaigns" value={preview.campaigns.total} />
-                                <Stat label="Sequence steps" value={preview.sequenceSteps} />
-                                <Stat label="Mailboxes" value={preview.mailboxes.total} sub="all need re-auth" />
-                                <Stat label="Leads" value={preview.leads.total} />
-                                <Stat label="Block list" value={preview.blockListEntries} />
-                                <Stat label="Custom tags" value={preview.customTags} />
-                                <Stat label="Lead labels" value={preview.leadLabels} />
-                            </div>
-
-                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4 text-[11px] text-gray-700">
-                                <div className="font-bold mb-1.5">Lead breakdown</div>
-                                <div className="grid grid-cols-2 gap-1">
-                                    <span>Never contacted</span><span className="font-mono">{preview.leads.neverContacted}</span>
-                                    <span>Stale contact (&gt;{preview.recentContactThresholdDays}d)</span><span className="font-mono">{preview.leads.staleContact}</span>
-                                    <span>Recent contact (≤{preview.recentContactThresholdDays}d)</span><span className="font-mono">{preview.leads.recentContact}</span>
-                                    <span>Sequence completed</span><span className="font-mono">{preview.leads.completed}</span>
-                                    <span>Opted out / Bounced (skipped)</span><span className="font-mono">{preview.leads.optedOut}</span>
-                                </div>
-                            </div>
-
-                            {Object.keys(preview.campaigns.byStatus).length > 0 && (
-                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4 text-[11px] text-gray-700">
-                                    <div className="font-bold mb-1.5">Campaigns by status</div>
-                                    <div className="grid grid-cols-2 gap-1">
-                                        {Object.entries(preview.campaigns.byStatus).map(([s, n]) => (
-                                            <>
-                                                <span key={`${s}-l`}>{STATUS_CODE_LABEL[s] || `Status ${s}`}</span>
-                                                <span key={`${s}-v`} className="font-mono">{n}</span>
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {Object.keys(preview.mailboxes.byProvider).length > 0 && (
-                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4 text-[11px] text-gray-700">
-                                    <div className="font-bold mb-1.5">Mailboxes by provider</div>
-                                    <div className="grid grid-cols-2 gap-1">
-                                        {Object.entries(preview.mailboxes.byProvider).map(([p, n]) => (
-                                            <>
-                                                <span key={`${p}-l`}>{providerLabel(p)}</span>
-                                                <span key={`${p}-v`} className="font-mono">{n}</span>
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Mode selector */}
-                            <div className="border border-gray-200 rounded-lg p-4 mb-4">
-                                <h3 className="text-xs font-bold text-gray-900 mb-2">Migration mode</h3>
-                                <label className="flex items-start gap-2 mb-2 cursor-pointer">
-                                    <input type="radio" name="mode" checked={mode === 'aggressive'} onChange={() => setMode('aggressive')} className="mt-0.5" />
-                                    <div>
-                                        <div className="text-xs font-semibold text-gray-900">Full migration <span className="ml-1 text-[10px] text-gray-500">(recommended)</span></div>
-                                        <div className="text-[11px] text-gray-500">Import every lead with status preserved (current step, replied/bounced flags, last-contact timestamp). Best when you intend to retire your Instantly account.</div>
-                                    </div>
-                                </label>
-                                <label className="flex items-start gap-2 mb-1 cursor-pointer">
-                                    <input type="radio" name="mode" checked={mode === 'conservative'} onChange={() => setMode('conservative')} className="mt-0.5" />
-                                    <div>
-                                        <div className="text-xs font-semibold text-gray-900">Conservative</div>
-                                        <div className="text-[11px] text-gray-500">Only import leads that haven&apos;t been contacted yet. Safest if you plan to keep Instantly running in parallel.</div>
-                                    </div>
-                                </label>
-                                {mode === 'aggressive' && preview.leads.recentContact > 0 && (
-                                    <label className="flex items-center gap-2 mt-3 ml-5 text-[11px] cursor-pointer">
-                                        <input type="checkbox" checked={includeRecentContacts} onChange={(e) => setIncludeRecentContacts(e.target.checked)} />
-                                        <span className="text-gray-700">Also include {preview.leads.recentContact} leads contacted in the last {preview.recentContactThresholdDays} days (higher risk of duplicate outreach)</span>
-                                    </label>
-                                )}
-                            </div>
-
-                            <label className="flex items-start gap-2 mb-4 text-xs text-gray-700 cursor-pointer">
-                                <input type="checkbox" checked={confirmedAck} onChange={(e) => setConfirmedAck(e.target.checked)} className="mt-0.5" />
-                                <span>I&apos;ve reviewed the counts above. I understand campaigns will land paused in Superkabe and mailboxes will need re-authentication before any sending happens.</span>
-                            </label>
-
-                            <button
-                                onClick={handleStart}
-                                disabled={!confirmedAck || starting}
-                                className="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg disabled:opacity-30"
-                            >
-                                {starting ? 'Starting…' : 'Start import'}
-                            </button>
-                        </>
-                    )}
-                </section>
-            )}
-
-            {/* ────── Step 3: Importing ────── */}
-            {step === 'importing' && (
-                <section className="bg-white border border-gray-200 rounded-xl p-6">
-                    <h2 className="text-base font-bold text-gray-900 mb-1">3. Importing…</h2>
-                    <p className="text-xs text-gray-500 mb-4">Don&apos;t close this tab — we&apos;ll show progress as the worker pulls each campaign.</p>
-
-                    {job ? (
-                        <>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                                <Stat label="Status" value={job.status} />
-                                {job.stats && Object.entries(job.stats).filter(([k]) => typeof (job.stats as any)[k] === 'number').map(([k, v]) => (
-                                    <Stat key={k} label={k.replace(/_/g, ' ')} value={Number(v)} />
-                                ))}
-                            </div>
-                            {job.error && (
-                                <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 text-xs text-rose-900">
-                                    <div className="font-bold mb-1">Error</div>
-                                    <div>{job.error}</div>
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <p className="text-sm text-gray-500">Waiting for worker…</p>
-                    )}
-                </section>
-            )}
-
-            {/* ────── Step 4: Handoff ────── */}
-            {step === 'handoff' && (
-                <section className="bg-white border border-gray-200 rounded-xl p-6">
-                    <h2 className="text-base font-bold text-gray-900 mb-1">4. Reconnect your mailboxes</h2>
-                    <p className="text-xs text-gray-500 mb-4">
-                        The import finished. Every imported campaign is paused, and every mailbox is currently disconnected (Instantly does not export sender credentials). Reconnect each mailbox to start sending from Superkabe.
-                    </p>
-
-                    {job?.stats && (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                            {['leadsImported', 'mailboxesImported', 'campaignsFound', 'sequenceStepsImported', 'variantsImported', 'blockListImported'].map(k => (
-                                ((job.stats as any)[k] != null) ? (
-                                    <Stat key={k} label={k.replace(/([A-Z])/g, ' $1').toLowerCase()} value={Number((job.stats as any)[k])} />
-                                ) : null
-                            ))}
-                        </div>
-                    )}
-
-                    <div className="flex gap-2">
-                        <Link href="/dashboard/sequencer/accounts" className="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg">Reconnect mailboxes →</Link>
-                        <Link href="/dashboard/sequencer/campaigns" className="px-4 py-2 bg-white text-gray-700 text-xs font-semibold rounded-lg border border-gray-200">Review imported campaigns</Link>
-                    </div>
-                </section>
-            )}
-        </div>
+                    <div className="text-xs text-gray-600 mt-1 leading-relaxed">{props.body}</div>
+                </div>
+            </div>
+        </button>
     );
 }
 
 function Stat({ label, value, sub }: { label: string; value: number | string; sub?: string }) {
     return (
-        <div className="border border-gray-200 rounded-lg p-3">
-            <div className="text-[10px] font-bold uppercase text-gray-500">{label}</div>
-            <div className="text-lg font-bold text-gray-900 tabular-nums">{value}</div>
-            {sub && <div className="text-[10px] text-gray-400">{sub}</div>}
+        <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
+            <div className="text-2xl font-bold text-gray-900">
+                {typeof value === 'number' ? value.toLocaleString() : value}
+            </div>
+            <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+            {sub && <div className="text-[10px] text-gray-400 mt-0.5">{sub}</div>}
         </div>
     );
+}
+
+function Bucket({ label, data, keyLabel }: {
+    label: string;
+    data: Record<string, number>;
+    keyLabel?: (k: string) => string;
+}) {
+    const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
+    if (entries.length === 0) return null;
+    return (
+        <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
+            <div className="text-xs font-semibold text-gray-600 mb-2">{label}</div>
+            <ul className="space-y-1">
+                {entries.map(([k, v]) => (
+                    <li key={k} className="flex items-center justify-between text-gray-700">
+                        <span>{keyLabel ? keyLabel(k) : k}</span>
+                        <span className="font-mono">{v.toLocaleString()}</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Step 3 — importing (poll loop)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const STAT_LABELS: Record<string, string> = {
+    mode: 'Migration mode',
+    includeRecentContacts: 'Includes recent contacts',
+    campaignsFound: 'Campaigns discovered',
+    campaignsImported: 'Campaigns imported',
+    mailboxesImported: 'Mailboxes imported (need re-auth)',
+    sequenceStepsImported: 'Sequence steps imported',
+    variantsImported: 'A/B variants imported',
+    leadsImported: 'Leads imported',
+    leadsSkippedRecentContact: 'Leads skipped (recent contact)',
+    leadsSkippedInFlight: 'Leads skipped (mid-sequence — conservative)',
+    leadsSkippedOptedOut: 'Leads skipped (opted out / bounced)',
+    leadsSkippedInvalidEmail: 'Leads skipped (invalid email)',
+    blockListImported: 'Block-list entries imported',
+    customTagsImported: 'Custom tags imported',
+    leadLabelsImported: 'Lead labels imported',
+};
+
+function StepImporting({ job }: { job: ImportJob | null }) {
+    if (!job) {
+        return (
+            <section className="bg-white rounded-2xl p-8 border border-gray-200">
+                <p className="text-sm text-gray-500">Connecting…</p>
+            </section>
+        );
+    }
+
+    const stats = (job.stats || {}) as Record<string, number | string | undefined>;
+    const failed = job.status === 'failed';
+    const cancelled = job.status === 'cancelled';
+
+    return (
+        <section className="bg-white rounded-2xl p-8 border border-gray-200 space-y-6">
+            <div>
+                <h2 className="text-lg font-bold text-gray-900 mb-1">
+                    {failed ? 'Import failed' : cancelled ? 'Import cancelled' : 'Importing…'}
+                </h2>
+                <p className="text-sm text-gray-500">
+                    Status: <span className="font-mono">{job.status}</span>
+                </p>
+            </div>
+
+            {failed && job.error && (
+                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+                    <div className="text-sm font-semibold text-rose-900 mb-1">Error</div>
+                    <pre className="text-xs text-rose-800 whitespace-pre-wrap break-words">{job.error}</pre>
+                </div>
+            )}
+
+            <ul className="divide-y divide-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+                {Object.entries(STAT_LABELS).map(([key, label]) => {
+                    const v = stats[key];
+                    if (v === undefined) return null;
+                    return (
+                        <li key={key} className="flex items-center justify-between px-4 py-3 text-sm">
+                            <span className="text-gray-700">{label}</span>
+                            <span className="font-mono text-gray-900">
+                                {typeof v === 'number' ? v.toLocaleString() : String(v)}
+                            </span>
+                        </li>
+                    );
+                })}
+            </ul>
+
+            {!failed && !cancelled && (
+                <p className="text-xs text-gray-400">Auto-refreshing every {POLL_INTERVAL_MS / 1000}s…</p>
+            )}
+        </section>
+    );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Step 4 — mailbox handoff
+// ─────────────────────────────────────────────────────────────────────────────
+
+function StepHandoff({ job }: { job: ImportJob | null }) {
+    const stats = (job?.stats || {}) as Record<string, unknown>;
+    const importedEmails: string[] = Array.isArray(stats.importedMailboxEmails)
+        ? (stats.importedMailboxEmails as string[])
+        : [];
+
+    return (
+        <section className="bg-white rounded-2xl p-8 border border-gray-200 space-y-6">
+            <div>
+                <h2 className="text-lg font-bold text-gray-900 mb-1">Reconnect your mailboxes</h2>
+                <p className="text-sm text-gray-500">
+                    Import is complete. Imported campaigns are paused, and every mailbox is currently
+                    disconnected — Instantly does not export OAuth tokens or SMTP passwords. Reconnect
+                    each mailbox natively to start sending from Superkabe. Any mailbox you don&apos;t
+                    reconnect will sit idle; campaigns won&apos;t send through it.
+                </p>
+            </div>
+
+            {importedEmails.length === 0 ? (
+                <div className="p-5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-500">
+                    No mailbox metadata was imported. You can still connect mailboxes the normal way.
+                </div>
+            ) : (
+                <ul className="divide-y divide-gray-100 border border-gray-200 rounded-xl overflow-hidden">
+                    {importedEmails.map(email => {
+                        const domain = email.split('@')[1] || '';
+                        const provider = guessProviderFromDomain(domain);
+                        return (
+                            <li key={email} className="flex items-center justify-between gap-3 px-4 py-3">
+                                <div>
+                                    <div className="text-sm font-semibold text-gray-900 font-mono">{email}</div>
+                                    <div className="text-xs text-gray-500">Suggested provider: {providerLabel(provider)}</div>
+                                </div>
+                                <Link
+                                    href="/dashboard/sequencer/accounts"
+                                    className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                                >
+                                    Reconnect →
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
+
+            <div className="flex flex-wrap gap-3 pt-2">
+                <Link
+                    href="/dashboard/sequencer/accounts"
+                    className="px-5 py-2.5 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800"
+                >
+                    Reconnect mailboxes
+                </Link>
+                <Link
+                    href="/dashboard/campaigns"
+                    className="px-5 py-2.5 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50"
+                >
+                    View imported campaigns
+                </Link>
+            </div>
+        </section>
+    );
+}
+
+function guessProviderFromDomain(domain: string): string {
+    const d = domain.toLowerCase();
+    if (d === 'gmail.com' || d.endsWith('.google.com')) return 'google';
+    if (d === 'outlook.com' || d === 'hotmail.com' || d.endsWith('.microsoft.com')) return 'microsoft';
+    return 'smtp';
 }

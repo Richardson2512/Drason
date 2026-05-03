@@ -76,6 +76,8 @@ export default function PrivacyPolicyPage() {
                                     <li><strong>Billing Information:</strong> processed by our payments provider (Polar.sh); we receive only billing reference identifiers, plan tier, and transaction status.</li>
                                     <li><strong>Mailbox Connection Data:</strong> OAuth tokens for Google Workspace and Microsoft 365 mailboxes (encrypted at rest with AES-256-GCM); SMTP credentials for self-hosted mailboxes (encrypted at rest with AES-256-GCM).</li>
                                     <li><strong>CRM Connection Data:</strong> if you connect HubSpot or Salesforce via OAuth, we store the access token, refresh token, and provider-specific identifiers (HubSpot portal_id, Salesforce instance_url) — all encrypted at rest with AES-256-GCM. Scope of contact data read/written is detailed in §6.1.</li>
+                                    <li><strong>Lead-Source Connection Data:</strong> if you connect a paid contact database (Apollo.io, ZoomInfo) via API key, we store the API key encrypted at rest (AES-256-GCM) plus the workspace identifiers and credit balance returned by the provider. Imported contact data is detailed in §6.2.</li>
+                                    <li><strong>Dialer Connection Data:</strong> if you connect Outreach.io via OAuth, we store the access token, refresh token, and Outreach user identifiers — all encrypted at rest with AES-256-GCM. Outreach is push-only: we send prospects + sequence-state writes, never read prospect data back. Detailed in §6.3.</li>
                                     <li><strong>One-Time Import Keys:</strong> if you import campaigns from another platform, we hold your admin API key encrypted at rest for at most 72 hours, then auto-discard.</li>
                                     <li><strong>Usage Telemetry:</strong> sequence performance metrics, mailbox health metrics, send/bounce/reply counts, audit logs of administrative actions.</li>
                                     <li><strong>Support Data:</strong> records of support correspondence, screenshots you share, and feature requests.</li>
@@ -181,6 +183,55 @@ export default function PrivacyPolicyPage() {
                                     <li>You remain the data controller for contact data inside your CRM and are responsible for compliance with your contractual relationship with HubSpot or Salesforce.</li>
                                     <li>You are responsible for ensuring that contacts you import into Superkabe have an appropriate lawful basis (consent, legitimate interest, contract) for outbound email under your jurisdiction&apos;s rules.</li>
                                     <li>You may disconnect at any time from <a href="/dashboard/integrations/crm" className="text-blue-600 hover:text-blue-800">/dashboard/integrations/crm</a>; tokens are wiped and pending pushes cancelled within seconds.</li>
+                                </ul>
+
+                                <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">6.2 Optional Lead-Source Integrations (Apollo.io, ZoomInfo)</h3>
+                                <p className="text-gray-600 leading-relaxed mb-2">
+                                    Customers may optionally connect a paid contact database to Superkabe via API key in order to import enriched contacts as Superkabe leads. These services are not Superkabe sub-processors — your contractual relationship with Apollo.io / ZoomInfo governs the underlying contact data, and you are responsible for ensuring you have a lawful basis to email any contact you import.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we read from the provider:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-3">
+                                    <li>Contact identity fields: email, first/last/full name, title, company, phone, LinkedIn URL.</li>
+                                    <li>Workspace metadata: account name, account ID, credit balance and limit (read at connect-time and after each import to display in your dashboard).</li>
+                                    <li>Contact-search filter parameters parsed out of the URL you paste (titles, locations, industries, etc.) — these are stored on the import job for auditability and re-running.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we write to the provider:</strong></p>
+                                <p className="text-gray-600 leading-relaxed mb-3">
+                                    None. Lead-source integrations are read-only — we never write activity, leads, or any other data back. Personal-email reveal (when you opt in) calls Apollo&apos;s <code>/v1/people/bulk_match</code> endpoint, which costs Apollo credits but does not write any data into your Apollo workspace.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Imported leads enter the standard Superkabe lifecycle:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-3">
+                                    <li>Email validation (disposable / catch-all / role-based detection).</li>
+                                    <li>Suppression-list checks at every send — unsubscribes, hard bounces, and spam complaints flip the lead globally for your workspace.</li>
+                                    <li>Deduplication on <code>(organization_id, email)</code> — re-importing the same URL upserts existing leads rather than duplicating them.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Customer responsibilities:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>You confirm that contacts you import have a lawful basis under your jurisdiction&apos;s rules (consent, legitimate interest, contract) for outbound email.</li>
+                                    <li>You manage credit consumption: personal-email reveal is opt-in per import, and every import accepts a hard cap (default ceiling: 50,000).</li>
+                                    <li>You may disconnect at any time from <a href="/dashboard/integrations/lead-sources" className="text-blue-600 hover:text-blue-800">/dashboard/integrations/lead-sources</a>; the encrypted API key is wiped and any pending imports are cancelled within seconds.</li>
+                                </ul>
+
+                                <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">6.3 Optional Dialer Integrations (Outreach.io)</h3>
+                                <p className="text-gray-600 leading-relaxed mb-2">
+                                    Customers may optionally connect Outreach.io via OAuth so the Superkabe cold call list can be pushed straight into an Outreach sequence. Outreach.io is not a Superkabe sub-processor — your contractual relationship with Outreach.io governs that data.
+                                </p>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we read from Outreach:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-3">
+                                    <li>The list of sequences you can add prospects to (id, name, share-type, active-prospect count) — surfaced in the export-to-Outreach picker.</li>
+                                    <li>The list of mailboxes you can send through (id, email, owning user) — required because every Outreach SequenceState specifies a mailbox.</li>
+                                    <li>The OAuth-granted user&apos;s id + email (whoami) so the dashboard can show &quot;connected as you@your.co&quot;.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Data we write to Outreach:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-3">
+                                    <li>Prospects, upserted on email — first/last name, title, company, phone, LinkedIn URL when available, plus a &quot;Superkabe&quot; tag.</li>
+                                    <li>SequenceStates — one per (prospect, sequence, mailbox) tuple to add the prospect to the chosen sequence. Outreach dedupes these server-side.</li>
+                                    <li>(Optional) New empty sequences — when the user clicks &quot;+ Create new sequence&quot; in the export dialog, we POST a single sequence shell that the user fills with steps inside Outreach&apos;s editor.</li>
+                                </ul>
+                                <p className="text-gray-600 leading-relaxed mb-2"><strong>Customer responsibilities:</strong></p>
+                                <ul className="list-disc pl-6 text-gray-600 space-y-1 mb-4">
+                                    <li>You confirm prospects you export have a lawful basis under your jurisdiction&apos;s rules for outbound contact via Outreach.</li>
+                                    <li>You may disconnect at any time from <a href="/dashboard/integrations/outreach" className="text-blue-600 hover:text-blue-800">/dashboard/integrations/outreach</a>; tokens are wiped, pending exports cancelled within seconds. Prospects already pushed to Outreach stay where they are — managing them after disconnect is your responsibility.</li>
                                 </ul>
                             </section>
 

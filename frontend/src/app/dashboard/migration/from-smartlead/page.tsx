@@ -266,6 +266,13 @@ export default function ImportFromSmartleadPage() {
     // ── Render ───────────────────────────────────────────────────────────────
     return (
         <div className="px-6 py-8 max-w-3xl mx-auto">
+            <Link
+                href="/dashboard/integrations"
+                className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 mb-4"
+            >
+                <span aria-hidden>←</span>
+                Back to Integrations
+            </Link>
             <header className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-900">Import from Smartlead</h1>
                 <p className="text-sm text-gray-500 mt-1">

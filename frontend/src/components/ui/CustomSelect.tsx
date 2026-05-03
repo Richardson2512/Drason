@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronDown, Search } from 'lucide-react';
 
 interface Option {
@@ -21,6 +22,13 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    // Anchor coords for the portal-rendered dropdown. Recomputed on open
+    // and on scroll/resize so the dropdown stays glued to its trigger even
+    // when an ancestor scrolls. Portal rendering is the only way to escape
+    // overflow:hidden / stacking-context clipping from chart libraries
+    // (Recharts' ResponsiveContainer is a known clipper).
+    const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
 
     const selectedOption = options.find(o => o.value === value);
 
@@ -28,13 +36,33 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
         ? options.filter(o => o.label.toLowerCase().includes(search.toLowerCase()))
         : options;
 
-    // Close on outside click
+    const updateCoords = () => {
+        if (!wrapperRef.current) return;
+        const r = wrapperRef.current.getBoundingClientRect();
+        setCoords({ top: r.bottom + 4, left: r.left, width: r.width });
+    };
+
+    useLayoutEffect(() => {
+        if (!isOpen) return;
+        updateCoords();
+        window.addEventListener('resize', updateCoords);
+        window.addEventListener('scroll', updateCoords, true); // capture, so ancestor scrolls fire too
+        return () => {
+            window.removeEventListener('resize', updateCoords);
+            window.removeEventListener('scroll', updateCoords, true);
+        };
+    }, [isOpen]);
+
+    // Close on outside click — checks BOTH the trigger wrapper and the
+    // portal-rendered dropdown so clicking inside the open menu doesn't
+    // count as "outside" and dismiss it before the option-click fires.
     useEffect(() => {
         if (!isOpen) return;
         const handleClick = (e: MouseEvent) => {
-            if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-                setIsOpen(false);
-            }
+            const t = e.target as Node;
+            if (wrapperRef.current?.contains(t)) return;
+            if (dropdownRef.current?.contains(t)) return;
+            setIsOpen(false);
         };
         document.addEventListener('mousedown', handleClick);
         return () => document.removeEventListener('mousedown', handleClick);
@@ -54,11 +82,19 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
                 <ChevronDown size={12} className="text-gray-400 shrink-0" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.15s ease' }} />
             </button>
 
-            {/* Dropdown — absolute, directly below the button */}
-            {isOpen && (
+            {/* Dropdown — rendered via portal so no ancestor's overflow or
+                stacking context can clip it. Positioned with fixed coords
+                computed from the trigger's bounding rect. */}
+            {isOpen && coords && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="absolute left-0 right-0 mt-1 bg-white overflow-hidden z-[9999]"
+                    ref={dropdownRef}
+                    className="bg-white overflow-hidden"
                     style={{
+                        position: 'fixed',
+                        top: coords.top,
+                        left: coords.left,
+                        width: coords.width,
+                        zIndex: 10000,
                         border: '1px solid #D1CBC5',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
@@ -105,7 +141,8 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
                             ))
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );

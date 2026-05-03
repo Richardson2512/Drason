@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import { apiClient } from '@/lib/api';
 import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
@@ -52,6 +53,10 @@ interface LeadContext {
     opened_count: number;
     clicked_count: number;
     replied_at: string | null;
+    // Canonical Lead.id from the org-wide Lead table. Null if the contact
+    // exists in a CampaignLead but isn't (yet) materialized as a Lead row —
+    // in that case the right-panel renders as text instead of a link.
+    lead_id?: string | null;
 }
 
 // ============================================================================
@@ -529,15 +534,31 @@ export default function UniboxPage() {
                         <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Contact</h3>
                     </div>
                     <div className="p-3 flex flex-col gap-3">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-900 text-white text-sm font-bold shrink-0">
-                                {(selectedThread.contact_name || selectedThread.contact_email)[0]?.toUpperCase()}
+                        {leadContext?.lead_id ? (
+                            <Link
+                                href={`/dashboard/sequencer/contacts/${leadContext.lead_id}`}
+                                className="flex items-center gap-2.5 -mx-1 px-1 py-1 rounded-lg hover:bg-gray-50 transition-colors group"
+                                title="Open contact details"
+                            >
+                                <div className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-900 text-white text-sm font-bold shrink-0">
+                                    {(selectedThread.contact_name || selectedThread.contact_email)[0]?.toUpperCase()}
+                                </div>
+                                <div className="min-w-0">
+                                    <div className="text-xs font-semibold text-gray-900 truncate group-hover:text-blue-700 group-hover:underline">{selectedThread.contact_name || selectedThread.contact_email.split('@')[0]}</div>
+                                    <div className="text-[10px] text-gray-500 truncate group-hover:text-blue-600">{selectedThread.contact_email}</div>
+                                </div>
+                            </Link>
+                        ) : (
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-900 text-white text-sm font-bold shrink-0">
+                                    {(selectedThread.contact_name || selectedThread.contact_email)[0]?.toUpperCase()}
+                                </div>
+                                <div className="min-w-0">
+                                    <div className="text-xs font-semibold text-gray-900 truncate">{selectedThread.contact_name || selectedThread.contact_email.split('@')[0]}</div>
+                                    <div className="text-[10px] text-gray-500 truncate">{selectedThread.contact_email}</div>
+                                </div>
                             </div>
-                            <div className="min-w-0">
-                                <div className="text-xs font-semibold text-gray-900 truncate">{selectedThread.contact_name || selectedThread.contact_email.split('@')[0]}</div>
-                                <div className="text-[10px] text-gray-500 truncate">{selectedThread.contact_email}</div>
-                            </div>
-                        </div>
+                        )}
 
                         {leadContext ? (
                             <div className="flex flex-col gap-2">

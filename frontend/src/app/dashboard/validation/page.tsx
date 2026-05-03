@@ -3,11 +3,12 @@
 import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
-import { Upload, FileSpreadsheet, CheckCircle, XCircle, AlertTriangle, Copy, Download, Send, ChevronDown, ChevronRight, Search, X } from 'lucide-react';
+import { Upload, FileSpreadsheet, CheckCircle, XCircle, AlertTriangle, Copy, Download, Send, ChevronDown, ChevronRight, Search, X, Tag as TagIcon, Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
 import type { ValidationBatch, ValidationBatchLead, ColumnMapping, ValidationAnalytics } from '@/types/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import DatePicker from '@/components/ui/DatePicker';
+import { TagIconShape, type TagItem } from '@/components/sequencer/TagManagerModal';
 
 // ============================================================================
 // TYPES
@@ -113,6 +114,17 @@ function ValidationPageContent() {
     const [routing, setRouting] = useState(false);
     const [routeResult, setRouteResult] = useState<{ routed: number; failed: number } | null>(null);
 
+    // Validate-by-tag state. Operator picks a tag and Superkabe pulls every
+    // contact carrying that tag and runs the same validation pipeline used
+    // for selected-rows-on-contacts-page. Result lands as a new batch in
+    // the upload history below so the operator sees per-row outcomes there.
+    const [allTags, setAllTags] = useState<TagItem[]>([]);
+    const [validateTagId, setValidateTagId] = useState<string>('');
+    const [validatingByTag, setValidatingByTag] = useState(false);
+    const [tagValidationSummary, setTagValidationSummary] = useState<{
+        processed: number; valid: number; invalid: number; risky: number; skipped: number;
+    } | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // ========== DATA FETCHING ==========
@@ -171,6 +183,44 @@ function ValidationPageContent() {
         } catch { /* graceful */ }
     }, []);
 
+    const fetchTags = useCallback(async () => {
+        try {
+            const res = await apiClient<{ tags: TagItem[] }>('/api/sequencer/tags');
+            setAllTags(res?.tags || []);
+        } catch { /* graceful */ }
+    }, []);
+
+    const validateByTag = async () => {
+        if (!validateTagId || validatingByTag) return;
+        setValidatingByTag(true);
+        setTagValidationSummary(null);
+        try {
+            const res = await apiClient<{
+                processed: number; valid: number; risky: number; invalid: number;
+                skipped: number; failed: number;
+                credits_remaining: number | null;
+            }>('/api/sequencer/contacts/validate', {
+                method: 'POST',
+                body: JSON.stringify({ tagId: validateTagId }),
+            });
+            setTagValidationSummary({
+                processed: res.processed,
+                valid: res.valid,
+                invalid: res.invalid,
+                risky: res.risky,
+                skipped: res.skipped,
+            });
+            // Refresh batches + analytics + tags so the operator sees the new
+            // batch row in Upload History and updated counts on the tag.
+            await Promise.all([fetchBatches(), fetchAnalytics(), fetchTags()]);
+        } catch {
+            // apiClient auto-toasts (e.g., credits exhausted, tag not found,
+            // no contacts carry that tag).
+        } finally {
+            setValidatingByTag(false);
+        }
+    };
+
     const fetchBatchLeads = useCallback(async (batchId: string, page = 1) => {
         try {
             const params = new URLSearchParams({ page: String(page), limit: String(batchMeta.limit) });
@@ -188,8 +238,8 @@ function ValidationPageContent() {
     }, [statusFilter, espFilter, searchQuery, batchMeta.limit]);
 
     useEffect(() => {
-        Promise.all([fetchBatches(), fetchAnalytics(), fetchCampaigns(), fetchEspPerformance()]).then(() => setLoading(false));
-    }, [fetchBatches, fetchAnalytics, fetchCampaigns]);
+        Promise.all([fetchBatches(), fetchAnalytics(), fetchCampaigns(), fetchEspPerformance(), fetchTags()]).then(() => setLoading(false));
+    }, [fetchBatches, fetchAnalytics, fetchCampaigns, fetchEspPerformance, fetchTags]);
 
     useEffect(() => {
         if (selectedBatch) fetchBatchLeads(selectedBatch.id, batchMeta.page);
@@ -577,6 +627,80 @@ function ValidationPageContent() {
                 </div>
             )}
 
+            {/* Validate by tag — pull every contact carrying a chosen tag
+                and run the validation pipeline against them. Result lands
+                as a new batch in Upload History below. */}
+            <div className="premium-card">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                        <h2 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+                            <TagIcon size={13} className="text-gray-700" /> Validate by tag
+                        </h2>
+                        <p className="text-[10px] text-gray-400 mt-0.5">
+                            Pick a contact tag and Superkabe will validate every contact carrying it. Counts against your monthly validation credits.
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                    <div className="w-64">
+                        <CustomSelect
+                            value={validateTagId}
+                            onChange={setValidateTagId}
+                            placeholder={allTags.length === 0 ? 'No tags yet — create one in Contacts → Manage tags' : 'Choose a tag…'}
+                            searchable={allTags.length > 5}
+                            options={allTags
+                                .filter(t => t.contact_count > 0)
+                                .map(t => ({
+                                    value: t.id,
+                                    label: `${t.name} (${t.contact_count} contact${t.contact_count === 1 ? '' : 's'})`,
+                                }))}
+                        />
+                    </div>
+                    <button
+                        onClick={validateByTag}
+                        disabled={!validateTagId || validatingByTag}
+                        className="flex items-center gap-1.5 px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800 disabled:opacity-50"
+                    >
+                        {validatingByTag ? <Loader2 size={11} className="animate-spin" /> : <CheckCircle size={11} />}
+                        {validatingByTag ? 'Validating…' : 'Validate contacts'}
+                    </button>
+                    {validateTagId && (() => {
+                        const t = allTags.find(x => x.id === validateTagId);
+                        if (!t) return null;
+                        return (
+                            <span className="inline-flex items-center gap-1.5 text-[11px] text-gray-600">
+                                <TagIconShape color={t.color || '#6B7280'} size={12} />
+                                <span className="font-medium">{t.name}</span>
+                                <span className="text-gray-400">· {t.contact_count} contact{t.contact_count === 1 ? '' : 's'}</span>
+                            </span>
+                        );
+                    })()}
+                </div>
+
+                {tagValidationSummary && (
+                    <div className="mt-3 p-3 rounded-lg flex items-center gap-4 flex-wrap" style={{ background: '#F5F1EA' }}>
+                        <span className="text-[11px] font-semibold text-gray-700">
+                            Done — {tagValidationSummary.processed} processed
+                        </span>
+                        <span className="text-[11px] text-emerald-700">
+                            <strong>{tagValidationSummary.valid}</strong> valid
+                        </span>
+                        <span className="text-[11px] text-amber-700">
+                            <strong>{tagValidationSummary.risky}</strong> risky
+                        </span>
+                        <span className="text-[11px] text-red-700">
+                            <strong>{tagValidationSummary.invalid}</strong> invalid
+                        </span>
+                        {tagValidationSummary.skipped > 0 && (
+                            <span className="text-[11px] text-gray-500">
+                                {tagValidationSummary.skipped} skipped (credit cap)
+                            </span>
+                        )}
+                        <span className="text-[10px] text-gray-400 ml-auto">See full per-contact results in Upload History below.</span>
+                    </div>
+                )}
+            </div>
+
             {/* Mailbox ESP Performance Matrix */}
             {espPerformance.length > 0 && (
                 <div className="premium-card">
@@ -718,7 +842,7 @@ function ValidationPageContent() {
                                 className="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-50"
                                 style={{ borderColor: '#D1CBC5' }}
                             >
-                                <Download size={11} />
+                                <Upload size={11} />
                                 Export Clean List
                             </button>
                             <button
@@ -726,7 +850,7 @@ function ValidationPageContent() {
                                 className="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-50 text-gray-500"
                                 style={{ borderColor: '#D1CBC5' }}
                             >
-                                <Download size={11} />
+                                <Upload size={11} />
                                 Full Results
                             </button>
                         </div>

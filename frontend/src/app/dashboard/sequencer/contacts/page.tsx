@@ -1,16 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import Link from 'next/link';
+import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import { DualEnrollmentModal, type DualEnrollmentReport } from '@/components/sequencer/DualEnrollmentModal';
+import ImportLeadsModal, { type SpawnedJob } from '@/components/contacts/ImportLeadsModal';
+import ImportProgressTray from '@/components/contacts/ImportProgressTray';
+import TagManagerModal, { type TagItem, TagIconShape } from '@/components/sequencer/TagManagerModal';
+import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
 import toast from 'react-hot-toast';
-import Papa from 'papaparse';
 
 const STATUS_OPTIONS = [
-    { value: 'all', label: 'All statuses' },
+    { value: 'all', label: 'Sequence status: any' },
     { value: 'held', label: 'Held' },
     { value: 'active', label: 'Active' },
     { value: 'paused', label: 'Paused' },
@@ -21,13 +25,31 @@ const STATUS_OPTIONS = [
 ];
 
 const VALIDATION_OPTIONS = [
-    { value: 'all', label: 'All validations' },
+    { value: 'all', label: 'Email validation: any' },
     { value: 'valid', label: 'Valid' },
     { value: 'risky', label: 'Risky' },
     { value: 'invalid', label: 'Invalid' },
     { value: 'unknown', label: 'Unknown' },
     { value: 'pending', label: 'Pending' },
 ];
+
+// Column registry. `defaultVisible` is the out-of-the-box set; user-customised
+// visibility persists in localStorage under COLUMN_PREF_KEY.
+const COLUMN_PREF_KEY = 'contacts.visibleColumns.v1';
+const ALL_COLUMNS = [
+    { key: 'email',       label: 'Email',             defaultVisible: true,  width: 'min-w-[220px]' },
+    { key: 'name',        label: 'Name',              defaultVisible: true,  width: 'min-w-[140px]' },
+    { key: 'company',     label: 'Company',           defaultVisible: true,  width: 'min-w-[140px]' },
+    { key: 'title',       label: 'Title',             defaultVisible: true,  width: 'min-w-[140px]' },
+    { key: 'source',      label: 'Source',            defaultVisible: false, width: 'min-w-[100px]' },
+    { key: 'status',      label: 'Status',            defaultVisible: true,  width: 'min-w-[110px]' },
+    { key: 'validation',  label: 'Validation',        defaultVisible: true,  width: 'min-w-[110px]' },
+    { key: 'tags',        label: 'Tags',              defaultVisible: true,  width: 'min-w-[180px]' },
+    { key: 'campaigns',   label: 'Campaigns history', defaultVisible: true,  width: 'min-w-[100px]' },
+    { key: 'created',     label: 'Added',             defaultVisible: true,  width: 'min-w-[80px]'  },
+] as const;
+type ColumnKey = typeof ALL_COLUMNS[number]['key'];
+const DEFAULT_VISIBLE_COLS: ColumnKey[] = ALL_COLUMNS.filter(c => c.defaultVisible).map(c => c.key);
 
 interface Contact {
     id: string;
@@ -47,6 +69,7 @@ interface Contact {
     lead_score?: number;
     campaign_count: number;
     current_step: number | null;
+    tags?: Array<{ id: string; name: string; color: string | null }>;
     created_at: string;
 }
 
@@ -73,11 +96,66 @@ export default function ContactsPage() {
     const [validationFilter, setValidationFilter] = useState('all');
     const [companyFilter, setCompanyFilter] = useState<string[]>([]);
     const [titleFilter, setTitleFilter] = useState<string[]>([]);
+    const [sourceFilter, setSourceFilter] = useState<string[]>([]);
     const [companyFacets, setCompanyFacets] = useState<Array<{ value: string; count: number }>>([]);
     const [titleFacets, setTitleFacets] = useState<Array<{ value: string; count: number }>>([]);
+    const [sourceFacets, setSourceFacets] = useState<Array<{ value: string; count: number }>>([]);
+    const [tagFilter, setTagFilter] = useState<string[]>([]);
+    const [allTags, setAllTags] = useState<TagItem[]>([]);
+    const [showTagManager, setShowTagManager] = useState(false);
+    const [showBulkTagMenu, setShowBulkTagMenu] = useState(false);
+    const bulkTagMenuRef = useRef<HTMLDivElement>(null);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
+    const filterMenuRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (!showFilterMenu) return;
+        const handler = (e: MouseEvent) => {
+            if (filterMenuRef.current && !filterMenuRef.current.contains(e.target as Node)) {
+                setShowFilterMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [showFilterMenu]);
+
+    // Column picker — visibility persisted to localStorage.
+    const [visibleCols, setVisibleCols] = useState<ColumnKey[]>(DEFAULT_VISIBLE_COLS);
+    const [showColumnMenu, setShowColumnMenu] = useState(false);
+    const columnMenuRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        try {
+            const raw = localStorage.getItem(COLUMN_PREF_KEY);
+            if (!raw) return;
+            const parsed = JSON.parse(raw) as string[];
+            const valid = parsed.filter((k): k is ColumnKey => ALL_COLUMNS.some(c => c.key === k));
+            if (valid.length > 0) setVisibleCols(valid);
+        } catch { /* ignore — fall back to defaults */ }
+    }, []);
+    const toggleColumn = (key: ColumnKey) => {
+        setVisibleCols(prev => {
+            const next = prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key];
+            // Preserve the ALL_COLUMNS canonical order so the table doesn't reshuffle.
+            const ordered = ALL_COLUMNS.filter(c => next.includes(c.key)).map(c => c.key);
+            try { localStorage.setItem(COLUMN_PREF_KEY, JSON.stringify(ordered)); } catch { /* quota / private mode */ }
+            return ordered;
+        });
+    };
+    useEffect(() => {
+        if (!showColumnMenu) return;
+        const handler = (e: MouseEvent) => {
+            if (columnMenuRef.current && !columnMenuRef.current.contains(e.target as Node)) {
+                setShowColumnMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [showColumnMenu]);
+    const visibleColDefs = useMemo(
+        () => ALL_COLUMNS.filter(c => visibleCols.includes(c.key)),
+        [visibleCols],
+    );
     const [loading, setLoading] = useState(true);
     const [deleting, setDeleting] = useState(false);
-    const [importing, setImporting] = useState(false);
     const [verifying, setVerifying] = useState(false);
     const [assigning, setAssigning] = useState(false);
 
@@ -90,6 +168,10 @@ export default function ContactsPage() {
     // Dual-enrollment preview modal
     const [dualReport, setDualReport] = useState<DualEnrollmentReport | null>(null);
     const [pendingAssignCampaign, setPendingAssignCampaign] = useState<{ id: string; name: string } | null>(null);
+
+    // Import Leads modal + progress tray
+    const [showImportModal, setShowImportModal] = useState(false);
+    const [importJobs, setImportJobs] = useState<SpawnedJob[]>([]);
 
     // Add Contact modal
     const [showAddModal, setShowAddModal] = useState(false);
@@ -112,6 +194,8 @@ export default function ContactsPage() {
         validation = validationFilter,
         companies = companyFilter,
         titles = titleFilter,
+        sources = sourceFilter,
+        tagIds = tagFilter,
     ) => {
         setLoading(true);
         try {
@@ -123,6 +207,8 @@ export default function ContactsPage() {
                 validation_status: validation === 'all' ? '' : validation,
                 companies: companies.join(','),
                 titles: titles.join(','),
+                sources: sources.join(','),
+                tag_ids: tagIds.join(','),
             });
             const res = await apiClient<any>(`/api/sequencer/contacts?${params}`);
             // Backend now returns { contacts, meta }. Fall back to other shapes just in case.
@@ -137,7 +223,16 @@ export default function ContactsPage() {
         } finally {
             setLoading(false);
         }
-    }, [searchQuery, statusFilter, validationFilter, companyFilter, titleFilter]);
+    }, [searchQuery, statusFilter, validationFilter, companyFilter, titleFilter, sourceFilter, tagFilter]);
+
+    const fetchTags = useCallback(async () => {
+        try {
+            const res = await apiClient<{ tags: TagItem[] }>('/api/sequencer/tags');
+            setAllTags(res?.tags || []);
+        } catch {
+            // non-fatal — tag UI just shows empty
+        }
+    }, []);
 
     // Facet loader — populates the company / title dropdowns with distinct values
     // from the org's contact pool. Refetches after CSV imports / bulk creates so
@@ -148,6 +243,7 @@ export default function ContactsPage() {
             const data = res?.data || res;
             setCompanyFacets(data?.companies || []);
             setTitleFacets(data?.titles || []);
+            setSourceFacets(data?.sources || []);
         } catch {
             // non-fatal — filter dropdowns just stay empty
         }
@@ -155,39 +251,96 @@ export default function ContactsPage() {
 
     // Initial fetch
     useEffect(() => {
-        fetchContacts(1, '', 'all', 'all', [], []);
+        fetchContacts(1, '', 'all', 'all', [], [], [], []);
         fetchFacets();
+        fetchTags();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Per-row tag mutation. Optimistic so the row visibly updates before
+    // the network round-trip completes. Reverts and toasts on error.
+    const setContactTags = async (contactId: string, tagIds: string[]) => {
+        // Optimistic update
+        const prev = contacts;
+        const newTagSet = allTags.filter(t => tagIds.includes(t.id))
+            .map(t => ({ id: t.id, name: t.name, color: t.color }));
+        setContacts(curr => curr.map(c => c.id === contactId ? { ...c, tags: newTagSet } : c));
+        try {
+            await apiClient(`/api/sequencer/contacts/${contactId}/tags`, {
+                method: 'PUT',
+                body: JSON.stringify({ tagIds }),
+            });
+            // Refresh tag counts so the manager modal stays accurate
+            fetchTags();
+        } catch {
+            setContacts(prev);
+        }
+    };
+
+    const handleTagFilterChange = (next: string[]) => {
+        setTagFilter(next);
+        fetchContacts(1, searchQuery, statusFilter, validationFilter, companyFilter, titleFilter, sourceFilter, next);
+    };
+
+    const bulkApplyTag = async (tagId: string) => {
+        if (selectedIds.size === 0) return;
+        setShowBulkTagMenu(false);
+        try {
+            const res = await apiClient<{ affected: number }>('/api/sequencer/contacts/bulk-tag', {
+                method: 'POST',
+                body: JSON.stringify({ ids: Array.from(selectedIds), tagId, action: 'add' }),
+            });
+            const tag = allTags.find(t => t.id === tagId);
+            toast.success(`Tagged ${res?.affected ?? 0} contact${res?.affected === 1 ? '' : 's'} with "${tag?.name || 'tag'}"`);
+            await fetchContacts(meta.page);
+            await fetchTags();
+        } catch { /* auto-toast */ }
+    };
+
+    useEffect(() => {
+        if (!showBulkTagMenu) return;
+        const handler = (e: MouseEvent) => {
+            if (bulkTagMenuRef.current && !bulkTagMenuRef.current.contains(e.target as Node)) {
+                setShowBulkTagMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [showBulkTagMenu]);
 
     // Debounced search
     const handleSearchChange = (value: string) => {
         setSearchQuery(value);
         if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
         searchTimerRef.current = setTimeout(() => {
-            fetchContacts(1, value, statusFilter, validationFilter, companyFilter, titleFilter);
+            fetchContacts(1, value, statusFilter, validationFilter, companyFilter, titleFilter, sourceFilter);
         }, 400);
     };
 
     // Status filter change
     const handleStatusFilterChange = (value: string) => {
         setStatusFilter(value);
-        fetchContacts(1, searchQuery, value, validationFilter, companyFilter, titleFilter);
+        fetchContacts(1, searchQuery, value, validationFilter, companyFilter, titleFilter, sourceFilter);
     };
 
     const handleValidationFilterChange = (value: string) => {
         setValidationFilter(value);
-        fetchContacts(1, searchQuery, statusFilter, value, companyFilter, titleFilter);
+        fetchContacts(1, searchQuery, statusFilter, value, companyFilter, titleFilter, sourceFilter);
     };
 
     const handleCompanyFilterChange = (next: string[]) => {
         setCompanyFilter(next);
-        fetchContacts(1, searchQuery, statusFilter, validationFilter, next, titleFilter);
+        fetchContacts(1, searchQuery, statusFilter, validationFilter, next, titleFilter, sourceFilter);
     };
 
     const handleTitleFilterChange = (next: string[]) => {
         setTitleFilter(next);
-        fetchContacts(1, searchQuery, statusFilter, validationFilter, companyFilter, next);
+        fetchContacts(1, searchQuery, statusFilter, validationFilter, companyFilter, next, sourceFilter);
+    };
+
+    const handleSourceFilterChange = (next: string[]) => {
+        setSourceFilter(next);
+        fetchContacts(1, searchQuery, statusFilter, validationFilter, companyFilter, titleFilter, next);
     };
 
     const clearFilters = () => {
@@ -196,77 +349,9 @@ export default function ContactsPage() {
         setValidationFilter('all');
         setCompanyFilter([]);
         setTitleFilter([]);
-        fetchContacts(1, '', 'all', 'all', [], []);
-    };
-
-    // Parse CSV and POST to the bulk-import endpoint. Each row runs through the
-    // health gate on the backend — invalid emails / disposable domains are rejected,
-    // existing contacts are updated (not duplicated), and results are surfaced via toast.
-    const handleCSVUpload = (file: File) => {
-        setImporting(true);
-        const pick = (row: Record<string, string>, ...names: string[]) => {
-            for (const n of names) {
-                if (row[n] !== undefined && String(row[n]).trim() !== '') return String(row[n]).trim();
-            }
-            return '';
-        };
-
-        Papa.parse<Record<string, string>>(file, {
-            header: true,
-            skipEmptyLines: true,
-            complete: async (result) => {
-                const rows = (result.data || []) as Record<string, string>[];
-                const contactsPayload = rows.map((row) => {
-                    const email = pick(row, 'email', 'Email', 'E-mail', 'EMAIL').toLowerCase();
-                    return {
-                        email,
-                        first_name: pick(row, 'first_name', 'firstname', 'First Name', 'FirstName', 'first name'),
-                        last_name: pick(row, 'last_name', 'lastname', 'Last Name', 'LastName', 'last name'),
-                        full_name: pick(row, 'full_name', 'fullname', 'Full Name', 'name', 'Name'),
-                        company: pick(row, 'company', 'Company', 'company_name', 'Company Name', 'organization'),
-                        website: pick(row, 'website', 'Website', 'url', 'URL', 'domain'),
-                        title: pick(row, 'title', 'Title', 'job_title', 'Job Title', 'role'),
-                        persona: pick(row, 'persona', 'Persona'),
-                        source: pick(row, 'source', 'Source') || 'csv',
-                    };
-                }).filter(c => c.email.includes('@'));
-
-                if (contactsPayload.length === 0) {
-                    toast.error('No valid email addresses found. Make sure your CSV has an "email" column.');
-                    setImporting(false);
-                    return;
-                }
-
-                try {
-                    const res = await apiClient<any>('/api/sequencer/contacts/bulk', {
-                        method: 'POST',
-                        body: JSON.stringify({ contacts: contactsPayload }),
-                    });
-                    const created = res?.created ?? 0;
-                    const updated = res?.updated ?? 0;
-                    const duplicates = res?.duplicates ?? 0;
-                    const rejected = res?.rejected ?? 0;
-                    const parts: string[] = [];
-                    if (created > 0) parts.push(`${created} added`);
-                    if (updated > 0 && updated !== duplicates) parts.push(`${updated} updated`);
-                    if (duplicates > 0) parts.push(`${duplicates} already existed`);
-                    if (rejected > 0) parts.push(`${rejected} rejected`);
-                    const msg = parts.length > 0 ? `Imported ${res?.total ?? contactsPayload.length} contacts — ${parts.join(', ')}` : `Processed ${res?.total ?? contactsPayload.length} rows`;
-                    if (created > 0 || updated > 0) toast.success(msg);
-                    else toast(msg);
-                    await fetchContacts(1, searchQuery, statusFilter);
-                    fetchFacets();
-                } catch {
-                    // apiClient auto-toasts errors (413 too big, 400 no emails, etc.)
-                } finally {
-                    setImporting(false);
-                }
-            },
-            error: (err) => {
-                toast.error(`Failed to parse CSV: ${err.message}`);
-                setImporting(false);
-            },
-        });
+        setSourceFilter([]);
+        setTagFilter([]);
+        fetchContacts(1, '', 'all', 'all', [], [], [], []);
     };
 
     const exportCSV = () => {
@@ -494,18 +579,60 @@ export default function ContactsPage() {
                     <p className="text-xs text-gray-500 mt-0.5">{meta.total.toLocaleString()} contacts</p>
                 </div>
                 <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setShowTagManager(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
+                        title="Create, rename, or delete tags"
+                    >
+                        <TagIcon size={12} /> Manage tags
+                    </button>
+                    <div ref={columnMenuRef} className="relative">
+                        <button
+                            type="button"
+                            onClick={() => setShowColumnMenu(v => !v)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
+                            title="Choose visible columns"
+                        >
+                            <Columns3 size={12} /> Columns
+                        </button>
+                        {showColumnMenu && (
+                            <div className="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg z-50" style={{ border: '1px solid #D1CBC5' }}>
+                                <div className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase" style={{ borderBottom: '1px solid #E8E3DC' }}>
+                                    Visible columns
+                                </div>
+                                {ALL_COLUMNS.map(col => {
+                                    const checked = visibleCols.includes(col.key);
+                                    const isLast = checked && visibleCols.length === 1;
+                                    return (
+                                        <label
+                                            key={col.key}
+                                            className={`flex items-center gap-2 px-3 py-1.5 text-xs ${isLast ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-50'}`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={checked}
+                                                disabled={isLast}
+                                                onChange={() => toggleColumn(col.key)}
+                                                className="cursor-pointer"
+                                            />
+                                            <span className="text-gray-900">{col.label}</span>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
                     <button onClick={exportCSV} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
-                        <Download size={12} /> Export
+                        <Upload size={12} /> Export
                     </button>
                     <button
-                        onClick={() => document.getElementById('contact-csv')?.click()}
-                        disabled={importing}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-wait"
+                        onClick={() => setShowImportModal(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
                     >
-                        {importing ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                        {importing ? 'Importing…' : 'Import CSV'}
+                        <Download size={12} />
+                        Import Leads
                     </button>
-                    <input id="contact-csv" type="file" accept=".csv" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleCSVUpload(f); e.target.value = ''; }} />
                     <button onClick={() => setShowAddModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800">
                         <Plus size={12} /> Add Contact
                     </button>
@@ -535,25 +662,76 @@ export default function ContactsPage() {
                     )}
                 </div>
 
-                <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
-                    <Filter size={11} />
-                    <span className="font-semibold uppercase tracking-wider">Filter</span>
+                {/* Filter button — opens a popover with the categorical
+                    enum filters (Sequence status + Email validation). Keeps
+                    the main row uncluttered for the high-cardinality entity
+                    filters next to it. Active count badge appears when any
+                    enum filter is set so the operator can see at a glance. */}
+                <div ref={filterMenuRef} className="relative">
+                    {(() => {
+                        const activeCount =
+                            (statusFilter !== 'all' ? 1 : 0) +
+                            (validationFilter !== 'all' ? 1 : 0);
+                        return (
+                            <button
+                                type="button"
+                                onClick={() => setShowFilterMenu(v => !v)}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-50 ${
+                                    activeCount > 0 ? 'text-gray-900' : 'text-gray-700'
+                                }`}
+                                style={{ border: `1px solid ${activeCount > 0 ? '#111827' : '#D1CBC5'}` }}
+                            >
+                                <Filter size={12} /> Filter
+                                {activeCount > 0 && (
+                                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-900 text-white tabular-nums">
+                                        {activeCount}
+                                    </span>
+                                )}
+                                <ChevronDown size={11} style={{ transform: showFilterMenu ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.15s' }} />
+                            </button>
+                        );
+                    })()}
+                    {showFilterMenu && (
+                        <div
+                            className="absolute left-0 top-full mt-1 w-72 bg-white rounded-lg shadow-lg z-50 p-3 flex flex-col gap-3"
+                            style={{ border: '1px solid #D1CBC5' }}
+                        >
+                            <div>
+                                <label className="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                    Sequence status
+                                </label>
+                                <CustomSelect
+                                    value={statusFilter}
+                                    onChange={handleStatusFilterChange}
+                                    options={STATUS_OPTIONS}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                    Email validation
+                                </label>
+                                <CustomSelect
+                                    value={validationFilter}
+                                    onChange={handleValidationFilterChange}
+                                    options={VALIDATION_OPTIONS}
+                                />
+                            </div>
+                            {(statusFilter !== 'all' || validationFilter !== 'all') && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        handleStatusFilterChange('all');
+                                        handleValidationFilterChange('all');
+                                    }}
+                                    className="text-[11px] text-gray-500 hover:text-gray-900 underline decoration-dotted self-start"
+                                >
+                                    Reset
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
 
-                <div className="w-[140px]">
-                    <CustomSelect
-                        value={statusFilter}
-                        onChange={handleStatusFilterChange}
-                        options={STATUS_OPTIONS}
-                    />
-                </div>
-                <div className="w-[160px]">
-                    <CustomSelect
-                        value={validationFilter}
-                        onChange={handleValidationFilterChange}
-                        options={VALIDATION_OPTIONS}
-                    />
-                </div>
                 <div className="w-[180px]">
                     <MultiSelectDropdown
                         options={companyFacets.map(f => ({ value: f.value, label: `${f.value} (${f.count})` }))}
@@ -574,8 +752,36 @@ export default function ContactsPage() {
                         searchPlaceholder="Search titles…"
                     />
                 </div>
+                <div className="w-[160px]">
+                    <MultiSelectDropdown
+                        options={sourceFacets.map(f => ({ value: f.value, label: `${sourceMeta(f.value).label} (${f.count})` }))}
+                        selected={sourceFilter}
+                        onChange={handleSourceFilterChange}
+                        placeholder="All sources"
+                        searchable
+                        searchPlaceholder="Search sources…"
+                    />
+                </div>
+                <div className="w-[160px]">
+                    <MultiSelectDropdown
+                        options={allTags.map(t => ({
+                            value: t.id,
+                            // Surface-specific count: this is the contacts
+                            // page, so the parenthetical reflects how many
+                            // CONTACTS carry the tag. Campaigns page uses
+                            // campaign_count for the same dropdown.
+                            label: `${t.name} (${t.contact_count})`,
+                            icon: <TagIconShape color={t.color || '#6B7280'} size={12} />,
+                        }))}
+                        selected={tagFilter}
+                        onChange={handleTagFilterChange}
+                        placeholder="All tags"
+                        searchable
+                        searchPlaceholder="Search tags…"
+                    />
+                </div>
 
-                {(statusFilter !== 'all' || validationFilter !== 'all' || searchQuery || companyFilter.length > 0 || titleFilter.length > 0) && (
+                {(statusFilter !== 'all' || validationFilter !== 'all' || searchQuery || companyFilter.length > 0 || titleFilter.length > 0 || sourceFilter.length > 0 || tagFilter.length > 0) && (
                     <button
                         type="button"
                         onClick={clearFilters}
@@ -585,67 +791,104 @@ export default function ContactsPage() {
                     </button>
                 )}
 
-                <span className="ml-auto text-[11px] text-gray-500 tabular-nums">
-                    {meta.total.toLocaleString()} contact{meta.total === 1 ? '' : 's'}
-                </span>
-                {selectedIds.size > 0 && (
-                    <>
+            </div>
+
+            {/* Bulk-action row — only renders when contacts are selected.
+                Lives on its own line below the filters so it doesn't compete
+                with the filter dropdowns for horizontal space. Pre-pends a
+                "N selected" indicator so the operator sees the scope of the
+                action they're about to apply. */}
+            {selectedIds.size > 0 && (
+                <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-semibold text-gray-700 mr-1">
+                        {selectedIds.size} selected
+                    </span>
+                    <div ref={bulkTagMenuRef} className="relative">
                         <button
-                            onClick={verifySelected}
-                            disabled={verifying || assigning}
+                            onClick={() => setShowBulkTagMenu(v => !v)}
+                            disabled={verifying || assigning || allTags.length === 0}
+                            title={allTags.length === 0 ? 'No tags yet — create one in "Manage tags" first' : 'Apply a tag to selected'}
                             className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50 disabled:opacity-50"
                         >
-                            {verifying ? <Loader2 size={11} className="animate-spin" /> : <ShieldCheck size={11} />} Verify Email {selectedIds.size > 1 ? `(${selectedIds.size})` : ''}
+                            <TagIcon size={11} /> Tag
+                            <ChevronDown size={11} />
                         </button>
-                        <div ref={campaignMenuRef} className="relative">
-                            <button
-                                onClick={openCampaignMenu}
-                                disabled={verifying || assigning}
-                                className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-800 disabled:opacity-50"
-                            >
-                                {assigning ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />} Add to Campaign {selectedIds.size > 1 ? `(${selectedIds.size})` : ''}
-                                <ChevronDown size={11} />
-                            </button>
-                            {showCampaignMenu && (
-                                <div className="absolute left-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
-                                    {loadingCampaigns ? (
-                                        <div className="flex items-center justify-center py-6">
-                                            <Loader2 size={14} className="animate-spin text-gray-400" />
-                                        </div>
-                                    ) : campaignsList.length === 0 ? (
-                                        <div className="p-3 text-[11px] text-gray-500 text-center">
-                                            No campaigns available. Create one first.
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase" style={{ borderBottom: '1px solid #E8E3DC' }}>
-                                                Select Campaign
-                                            </div>
-                                            {campaignsList.map(c => (
-                                                <button
-                                                    key={c.id}
-                                                    onClick={() => assignToCampaign(c.id)}
-                                                    className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 cursor-pointer flex items-center justify-between gap-2"
-                                                >
-                                                    <span className="truncate text-gray-900">{c.name}</span>
-                                                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-semibold capitalize flex-shrink-0 ${
-                                                        c.status === 'active' ? 'bg-green-50 text-green-700' :
-                                                        c.status === 'paused' ? 'bg-yellow-50 text-yellow-700' :
-                                                        'bg-gray-100 text-gray-600'
-                                                    }`}>{c.status}</span>
-                                                </button>
-                                            ))}
-                                        </>
-                                    )}
+                        {showBulkTagMenu && (
+                            <div className="absolute left-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
+                                <div className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase" style={{ borderBottom: '1px solid #E8E3DC' }}>
+                                    Apply tag to {selectedIds.size}
                                 </div>
-                            )}
-                        </div>
-                        <button onClick={deleteSelected} disabled={deleting || verifying || assigning} className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-red-600 rounded-lg cursor-pointer border border-red-200 hover:bg-red-50 disabled:opacity-50">
-                            {deleting ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />} Delete {selectedIds.size}
+                                {allTags.map(t => (
+                                    <button
+                                        key={t.id}
+                                        onClick={() => bulkApplyTag(t.id)}
+                                        className="w-full text-left px-3 py-2 text-xs cursor-pointer transition-colors hover:bg-[#F5F1EA] flex items-center gap-2.5"
+                                        style={{ borderBottom: '1px solid #F0EBE3', color: '#4B5563' }}
+                                    >
+                                        <span className="shrink-0 flex items-center">
+                                            <TagIconShape color={t.color || '#6B7280'} size={12} />
+                                        </span>
+                                        <span className="truncate">{t.name} ({t.contact_count})</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        onClick={verifySelected}
+                        disabled={verifying || assigning}
+                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50 disabled:opacity-50"
+                    >
+                        {verifying ? <Loader2 size={11} className="animate-spin" /> : <ShieldCheck size={11} />} Verify Email
+                    </button>
+                    <div ref={campaignMenuRef} className="relative">
+                        <button
+                            onClick={openCampaignMenu}
+                            disabled={verifying || assigning}
+                            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-800 disabled:opacity-50"
+                        >
+                            {assigning ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />} Add to Campaign
+                            <ChevronDown size={11} />
                         </button>
-                    </>
-                )}
-            </div>
+                        {showCampaignMenu && (
+                            <div className="absolute left-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
+                                {loadingCampaigns ? (
+                                    <div className="flex items-center justify-center py-6">
+                                        <Loader2 size={14} className="animate-spin text-gray-400" />
+                                    </div>
+                                ) : campaignsList.length === 0 ? (
+                                    <div className="p-3 text-[11px] text-gray-500 text-center">
+                                        No campaigns available. Create one first.
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase" style={{ borderBottom: '1px solid #E8E3DC' }}>
+                                            Select Campaign
+                                        </div>
+                                        {campaignsList.map(c => (
+                                            <button
+                                                key={c.id}
+                                                onClick={() => assignToCampaign(c.id)}
+                                                className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 cursor-pointer flex items-center justify-between gap-2"
+                                            >
+                                                <span className="truncate text-gray-900">{c.name}</span>
+                                                <span className={`text-[9px] px-1.5 py-0.5 rounded font-semibold capitalize flex-shrink-0 ${
+                                                    c.status === 'active' ? 'bg-green-50 text-green-700' :
+                                                    c.status === 'paused' ? 'bg-yellow-50 text-yellow-700' :
+                                                    'bg-gray-100 text-gray-600'
+                                                }`}>{c.status}</span>
+                                            </button>
+                                        ))}
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                    <button onClick={deleteSelected} disabled={deleting || verifying || assigning} className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-red-600 rounded-lg cursor-pointer border border-red-200 hover:bg-red-50 disabled:opacity-50">
+                        {deleting ? <Loader2 size={11} className="animate-spin" /> : <Trash2 size={11} />} Delete
+                    </button>
+                </div>
+            )}
 
             {/* Table */}
             {loading && contacts.length === 0 ? (
@@ -657,14 +900,13 @@ export default function ContactsPage() {
                 <div className="premium-card flex flex-col items-center justify-center py-16">
                     <Users size={28} className="text-gray-300 mb-3" />
                     <h2 className="text-sm font-bold text-gray-900 mb-1">No contacts yet</h2>
-                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">Import a CSV or add contacts when creating campaigns. All contacts across campaigns are accessible here.</p>
+                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">Import leads from CSV, Apollo, or your CRM, or add contacts when creating campaigns. All contacts across campaigns are accessible here.</p>
                     <button
-                        onClick={() => document.getElementById('contact-csv')?.click()}
-                        disabled={importing}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800 disabled:opacity-50 disabled:cursor-wait"
+                        onClick={() => setShowImportModal(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800"
                     >
-                        {importing ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
-                        {importing ? 'Importing…' : 'Import CSV'}
+                        <Download size={13} />
+                        Import Leads
                     </button>
                 </div>
             ) : !loading && contacts.length === 0 && searchQuery ? (
@@ -686,37 +928,38 @@ export default function ContactsPage() {
                                 <thead>
                                     <tr style={{ borderBottom: '1px solid #D1CBC5', background: '#F7F2EB' }}>
                                         <th className="px-3 py-2 w-8"><input type="checkbox" checked={selectedIds.size === contacts.length && contacts.length > 0} onChange={toggleSelectAll} className="cursor-pointer" /></th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Email</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Name</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Company</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Title</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Source</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Status</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Campaigns</th>
-                                        <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Added</th>
+                                        {visibleColDefs.map(col => (
+                                            <th
+                                                key={col.key}
+                                                className={`px-3 py-2 text-[10px] font-semibold text-gray-500 ${col.width}`}
+                                                title={col.key === 'campaigns' ? 'Number of campaigns this contact has ever been enrolled in (lifetime, not concurrent)' : undefined}
+                                            >
+                                                {col.label}
+                                            </th>
+                                        ))}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {contacts.map(c => (
                                         <tr key={c.id} className="hover:bg-[#F5F1EA] transition-colors" style={{ borderBottom: '1px solid #E8E3DC' }}>
-                                            <td className="px-3 py-1.5"><input type="checkbox" checked={selectedIds.has(c.id)} onChange={() => toggleSelect(c.id)} className="cursor-pointer" /></td>
-                                            <td className="px-3 py-1.5 text-gray-900 font-medium">{c.email}</td>
-                                            <td className="px-3 py-1.5 text-gray-600">{displayName(c)}</td>
-                                            <td className="px-3 py-1.5 text-gray-600">{c.company || '—'}</td>
-                                            <td className="px-3 py-1.5 text-gray-600">{c.title || '—'}</td>
-                                            <td className="px-3 py-1.5"><SourcePill source={c.source} /></td>
                                             <td className="px-3 py-1.5">
-                                                <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold capitalize ${
-                                                    c.status === 'active' ? 'bg-green-50 text-green-700' :
-                                                    c.status === 'bounced' ? 'bg-red-50 text-red-600' :
-                                                    c.status === 'replied' ? 'bg-blue-50 text-blue-700' :
-                                                    c.status === 'unsubscribed' ? 'bg-orange-50 text-orange-600' :
-                                                    c.status === 'held' ? 'bg-blue-50 text-blue-700' :
-                                                    'bg-gray-100 text-gray-600'
-                                                }`}>{c.status === 'held' ? 'Available' : c.status}</span>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedIds.has(c.id)}
+                                                    onChange={() => toggleSelect(c.id)}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="cursor-pointer"
+                                                />
                                             </td>
-                                            <td className="px-3 py-1.5 text-gray-500 text-center">{c.campaign_count || 0}</td>
-                                            <td className="px-3 py-1.5 text-gray-400">{new Date(c.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
+                                            {visibleColDefs.map(col => (
+                                                <td key={col.key} className={`px-3 py-1.5 ${col.width}`}>
+                                                    {renderCell(col.key, c, displayName, {
+                                                        allTags,
+                                                        onTagsChange: setContactTags,
+                                                        onTagCreated: fetchTags,
+                                                    })}
+                                                </td>
+                                            ))}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -883,7 +1126,137 @@ export default function ContactsPage() {
                     onCancel={cancelDualEnrollment}
                 />
             )}
+
+            <ImportLeadsModal
+                open={showImportModal}
+                onClose={() => setShowImportModal(false)}
+                onCsvImported={() => {
+                    fetchContacts(1, searchQuery, statusFilter);
+                    fetchFacets();
+                }}
+                onJobsSpawned={(spawned) => setImportJobs((prev) => [...prev, ...spawned])}
+            />
+
+            <ImportProgressTray
+                jobs={importJobs}
+                onRemove={(id) => setImportJobs((prev) => prev.filter((j) => j.id !== id))}
+                onAnyCompleted={() => {
+                    fetchContacts(meta.page, searchQuery, statusFilter);
+                    fetchFacets();
+                }}
+            />
+
+            {showTagManager && (
+                <TagManagerModal
+                    onClose={() => setShowTagManager(false)}
+                    onChanged={() => { fetchTags(); fetchContacts(meta.page); }}
+                />
+            )}
         </div>
+    );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Cell renderer — single source of truth for how each column displays.
+// Keeps the table JSX flat and lets new columns be added by extending
+// ALL_COLUMNS + this switch, no other changes required.
+// ────────────────────────────────────────────────────────────────────
+
+interface RenderCellContext {
+    allTags: TagItem[];
+    onTagsChange: (contactId: string, tagIds: string[]) => Promise<void>;
+    onTagCreated: () => Promise<void>;
+}
+
+function renderCell(
+    key: ColumnKey,
+    c: Contact,
+    displayName: (c: Contact) => string,
+    ctx: RenderCellContext,
+) {
+    switch (key) {
+        case 'email':
+            return (
+                <Link
+                    href={`/dashboard/sequencer/contacts/${c.id}`}
+                    className="text-gray-900 font-medium hover:text-blue-700 hover:underline"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {c.email}
+                </Link>
+            );
+        case 'name':
+            return <span className="text-gray-600">{displayName(c)}</span>;
+        case 'company':
+            return <span className="text-gray-600">{c.company || '—'}</span>;
+        case 'title':
+            return <span className="text-gray-600">{c.title || '—'}</span>;
+        case 'source':
+            return <SourcePill source={c.source} />;
+        case 'status':
+            return (
+                <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold capitalize ${
+                    c.status === 'active' ? 'bg-green-50 text-green-700' :
+                    c.status === 'bounced' ? 'bg-red-50 text-red-600' :
+                    c.status === 'replied' ? 'bg-blue-50 text-blue-700' :
+                    c.status === 'unsubscribed' ? 'bg-orange-50 text-orange-600' :
+                    c.status === 'held' ? 'bg-blue-50 text-blue-700' :
+                    'bg-gray-100 text-gray-600'
+                }`}>{c.status === 'held' ? 'Available' : c.status}</span>
+            );
+        case 'validation':
+            return <ValidationPill status={c.validation_status} score={c.validation_score} />;
+        case 'tags': {
+            const tags = c.tags || [];
+            const tagIds = tags.map(t => t.id);
+            // The trigger overlays the existing pills so the operator can
+            // click anywhere in the cell to open the picker.
+            return (
+                <div className="flex items-center gap-1 flex-wrap" onClick={e => e.stopPropagation()}>
+                    {tags.length > 0 && (
+                        <TagPillList
+                            tags={tags}
+                            onRemove={(id) => ctx.onTagsChange(c.id, tagIds.filter(t => t !== id))}
+                            compact
+                        />
+                    )}
+                    <TagPicker
+                        allTags={ctx.allTags}
+                        selectedIds={tagIds}
+                        onChange={(next) => ctx.onTagsChange(c.id, next)}
+                        onTagCreated={ctx.onTagCreated}
+                        align="left"
+                    />
+                </div>
+            );
+        }
+        case 'campaigns':
+            return <span className="text-gray-500">{c.campaign_count || 0}</span>;
+        case 'created':
+            return <span className="text-gray-400">{new Date(c.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>;
+        default:
+            return null;
+    }
+}
+
+function ValidationPill({ status, score }: { status?: string | null; score?: number | null }) {
+    if (!status) return <span className="text-gray-300 text-[11px]">—</span>;
+    const colors: Record<string, { bg: string; fg: string }> = {
+        valid:   { bg: '#F0FDF4', fg: '#15803D' },
+        risky:   { bg: '#FFFBEB', fg: '#B45309' },
+        invalid: { bg: '#FEF2F2', fg: '#B91C1C' },
+        unknown: { bg: '#F1F5F9', fg: '#475569' },
+        pending: { bg: '#EFF6FF', fg: '#1D4ED8' },
+    };
+    const c = colors[status] || colors.unknown;
+    return (
+        <span
+            className="inline-block text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded"
+            style={{ background: c.bg, color: c.fg }}
+            title={typeof score === 'number' ? `Score: ${score}` : status}
+        >
+            {status}
+        </span>
     );
 }
 
@@ -908,7 +1281,10 @@ function SourcePill({ source }: { source?: string }) {
 }
 
 function sourceMeta(source: string): { label: string; bg: string; fg: string; border: string } {
-    switch (source.toLowerCase()) {
+    // Worker-side imports tag rows with `${provider}_import` (e.g. apollo_import,
+    // hubspot_import). Strip the suffix so the pill colour matches the provider.
+    const normalized = source.toLowerCase().replace(/_import$/, '');
+    switch (normalized) {
         case 'csv':       return { label: 'CSV',      bg: '#EFF6FF', fg: '#1D4ED8', border: '#BFDBFE' };
         case 'clay':      return { label: 'Clay',     bg: '#F0FDF4', fg: '#15803D', border: '#BBF7D0' };
         case 'database':

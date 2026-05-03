@@ -59,7 +59,8 @@ export function middleware(request: NextRequest) {
         pathname === '/contact' ||
         pathname.startsWith('/release-notes') ||
         pathname.startsWith('/guides') ||
-        pathname.startsWith('/tools');
+        pathname.startsWith('/tools') ||
+        pathname.startsWith('/cold-email-templates');
 
     // Decode role from JWT (without verification — backend handles real auth)
     const jwtPayload = token ? decodeJwtPayload(token) : null;

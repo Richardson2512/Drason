@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import Script from 'next/script';
 import CookieBanner from '@/components/CookieBanner';
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -252,6 +253,7 @@ export default function RootLayout({
           since the body itself is a pure layout shell. */}
       <body className={`${plusJakartaSans.className} ${plusJakartaSans.variable}`} suppressHydrationWarning>
         {children}
+        <ScrollToTopButton />
         <CookieBanner />
         <Toaster
           position="top-right"

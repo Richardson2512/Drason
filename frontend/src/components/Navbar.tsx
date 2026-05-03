@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, Pencil, KeyRound, Settings, ShieldCheck, Shield, LayoutGrid, ArrowRight } from 'lucide-react';
+import { Search, Pencil, KeyRound, Settings, ShieldCheck, Shield, LayoutGrid, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { useIsAuthenticated } from '@/lib/auth-client';
 
 const toolLinks = [
     {
@@ -52,6 +53,10 @@ export default function Navbar() {
     const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
     const toolsRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+    // ready=false on first client render so SSR markup matches; flips true on
+    // mount once we've read the cookie. We render the signed-out CTAs while
+    // ready=false to avoid a flash of authed UI on hydration.
+    const { ready, isAuthenticated } = useIsAuthenticated();
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -232,17 +237,31 @@ export default function Navbar() {
                         </div>
                     </nav>
 
-                    {/* Desktop CTAs */}
+                    {/* Desktop CTAs — auth-aware. Renders signed-out state on
+                        SSR and first render, flips to dashboard CTA after the
+                        token cookie is read on mount. */}
                     <div className="hidden md:flex gap-3 items-center ml-2">
-                        <Link href="/login" className="text-gray-400 hover:text-white text-[13px] font-medium transition-colors">
-                            Sign In
-                        </Link>
-                        <Link
-                            href="/signup"
-                            className="px-5 py-2 bg-white text-gray-900 rounded-full text-[13px] font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg shadow-white/10"
-                        >
-                            Get Started
-                        </Link>
+                        {ready && isAuthenticated ? (
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center gap-1.5 px-5 py-2 bg-white text-gray-900 rounded-full text-[13px] font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg shadow-white/10"
+                            >
+                                <LayoutDashboard size={13} strokeWidth={2} />
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <>
+                                <Link href="/login" className="text-gray-400 hover:text-white text-[13px] font-medium transition-colors">
+                                    Sign In
+                                </Link>
+                                <Link
+                                    href="/signup"
+                                    className="px-5 py-2 bg-white text-gray-900 rounded-full text-[13px] font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg shadow-white/10"
+                                >
+                                    Get Started
+                                </Link>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile Hamburger */}
@@ -314,16 +333,29 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex flex-col gap-4 mt-6 items-center">
-                        <Link href="/login" className="text-gray-400 hover:text-white text-lg font-medium transition-colors" onClick={() => setMobileOpen(false)}>
-                            Sign In
-                        </Link>
-                        <Link
-                            href="/signup"
-                            className="px-8 py-3 bg-white text-gray-900 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
-                            onClick={() => setMobileOpen(false)}
-                        >
-                            Get Started
-                        </Link>
+                        {ready && isAuthenticated ? (
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center gap-2 px-8 py-3 bg-white text-gray-900 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                <LayoutDashboard size={16} strokeWidth={2} />
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <>
+                                <Link href="/login" className="text-gray-400 hover:text-white text-lg font-medium transition-colors" onClick={() => setMobileOpen(false)}>
+                                    Sign In
+                                </Link>
+                                <Link
+                                    href="/signup"
+                                    className="px-8 py-3 bg-white text-gray-900 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    Get Started
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

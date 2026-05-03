@@ -15,7 +15,7 @@ interface Integration {
     id: string;
     name: string;
     description: string;
-    category: 'sending' | 'leads' | 'crm' | 'notifications' | 'sequencer' | 'developer' | 'migration' | 'ai';
+    category: 'sending' | 'lead_sources' | 'crm' | 'dialer' | 'notifications' | 'sequencer' | 'developer' | 'migration' | 'ai';
     logo: string;           // path to /public asset or inline
     configPath: string;     // deep-link to configure
     settingKey?: string;    // key in settings API to check connection
@@ -26,15 +26,23 @@ interface Integration {
 }
 
 const INTEGRATIONS: Integration[] = [
-    // Lead Sources
+    // Lead Sources — anywhere a lead can come from (enrichment, contact DBs)
     {
         id: 'clay',
         name: 'Clay',
         description: 'Ingest enriched leads directly from Clay tables via webhook.',
-        category: 'leads',
+        category: 'lead_sources',
         logo: '/clay.png',
         configPath: '/dashboard/settings',
         settingKey: '_CLAY_ALWAYS_ON_', // Clay is always available once org exists
+    },
+    {
+        id: 'apollo',
+        name: 'Apollo.io',
+        description: 'Paste an Apollo people-search, saved-search, or list URL to import contacts as Superkabe leads. Credit-aware, capped, idempotent on email.',
+        category: 'lead_sources',
+        logo: '/brands/apollo.svg',
+        configPath: '/dashboard/integrations/lead-sources',
     },
 
     // Sequencer — Mailbox Providers
@@ -116,6 +124,16 @@ const INTEGRATIONS: Integration[] = [
         requiresMigrationFlag: true,
     },
 
+    // Dialers — push the cold-call list into a dialer's queue
+    {
+        id: 'outreach',
+        name: 'Outreach',
+        description: 'Export your cold call list to an Outreach sequence. Connect once via OAuth, then push prospects from any campaign or custom list straight into the dialer.',
+        category: 'dialer',
+        logo: '/logos/outreach-icon.png',
+        configPath: '/dashboard/integrations/outreach',
+    },
+
     // CRM — Future
     {
         id: 'hubspot',
@@ -137,12 +155,13 @@ const INTEGRATIONS: Integration[] = [
 
 const CATEGORIES: { key: string; label: string }[] = [
     { key: 'sequencer', label: 'Sending Mailboxes' },
-    { key: 'leads', label: 'Lead Sources' },
+    { key: 'lead_sources', label: 'Lead Sources' },
+    { key: 'crm', label: 'CRM' },
+    { key: 'dialer', label: 'Dialers' },
     { key: 'ai', label: 'AI Assistants' },
     { key: 'notifications', label: 'Notifications' },
     { key: 'developer', label: 'Developer' },
     { key: 'migration', label: 'One-time Imports' },
-    { key: 'crm', label: 'CRM' },
 ];
 
 // ────────────────────────────────────────────────────────────────────
@@ -231,6 +250,8 @@ function getConnectionStatus(
     providerCounts: Record<string, number>,
     oauthClientCount: number,
     crmActiveProviders: Set<string>,
+    leadSourceActiveProviders: Set<string>,
+    outreachActive: boolean,
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
@@ -247,6 +268,12 @@ function getConnectionStatus(
     // CrmConnection exists for that provider in the org.
     if (integration.id === 'hubspot' || integration.id === 'salesforce') {
         return crmActiveProviders.has(integration.id) ? 'connected' : 'not_connected';
+    }
+    if (integration.category === 'lead_sources') {
+        return leadSourceActiveProviders.has(integration.id) ? 'connected' : 'not_connected';
+    }
+    if (integration.id === 'outreach') {
+        return outreachActive ? 'connected' : 'not_connected';
     }
 
     // Sequencer mailbox providers — check the specific provider's connected account count.
@@ -295,6 +322,8 @@ export default function IntegrationsPage() {
     const [providerCounts, setProviderCounts] = useState<Record<string, number>>({});
     const [oauthClientCount, setOauthClientCount] = useState(0);
     const [crmActiveProviders, setCrmActiveProviders] = useState<Set<string>>(new Set());
+    const [leadSourceActiveProviders, setLeadSourceActiveProviders] = useState<Set<string>>(new Set());
+    const [outreachActive, setOutreachActive] = useState(false);
     const [migrationEnabled, setMigrationEnabled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -336,6 +365,20 @@ export default function IntegrationsPage() {
                     setCrmActiveProviders(active);
                 })
                 .catch(() => setCrmActiveProviders(new Set())),
+            apiClient<Array<{ provider: string; status: string }>>('/api/integrations/lead-sources/connections')
+                .then(res => {
+                    const active = new Set<string>();
+                    if (Array.isArray(res)) {
+                        for (const c of res) {
+                            if (c.status === 'active') active.add(c.provider);
+                        }
+                    }
+                    setLeadSourceActiveProviders(active);
+                })
+                .catch(() => setLeadSourceActiveProviders(new Set())),
+            apiClient<{ status?: string } | null>('/api/integrations/outreach/connection')
+                .then(res => setOutreachActive(!!res && res.status === 'active'))
+                .catch(() => setOutreachActive(false)),
         ]).finally(() => setLoading(false));
     }, []);
 
@@ -356,7 +399,7 @@ export default function IntegrationsPage() {
     }
 
     const connectedCount = visibleIntegrations.filter(i => {
-        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders);
+        const s = getConnectionStatus(i, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive);
         return s === 'connected';
     }).length;
 
@@ -427,7 +470,7 @@ export default function IntegrationsPage() {
                             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">{cat.label}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {items.map(integration => {
-                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders);
+                                    const status = getConnectionStatus(integration, settings, providerCounts, oauthClientCount, crmActiveProviders, leadSourceActiveProviders, outreachActive);
                                     const cfg = STATUS_CONFIG[status];
                                     const isClickable = !integration.comingSoon;
 

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Superkabe — Product Intro</title>
+  <link rel="stylesheet" href="colors_and_type.css" />
+  <link rel="icon" href="assets/logo-mark.svg" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #FFFBF4;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: var(--font-sans);
+    }
+    /* Hide the Stage's playback bar when embedded as an autoplay loop. */
+    #root > div > div:not(:first-child) { display: none !important; }
+    @keyframes sk-breath { 0%,100% { opacity: 0.85 } 50% { opacity: 1 } }
+    @keyframes sk-blink  { 0% { opacity: 1 } 100% { opacity: 0.3 } }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="animations.jsx"></script>
+  <script type="text/babel" src="scenes.jsx"></script>
+  <script type="text/babel">
+    ReactDOM.createRoot(document.getElementById('root')).render(<Video />);
+  </script>
+</body>
+</html>

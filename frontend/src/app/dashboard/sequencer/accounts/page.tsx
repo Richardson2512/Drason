@@ -1,18 +1,34 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Plus, Mail, Shield, Wifi, WifiOff, Trash2, RefreshCw, Settings, X, Upload, Loader2, Search } from 'lucide-react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Plus, Mail, Shield, Wifi, WifiOff, Trash2, RefreshCw, Settings, X, Upload, Download, Loader2, Search, Zap } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import CustomSelect from '@/components/ui/CustomSelect';
 import BulkMailboxImportModal from '@/components/sequencer/BulkMailboxImportModal';
+import ResellerImportModal from '@/components/sequencer/ResellerImportModal';
 import MailboxSettingsModal from '@/components/sequencer/MailboxSettingsModal';
+
+// Stable source codes — keep in sync with backend ConnectedAccount.source.
+// Adding a new reseller? Update both this list AND the SOURCE_META map below.
+type AccountSource = 'oauth' | 'manual' | 'csv' | 'zapmail' | 'premium_inboxes' | 'mission_inbox' | 'scaled_mail' | null;
+
+const SOURCE_META: Record<Exclude<AccountSource, null>, { label: string; bg: string; fg: string }> = {
+    oauth:           { label: 'OAuth',            bg: '#EFF6FF', fg: '#1D4ED8' },
+    manual:          { label: 'Manual',           bg: '#F5F5F4', fg: '#57534E' },
+    csv:             { label: 'CSV import',       bg: '#FEF3C7', fg: '#92400E' },
+    zapmail:         { label: 'Zapmail',          bg: '#EFF6FF', fg: '#1E40AF' },
+    premium_inboxes: { label: 'Premium Inboxes',  bg: '#FFFBEB', fg: '#92400E' },
+    mission_inbox:   { label: 'Mission Inbox',    bg: '#EFF6FF', fg: '#1D4ED8' },
+    scaled_mail:     { label: 'Scaled Mail',      bg: '#F0FDF4', fg: '#15803D' },
+};
 
 interface ConnectedAccount {
     id: string;
     email: string;
     displayName: string;
     provider: 'google' | 'microsoft' | 'smtp';
+    source: AccountSource;
     status: 'active' | 'error' | 'expired';
     dailySendLimit: number;
     sendsToday: number;
@@ -24,6 +40,7 @@ interface ApiAccount {
     email: string;
     display_name: string;
     provider: 'google' | 'microsoft' | 'smtp';
+    source: AccountSource;
     connection_status: 'active' | 'error' | 'expired';
     daily_send_limit: number;
     sends_today: number;
@@ -36,6 +53,7 @@ function mapApiAccount(a: ApiAccount): ConnectedAccount {
         email: a.email,
         displayName: a.display_name,
         provider: a.provider,
+        source: a.source ? a.source : null,
         status: a.connection_status,
         dailySendLimit: a.daily_send_limit,
         sendsToday: a.sends_today,
@@ -73,29 +91,14 @@ const PROVIDER_META = {
     smtp: { label: 'Custom SMTP', color: '#6B7280', Icon: SmtpIcon },
 };
 
-interface InfraProvider {
-    id: string;
-    name: string;
-    smtpHost: string;
-    smtpPort: string;
-    imapHost: string;
-    imapPort: string;
-    type: string;
-}
-
-// Fallback list used only if the API fetch fails — keeps bulk import usable offline.
-const FALLBACK_INFRA_PROVIDERS: InfraProvider[] = [
-    { id: 'other', name: 'Custom SMTP', smtpHost: '', smtpPort: '587', imapHost: '', imapPort: '993', type: 'smtp' },
-];
-
 export default function ConnectedAccountsPage() {
     const [accounts, setAccounts] = useState<ConnectedAccount[]>([]);
     const [loading, setLoading] = useState(true);
-    const [INFRA_PROVIDERS, setInfraProviders] = useState<InfraProvider[]>(FALLBACK_INFRA_PROVIDERS);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showBulkModal, setShowBulkModal] = useState(false);
+    const [showResellerModal, setShowResellerModal] = useState(false);
     const [settingsAccountId, setSettingsAccountId] = useState<string | null>(null);
-    const [addType, setAddType] = useState<'google' | 'microsoft' | 'smtp' | 'bulk' | null>(null);
+    const [addType, setAddType] = useState<'google' | 'microsoft' | 'smtp' | null>(null);
     const [submitting, setSubmitting] = useState(false);
 
     // SMTP form state
@@ -103,15 +106,15 @@ export default function ConnectedAccountsPage() {
 
     const [oauthMessage, setOauthMessage] = useState<string | null>(null);
 
-    // Bulk import state
-    const [bulkProvider, setBulkProvider] = useState<string>('');
-    const [bulkInput, setBulkInput] = useState(''); // email:password per line
-    const [bulkFile, setBulkFile] = useState<string | null>(null);
-    const [bulkResults, setBulkResults] = useState<{ total: number; success: number; failed: string[] } | null>(null);
+    // Bulk-import via CSV and via Zapmail/resellers each have dedicated modals
+    // (BulkMailboxImportModal + ResellerImportModal). The Connect Mailbox modal
+    // is for single-mailbox connections only; we deliberately don't duplicate
+    // bulk options here.
 
     // Search + provider filter + bulk selection — mirrors the Contacts page pattern
     const [searchQuery, setSearchQuery] = useState('');
     const [providerFilter, setProviderFilter] = useState<'all' | 'google' | 'microsoft' | 'smtp'>('all');
+    const [sourceFilter, setSourceFilter] = useState<'all' | Exclude<AccountSource, null> | 'unknown'>('all');
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [deleting, setDeleting] = useState(false);
     const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -127,12 +130,36 @@ export default function ConnectedAccountsPage() {
     // Filtered view used by the list + select-all + bulk actions
     const filteredAccounts = accounts.filter(a => {
         if (providerFilter !== 'all' && a.provider !== providerFilter) return false;
+        if (sourceFilter !== 'all') {
+            // 'unknown' is the synthetic bucket for legacy rows with null source.
+            // Explicit ternary, not ??, to dodge the Turbopack nullish-coalescing
+            // miscompile that hits this file (see availableSources comment).
+            const effective = a.source ? a.source : 'unknown';
+            if (effective !== sourceFilter) return false;
+        }
         if (debouncedSearch) {
-            const hay = `${a.email} ${a.displayName} ${PROVIDER_META[a.provider]?.label || ''}`.toLowerCase();
+            const sourceLabel = a.source ? SOURCE_META[a.source].label : '';
+            const hay = `${a.email} ${a.displayName} ${PROVIDER_META[a.provider]?.label || ''} ${sourceLabel}`.toLowerCase();
             if (!hay.includes(debouncedSearch)) return false;
         }
         return true;
     });
+
+    // Show only the sources actually present in the org's mailboxes — keeps
+    // the dropdown short for new orgs that haven't used every reseller.
+    //
+    // Note: written with an explicit ternary instead of `a.source ?? 'unknown'`
+    // because Turbopack 16.x miscompiles the nullish-coalescing form here
+    // ("ReferenceError: _a_source is not defined"). Same class of bug we
+    // hit earlier on cold-call-list — see feedback_turbopack_cache memory.
+    const availableSources = useMemo(() => {
+        const set = new Set<string>();
+        for (const a of accounts) {
+            const key = a.source ? a.source : 'unknown';
+            set.add(key);
+        }
+        return set;
+    }, [accounts]);
 
     const toggleSelect = (id: string) => setSelectedIds(prev => {
         const next = new Set(prev);
@@ -193,15 +220,6 @@ export default function ConnectedAccountsPage() {
 
     useEffect(() => {
         fetchAccounts();
-
-        // Fetch infrastructure providers from backend (single source of truth)
-        apiClient<{ providers?: InfraProvider[] }>('/api/sequencer/infra-providers')
-            .then(res => {
-                if (res?.providers && Array.isArray(res.providers) && res.providers.length > 0) {
-                    setInfraProviders(res.providers);
-                }
-            })
-            .catch(() => { /* keep fallback */ });
 
         // Handle OAuth callback results
         if (typeof window === 'undefined') return;
@@ -265,91 +283,6 @@ export default function ConnectedAccountsPage() {
         }
     };
 
-    const bulkImport = async () => {
-        const provider = INFRA_PROVIDERS.find(p => p.id === bulkProvider);
-        if (!provider) return;
-
-        let lines: Array<{ email: string; password: string; displayName?: string }> = [];
-
-        // Parse input — support email:password, email,password, or CSV with headers
-        const raw = bulkInput.trim();
-        if (!raw) return;
-
-        const rows = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-        // Detect if first row is a header
-        const firstRow = rows[0].toLowerCase();
-        const hasHeader = firstRow.includes('email') && (firstRow.includes('password') || firstRow.includes('app_password'));
-        const dataRows = hasHeader ? rows.slice(1) : rows;
-
-        for (const row of dataRows) {
-            // Try comma, then colon, then tab separator
-            let parts: string[];
-            if (row.includes(',')) parts = row.split(',').map(s => s.trim());
-            else if (row.includes(':')) parts = row.split(':').map(s => s.trim());
-            else if (row.includes('\t')) parts = row.split('\t').map(s => s.trim());
-            else continue;
-
-            if (parts.length >= 2 && parts[0].includes('@')) {
-                lines.push({ email: parts[0], password: parts[1], displayName: parts[2] || undefined });
-            }
-        }
-
-        if (lines.length === 0) return;
-
-        setSubmitting(true);
-        let successCount = 0;
-        const failed: string[] = [];
-
-        for (const line of lines) {
-            if (!line.email || !line.password) {
-                failed.push(line.email || 'unknown');
-                continue;
-            }
-
-            try {
-                await apiClient('/api/sequencer/accounts', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: line.email.toLowerCase(),
-                        display_name: line.displayName || line.email.split('@')[0],
-                        provider: provider.type as 'google' | 'microsoft' | 'smtp',
-                        smtp_host: provider.smtpHost,
-                        smtp_port: provider.smtpPort,
-                        smtp_username: line.email.toLowerCase(),
-                        smtp_password: line.password,
-                        imap_host: provider.imapHost,
-                        imap_port: provider.imapPort,
-                    }),
-                });
-                successCount++;
-            } catch (err: any) {
-                failed.push(`${line.email} (${err.message || 'failed'})`);
-            }
-        }
-
-        await fetchAccounts();
-        setBulkResults({ total: lines.length, success: successCount, failed });
-        setSubmitting(false);
-    };
-
-    const handleBulkCSV = (file: File) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const text = e.target?.result as string;
-            setBulkInput(text);
-            setBulkFile(file.name);
-        };
-        reader.readAsText(file);
-    };
-
-    const resetBulk = () => {
-        setBulkProvider('');
-        setBulkInput('');
-        setBulkFile(null);
-        setBulkResults(null);
-    };
-
     const removeAccount = async (id: string) => {
         try {
             await apiClient(`/api/sequencer/accounts/${id}`, { method: 'DELETE' });
@@ -368,12 +301,20 @@ export default function ConnectedAccountsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                     <button
+                        onClick={() => setShowResellerModal(true)}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
+                        style={{ border: '1px solid #D1CBC5' }}
+                        title="Bulk-import mailboxes from Zapmail and other inbox providers"
+                    >
+                        <Zap size={13} /> Import mailboxes
+                    </button>
+                    <button
                         onClick={() => setShowBulkModal(true)}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
                         style={{ border: '1px solid #D1CBC5' }}
                         title="Import many mailboxes from a CSV"
                     >
-                        <Upload size={13} /> Bulk import
+                        <Download size={13} /> CSV import
                     </button>
                     <button onClick={() => { setShowAddModal(true); setAddType(null); }} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold hover:bg-gray-800 cursor-pointer">
                         <Plus size={13} /> Connect Mailbox
@@ -415,6 +356,19 @@ export default function ConnectedAccountsPage() {
                             ]}
                         />
                     </div>
+                    <div className="w-44">
+                        <CustomSelect
+                            value={sourceFilter}
+                            onChange={(v) => setSourceFilter(v as any)}
+                            options={[
+                                { value: 'all', label: 'All sources' },
+                                ...(Object.entries(SOURCE_META) as Array<[Exclude<AccountSource, null>, { label: string }]>)
+                                    .filter(([k]) => availableSources.has(k))
+                                    .map(([k, m]) => ({ value: k, label: m.label })),
+                                ...(availableSources.has('unknown') ? [{ value: 'unknown', label: 'Unknown / legacy' }] : []),
+                            ]}
+                        />
+                    </div>
                     {selectedIds.size > 0 && (
                         <button
                             onClick={requestBulkDelete}
@@ -447,7 +401,7 @@ export default function ConnectedAccountsPage() {
                     <Search size={28} className="text-gray-300 mb-3" />
                     <h2 className="text-sm font-bold text-gray-900 mb-1">No mailboxes match your filters</h2>
                     <p className="text-xs text-gray-500 text-center max-w-md mb-4">Try clearing the search or changing the provider filter.</p>
-                    <button onClick={() => { setSearchQuery(''); setProviderFilter('all'); }} className="px-3 py-1.5 text-xs text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
+                    <button onClick={() => { setSearchQuery(''); setProviderFilter('all'); setSourceFilter('all'); }} className="px-3 py-1.5 text-xs text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
                         Clear filters
                     </button>
                 </div>
@@ -476,12 +430,32 @@ export default function ConnectedAccountsPage() {
                                     <div className="min-w-0">
                                         <div className="text-xs font-semibold text-gray-900 truncate">{account.displayName}</div>
                                         <div className="text-[10px] text-gray-500 truncate">{account.email}</div>
-                                        <div className="flex items-center gap-2 mt-0.5">
+                                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                             <span className="text-[9px] px-1.5 py-0.5 rounded-full font-medium" style={{ background: meta.color + '15', color: meta.color }}>{meta.label}</span>
                                             <span className="flex items-center gap-1 text-[9px]" style={{ color: account.status === 'active' ? '#059669' : '#DC2626' }}>
                                                 {account.status === 'active' ? <Wifi size={8} /> : <WifiOff size={8} />}
                                                 {account.status}
                                             </span>
+                                            {account.source && SOURCE_META[account.source] ? (
+                                                <span
+                                                    className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                                                    style={{ background: SOURCE_META[account.source].bg, color: SOURCE_META[account.source].fg }}
+                                                    title={`Imported via ${SOURCE_META[account.source].label}`}
+                                                >
+                                                    {SOURCE_META[account.source].label}
+                                                </span>
+                                            ) : (
+                                                // Legacy rows (created before the source field existed) get
+                                                // a neutral pill so the column is still visible. Real
+                                                // sources show with their distinct color above.
+                                                <span
+                                                    className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                                                    style={{ background: '#F3F4F6', color: '#9CA3AF' }}
+                                                    title="Legacy mailbox — added before source tracking"
+                                                >
+                                                    Legacy
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -507,7 +481,17 @@ export default function ConnectedAccountsPage() {
                 </div>
             )}
 
-            {/* Bulk Import Modal */}
+            {/* Reseller Import Modal — Zapmail / Premium Inboxes / etc.
+                One-click bulk import via reseller API. SMTP/IMAP only — no
+                Google OAuth scopes required. */}
+            {showResellerModal && (
+                <ResellerImportModal
+                    onClose={() => setShowResellerModal(false)}
+                    onSuccess={() => { setShowResellerModal(false); fetchAccounts(); }}
+                />
+            )}
+
+            {/* CSV Bulk Import Modal — paste/upload a CSV with credentials. */}
             {showBulkModal && (
                 <BulkMailboxImportModal
                     onClose={() => setShowBulkModal(false)}
@@ -526,9 +510,9 @@ export default function ConnectedAccountsPage() {
             {/* Add Account Modal */}
             {showAddModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={e => { if (e.target === e.currentTarget) { setShowAddModal(false); setAddType(null); } }}>
-                    <div className="bg-white rounded-xl w-[90%] max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', maxWidth: addType === 'bulk' ? '720px' : '512px' }}>
+                    <div className="bg-white rounded-xl w-[90%] max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', maxWidth: '512px' }}>
                         <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid #D1CBC5' }}>
-                            <h2 className="text-sm font-bold text-gray-900">{addType && addType !== 'bulk' ? `Connect ${PROVIDER_META[addType].label}` : addType === 'bulk' ? 'Bulk Import Mailboxes' : 'Connect Mailbox'}</h2>
+                            <h2 className="text-sm font-bold text-gray-900">{addType ? `Connect ${PROVIDER_META[addType].label}` : 'Connect Mailbox'}</h2>
                             <button onClick={() => { setShowAddModal(false); setAddType(null); }} className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
                         </div>
                         <div className="p-4">
@@ -542,26 +526,11 @@ export default function ConnectedAccountsPage() {
 
                             {!addType ? (
                                 <div className="flex flex-col gap-3">
-                                    <p className="text-xs text-gray-500 mb-2">How do you want to connect?</p>
+                                    <p className="text-xs text-gray-500 mb-1">Pick a provider</p>
 
-                                    {/* Bulk Import — primary CTA */}
-                                    <button onClick={() => { setAddType('bulk'); resetBulk(); }} className="flex items-center gap-3 p-4 rounded-lg cursor-pointer transition-colors hover:bg-[#F5F1EA] text-left w-full" style={{ border: '2px solid #111827' }}>
-                                        <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-gray-900">
-                                            <Upload size={16} className="text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs font-semibold text-gray-900">Bulk Import Mailboxes</div>
-                                            <div className="text-[10px] text-gray-500">Upload CSV or paste email:password list from Zapmail, Scaledmail, Premium Inboxes, etc.</div>
-                                        </div>
-                                    </button>
-
-                                    <div className="flex items-center gap-3 my-1">
-                                        <div className="flex-1 h-px" style={{ background: '#E8E3DC' }} />
-                                        <span className="text-[10px] text-gray-400">or connect one mailbox</span>
-                                        <div className="flex-1 h-px" style={{ background: '#E8E3DC' }} />
-                                    </div>
-
-                                    {/* Single connection options */}
+                                    {/* Single connection options. For bulk import use the
+                                        "Import mailboxes" or "CSV import" buttons in the
+                                        page header — those flows live in dedicated modals. */}
                                     {(['google', 'microsoft', 'smtp'] as const).map(p => {
                                         const meta = PROVIDER_META[p];
                                         return (
@@ -628,126 +597,6 @@ export default function ConnectedAccountsPage() {
                                             Connect
                                         </button>
                                     </div>
-                                </div>
-                            ) : addType === 'bulk' ? (
-                                <div className="flex flex-col gap-4">
-                                    {!bulkResults ? (
-                                        <>
-                                            {/* Step 1: Select provider */}
-                                            <div>
-                                                <label className="block text-[10px] font-semibold text-gray-500 uppercase mb-2">Select your mailbox provider</label>
-                                                <div className="grid grid-cols-2 gap-2">
-                                                    {INFRA_PROVIDERS.map(p => (
-                                                        <button
-                                                            key={p.id}
-                                                            onClick={() => setBulkProvider(p.id)}
-                                                            className="p-2.5 rounded-lg text-left cursor-pointer transition-colors text-xs"
-                                                            style={{
-                                                                border: bulkProvider === p.id ? '2px solid #111827' : '1px solid #D1CBC5',
-                                                                background: bulkProvider === p.id ? '#F5F1EA' : 'transparent',
-                                                                fontWeight: bulkProvider === p.id ? 600 : 400,
-                                                            }}
-                                                        >
-                                                            {p.name}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {bulkProvider && (
-                                                <>
-                                                    {/* Provider info */}
-                                                    {(() => {
-                                                        const prov = INFRA_PROVIDERS.find(p => p.id === bulkProvider);
-                                                        return prov && prov.smtpHost ? (
-                                                            <div className="p-2.5 rounded-lg text-[10px] text-gray-500" style={{ background: '#F7F2EB' }}>
-                                                                SMTP: <strong>{prov.smtpHost}:{prov.smtpPort}</strong> &middot; IMAP: <strong>{prov.imapHost}:{prov.imapPort}</strong> — auto-configured
-                                                            </div>
-                                                        ) : null;
-                                                    })()}
-
-                                                    {/* Step 2: Paste or upload credentials */}
-                                                    <div>
-                                                        <label className="block text-[10px] font-semibold text-gray-500 uppercase mb-1">
-                                                            Paste email:password list or upload CSV
-                                                        </label>
-                                                        <textarea
-                                                            value={bulkInput}
-                                                            onChange={e => setBulkInput(e.target.value)}
-                                                            placeholder={`email1@domain.com:app_password_here\nemail2@domain.com:app_password_here\nemail3@domain.com:app_password_here\n\nOr upload a CSV with email,password columns`}
-                                                            rows={8}
-                                                            className="w-full px-3 py-2 text-xs rounded-lg outline-none border border-[#D1CBC5] font-mono resize-none"
-                                                        />
-                                                        <p className="text-[9px] text-gray-400 mt-1.5 mb-2">
-                                                            Accepts: email:password, email,password, or CSV with headers. One per line.
-                                                        </p>
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                onClick={() => {
-                                                                    const csv = 'email,password,display_name\njohn@yourdomain.com,app_password_here,John Smith\njane@yourdomain.com,app_password_here,Jane Doe\nmark@yourdomain.com,app_password_here,Mark Johnson';
-                                                                    const blob = new Blob([csv], { type: 'text/csv' });
-                                                                    const url = URL.createObjectURL(blob);
-                                                                    const a = document.createElement('a');
-                                                                    a.href = url; a.download = 'superkabe-mailbox-import-sample.csv'; a.click();
-                                                                    URL.revokeObjectURL(url);
-                                                                }}
-                                                                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[10px] font-semibold cursor-pointer transition-colors hover:bg-gray-50"
-                                                                style={{ border: '1px solid #D1CBC5' }}
-                                                            >
-                                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                                                Download Sample CSV
-                                                            </button>
-                                                            <button
-                                                                onClick={() => document.getElementById('bulk-csv')?.click()}
-                                                                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[10px] font-semibold cursor-pointer transition-colors hover:bg-blue-50 text-blue-600"
-                                                                style={{ border: '1px solid #93C5FD' }}
-                                                            >
-                                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                                                Upload CSV File
-                                                            </button>
-                                                            <input id="bulk-csv" type="file" accept=".csv,.txt" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleBulkCSV(f); }} />
-                                                        </div>
-                                                        {bulkFile && <div className="text-[10px] text-emerald-600 mt-1">Loaded: {bulkFile}</div>}
-                                                    </div>
-
-                                                    {/* Import button */}
-                                                    <div className="flex justify-end gap-2">
-                                                        <button onClick={() => setAddType(null)} className="px-4 py-1.5 text-xs text-gray-600 rounded-lg cursor-pointer border border-[#D1CBC5]">Back</button>
-                                                        <button
-                                                            onClick={bulkImport}
-                                                            disabled={!bulkInput.trim() || submitting}
-                                                            className="px-5 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800 disabled:opacity-30 flex items-center gap-2"
-                                                        >
-                                                            {submitting && <Loader2 size={12} className="animate-spin" />}
-                                                            Import Mailboxes
-                                                        </button>
-                                                    </div>
-                                                </>
-                                            )}
-                                        </>
-                                    ) : (
-                                        /* Results */
-                                        <div className="text-center py-4">
-                                            <div className="text-3xl mb-3">{bulkResults.success > 0 ? '✅' : '❌'}</div>
-                                            <h3 className="text-sm font-bold text-gray-900 mb-1">
-                                                {bulkResults.success} of {bulkResults.total} mailboxes connected
-                                            </h3>
-                                            {bulkResults.failed.length > 0 && (
-                                                <div className="mt-3 text-left">
-                                                    <div className="text-[10px] font-semibold text-red-600 mb-1">Failed ({bulkResults.failed.length}):</div>
-                                                    <div className="max-h-24 overflow-y-auto text-[10px] text-red-500 space-y-0.5">
-                                                        {bulkResults.failed.map((f, i) => <div key={i}>{f}</div>)}
-                                                    </div>
-                                                </div>
-                                            )}
-                                            <button
-                                                onClick={() => { setShowAddModal(false); setAddType(null); resetBulk(); }}
-                                                className="mt-4 px-5 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800"
-                                            >
-                                                Done
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
                             ) : null}
                         </div>

@@ -446,7 +446,9 @@ export default function NewCampaignPage() {
             .then((c: any) => {
                 if (cancelled || !c) return;
                 setCampaignName(c.name || '');
-                setCampaignTags(Array.isArray(c.tags) ? c.tags.join(', ') : '');
+                // Wizard "tags" field is the legacy Smartlead-import string array.
+                // The proper org-level tag relation lives under c.tags (objects).
+                setCampaignTags(Array.isArray(c.legacy_tags) ? c.legacy_tags.join(', ') : '');
                 setEditStatus(c.status || '');
 
                 // Sequence steps with variants

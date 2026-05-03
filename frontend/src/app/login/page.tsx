@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
+import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
 
-export default function LoginPage() {
+function LoginContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -72,6 +74,14 @@ export default function LoginPage() {
         return () => clearInterval(timer);
     }, []);
 
+    // Persist ?from= to localStorage so it survives a Google OAuth round-trip.
+    useEffect(() => {
+        const fromParam = searchParams.get('from');
+        if (fromParam && safePath(fromParam)) {
+            setIntendedReturnTo(fromParam);
+        }
+    }, [searchParams]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -87,8 +97,9 @@ export default function LoginPage() {
             // Start periodic token refresh to keep session alive.
             startTokenRefresh();
 
-            // Successful login
-            router.push('/dashboard');
+            // Successful login — return to intended page if set, else dashboard.
+            const returnTo = consumeIntendedReturnTo();
+            router.push(returnTo || '/dashboard');
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -318,5 +329,24 @@ export default function LoginPage() {
             </div>
 
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#F7F2EB',
+                color: '#9CA3AF'
+            }}>
+                Loading...
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     );
 }

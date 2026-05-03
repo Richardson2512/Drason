@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { X, Globe, CheckCircle2, AlertTriangle, Loader2, RefreshCw, Copy, Gauge } from 'lucide-react';
+import { X, Globe, CheckCircle2, AlertTriangle, Loader2, RefreshCw, Copy, Gauge, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 
@@ -54,6 +54,10 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
     const [savingLimit, setSavingLimit] = useState(false);
     const [verifying, setVerifying] = useState(false);
     const [report, setReport] = useState<VerificationReport | null>(null);
+    // Pre-flight DNS check state (runs against the input value WITHOUT saving).
+    // Lets the user validate DNS configuration before committing the domain.
+    const [precheckReport, setPrecheckReport] = useState<VerificationReport | null>(null);
+    const [prechecking, setPrechecking] = useState(false);
 
     const refresh = async () => {
         try {
@@ -116,6 +120,27 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
             toast.error(e?.message || 'Failed to update limit');
         } finally {
             setSavingLimit(false);
+        }
+    };
+
+    // Pre-flight: validate DNS for whatever the user has typed, without
+    // touching the persisted account row. Useful BEFORE save so the user
+    // doesn't commit a misconfigured domain.
+    const precheckDomain = async () => {
+        const domain = domainInput.trim();
+        if (!domain) return;
+        setPrechecking(true);
+        setPrecheckReport(null);
+        try {
+            const res = await apiClient<VerificationReport>(
+                `/api/sequencer/accounts/tracking-domain/check?domain=${encodeURIComponent(domain)}`
+            );
+            setPrecheckReport(res);
+        } catch (err: unknown) {
+            const e = err as { message?: string };
+            toast.error(e?.message || 'Pre-flight DNS check failed');
+        } finally {
+            setPrechecking(false);
         }
     };
 
@@ -233,7 +258,11 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                                             type="text"
                                             placeholder="links.yourdomain.com"
                                             value={domainInput}
-                                            onChange={(e) => setDomainInput(e.target.value)}
+                                            onChange={(e) => {
+                                                setDomainInput(e.target.value);
+                                                // Stale precheck result no longer applies to a different domain
+                                                if (precheckReport) setPrecheckReport(null);
+                                            }}
                                             className="flex-1 px-3 py-1.5 rounded-lg text-xs outline-none"
                                             style={{ border: '1px solid #D1CBC5' }}
                                         />
@@ -245,6 +274,59 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                                             {saving ? 'Saving…' : 'Save'}
                                         </button>
                                     </div>
+
+                                    {/* Pre-flight DNS check — validate the typed hostname before saving.
+                                        Helps the user catch misconfigured CNAMEs without committing. */}
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={precheckDomain}
+                                            disabled={prechecking || !domainInput.trim() || domainInput.trim() === (account.tracking_domain || '')}
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] text-gray-700 cursor-pointer hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+                                            style={{ border: '1px solid #D1CBC5' }}
+                                            title="Run a DNS check on the typed hostname without saving"
+                                        >
+                                            {prechecking ? <Loader2 size={11} className="animate-spin" /> : <Search size={11} strokeWidth={2} />}
+                                            {prechecking ? 'Checking DNS…' : 'Check DNS first'}
+                                        </button>
+                                        <span className="text-[10px] text-gray-400">
+                                            Optional — validate before save
+                                        </span>
+                                    </div>
+
+                                    {/* Pre-flight result — success */}
+                                    {precheckReport && precheckReport.ok && (
+                                        <div className="mt-2 rounded-lg p-2.5 bg-emerald-50 border border-emerald-200 flex items-start gap-2">
+                                            <CheckCircle2 size={13} className="text-emerald-600 mt-0.5 shrink-0" />
+                                            <div className="text-[11px] text-emerald-900 leading-relaxed">
+                                                <span className="font-semibold">DNS configured correctly.</span> Safe to save — verification will pass instantly.
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Pre-flight result — failure */}
+                                    {precheckReport && !precheckReport.ok && (
+                                        <div className="mt-2 rounded-lg p-2.5 bg-red-50 border border-red-200 flex flex-col gap-1">
+                                            <div className="flex items-center gap-2">
+                                                <AlertTriangle size={12} className="text-red-600 shrink-0" />
+                                                <span className="text-[11px] font-semibold text-red-900">{verificationCodeLabel(precheckReport.code)}</span>
+                                            </div>
+                                            <div className="text-[11px] text-red-900 leading-relaxed">{precheckReport.detail}</div>
+                                            {precheckReport.cnameTarget && (
+                                                <div className="text-[11px] text-red-700">
+                                                    Detected CNAME: <code className="bg-white border border-red-200 px-1 py-0.5 rounded">{precheckReport.cnameTarget}</code>
+                                                </div>
+                                            )}
+                                            {precheckReport.aRecords && precheckReport.aRecords.length > 0 && (
+                                                <div className="text-[11px] text-red-700">
+                                                    Detected A records: <code className="bg-white border border-red-200 px-1 py-0.5 rounded">{precheckReport.aRecords.join(', ')}</code>
+                                                </div>
+                                            )}
+                                            <div className="text-[11px] text-red-700 mt-0.5">
+                                                Fix DNS at your registrar, then re-run the check.
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* DNS instructions */}

@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
 import { releaseNotes } from '@/data/releaseNotes';
+import { TEMPLATES as COLD_EMAIL_TEMPLATES } from '@/data/coldEmailTemplates';
 
 const BASE_URL = 'https://www.superkabe.com';
 
@@ -151,6 +152,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'yearly',
             priority: 0.3,
         },
+
+        // ─── Cold Email Templates (hub) ──────────────
+        {
+            url: `${BASE_URL}/cold-email-templates`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+
+        // ─── Cold Email Templates (AI generator) ─────
+        {
+            url: `${BASE_URL}/cold-email-templates/generate`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+
+        // ─── Cold Email Templates (individual, data-driven) ─
+        ...COLD_EMAIL_TEMPLATES.map((t) => ({
+            url: `${BASE_URL}/cold-email-templates/${t.slug}`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly' as const,
+            priority: 0.7,
+        })),
 
         // ─── Free Tools (auto-discovered) ────────────
         ...discoverRoutes('tools', '/tools', 'weekly', 0.8),

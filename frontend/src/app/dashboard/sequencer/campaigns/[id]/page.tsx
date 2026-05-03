@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
     ArrowLeft, Play, Pause, Trash2, Loader2, Users, Mail, MousePointerClick,
     MessageSquare, AlertTriangle, Clock, Send, Zap, ShieldCheck, Eye, Pencil,
-    FileText, Database, Hand, Webhook, GitMerge, X,
+    FileText, Database, Hand, Webhook, GitMerge, X, Workflow,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import ScheduleCalendarView from '@/components/sequencer/ScheduleCalendarView';
@@ -213,6 +213,12 @@ export default function CampaignDetailPage() {
                     </div>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
+                    <Link
+                        href={`/dashboard/sequencer/campaigns/${campaign.id}/sequence`}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-gray-700 border border-[#D1CBC5] text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-50"
+                    >
+                        <Workflow size={12} /> View sequence
+                    </Link>
                     {(campaign.status === 'draft' || campaign.status === 'active' || campaign.status === 'paused') && (
                         <Link
                             href={`/dashboard/sequencer/campaigns/new?id=${campaign.id}`}

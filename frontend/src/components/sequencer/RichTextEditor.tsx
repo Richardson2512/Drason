@@ -8,6 +8,7 @@ import Underline from '@tiptap/extension-underline';
 import Image from '@tiptap/extension-image';
 import { Bold, Italic, Underline as UnderlineIcon, Strikethrough, Link as LinkIcon, List, ListOrdered, Undo, Redo, Code, Image as ImageIcon, PenLine } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { preserveBlankLines } from '@/lib/preserveBlankLines';
 
 interface Signature {
     id: string;
@@ -87,7 +88,16 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
         ],
         content,
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML());
+            // Canonical write path: normalize Tiptap's emit so user-intended
+            // blank lines (which Tiptap stores as <p></p> / <p><br></p> /
+            // <p>text<br></p>) become <p>&nbsp;</p> — the only form that
+            // renders with visible height in browsers, email clients, and
+            // every preview surface.
+            //
+            // Idempotent: re-emitting the same HTML produces the same output.
+            // Tiptap's internal state stays raw; only what we hand to the
+            // parent (and ultimately to storage) is normalized.
+            onChange(preserveBlankLines(editor.getHTML()));
             checkAutocomplete();
         },
         onSelectionUpdate: () => {

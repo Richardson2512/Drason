@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Plus, Play, Pause, Trash2, MoreHorizontal, Users, Mail } from 'lucide-react';
+import { Plus, Users, Mail, Tag as TagIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import TagManagerModal, { type TagItem, TagIconShape } from '@/components/sequencer/TagManagerModal';
+import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
 
 interface Campaign {
     id: string;
@@ -21,6 +24,7 @@ interface Campaign {
     lead_count: number;
     step_count: number;
     account_count?: number;
+    tags?: Array<{ id: string; name: string; color: string | null }>;
 }
 
 const statusBadge: Record<string, string> = {
@@ -34,23 +38,63 @@ export default function SequencerCampaignsPage() {
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [allTags, setAllTags] = useState<TagItem[]>([]);
+    const [tagFilter, setTagFilter] = useState<string[]>([]);
+    const [showTagManager, setShowTagManager] = useState(false);
+
+    const fetchCampaigns = useCallback(async (tagIds: string[] = tagFilter) => {
+        try {
+            const url = tagIds.length > 0
+                ? `/api/sequencer/campaigns?tag_ids=${encodeURIComponent(tagIds.join(','))}`
+                : '/api/sequencer/campaigns';
+            const res = await apiClient<any>(url);
+            // apiClient auto-unwraps `{success, data}` → returns the array directly.
+            // Keep fallbacks for the `{campaigns: [...]}` shape in case the backend changes.
+            const list = Array.isArray(res) ? res : (res?.campaigns ?? res?.data ?? []);
+            setCampaigns(list);
+        } catch (err: any) {
+            setError(err.message ?? 'Failed to load campaigns');
+        } finally {
+            setLoading(false);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const fetchTags = useCallback(async () => {
+        try {
+            const res = await apiClient<{ tags: TagItem[] }>('/api/sequencer/tags');
+            setAllTags(res?.tags || []);
+        } catch { /* */ }
+    }, []);
 
     useEffect(() => {
-        async function fetchCampaigns() {
-            try {
-                const res = await apiClient<any>('/api/sequencer/campaigns');
-                // apiClient auto-unwraps `{success, data}` → returns the array directly.
-                // Keep fallbacks for the `{campaigns: [...]}` shape in case the backend changes.
-                const list = Array.isArray(res) ? res : (res?.campaigns ?? res?.data ?? []);
-                setCampaigns(list);
-            } catch (err: any) {
-                setError(err.message ?? 'Failed to load campaigns');
-            } finally {
-                setLoading(false);
-            }
+        fetchCampaigns([]);
+        fetchTags();
+    }, [fetchCampaigns, fetchTags]);
+
+    const handleTagFilterChange = (next: string[]) => {
+        setTagFilter(next);
+        setLoading(true);
+        fetchCampaigns(next);
+    };
+
+    // Per-row tag mutation. Optimistic so the row visibly updates before
+    // the network round-trip completes; reverts and refetches on error.
+    const updateCampaignTags = async (campaignId: string, tagIds: string[]) => {
+        const prev = campaigns;
+        const newTagSet = allTags.filter(t => tagIds.includes(t.id))
+            .map(t => ({ id: t.id, name: t.name, color: t.color }));
+        setCampaigns(curr => curr.map(c => c.id === campaignId ? { ...c, tags: newTagSet } : c));
+        try {
+            await apiClient(`/api/sequencer/campaigns/${campaignId}/tags`, {
+                method: 'PUT',
+                body: JSON.stringify({ tagIds }),
+            });
+            fetchTags();
+        } catch {
+            setCampaigns(prev);
         }
-        fetchCampaigns();
-    }, []);
+    };
 
     function formatDate(iso: string) {
         return new Date(iso).toLocaleDateString('en-US', {
@@ -67,13 +111,53 @@ export default function SequencerCampaignsPage() {
                     <h1 className="text-2xl font-bold text-gray-900">Campaigns</h1>
                     <p className="text-sm text-gray-500 mt-1">Create and manage email campaigns</p>
                 </div>
-                <Link
-                    href="/dashboard/sequencer/campaigns/new"
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
-                >
-                    <Plus size={14} />
-                    Create Campaign
-                </Link>
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setShowTagManager(true)}
+                        className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
+                        title="Create, rename, or delete tags"
+                    >
+                        <TagIcon size={12} /> Manage tags
+                    </button>
+                    <Link
+                        href="/dashboard/sequencer/campaigns/new"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
+                    >
+                        <Plus size={14} />
+                        Create Campaign
+                    </Link>
+                </div>
+            </div>
+
+            {/* Tag filter */}
+            <div className="flex items-center gap-2">
+                <div className="w-[180px]">
+                    <MultiSelectDropdown
+                        options={allTags.map(t => ({
+                            value: t.id,
+                            // Surface-specific count — this dropdown is on the
+                            // campaigns page, so the parenthetical reflects
+                            // how many CAMPAIGNS carry the tag.
+                            label: `${t.name} (${t.campaign_count})`,
+                            icon: <TagIconShape color={t.color || '#6B7280'} size={12} />,
+                        }))}
+                        selected={tagFilter}
+                        onChange={handleTagFilterChange}
+                        placeholder="All tags"
+                        searchable
+                        searchPlaceholder="Search tags…"
+                    />
+                </div>
+                {tagFilter.length > 0 && (
+                    <button
+                        type="button"
+                        onClick={() => handleTagFilterChange([])}
+                        className="text-[11px] text-gray-500 hover:text-gray-900 underline decoration-dotted"
+                    >
+                        Clear
+                    </button>
+                )}
             </div>
 
             {/* Loading state */}
@@ -122,6 +206,7 @@ export default function SequencerCampaignsPage() {
                             <tr className="border-b border-gray-200">
                                 <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Campaign</th>
                                 <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[180px]">Tags</th>
                                 <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Leads</th>
                                 <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Steps</th>
                                 <th className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Sent</th>
@@ -145,6 +230,25 @@ export default function SequencerCampaignsPage() {
                                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${statusBadge[campaign.status] ?? 'bg-gray-100 text-gray-600'}`}>
                                             {campaign.status}
                                         </span>
+                                    </td>
+                                    <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                                        <div className="flex items-center gap-1 flex-wrap">
+                                            <TagPillList
+                                                tags={campaign.tags || []}
+                                                onRemove={(tid) => updateCampaignTags(
+                                                    campaign.id,
+                                                    (campaign.tags || []).filter(t => t.id !== tid).map(t => t.id),
+                                                )}
+                                                compact
+                                            />
+                                            <TagPicker
+                                                allTags={allTags}
+                                                selectedIds={(campaign.tags || []).map(t => t.id)}
+                                                onChange={(next) => updateCampaignTags(campaign.id, next)}
+                                                onTagCreated={fetchTags}
+                                                align="left"
+                                            />
+                                        </div>
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                         <div className="flex items-center justify-center gap-1 text-xs text-gray-600">
@@ -172,6 +276,13 @@ export default function SequencerCampaignsPage() {
                         </tbody>
                     </table>
                 </div>
+            )}
+
+            {showTagManager && (
+                <TagManagerModal
+                    onClose={() => setShowTagManager(false)}
+                    onChanged={() => { fetchTags(); fetchCampaigns(); }}
+                />
             )}
         </div>
     );

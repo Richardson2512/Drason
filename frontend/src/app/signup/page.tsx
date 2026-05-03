@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
+import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
 
 function SignupContent() {
     const router = useRouter();
@@ -38,7 +39,9 @@ function SignupContent() {
         return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     };
 
-    // Capture plan parameter and OAuth errors from URL
+    // Capture plan parameter and OAuth errors from URL.
+    // Also persist the intended return-to (?from=...) into localStorage so it
+    // survives a Google OAuth round-trip — consumed in DashboardShell or here.
     useEffect(() => {
         const plan = searchParams.get('plan');
         if (plan && ['starter', 'growth', 'scale'].includes(plan)) {
@@ -47,6 +50,10 @@ function SignupContent() {
         const oauthError = searchParams.get('error');
         if (oauthError) {
             setError(oauthError);
+        }
+        const fromParam = searchParams.get('from');
+        if (fromParam && safePath(fromParam)) {
+            setIntendedReturnTo(fromParam);
         }
     }, [searchParams]);
 
@@ -61,6 +68,8 @@ function SignupContent() {
         const backendUrl = getBackendUrl();
         const params = new URLSearchParams({ source: 'signup' });
         if (selectedPlan) params.set('plan', selectedPlan);
+        // The from param is already in localStorage (set in the useEffect above).
+        // DashboardShell consumes it after the OAuth callback redirects in.
         window.location.href = `${backendUrl}/api/auth/google?${params.toString()}`;
     };
 
@@ -133,9 +142,12 @@ function SignupContent() {
             // Start periodic token refresh to keep session alive.
             startTokenRefresh();
 
-            // Redirect to dashboard - user gets immediate trial access
-            // No payment required for 14-day trial
-            router.push('/dashboard');
+            // Redirect: prefer the intended return-to (set from ?from= when the
+            // user landed here from a CTA on /cold-email-templates etc.). Falls
+            // back to /dashboard. User gets 14-day trial regardless of where
+            // they're sent.
+            const returnTo = consumeIntendedReturnTo();
+            router.push(returnTo || '/dashboard');
         } catch (err: any) {
             setError(err.message);
         } finally {

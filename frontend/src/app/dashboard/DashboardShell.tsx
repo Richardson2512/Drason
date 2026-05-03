@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
+import { consumeIntendedReturnTo } from '@/lib/auth-client';
 import CustomSelect from '@/components/ui/CustomSelect';
 import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -23,6 +24,18 @@ export default function DashboardShell({
     const pathname = usePathname();
     const { user, subscription } = useDashboard();
     const [isCollapsed, setIsCollapsed] = useState(false);
+
+    // Post-auth bridge: if a guest came in from /cold-email-templates (or
+    // anywhere with ?from=...) and just completed signup or login — including
+    // a Google OAuth round-trip that lands here on /dashboard — redirect them
+    // back to where they started. Runs once on mount; one-time consume.
+    useEffect(() => {
+        const returnTo = consumeIntendedReturnTo();
+        if (returnTo && returnTo !== pathname) {
+            router.replace(returnTo);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     // When the recipient preview modal opens we collapse the sidebar so the
     // pixel-tuned device replicas have full canvas; on close we restore the
     // user's prior preference.
