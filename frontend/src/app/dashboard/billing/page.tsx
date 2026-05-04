@@ -111,25 +111,23 @@ function BillingContent() {
         }
     };
 
+    // Plan changes (upgrade/downgrade) now go through the same Polar
+    // checkout flow as initial purchases. The backend's /api/billing/
+    // change-plan endpoint creates a checkout session and returns its URL
+    // — the customer pays the new tier's price, the webhook fires, the
+    // org's tier flips, and the previous subscription is canceled
+    // automatically. Same flow for coupon and non-coupon customers.
     const handleChangePlan = async (tier: string) => {
         setActionLoading(true);
         setError('');
         try {
-            const result = await apiClient<{
-                newTier?: string;
-                direction?: string;
-                effective?: string;
-                message?: string;
-                previousTier?: string;
-            }>('/api/billing/change-plan', {
+            const result = await apiClient<{ checkoutUrl: string }>('/api/billing/change-plan', {
                 method: 'POST',
-                body: JSON.stringify({ tier })
+                body: JSON.stringify({ tier }),
             });
-            await fetchSubscription();
-            setError(result.message || `Plan changed to ${tier} successfully.`);
+            window.location.href = result.checkoutUrl;
         } catch (err: any) {
-            setError(err.message || 'Failed to change plan');
-        } finally {
+            setError(err.message || 'Failed to start plan change');
             setActionLoading(false);
         }
     };
