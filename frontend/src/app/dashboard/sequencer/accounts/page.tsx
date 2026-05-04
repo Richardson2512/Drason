@@ -239,16 +239,19 @@ export default function ConnectedAccountsPage() {
         }
     }, []);
 
+    // OAuth initiation goes through a relative URL so the Next.js
+    // rewrite in next.config.ts ('/api/:path*' → backend) handles the
+    // proxy. Using an absolute URL with NEXT_PUBLIC_API_URL takes the
+    // browser straight to the backend domain, where the JWT cookie
+    // (set on the frontend origin via the rewrite) doesn't exist —
+    // backend's extractOrgContext sees no auth and 401s before it can
+    // even build the Google/Microsoft redirect.
     const connectGoogle = () => {
-        // Redirect to backend OAuth authorize endpoint — backend will redirect to Google
-        const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
-        window.location.href = `${apiBase}/api/sequencer/accounts/google/authorize`;
+        window.location.href = '/api/sequencer/accounts/google/authorize';
     };
 
     const connectMicrosoft = () => {
-        // Redirect to backend OAuth authorize endpoint — backend will redirect to Microsoft
-        const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
-        window.location.href = `${apiBase}/api/sequencer/accounts/microsoft/authorize`;
+        window.location.href = '/api/sequencer/accounts/microsoft/authorize';
     };
 
     const connectSMTP = async () => {
