@@ -321,7 +321,11 @@ export default function ClayIntegrationPage() {
  <div>
  <p className="font-semibold text-gray-700 mb-1">Headers:</p>
  <pre className="text-gray-700 bg-gray-50 p-3 text-xs mt-1">{`Content-Type: application/json
-x-organization-id: YOUR_ORG_ID`}</pre>
+X-Organization-ID: YOUR_ORG_ID
+X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
+ <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+ Copy the webhook secret from <a href="/dashboard/integrations/clay" className="text-blue-600 hover:underline">Dashboard → Integrations → Clay</a>. It&apos;s a per-org token (rotated on demand) that Superkabe verifies against the request — same security model as a bearer token. <em>Advanced:</em> if you can compute HMAC-SHA256 in a separate Clay column, send <code className="bg-gray-100 px-1 py-0.5 rounded">X-Clay-Signature: &lt;hex&gt;</code> instead. Either header works.
+ </p>
  </div>
  </div>
  </li>
