@@ -142,12 +142,23 @@ function BillingContent() {
     };
 
     const [showCancelModal, setShowCancelModal] = useState(false);
-    const handleCancel = () => setShowCancelModal(true);
+    // Required GDPR/DPDP consent — null until the user picks one. The
+    // confirm button stays disabled while this is null, so cancellation
+    // can never go through without an affirmative data-retention choice.
+    const [dataRetentionChoice, setDataRetentionChoice] = useState<'keep' | 'delete' | null>(null);
+    const handleCancel = () => {
+        setDataRetentionChoice(null); // reset on each open
+        setShowCancelModal(true);
+    };
     const confirmCancel = async () => {
+        if (!dataRetentionChoice) return;
         setActionLoading(true);
         try {
-            await apiClient('/api/billing/cancel', { method: 'POST' });
-            setError('Subscription canceled. Access will continue until billing period ends.');
+            const result = await apiClient<{ message: string }>('/api/billing/cancel', {
+                method: 'POST',
+                body: JSON.stringify({ data_retention: dataRetentionChoice }),
+            });
+            setError(result.message || 'Subscription canceled. Access continues until billing period ends.');
             await fetchSubscription();
             setShowCancelModal(false);
         } catch (err: any) {
@@ -612,22 +623,113 @@ function BillingContent() {
                     )}
                 </div>
             )}
-            <ConfirmActionModal
-                isOpen={showCancelModal}
-                title="Cancel subscription"
-                icon="⚠️"
-                message="Are you sure you want to cancel? Your subscription will end at the close of the current billing period."
-                consequences={[
-                    'You\'ll retain full access until the period ends',
-                    'No further charges will be made',
-                    'Stored data and connected mailboxes are preserved — re-subscribe anytime to resume',
-                ]}
-                confirmLabel="Cancel subscription"
-                variant="danger"
-                loading={actionLoading}
-                onConfirm={confirmCancel}
-                onCancel={() => setShowCancelModal(false)}
-            />
+            {/* Cancel subscription — custom modal because we need to force
+                an affirmative GDPR/DPDP choice on what happens to the
+                user's data after the paid period ends. The reusable
+                ConfirmActionModal can't render the radio picker, and
+                without an explicit choice we have no legal basis to
+                preserve the data. Confirm button is disabled until one
+                of the two radios is selected. */}
+            {showCancelModal && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center px-4"
+                    style={{ background: 'rgba(15, 23, 42, 0.55)' }}
+                    onClick={() => !actionLoading && setShowCancelModal(false)}
+                >
+                    <div
+                        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-start gap-3 mb-2">
+                            <div className="text-2xl">⚠️</div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900 m-0">Cancel subscription</h3>
+                                <p className="text-sm text-slate-500 m-0 mt-1">Access continues until the end of your current billing period.</p>
+                            </div>
+                        </div>
+
+                        <div className="mt-5 mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            What should we do with your data?
+                        </div>
+                        <div className="text-[11px] text-slate-400 mb-3">
+                            Required — we cannot retain your data without your explicit consent.
+                        </div>
+
+                        <div className="flex flex-col gap-2.5">
+                            {/* Keep — explicit consent to retain */}
+                            <label
+                                className="flex gap-3 p-4 rounded-xl border cursor-pointer transition-all"
+                                style={{
+                                    borderColor: dataRetentionChoice === 'keep' ? '#1C4532' : '#E2E8F0',
+                                    background: dataRetentionChoice === 'keep' ? '#F0FDF4' : '#FFFFFF',
+                                }}
+                            >
+                                <input
+                                    type="radio"
+                                    name="data_retention"
+                                    value="keep"
+                                    checked={dataRetentionChoice === 'keep'}
+                                    onChange={() => setDataRetentionChoice('keep')}
+                                    className="mt-0.5 accent-[#1C4532]"
+                                    disabled={actionLoading}
+                                />
+                                <div>
+                                    <div className="text-sm font-semibold text-gray-900">Keep my data</div>
+                                    <div className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                        I plan to come back. Retain my leads, campaigns, mailboxes, and account data so I can re-subscribe later. I consent to Superkabe storing this data after my subscription ends.
+                                    </div>
+                                </div>
+                            </label>
+
+                            {/* Delete — schedule erasure */}
+                            <label
+                                className="flex gap-3 p-4 rounded-xl border cursor-pointer transition-all"
+                                style={{
+                                    borderColor: dataRetentionChoice === 'delete' ? '#B91C1C' : '#E2E8F0',
+                                    background: dataRetentionChoice === 'delete' ? '#FEF2F2' : '#FFFFFF',
+                                }}
+                            >
+                                <input
+                                    type="radio"
+                                    name="data_retention"
+                                    value="delete"
+                                    checked={dataRetentionChoice === 'delete'}
+                                    onChange={() => setDataRetentionChoice('delete')}
+                                    className="mt-0.5 accent-[#B91C1C]"
+                                    disabled={actionLoading}
+                                />
+                                <div>
+                                    <div className="text-sm font-semibold text-gray-900">Delete all my data</div>
+                                    <div className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                        I&apos;m leaving permanently. Erase my leads, campaigns, mailboxes, and account data after the 30-day grace period. <strong className="text-red-700">This cannot be undone.</strong>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => setShowCancelModal(false)}
+                                disabled={actionLoading}
+                                className="flex-1 py-2.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-700 cursor-pointer disabled:opacity-50"
+                            >
+                                Keep subscription
+                            </button>
+                            <button
+                                onClick={confirmCancel}
+                                disabled={actionLoading || !dataRetentionChoice}
+                                className="flex-1 py-2.5 rounded-lg border-none text-sm font-bold text-white cursor-pointer disabled:cursor-not-allowed transition-opacity"
+                                style={{
+                                    background: dataRetentionChoice === 'delete' ? '#B91C1C' : '#1C4532',
+                                    opacity: (actionLoading || !dataRetentionChoice) ? 0.5 : 1,
+                                }}
+                            >
+                                {actionLoading ? 'Canceling…' : 'Confirm cancellation'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
