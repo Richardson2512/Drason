@@ -261,7 +261,6 @@ export default function DashboardShell({
                         ];
 
                         const sharedItems = [
-                            { href: '/dashboard/cold-call-list', label: 'Cold Call List', icon: <PhoneCall size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/integrations', label: 'Integrations', icon: <Plug size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/api-mcp', label: 'API & MCP', icon: <Code size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={13} strokeWidth={1.75} />, badge: unreadCount },
@@ -344,9 +343,16 @@ export default function DashboardShell({
                                     </div>
                                 )}
 
-                                {/* Email Validation — standalone, always visible */}
+                                {/* Cold Call List — standalone, always visible.
+                                    Pulled out of `sharedItems` so it sits next
+                                    to Email Validation as a sibling activity-
+                                    focused tool, not buried with billing /
+                                    audit log / integrations. */}
                                 {!isCollapsed && <div className="h-px mt-2 mb-1" style={{ background: '#E8E3DC' }} />}
                                 {isCollapsed && <div className="h-2" />}
+                                {renderNavItem({ href: '/dashboard/cold-call-list', label: 'Cold Call List', icon: <PhoneCall size={13} strokeWidth={1.75} /> })}
+
+                                {/* Email Validation — standalone, always visible */}
                                 {renderNavItem({ href: '/dashboard/validation', label: 'Email Validation', icon: <BadgeCheck size={13} strokeWidth={1.75} /> })}
 
                                 {/* Shared Items — always visible */}
