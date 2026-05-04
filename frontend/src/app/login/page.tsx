@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
+import { marketingUrl } from '@/lib/urls';
 
 function LoginContent() {
     const router = useRouter();
@@ -128,11 +129,14 @@ function LoginContent() {
                 {/* Content Container - NOW IN A CARD */}
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 md:p-10">
 
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2 mb-8 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={32} height={32} />
+                    {/* Logo → marketing home. Using <a> with marketingUrl
+                        because in subdomain-split mode, the app subdomain
+                        redirects bare slash back to /login, so a Next.js
+                        Link href slash would feel like a no-op click. */}
+                    <a href={marketingUrl('/')} className="flex items-center gap-2 mb-8 w-fit mx-auto no-underline">
+                        <Image src="/image/logo-v2.png" alt="Superkabe — back to home" width={32} height={32} />
                         <span className="font-bold text-xl text-[#171923]">Superkabe</span>
-                    </Link>
+                    </a>
 
                     {/* Header */}
                     <div className="mb-8 text-center">

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { apiClient, startTokenRefresh } from '@/lib/api';
+import { marketingUrl } from '@/lib/urls';
 
 export default function OnboardingPage() {
     const router = useRouter();
@@ -59,10 +60,11 @@ export default function OnboardingPage() {
 
                 {/* Content Card */}
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 md:p-10">
-                    <Link href="/" className="flex items-center gap-2 mb-8 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={32} height={32} />
+                    {/* Logo → marketing home (see login/page.tsx note) */}
+                    <a href={marketingUrl('/')} className="flex items-center gap-2 mb-8 w-fit mx-auto no-underline">
+                        <Image src="/image/logo-v2.png" alt="Superkabe — back to home" width={32} height={32} />
                         <span className="font-bold text-xl text-[#171923]">Superkabe</span>
-                    </Link>
+                    </a>
 
                     <div className="mb-8 text-center">
                         <h1 className="text-3xl font-bold text-[#171923] mb-2">One Last Step</h1>

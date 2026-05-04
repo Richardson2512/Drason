@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
+import { marketingUrl } from '@/lib/urls';
 
 function SignupContent() {
     const router = useRouter();
@@ -172,10 +173,11 @@ function SignupContent() {
 
                 {/* Content Container - compact card */}
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-5 md:p-6">
-                    <Link href="/" className="flex items-center gap-2 mb-4 w-fit mx-auto">
-                        <Image src="/image/logo-v2.png" alt="Superkabe" width={26} height={26} />
+                    {/* Logo → marketing home (see login/page.tsx note) */}
+                    <a href={marketingUrl('/')} className="flex items-center gap-2 mb-4 w-fit mx-auto no-underline">
+                        <Image src="/image/logo-v2.png" alt="Superkabe — back to home" width={26} height={26} />
                         <span className="font-bold text-base text-[#171923]">Superkabe</span>
-                    </Link>
+                    </a>
 
                     <div className="mb-4 text-center">
                         <h1 className="text-xl font-bold text-[#171923] mb-0.5">Get Started</h1>
