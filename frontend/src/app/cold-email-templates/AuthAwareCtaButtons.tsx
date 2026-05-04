@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { LayoutDashboard } from 'lucide-react';
 import { useIsAuthenticated } from '@/lib/auth-client';
+import { appUrl } from '@/lib/urls';
 
 interface AuthAwareCtaButtonsProps {
     /** Path to round-trip back to after signup (relative). */
@@ -28,13 +29,13 @@ export default function AuthAwareCtaButtons({ from, intent, secondary }: AuthAwa
     if (ready && isAuthenticated) {
         return (
             <div className="flex flex-wrap gap-3">
-                <Link
-                    href="/dashboard"
+                <a
+                    href={appUrl('/dashboard')}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-[#1E1E2F] text-sm font-semibold hover:bg-[#F7F2EB] transition"
                 >
                     <LayoutDashboard size={14} strokeWidth={2} />
                     Open dashboard
-                </Link>
+                </a>
                 <Link
                     href={secondary.href}
                     className="px-5 py-2.5 rounded-lg border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition"
@@ -50,12 +51,12 @@ export default function AuthAwareCtaButtons({ from, intent, secondary }: AuthAwa
 
     return (
         <div className="flex flex-wrap gap-3">
-            <Link
-                href={`/signup?${params.toString()}`}
+            <a
+                href={appUrl(`/signup?${params.toString()}`)}
                 className="px-5 py-2.5 rounded-lg bg-white text-[#1E1E2F] text-sm font-semibold hover:bg-[#F7F2EB] transition"
             >
                 Start free trial
-            </Link>
+            </a>
             <Link
                 href={secondary.href}
                 className="px-5 py-2.5 rounded-lg border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition"

@@ -1,18 +1,21 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { apiClient } from '@/lib/api';
-import type { SettingEntry, Organization, ClayWebhookResponse } from '@/types/api';
+import type { Organization } from '@/types/api';
 import HealthEnforcementModal from '@/components/modals/HealthEnforcementModal';
 import { useRouter } from 'next/navigation';
 import SystemModeCard from '@/components/settings/SystemModeCard';
-import SlackIntegrationCard from '@/components/settings/SlackIntegrationCard';
 import OrganizationDetailsCard from '@/components/settings/OrganizationDetailsCard';
-import ClayIntegrationCard from '@/components/settings/ClayIntegrationCard';
+import PostmasterToolsCard from '@/components/settings/PostmasterToolsCard';
+
+// NOTE: Clay and Slack integrations moved to /dashboard/integrations/clay
+// and /dashboard/integrations/slack — they're surfaced from the
+// integrations grid now instead of crowding this Settings page.
+// Postmaster Tools stays here (it's a deliverability monitoring config,
+// not a connector users browse for in the integrations grid).
 
 export default function Settings() {
     const router = useRouter();
-    const [webhookUrl, setWebhookUrl] = useState('');
-    const [webhookSecret, setWebhookSecret] = useState('');
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState('');
 
@@ -23,22 +26,7 @@ export default function Settings() {
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [healthCheckData, setHealthCheckData] = useState<{ critical_count?: number; findings?: { category: string; severity: string; title: string; details: string }[]; overall_score?: number } | null>(null);
 
-    // Settings array shared with child cards (Slack reads its own state)
-    const [settingsData, setSettingsData] = useState<SettingEntry[]>([]);
-
     useEffect(() => {
-        // Fetch current settings
-        apiClient<SettingEntry[]>('/api/settings')
-            .then(data => {
-                if (data) {
-                    const arr = Array.isArray(data) ? data : [];
-                    setSettingsData(arr);
-                }
-            })
-            .catch(err => {
-                console.error('[Settings] Failed to fetch settings', err);
-            });
-
         // Fetch organization info
         apiClient<Organization>('/api/organization')
             .then(response => {
@@ -47,26 +35,6 @@ export default function Settings() {
             .catch(() => {
                 setMsg('Failed to fetch organization details');
             });
-
-        // Fetch Clay webhook configuration with secret
-        apiClient<ClayWebhookResponse>('/api/settings/clay-webhook-url')
-            .then(data => {
-                if (data?.webhookUrl) {
-                    setWebhookUrl(data.webhookUrl);
-                    setWebhookSecret(data.webhookSecret || '');
-                } else {
-                    const protocol = window.location.protocol;
-                    const hostname = window.location.hostname;
-                    const backendUrl = process.env.NEXT_PUBLIC_API_URL || `${protocol}//${hostname}`;
-                    setWebhookUrl(`${backendUrl}/api/ingest/clay`);
-                }
-            })
-            .catch(() => {
-                const protocol = window.location.protocol;
-                const hostname = window.location.hostname;
-                const backendUrl = process.env.NEXT_PUBLIC_API_URL || `${protocol}//${hostname}`;
-                setWebhookUrl(`${backendUrl}/api/ingest/clay`);
-            });
     }, []);
 
     return (
@@ -74,7 +42,7 @@ export default function Settings() {
             <div className="p-4 pb-12 flex flex-col gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Settings & Configuration</h1>
-                    <p className="text-sm text-gray-500 mt-1">Manage system mode, lead-source integrations, and alert channels</p>
+                    <p className="text-sm text-gray-500 mt-1">Manage system mode and organization details. Connectors (Clay, Slack, etc.) live under <a href="/dashboard/integrations" className="text-blue-600 hover:underline">Integrations</a>.</p>
                 </div>
 
                 <SystemModeCard />
@@ -82,13 +50,11 @@ export default function Settings() {
                 {/* Organization Info */}
                 <OrganizationDetailsCard org={org} />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {/* Clay — lead source */}
-                    <ClayIntegrationCard webhookUrl={webhookUrl} webhookSecret={webhookSecret} orgId={org?.id} />
-
-                    {/* Slack — alerts (Postmaster Tools embedded) */}
-                    <SlackIntegrationCard settings={settingsData} />
-                </div>
+                {/* Postmaster Tools — Google deliverability monitoring config.
+                    Not a "connector" the user shops for; configured per
+                    domain after sending starts. Lives here rather than on
+                    the integrations grid. */}
+                <PostmasterToolsCard />
             </div>
 
             {/* Health Enforcement Modal */}

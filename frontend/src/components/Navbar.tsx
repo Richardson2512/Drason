@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Search, Pencil, KeyRound, Settings, ShieldCheck, Shield, LayoutGrid, ArrowRight, LayoutDashboard } from 'lucide-react';
 import { useIsAuthenticated } from '@/lib/auth-client';
+import { appUrl } from '@/lib/urls';
 
 const toolLinks = [
     {
@@ -239,27 +240,32 @@ export default function Navbar() {
 
                     {/* Desktop CTAs — auth-aware. Renders signed-out state on
                         SSR and first render, flips to dashboard CTA after the
-                        token cookie is read on mount. */}
+                        token cookie is read on mount.
+                        appUrl() returns absolute URLs to app.* in subdomain
+                        mode (so users hop directly without a 302 from the
+                        marketing site's middleware) and relative paths
+                        otherwise. Uses <a> instead of next/link because
+                        next/link can short-circuit cross-host navigation. */}
                     <div className="hidden md:flex gap-3 items-center ml-2">
                         {ready && isAuthenticated ? (
-                            <Link
-                                href="/dashboard"
+                            <a
+                                href={appUrl('/dashboard')}
                                 className="inline-flex items-center gap-1.5 px-5 py-2 bg-white text-gray-900 rounded-full text-[13px] font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg shadow-white/10"
                             >
                                 <LayoutDashboard size={13} strokeWidth={2} />
                                 Dashboard
-                            </Link>
+                            </a>
                         ) : (
                             <>
-                                <Link href="/login" className="text-gray-400 hover:text-white text-[13px] font-medium transition-colors">
+                                <a href={appUrl('/login')} className="text-gray-400 hover:text-white text-[13px] font-medium transition-colors">
                                     Sign In
-                                </Link>
-                                <Link
-                                    href="/signup"
+                                </a>
+                                <a
+                                    href={appUrl('/signup')}
                                     className="px-5 py-2 bg-white text-gray-900 rounded-full text-[13px] font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg shadow-white/10"
                                 >
                                     Get Started
-                                </Link>
+                                </a>
                             </>
                         )}
                     </div>
@@ -334,26 +340,26 @@ export default function Navbar() {
 
                     <div className="flex flex-col gap-4 mt-6 items-center">
                         {ready && isAuthenticated ? (
-                            <Link
-                                href="/dashboard"
+                            <a
+                                href={appUrl('/dashboard')}
                                 className="inline-flex items-center gap-2 px-8 py-3 bg-white text-gray-900 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
                                 onClick={() => setMobileOpen(false)}
                             >
                                 <LayoutDashboard size={16} strokeWidth={2} />
                                 Dashboard
-                            </Link>
+                            </a>
                         ) : (
                             <>
-                                <Link href="/login" className="text-gray-400 hover:text-white text-lg font-medium transition-colors" onClick={() => setMobileOpen(false)}>
+                                <a href={appUrl('/login')} className="text-gray-400 hover:text-white text-lg font-medium transition-colors" onClick={() => setMobileOpen(false)}>
                                     Sign In
-                                </Link>
-                                <Link
-                                    href="/signup"
+                                </a>
+                                <a
+                                    href={appUrl('/signup')}
                                     className="px-8 py-3 bg-white text-gray-900 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
                                     onClick={() => setMobileOpen(false)}
                                 >
                                     Get Started
-                                </Link>
+                                </a>
                             </>
                         )}
                     </div>

@@ -33,7 +33,7 @@ const INTEGRATIONS: Integration[] = [
         description: 'Ingest enriched leads directly from Clay tables via webhook.',
         category: 'lead_sources',
         logo: '/clay.png',
-        configPath: '/docs/clay-integration',
+        configPath: '/dashboard/integrations/clay',
         settingKey: '_CLAY_ALWAYS_ON_', // Clay is always available once org exists
     },
     {
@@ -78,7 +78,7 @@ const INTEGRATIONS: Integration[] = [
         description: 'Receive real-time alerts for pauses, bounces, and health issues.',
         category: 'notifications',
         logo: '_slack_',
-        configPath: '/dashboard/settings',
+        configPath: '/dashboard/integrations/slack',
         settingKey: 'SLACK_CONNECTED',
         statusKey: 'SLACK_ALERTS_STATUS',
     },

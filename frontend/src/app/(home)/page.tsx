@@ -6,6 +6,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+// In subdomain mode, app routes (signup/login/dashboard) live on the
+// `app.*` host. `appUrl` returns an absolute URL pointing there when
+// NEXT_PUBLIC_APP_URL is set, and a relative path otherwise — so the
+// marketing site's primary CTA always lands on the right host without
+// the middleware needing to do a 302 redirect on every click.
+import { appUrl } from '@/lib/urls';
 import {
     GmailLogo as GmailLogoSvg,
     GoogleWorkspaceLogo,
@@ -825,9 +831,9 @@ export default function LandingPage() {
  </p>
 
  <div className="flex flex-col sm:flex-row gap-4 items-center lg:justify-start justify-center">
- <Link href="/signup" className="px-10 py-4 bg-black text-white rounded-full text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+ <a href={appUrl('/signup')} className="px-10 py-4 bg-black text-white rounded-full text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
  Start Your Trial
- </Link>
+ </a>
  <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-white text-gray-900 border border-gray-200 rounded-full text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
  Book a Demo
  </a>
@@ -1396,12 +1402,12 @@ export default function LandingPage() {
  </p>
 
  <div className="flex flex-col sm:flex-row gap-4 justify-center">
- <Link
- href="/signup"
+ <a
+ href={appUrl('/signup')}
  className="px-10 py-4 bg-black text-white rounded-full font-bold shadow-xl hover:-translate-y-1 transition-all"
  >
  Get Started Free
- </Link>
+ </a>
  </div>
  </div>
  </section>
