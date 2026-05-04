@@ -330,15 +330,15 @@ x-organization-id: YOUR_ORG_ID`}</pre>
  <div className="mt-3 bg-white border border-gray-200 p-4">
  <p className="text-gray-500 mb-2">Use Clay&apos;s column references to map fields:</p>
  <pre className="text-gray-700 bg-gray-50 p-3 text-xs overflow-x-auto">{`{
- "email": {{email}},
- "firstName": {{firstName}},
- "lastName": {{lastName}},
- "company": {{company}},
- "persona": {{jobTitle}},
- "lead_score": {{leadScore}}
+ "Work_Email": "{{Work Email}}",
+ "First_Name": "{{First Name}}",
+ "Last_Name": "{{Last Name}}",
+ "Company": "{{Company}}",
+ "Job_Title": "{{Job Title}}",
+ "Lead_Score": {{Lead Score}}
 }`}</pre>
  <p className="text-xs text-gray-500 mt-2">
- You do not need to specify a campaign ID. Routing is handled automatically by your routing rules.
+ The pattern: JSON keys use underscores (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>), Clay column references inside <code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{ ... }}'}</code> use the literal column name with spaces (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{Work Email}}'}</code>). Clay&apos;s editor recommends this convention. The Superkabe Clay endpoint matches keys case-insensitively and accepts both underscored and spaced variants, so <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">work email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">email</code>, and <code className="px-1 py-0.5 bg-gray-100 text-[11px]">e-mail</code> all map to the same field. See the field reference below for the full list of accepted variants. String values stay quoted; <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Lead_Score</code> stays unquoted. Don&apos;t wrap the whole body in outer quotes or escape the inner quotes — Clay expects raw JSON. You do not need to specify a campaign ID; routing is handled automatically by your routing rules.
  </p>
  </div>
  </li>
