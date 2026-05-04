@@ -391,9 +391,17 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
  </div>
  </aside>
 
- {/* Main content - offset for fixed sidebars on desktop */}
+ {/* Main content - offset for fixed sidebars on desktop.
+ mx-auto + tiered max-width keeps line length readable on
+ 13" laptops while filling the gap on 27"+ monitors. Without
+ mx-auto, the inner div pinned left and produced a large
+ right-side void on widescreens. Tier:
+   default → 56rem  (4xl)  laptop comfortable reading
+   xl       → 64rem  (5xl)  widescreen-friendly
+   2xl      → 72rem  (6xl)  ultrawide / 27"+ gets meaningful extra room
+ */}
  <main className="flex-1 min-w-0 lg:ml-80 px-6 lg:px-12">
- <div className="max-w-4xl py-4 lg:py-6">
+ <div className="max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto py-4 lg:py-6">
  {pageSeo?.tldr && <TldrBlock text={pageSeo.tldr} />}
  {children}
  {pageSeo?.faq && pageSeo.faq.length > 0 && (
