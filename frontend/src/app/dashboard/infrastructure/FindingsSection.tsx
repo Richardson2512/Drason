@@ -13,7 +13,8 @@ const SEVERITY_CONFIG = {
 };
 
 /** Maps finding title prefixes to official external help documentation */
-function getHelpLink(title: string): { url: string; label: string } | null {
+function getHelpLink(title: string | null | undefined): { url: string; label: string } | null {
+    if (!title) return null;
     const t = title.toLowerCase();
 
     // DNS authentication findings
