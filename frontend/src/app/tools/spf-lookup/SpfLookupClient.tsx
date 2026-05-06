@@ -34,8 +34,8 @@ function qualifierLabel(q: string) {
 function qualifierColor(q: string) {
  switch (q) {
  case '+': return 'bg-green-100 text-green-700';
- case '-': return 'bg-red-100 text-red-700';
- case '~': return 'bg-amber-100 text-amber-700';
+ case '-': return 'bg-gray-200 text-gray-800';
+ case '~': return 'bg-[#FFEBC9] text-[#D4730F]';
  case '?': return 'bg-gray-100 text-gray-600';
  default: return 'bg-green-100 text-green-700';
  }
@@ -200,13 +200,13 @@ export default function SpfLookupClient() {
  onChange={e => setDomain(e.target.value)}
  onKeyDown={handleKeyDown}
  placeholder="e.g. example.com"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 placeholder:text-gray-400 transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-gray-900 placeholder:text-gray-400 transition-all"
  disabled={loading}
  />
  <button
  onClick={handleLookup}
  disabled={loading || !domain.trim()}
- className="px-6 py-3 bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white font-semibold hover:bg-[#D4730F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
  >
  {loading ? (
  <span className="flex items-center gap-2">
@@ -226,15 +226,15 @@ export default function SpfLookupClient() {
  {/* Error */}
  {error && (
  <div className="mt-6 space-y-4">
- <div className="bg-red-50 border border-red-200 p-6">
+ <div className="bg-gray-100 border border-gray-200 p-6">
  <div className="flex items-start gap-3">
- <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <svg className="w-5 h-5 text-gray-5000 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <circle cx="12" cy="12" r="10" />
  <path d="M15 9l-6 6M9 9l6 6" />
  </svg>
  <div>
- <p className="font-semibold text-red-800 text-sm">No SPF Record Found</p>
- <p className="text-red-700 text-sm mt-1">{error}</p>
+ <p className="font-semibold text-gray-800 text-sm">No SPF Record Found</p>
+ <p className="text-gray-800 text-sm mt-1">{error}</p>
  </div>
  </div>
  </div>
@@ -246,23 +246,23 @@ export default function SpfLookupClient() {
  Without an SPF record, receiving servers cannot verify which mail servers are authorized to send email for your domain. This means your emails are more likely to land in spam or be rejected entirely.
  </p>
  <div className="space-y-3 mb-5">
- <div className="flex items-start gap-3 p-3 bg-blue-50 ">
- <span className="w-6 h-6 bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">1</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Generate your SPF record</p>
  <p className="text-xs text-gray-500 mt-0.5">Use our free generator to build a properly formatted SPF record with your authorized senders.</p>
- <a href="/tools/spf-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 mt-1">Use SPF Generator &rarr;</a>
+ <a href="/tools/spf-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-[#D4730F] hover:text-[#D4730F] mt-1">Use SPF Generator &rarr;</a>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-blue-50 ">
- <span className="w-6 h-6 bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">2</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Add a TXT record to your DNS</p>
  <p className="text-xs text-gray-500 mt-0.5">Log into your DNS provider (Cloudflare, GoDaddy, Namecheap, etc.) and add a new TXT record with your generated SPF value at the root (@) of your domain.</p>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-blue-50 ">
- <span className="w-6 h-6 bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">3</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Come back and verify</p>
  <p className="text-xs text-gray-500 mt-0.5">DNS changes can take up to 48 hours to propagate. Return here to verify your SPF record is live and valid.</p>
@@ -272,15 +272,15 @@ export default function SpfLookupClient() {
  <div className="border-t border-gray-100 pt-4">
  <p className="text-xs font-medium text-gray-500 mb-2">DNS provider guides:</p>
  <div className="flex flex-wrap gap-2">
- <a href="https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors">Cloudflare</a>
- <a href="https://www.godaddy.com/help/add-a-txt-record-19232" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors">GoDaddy</a>
- <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdaborpspf-records-for-my-domain/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors">Namecheap</a>
- <a href="https://support.google.com/a/answer/183895" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors">Google Domains</a>
- <a href="https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/email-authentication-spf-configure" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-colors">Microsoft 365</a>
+ <a href="https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Cloudflare</a>
+ <a href="https://www.godaddy.com/help/add-a-txt-record-19232" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">GoDaddy</a>
+ <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdaborpspf-records-for-my-domain/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Namecheap</a>
+ <a href="https://support.google.com/a/answer/183895" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Google Domains</a>
+ <a href="https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/email-authentication-spf-configure" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Microsoft 365</a>
  </div>
  </div>
  <div className="mt-4 p-3 bg-gray-50 ">
- <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
+ <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-[#D4730F] font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
  </div>
  </div>
  </div>
@@ -291,11 +291,11 @@ export default function SpfLookupClient() {
  <div className="mt-6 space-y-6">
  {/* Status Badge */}
  <div className="flex items-center gap-3">
- <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${result.isValid ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
- <span className={`w-2 h-2 rounded-full ${result.isValid ? 'bg-green-500' : 'bg-red-500'}`} />
+ <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${result.isValid ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-800'}`}>
+ <span className={`w-2 h-2 rounded-full ${result.isValid ? 'bg-green-500' : 'bg-gray-1000'}`} />
  {result.isValid ? 'Valid SPF Record' : 'Invalid SPF Record'}
  </span>
- <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${result.lookupCount > 10 ? 'bg-red-100 text-red-700' : result.lookupCount > 7 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+ <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${result.lookupCount > 10 ? 'bg-gray-200 text-gray-800' : result.lookupCount > 7 ? 'bg-[#FFEBC9] text-[#D4730F]' : 'bg-green-100 text-green-700'}`}>
  {result.lookupCount}/10 DNS lookups
  </span>
  </div>
@@ -306,7 +306,7 @@ export default function SpfLookupClient() {
  <h3 className="text-sm font-semibold text-gray-700">Raw SPF Record</h3>
  <button
  onClick={handleCopy}
- className={`px-3 py-1.5 text-xs font-semibold transition-all ${copied ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600'}`}
+ className={`px-3 py-1.5 text-xs font-semibold transition-all ${copied ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#FFEBC9] hover:text-[#D4730F]'}`}
  >
  {copied ? 'Copied!' : 'Copy'}
  </button>
@@ -320,11 +320,11 @@ export default function SpfLookupClient() {
  {result.warnings.length > 0 && (
  <div className="space-y-3">
  {result.warnings.map((w, i) => (
- <div key={i} className="flex items-start gap-3 bg-amber-50 border border-amber-200 p-4">
- <svg className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <div key={i} className="flex items-start gap-3 bg-[#FFEBC9]/40 border border-[#FFEBC9] p-4">
+ <svg className="w-5 h-5 text-[#D4730F]0 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
- <p className="text-sm text-amber-800">{w}</p>
+ <p className="text-sm text-[#D4730F]">{w}</p>
  </div>
  ))}
  </div>
@@ -382,12 +382,12 @@ export default function SpfLookupClient() {
  <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-green-100 text-green-700 shrink-0">Pass</span>
  <p className="text-xs text-gray-600">The server is authorized to send email for this domain.</p>
  </div>
- <div className="flex items-start gap-3 p-3 bg-red-50 ">
- <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-red-100 text-red-700 shrink-0">Fail</span>
+ <div className="flex items-start gap-3 p-3 bg-gray-100 ">
+ <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-gray-200 text-gray-800 shrink-0">Fail</span>
  <p className="text-xs text-gray-600">The server is explicitly not authorized. Emails should be rejected.</p>
  </div>
- <div className="flex items-start gap-3 p-3 bg-amber-50 ">
- <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-amber-100 text-amber-700 shrink-0">SoftFail</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-[#FFEBC9] text-[#D4730F] shrink-0">SoftFail</span>
  <p className="text-xs text-gray-600">The server is probably not authorized. Emails are accepted but flagged.</p>
  </div>
  <div className="flex items-start gap-3 p-3 bg-gray-50 ">

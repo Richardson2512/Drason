@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import { productPages } from '@/data/productPages';
 import { productPageSeo } from '@/data/productPageSeo';
 import TldrBlock from '@/components/seo/TldrBlock';
@@ -118,12 +119,13 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
     ];
 
     return (
-        <div className="bg-[#F7F2EB] text-gray-900 font-sans min-h-screen">
+        <div className="relative bg-[#F7F2EB] text-gray-900 font-sans min-h-screen">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             <BreadcrumbJsonLd crumbs={crumbs} />
             {faq && faq.length > 0 && <FaqJsonLd items={faq} />}
 
             <Navbar />
+            <MarketingBackdrop />
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-16">
                 <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10 lg:gap-16">
@@ -189,7 +191,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                                     <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h3>
                                     <div className="grid md:grid-cols-2 gap-4">
                                         {data.relatedBlog.map((blog, i) => (
-                                            <Link key={i} href={`/blog/${blog.slug}`} className="bg-white p-6 border border-gray-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+                                            <Link key={i} href={`/blog/${blog.slug}`} className="bg-white p-6 border border-[#D1CBC5] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
                                                 <h4 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-gray-700 transition-colors">{blog.title}</h4>
                                                 <p className="text-gray-500 text-xs">{blog.description}</p>
                                             </Link>

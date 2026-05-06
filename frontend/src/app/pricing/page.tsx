@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 
 export default function PricingPage() {
@@ -266,29 +267,20 @@ export default function PricingPage() {
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
+ <MarketingBackdrop />
 
  {/* Hero Section */}
  <div className="relative pt-32 md:pt-36 pb-12 text-center px-4 md:px-6">
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  <div className="relative z-10 max-w-5xl mx-auto">
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
  Transparent pricing for outbound teams
  </div>
- <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight leading-[1.05]">
+ <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 md:mb-6 text-gray-900 tracking-tight leading-[1.1]">
  Simple pricing for teams of all sizes
  </h1>
- <p className="text-lg md:text-xl text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
+ <p className="text-sm md:text-base text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
  Superkabe is the AI cold email platform for modern outbound teams — AI sequences, multi-mailbox sending, email validation, and full deliverability protection in one plan. Pick the tier that matches your scale.
  </p>
  <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-4">
@@ -308,7 +300,7 @@ export default function PricingPage() {
  <div className="bg-white border border-gray-200 p-10 md:p-14">
  <div className="text-center mb-10">
  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">What&apos;s included in every plan</p>
- <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">What does every Superkabe plan include?</h2>
+ <h2 className="h2-rule">What does every Superkabe plan include?</h2>
  </div>
  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5">
  {[
@@ -341,7 +333,7 @@ export default function PricingPage() {
  {/* Pricing Tiers — popl grid-line style, 3 public tiers */}
  <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10">
  <div className="text-center mb-10">
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">How much does Superkabe cost?</h2>
+ <h2 className="h2-rule mb-3">How much does Superkabe cost?</h2>
  <p className="text-base text-gray-500">Transparent, flat-rate pricing. Upgrade or downgrade anytime.</p>
  </div>
 
@@ -450,7 +442,7 @@ export default function PricingPage() {
  </div>
  </div>
 
- {/* ─── Enterprise Book a Demo (dedicated section) ─── */}
+ {/* ─── Enterprise Book a Demo (split design, sharp corners) ─── */}
  <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-16">
  <div className="overflow-hidden border border-gray-200">
  <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch">
@@ -465,7 +457,7 @@ export default function PricingPage() {
  </svg>
  </div>
  <div className="text-[10px] font-bold tracking-widest uppercase text-emerald-200 mb-3">Enterprise</div>
- <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-3 text-center">Custom platform + deliverability SLA</h3>
+ <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3 text-center">Custom platform + deliverability SLA</h3>
  <p className="text-sm md:text-base text-emerald-50/90 text-center max-w-sm leading-relaxed">
  Unlimited domains, unlimited mailboxes, super admin console, and a dedicated support team with guaranteed response times.
  </p>
@@ -488,7 +480,7 @@ export default function PricingPage() {
  'Custom integrations & white-glove onboarding',
  ].map((benefit) => (
  <li key={benefit} className="flex items-start gap-3 text-sm text-gray-700">
- <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+ <svg className="w-4 h-4 text-[#1C4532] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
  </svg>
  <span className="leading-relaxed">{benefit}</span>
@@ -497,15 +489,97 @@ export default function PricingPage() {
  </ul>
 
  <div className="flex flex-col sm:flex-row gap-3">
- <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors shadow-sm">
+ <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white text-sm font-semibold hover:bg-black transition-colors">
  Book a demo
  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
  </a>
- <a href="mailto:richardson@superkabe.com?subject=Enterprise%20Plan%20Inquiry" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-gray-900 border border-gray-200 rounded-full text-sm font-semibold hover:bg-gray-50 transition-colors">
+ <a href="mailto:richardson@superkabe.com?subject=Enterprise%20Plan%20Inquiry" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition-colors">
  Email sales
  </a>
  </div>
  </div>
+ </div>
+ </div>
+ </div>
+
+ {/* ─── Add-on: Dedicated IP (sharp corners) ─── */}
+ <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-16">
+ <div className="text-center mb-8">
+ <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#D1CBC5] text-[10px] font-semibold uppercase tracking-wider text-[#4A3F30] mb-4">
+ Add-on
+ </span>
+ <h2 className="h2-rule mb-3">Add a dedicated IP to any plan</h2>
+ <p className="text-base text-gray-500 max-w-2xl mx-auto">
+ Send through your own isolated IP address. Full reputation control, automatic warm-up, and zero shared-pool exposure.
+ </p>
+ </div>
+
+ <div
+ className="relative overflow-hidden p-8 md:p-12 text-white"
+ style={{ background: 'linear-gradient(135deg, #1C4532 0%, #143325 100%)', border: '1px solid #143325', boxShadow: '0 12px 40px rgba(28, 69, 50, 0.25)' }}
+ >
+ {/* Header row */}
+ <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8 pb-8 border-b border-white/15">
+ <div>
+ <div className="flex items-center gap-2 mb-4">
+ <div className="w-8 h-8 flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}>
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+ <rect x="2" y="6" width="20" height="12" rx="2" />
+ <path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01" />
+ </svg>
+ </div>
+ <span className="text-[11px] font-semibold tracking-widest uppercase text-emerald-100/80">Dedicated IP</span>
+ </div>
+ <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2">One IP, one workspace.</h3>
+ <p className="text-sm md:text-base text-emerald-50/80 leading-relaxed max-w-xl">
+ Provisioned on AWS SES, fully isolated, automatically warmed. Your sender reputation is yours alone.
+ </p>
+ </div>
+ <div className="md:text-right shrink-0">
+ <div className="flex items-baseline gap-1.5 md:justify-end mb-1">
+ <span className="text-2xl md:text-3xl font-bold tracking-tight">$39</span>
+ <span className="text-sm text-emerald-100/75">/ mo per IP</span>
+ </div>
+ <p className="text-xs text-emerald-100/65">Billed monthly · No setup fee</p>
+ </div>
+ </div>
+
+ {/* What's included — 2-col grid */}
+ <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 mb-8">
+ {[
+ 'Isolated AWS SES dedicated IP',
+ 'Real-time DNSBL + Postmaster monitoring',
+ 'Automatic warm-up over 4–8 weeks',
+ 'Auto-pause + 5-phase healing',
+ 'Per-workspace assignment',
+ 'Gmail Postmaster + Outlook SNDS data',
+ ].map((feature) => (
+ <li key={feature} className="flex items-start gap-2.5 text-sm text-emerald-50/90">
+ <svg className="w-4 h-4 text-[#9AE6B4] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+ <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+ </svg>
+ <span>{feature}</span>
+ </li>
+ ))}
+ </ul>
+
+ {/* CTAs */}
+ <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+ <Link
+ href="/docs/dedicated-ip"
+ className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-white text-[#1C4532] text-sm font-semibold hover:bg-emerald-50 transition-colors"
+ >
+ Learn more
+ <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+ </Link>
+ <Link
+ href="/docs/help/dedicated-ip"
+ className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-white text-sm font-semibold transition-colors"
+ style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)' }}
+ >
+ Setup guide
+ </Link>
+ <span className="text-xs text-emerald-100/65 sm:ml-auto">Best for 50K+ sends/month</span>
  </div>
  </div>
  </div>
@@ -515,7 +589,7 @@ export default function PricingPage() {
  {/* Section header */}
  <div className="text-center mb-10 px-6">
  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">How pricing works</p>
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+ <h2 className="h2-rule">
  Pricing built for how outbound actually works
  </h2>
  </div>
@@ -574,8 +648,8 @@ export default function PricingPage() {
  >
  <div className="text-white">
  <p className="text-xs font-bold tracking-widest uppercase opacity-80 mb-2">Superkabe is</p>
- <p className="text-3xl md:text-4xl font-bold leading-tight mb-3">The AI cold email platform</p>
- <p className="text-3xl md:text-4xl font-bold leading-tight opacity-90">built for deliverability.</p>
+ <p className="text-2xl md:text-3xl font-bold leading-tight mb-3">The AI cold email platform</p>
+ <p className="text-2xl md:text-3xl font-bold leading-tight opacity-90">built for deliverability.</p>
  </div>
  </div>
  </div>
@@ -603,7 +677,7 @@ export default function PricingPage() {
  borderBottom: i < 2 ? `1px solid #D1CBC5` : 'none',
  }}
  >
- <p className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight mb-1">{s.v}</p>
+ <p className="text-lg md:text-xl font-bold text-gray-900 tracking-tight mb-1">{s.v}</p>
  <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">{s.l}</p>
  </div>
  ))}
@@ -649,7 +723,7 @@ export default function PricingPage() {
  { v: '$20k–$80k', l: 'In pipeline exposure' },
  ].map((item) => (
  <div key={item.l} className="flex items-baseline justify-between gap-4 pb-4 border-b border-red-100 last:border-0 last:pb-0">
- <p className="text-xl md:text-2xl font-bold text-red-700 tracking-tight shrink-0">{item.v}</p>
+ <p className="text-lg md:text-xl font-bold text-red-700 tracking-tight shrink-0">{item.v}</p>
  <p className="text-xs text-gray-600 text-right font-medium">{item.l}</p>
  </div>
  ))}
@@ -668,7 +742,7 @@ export default function PricingPage() {
  <div className="max-w-3xl mx-auto">
  <div className="text-center mb-10">
  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Pricing FAQ</p>
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Common questions about Superkabe pricing</h2>
+ <h2 className="h2-rule">Common questions about Superkabe pricing</h2>
  </div>
  <div className="space-y-3">
  {faqSchema.mainEntity.map((q, i) => (

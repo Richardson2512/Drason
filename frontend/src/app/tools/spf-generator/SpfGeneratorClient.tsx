@@ -124,7 +124,7 @@ export default function SpfGeneratorClient() {
  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
  100% Free &middot; No Signup Required
  </div>
- <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-3">
  SPF Record Generator
  </h1>
  <p className="text-gray-600 text-lg">
@@ -139,9 +139,9 @@ export default function SpfGeneratorClient() {
  <div className="flex items-center gap-3">
  <span className={`text-xs font-medium px-2 py-1 ${
  lookupCount > 10
- ? 'bg-red-50 text-red-700 border border-red-200'
+ ? 'bg-gray-100 text-gray-800 border border-gray-200'
  : lookupCount > 7
- ? 'bg-amber-50 text-amber-700 border border-amber-200'
+ ? 'bg-[#FFEBC9]/40 text-[#D4730F] border border-[#FFEBC9]'
  : 'bg-green-50 text-green-700 border border-green-200'
  }`}>
  {lookupCount}/10 lookups
@@ -168,9 +168,9 @@ export default function SpfGeneratorClient() {
  {warnings.length > 0 && (
  <div className="space-y-2">
  {warnings.map((w) => (
- <div key={w} className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 ">
- <span className="text-amber-500 shrink-0 mt-0.5">&#9888;</span>
- <p className="text-sm text-amber-800">{w}</p>
+ <div key={w} className="flex items-start gap-3 p-4 bg-[#FFEBC9]/40 border border-[#FFEBC9] ">
+ <span className="text-[#D4730F]0 shrink-0 mt-0.5">&#9888;</span>
+ <p className="text-sm text-[#D4730F]">{w}</p>
  </div>
  ))}
  </div>
@@ -189,8 +189,8 @@ export default function SpfGeneratorClient() {
  disabled={isAdded}
  className={`px-3 py-1.5 text-xs border transition-colors ${
  isAdded
- ? 'bg-blue-100 text-blue-400 border-blue-200 cursor-default'
- : 'bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100 hover:border-blue-200'
+ ? 'bg-[#FFEBC9] text-[#D4730F] border-[#FFEBC9] cursor-default'
+ : 'bg-[#FFEBC9]/40 text-[#D4730F] border-[#FFEBC9] hover:bg-[#FFEBC9] hover:border-[#FFEBC9]'
  }`}
  >
  {isAdded ? `${provider.name} ✓` : `+ ${provider.name}`}
@@ -211,11 +211,11 @@ export default function SpfGeneratorClient() {
  onChange={(e) => setIpv4Input(e.target.value)}
  onKeyDown={(e) => e.key === 'Enter' && addIpv4()}
  placeholder="e.g. 192.0.2.1 or 192.0.2.0/24"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  <button
  onClick={addIpv4}
- className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 text-sm font-semibold transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white hover:bg-[#D4730F] text-sm font-semibold transition-colors shrink-0"
  >
  Add
  </button>
@@ -225,7 +225,7 @@ export default function SpfGeneratorClient() {
  {ipv4List.map((ip) => (
  <span key={ip} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm font-mono">
  ip4:{ip}
- <button onClick={() => removeItem(ipv4List, setIpv4List, ip)} className="text-gray-400 hover:text-red-500 transition-colors">&times;</button>
+ <button onClick={() => removeItem(ipv4List, setIpv4List, ip)} className="text-gray-400 hover:text-gray-5000 transition-colors">&times;</button>
  </span>
  ))}
  </div>
@@ -243,11 +243,11 @@ export default function SpfGeneratorClient() {
  onChange={(e) => setIpv6Input(e.target.value)}
  onKeyDown={(e) => e.key === 'Enter' && addIpv6()}
  placeholder="e.g. 2001:db8::1 or 2001:db8::/32"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  <button
  onClick={addIpv6}
- className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 text-sm font-semibold transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white hover:bg-[#D4730F] text-sm font-semibold transition-colors shrink-0"
  >
  Add
  </button>
@@ -257,7 +257,7 @@ export default function SpfGeneratorClient() {
  {ipv6List.map((ip) => (
  <span key={ip} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm font-mono">
  ip6:{ip}
- <button onClick={() => removeItem(ipv6List, setIpv6List, ip)} className="text-gray-400 hover:text-red-500 transition-colors">&times;</button>
+ <button onClick={() => removeItem(ipv6List, setIpv6List, ip)} className="text-gray-400 hover:text-gray-5000 transition-colors">&times;</button>
  </span>
  ))}
  </div>
@@ -275,11 +275,11 @@ export default function SpfGeneratorClient() {
  onChange={(e) => setIncludeInput(e.target.value)}
  onKeyDown={(e) => e.key === 'Enter' && addInclude(includeInput)}
  placeholder="e.g. _spf.google.com"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none text-sm transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  <button
  onClick={() => addInclude(includeInput)}
- className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 text-sm font-semibold transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white hover:bg-[#D4730F] text-sm font-semibold transition-colors shrink-0"
  >
  Add
  </button>
@@ -289,7 +289,7 @@ export default function SpfGeneratorClient() {
  {includeList.map((domain) => (
  <span key={domain} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm font-mono">
  include:{domain}
- <button onClick={() => removeItem(includeList, setIncludeList, domain)} className="text-gray-400 hover:text-red-500 transition-colors">&times;</button>
+ <button onClick={() => removeItem(includeList, setIncludeList, domain)} className="text-gray-400 hover:text-gray-5000 transition-colors">&times;</button>
  </span>
  ))}
  </div>
@@ -305,7 +305,7 @@ export default function SpfGeneratorClient() {
  type="checkbox"
  checked={allowA}
  onChange={(e) => setAllowA(e.target.checked)}
- className="w-5 h-5 border-gray-300 text-blue-600 focus:ring-blue-500"
+ className="w-5 h-5 border-gray-300 text-[#D4730F] focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Allow domain&apos;s A record</span>
@@ -317,7 +317,7 @@ export default function SpfGeneratorClient() {
  type="checkbox"
  checked={allowMx}
  onChange={(e) => setAllowMx(e.target.checked)}
- className="w-5 h-5 border-gray-300 text-blue-600 focus:ring-blue-500"
+ className="w-5 h-5 border-gray-300 text-[#D4730F] focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Allow domain&apos;s MX servers</span>

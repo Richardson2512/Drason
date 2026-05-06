@@ -3,6 +3,7 @@ import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import CustomSelect from '@/components/ui/CustomSelect';
 
 const SUBJECT_OPTIONS = [
@@ -108,27 +109,19 @@ export default function ContactPage() {
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
+ <MarketingBackdrop />
 
  {/* Hero Section */}
  <div className="relative pt-32 md:pt-36 pb-10 md:pb-12 text-center px-4 md:px-6">
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  <div className="relative z-10 max-w-3xl mx-auto">
- <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-gray-900 tracking-tight">
+ <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold mb-4 md:mb-6 text-gray-900 tracking-tight">
  Contact Us
  </h1>
  <p className="text-lg md:text-2xl text-gray-500 mb-2 max-w-2xl mx-auto">
  We&apos;d Love to Hear From You
  </p>
- <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+ <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
  Whether you have a question about our platform, need technical support, or want to explore a partnership — our team is ready to help.
  </p>
  </div>
@@ -148,7 +141,7 @@ export default function ContactPage() {
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
  </svg>
  </div>
- <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+ <h2 className="h2-rule mb-3">
  Message Sent
  </h2>
  <p className="text-gray-600 text-lg mb-2">
@@ -169,7 +162,7 @@ export default function ContactPage() {
  </div>
  ) : (
  <>
- <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
+ <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-6">
  Send Us a Message
  </h2>
  <form onSubmit={handleSubmit} className="space-y-5">

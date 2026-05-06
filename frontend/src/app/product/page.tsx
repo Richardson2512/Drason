@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 import type { Metadata } from 'next';
 
@@ -115,11 +116,12 @@ export default function ProductIndexPage() {
  };
 
  return (
- <div className="bg-[#F7F2EB] text-gray-900 font-sans min-h-screen flex flex-col">
+ <div className="relative bg-[#F7F2EB] text-gray-900 font-sans min-h-screen flex flex-col">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
+ <MarketingBackdrop />
 
  <main className="flex-1 max-w-6xl mx-auto px-6 w-full pt-32 md:pt-40 pb-16">
  {/* Mailivery-style header — tag pill + huge H1 + subtitle */}
@@ -130,7 +132,7 @@ export default function ProductIndexPage() {
  </span>
  </div>
  <h1
- className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 leading-[1.1] mb-6"
  style={{ letterSpacing: '-0.02em' }}
  >
  The AI cold email platform — every layer, one product
@@ -154,16 +156,16 @@ export default function ProductIndexPage() {
  </div>
 
  {/* Popl-style grid with continuous border lines */}
- <div style={{ borderTop: `1px solid #E5E7EB`, borderLeft: `1px solid #E5E7EB` }}>
+ <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
  {category.links.map((link) => (
  <Link
  key={link.href}
  href={link.href}
- className="group block p-8 md:p-10 hover:bg-gray-50 transition-colors duration-300"
+ className="group block bg-white p-8 md:p-10 hover:bg-[#FAF6F0] transition-colors duration-300"
  style={{
- borderRight: `1px solid #E5E7EB`,
- borderBottom: `1px solid #E5E7EB`,
+ borderRight: `1px solid #D1CBC5`,
+ borderBottom: `1px solid #D1CBC5`,
  }}
  >
  <h3 className="font-bold text-gray-900 mb-3 group-hover:text-gray-700 transition-colors text-base md:text-lg leading-[1.3] tracking-tight">

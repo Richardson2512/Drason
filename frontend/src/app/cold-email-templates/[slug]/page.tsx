@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import {
     TEMPLATES,
     GOAL_META,
@@ -110,6 +111,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             />
 
             <Navbar />
+            <MarketingBackdrop />
 
             {/* ─── Header ──────────────────────────────────────────────── */}
             <section className="px-6 pt-24 pb-8 md:pt-32">
@@ -122,7 +124,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
                         <span className="text-[#1E1E2F]">{template.title}</span>
                     </nav>
 
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight mb-4">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight leading-tight mb-4">
                         {template.title}
                     </h1>
 

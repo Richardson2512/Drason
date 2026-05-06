@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 export const metadata: Metadata = {
  title: 'The Modern Outbound Email Infrastructure Stack | Superkabe',
@@ -122,10 +123,7 @@ export default function OutboundInfrastructureStackGuide() {
  return (
  <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
  <Navbar />
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg"><div className="cloud-shadow" /><div className="cloud-puff-1" /><div className="cloud-puff-2" /><div className="cloud-puff-3" /></div>
- <div className="absolute inset-0 hero-grid" />
- </div>
+ <MarketingBackdrop />
 
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
@@ -143,7 +141,7 @@ export default function OutboundInfrastructureStackGuide() {
  <span className="text-gray-600">Outbound Email Infrastructure Stack</span>
  </nav>
 
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-4">
  The modern outbound email infrastructure stack: a complete breakdown
  </h1>
  <p className="text-gray-400 text-sm mb-8">18 min read &middot; Published March 2026 &middot; Last updated March 27, 2026</p>

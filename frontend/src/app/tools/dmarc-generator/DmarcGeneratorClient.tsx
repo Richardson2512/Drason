@@ -146,9 +146,9 @@ export default function DmarcGeneratorClient() {
  const strengthLabel = policyStrength < 30 ? 'Weak' : policyStrength < 60 ? 'Moderate' : 'Strong';
  const strengthColor =
  policyStrength < 30
- ? 'from-red-400 to-red-500'
+ ? 'from-gray-200 to-gray-8000'
  : policyStrength < 60
- ? 'from-amber-400 to-amber-500'
+ ? 'from-[#FFEBC9] to-[#D4730F]0'
  : 'from-green-400 to-green-500';
 
  /* ─── Copy ─── */
@@ -177,7 +177,7 @@ export default function DmarcGeneratorClient() {
  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
  100% Free &middot; No Signup Required
  </div>
- <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-3">
  DMARC Record Generator
  </h1>
  <p className="text-gray-600 text-lg">
@@ -227,9 +227,9 @@ export default function DmarcGeneratorClient() {
  {warnings.length > 0 && (
  <div className="space-y-2">
  {warnings.map((w) => (
- <div key={w} className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 ">
- <span className="text-amber-500 shrink-0 mt-0.5">&#9888;</span>
- <p className="text-sm text-amber-800">{w}</p>
+ <div key={w} className="flex items-start gap-3 p-4 bg-[#FFEBC9]/40 border border-[#FFEBC9] ">
+ <span className="text-[#D4730F]0 shrink-0 mt-0.5">&#9888;</span>
+ <p className="text-sm text-[#D4730F]">{w}</p>
  </div>
  ))}
  </div>
@@ -246,7 +246,7 @@ export default function DmarcGeneratorClient() {
  value={domain}
  onChange={(e) => setDomain(e.target.value)}
  placeholder="e.g. example.com"
- className="w-full max-w-md px-4 py-3 border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none text-sm transition-all"
+ className="w-full max-w-md px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  {domain.trim() && (
  <p className="mt-2 text-xs text-gray-500">
@@ -301,11 +301,11 @@ export default function DmarcGeneratorClient() {
  onChange={(e) => setRuaInput(e.target.value)}
  onKeyDown={(e) => e.key === 'Enter' && addRuaEmail()}
  placeholder="e.g. dmarc-reports@example.com"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none text-sm transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  <button
  onClick={addRuaEmail}
- className="px-6 py-3 bg-purple-600 text-white hover:bg-purple-700 text-sm font-semibold transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white hover:bg-[#D4730F] text-sm font-semibold transition-colors shrink-0"
  >
  Add
  </button>
@@ -315,12 +315,12 @@ export default function DmarcGeneratorClient() {
  {ruaEmails.map((email) => (
  <span
  key={email}
- className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-700 text-sm font-mono border border-purple-100"
+ className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFEBC9]/40 text-[#D4730F] text-sm font-mono border border-[#FFEBC9]"
  >
  mailto:{email}
  <button
  onClick={() => removeEmail(ruaEmails, setRuaEmails, email)}
- className="text-purple-400 hover:text-red-500 transition-colors"
+ className="text-[#D4730F] hover:text-gray-5000 transition-colors"
  >
  &times;
  </button>
@@ -346,11 +346,11 @@ export default function DmarcGeneratorClient() {
  onChange={(e) => setRufInput(e.target.value)}
  onKeyDown={(e) => e.key === 'Enter' && addRufEmail()}
  placeholder="e.g. dmarc-forensic@example.com"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none text-sm transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm transition-all"
  />
  <button
  onClick={addRufEmail}
- className="px-6 py-3 bg-purple-600 text-white hover:bg-purple-700 text-sm font-semibold transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white hover:bg-[#D4730F] text-sm font-semibold transition-colors shrink-0"
  >
  Add
  </button>
@@ -365,7 +365,7 @@ export default function DmarcGeneratorClient() {
  mailto:{email}
  <button
  onClick={() => removeEmail(rufEmails, setRufEmails, email)}
- className="text-gray-400 hover:text-red-500 transition-colors"
+ className="text-gray-400 hover:text-gray-5000 transition-colors"
  >
  &times;
  </button>
@@ -389,7 +389,7 @@ export default function DmarcGeneratorClient() {
  value="r"
  checked={adkim === 'r'}
  onChange={() => setAdkim('r')}
- className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+ className="w-4 h-4 text-[#D4730F] border-gray-300 focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Relaxed</span>
@@ -403,7 +403,7 @@ export default function DmarcGeneratorClient() {
  value="s"
  checked={adkim === 's'}
  onChange={() => setAdkim('s')}
- className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+ className="w-4 h-4 text-[#D4730F] border-gray-300 focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Strict</span>
@@ -427,7 +427,7 @@ export default function DmarcGeneratorClient() {
  value="r"
  checked={aspf === 'r'}
  onChange={() => setAspf('r')}
- className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+ className="w-4 h-4 text-[#D4730F] border-gray-300 focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Relaxed</span>
@@ -441,7 +441,7 @@ export default function DmarcGeneratorClient() {
  value="s"
  checked={aspf === 's'}
  onChange={() => setAspf('s')}
- className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+ className="w-4 h-4 text-[#D4730F] border-gray-300 focus:ring-[#FFEBC9]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Strict</span>
@@ -476,13 +476,13 @@ export default function DmarcGeneratorClient() {
  const v = Math.max(1, Math.min(100, Number(e.target.value) || 1));
  setPct(v);
  }}
- className="w-16 px-3 py-2 border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none text-sm text-center transition-all"
+ className="w-16 px-3 py-2 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-sm text-center transition-all"
  />
  <span className="text-sm text-gray-500">%</span>
  </div>
  </div>
  {pct < 100 && (
- <p className="mt-2 text-xs text-purple-600 font-medium">
+ <p className="mt-2 text-xs text-[#D4730F] font-medium">
  The policy will apply to {pct}% of messages. The remaining {100 - pct}% will be treated as p=none.
  </p>
  )}
@@ -510,7 +510,7 @@ export default function DmarcGeneratorClient() {
  type="checkbox"
  checked={foOptions.includes(opt.value)}
  onChange={() => toggleFo(opt.value)}
- className="w-5 h-5 border-gray-300 text-purple-600 focus:ring-purple-500 mt-0.5"
+ className="w-5 h-5 border-gray-300 text-[#D4730F] focus:ring-[#FFEBC9]0 mt-0.5"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">{opt.label}</span>

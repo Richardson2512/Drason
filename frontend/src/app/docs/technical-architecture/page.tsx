@@ -27,7 +27,7 @@ export default function ArticlePage() {
  <Navbar />
 
  <article className="pt-32 md:pt-36 pb-10 max-w-4xl mx-auto px-6 relative z-10">
- <h1 className="text-5xl font-bold leading-tight tracking-tight text-gray-900 mb-8">
+ <h1 className="text-5xl font-semibold leading-tight tracking-tight text-gray-900 mb-8">
  Superkabe Technical Architecture
  </h1>
 

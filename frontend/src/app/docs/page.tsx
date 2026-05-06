@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function DocsPage() {
     return (
         <div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900 tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-semibold mb-6 text-gray-900 tracking-tight">
                 Superkabe Documentation
             </h1>
             <p className="text-xl text-gray-500 mb-12 leading-relaxed max-w-2xl">

@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import BlogArticleGrid from '@/components/BlogArticleGrid';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 import type { Metadata } from 'next';
@@ -512,10 +513,11 @@ export default function BlogPage() {
  };
 
  return (
- <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
+ <div className="relative bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
  <Navbar />
+ <MarketingBackdrop />
 
  <main className="pt-32 md:pt-40 pb-16">
  {/* Mailivery-style header — width-locked to match BlogArticleGrid's max-w-6xl */}
@@ -527,7 +529,7 @@ export default function BlogPage() {
  </span>
  </div>
  <h1
- className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 leading-[1.1] mb-6"
  style={{ letterSpacing: '-0.02em' }}
  >
  Email infrastructure intelligence

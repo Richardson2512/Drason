@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Opt-in marketing typography. Add `.h2-rule` / `.h3-rule` to a heading
+   to give it the customers-section look. Not a global element selector,
+   so FAQ items, card titles, etc. are unaffected unless they opt in. */
+.h2-rule {
+  font-size: clamp(28px, 3vw, 40px) !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  color: #111827 !important;
+  text-wrap: balance;
+}
+.h3-rule {
+  font-size: clamp(20px, 2vw, 24px) !important;
+  font-weight: 600 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  color: #111827 !important;
+  text-wrap: balance;
+}
+
 :root {
   --bg: #F5F8FF;
   --text: #1E1E2F;
@@ -422,14 +442,19 @@ body {
 
 /* Faint Grid Overlay for Hero */
 .hero-grid {
-  position: absolute;
-  inset: 0;
   background-image:
-    linear-gradient(rgba(148, 3, 253, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 3, 253, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(31, 41, 55, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 41, 55, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
-  z-index: 1;
+}
+
+/* Marketing wrappers — establish a stacking context so the absolutely-
+   positioned MarketingBackdrop (z=-1) stays BEHIND in-flow content
+   (sections, cards, text) within the wrapper bounds. Without this,
+   the grid would either float above content or escape to the viewport. */
+.bg-\[\#F7F2EB\] {
+  isolation: isolate;
 }
 
 /* ============================================================================
@@ -524,6 +549,50 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ============================================================================
+   MARKETING SCROLLBAR
+   Show a branded scrollbar on marketing pages only. Scoped via :has() to the
+   cream-bg wrapper (`bg-[#F7F2EB]`) that every marketing route mounts at the
+   root of its tree — so the dashboard (.light-theme) keeps its hidden scroll.
+   ============================================================================ */
+html:has(body .bg-\[\#F7F2EB\]) {
+  scrollbar-width: thin;
+  scrollbar-color: #E68B1F #F4ECDC;
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar {
+  display: block;
+  width: 12px;
+  background: #F4ECDC;
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, transparent 0, #F4ECDC 35%, #F4ECDC 65%, transparent 100%);
+  border-left: 1px solid rgba(60, 40, 10, 0.06);
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #F5A742 0%, #E68B1F 50%, #B36710 100%);
+  border: 3px solid #F4ECDC;
+  border-radius: 999px;
+  background-clip: padding-box;
+  min-height: 60px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #E68B1F 0%, #B36710 100%);
+  border-color: #EFE0C2;
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-thumb:active {
+  background: #B36710;
+}
+
+html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-corner {
+  background: #F4ECDC;
 }
 
 /* Logo Ticker Animation */

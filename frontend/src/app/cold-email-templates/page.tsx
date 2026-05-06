@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import {
     TEMPLATES,
     GOAL_META,
@@ -86,6 +87,7 @@ export default function ColdEmailTemplatesPage() {
             />
 
             <Navbar />
+            <MarketingBackdrop />
 
             {/* ─── Hero — centered, condensed, premium ─────────────────── */}
             <section className="px-6 pt-24 pb-10 md:pt-32 md:pb-14">
@@ -94,7 +96,7 @@ export default function ColdEmailTemplatesPage() {
                         Free Template Library
                     </span>
 
-                    <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.1] mb-5">
+                    <h1 className="text-2xl md:text-3xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.1] mb-5">
                         Cold Email Templates That Actually Get Replies
                     </h1>
 

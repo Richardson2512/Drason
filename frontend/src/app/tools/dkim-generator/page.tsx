@@ -146,13 +146,13 @@ export default function DkimGeneratorPage() {
 
  {/* Header */}
  <div className="mb-10">
- <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-xs font-medium text-emerald-700 mb-6">
+ <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#D4F0DC]/50 border border-[#D4F0DC] rounded-full text-xs font-medium text-[#1C4532] mb-6">
  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4" />
  </svg>
  DKIM Generator
  </div>
- <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-4">
  Free DKIM Record Generator
  </h1>
  <p className="text-lg text-gray-600 leading-relaxed">
@@ -188,7 +188,7 @@ export default function DkimGeneratorPage() {
  <div className="space-y-6">
  <div className="p-5 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-4">
- <code className="shrink-0 px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-bold">v=DKIM1</code>
+ <code className="shrink-0 px-3 py-1 bg-[#D4F0DC] text-[#1C4532] text-sm font-bold">v=DKIM1</code>
  <div>
  <h3 className="font-semibold text-gray-900 mb-1">Version</h3>
  <p className="text-sm text-gray-600">Identifies the record as a DKIM key record. This tag is required and must be the first tag in the record. The only valid value is <code className="text-xs bg-gray-200 px-1 ">DKIM1</code>.</p>
@@ -198,7 +198,7 @@ export default function DkimGeneratorPage() {
 
  <div className="p-5 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-4">
- <code className="shrink-0 px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-bold">k=rsa</code>
+ <code className="shrink-0 px-3 py-1 bg-[#D4F0DC] text-[#1C4532] text-sm font-bold">k=rsa</code>
  <div>
  <h3 className="font-semibold text-gray-900 mb-1">Key Type</h3>
  <p className="text-sm text-gray-600">Specifies the cryptographic algorithm used. <code className="text-xs bg-gray-200 px-1 ">rsa</code> is the standard and universally supported. <code className="text-xs bg-gray-200 px-1 ">ed25519</code> is newer and produces shorter keys but has limited receiver support.</p>
@@ -208,7 +208,7 @@ export default function DkimGeneratorPage() {
 
  <div className="p-5 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-4">
- <code className="shrink-0 px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-bold">p=...</code>
+ <code className="shrink-0 px-3 py-1 bg-[#D4F0DC] text-[#1C4532] text-sm font-bold">p=...</code>
  <div>
  <h3 className="font-semibold text-gray-900 mb-1">Public Key</h3>
  <p className="text-sm text-gray-600">The base64-encoded public key data. This is the key that receiving servers use to verify DKIM signatures. An empty <code className="text-xs bg-gray-200 px-1 ">p=</code> value means the key has been revoked.</p>
@@ -218,7 +218,7 @@ export default function DkimGeneratorPage() {
 
  <div className="p-5 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-4">
- <code className="shrink-0 px-3 py-1 bg-emerald-100 text-emerald-700 text-sm font-bold">t=y / t=s</code>
+ <code className="shrink-0 px-3 py-1 bg-[#D4F0DC] text-[#1C4532] text-sm font-bold">t=y / t=s</code>
  <div>
  <h3 className="font-semibold text-gray-900 mb-1">Flags</h3>
  <p className="text-sm text-gray-600"><code className="text-xs bg-gray-200 px-1 ">t=y</code> indicates testing mode &mdash; failures should not cause rejection. <code className="text-xs bg-gray-200 px-1 ">t=s</code> enforces strict alignment, requiring the signing domain to exactly match the From header domain (no subdomains).</p>
@@ -246,7 +246,7 @@ export default function DkimGeneratorPage() {
  <div className="bg-white border border-gray-100 p-8 md:p-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-6">Provider-Specific Setup</h2>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="p-6 bg-emerald-50/50 border border-emerald-100">
+ <div className="p-6 bg-[#D4F0DC]/50 border border-[#D4F0DC]">
  <h3 className="font-bold text-gray-900 mb-3">Google Workspace</h3>
  <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
  <li>Go to Admin Console &rarr; Apps &rarr; Google Workspace &rarr; Gmail</li>
@@ -256,7 +256,7 @@ export default function DkimGeneratorPage() {
  </ol>
  </div>
 
- <div className="p-6 bg-emerald-50/50 border border-emerald-100">
+ <div className="p-6 bg-[#D4F0DC]/50 border border-[#D4F0DC]">
  <h3 className="font-bold text-gray-900 mb-3">Microsoft 365</h3>
  <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
  <li>Go to Microsoft Defender portal &rarr; Email authentication</li>
@@ -266,7 +266,7 @@ export default function DkimGeneratorPage() {
  </ol>
  </div>
 
- <div className="p-6 bg-emerald-50/50 border border-emerald-100">
+ <div className="p-6 bg-[#D4F0DC]/50 border border-[#D4F0DC]">
  <h3 className="font-bold text-gray-900 mb-3">Smartlead</h3>
  <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
  <li>Go to Settings &rarr; Email Accounts</li>
@@ -276,7 +276,7 @@ export default function DkimGeneratorPage() {
  </ol>
  </div>
 
- <div className="p-6 bg-emerald-50/50 border border-emerald-100">
+ <div className="p-6 bg-[#D4F0DC]/50 border border-[#D4F0DC]">
  <h3 className="font-bold text-gray-900 mb-3">SendGrid</h3>
  <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
  <li>Go to Settings &rarr; Sender Authentication</li>
@@ -321,7 +321,7 @@ export default function DkimGeneratorPage() {
  href={tool.href}
  className={`group block p-6 bg-white border border-gray-100 hover:border-${tool.color}-200 hover:shadow-lg transition-all duration-300`}
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors text-sm">{tool.title}</h3>
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#1C4532] transition-colors text-sm">{tool.title}</h3>
  <p className="text-xs text-gray-500">{tool.description}</p>
  </Link>
  ))}
@@ -334,9 +334,9 @@ export default function DkimGeneratorPage() {
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <Link
  href="/blog/spf-dkim-dmarc-explained"
- className="group block p-6 bg-white border border-gray-100 hover:border-emerald-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#D4F0DC] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors text-sm">SPF, DKIM &amp; DMARC Setup Guide</h3>
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#1C4532] transition-colors text-sm">SPF, DKIM &amp; DMARC Setup Guide</h3>
  <p className="text-xs text-gray-500">Step-by-step DNS authentication setup for outbound email teams.</p>
  </Link>
  </div>
@@ -351,7 +351,7 @@ export default function DkimGeneratorPage() {
  </p>
  <Link
  href="/signup"
- className="inline-block px-6 py-3 bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors"
+ className="inline-block px-6 py-3 bg-[#1C4532] text-white text-sm font-semibold hover:bg-[#143325] transition-colors"
  >
  Start free trial
  </Link>

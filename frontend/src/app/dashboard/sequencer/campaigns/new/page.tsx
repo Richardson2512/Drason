@@ -16,6 +16,19 @@ import toast from 'react-hot-toast';
 // Dynamic import to avoid SSR issues with Tiptap
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
+// crypto.randomUUID is only defined in secure contexts (HTTPS / localhost).
+// Fall back to a v4-shaped Math.random id for plain-HTTP dev access.
+function safeRandomUUID(): string {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -367,7 +380,7 @@ export default function NewCampaignPage() {
 
     // Step 3: Sequence
     const [sequenceSteps, setSequenceSteps] = useState<SequenceStepData[]>([
-        { id: crypto.randomUUID(), stepNumber: 1, delayDays: 0, delayHours: 0, subject: '', bodyHtml: '', variants: [] },
+        { id: safeRandomUUID(), stepNumber: 1, delayDays: 0, delayHours: 0, subject: '', bodyHtml: '', variants: [] },
     ]);
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [previewStepIndex, setPreviewStepIndex] = useState<number | null>(null);
@@ -454,7 +467,7 @@ export default function NewCampaignPage() {
                 // Sequence steps with variants
                 if (Array.isArray(c.steps) && c.steps.length > 0) {
                     setSequenceSteps(c.steps.map((s: any) => ({
-                        id: s.id || (typeof crypto !== 'undefined' ? crypto.randomUUID() : String(Math.random())),
+                        id: s.id || safeRandomUUID(),
                         stepNumber: s.step_number,
                         delayDays: s.delay_days ?? 0,
                         delayHours: s.delay_hours ?? 0,
@@ -463,7 +476,7 @@ export default function NewCampaignPage() {
                         condition: s.condition ?? null,
                         branchToStepNumber: s.branch_to_step_number ?? null,
                         variants: Array.isArray(s.variants) ? s.variants.map((v: any) => ({
-                            id: v.id || (typeof crypto !== 'undefined' ? crypto.randomUUID() : String(Math.random())),
+                            id: v.id || safeRandomUUID(),
                             label: v.variant_label || v.label || 'B',
                             subject: v.subject || '',
                             bodyHtml: v.body_html || '',
@@ -805,7 +818,7 @@ export default function NewCampaignPage() {
 
     const addStep = () => {
         const newStep: SequenceStepData = {
-            id: crypto.randomUUID(),
+            id: safeRandomUUID(),
             stepNumber: sequenceSteps.length + 1,
             delayDays: 2,
             delayHours: 0,
@@ -828,9 +841,9 @@ export default function NewCampaignPage() {
         const source = sequenceSteps[index];
         const dup: SequenceStepData = {
             ...source,
-            id: crypto.randomUUID(),
+            id: safeRandomUUID(),
             stepNumber: sequenceSteps.length + 1,
-            variants: source.variants.map(v => ({ ...v, id: crypto.randomUUID() })),
+            variants: source.variants.map(v => ({ ...v, id: safeRandomUUID() })),
         };
         setSequenceSteps([...sequenceSteps, dup]);
         setActiveStepIndex(sequenceSteps.length);
@@ -845,7 +858,7 @@ export default function NewCampaignPage() {
         const labels = 'ABCDEFGH';
         const nextLabel = labels[step.variants.length + 1] || 'X';
         const variant = {
-            id: crypto.randomUUID(),
+            id: safeRandomUUID(),
             label: nextLabel,
             subject: step.subject,
             bodyHtml: step.bodyHtml,

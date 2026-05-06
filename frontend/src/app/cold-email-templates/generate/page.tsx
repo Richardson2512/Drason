@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import {
     GOAL_META,
     FRAMEWORK_META,
@@ -82,6 +83,7 @@ export default function GenerateColdEmailPage() {
             />
 
             <Navbar />
+            <MarketingBackdrop />
 
             {/* ─── Hero ───────────────────────────────────────────────── */}
             <section className="px-6 pt-24 pb-10 md:pt-32">

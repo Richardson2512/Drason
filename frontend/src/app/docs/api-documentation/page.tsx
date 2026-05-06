@@ -167,7 +167,7 @@ function RequestLifecycleDiagram() {
 export default function APIReferencePage() {
  return (
  <div className="prose prose-lg text-gray-700 max-w-none">
- <h1 className="text-5xl font-bold mb-4 text-gray-900">Superkabe API Documentation <Pill tone="blue">v1</Pill></h1>
+ <h1 className="text-5xl font-semibold mb-4 text-gray-900">Superkabe API Documentation <Pill tone="blue">v1</Pill></h1>
  <p className="text-xl text-gray-500 mb-8">
  Complete reference for the Superkabe public REST API. Every endpoint, every field, every error code. Used by the dashboard UI, the MCP server, and any third-party integration you build.
  </p>

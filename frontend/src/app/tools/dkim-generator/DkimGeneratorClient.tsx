@@ -103,10 +103,10 @@ export default function DkimGeneratorClient() {
  value={selector}
  onChange={(e) => setSelector(e.target.value)}
  placeholder="e.g. google, s1, default"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
  />
  {!selector.trim() && (
- <p className="mt-1.5 text-xs text-amber-600">
+ <p className="mt-1.5 text-xs text-[#D4730F]">
  Enter a selector name. Your email provider will tell you which selector to use.
  </p>
  )}
@@ -123,7 +123,7 @@ export default function DkimGeneratorClient() {
  value={domain}
  onChange={(e) => setDomain(e.target.value)}
  placeholder="e.g. yourdomain.com"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
  />
  </div>
 
@@ -137,10 +137,10 @@ export default function DkimGeneratorClient() {
  value={publicKey}
  onChange={(e) => setPublicKey(e.target.value)}
  placeholder="Paste your DKIM public key here (base64 encoded)"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400 min-h-[120px] resize-y font-mono"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400 min-h-[120px] resize-y font-mono"
  />
  {keyWarning && (
- <p className="mt-1.5 text-xs text-amber-600 flex items-start gap-1.5">
+ <p className="mt-1.5 text-xs text-[#D4730F] flex items-start gap-1.5">
  <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
  </svg>
@@ -170,7 +170,7 @@ export default function DkimGeneratorClient() {
  type="checkbox"
  checked={testingMode}
  onChange={(e) => setTestingMode(e.target.checked)}
- className="mt-0.5 w-5 h-5 border-gray-300 text-emerald-600 focus:ring-emerald-500"
+ className="mt-0.5 w-5 h-5 border-gray-300 text-[#1C4532] focus:ring-[#D4F0DC]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Testing mode</span>
@@ -183,7 +183,7 @@ export default function DkimGeneratorClient() {
  type="checkbox"
  checked={strictAlignment}
  onChange={(e) => setStrictAlignment(e.target.checked)}
- className="mt-0.5 w-5 h-5 border-gray-300 text-emerald-600 focus:ring-emerald-500"
+ className="mt-0.5 w-5 h-5 border-gray-300 text-[#1C4532] focus:ring-[#D4F0DC]0"
  />
  <div>
  <span className="text-sm font-medium text-gray-900">Strict alignment</span>
@@ -205,7 +205,7 @@ export default function DkimGeneratorClient() {
  value={notes}
  onChange={(e) => setNotes(e.target.value)}
  placeholder="e.g. Generated for marketing emails"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
  />
  <p className="mt-1.5 text-xs text-gray-400">Adds an informational note to the record (n= field). Not used for validation.</p>
  </div>
@@ -265,13 +265,13 @@ export default function DkimGeneratorClient() {
 
  {/* Info callout for testing mode */}
  {testingMode && (
- <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 ">
+ <div className="mt-4 p-4 bg-[#D4F0DC]/50 border border-[#D4F0DC] ">
  <div className="flex items-start gap-2">
- <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <svg className="w-4 h-4 text-[#1C4532] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
  </svg>
- <p className="text-xs text-emerald-800">
- <strong>Testing mode is enabled.</strong> Receiving servers will log DKIM failures but will not reject emails. Remove the <code className="bg-emerald-100 px-1 ">t=y</code> flag once you have confirmed that DKIM signing is working correctly.
+ <p className="text-xs text-[#1C4532]">
+ <strong>Testing mode is enabled.</strong> Receiving servers will log DKIM failures but will not reject emails. Remove the <code className="bg-[#D4F0DC] px-1 ">t=y</code> flag once you have confirmed that DKIM signing is working correctly.
  </p>
  </div>
  </div>
@@ -283,23 +283,23 @@ export default function DkimGeneratorClient() {
  <h2 className="text-lg font-bold text-gray-900 mb-4">How to Add This Record to Your DNS</h2>
  <ol className="space-y-3 text-sm text-gray-600">
  <li className="flex items-start gap-3">
- <span className="shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+ <span className="shrink-0 w-6 h-6 bg-[#D4F0DC] text-[#1C4532] rounded-full flex items-center justify-center text-xs font-bold">1</span>
  <span>Log in to your domain registrar or DNS provider (e.g., Cloudflare, Namecheap, GoDaddy, Route 53).</span>
  </li>
  <li className="flex items-start gap-3">
- <span className="shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+ <span className="shrink-0 w-6 h-6 bg-[#D4F0DC] text-[#1C4532] rounded-full flex items-center justify-center text-xs font-bold">2</span>
  <span>Navigate to DNS management for your domain.</span>
  </li>
  <li className="flex items-start gap-3">
- <span className="shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+ <span className="shrink-0 w-6 h-6 bg-[#D4F0DC] text-[#1C4532] rounded-full flex items-center justify-center text-xs font-bold">3</span>
  <span>Add a new <strong>TXT</strong> record with the name <code className="bg-gray-100 px-1.5 py-0.5 text-xs font-mono">{dnsName}</code>.</span>
  </li>
  <li className="flex items-start gap-3">
- <span className="shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">4</span>
+ <span className="shrink-0 w-6 h-6 bg-[#D4F0DC] text-[#1C4532] rounded-full flex items-center justify-center text-xs font-bold">4</span>
  <span>Paste the generated TXT record value above into the value field.</span>
  </li>
  <li className="flex items-start gap-3">
- <span className="shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">5</span>
+ <span className="shrink-0 w-6 h-6 bg-[#D4F0DC] text-[#1C4532] rounded-full flex items-center justify-center text-xs font-bold">5</span>
  <span>Save and wait for DNS propagation (usually 5 minutes to 48 hours).</span>
  </li>
  </ol>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import type { Metadata } from 'next';
 import { releaseNotes } from '@/data/releaseNotes';
 
@@ -107,16 +108,8 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
  {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
  <Navbar />
+ <MarketingBackdrop />
 
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid" />
- </div>
 
  <article className="relative z-10 pt-32 md:pt-36 pb-10 px-6">
  <div className="max-w-4xl mx-auto">
@@ -141,10 +134,10 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
  </span>
  )}
  </div>
- <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+ <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-900 tracking-tight leading-tight mb-4">
  {release.headline}
  </h1>
- <p className="text-lg text-gray-500 leading-relaxed max-w-3xl">
+ <p className="text-sm text-gray-500 leading-relaxed max-w-3xl">
  {release.summary}
  </p>
  </div>

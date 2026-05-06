@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function SequencerOverviewDocsPage() {
     return (
         <div className="prose prose-lg max-w-none">
-            <h1 className="text-5xl font-bold mb-6 pb-2 bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-semibold mb-6 pb-2 bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
                 Sequencer Overview
             </h1>
             <p className="text-xl text-gray-500 mb-12">

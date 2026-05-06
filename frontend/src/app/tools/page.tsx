@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
@@ -65,9 +66,9 @@ const tools = [
 ];
 
 const colorMap: Record<string, { bg: string; border: string; iconBg: string; iconText: string; hover: string }> = {
- blue: { bg: 'bg-blue-50/50', border: 'border-blue-100', iconBg: 'bg-blue-100', iconText: 'text-blue-600', hover: 'hover:border-blue-300 hover:shadow-blue-100/50' },
- emerald: { bg: 'bg-emerald-50/50', border: 'border-emerald-100', iconBg: 'bg-emerald-100', iconText: 'text-emerald-600', hover: 'hover:border-emerald-300 hover:shadow-emerald-100/50' },
- purple: { bg: 'bg-purple-50/50', border: 'border-purple-100', iconBg: 'bg-purple-100', iconText: 'text-purple-600', hover: 'hover:border-purple-300 hover:shadow-purple-100/50' },
+ blue: { bg: 'bg-[#FFEBC9]/40/50', border: 'border-[#FFEBC9]', iconBg: 'bg-[#FFEBC9]', iconText: 'text-[#D4730F]', hover: 'hover:border-[#FFEBC9] hover:shadow-blue-100/50' },
+ emerald: { bg: 'bg-[#D4F0DC]/50', border: 'border-[#D4F0DC]', iconBg: 'bg-[#D4F0DC]', iconText: 'text-[#1C4532]', hover: 'hover:border-[#D4F0DC] hover:shadow-emerald-100/50' },
+ purple: { bg: 'bg-[#FFEBC9]/40/50', border: 'border-[#FFEBC9]', iconBg: 'bg-[#FFEBC9]', iconText: 'text-[#D4730F]', hover: 'hover:border-[#FFEBC9] hover:shadow-purple-100/50' },
 };
 
 export default function ToolsPage() {
@@ -137,11 +138,12 @@ export default function ToolsPage() {
  };
 
  return (
- <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
+ <div className="relative bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
  <Navbar />
+ <MarketingBackdrop />
 
  {/* Mailivery-style header — width-locked to match blog index (max-w-6xl) */}
  <header className="max-w-6xl mx-auto px-6 pt-32 md:pt-40 pb-10">
@@ -156,7 +158,7 @@ export default function ToolsPage() {
  </span>
  </div>
  <h1
- className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6"
+ className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 leading-[1.1] mb-6"
  style={{ letterSpacing: '-0.02em' }}
  >
  Free email authentication tools
@@ -185,13 +187,13 @@ export default function ToolsPage() {
  <ToolIcon name={tool.icon} className={c.iconText} />
  </div>
  <div>
- <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+ <h2 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors">
  {tool.title}
  </h2>
  <p className="text-sm text-gray-600 leading-relaxed">
  {tool.description}
  </p>
- <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-gray-500 group-hover:text-blue-600 transition-colors">
+ <span className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-gray-500 group-hover:text-[#D4730F] transition-colors">
  Use tool <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
  </span>
  </div>
@@ -217,15 +219,15 @@ export default function ToolsPage() {
  </p>
 
  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
- <div className="p-6 bg-blue-50/50 border border-blue-100">
+ <div className="p-6 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-2">SPF</h3>
  <p className="text-sm text-gray-600">Authorizes which mail servers can send email on behalf of your domain. Prevents unauthorized servers from using your domain name.</p>
  </div>
- <div className="p-6 bg-emerald-50/50 border border-emerald-100">
+ <div className="p-6 bg-[#D4F0DC]/50 border border-[#D4F0DC]">
  <h3 className="font-bold text-gray-900 mb-2">DKIM</h3>
  <p className="text-sm text-gray-600">Adds a cryptographic signature to each email. Receiving servers verify the signature to confirm the message is authentic and unaltered.</p>
  </div>
- <div className="p-6 bg-purple-50/50 border border-purple-100">
+ <div className="p-6 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-2">DMARC</h3>
  <p className="text-sm text-gray-600">Tells receiving servers what to do when SPF or DKIM checks fail. Enables reporting so you can monitor authentication across all sending sources.</p>
  </div>
@@ -317,8 +319,8 @@ export default function ToolsPage() {
  href: '/blog/how-spam-filters-work',
  },
  ].map((post) => (
- <Link key={post.href} href={post.href} className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">{post.title}</h3>
+ <Link key={post.href} href={post.href} className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">{post.title}</h3>
  <p className="text-xs text-gray-500">{post.description}</p>
  </Link>
  ))}

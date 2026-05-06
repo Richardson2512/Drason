@@ -134,6 +134,7 @@ export function middleware(request: NextRequest) {
         pathname === '/infrastructure-playbook' ||
         pathname === '/open-source' ||
         pathname === '/contact' ||
+        pathname === '/testimonials' ||
         pathname.startsWith('/release-notes') ||
         pathname.startsWith('/guides') ||
         pathname.startsWith('/tools') ||

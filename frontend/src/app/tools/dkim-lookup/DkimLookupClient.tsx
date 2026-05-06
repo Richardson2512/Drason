@@ -182,9 +182,9 @@ export default function DkimLookupClient() {
 
  const statusConfig = {
  valid: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-800', label: 'Valid', dot: 'bg-green-500' },
- revoked: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-800', label: 'Revoked Key', dot: 'bg-red-500' },
- not_found: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-800', label: 'Not Found', dot: 'bg-amber-500' },
- error: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-800', label: 'Error', dot: 'bg-red-500' },
+ revoked: { bg: 'bg-gray-100', border: 'border-gray-200', text: 'text-gray-800', label: 'Revoked Key', dot: 'bg-gray-1000' },
+ not_found: { bg: 'bg-[#FFEBC9]/40', border: 'border-[#FFEBC9]', text: 'text-[#D4730F]', label: 'Not Found', dot: 'bg-[#FFEBC9]/400' },
+ error: { bg: 'bg-gray-100', border: 'border-gray-200', text: 'text-gray-800', label: 'Error', dot: 'bg-gray-1000' },
  };
 
  return (
@@ -203,7 +203,7 @@ export default function DkimLookupClient() {
  value={selector}
  onChange={(e) => setSelector(e.target.value)}
  placeholder="e.g. google, s1, default"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-gray-900 placeholder:text-gray-400"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-gray-900 placeholder:text-gray-400"
  required
  />
  </div>
@@ -217,7 +217,7 @@ export default function DkimLookupClient() {
  value={domain}
  onChange={(e) => setDomain(e.target.value)}
  placeholder="e.g. example.com"
- className="w-full px-4 py-3 border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-gray-900 placeholder:text-gray-400"
+ className="w-full px-4 py-3 border border-gray-200 focus:border-[#D4F0DC] focus:ring-2 focus:ring-[#D4F0DC] outline-none transition-all text-gray-900 placeholder:text-gray-400"
  required
  />
  </div>
@@ -234,8 +234,8 @@ export default function DkimLookupClient() {
  onClick={() => setSelector(s)}
  className={`px-3 py-1.5 text-xs border transition-all duration-200 ${
  selector === s
- ? 'bg-emerald-600 text-white border-emerald-600'
- : 'bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 hover:border-emerald-200'
+ ? 'bg-[#1C4532] text-white border-[#D4F0DC]'
+ : 'bg-[#D4F0DC]/50 text-[#1C4532] border-[#D4F0DC] hover:bg-[#D4F0DC] hover:border-[#D4F0DC]'
  }`}
  >
  {s}
@@ -247,7 +247,7 @@ export default function DkimLookupClient() {
  <button
  type="submit"
  disabled={loading || !selector.trim() || !domain.trim()}
- className="w-full md:w-auto px-6 py-3 bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+ className="w-full md:w-auto px-6 py-3 bg-[#1C4532] text-white font-semibold hover:bg-[#143325] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
  >
  {loading ? (
  <>
@@ -290,37 +290,37 @@ export default function DkimLookupClient() {
  Without a DKIM record, receiving servers cannot verify that emails from your domain are authentic and unaltered. This weakens your sender reputation and hurts inbox placement.
  </p>
  <div className="space-y-3">
- <div className="flex items-start gap-3 p-3 bg-emerald-50 ">
- <span className="w-6 h-6 bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+ <div className="flex items-start gap-3 p-3 bg-[#D4F0DC]/50 ">
+ <span className="w-6 h-6 bg-[#D4F0DC] text-[#1C4532] flex items-center justify-center text-xs font-bold shrink-0">1</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Check your selector is correct</p>
  <p className="text-xs text-gray-500 mt-0.5">DKIM selectors vary by provider. Check your email headers for the <code className="px-1 py-0.5 bg-gray-100 text-xs">s=</code> value in the DKIM-Signature header, or try common selectors like <strong>google</strong>, <strong>s1</strong>, <strong>s2</strong>, or <strong>default</strong>.</p>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-emerald-50 ">
- <span className="w-6 h-6 bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+ <div className="flex items-start gap-3 p-3 bg-[#D4F0DC]/50 ">
+ <span className="w-6 h-6 bg-[#D4F0DC] text-[#1C4532] flex items-center justify-center text-xs font-bold shrink-0">2</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Enable DKIM in your email provider</p>
  <p className="text-xs text-gray-500 mt-0.5">Most providers generate the DKIM key pair for you. Enable DKIM signing in your provider settings and add the DNS record they give you.</p>
  <div className="flex flex-wrap gap-2 mt-2">
- <a href="https://support.google.com/a/answer/174124" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Google Workspace</a>
- <a href="https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/email-authentication-dkim-configure" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Microsoft 365</a>
- <a href="https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">SendGrid</a>
- <a href="https://documentation.mailgun.com/docs/mailgun/user-manual/get-started/#verify-your-domain" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-emerald-300 hover:text-emerald-600 transition-colors">Mailgun</a>
+ <a href="https://support.google.com/a/answer/174124" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-[#D4F0DC] hover:text-[#1C4532] transition-colors">Google Workspace</a>
+ <a href="https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/email-authentication-dkim-configure" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-[#D4F0DC] hover:text-[#1C4532] transition-colors">Microsoft 365</a>
+ <a href="https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-[#D4F0DC] hover:text-[#1C4532] transition-colors">SendGrid</a>
+ <a href="https://documentation.mailgun.com/docs/mailgun/user-manual/get-started/#verify-your-domain" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-white text-gray-600 text-xs border border-gray-200 hover:border-[#D4F0DC] hover:text-[#1C4532] transition-colors">Mailgun</a>
  </div>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-emerald-50 ">
- <span className="w-6 h-6 bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+ <div className="flex items-start gap-3 p-3 bg-[#D4F0DC]/50 ">
+ <span className="w-6 h-6 bg-[#D4F0DC] text-[#1C4532] flex items-center justify-center text-xs font-bold shrink-0">3</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Or generate a DKIM record manually</p>
  <p className="text-xs text-gray-500 mt-0.5">If you have your own public key, use our generator to create the DNS record.</p>
- <a href="/tools/dkim-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:text-emerald-700 mt-1">Use DKIM Generator &rarr;</a>
+ <a href="/tools/dkim-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-[#1C4532] hover:text-[#1C4532] mt-1">Use DKIM Generator &rarr;</a>
  </div>
  </div>
  </div>
  <div className="p-3 bg-gray-50 ">
- <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-emerald-600 font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
+ <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-[#1C4532] font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
  </div>
  </div>
  )}
@@ -370,7 +370,7 @@ export default function DkimLookupClient() {
  {result.keyLengthBits && (
  <div className="flex items-center gap-2">
  <span className="text-sm font-medium text-gray-700">Estimated Key Length:</span>
- <span className={`text-sm font-semibold ${result.keyLengthBits >= 2048 ? 'text-green-600' : result.keyLengthBits >= 1024 ? 'text-amber-600' : 'text-red-600'}`}>
+ <span className={`text-sm font-semibold ${result.keyLengthBits >= 2048 ? 'text-green-600' : result.keyLengthBits >= 1024 ? 'text-[#D4730F]' : 'text-gray-700'}`}>
  {result.keyLengthBits} bits
  {result.keyLengthBits >= 2048 && ' (recommended)'}
  {result.keyLengthBits < 1024 && ' (too short — upgrade to 2048-bit)'}
@@ -385,14 +385,14 @@ export default function DkimLookupClient() {
 
  {/* Revoked Key Warning */}
  {result.status === 'revoked' && (
- <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-100">
- <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <div className="flex items-start gap-3 p-4 bg-gray-100 border border-gray-200">
+ <svg className="w-5 h-5 text-gray-5000 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" />
  <path d="M12 15.75h.007v.008H12v-.008z" />
  </svg>
  <div>
- <p className="text-sm font-semibold text-red-800">This DKIM key has been revoked</p>
- <p className="text-sm text-red-600 mt-1">
+ <p className="text-sm font-semibold text-gray-800">This DKIM key has been revoked</p>
+ <p className="text-sm text-gray-700 mt-1">
  The public key field (p=) is empty, which means this key has been intentionally decommissioned. Any emails signed with this selector will fail DKIM verification. If you are still using this selector, you need to publish a new key.
  </p>
  </div>
@@ -425,7 +425,7 @@ function ParsedField({
  {value}
  </p>
  ) : (
- <p className={`text-sm ${warn ? 'text-red-600 font-semibold' : 'text-gray-400 italic'}`}>
+ <p className={`text-sm ${warn ? 'text-gray-700 font-semibold' : 'text-gray-400 italic'}`}>
  {fallback}
  </p>
  )}

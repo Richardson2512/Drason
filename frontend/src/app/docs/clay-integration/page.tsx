@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function ClayIntegrationPage() {
  return (
  <div className="prose prose-lg max-w-none text-gray-700">
- <h1 className="text-5xl font-bold mb-6 text-gray-900">
+ <h1 className="text-5xl font-semibold mb-6 text-gray-900">
  Complete Guide: Clay to Sender Platform via Superkabe
  </h1>
  <p className="text-xl text-gray-500 mb-12">

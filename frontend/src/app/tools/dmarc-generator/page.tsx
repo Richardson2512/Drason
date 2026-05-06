@@ -160,17 +160,17 @@ export default function DmarcGeneratorPage() {
  both SPF and DKIM authentication. The three policy levels represent increasing enforcement:
  </p>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
- <div className="p-5 bg-purple-50/50 border border-purple-100">
+ <div className="p-5 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-1 text-base">p=none</h3>
- <p className="text-purple-700 text-xs font-semibold mb-2">Monitor Only</p>
+ <p className="text-[#D4730F] text-xs font-semibold mb-2">Monitor Only</p>
  <p className="text-sm text-gray-600">
  No action taken on failing emails. Reports are collected so you can see who is sending as your
  domain. This is the starting point for any DMARC deployment.
  </p>
  </div>
- <div className="p-5 bg-amber-50/50 border border-amber-100">
+ <div className="p-5 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-1 text-base">p=quarantine</h3>
- <p className="text-amber-700 text-xs font-semibold mb-2">Send to Spam</p>
+ <p className="text-[#D4730F] text-xs font-semibold mb-2">Send to Spam</p>
  <p className="text-sm text-gray-600">
  Failing emails are delivered to the spam/junk folder instead of the inbox. This is the
  intermediate enforcement level during rollout.
@@ -199,7 +199,7 @@ export default function DmarcGeneratorPage() {
  </p>
  <ol className="space-y-4">
  <li className="flex items-start gap-4">
- <span className="flex items-center justify-center w-8 h-8 bg-purple-100 text-purple-700 rounded-full text-sm font-bold shrink-0">1</span>
+ <span className="flex items-center justify-center w-8 h-8 bg-[#FFEBC9] text-[#D4730F] rounded-full text-sm font-bold shrink-0">1</span>
  <div>
  <p className="font-semibold text-gray-900 text-sm">p=none (Monitor)</p>
  <p className="text-sm text-gray-600">
@@ -210,7 +210,7 @@ export default function DmarcGeneratorPage() {
  </div>
  </li>
  <li className="flex items-start gap-4">
- <span className="flex items-center justify-center w-8 h-8 bg-purple-100 text-purple-700 rounded-full text-sm font-bold shrink-0">2</span>
+ <span className="flex items-center justify-center w-8 h-8 bg-[#FFEBC9] text-[#D4730F] rounded-full text-sm font-bold shrink-0">2</span>
  <div>
  <p className="font-semibold text-gray-900 text-sm">p=quarantine; pct=25</p>
  <p className="text-sm text-gray-600">
@@ -220,7 +220,7 @@ export default function DmarcGeneratorPage() {
  </div>
  </li>
  <li className="flex items-start gap-4">
- <span className="flex items-center justify-center w-8 h-8 bg-purple-100 text-purple-700 rounded-full text-sm font-bold shrink-0">3</span>
+ <span className="flex items-center justify-center w-8 h-8 bg-[#FFEBC9] text-[#D4730F] rounded-full text-sm font-bold shrink-0">3</span>
  <div>
  <p className="font-semibold text-gray-900 text-sm">p=quarantine; pct=100</p>
  <p className="text-sm text-gray-600">
@@ -230,7 +230,7 @@ export default function DmarcGeneratorPage() {
  </div>
  </li>
  <li className="flex items-start gap-4">
- <span className="flex items-center justify-center w-8 h-8 bg-purple-100 text-purple-700 rounded-full text-sm font-bold shrink-0">4</span>
+ <span className="flex items-center justify-center w-8 h-8 bg-[#FFEBC9] text-[#D4730F] rounded-full text-sm font-bold shrink-0">4</span>
  <div>
  <p className="font-semibold text-gray-900 text-sm">p=reject; pct=25</p>
  <p className="text-sm text-gray-600">
@@ -258,7 +258,7 @@ export default function DmarcGeneratorPage() {
  <div className="bg-white border border-gray-100 p-8 md:p-10 shadow-sm">
  <h2 className="text-2xl font-bold text-gray-900 mb-6">DMARC Reporting Explained</h2>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="p-6 bg-purple-50/50 border border-purple-100">
+ <div className="p-6 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-2">Aggregate Reports (rua)</h3>
  <p className="text-sm text-gray-600 mb-3">
  Daily XML reports sent to your specified email address. They summarize authentication results for all
@@ -283,7 +283,7 @@ export default function DmarcGeneratorPage() {
  <li>Sending and receiving server information</li>
  <li>Not widely supported by all receivers</li>
  </ul>
- <p className="text-xs text-amber-700 mt-3 font-medium">
+ <p className="text-xs text-[#D4730F] mt-3 font-medium">
  Note: Many large providers (Gmail, Yahoo) do not send forensic reports due to privacy concerns.
  </p>
  </div>
@@ -300,13 +300,13 @@ export default function DmarcGeneratorPage() {
  DKIM authentication. You can configure alignment independently for each protocol.
  </p>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="p-6 bg-purple-50/50 border border-purple-100">
+ <div className="p-6 bg-[#FFEBC9]/40/50 border border-[#FFEBC9]">
  <h3 className="font-bold text-gray-900 mb-2">Relaxed Alignment (default)</h3>
  <p className="text-sm text-gray-600 mb-3">
  The organizational domains must match, but subdomains are allowed. For example, if the From header is
  user@mail.example.com, an SPF or DKIM domain of example.com will pass.
  </p>
- <p className="text-xs text-purple-700 font-medium">
+ <p className="text-xs text-[#D4730F] font-medium">
  Recommended for most organizations, especially those using third-party sending services.
  </p>
  </div>
@@ -365,13 +365,13 @@ export default function DmarcGeneratorPage() {
  <Link
  key={tool.href}
  href={tool.href}
- className="group block p-6 bg-white border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  {tool.title}
  </h3>
  <p className="text-xs text-gray-500">{tool.description}</p>
- <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-purple-600 transition-colors">
+ <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-[#D4730F] transition-colors">
  Use tool <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
  </span>
  </Link>
@@ -384,9 +384,9 @@ export default function DmarcGeneratorPage() {
  <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
  <Link
  href="/blog/spf-dkim-dmarc-explained"
- className="group block p-6 bg-white border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  SPF, DKIM &amp; DMARC Setup Guide
  </h3>
  <p className="text-xs text-gray-500">
@@ -398,7 +398,7 @@ export default function DmarcGeneratorPage() {
 
  {/* CTA */}
  <section className="mt-12 mb-4">
- <div className="bg-purple-50 border border-purple-100 p-8 md:p-10">
+ <div className="bg-[#FFEBC9]/40 border border-[#FFEBC9] p-8 md:p-10">
  <h2 className="text-xl font-bold text-gray-900 mb-3">Need continuous DMARC monitoring?</h2>
  <p className="text-sm text-gray-600 mb-6 max-w-2xl">
  This free tool generates your DMARC record on demand. Superkabe monitors SPF, DKIM, and DMARC across all your
@@ -407,7 +407,7 @@ export default function DmarcGeneratorPage() {
  </p>
  <Link
  href="/signup"
- className="inline-block px-6 py-3 bg-purple-600 text-white text-sm font-semibold hover:bg-purple-700 transition-colors"
+ className="inline-block px-6 py-3 bg-[#D4730F] text-white text-sm font-semibold hover:bg-[#D4730F] transition-colors"
  >
  Start free trial
  </Link>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function OptimizationSuggestionsPage() {
  return (
  <div className="prose prose-lg text-gray-700 max-w-none">
- <h1 className="text-5xl font-bold mb-6 text-gray-900">
+ <h1 className="text-5xl font-semibold mb-6 text-gray-900">
  Load Balancing Suggestions Explained
  </h1>
  <p className="text-xl text-gray-500 mb-12">

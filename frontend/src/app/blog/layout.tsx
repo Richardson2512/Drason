@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import { HowToJsonLd, ItemListJsonLd } from '@/components/seo/ExtraSchema';
 import { blogPageSeo } from '@/data/blogPageSeo';
 import MaileveryToc from '@/components/blog/MaileveryToc';
@@ -38,8 +39,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
     // Mailivery-style posts: cream brand background, sticky left TOC + centered main column
     return (
-        <div className="bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
+        <div className="relative bg-[#F7F2EB] text-gray-900 min-h-screen font-sans">
             <Navbar />
+            <MarketingBackdrop />
 
             {/*
               Per-post BreadcrumbList (3 levels: Home > Blog > <post title>) is

@@ -115,12 +115,12 @@ export default function DmarcLookupPage() {
  {/* Hero */}
  <div className="mb-8">
  <div className="flex items-center gap-3 mb-4">
- <span className="inline-flex items-center justify-center w-10 h-10 bg-purple-100">
- <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <span className="inline-flex items-center justify-center w-10 h-10 bg-[#FFEBC9]">
+ <svg className="w-5 h-5 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
  </svg>
  </span>
- <h1 className="text-2xl md:text-3xl font-bold text-gray-900">DMARC Record Lookup</h1>
+ <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">DMARC Record Lookup</h1>
  </div>
  <p className="text-gray-600 text-base leading-relaxed max-w-2xl">
  Enter any domain to check its DMARC policy. See the enforcement level, reporting addresses, alignment settings, and get actionable recommendations to strengthen your email authentication.
@@ -155,7 +155,7 @@ export default function DmarcLookupPage() {
  <div className="grid gap-4 md:grid-cols-3">
  <div className="bg-white border border-gray-100 shadow-sm p-6">
  <div className="flex items-center gap-2 mb-3">
- <span className="inline-flex items-center px-3 py-1 text-xs font-bold bg-red-100 text-red-700">p=none</span>
+ <span className="inline-flex items-center px-3 py-1 text-xs font-bold bg-gray-200 text-gray-800">p=none</span>
  </div>
  <h3 className="text-sm font-semibold text-gray-900 mb-2">Monitor Only</h3>
  <p className="text-gray-600 text-xs leading-relaxed">
@@ -164,7 +164,7 @@ export default function DmarcLookupPage() {
  </div>
  <div className="bg-white border border-gray-100 shadow-sm p-6">
  <div className="flex items-center gap-2 mb-3">
- <span className="inline-flex items-center px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700">p=quarantine</span>
+ <span className="inline-flex items-center px-3 py-1 text-xs font-bold bg-[#FFEBC9] text-[#D4730F]">p=quarantine</span>
  </div>
  <h3 className="text-sm font-semibold text-gray-900 mb-2">Quarantine</h3>
  <p className="text-gray-600 text-xs leading-relaxed">
@@ -202,9 +202,9 @@ export default function DmarcLookupPage() {
  ].map((item) => (
  <div key={item.tag} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-6 py-4">
  <div className="flex items-center gap-2 sm:w-32 shrink-0">
- <code className="px-2 py-1 bg-purple-50 text-purple-700 text-xs font-bold font-mono">{item.tag}</code>
+ <code className="px-2 py-1 bg-[#FFEBC9]/40 text-[#D4730F] text-xs font-bold font-mono">{item.tag}</code>
  {item.required && (
- <span className="text-xs text-red-500 font-semibold">Required</span>
+ <span className="text-xs text-gray-5000 font-semibold">Required</span>
  )}
  </div>
  <p className="text-sm text-gray-700">{item.desc}</p>
@@ -220,7 +220,7 @@ export default function DmarcLookupPage() {
  <div className="bg-white border border-gray-100 shadow-sm p-6">
  <div className="space-y-6">
  <div className="flex items-start gap-4">
- <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold shrink-0">1</div>
+ <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-800 text-sm font-bold shrink-0">1</div>
  <div>
  <h3 className="text-sm font-semibold text-gray-900">Start with p=none</h3>
  <p className="text-sm text-gray-600 mt-1">
@@ -229,7 +229,7 @@ export default function DmarcLookupPage() {
  </div>
  </div>
  <div className="flex items-start gap-4">
- <div className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-700 text-sm font-bold shrink-0">2</div>
+ <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#FFEBC9] text-[#D4730F] text-sm font-bold shrink-0">2</div>
  <div>
  <h3 className="text-sm font-semibold text-gray-900">Move to p=quarantine</h3>
  <p className="text-sm text-gray-600 mt-1">
@@ -274,36 +274,36 @@ export default function DmarcLookupPage() {
  <section>
  <h2 className="text-xl font-bold text-gray-900 mb-4">Related Tools</h2>
  <div className="grid gap-4 md:grid-cols-3">
- <Link href="/tools/dmarc-generator" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-purple-300 hover:shadow-purple-100/50 transition-all group">
+ <Link href="/tools/dmarc-generator" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-[#FFEBC9] hover:shadow-purple-100/50 transition-all group">
  <div className="flex items-center gap-3 mb-2">
- <span className="inline-flex items-center justify-center w-8 h-8 bg-purple-100">
- <svg className="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <span className="inline-flex items-center justify-center w-8 h-8 bg-[#FFEBC9]">
+ <svg className="w-4 h-4 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
  </svg>
  </span>
- <h3 className="text-sm font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">DMARC Generator</h3>
+ <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#D4730F] transition-colors">DMARC Generator</h3>
  </div>
  <p className="text-xs text-gray-500">Generate a DMARC record with your preferred policy, reporting addresses, and alignment settings.</p>
  </Link>
- <Link href="/tools/spf-lookup" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-blue-300 hover:shadow-blue-100/50 transition-all group">
+ <Link href="/tools/spf-lookup" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-[#FFEBC9] hover:shadow-blue-100/50 transition-all group">
  <div className="flex items-center gap-3 mb-2">
- <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100">
- <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <span className="inline-flex items-center justify-center w-8 h-8 bg-[#FFEBC9]">
+ <svg className="w-4 h-4 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </span>
- <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">SPF Lookup</h3>
+ <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#D4730F] transition-colors">SPF Lookup</h3>
  </div>
  <p className="text-xs text-gray-500">Check if your domain has a valid SPF record and see authorized sending servers.</p>
  </Link>
- <Link href="/tools/dkim-lookup" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-emerald-300 hover:shadow-emerald-100/50 transition-all group">
+ <Link href="/tools/dkim-lookup" className="bg-white border border-gray-100 shadow-sm p-6 hover:border-[#D4F0DC] hover:shadow-emerald-100/50 transition-all group">
  <div className="flex items-center gap-3 mb-2">
- <span className="inline-flex items-center justify-center w-8 h-8 bg-emerald-100">
- <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <span className="inline-flex items-center justify-center w-8 h-8 bg-[#D4F0DC]">
+ <svg className="w-4 h-4 text-[#1C4532]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
  </svg>
  </span>
- <h3 className="text-sm font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors">DKIM Lookup</h3>
+ <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#1C4532] transition-colors">DKIM Lookup</h3>
  </div>
  <p className="text-xs text-gray-500">Verify your DKIM DNS record is published correctly and check the public key.</p>
  </Link>
@@ -313,8 +313,8 @@ export default function DmarcLookupPage() {
  {/* Related Reading */}
  <section>
  <h2 className="text-xl font-bold text-gray-900 mb-4">Related Reading</h2>
- <Link href="/blog/spf-dkim-dmarc-explained" className="block bg-white border border-gray-100 shadow-sm p-6 hover:border-purple-300 hover:shadow-purple-100/50 transition-all group">
- <h3 className="text-sm font-semibold text-gray-900 group-hover:text-purple-700 transition-colors mb-1">
+ <Link href="/blog/spf-dkim-dmarc-explained" className="block bg-white border border-gray-100 shadow-sm p-6 hover:border-[#FFEBC9] hover:shadow-purple-100/50 transition-all group">
+ <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#D4730F] transition-colors mb-1">
  SPF, DKIM, and DMARC Explained
  </h3>
  <p className="text-xs text-gray-500">
@@ -324,14 +324,14 @@ export default function DmarcLookupPage() {
  </section>
 
  {/* CTA */}
- <section className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 p-8 text-center">
+ <section className="bg-gradient-to-br from-[#FFEBC9] to-[#D4730F] border border-[#FFEBC9] p-8 text-center">
  <h2 className="text-lg font-bold text-gray-900 mb-2">Monitor DMARC Across All Your Domains</h2>
  <p className="text-sm text-gray-600 max-w-lg mx-auto mb-6">
  Superkabe continuously monitors SPF, DKIM, and DMARC records across all your sending domains. Get alerted when records change or misconfigurations are detected.
  </p>
  <Link
  href="/signup"
- className="inline-flex items-center px-6 py-3 bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+ className="inline-flex items-center px-6 py-3 bg-[#D4730F] text-white font-semibold hover:bg-[#D4730F] transition-colors"
  >
  Start free trial
  </Link>

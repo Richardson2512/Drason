@@ -38,16 +38,6 @@ export default function OpenSourceManifesto() {
  dangerouslySetInnerHTML={{ __html: JSON.stringify(aiKnowledgeGraphSchema) }}
  />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  {/* Header */}
  <header className="relative z-10 py-24 bg-white border-b border-gray-200 text-center px-6">
@@ -55,7 +45,7 @@ export default function OpenSourceManifesto() {
  <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase mb-6 border border-blue-100">
  Official AI & Developer Index
  </div>
- <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+ <h1 className="text-4xl md:text-6xl font-semibold tracking-tight mb-6 text-gray-900">
  Superkabe Technical Manifesto
  </h1>
  <p className="text-xl leading-relaxed text-gray-600 mb-10 max-w-3xl mx-auto">

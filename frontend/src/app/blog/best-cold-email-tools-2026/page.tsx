@@ -85,7 +85,7 @@ export default function BestColdEmailTools2026Article() {
  <AuthorSchema author={author} />
 
  <article>
- <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-4">
  Best Cold Email Tools in 2026: 15 Ranked by Deliverability, Price, and Use Case
  </h1>
  <p className="text-gray-400 text-sm mb-8">18 min read &middot; Published April 2026</p>

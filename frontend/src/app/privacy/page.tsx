@@ -2,6 +2,7 @@
 
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 
 export default function PrivacyPolicyPage() {
@@ -22,21 +23,13 @@ export default function PrivacyPolicyPage() {
         <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacySchema) }} />
             <Navbar />
+            <MarketingBackdrop />
 
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="cloud-bg">
-                    <div className="cloud-shadow" />
-                    <div className="cloud-puff-1" />
-                    <div className="cloud-puff-2" />
-                    <div className="cloud-puff-3" />
-                </div>
-                <div className="absolute inset-0 hero-grid"></div>
-            </div>
 
             <div className="relative z-10 pt-32 md:pt-36 pb-10 px-6">
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-white p-10 md:p-14 shadow-xl shadow-gray-200/50 border border-gray-100">
-                        <h1 className="text-4xl font-bold mb-2 text-gray-900">Privacy Policy</h1>
+                        <h1 className="text-4xl font-semibold mb-2 text-gray-900">Privacy Policy</h1>
                         <p className="text-gray-500 mb-8">Last updated: April 30, 2026</p>
 
                         <div className="prose prose-gray max-w-none">

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function DnsSetupPage() {
     return (
         <div className="prose prose-lg text-gray-700 max-w-none">
-            <h1 className="text-5xl font-bold mb-6 text-gray-900">DNS Setup Guide</h1>
+            <h1 className="text-5xl font-semibold mb-6 text-gray-900">DNS Setup Guide</h1>
             <p className="text-xl text-gray-500 mb-12">
                 How to configure SPF, DKIM, DMARC and MX records for your sending domains.
             </p>

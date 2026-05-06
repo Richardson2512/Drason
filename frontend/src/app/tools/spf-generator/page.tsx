@@ -238,7 +238,7 @@ export default function SpfGeneratorPage() {
  },
  ].map((item) => (
  <li key={item.title} className="flex items-start gap-3">
- <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">&#10003;</span>
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">&#10003;</span>
  <div>
  <h3 className="text-sm font-bold text-gray-900">{item.title}</h3>
  <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
@@ -278,11 +278,11 @@ export default function SpfGeneratorPage() {
  <Link
  key={tool.href}
  href={tool.href}
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">{tool.title}</h3>
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">{tool.title}</h3>
  <p className="text-xs text-gray-500">{tool.desc}</p>
- <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-blue-600 transition-colors">
+ <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-[#D4730F] transition-colors">
  Use tool <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
  </span>
  </Link>
@@ -295,15 +295,15 @@ export default function SpfGeneratorPage() {
  <h2 className="text-2xl font-bold text-gray-900 mb-6">Related Reading</h2>
  <Link
  href="/blog/spf-dkim-dmarc-explained"
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  SPF, DKIM &amp; DMARC Explained &mdash; Complete Setup Guide
  </h3>
  <p className="text-xs text-gray-500">
  Step-by-step DNS authentication setup for outbound email teams. Learn how SPF, DKIM, and DMARC work together to protect your sender reputation.
  </p>
- <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-blue-600 transition-colors">
+ <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-[#D4730F] transition-colors">
  Read guide <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
  </span>
  </Link>
@@ -317,7 +317,7 @@ export default function SpfGeneratorPage() {
  </p>
  <Link
  href="/signup"
- className="inline-block px-8 py-3 bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors text-sm"
+ className="inline-block px-8 py-3 bg-[#D4730F] text-white font-semibold hover:bg-[#D4730F] transition-colors text-sm"
  >
  Start free trial
  </Link>

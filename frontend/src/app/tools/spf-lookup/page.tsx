@@ -109,11 +109,11 @@ export default function SpfLookupPage() {
 
  {/* Hero / Title */}
  <div className="mb-8">
- <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-full text-xs font-medium text-blue-600 mb-4">
- <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+ <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FFEBC9]/40 border border-[#FFEBC9] rounded-full text-xs font-medium text-[#D4730F] mb-4">
+ <span className="w-1.5 h-1.5 bg-[#FFEBC9]/400 rounded-full" />
  Free Tool &middot; No Signup Required
  </div>
- <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-3">
  SPF Record Lookup
  </h1>
  <p className="text-gray-600 leading-relaxed max-w-2xl">
@@ -266,13 +266,13 @@ export default function SpfLookupPage() {
  <Link
  key={tool.href}
  href={tool.href}
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  {tool.title}
  </h3>
  <p className="text-xs text-gray-500">{tool.description}</p>
- <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-blue-600 transition-colors">
+ <span className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-gray-400 group-hover:text-[#D4730F] transition-colors">
  Use tool <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
  </span>
  </Link>
@@ -286,18 +286,18 @@ export default function SpfLookupPage() {
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
  <Link
  href="/blog/spf-dkim-dmarc-explained"
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  SPF, DKIM & DMARC Setup Guide
  </h3>
  <p className="text-xs text-gray-500">Step-by-step DNS authentication setup for outbound email teams. Learn how SPF, DKIM, and DMARC work together to protect your domain.</p>
  </Link>
  <Link
  href="/blog/email-deliverability-guide"
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
  Complete Email Deliverability Guide
  </h3>
  <p className="text-xs text-gray-500">Everything you need to know about inbox placement, sender reputation, and avoiding spam filters.</p>

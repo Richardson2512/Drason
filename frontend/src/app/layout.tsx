@@ -1,16 +1,25 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Figtree, Fraunces } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import Script from 'next/script';
 import CookieBanner from '@/components/CookieBanner';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const figtree = Figtree({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-plus-jakarta',
+  variable: '--font-figtree',
+});
+
+// Serif accent font for italic emphasis (e.g. "deliverability protection")
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  style: ['italic'],
+  display: 'swap',
+  variable: '--font-fraunces',
 });
 
 export const metadata: Metadata = {
@@ -170,7 +179,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${figtree.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
         {/*
           Google Consent Mode v2.
@@ -249,7 +258,7 @@ export default function RootLayout({
           `data-cjcrx=addYes` seen in the wild) inject attributes onto <body> before React
           hydrates, which otherwise flags as a hydration mismatch. Safe to suppress here
           since the body itself is a pure layout shell. */}
-      <body className={`${plusJakartaSans.className} ${plusJakartaSans.variable}`} suppressHydrationWarning>
+      <body className={figtree.className} suppressHydrationWarning>
         {children}
         <ScrollToTopButton />
         <CookieBanner />

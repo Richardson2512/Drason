@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
+import CustomersMarquee from '@/components/marketing/CustomersMarquee';
 // In subdomain mode, app routes (signup/login/dashboard) live on the
 // `app.*` host. `appUrl` returns an absolute URL pointing there when
 // NEXT_PUBLIC_APP_URL is set, and a relative path otherwise — so the
@@ -56,12 +58,12 @@ interface PlatformRowProps {
 }
 
 const TAG_COLORS: Record<string, { bg: string; text: string }> = {
- blue: { bg: 'bg-blue-50', text: 'text-blue-700' },
- purple: { bg: 'bg-purple-50', text: 'text-purple-700' },
- teal: { bg: 'bg-teal-50', text: 'text-teal-700' },
+ blue: { bg: 'bg-[#FFEBC9]/40', text: 'text-[#D4730F]' },
+ purple: { bg: 'bg-[#FFEBC9]/40', text: 'text-[#D4730F]' },
+ teal: { bg: 'bg-[#D4F0DC]/50', text: 'text-[#1C4532]' },
  orange: { bg: 'bg-orange-50', text: 'text-orange-700' },
- yellow: { bg: 'bg-yellow-50', text: 'text-yellow-700' },
- pink: { bg: 'bg-pink-50', text: 'text-pink-700' },
+ yellow: { bg: 'bg-[#FFEBC9]/50', text: 'text-[#D4730F]' },
+ pink: { bg: 'bg-[#FFEBC9]/40', text: 'text-[#D4730F]' },
 };
 
 // ─── Integrations marquee ──────────────────────────────────────────────────
@@ -95,7 +97,7 @@ function MarqueeCard({ item }: { item: MarqueeItem }) {
             <span
                 className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
                     item.status === 'live'
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        ? 'bg-[#D4F0DC]/50 text-[#1C4532] border border-[#D4F0DC]'
                         : 'bg-gray-50 text-gray-500 border border-gray-200'
                 }`}
             >
@@ -187,8 +189,8 @@ function PlatformRow({ eyebrow, title, body, tags, tagColor, link, imageOnLeft, 
  {/* Content side */}
  <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-12">
  <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-5">{eyebrow}</p>
- <h3 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
- <p className="text-base text-gray-600 leading-relaxed mb-6">{body}</p>
+ <h3 className="text-xl md:text-2xl lg:text-[28px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
+ <p className="text-sm text-gray-600 leading-relaxed mb-5">{body}</p>
  <div className="flex flex-wrap gap-2 mb-7">
  {tags.map((t) => (
  <span key={t} className={`px-3 py-1 rounded-full text-[11px] font-semibold ${tc.bg} ${tc.text}`}>{t}</span>
@@ -233,8 +235,8 @@ function FeatureRow({ eyebrow, title, body, link, imageOnLeft, mockup }: Feature
  </div>
  <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-12">
  <p className="text-xs font-bold tracking-widest uppercase text-gray-500 mb-5">{eyebrow}</p>
- <h3 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
- <p className="text-base text-gray-600 leading-relaxed mb-7">{body}</p>
+ <h3 className="text-xl md:text-2xl lg:text-[28px] font-bold leading-[1.15] tracking-tight text-gray-900 mb-5">{title}</h3>
+ <p className="text-sm text-gray-600 leading-relaxed mb-6">{body}</p>
  <div>
  <Link href={link} className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors">
  Learn more <span>→</span>
@@ -253,7 +255,7 @@ function GmailMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
  <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center gap-3">
- <div className="w-6 h-6 rounded-full bg-gradient-to-br from-red-500 via-amber-400 to-blue-500 shrink-0 flex items-center justify-center text-white text-[10px] font-bold">G</div>
+ <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#D4730F] via-[#FFAA49] to-[#D4730F] shrink-0 flex items-center justify-center text-white text-[10px] font-bold">G</div>
  <span className="text-xs font-bold text-gray-900 flex-1">Gmail · OAuth</span>
  <div className="flex items-center gap-1.5">
  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -283,10 +285,10 @@ function MicrosoftMockup() {
  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
  <div className="w-6 h-6 grid grid-cols-2 gap-[2px] shrink-0">
  <div className="bg-orange-500" /><div className="bg-green-500" />
- <div className="bg-blue-500" /><div className="bg-yellow-500" />
+ <div className="bg-[#FFEBC9]/400" /><div className="bg-[#FFEBC9]/500" />
  </div>
  <span className="text-xs font-bold text-gray-900 flex-1">Microsoft 365 · OAuth</span>
- <span className="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 font-semibold">Active</span>
+ <span className="text-[10px] px-2 py-0.5 bg-[#FFEBC9] text-[#D4730F] font-semibold">Active</span>
  </div>
  <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Native Sequence</div>
  <div className="text-sm font-bold text-gray-900 mb-3">Q2 Enterprise Outbound</div>
@@ -299,7 +301,7 @@ function MicrosoftMockup() {
  ))}
  </div>
  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
- <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{ width: '72%' }} />
+ <div className="h-full bg-gradient-to-r from-[#D4730F] to-[#D4730F] rounded-full" style={{ width: '72%' }} />
  </div>
  <div className="text-[10px] text-gray-500 mt-2">Native send · ESP-aware routing live</div>
  </div>
@@ -312,7 +314,7 @@ function SmtpMockup() {
  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
  <div className="w-6 h-6 bg-gray-900 text-white shrink-0 flex items-center justify-center text-[9px] font-bold rounded">SMTP</div>
  <span className="text-xs font-bold text-gray-900 flex-1">SMTP · Encrypted creds</span>
- <span className="text-[10px] px-2 py-0.5 bg-teal-100 text-teal-700 font-semibold">3 mailboxes</span>
+ <span className="text-[10px] px-2 py-0.5 bg-[#D4F0DC] text-[#1C4532] font-semibold">3 mailboxes</span>
  </div>
  <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Daily Send Caps</div>
  <div className="space-y-2.5">
@@ -324,7 +326,7 @@ function SmtpMockup() {
  <div key={i} className="flex items-center gap-3 text-xs">
  <span className="font-mono text-gray-700 w-32 truncate">{m.name}</span>
  <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
- <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(m.vol / m.max) * 100}%` }} />
+ <div className="h-full bg-[#D4F0DC]/500 rounded-full" style={{ width: `${(m.vol / m.max) * 100}%` }} />
  </div>
  <span className="text-[10px] text-gray-500 font-semibold w-14 text-right">{m.vol}/{m.max}</span>
  </div>
@@ -332,7 +334,7 @@ function SmtpMockup() {
  </div>
  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px]">
  <span className="text-gray-500">3 mailboxes · auto-paused at 3% bounce</span>
- <span className="text-teal-700 font-semibold">+Add mailbox</span>
+ <span className="text-[#1C4532] font-semibold">+Add mailbox</span>
  </div>
  </div>
  );
@@ -341,7 +343,7 @@ function SmtpMockup() {
 function ClayMockup() {
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
- <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-3 border-b border-orange-100 flex items-center gap-3">
+ <div className="bg-gradient-to-r from-orange-50 to-[#FFEBC9]/50 px-4 py-3 border-b border-orange-100 flex items-center gap-3">
  <Image src="/clay.png" alt="Clay" width={24} height={24} loading="lazy" className="object-contain shrink-0" />
  <span className="text-xs font-bold text-gray-900 flex-1">Clay</span>
  <span className="text-[10px] text-orange-700 font-mono font-bold">POST</span>
@@ -408,10 +410,10 @@ function MonitoringMockup() {
  </div>
  <div className="grid grid-cols-2 gap-2 mb-3">
  {[
- { l: 'Bounces', v: '12', c: 'text-red-600' },
- { l: 'Opens', v: '348', c: 'text-blue-600' },
- { l: 'Replies', v: '47', c: 'text-emerald-600' },
- { l: 'Blocks', v: '3', c: 'text-amber-600' },
+ { l: 'Bounces', v: '12', c: 'text-gray-700' },
+ { l: 'Opens', v: '348', c: 'text-[#D4730F]' },
+ { l: 'Replies', v: '47', c: 'text-[#1C4532]' },
+ { l: 'Blocks', v: '3', c: 'text-[#D4730F]' },
  ].map((m, i) => (
  <div key={i} className="bg-gray-50 p-2.5">
  <div className={`text-lg font-bold ${m.c}`}>{m.v}</div>
@@ -442,9 +444,9 @@ function ExecutionGateMockup() {
  <span className="font-mono text-gray-700">{d.domain}</span>
  <div className="flex items-center gap-2">
  <div className="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
- <div className={`h-full ${d.pass ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${d.score}%` }} />
+ <div className={`h-full ${d.pass ? 'bg-[#D4F0DC]/500' : 'bg-gray-1000'}`} style={{ width: `${d.score}%` }} />
  </div>
- <span className={`text-[10px] font-bold px-1.5 py-0.5 ${d.pass ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+ <span className={`text-[10px] font-bold px-1.5 py-0.5 ${d.pass ? 'bg-[#D4F0DC] text-[#1C4532]' : 'bg-gray-200 text-gray-800'}`}>
  {d.pass ? 'PASS' : 'GATE'}
  </span>
  </div>
@@ -458,28 +460,28 @@ function ExecutionGateMockup() {
 function HealingMockup() {
  const phases = [
  { l: 'Paused', active: false, color: 'bg-gray-200' },
- { l: 'Quarantine', active: false, color: 'bg-amber-300' },
- { l: 'Restricted', active: true, color: 'bg-blue-400' },
- { l: 'Warm Recovery', active: false, color: 'bg-purple-300' },
- { l: 'Healthy', active: false, color: 'bg-emerald-400' },
+ { l: 'Quarantine', active: false, color: 'bg-[#FFAA49]' },
+ { l: 'Restricted', active: true, color: 'bg-[#FFAA49]' },
+ { l: 'Warm Recovery', active: false, color: 'bg-[#FFAA49]' },
+ { l: 'Healthy', active: false, color: 'bg-[#1C4532]' },
  ];
  return (
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-5">
  <div className="flex items-center justify-between mb-4">
  <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">5-Phase Recovery</span>
- <span className="text-[10px] text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 ">Phase 3/5</span>
+ <span className="text-[10px] text-[#D4730F] font-semibold bg-[#FFEBC9]/40 px-2 py-0.5 ">Phase 3/5</span>
  </div>
  <div className="space-y-2.5">
  {phases.map((p, i) => (
  <div key={i} className="flex items-center gap-3">
- <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${p.active ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-400'}`}>
+ <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${p.active ? 'bg-[#FFEBC9]/400 text-white' : 'bg-gray-100 text-gray-400'}`}>
  {i + 1}
  </div>
  <div className="flex-1">
  <div className={`text-xs font-semibold ${p.active ? 'text-gray-900' : 'text-gray-400'}`}>{p.l}</div>
  {p.active && <div className="text-[10px] text-gray-500">10 clean sends / 15 required</div>}
  </div>
- {p.active && <div className="w-12 h-1 bg-blue-100 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: '66%' }} /></div>}
+ {p.active && <div className="w-12 h-1 bg-[#FFEBC9] rounded-full overflow-hidden"><div className="h-full bg-[#FFEBC9]/400 rounded-full" style={{ width: '66%' }} /></div>}
  </div>
  ))}
  </div>
@@ -516,11 +518,11 @@ function AnalyticsMockup() {
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm p-5">
  <div className="flex items-center justify-between mb-4">
  <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Domain Health Trend</span>
- <span className="text-xs font-bold text-emerald-600">+12% ↗</span>
+ <span className="text-xs font-bold text-[#1C4532]">+12% ↗</span>
  </div>
  <div className="flex items-end gap-1.5 h-24 mb-3">
  {bars.map((h, i) => (
- <div key={i} className="flex-1 bg-gradient-to-t from-blue-500 to-purple-500 opacity-80" style={{ height: `${h}%` }} />
+ <div key={i} className="flex-1 bg-gradient-to-t from-[#D4730F] to-[#D4730F] opacity-80" style={{ height: `${h}%` }} />
  ))}
  </div>
  <div className="flex items-center justify-between text-[10px] text-gray-500">
@@ -542,7 +544,7 @@ function ValidationMockup() {
  <div className="w-full max-w-[420px] bg-white border border-gray-200 shadow-sm overflow-hidden">
  <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center justify-between">
  <span className="text-xs font-bold text-gray-700">Validation Pipeline</span>
- <span className="text-[10px] font-mono bg-emerald-100 text-emerald-700 px-2 py-0.5 font-semibold">4/4 processed</span>
+ <span className="text-[10px] font-mono bg-[#D4F0DC] text-[#1C4532] px-2 py-0.5 font-semibold">4/4 processed</span>
  </div>
  <div className="p-4 space-y-2.5">
  {leads.map((l, i) => (
@@ -557,7 +559,7 @@ function ValidationMockup() {
  </div>
  <div className="px-4 py-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] bg-gray-50">
  <span className="text-gray-500">2 valid · 2 blocked</span>
- <span className="text-emerald-700 font-semibold">Hard bounces prevented</span>
+ <span className="text-[#1C4532] font-semibold">Hard bounces prevented</span>
  </div>
  </div>
  );
@@ -800,94 +802,48 @@ export default function LandingPage() {
  {/* ================= NAVBAR ================= */}
  <Navbar />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
+ {/* Fixed thin-square grid background — sits behind everything */}
+ <MarketingBackdrop />
 
- {/* ================= HERO (SPLIT LAYOUT) ================= */}
- <section className="relative pt-32 md:pt-36 pb-10 z-10 px-6">
- <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
- {/* LEFT — content + CTAs */}
- <div className="text-center lg:text-left">
- <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-tight text-gray-900 mb-5">
+ {/* ================= HERO — centered, beige, screenshot below ================= */}
+ <section className="relative pt-44 md:pt-52 pb-8 z-10 px-6">
+ <div className="max-w-3xl mx-auto text-center">
+ <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-[1.18] tracking-[-0.01em] text-gray-900 mb-4">
  AI-powered cold email with{' '}
- <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">deliverability protection</span>.
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>deliverability protection</span>.
  </h1>
 
- <p className="text-lg md:text-xl text-gray-500 mb-6 leading-relaxed max-w-xl mx-auto lg:mx-0">
+ <p className="text-sm md:text-base text-gray-500 mb-4 leading-relaxed max-w-xl mx-auto">
  Send, personalize, and scale cold email — with a protection layer that auto-pauses, reroutes, and heals before your domains burn.
  </p>
 
- <p className="text-xs text-gray-400 mb-8 tracking-wide max-w-xl mx-auto lg:mx-0">
+ <p className="text-[11px] text-gray-400 mb-6 tracking-wide">
  AI sequences · Multi-mailbox sending · Email validation · Auto-healing
  </p>
 
- <div className="flex flex-col sm:flex-row gap-4 items-center lg:justify-start justify-center">
- <a href={appUrl('/signup')} className="px-10 py-4 bg-black text-white rounded-full text-lg font-semibold shadow-xl shadow-black/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+ <div className="flex flex-col sm:flex-row gap-2.5 items-center justify-center">
+ <a href={appUrl('/signup')} className="inline-flex items-center justify-center px-4 py-2 bg-black text-white rounded-full text-xs font-semibold hover:bg-gray-800 transition-colors">
  Start Your Trial
  </a>
- <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-white text-gray-900 border border-gray-200 rounded-full text-lg font-semibold hover:bg-gray-50 transition-colors shadow-sm">
+ <a href="https://cal.com/richardson-eugin-simon-qzmevd/30min" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-4 py-2 bg-white text-gray-900 border border-[#D1CBC5] rounded-full text-xs font-semibold hover:border-gray-900 transition-colors">
  Book a Demo
  </a>
  </div>
  </div>
+ </section>
 
- {/* RIGHT — static dashboard preview with subtle animations */}
- <div className="relative flex">
- {/* Gradient glow backdrop */}
- <div className="absolute inset-0 -inset-x-4 -inset-y-8 pointer-events-none">
- <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-400/30 rounded-full blur-[100px] animate-pulse-slow"></div>
- <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-500/30 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
- <div className="absolute top-1/2 right-0 w-[200px] h-[200px] bg-pink-400/25 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
- </div>
-
- {/* Superkabe product demo video (looping, 16:9 maintained) */}
- <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-xl border border-gray-100 shadow-2xl shadow-blue-500/10 animate-float">
- <div className="relative w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl">
- <video
- src="/Superkabe.mp4"
- autoPlay
- loop
- muted
- playsInline
- preload="none"
- poster="/Superkabe-poster.jpg"
- aria-label="Superkabe AI cold email platform demo — sequence builder, sending dashboard, and deliverability protection walkthrough"
- className="w-full h-full object-contain bg-white rounded-2xl md:rounded-3xl"
- >
- Your browser does not support the video tag.
- </video>
- </div>
- </div>
-
- {/* Floating accent cards */}
- <div className="hidden lg:block absolute -top-4 -left-4 bg-white px-4 py-3 shadow-xl border border-gray-100 animate-float" style={{ animationDelay: '0.5s' }}>
- <div className="flex items-center gap-2.5">
- <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
- <div>
- <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">Mailboxes</div>
- <div className="text-sm font-bold text-gray-900">100 healthy</div>
- </div>
- </div>
- </div>
-
- <div className="hidden lg:block absolute -bottom-4 -right-4 bg-white px-4 py-3 shadow-xl border border-gray-100 animate-float" style={{ animationDelay: '1.2s' }}>
- <div className="flex items-center gap-2.5">
- <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">73</div>
- <div>
- <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">Infra Score</div>
- <div className="text-sm font-bold text-gray-900">Monitoring</div>
- </div>
- </div>
- </div>
+ {/* ================= HERO SCREENSHOT — Protection Overview ================= */}
+ <section className="relative z-10 px-6 pb-12 md:pb-16">
+ <div className="max-w-6xl mx-auto">
+ <div className="relative rounded-2xl overflow-hidden border border-[#D1CBC5] shadow-xl shadow-gray-900/5 bg-white">
+ <Image
+ src="/image/dashboard-overview.png"
+ alt="Superkabe — protection overview dashboard with healing pipeline and lead health gate"
+ width={1920}
+ height={1200}
+ priority
+ className="w-full h-auto"
+ />
  </div>
  </div>
  </section>
@@ -902,12 +858,13 @@ export default function LandingPage() {
  { value: '24/7', label: 'Auto-Healing' },
  ].map((stat) => (
  <div key={stat.label} className="text-center">
- <div className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">{stat.value}</div>
+ <div className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">{stat.value}</div>
  <div className="text-sm text-gray-500 mt-1 font-medium">{stat.label}</div>
  </div>
  ))}
  </div>
  </section>
+
 
  {/* ================= WHAT IS SUPERKABE (AEO AUTHORITY - BENTO GRID) ================= */}
  <section className="py-14 lg:py-20 px-6 relative z-10">
@@ -918,10 +875,10 @@ export default function LandingPage() {
  <span className="w-1.5 h-1.5 bg-gray-900 rounded-full"></span>
  Explore the Superkabe platform
  </div>
- <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-5 tracking-tight">
+ <h2 className="h2-rule mb-5">
  What does the Superkabe platform do for you?
  </h2>
- <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+ <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto">
  Superkabe is an AI-driven cold email platform with deliverability protection built in. Draft sequences with AI, send across unlimited mailboxes, validate every email, route each lead to the mailbox with the best ESP track record — and let the protection layer auto-pause, reroute, and heal whenever a mailbox or domain starts to drift.
  </p>
  </div>
@@ -932,23 +889,23 @@ export default function LandingPage() {
  {/* Row 1: Mailbox fatigue (wide) + DNS auth */}
  <div className="md:col-span-4 bg-white border border-gray-200 p-7 md:p-9 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
  <div className="flex items-center gap-3 mb-4">
- <div className="w-11 h-11 bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
- <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+ <div className="w-11 h-11 bg-[#FFEBC9]/50 border border-[#FFEBC9] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+ <svg className="w-5 h-5 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
  </div>
  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Mailbox Health</span>
  </div>
- <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">Mailbox fatigue detection</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 tracking-tight">Mailbox fatigue detection</h3>
  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
  Superkabe algorithms automatically detect mailbox fatigue and instantly pause underperforming mailboxes, rebalancing traffic to healthy assets to preserve reputation.
  </p>
  </div>
 
  <div className="md:col-span-2 bg-white border border-gray-200 p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
- <div className="w-11 h-11 bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+ <div className="w-11 h-11 bg-[#FFEBC9]/40 border border-[#FFEBC9] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+ <svg className="w-5 h-5 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
  </div>
  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Authentication</div>
- <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">DNS authentication enforcement</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 tracking-tight">DNS authentication enforcement</h3>
  <p className="text-sm text-gray-600 leading-relaxed">
  Continuously monitors SPF, DKIM, and DMARC on every domain and blocks outbound traffic when misconfigurations threaten deliverability.
  </p>
@@ -956,33 +913,33 @@ export default function LandingPage() {
 
  {/* Row 2: Three equal columns */}
  <div className="md:col-span-2 bg-white border border-gray-200 p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
- <div className="w-11 h-11 bg-red-50 border border-red-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <svg className="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.24 17 7.5c.73 1.81 1 4.53 0 6.5-1 2 1.415 1.5 1.5 1.5-.085.5-1.2 1.5-1.843 2z" /></svg>
+ <div className="w-11 h-11 bg-gray-100 border border-gray-200 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+ <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.24 17 7.5c.73 1.81 1 4.53 0 6.5-1 2 1.415 1.5 1.5 1.5-.085.5-1.2 1.5-1.843 2z" /></svg>
  </div>
  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Domain Safety</div>
- <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Domain burnout prevention</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 tracking-tight">Domain burnout prevention</h3>
  <p className="text-sm text-gray-600 leading-relaxed">
  Gates outbound email traffic based on live bounce data, halting campaigns before an isolated spike compounds into permanent blocklisting.
  </p>
  </div>
 
  <div className="md:col-span-2 bg-white border border-gray-200 p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
- <div className="w-11 h-11 bg-rose-50 border border-rose-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <svg className="w-5 h-5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+ <div className="w-11 h-11 bg-[#FFEBC9]/40 border border-[#FFEBC9] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+ <svg className="w-5 h-5 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
  </div>
  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Lead Quality</div>
- <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Toxic lead filtering</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 tracking-tight">Toxic lead filtering</h3>
  <p className="text-sm text-gray-600 leading-relaxed">
  Tracks lead health across your infrastructure, automatically isolating toxic contacts to prevent hard bounces from damaging sender reputation.
  </p>
  </div>
 
  <div className="md:col-span-2 bg-white border border-gray-200 p-7 md:p-8 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
- <div className="w-11 h-11 bg-cyan-50 border border-cyan-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <svg className="w-5 h-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+ <div className="w-11 h-11 bg-[#FFEBC9]/40 border border-[#FFEBC9] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+ <svg className="w-5 h-5 text-[#D4730F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
  </div>
  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Validation</div>
- <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 tracking-tight">Email validation before sending</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 tracking-tight">Email validation before sending</h3>
  <p className="text-sm text-gray-600 leading-relaxed">
  Syntax, MX, disposable domain, and catch-all detection before emails reach your sender. MillionVerifier API verification for risky leads.
  </p>
@@ -991,28 +948,28 @@ export default function LandingPage() {
  {/* Row 3: Full-width Health Gate */}
  <div className="md:col-span-6 bg-white border border-gray-200 p-7 md:p-10 hover:border-gray-300 hover:shadow-[0_5px_20px_rgba(26,26,26,0.06)] transition-all duration-300 group">
  <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center">
- <div className="w-12 h-12 bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
- <svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+ <div className="w-12 h-12 bg-[#D4F0DC]/50 border border-[#D4F0DC] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+ <svg className="w-6 h-6 text-[#1C4532]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
  </div>
  <div>
  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Risk-Aware Routing</div>
- <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 tracking-tight">Health gate classifies every lead before it ships</h3>
+ <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 tracking-tight">Health gate classifies every lead before it ships</h3>
  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
- Every lead is classified <span className="font-bold text-emerald-700">GREEN</span>, <span className="font-bold text-amber-700">YELLOW</span>, or <span className="font-bold text-red-700">RED</span> based on validation score, engagement signals, and domain health. RED leads are blocked. GREEN leads route normally. YELLOW leads distribute across mailboxes with per-sender risk caps.
+ Every lead is classified <span className="font-bold text-[#1C4532]">GREEN</span>, <span className="font-bold text-[#D4730F]">YELLOW</span>, or <span className="font-bold text-gray-800">RED</span> based on validation score, engagement signals, and domain health. RED leads are blocked. GREEN leads route normally. YELLOW leads distribute across mailboxes with per-sender risk caps.
  </p>
  </div>
  <div className="hidden md:flex items-center gap-3 shrink-0">
  <div className="flex flex-col items-center">
- <div className="w-12 h-12 bg-emerald-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">G</div>
- <span className="text-[10px] text-emerald-700 font-semibold mt-1.5">GREEN</span>
+ <div className="w-12 h-12 bg-[#D4F0DC]/500 flex items-center justify-center text-white font-bold text-sm shadow-sm">G</div>
+ <span className="text-[10px] text-[#1C4532] font-semibold mt-1.5">GREEN</span>
  </div>
  <div className="flex flex-col items-center">
- <div className="w-12 h-12 bg-amber-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">Y</div>
- <span className="text-[10px] text-amber-700 font-semibold mt-1.5">YELLOW</span>
+ <div className="w-12 h-12 bg-[#FFEBC9]/500 flex items-center justify-center text-white font-bold text-sm shadow-sm">Y</div>
+ <span className="text-[10px] text-[#D4730F] font-semibold mt-1.5">YELLOW</span>
  </div>
  <div className="flex flex-col items-center">
- <div className="w-12 h-12 bg-red-500 flex items-center justify-center text-white font-bold text-sm shadow-sm">R</div>
- <span className="text-[10px] text-red-700 font-semibold mt-1.5">RED</span>
+ <div className="w-12 h-12 bg-gray-1000 flex items-center justify-center text-white font-bold text-sm shadow-sm">R</div>
+ <span className="text-[10px] text-gray-800 font-semibold mt-1.5">RED</span>
  </div>
  </div>
  </div>
@@ -1020,27 +977,85 @@ export default function LandingPage() {
  </div>
  </div>
 
- <p className="text-xl md:text-2xl font-bold text-center mb-10 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
- AI-powered sending with a 99%+ inbox rate baked in.
- </p>
- <div className="flex flex-wrap justify-center gap-3 mb-10">
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto mb-14">
+ {/* LEFT — 2-col feature card grid */}
+ <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
  {[
- { label: 'AI Sequences', bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700' },
- { label: 'AI Personalization', bg: 'bg-fuchsia-50', border: 'border-fuchsia-200', text: 'text-fuchsia-700' },
- { label: 'AI Agents', bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700' },
- { label: 'ESP Routing', bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
- { label: 'Email Validation', bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-700' },
- { label: 'Multi-Mailbox Sending', bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700' },
- { label: 'Auto-Healing', bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
- { label: 'Bounce Protection', bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
- { label: 'Mailbox Health', bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700' },
- { label: 'Health Gate', bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700' },
- { label: 'REST API + MCP', bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-700' },
- ].map((tag) => (
- <span key={tag.label} className={`px-5 py-2.5 ${tag.bg} border ${tag.border} rounded-full text-sm font-semibold ${tag.text}`}>
- {tag.label}
+ {
+ title: 'Leads',
+ desc: 'Validate, route & enrich prospects',
+ svg: <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />,
+ },
+ {
+ title: 'Sequence',
+ desc: 'AI-drafted multi-step campaigns',
+ svg: <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />,
+ },
+ {
+ title: 'Schedule',
+ desc: 'Send-window control per mailbox',
+ svg: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />,
+ },
+ {
+ title: 'Settings',
+ desc: 'Throttling rules & guardrails',
+ svg: <><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+ },
+ {
+ title: 'Sender Mailboxes',
+ desc: 'Multi-provider sending pool',
+ svg: <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />,
+ },
+ {
+ title: 'Launch',
+ desc: 'Activate, monitor, auto-heal',
+ svg: <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />,
+ },
+ ].map((f) => (
+ <div key={f.title} className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-[#D1CBC5]">
+ <div className="w-8 h-8 rounded-lg bg-[#FFEBC9]/40 border border-[#FFEBC9] flex items-center justify-center shrink-0 text-[#D4730F]">
+ <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24">{f.svg}</svg>
+ </div>
+ <div className="min-w-0">
+ <div className="text-sm font-semibold text-gray-900 leading-tight">{f.title}</div>
+ <div className="text-xs text-gray-500 mt-0.5 leading-snug">{f.desc}</div>
+ </div>
+ </div>
+ ))}
+ </div>
+
+ {/* RIGHT — heading + checklist + pill row */}
+ <div>
+ <h2 className="h2-rule mb-4">
+ AI-powered sending with a 99%+ inbox rate baked in.
+ </h2>
+ <p className="text-base md:text-sm text-gray-500 leading-relaxed mb-7">
+ Predictable, multi-step campaigns with deliverability protection layered into every send.
+ </p>
+ <ul className="space-y-3 mb-8">
+ {[
+ 'Proprietary 5-phase healing pipeline for paused mailboxes',
+ 'ESP-aware routing for higher inbox placement on Gmail and Outlook',
+ 'Real-time bounce monitoring with threshold-based auto-pause',
+ 'Hybrid email validation — syntax, MX, disposable, catch-all',
+ 'Complete REST API + MCP server for programmatic control',
+ ].map((item) => (
+ <li key={item} className="flex items-start gap-2.5">
+ <svg className="w-5 h-5 text-[#1C4532] shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+ <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+ </svg>
+ <span className="text-sm md:text-base text-gray-700 leading-relaxed">{item}</span>
+ </li>
+ ))}
+ </ul>
+ <div className="flex flex-wrap gap-1.5">
+ {['Leads', 'Sequence', 'Schedule', 'Settings', 'Sender Mailboxes', 'Launch'].map((tag) => (
+ <span key={tag} className="px-3 py-1 bg-white border border-[#D1CBC5] rounded-md text-xs font-medium text-gray-700">
+ {tag}
  </span>
  ))}
+ </div>
+ </div>
  </div>
  <div className="text-center mt-6">
  <p className="text-gray-500 text-sm mb-4 max-w-xl mx-auto">The Superkabe Infrastructure Playbook documents best practices for maintaining 99%+ deliverability across multi-domain outbound email infrastructure.</p>
@@ -1052,13 +1067,16 @@ export default function LandingPage() {
 
 
 
+ {/* ================= CUSTOMERS (hanging-badge marquee + laptop) ================= */}
+ <CustomersMarquee />
+
  {/* ================= INTEGRATIONS GRID (vertical marquee) ================= */}
- <div className="mt-12 sm:mt-16 mb-0 relative w-full pt-8 pb-2 flex flex-col items-center">
+ <div className="mt-0 mb-0 relative w-full pt-2 pb-2 flex flex-col items-center">
  <div className="text-center mb-12 px-6 max-w-3xl">
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-5">
  Native Integrations
  </div>
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+ <h2 className="h2-rule mb-4">
  Plugs into your stack — no middleman.
  </h2>
  <p className="text-lg text-gray-600 leading-relaxed">
@@ -1092,11 +1110,11 @@ export default function LandingPage() {
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
  Lead Sources · Mailboxes · Alerts
  </div>
- <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+ <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
  Connect your mailboxes. Send from Superkabe.
  </h2>
- <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Pipe enriched leads from your enrichment stack — Clay, Apollo, ZoomInfo, Airtable, CSV upload, the API, or any tool that can hit a webhook — route them through your own Gmail, Microsoft 365, SMTP, Zapmail, Scaledmail or any IMAP/SMTP-compatible provider, and sync activity back to Slack, Salesforce, HubSpot, Outreach, Heyreach, Justcall or your own systems via webhooks. Native integrations are configurable in under 5 minutes; everything else connects through generic SMTP, IMAP, CSV, REST API, or webhooks.
+ <p className="text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed">
+ Pipe leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack — all native, all configurable in minutes.
  </p>
  </div>
  </div>
@@ -1180,7 +1198,7 @@ export default function LandingPage() {
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
  Platform Capabilities
  </div>
- <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900 tracking-tight">Everything your cold email program needs — in one platform.</h2>
+ <h2 className="h2-rule mb-5">Everything your cold email program needs — in one platform.</h2>
  <p className="text-gray-500 max-w-2xl mx-auto text-lg">AI sequence builder, multi-mailbox sending, ESP-aware routing, email validation, and a full deliverability protection stack — plus dedicated AI agents and a full API for programmatic control.</p>
  </div>
  </div>
@@ -1240,8 +1258,8 @@ export default function LandingPage() {
  <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-end">
 
  <div>
- <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">Simple Pricing</div>
- <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 tracking-tight">One platform for cold email outreach and protection.</h2>
+ <div className="inline-block px-4 py-1 rounded-full bg-[#FFEBC9]/40 text-[#D4730F] text-sm font-semibold mb-6">Simple Pricing</div>
+ <h2 className="h2-rule mb-6">One platform for cold email outreach and protection.</h2>
  <p className="text-gray-500 mb-8 text-lg leading-relaxed">
  Stop paying for an AI writer, a sender, a validator, and a deliverability tool separately. Superkabe bundles AI sequences, multi-mailbox sending, email validation, and the full protection layer — for the price of one line item.
  </p>
@@ -1268,14 +1286,14 @@ export default function LandingPage() {
  </div>
  </div>
 
- <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-1 shadow-2xl transition-transform duration-500">
+ <div className="bg-gradient-to-br from-[#D4730F] to-[#1C4532] p-1 shadow-2xl transition-transform duration-500">
  <div className="bg-white p-10 md:p-12 h-full">
  <div className="flex justify-between items-start mb-8">
  <div>
- <h3 className="text-2xl font-bold text-gray-900">Starter Plan</h3>
+ <h3 className="text-xl font-bold text-gray-900">Starter Plan</h3>
  <p className="text-gray-500 mt-1">Perfect for founder-led teams</p>
  </div>
- <div className="bg-blue-50 text-blue-700 px-3 py-1 text-xs font-bold uppercase tracking-wider">Start Today</div>
+ <div className="bg-[#FFEBC9]/40 text-[#D4730F] px-3 py-1 text-xs font-bold uppercase tracking-wider">Start Today</div>
  </div>
 
  <div className="flex items-baseline gap-1 mb-10">
@@ -1291,7 +1309,7 @@ export default function LandingPage() {
  router.push('/signup?plan=starter');
  }
  }}
- className="w-full py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg shadow-blue-200 hover:shadow-xl hover:bg-blue-700 transition-all"
+ className="w-full py-4 bg-[#D4730F] text-white rounded-full font-bold shadow-lg shadow-[#FFEBC9] hover:shadow-xl hover:bg-[#1C4532] transition-all"
  >
  Start Free Trial
  </button>
@@ -1306,7 +1324,7 @@ export default function LandingPage() {
  <section className="py-10 lg:py-16 px-6 relative z-10">
  <div className="max-w-5xl mx-auto">
  <div className="text-center mb-10">
- <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">How the Superkabe platform is built</h2>
+ <h2 className="h2-rule mb-4">How the Superkabe platform is built</h2>
  <p className="text-gray-500 text-lg max-w-3xl mx-auto">The core technical characteristics of Superkabe — an AI cold email platform with native deliverability protection — for teams running high-volume outbound.</p>
  </div>
  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
@@ -1330,7 +1348,7 @@ export default function LandingPage() {
 
  {/* Left Column — Heading + CTA */}
  <div className="lg:sticky lg:top-32 lg:self-start">
- <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-[1.1] mb-6">
+ <h2 className="h2-rule mb-6">
  Questions<br />and answers
  </h2>
  <p className="text-gray-500 text-lg leading-relaxed mb-8">
@@ -1359,7 +1377,7 @@ export default function LandingPage() {
  >
  <div className={`py-6 px-4 transition-all duration-300 ${openIndex === index ? 'bg-gray-50 ' : ''}`}>
  <div className="flex justify-between items-center gap-4">
- <h3 className="font-semibold text-lg md:text-xl text-gray-900 pr-4">{faq.name}</h3>
+ <h3 className="font-semibold text-base md:text-lg text-gray-900 pr-4">{faq.name}</h3>
  <svg
  xmlns="http://www.w3.org/2000/svg"
  width="20"
@@ -1393,11 +1411,11 @@ export default function LandingPage() {
  {/* ================= CTA ================= */}
  <section className="py-10 lg:py-12 px-6 text-center relative z-10">
  <div className="relative z-10 container max-w-3xl mx-auto">
- <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 tracking-tight">
+ <h2 className="h2-rule mb-8">
  Send smarter. <br />
  Protect what you send with.
  </h2>
- <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+ <p className="text-base text-gray-600 mb-12 max-w-2xl mx-auto">
  Join modern outbound teams running their entire cold email operation on Superkabe — AI sequences, multi-mailbox sending, and deliverability protection in one platform.
  </p>
 

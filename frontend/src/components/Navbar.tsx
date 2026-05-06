@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, Pencil, KeyRound, Settings, ShieldCheck, Shield, LayoutGrid, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { Search, Pencil, KeyRound, Settings, ShieldCheck, Shield, ArrowRight, LayoutDashboard, LayoutGrid } from 'lucide-react';
 import { useIsAuthenticated } from '@/lib/auth-client';
 import { appUrl } from '@/lib/urls';
 
@@ -100,11 +100,19 @@ export default function Navbar() {
                     }`}
             >
                 <div
-                    className={`flex items-center gap-6 md:gap-10 shadow-2xl transition-all duration-500 rounded-full
+                    className={`flex items-center gap-6 md:gap-10 transition-all duration-500 rounded-full
                         ${scrolled
-                            ? 'px-6 md:px-8 py-2.5 bg-[#111827]/90 backdrop-blur-2xl border border-white/10 shadow-black/30'
-                            : 'px-8 md:px-10 py-3.5 bg-[#111827]/75 backdrop-blur-xl border border-white/[0.08] shadow-black/20'
+                            ? 'px-6 md:px-8 py-2.5 border border-white/15'
+                            : 'px-8 md:px-10 py-3.5 border border-white/[0.12]'
                         }`}
+                    style={{
+                        background: scrolled ? 'rgba(17, 24, 39, 0.65)' : 'rgba(17, 24, 39, 0.55)',
+                        backdropFilter: 'blur(24px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+                        boxShadow: scrolled
+                            ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                            : '0 12px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+                    }}
                 >
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2.5 shrink-0">
@@ -150,65 +158,28 @@ export default function Navbar() {
 
                             {toolsOpen && (
                                 <div
-                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[780px] max-w-[calc(100vw-48px)] overflow-hidden"
+                                    className="absolute top-full right-0 xl:right-auto xl:left-0 mt-7 w-[720px] max-w-[calc(100vw-48px)]"
                                     style={{
                                         background: '#FFFFFF',
                                         border: '1px solid #D1CBC5',
-                                        borderRadius: 12,
-                                        boxShadow: '0 18px 48px rgba(17, 24, 39, 0.12)',
+                                        borderRadius: 14,
+                                        boxShadow: '0 20px 48px rgba(17, 24, 39, 0.16), 0 4px 12px rgba(17, 24, 39, 0.05)',
+                                        overflow: 'hidden',
                                     }}
                                 >
-                                    <div className="flex items-stretch">
-                                        {/* Left spotlight card — platform cream */}
-                                        <Link
-                                            href="/tools"
-                                            onClick={() => setToolsOpen(false)}
-                                            className="group relative flex flex-col items-start justify-between w-[220px] shrink-0 px-5 py-6"
-                                            style={{
-                                                background: '#1C4532',
-                                                borderRight: '1px solid #143325',
-                                                textDecoration: 'none',
-                                            }}
-                                        >
-                                            <div>
-                                                <div
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
-                                                    style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', color: '#FFFFFF' }}
-                                                >
-                                                    <LayoutGrid size={14} strokeWidth={1.75} />
-                                                </div>
-                                                <h3 className="font-semibold mb-1" style={{ fontSize: '0.8rem', color: '#FFFFFF', letterSpacing: '-0.005em' }}>
-                                                    All Free Tools
-                                                </h3>
-                                                <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
-                                                    Authentication lookups and record generators
-                                                </p>
-                                            </div>
-                                            <span
-                                                className="inline-flex items-center gap-1 mt-4 group-hover:gap-1.5 transition-all"
-                                                style={{ fontSize: '0.7rem', fontWeight: 600, color: '#FFFFFF' }}
-                                            >
-                                                Explore all
-                                                <ArrowRight size={12} strokeWidth={1.75} />
-                                            </span>
-                                        </Link>
-
-                                        {/* Right tools grid — 2 columns × 3 rows, platform cream */}
-                                        <div className="flex-1 grid grid-cols-2 gap-0">
-                                            {toolLinks.map((tool, i) => {
-                                                const isRightCol = i % 2 === 1;
-                                                const isBottomRow = i >= toolLinks.length - 2;
+                                    <div className="flex items-stretch p-3 gap-3">
+                                        {/* LEFT: tools list — 2 cols × 3 rows */}
+                                        <div className="flex-1 grid grid-cols-2 gap-1">
+                                            {toolLinks.map((tool) => {
                                                 const active = isActive(tool.href);
                                                 return (
                                                     <Link
                                                         key={tool.href}
                                                         href={tool.href}
                                                         onClick={() => setToolsOpen(false)}
-                                                        className="group relative flex items-start gap-2.5 px-4 py-3 transition-colors"
+                                                        className="group flex items-start gap-2.5 px-3 py-2 rounded-md transition-colors"
                                                         style={{
                                                             background: active ? '#F7F2EB' : 'transparent',
-                                                            borderRight: !isRightCol ? '1px solid #E8E3DC' : undefined,
-                                                            borderBottom: !isBottomRow ? '1px solid #E8E3DC' : undefined,
                                                             textDecoration: 'none',
                                                         }}
                                                         onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = '#F5F1EA'; }}
@@ -221,16 +192,88 @@ export default function Navbar() {
                                                             {tool.icon}
                                                         </div>
                                                         <div className="flex-1 min-w-0">
-                                                            <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#111827', letterSpacing: '-0.005em' }}>
+                                                            <div style={{ fontSize: '0.74rem', fontWeight: 600, color: '#111827', letterSpacing: '-0.005em', lineHeight: 1.3 }}>
                                                                 {tool.label}
                                                             </div>
-                                                            <div style={{ fontSize: '0.68rem', color: '#6B7280', marginTop: 2, lineHeight: 1.45 }}>
+                                                            <div style={{ fontSize: '0.64rem', color: '#6B7280', marginTop: 1, lineHeight: 1.4 }}>
                                                                 {tool.desc}
                                                             </div>
                                                         </div>
                                                     </Link>
                                                 );
                                             })}
+                                        </div>
+
+                                        {/* RIGHT: stacked branded banners */}
+                                        <div className="w-[220px] shrink-0 flex flex-col gap-2.5">
+                                            {/* Banner 1: Cold Email Templates — branded with Superkabe logo */}
+                                            <Link
+                                                href="/cold-email-templates"
+                                                onClick={() => setToolsOpen(false)}
+                                                className="group relative flex flex-col p-4 rounded-xl overflow-hidden"
+                                                style={{
+                                                    background: 'linear-gradient(135deg, #1C4532 0%, #143325 100%)',
+                                                    border: '1px solid #143325',
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                {/* Branded header — Superkabe logo + wordmark */}
+                                                <div className="flex items-center gap-1.5 mb-3">
+                                                    <Image src="/image/logo-v2.png" alt="Superkabe" width={18} height={18} className="shrink-0" />
+                                                    <span style={{ fontSize: '0.66rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.005em' }}>
+                                                        Superkabe
+                                                    </span>
+                                                </div>
+                                                <h3 className="font-semibold mb-1" style={{ fontSize: '0.82rem', color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.25 }}>
+                                                    Cold Email Templates
+                                                </h3>
+                                                <p style={{ fontSize: '0.66rem', color: 'rgba(255,255,255,0.74)', lineHeight: 1.5 }}>
+                                                    Industry-standard templates, AI-customizable in seconds
+                                                </p>
+                                                <span
+                                                    className="inline-flex items-center gap-1 mt-3 group-hover:gap-1.5 transition-all"
+                                                    style={{ fontSize: '0.68rem', fontWeight: 600, color: '#FFFFFF' }}
+                                                >
+                                                    Browse library
+                                                    <ArrowRight size={11} strokeWidth={2} />
+                                                </span>
+                                            </Link>
+
+                                            {/* Banner 2: All Free Tools */}
+                                            <Link
+                                                href="/tools"
+                                                onClick={() => setToolsOpen(false)}
+                                                className="group flex flex-col p-4 rounded-xl transition-colors"
+                                                style={{
+                                                    background: '#FAF8F4',
+                                                    border: '1px solid #E8E3DC',
+                                                    textDecoration: 'none',
+                                                }}
+                                                onMouseEnter={(e) => { e.currentTarget.style.background = '#F2EBE0'; }}
+                                                onMouseLeave={(e) => { e.currentTarget.style.background = '#FAF8F4'; }}
+                                            >
+                                                <div className="flex items-center gap-1.5 mb-3">
+                                                    <div className="w-[18px] h-[18px] rounded-md flex items-center justify-center shrink-0" style={{ background: '#1C4532' }}>
+                                                        <LayoutGrid size={10} strokeWidth={2.25} style={{ color: '#FFFFFF' }} />
+                                                    </div>
+                                                    <span style={{ fontSize: '0.66rem', fontWeight: 700, color: '#1C4532', letterSpacing: '-0.005em' }}>
+                                                        All Tools
+                                                    </span>
+                                                </div>
+                                                <h3 className="font-semibold mb-1" style={{ fontSize: '0.82rem', color: '#111827', letterSpacing: '-0.01em', lineHeight: 1.25 }}>
+                                                    All Free Tools
+                                                </h3>
+                                                <p style={{ fontSize: '0.66rem', color: '#6B7280', lineHeight: 1.5 }}>
+                                                    SPF, DKIM, DMARC lookups and generators
+                                                </p>
+                                                <span
+                                                    className="inline-flex items-center gap-1 mt-3 group-hover:gap-1.5 transition-all"
+                                                    style={{ fontSize: '0.68rem', fontWeight: 600, color: '#1C4532' }}
+                                                >
+                                                    Explore all
+                                                    <ArrowRight size={11} strokeWidth={2} />
+                                                </span>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -282,6 +325,16 @@ export default function Navbar() {
                     </button>
                 </div>
             </header>
+
+            {/* Desktop dropdown backdrop dim — z-40 sits below navbar (z-50) so the pill stays vibrant on top */}
+            {toolsOpen && (
+                <div
+                    aria-hidden
+                    onClick={() => setToolsOpen(false)}
+                    className="hidden md:block fixed inset-0 z-40 animate-fadeIn"
+                    style={{ background: 'rgba(17, 24, 39, 0.32)', backdropFilter: 'blur(2px)' }}
+                />
+            )}
 
             {/* Mobile Menu Overlay */}
             {mobileOpen && (

@@ -138,11 +138,11 @@ export default function DkimLookupPage() {
 
  {/* Hero */}
  <div className="mb-10">
- <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-emerald-200 rounded-full text-xs font-medium text-emerald-700 mb-6">
- <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+ <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-[#D4F0DC] rounded-full text-xs font-medium text-[#1C4532] mb-6">
+ <span className="w-2 h-2 bg-[#D4F0DC]/500 rounded-full animate-pulse" />
  Free Tool &middot; No Signup Required
  </div>
- <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-4">
  DKIM Record Lookup
  </h1>
  <p className="text-lg text-gray-600 max-w-2xl">
@@ -194,7 +194,7 @@ export default function DkimLookupPage() {
  </ol>
  <div className="mt-4 bg-gray-900 text-green-400 p-4 font-mono text-sm overflow-x-auto">
  <span className="text-gray-500">DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;</span><br />
- &nbsp;&nbsp;<span className="text-gray-500">d=example.com;</span> <span className="text-yellow-300">s=google;</span><br />
+ &nbsp;&nbsp;<span className="text-gray-500">d=example.com;</span> <span className="text-[#D4730F]">s=google;</span><br />
  &nbsp;&nbsp;<span className="text-gray-500">h=from:to:subject:date:message-id; ...</span>
  </div>
  <p className="text-sm text-gray-500 mt-2">
@@ -225,7 +225,7 @@ export default function DkimLookupPage() {
  <tr key={row.provider} className="border-b border-gray-50 hover:bg-gray-50/50">
  <td className="py-3 px-4 text-gray-900 font-medium">{row.provider}</td>
  <td className="py-3 px-4">
- <code className="px-1.5 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-mono">{row.selector}</code>
+ <code className="px-1.5 py-0.5 bg-[#D4F0DC]/50 text-[#1C4532] text-xs font-mono">{row.selector}</code>
  </td>
  <td className="py-3 px-4 text-gray-500 hidden md:table-cell">{row.notes}</td>
  </tr>
@@ -247,7 +247,7 @@ export default function DkimLookupPage() {
  <div className="space-y-4 mt-4">
  <div className="p-4 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-3">
- <code className="px-2 py-1 bg-emerald-100 text-emerald-800 font-mono text-sm font-bold shrink-0">v=DKIM1</code>
+ <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">v=DKIM1</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Version</p>
  <p className="text-sm text-gray-600">Identifies this as a DKIM record. Always set to DKIM1.</p>
@@ -256,7 +256,7 @@ export default function DkimLookupPage() {
  </div>
  <div className="p-4 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-3">
- <code className="px-2 py-1 bg-emerald-100 text-emerald-800 font-mono text-sm font-bold shrink-0">k=rsa</code>
+ <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">k=rsa</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Key Type</p>
  <p className="text-sm text-gray-600">The cryptographic algorithm used. RSA is the most common. Ed25519 is a newer, more efficient alternative.</p>
@@ -265,7 +265,7 @@ export default function DkimLookupPage() {
  </div>
  <div className="p-4 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-3">
- <code className="px-2 py-1 bg-emerald-100 text-emerald-800 font-mono text-sm font-bold shrink-0">p=MIIBIj...</code>
+ <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">p=MIIBIj...</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Public Key</p>
  <p className="text-sm text-gray-600">The base64-encoded public key used to verify signatures. An empty <code className="px-1 py-0.5 bg-gray-100 text-xs">p=</code> means the key has been revoked.</p>
@@ -274,7 +274,7 @@ export default function DkimLookupPage() {
  </div>
  <div className="p-4 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-3">
- <code className="px-2 py-1 bg-emerald-100 text-emerald-800 font-mono text-sm font-bold shrink-0">t=y</code>
+ <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">t=y</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Flags</p>
  <p className="text-sm text-gray-600"><code className="px-1 py-0.5 bg-gray-100 text-xs">t=y</code> means the domain is testing DKIM (receivers should treat failures leniently). <code className="px-1 py-0.5 bg-gray-100 text-xs">t=s</code> means strict mode &mdash; the signing domain must exactly match the From header domain.</p>
@@ -283,7 +283,7 @@ export default function DkimLookupPage() {
  </div>
  <div className="p-4 bg-gray-50 border border-gray-100">
  <div className="flex items-start gap-3">
- <code className="px-2 py-1 bg-emerald-100 text-emerald-800 font-mono text-sm font-bold shrink-0">n=...</code>
+ <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">n=...</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Notes</p>
  <p className="text-sm text-gray-600">Optional human-readable notes about the key. Not used for verification.</p>
@@ -367,7 +367,7 @@ export default function DkimLookupPage() {
  href={tool.href}
  className={`group block p-6 bg-white border border-gray-100 hover:border-${tool.color}-200 hover:shadow-lg transition-all duration-300`}
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors text-sm">{tool.title}</h3>
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#1C4532] transition-colors text-sm">{tool.title}</h3>
  <p className="text-xs text-gray-500">{tool.description}</p>
  </Link>
  ))}
@@ -380,9 +380,9 @@ export default function DkimLookupPage() {
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <Link
  href="/blog/spf-dkim-dmarc-explained"
- className="group block p-6 bg-white border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300"
+ className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
- <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors text-sm">SPF, DKIM & DMARC Setup Guide</h3>
+ <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">SPF, DKIM & DMARC Setup Guide</h3>
  <p className="text-xs text-gray-500">Step-by-step DNS authentication setup for outbound email teams. Covers all three protocols in detail.</p>
  </Link>
  </div>

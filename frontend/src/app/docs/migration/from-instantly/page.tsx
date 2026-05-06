@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function MigrateFromInstantlyDocsPage() {
     return (
         <div className="prose prose-lg max-w-none">
-            <h1 className="text-5xl font-bold mb-6 pb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-semibold mb-6 pb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Migrate from Instantly
             </h1>
             <p className="text-xl text-gray-500 mb-12">

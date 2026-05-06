@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import type { Metadata } from 'next';
 import { releaseNotes } from '@/data/releaseNotes';
 
@@ -53,17 +54,8 @@ export default function ReleaseNotesPage() {
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(releaseNotesSchema) }} />
 
  <Navbar />
+ <MarketingBackdrop />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  {/* Content */}
  <div className="relative z-10 pt-32 md:pt-36 pb-10 px-6">
@@ -74,10 +66,10 @@ export default function ReleaseNotesPage() {
  <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase mb-6 border border-blue-100">
  Changelog
  </div>
- <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">
+ <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900 mb-4">
  Release Notes
  </h1>
- <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
+ <p className="text-sm text-gray-500 max-w-xl mx-auto leading-relaxed">
  Every improvement, feature, and fix shipped to Superkabe. Stay up to date with what is new in the platform.
  </p>
  </div>

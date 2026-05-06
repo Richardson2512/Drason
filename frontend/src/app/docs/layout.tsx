@@ -45,6 +45,7 @@ const docSections = [
  { title: 'Risk Scoring', href: '/docs/risk-scoring', icon: TrendingUp },
  { title: 'Monitoring System', href: '/docs/monitoring', icon: Activity },
  { title: 'Warmup & Recovery', href: '/docs/warmup-recovery', icon: Activity },
+ { title: 'Dedicated IP', href: '/docs/dedicated-ip', icon: Shield },
  ]
  },
  {
@@ -73,6 +74,7 @@ const docSections = [
  {
  title: 'Help Center',
  items: [
+ { title: 'Dedicated IP Setup', href: '/docs/help/dedicated-ip', icon: HelpCircle },
  { title: 'Email Validation', href: '/docs/help/email-validation', icon: HelpCircle },
  { title: 'CSV Lead Upload', href: '/docs/help/csv-upload', icon: HelpCircle },
  { title: 'ESP-Aware Routing', href: '/docs/help/esp-routing', icon: HelpCircle },
@@ -319,16 +321,6 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
  {/* ================= NAVBAR ================= */}
  <Navbar />
 
- {/* ================= Fixed Background Layer ================= */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  {/* ================= MAIN LAYOUT ================= */}
  <div className="relative z-10 pt-32 md:pt-36 pb-8">

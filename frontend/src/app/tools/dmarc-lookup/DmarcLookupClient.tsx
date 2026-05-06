@@ -32,8 +32,8 @@ interface DmarcResult {
 function policyBadgeColor(policy: string | null): string {
  switch (policy) {
  case 'reject': return 'bg-green-100 text-green-700';
- case 'quarantine': return 'bg-amber-100 text-amber-700';
- case 'none': return 'bg-red-100 text-red-700';
+ case 'quarantine': return 'bg-[#FFEBC9] text-[#D4730F]';
+ case 'none': return 'bg-gray-200 text-gray-800';
  default: return 'bg-gray-100 text-gray-600';
  }
 }
@@ -41,9 +41,9 @@ function policyBadgeColor(policy: string | null): string {
 function assessmentBadgeColor(assessment: string): string {
  switch (assessment) {
  case 'strong': return 'bg-green-100 text-green-700';
- case 'moderate': return 'bg-amber-100 text-amber-700';
- case 'monitor': return 'bg-red-100 text-red-700';
- case 'missing': return 'bg-red-100 text-red-700';
+ case 'moderate': return 'bg-[#FFEBC9] text-[#D4730F]';
+ case 'monitor': return 'bg-gray-200 text-gray-800';
+ case 'missing': return 'bg-gray-200 text-gray-800';
  default: return 'bg-gray-100 text-gray-600';
  }
 }
@@ -270,13 +270,13 @@ export default function DmarcLookupClient() {
  onChange={e => setDomain(e.target.value)}
  onKeyDown={handleKeyDown}
  placeholder="e.g. example.com"
- className="flex-1 px-4 py-3 border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none text-gray-900 placeholder:text-gray-400 transition-all"
+ className="flex-1 px-4 py-3 border border-gray-200 focus:border-[#FFEBC9] focus:ring-2 focus:ring-[#FFEBC9] outline-none text-gray-900 placeholder:text-gray-400 transition-all"
  disabled={loading}
  />
  <button
  onClick={handleLookup}
  disabled={loading || !domain.trim()}
- className="px-6 py-3 bg-purple-600 text-white font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
+ className="px-6 py-3 bg-[#D4730F] text-white font-semibold hover:bg-[#D4730F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
  >
  {loading ? (
  <span className="flex items-center gap-2">
@@ -296,15 +296,15 @@ export default function DmarcLookupClient() {
  {/* Error */}
  {error && (
  <div className="mt-6 space-y-4">
- <div className="bg-red-50 border border-red-200 p-6">
+ <div className="bg-gray-100 border border-gray-200 p-6">
  <div className="flex items-start gap-3">
- <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <svg className="w-5 h-5 text-gray-5000 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <circle cx="12" cy="12" r="10" />
  <path d="M15 9l-6 6M9 9l6 6" />
  </svg>
  <div>
- <p className="font-semibold text-red-800 text-sm">No DMARC Record Found</p>
- <p className="text-red-700 text-sm mt-1">{error}</p>
+ <p className="font-semibold text-gray-800 text-sm">No DMARC Record Found</p>
+ <p className="text-gray-800 text-sm mt-1">{error}</p>
  </div>
  </div>
  </div>
@@ -316,34 +316,34 @@ export default function DmarcLookupClient() {
  Without a DMARC record, receiving servers have no policy for handling emails that fail SPF or DKIM checks. Attackers can spoof your domain unchallenged, and you receive no reports about authentication failures. Since February 2024, Google and Yahoo require at least <code className="px-1.5 py-0.5 bg-gray-100 text-xs">p=none</code> for all bulk senders.
  </p>
  <div className="space-y-3 mb-5">
- <div className="flex items-start gap-3 p-3 bg-purple-50 ">
- <span className="w-6 h-6 bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">1</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Generate your DMARC record</p>
  <p className="text-xs text-gray-500 mt-0.5">Start with <code className="px-1 py-0.5 bg-gray-100 text-xs">p=none</code> to monitor authentication without affecting delivery. Add a reporting address to receive aggregate reports.</p>
- <a href="/tools/dmarc-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 hover:text-purple-700 mt-1">Use DMARC Generator &rarr;</a>
+ <a href="/tools/dmarc-generator" className="inline-flex items-center gap-1 text-xs font-semibold text-[#D4730F] hover:text-[#D4730F] mt-1">Use DMARC Generator &rarr;</a>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-purple-50 ">
- <span className="w-6 h-6 bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">2</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Add a TXT record at _dmarc.yourdomain.com</p>
  <p className="text-xs text-gray-500 mt-0.5">In your DNS provider, create a TXT record with the host/name set to <code className="px-1 py-0.5 bg-gray-100 text-xs">_dmarc</code> and paste the generated DMARC value.</p>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-purple-50 ">
- <span className="w-6 h-6 bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">3</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Also check SPF and DKIM</p>
  <p className="text-xs text-gray-500 mt-0.5">DMARC builds on SPF and DKIM. All three must be configured for proper email authentication.</p>
  <div className="flex gap-3 mt-1">
- <a href="/tools/spf-lookup" className="text-xs font-semibold text-purple-600 hover:text-purple-700">Check SPF &rarr;</a>
- <a href="/tools/dkim-lookup" className="text-xs font-semibold text-purple-600 hover:text-purple-700">Check DKIM &rarr;</a>
+ <a href="/tools/spf-lookup" className="text-xs font-semibold text-[#D4730F] hover:text-[#D4730F]">Check SPF &rarr;</a>
+ <a href="/tools/dkim-lookup" className="text-xs font-semibold text-[#D4730F] hover:text-[#D4730F]">Check DKIM &rarr;</a>
  </div>
  </div>
  </div>
- <div className="flex items-start gap-3 p-3 bg-purple-50 ">
- <span className="w-6 h-6 bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+ <div className="flex items-start gap-3 p-3 bg-[#FFEBC9]/40 ">
+ <span className="w-6 h-6 bg-[#FFEBC9] text-[#D4730F] flex items-center justify-center text-xs font-bold shrink-0">4</span>
  <div>
  <p className="text-sm font-medium text-gray-900">Verify after DNS propagation</p>
  <p className="text-xs text-gray-500 mt-0.5">Return here after adding the record (allow up to 48 hours for DNS propagation) to confirm your DMARC policy is live.</p>
@@ -353,14 +353,14 @@ export default function DmarcLookupClient() {
  <div className="border-t border-gray-100 pt-4">
  <p className="text-xs font-medium text-gray-500 mb-2">DNS provider guides:</p>
  <div className="flex flex-wrap gap-2">
- <a href="https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Cloudflare</a>
- <a href="https://www.godaddy.com/help/add-a-txt-record-19232" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">GoDaddy</a>
- <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdaborpspf-records-for-my-domain/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Namecheap</a>
- <a href="https://support.google.com/a/answer/2466563" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-purple-300 hover:text-purple-600 transition-colors">Google Domains</a>
+ <a href="https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Cloudflare</a>
+ <a href="https://www.godaddy.com/help/add-a-txt-record-19232" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">GoDaddy</a>
+ <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdaborpspf-records-for-my-domain/" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Namecheap</a>
+ <a href="https://support.google.com/a/answer/2466563" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-gray-50 text-gray-600 text-xs border border-gray-200 hover:border-[#FFEBC9] hover:text-[#D4730F] transition-colors">Google Domains</a>
  </div>
  </div>
  <div className="mt-4 p-3 bg-gray-50 ">
- <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-purple-600 font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
+ <p className="text-xs text-gray-500">Learn more: <a href="/blog/spf-dkim-dmarc-explained" className="text-[#D4730F] font-medium hover:underline">SPF, DKIM &amp; DMARC Setup Guide</a></p>
  </div>
  </div>
  </div>
@@ -374,8 +374,8 @@ export default function DmarcLookupClient() {
  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${assessmentBadgeColor(result.assessment)}`}>
  <span className={`w-2 h-2 rounded-full ${
  result.assessment === 'strong' ? 'bg-green-500' :
- result.assessment === 'moderate' ? 'bg-amber-500' :
- 'bg-red-500'
+ result.assessment === 'moderate' ? 'bg-[#FFEBC9]/400' :
+ 'bg-gray-1000'
  }`} />
  {result.assessmentLabel} DMARC Policy
  </span>
@@ -392,7 +392,7 @@ export default function DmarcLookupClient() {
  <h3 className="text-sm font-semibold text-gray-700">Raw DMARC Record</h3>
  <button
  onClick={handleCopy}
- className={`px-3 py-1.5 text-xs font-semibold transition-all ${copied ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-600'}`}
+ className={`px-3 py-1.5 text-xs font-semibold transition-all ${copied ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#FFEBC9] hover:text-[#D4730F]'}`}
  >
  {copied ? 'Copied!' : 'Copy'}
  </button>
@@ -411,7 +411,7 @@ export default function DmarcLookupClient() {
  {result.tags.map((t, i) => (
  <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-6 py-4">
  <div className="flex items-center gap-3 sm:w-48 shrink-0">
- <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-purple-100 text-purple-700 font-mono">
+ <span className="inline-flex items-center px-2.5 py-1 text-xs font-bold bg-[#FFEBC9] text-[#D4730F] font-mono">
  {t.tag}
  </span>
  <span className="text-sm font-semibold text-gray-900">{t.label}</span>
@@ -442,7 +442,7 @@ export default function DmarcLookupClient() {
  <div className="space-y-3">
  {result.recommendations.map((r, i) => (
  <div key={i} className="flex items-start gap-3">
- <svg className="w-5 h-5 text-purple-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+ <svg className="w-5 h-5 text-[#D4730F]0 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
  <p className="text-sm text-gray-700">{r}</p>

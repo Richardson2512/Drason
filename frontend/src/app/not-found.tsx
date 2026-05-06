@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 export const metadata: Metadata = {
  title: 'Page Not Found | Superkabe',
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
  return (
- <div className="min-h-screen bg-[#F7F2EB] flex items-center justify-center px-6">
+ <div className="relative min-h-screen bg-[#F7F2EB] flex items-center justify-center px-6">
+ <MarketingBackdrop />
  <div className="text-center max-w-lg">
  <p className="text-7xl font-extrabold text-gray-200 mb-4">404</p>
  <h1 className="text-2xl font-bold text-gray-900 mb-3">Page not found</h1>

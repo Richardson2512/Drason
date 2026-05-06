@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronUp, Search, Settings, Shield, Key, Lock, Wrench } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 const toolItems = [
  { title: 'All Tools', href: '/tools', icon: Wrench },
@@ -63,16 +64,7 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
  />
 
  <Navbar />
-
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
+ <MarketingBackdrop />
 
  <div className="relative z-10 pt-32 md:pt-36 pb-8">
  <div className="flex items-start">
@@ -96,12 +88,12 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
  ))}
  </nav>
 
- <div className="mt-8 p-4 bg-blue-50 border border-blue-100">
- <p className="text-xs text-blue-800 font-medium mb-2">Need continuous monitoring?</p>
- <p className="text-xs text-blue-600 mb-3">Superkabe checks SPF, DKIM, and DMARC across all your sending domains automatically.</p>
+ <div className="mt-8 p-4 bg-[#FFEBC9]/40 border border-[#FFEBC9]">
+ <p className="text-xs text-[#D4730F] font-medium mb-2">Need continuous monitoring?</p>
+ <p className="text-xs text-[#D4730F] mb-3">Superkabe checks SPF, DKIM, and DMARC across all your sending domains automatically.</p>
  <Link
  href="/signup"
- className="inline-block px-4 py-2 bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors"
+ className="inline-block px-4 py-2 bg-[#D4730F] text-white text-xs font-semibold hover:bg-[#D4730F] transition-colors"
  >
  Start free trial
  </Link>
@@ -148,7 +140,7 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
  {showScrollTop && (
  <button
  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
- className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-white rounded-full shadow-xl shadow-gray-200/50 border border-gray-100 flex items-center justify-center text-gray-600 hover:text-blue-600 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+ className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-white rounded-full shadow-xl shadow-gray-200/50 border border-gray-100 flex items-center justify-center text-gray-600 hover:text-[#D4730F] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
  aria-label="Scroll to top"
  >
  <ChevronUp size={24} />
@@ -167,9 +159,9 @@ function ToolNavItem({ href, title, icon: Icon, onClick }: { href: string; title
  href={href}
  onClick={onClick}
  className={`flex items-center gap-3 px-3 py-2 transition-all duration-200
- ${isActive ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
+ ${isActive ? 'bg-[#FFEBC9]/40 text-[#D4730F] font-semibold shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
  >
- <Icon size={18} className={isActive ? 'text-blue-600' : 'text-gray-400'} />
+ <Icon size={18} className={isActive ? 'text-[#D4730F]' : 'text-gray-400'} />
  <span className="text-sm">{title}</span>
  </Link>
  );

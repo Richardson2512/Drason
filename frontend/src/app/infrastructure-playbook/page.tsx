@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import MarketingBackdrop from '@/components/MarketingBackdrop';
 import type { Metadata } from 'next';
 
 
@@ -83,20 +84,11 @@ export default function InfrastructurePlaybookPage() {
 
  {/* ================= NAVBAR ================= */}
  <Navbar />
+ <MarketingBackdrop />
 
- {/* Fixed Background Layer */}
- <div className="fixed inset-0 pointer-events-none z-0">
- <div className="cloud-bg">
- <div className="cloud-shadow" />
- <div className="cloud-puff-1" />
- <div className="cloud-puff-2" />
- <div className="cloud-puff-3" />
- </div>
- <div className="absolute inset-0 hero-grid"></div>
- </div>
 
  <article className="relative pt-32 md:pt-36 pb-10 px-6 max-w-4xl mx-auto z-10">
- <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-10 text-center leading-[0.95] tracking-tight">
+ <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-gray-900 mb-10 text-center leading-[0.95] tracking-tight">
  The Outbound Email Infrastructure Playbook
  </h1>
 
