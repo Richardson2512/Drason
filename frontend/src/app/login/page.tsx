@@ -8,17 +8,32 @@ import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
 import { marketingUrl } from '@/lib/urls';
+import { resolvePostLoginRoute } from '@/lib/postLoginRoute';
 
 function LoginContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [workspaceSlug, setWorkspaceSlug] = useState('');
+    const [clientMode, setClientMode] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
+
+    // Pre-fill from magic-link redirect: /login?mode=client&workspace=…&email=…
+    useEffect(() => {
+        const mode = searchParams.get('mode');
+        const ws = searchParams.get('workspace');
+        const em = searchParams.get('email');
+        if (mode === 'client') {
+            setClientMode(true);
+            if (ws) setWorkspaceSlug(ws);
+            if (em) setEmail(em);
+        }
+    }, [searchParams]);
 
     // Get backend URL for Google OAuth redirect
     const getBackendUrl = () => {
@@ -89,18 +104,34 @@ function LoginContent() {
         setLoading(true);
 
         try {
-            const data = await apiClient<{ token?: string }>('/api/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ email, password }),
-            });
-
-            // Server sets httpOnly cookie automatically via Set-Cookie header.
-            // Start periodic token refresh to keep session alive.
-            startTokenRefresh();
-
-            // Successful login — return to intended page if set, else dashboard.
-            const returnTo = consumeIntendedReturnTo();
-            router.push(returnTo || '/dashboard');
+            if (clientMode) {
+                // Workspace-scoped client login: requires workspace slug.
+                await apiClient('/api/auth/login/client', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        workspaceSlug: workspaceSlug.trim().toLowerCase(),
+                        email,
+                        password,
+                    }),
+                });
+                startTokenRefresh();
+                // Hard-locked clients always land on /dashboard. The backend
+                // enforces JWT scoping; agency-only routes (workspace switch,
+                // billing, etc.) reject if accessed.
+                router.push('/dashboard');
+            } else {
+                await apiClient<{ token?: string }>('/api/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password }),
+                });
+                startTokenRefresh();
+                const returnTo = consumeIntendedReturnTo();
+                if (returnTo) {
+                    router.push(returnTo);
+                } else {
+                    router.push(resolvePostLoginRoute(email));
+                }
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -148,6 +179,23 @@ function LoginContent() {
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                        {clientMode && (
+                            <div className="space-y-1.5">
+                                <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">Workspace</label>
+                                <input
+                                    type="text"
+                                    value={workspaceSlug}
+                                    onChange={(e) => setWorkspaceSlug(e.target.value)}
+                                    className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-3 text-[#2D3748] placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm"
+                                    placeholder="e.g. acme-q2-outbound"
+                                    required
+                                    autoFocus
+                                />
+                                <p className="text-[10px] text-[#718096] mt-1">
+                                    The workspace slug is in your invite email.
+                                </p>
+                            </div>
+                        )}
                         <div className="space-y-1.5">
                             <label className="text-[#718096] font-medium text-xs uppercase tracking-wide">E-mail</label>
                             <input
@@ -197,6 +245,22 @@ function LoginContent() {
                             <Link href="/forgot-password" className="text-xs font-bold text-[#1C4532] hover:underline opacity-80 hover:opacity-100">
                                 FORGOT PASSWORD?
                             </Link>
+                        </div>
+
+                        {/* Client-mode toggle — small inline link, default flow stays unchanged */}
+                        <div className="flex items-center justify-center -mt-1">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setClientMode(!clientMode);
+                                    setError('');
+                                }}
+                                className="text-[11px] text-[#718096] hover:text-[#1C4532] hover:underline transition-colors"
+                            >
+                                {clientMode
+                                    ? '← Back to standard login'
+                                    : 'Logging in to a client workspace? Use client login'}
+                            </button>
                         </div>
 
                         <button

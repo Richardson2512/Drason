@@ -15,6 +15,13 @@ export interface DashboardUser {
   name: string;
   email: string;
   role: string;
+  isAgencyOwner: boolean;
+  scopedOrganizationId: string | null;
+  capabilities: string[];
+  /** The canonical list of every capability the backend recognizes — served
+   *  by /api/user/me so adding a new capability backend-side automatically
+   *  shows up in the invite modal's checkbox grid without a frontend deploy. */
+  capabilityKeys: string[];
 }
 
 export interface DashboardSubscription {
@@ -29,6 +36,9 @@ export interface DashboardSubscription {
 interface DashboardContextValue {
   user: DashboardUser | null;
   subscription: DashboardSubscription | null;
+  /** True when the requesting user has the named capability on their active
+   *  workspace. Wildcard '*' (agency owners + legacy) returns true for any cap. */
+  hasCapability: (cap: string) => boolean;
   refetchUser: () => Promise<void>;
   refetchSubscription: () => Promise<void>;
 }
@@ -49,6 +59,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
           name: u.name || u.email || '',
           email: u.email || '',
           role: u.role || '',
+          isAgencyOwner: !!u.is_agency_owner,
+          scopedOrganizationId: u.scoped_organization_id ?? null,
+          capabilities: Array.isArray(u.capabilities) ? u.capabilities : [],
+          capabilityKeys: Array.isArray(u.capabilityKeys) ? u.capabilityKeys : [],
         });
       }
     } catch (err) {
@@ -82,9 +96,15 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     refetchSubscription();
   }, [refetchUser, refetchSubscription]);
 
+  const hasCapability = useCallback((cap: string): boolean => {
+    if (!user) return false;
+    if (user.capabilities.includes('*')) return true;
+    return user.capabilities.includes(cap);
+  }, [user]);
+
   const value = useMemo(
-    () => ({ user, subscription, refetchUser, refetchSubscription }),
-    [user, subscription, refetchUser, refetchSubscription]
+    () => ({ user, subscription, hasCapability, refetchUser, refetchSubscription }),
+    [user, subscription, hasCapability, refetchUser, refetchSubscription]
   );
 
   return (

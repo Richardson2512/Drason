@@ -8,6 +8,7 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import TagManagerModal, { type TagItem, TagIconShape } from '@/components/sequencer/TagManagerModal';
 import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 interface Campaign {
     id: string;
@@ -35,6 +36,8 @@ const statusBadge: Record<string, string> = {
 };
 
 export default function SequencerCampaignsPage() {
+    const { hasCapability } = useDashboard();
+    const canCreate = hasCapability('create_campaigns');
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -120,13 +123,15 @@ export default function SequencerCampaignsPage() {
                     >
                         <TagIcon size={12} /> Manage tags
                     </button>
-                    <Link
-                        href="/dashboard/sequencer/campaigns/new"
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
-                    >
-                        <Plus size={14} />
-                        Create Campaign
-                    </Link>
+                    {canCreate && (
+                        <Link
+                            href="/dashboard/sequencer/campaigns/new"
+                            className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
+                        >
+                            <Plus size={14} />
+                            Create Campaign
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -186,15 +191,19 @@ export default function SequencerCampaignsPage() {
                     <div className="text-4xl mb-4">🚀</div>
                     <h2 className="text-lg font-bold text-gray-900 mb-2">No campaigns yet</h2>
                     <p className="text-sm text-gray-500 text-center max-w-md mb-6">
-                        Create your first campaign to start sending cold emails with native deliverability protection.
+                        {canCreate
+                            ? 'Create your first campaign to start sending cold emails with native deliverability protection.'
+                            : 'Your agency hasn’t created any campaigns yet. Reach out if you’d like one set up.'}
                     </p>
-                    <Link
-                        href="/dashboard/sequencer/campaigns/new"
-                        className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
-                    >
-                        <Plus size={14} />
-                        Create Campaign
-                    </Link>
+                    {canCreate && (
+                        <Link
+                            href="/dashboard/sequencer/campaigns/new"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
+                        >
+                            <Plus size={14} />
+                            Create Campaign
+                        </Link>
+                    )}
                 </div>
             )}
 

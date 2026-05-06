@@ -13,6 +13,7 @@ import ImportProgressTray from '@/components/contacts/ImportProgressTray';
 import TagManagerModal, { type TagItem, TagIconShape } from '@/components/sequencer/TagManagerModal';
 import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
 import toast from 'react-hot-toast';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 const STATUS_OPTIONS = [
     { value: 'all', label: 'Sequence status: any' },
@@ -90,6 +91,8 @@ const PAGE_SIZE = 50;
 
 function ContactsPageContent() {
     const searchParams = useSearchParams();
+    const { hasCapability } = useDashboard();
+    const canAddLeads = hasCapability('add_leads');
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [meta, setMeta] = useState<ContactsMeta>({ total: 0, page: 1, limit: PAGE_SIZE, totalPages: 1 });
     const [searchQuery, setSearchQuery] = useState(() => searchParams?.get('email') ?? '');
@@ -634,16 +637,20 @@ function ContactsPageContent() {
                     <button onClick={exportCSV} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
                         <Upload size={12} /> Export
                     </button>
-                    <button
-                        onClick={() => setShowImportModal(true)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
-                    >
-                        <Download size={12} />
-                        Import Leads
-                    </button>
-                    <button onClick={() => setShowAddModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800">
-                        <Plus size={12} /> Add Contact
-                    </button>
+                    {canAddLeads && (
+                        <button
+                            onClick={() => setShowImportModal(true)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50"
+                        >
+                            <Download size={12} />
+                            Import Leads
+                        </button>
+                    )}
+                    {canAddLeads && (
+                        <button onClick={() => setShowAddModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-900 text-white text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-800">
+                            <Plus size={12} /> Add Contact
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -908,14 +915,20 @@ function ContactsPageContent() {
                 <div className="premium-card flex flex-col items-center justify-center py-16">
                     <Users size={28} className="text-gray-300 mb-3" />
                     <h2 className="text-sm font-bold text-gray-900 mb-1">No contacts yet</h2>
-                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">Import leads from CSV, Apollo, or your CRM, or add contacts when creating campaigns. All contacts across campaigns are accessible here.</p>
-                    <button
-                        onClick={() => setShowImportModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800"
-                    >
-                        <Download size={13} />
-                        Import Leads
-                    </button>
+                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">
+                        {canAddLeads
+                            ? 'Import leads from CSV, Apollo, or your CRM, or add contacts when creating campaigns. All contacts across campaigns are accessible here.'
+                            : 'Your agency hasn’t added any contacts to this workspace yet.'}
+                    </p>
+                    {canAddLeads && (
+                        <button
+                            onClick={() => setShowImportModal(true)}
+                            className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800"
+                        >
+                            <Download size={13} />
+                            Import Leads
+                        </button>
+                    )}
                 </div>
             ) : !loading && contacts.length === 0 && searchQuery ? (
                 <div className="premium-card flex flex-col items-center justify-center py-16">

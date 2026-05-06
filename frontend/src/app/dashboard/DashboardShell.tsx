@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon, Flame } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { consumeIntendedReturnTo } from '@/lib/auth-client';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -12,6 +12,7 @@ import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ConsentReacceptanceModal from '@/components/ConsentReacceptanceModal';
 import ValidationBanner from '@/components/dashboard/ValidationBanner';
+import WorkspaceSwitcher from '@/components/dashboard/WorkspaceSwitcher';
 import { useDashboard } from '@/contexts/DashboardContext';
 import type { AssessmentStatusResponse, Organization, UnreadCountResponse } from '@/types/api';
 
@@ -230,6 +231,12 @@ export default function DashboardShell({
                         )}
                     </div>
 
+                    {/* Agency Mode workspace switcher — renders only when Agency Mode is on */}
+                    <WorkspaceSwitcher
+                        isCollapsed={isCollapsed}
+                        onRequestExpand={() => setIsCollapsed(false)}
+                    />
+
                     {(() => {
                         const toggleMode = (mode: 'sequencer' | 'protection') => {
                             const next = activeMode === mode ? null : mode;
@@ -244,6 +251,7 @@ export default function DashboardShell({
                             { href: '/dashboard/sequencer/contacts', label: 'Contacts', icon: <Contact size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/analytics', label: 'Analytics', icon: <BarChart3 size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/accounts', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/warmup', label: 'Warmup', icon: <Flame size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/settings', label: 'Settings', icon: <Settings size={13} strokeWidth={1.75} /> },
                         ];
 

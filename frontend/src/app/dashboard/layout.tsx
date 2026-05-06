@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import DashboardShell from './DashboardShell';
 import { DashboardProvider } from '@/contexts/DashboardContext';
+import { AgencyModeProvider } from '@/hooks/useAgencyMode';
 
 export const metadata: Metadata = {
     title: 'Dashboard | Superkabe',
@@ -14,7 +15,9 @@ export default function DashboardLayout({
 }) {
     return (
         <DashboardProvider>
-            <DashboardShell>{children}</DashboardShell>
+            <AgencyModeProvider>
+                <DashboardShell>{children}</DashboardShell>
+            </AgencyModeProvider>
         </DashboardProvider>
     );
 }

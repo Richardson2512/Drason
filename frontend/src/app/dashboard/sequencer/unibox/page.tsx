@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText, Square, CheckSquare } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
@@ -65,6 +66,8 @@ interface LeadContext {
 // ============================================================================
 
 export default function UniboxPage() {
+    const { hasCapability } = useDashboard();
+    const canReply = hasCapability('reply_to_messages');
     const [threads, setThreads] = useState<EmailThread[]>([]);
     const [selectedThread, setSelectedThread] = useState<(EmailThread & { messages: EmailMessage[] }) | null>(null);
     const [leadContext, setLeadContext] = useState<LeadContext | null>(null);
@@ -554,7 +557,11 @@ export default function UniboxPage() {
 
                         {/* Reply */}
                         <div className="shrink-0 bg-white" style={{ borderTop: '1px solid #D1CBC5' }}>
-                            {!showReply ? (
+                            {!canReply ? (
+                                <div className="w-full p-3 text-[11px] text-gray-400 italic">
+                                    You don&apos;t have permission to reply on this workspace.
+                                </div>
+                            ) : !showReply ? (
                                 <button onClick={() => setShowReply(true)} className="w-full p-3 text-left text-xs text-gray-900 hover:bg-gray-50 cursor-pointer transition-colors font-medium">
                                     Click to reply to {selectedThread.contact_name || selectedThread.contact_email}...
                                 </button>

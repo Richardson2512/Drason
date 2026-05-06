@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
 import { User, Lock, Save, CheckCircle, AlertCircle } from 'lucide-react';
 import { useDashboard } from '@/contexts/DashboardContext';
+import AgencyModeCard from '@/components/settings/AgencyModeCard';
 
 export default function ProfilePage() {
     const { user, refetchUser } = useDashboard();
@@ -93,6 +94,9 @@ export default function ProfilePage() {
         <div className="px-4 py-8 max-w-[1200px] mx-auto">
             <h1 className="text-xl font-bold text-gray-900 mb-0.5">Profile</h1>
             <p className="text-xs text-gray-500 mb-8">Manage your account details and security</p>
+
+            {/* Agency Mode — manage multiple client workspaces (Scale/Enterprise) */}
+            <AgencyModeCard />
 
             <div className="flex flex-wrap gap-8 items-start">
                 {/* Left Column */}

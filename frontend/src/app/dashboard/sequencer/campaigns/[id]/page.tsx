@@ -12,6 +12,7 @@ import { apiClient } from '@/lib/api';
 import ScheduleCalendarView from '@/components/sequencer/ScheduleCalendarView';
 import RecipientPreviewPanel from '@/components/sequencer/RecipientPreviewPanel';
 import toast from 'react-hot-toast';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 interface Variant {
     id: string;
@@ -99,6 +100,10 @@ const statusStyles: Record<string, string> = {
 export default function CampaignDetailPage() {
     const params = useParams();
     const router = useRouter();
+    const { hasCapability } = useDashboard();
+    const canLaunchPause = hasCapability('launch_pause_campaigns');
+    const canEdit = hasCapability('edit_sequences');
+    const canDelete = hasCapability('create_campaigns');
     const id = Array.isArray(params?.id) ? params.id[0] : (params?.id as string);
 
     const [campaign, setCampaign] = useState<Campaign | null>(null);
@@ -219,7 +224,7 @@ export default function CampaignDetailPage() {
                     >
                         <Workflow size={12} /> View sequence
                     </Link>
-                    {(campaign.status === 'draft' || campaign.status === 'active' || campaign.status === 'paused') && (
+                    {canEdit && (campaign.status === 'draft' || campaign.status === 'active' || campaign.status === 'paused') && (
                         <Link
                             href={`/dashboard/sequencer/campaigns/new?id=${campaign.id}`}
                             className="flex items-center gap-1.5 px-3 py-1.5 text-gray-700 border border-[#D1CBC5] text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-50"
@@ -227,7 +232,7 @@ export default function CampaignDetailPage() {
                             <Pencil size={12} /> Edit
                         </Link>
                     )}
-                    {campaign.status === 'draft' && (
+                    {canLaunchPause && campaign.status === 'draft' && (
                         <button
                             onClick={() => doAction('launch')}
                             disabled={!!acting}
@@ -236,7 +241,7 @@ export default function CampaignDetailPage() {
                             {acting === 'launch' ? <Loader2 size={12} className="animate-spin" /> : <Play size={12} />} Launch
                         </button>
                     )}
-                    {campaign.status === 'active' && (
+                    {canLaunchPause && campaign.status === 'active' && (
                         <button
                             onClick={() => doAction('pause')}
                             disabled={!!acting}
@@ -245,7 +250,7 @@ export default function CampaignDetailPage() {
                             {acting === 'pause' ? <Loader2 size={12} className="animate-spin" /> : <Pause size={12} />} Pause
                         </button>
                     )}
-                    {campaign.status === 'paused' && (
+                    {canLaunchPause && campaign.status === 'paused' && (
                         <button
                             onClick={() => doAction('resume')}
                             disabled={!!acting}
@@ -254,13 +259,15 @@ export default function CampaignDetailPage() {
                             {acting === 'resume' ? <Loader2 size={12} className="animate-spin" /> : <Play size={12} />} Resume
                         </button>
                     )}
-                    <button
-                        onClick={() => doAction('delete')}
-                        disabled={!!acting}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-red-600 border border-red-200 text-xs font-semibold rounded-lg cursor-pointer hover:bg-red-50 disabled:opacity-50"
-                    >
-                        {acting === 'delete' ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />} Delete
-                    </button>
+                    {canDelete && (
+                        <button
+                            onClick={() => doAction('delete')}
+                            disabled={!!acting}
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-red-600 border border-red-200 text-xs font-semibold rounded-lg cursor-pointer hover:bg-red-50 disabled:opacity-50"
+                        >
+                            {acting === 'delete' ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />} Delete
+                        </button>
+                    )}
                 </div>
             </div>
 

@@ -11,6 +11,7 @@ import { getScoreColor, getScoreLabel, getScoreEmoji } from '@/lib/statusHelpers
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import AssessmentConfirmationModal from '@/components/AssessmentConfirmationModal';
 import AssessmentProgressOverlay from '@/components/AssessmentProgressOverlay';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 import TransitionGateBanner from './TransitionGateBanner';
 // Recovery and warmup panels moved to /dashboard/healing
@@ -23,6 +24,8 @@ const ScoreHistory = dynamic(() => import('./Charts').then(mod => ({ default: mo
 
 
 export default function InfrastructureHealthPage() {
+    const { hasCapability } = useDashboard();
+    const canRunAssessment = hasCapability('run_assessment');
     const [report, setReport] = useState<InfraReport | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -335,9 +338,15 @@ export default function InfrastructureHealthPage() {
                     ))}
                 </div>
 
-                <button onClick={handleReassess} className="premium-btn px-8 py-4 text-base bg-[#2563EB] rounded-2xl" disabled={reassessing}>
-                    {reassessing ? 'Running Assessment...' : '🔍 Run Infrastructure Assessment'}
-                </button>
+                {canRunAssessment ? (
+                    <button onClick={handleReassess} className="premium-btn px-8 py-4 text-base bg-[#2563EB] rounded-2xl" disabled={reassessing}>
+                        {reassessing ? 'Running Assessment...' : '🔍 Run Infrastructure Assessment'}
+                    </button>
+                ) : (
+                    <div className="text-xs text-gray-500 italic max-w-md text-center">
+                        Your agency runs assessments for this workspace. Reach out if you&apos;d like a fresh scan.
+                    </div>
+                )}
                 {reassessResult && (
                     <div className="premium-card px-6 py-4 max-w-[500px] text-center">
                         {reassessResult.message}
@@ -395,6 +404,7 @@ export default function InfrastructureHealthPage() {
                     <span className="bg-gray-100 px-4 py-[0.4rem] rounded-full text-xs font-semibold text-gray-500">
                         v{report.assessment_version} • {report.report_type.replace(/_/g, ' ')}
                     </span>
+                    {canRunAssessment && (
                     <button
                         onClick={handleReassess}
                         disabled={reassessing}
@@ -414,6 +424,7 @@ export default function InfrastructureHealthPage() {
                             <>🔄 Re-assess</>
                         )}
                     </button>
+                    )}
                 </div>
             </div>
 

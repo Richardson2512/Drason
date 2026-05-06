@@ -8,6 +8,7 @@ import CustomSelect from '@/components/ui/CustomSelect';
 import BulkMailboxImportModal from '@/components/sequencer/BulkMailboxImportModal';
 import ResellerImportModal from '@/components/sequencer/ResellerImportModal';
 import MailboxSettingsModal from '@/components/sequencer/MailboxSettingsModal';
+import { useDashboard } from '@/contexts/DashboardContext';
 
 // Stable source codes — keep in sync with backend ConnectedAccount.source.
 // Adding a new reseller? Update both this list AND the SOURCE_META map below.
@@ -92,6 +93,9 @@ const PROVIDER_META = {
 };
 
 export default function ConnectedAccountsPage() {
+    const { hasCapability } = useDashboard();
+    const canConnect = hasCapability('connect_mailboxes');
+    const canIntegrate = hasCapability('access_integrations');
     const [accounts, setAccounts] = useState<ConnectedAccount[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -319,25 +323,31 @@ export default function ConnectedAccountsPage() {
                     <p className="text-xs text-gray-500 mt-0.5">{accounts.length.toLocaleString()} mailbox{accounts.length === 1 ? '' : 'es'}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setShowResellerModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
-                        style={{ border: '1px solid #D1CBC5' }}
-                        title="Bulk-import mailboxes from Zapmail and other inbox providers"
-                    >
-                        <Zap size={13} /> Import mailboxes
-                    </button>
-                    <button
-                        onClick={() => setShowBulkModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
-                        style={{ border: '1px solid #D1CBC5' }}
-                        title="Import many mailboxes from a CSV"
-                    >
-                        <Download size={13} /> CSV import
-                    </button>
-                    <button onClick={() => { setShowAddModal(true); setAddType(null); }} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold hover:bg-gray-800 cursor-pointer">
-                        <Plus size={13} /> Connect Mailbox
-                    </button>
+                    {canIntegrate && (
+                        <button
+                            onClick={() => setShowResellerModal(true)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
+                            style={{ border: '1px solid #D1CBC5' }}
+                            title="Bulk-import mailboxes from Zapmail and other inbox providers"
+                        >
+                            <Zap size={13} /> Import mailboxes
+                        </button>
+                    )}
+                    {canConnect && (
+                        <button
+                            onClick={() => setShowBulkModal(true)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer text-gray-700 hover:bg-gray-50"
+                            style={{ border: '1px solid #D1CBC5' }}
+                            title="Import many mailboxes from a CSV"
+                        >
+                            <Download size={13} /> CSV import
+                        </button>
+                    )}
+                    {canConnect && (
+                        <button onClick={() => { setShowAddModal(true); setAddType(null); }} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold hover:bg-gray-800 cursor-pointer">
+                            <Plus size={13} /> Connect Mailbox
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -410,10 +420,16 @@ export default function ConnectedAccountsPage() {
                 <div className="premium-card flex flex-col items-center justify-center py-16">
                     <Mail size={28} className="text-gray-300 mb-3" />
                     <h2 className="text-sm font-bold text-gray-900 mb-1">No mailboxes connected</h2>
-                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">Connect your Google Workspace, Microsoft 365, or custom SMTP mailboxes to start sending emails from Superkabe.</p>
-                    <button onClick={() => { setShowAddModal(true); setAddType(null); }} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800">
-                        <Plus size={13} /> Connect First Mailbox
-                    </button>
+                    <p className="text-xs text-gray-500 text-center max-w-md mb-4">
+                        {canConnect
+                            ? 'Connect your Google Workspace, Microsoft 365, or custom SMTP mailboxes to start sending emails from Superkabe.'
+                            : 'Your agency hasn’t connected any mailboxes yet. Reach out if you’d like sending set up.'}
+                    </p>
+                    {canConnect && (
+                        <button onClick={() => { setShowAddModal(true); setAddType(null); }} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-800">
+                            <Plus size={13} /> Connect First Mailbox
+                        </button>
+                    )}
                 </div>
             ) : filteredAccounts.length === 0 ? (
                 <div className="premium-card flex flex-col items-center justify-center py-16">

@@ -433,6 +433,8 @@ export default function PricingPage() {
  "Unlimited domains, mailboxes, leads",
  "600,000 email sends/month",
  "100,000 email validation credits + API",
+ "Optional Agency mode",
+ "Unlimited workspaces",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
@@ -477,6 +479,8 @@ export default function PricingPage() {
  <ul className="space-y-3 mb-8">
  {[
  'Unlimited sends, validation credits, and protection coverage',
+ 'Optional Agency mode',
+ 'Unlimited workspaces',
  'Super admin console with multi-workspace controls',
  'Custom healing pipeline configuration',
  'Custom validation thresholds + bulk-buy credits',
