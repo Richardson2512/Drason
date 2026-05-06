@@ -24,7 +24,7 @@ const TESTIMONIALS: Testimonial[] = [
         author: 'Aarav Singh',
         role: 'Founder',
         company: 'Rihario',
-        logo: '/image/customers/rihario.png',
+        logo: '/image/customers/rihario-v2.png',
         metric: { value: '0', label: 'Domains burned in Q1' },
         accent: 'orange',
     },
@@ -90,22 +90,22 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         quote:
-            "The unified inbox is what keeps us on Superkabe. Replies from twelve sender addresses land in one queue with the right context attached. My SDRs stopped missing warm replies in the noise.",
+            "The unified inbox is what keeps my team on Superkabe. Replies from twelve sender addresses land in one queue with the right context attached. Our SDRs stopped missing warm replies in the noise.",
         author: 'Jordan Reyes',
         role: 'RevOps Manager',
-        company: 'Northwind Outbound',
+        company: 'PrompTrim',
         logo: '/image/customers/promptrim.png',
-        accent: 'blue',
+        accent: 'orange',
     },
     {
         quote:
-            "Switched off SmartLead and Instantly to consolidate. The infra-score dashboard is what sold our CTO — we finally have a single number to point at when leadership asks 'is outbound healthy this quarter?'",
+            "Switched off SmartLead and Instantly to consolidate on Superkabe. The infra-score dashboard is what sold our CTO — we finally have a single number to point at when leadership asks 'is outbound healthy this quarter?'",
         author: 'Linnea Berg',
         role: 'VP Growth',
-        company: 'Heylex',
+        company: 'Insightsnap',
         logo: '/image/customers/insightsnap.png',
         metric: { value: '1', label: 'Tool, not three' },
-        accent: 'green',
+        accent: 'blue',
     },
 ];
 

@@ -25,7 +25,7 @@ const CUSTOMERS: Customer[] = [
         key: 'rihario',
         brand: 'Rihario',
         role: 'DTC commerce · India',
-        logo: '/image/customers/rihario.png',
+        logo: '/image/customers/rihario-v2.png',
         tone: 'orange',
         tag: 'Top sender',
         contact: { name: 'Aarav Singh', role: 'Founder, Rihario', email: 'aarav@rihario.com', phone: '+91 98765 43210', handle: '@rihario' },

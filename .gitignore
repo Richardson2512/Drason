@@ -13,6 +13,3 @@ backend/
 !frontend/**/*.md
 !README.md
 frontend/public/new landing page inspiration.mp4
-
-# local dev server log
-frontend/.staging-frontend.log
