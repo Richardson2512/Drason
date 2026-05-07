@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { releaseNotes } from '@/data/releaseNotes';
 import { TEMPLATES as COLD_EMAIL_TEMPLATES } from '@/data/coldEmailTemplates';
+import { productPages } from '@/data/productPages';
 
 const BASE_URL = 'https://www.superkabe.com';
 
@@ -23,6 +24,7 @@ function getPageMtime(routePath: string): Date {
         '/product': 'product',
         '/contact': 'contact',
         '/release-notes': 'release-notes',
+        '/testimonials': 'testimonials',
     };
 
     const dir = routeMap[routePath];
@@ -125,6 +127,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.7,
         },
         {
+            url: `${BASE_URL}/testimonials`,
+            lastModified: getPageMtime('/testimonials'),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
             url: `${BASE_URL}/release-notes`,
             lastModified: getPageMtime('/release-notes'),
             changeFrequency: 'weekly',
@@ -209,41 +217,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
 
-        // ─── Auto-Generated SEO & Case Study Pages ────
-        ...[
-            'email-deliverability-protection',
-            'what-is-email-deliverability-protection',
-            'sender-reputation-protection-tool',
-            'how-to-protect-sender-reputation',
-            'b2b-sender-reputation-management',
-            'domain-burnout-prevention-tool',
-            'how-to-prevent-domain-burnout',
-            'automated-domain-healing',
-            'outbound-domain-protection',
-            'email-infrastructure-protection',
-            'cold-email-infrastructure-protection',
-            'outbound-email-infrastructure-monitoring',
-            'email-infrastructure-health-check',
-            'bounce-rate-protection-system',
-            'sender-reputation-monitoring',
-            'automated-bounce-management',
-            'smartlead-infrastructure-protection',
-            'smartlead-deliverability-protection',
-            'instantly-infrastructure-protection',
-            'reply-io-deliverability-protection',
-            'emailbison-infrastructure-protection',
-            'multi-platform-outbound-protection',
-            'case-study-domain-recovery',
-            'case-study-bounce-reduction',
-            'case-study-infrastructure-protection',
-            'email-validation-infrastructure-protection',
-            'multi-platform-email-validation',
-            // ─── Sequencer Capability Pages (2026-04-24) ─────────
-            'ai-cold-email-sequences',
-            'esp-aware-sending-health-gate',
-            'unlimited-multi-mailbox-sending',
-            'cold-email-sending-analytics',
-        ].map(slug => ({
+        // ─── Product subpages (data-driven) ─────────────
+        // Derived from productPages so the sitemap never drifts out of sync
+        // with the actual `/product/[slug]` routes. Adding a new entry to
+        // productPages.ts auto-includes it here; deleting one auto-removes
+        // it. (Previously this was a hardcoded list and 7 stale slugs were
+        // pointing at 404s for months — Google does not love that.)
+        ...Object.keys(productPages).map(slug => ({
             url: `${BASE_URL}/product/${slug}`,
             lastModified: productMtime,
             changeFrequency: 'weekly' as const,
