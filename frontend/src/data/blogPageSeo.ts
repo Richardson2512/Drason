@@ -574,4 +574,28 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
             ],
         },
     },
+    '/blog/reply-io-alternatives': {
+        tldr: "7 ranked Reply.io alternatives for cold email in 2026: Superkabe (AI sequencing + flat-tier protection), Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy. Reply.io's per-user pricing makes scaling past 5 reps expensive; cold-email-first alternatives are 3-5× cheaper. Superkabe is the only platform that ships native auto-pause, 5-phase healing, and ESP-aware routing.",
+    },
+    '/blog/luella-alternatives': {
+        tldr: "7 ranked Luella alternatives for AI cold email in 2026: Superkabe (AI sequencing + flat-tier protection), Smartlead, Instantly, Reply.io, Lemlist, EmailBison, Woodpecker. Luella's AI SDR persona is differentiated but ships no native deliverability protection. Superkabe is the only alternative that pairs AI sequencing with auto-pause, 5-phase healing, and ESP-aware routing.",
+    },
+    '/blog/superkabe-vs-smartlead': {
+        tldr: "Superkabe vs Smartlead head-to-head: Superkabe wins on the protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) and flat-tier pricing past 50K active leads. Smartlead wins on track record at extreme volume and webhook ecosystem maturity. Migration is same-day in either direction.",
+    },
+    '/blog/superkabe-vs-instantly': {
+        tldr: "Superkabe vs Instantly head-to-head: Superkabe wins on native auto-pause, 5-phase healing, ESP-aware per-mailbox routing, and flat-tier pricing past 25K active leads. Instantly wins on bundled warmup network and built-in B2B lead database. Migration is same-day.",
+    },
+    '/blog/superkabe-vs-emailbison': {
+        tldr: "Superkabe vs EmailBison head-to-head: Superkabe wins on the protection layer (auto-pause, 5-phase healing, ESP-aware routing, validation, DNSBL monitoring) and per-workspace isolation for agencies. EmailBison wins on raw per-send economics at extreme volume (1M+ sends/mo) for single-tenant teams.",
+    },
+    '/blog/superkabe-vs-woodpecker': {
+        tldr: "Superkabe vs Woodpecker head-to-head: Superkabe wins on modern AI sequencing, native auto-pause, 5-phase healing, ESP-aware routing, and lower entry pricing ($19/mo vs $54/mo). Woodpecker wins on reply detection accuracy, if-campaign branching maturity, and 10+ year operational track record.",
+    },
+    '/blog/superkabe-vs-reply-io': {
+        tldr: "Superkabe vs Reply.io head-to-head: Superkabe wins on flat-tier pricing (vs Reply.io's per-user model), the protection layer (auto-pause, 5-phase healing, ESP-aware routing), and large mailbox-fleet management. Reply.io wins on native multichannel — calls, LinkedIn, deep CRM integrations.",
+    },
+    '/blog/superkabe-vs-luella': {
+        tldr: "Superkabe vs Luella head-to-head: Superkabe wins on the protection layer (auto-pause, 5-phase healing, ESP-aware routing) and per-workspace isolation for agencies. Luella wins on autonomous AI SDR persona — full reply-handling autonomy with persona-driven outreach. Different problems: Superkabe protects domains, Luella replaces the SDR.",
+    },
 };

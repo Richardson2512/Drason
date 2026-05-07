@@ -36,6 +36,18 @@
 ## Comparisons
 
 - [Smartlead Alternatives](https://www.superkabe.com/blog/smartlead-alternatives): 7 platforms ranked by deliverability protection.
+- [Instantly Alternatives](https://www.superkabe.com/blog/instantly-alternatives): 7 ranked alternatives covering pricing, deliverability, and bundled warmup.
+- [EmailBison Alternatives](https://www.superkabe.com/blog/emailbison-alternatives): 7 ranked alternatives for high-volume teams that also want infrastructure protection.
+- [Woodpecker Alternatives](https://www.superkabe.com/blog/woodpecker-alternatives): 7 ranked alternatives with modern AI sequencing and automated auto-pause.
+- [Lemlist Alternatives](https://www.superkabe.com/blog/lemlist-alternatives): 7 ranked alternatives competing on AI sequencing and flat-tier pricing.
+- [Reply.io Alternatives](https://www.superkabe.com/blog/reply-io-alternatives): 7 ranked alternatives for cold-email-first teams moving off per-user pricing.
+- [Luella Alternatives](https://www.superkabe.com/blog/luella-alternatives): 7 ranked alternatives pairing AI sequencing with deliverability protection.
+- [Superkabe vs Smartlead](https://www.superkabe.com/blog/superkabe-vs-smartlead): Head-to-head on pricing, AI sequencing, auto-pause, ESP-aware routing, and 5-phase healing.
+- [Superkabe vs Instantly](https://www.superkabe.com/blog/superkabe-vs-instantly): Head-to-head on bundled warmup vs the protection layer at flat-tier pricing.
+- [Superkabe vs EmailBison](https://www.superkabe.com/blog/superkabe-vs-emailbison): Head-to-head on high-volume sending vs sender + protection bundle.
+- [Superkabe vs Woodpecker](https://www.superkabe.com/blog/superkabe-vs-woodpecker): Head-to-head on modern AI sequencing vs established reply-detection branching.
+- [Superkabe vs Reply.io](https://www.superkabe.com/blog/superkabe-vs-reply-io): Head-to-head on cold-email-first protection vs multichannel sales engagement.
+- [Superkabe vs Luella](https://www.superkabe.com/blog/superkabe-vs-luella): Head-to-head on AI sequencing + protection vs autonomous AI SDR persona.
 - [Email Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Category-by-category comparison of monitoring, validation, and protection tools.
 - [Best Email Validation Tools (Cold Outreach)](https://www.superkabe.com/blog/best-email-validation-tools-cold-outreach): MillionVerifier vs ZeroBounce vs NeverBounce vs others.
 - [ZeroBounce Alternatives](https://www.superkabe.com/blog/zerobounce-alternatives): Lower-cost alternatives + tradeoffs.
