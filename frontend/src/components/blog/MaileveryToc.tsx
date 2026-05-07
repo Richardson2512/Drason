@@ -114,9 +114,9 @@ export default function MaileveryToc() {
     };
 
     return (
-        <nav className="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto scrollbar-hide">
+        <nav className="sticky top-32 max-h-[calc(100vh-9rem)] flex flex-col">
             {groups.length > 0 && (
-                <>
+                <div className="flex-1 min-h-0 overflow-y-auto scrollbar-hide">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Table of Contents</h2>
 
                     <ul className="space-y-0">
@@ -172,10 +172,12 @@ export default function MaileveryToc() {
                             );
                         })}
                     </ul>
-                </>
+                </div>
             )}
 
-            <BlogSidebarCta />
+            <div className="shrink-0">
+                <BlogSidebarCta />
+            </div>
         </nav>
     );
 }
