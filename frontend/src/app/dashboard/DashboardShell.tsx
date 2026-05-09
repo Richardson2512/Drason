@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon, Flame } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon, Flame, Zap } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { consumeIntendedReturnTo } from '@/lib/auth-client';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -74,6 +74,22 @@ export default function DashboardShell({
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
+    // Super Sender announcement — dedicated-IP upsell. Persisted to
+    // localStorage so a one-click dismiss sticks across sessions; the user
+    // can still re-show it by clearing storage or visiting the dedicated
+    // /dashboard/sequencer/super-sender page (which is in the sidebar).
+    const [superSenderDismissed, setSuperSenderDismissed] = useState<boolean>(false);
+    useEffect(() => {
+        if (typeof window !== 'undefined' && localStorage.getItem('superkabe-super-sender-dismissed') === '1') {
+            setSuperSenderDismissed(true);
+        }
+    }, []);
+    const dismissSuperSender = () => {
+        setSuperSenderDismissed(true);
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('superkabe-super-sender-dismissed', '1');
+        }
+    };
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [orgName, setOrgName] = useState<string>('');
     const [assessmentInProgress, setAssessmentInProgress] = useState<boolean>(false);
@@ -251,6 +267,7 @@ export default function DashboardShell({
                             { href: '/dashboard/sequencer/contacts', label: 'Contacts', icon: <Contact size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/analytics', label: 'Analytics', icon: <BarChart3 size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/accounts', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/super-sender', label: 'Super Sender', icon: <Zap size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/warmup', label: 'Warmup', icon: <Flame size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/settings', label: 'Settings', icon: <Settings size={13} strokeWidth={1.75} /> },
                         ];
@@ -446,6 +463,51 @@ export default function DashboardShell({
                             title="Dismiss (session only)"
                         >
                             ✕
+                        </button>
+                    </div>
+                )}
+
+                {/* Super Sender announcement — dedicated-IP upsell. Sticks
+                    to the top of the main content area so it's seen on any
+                    dashboard page. Per-user dismissal persists across sessions. */}
+                {!superSenderDismissed && pathname !== '/dashboard/sequencer/super-sender' && (
+                    <div
+                        className="flex items-center justify-between gap-4 sticky top-0 z-30 shadow-sm"
+                        style={{
+                            background: 'linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #2563EB 100%)',
+                            borderBottom: '1px solid #1E3A8A',
+                            padding: '0.75rem 1.5rem',
+                        }}
+                    >
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div
+                                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                                style={{ background: 'rgba(255,255,255,0.15)' }}
+                            >
+                                <Zap size={16} strokeWidth={2} className="text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="m-0 text-[0.85rem] text-white font-bold leading-tight">
+                                    Introducing Super Sender — dedicated IPs for your workspace
+                                </p>
+                                <p className="m-0 text-[0.75rem] text-blue-100 leading-tight mt-0.5">
+                                    Better deliverability, full control over your sender reputation. From <strong className="text-white">$39/IP/month</strong>, powered by Amazon SES.{' '}
+                                    <Link
+                                        href="/dashboard/sequencer/super-sender"
+                                        className="text-white underline font-semibold hover:text-blue-50"
+                                    >
+                                        Learn more →
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={dismissSuperSender}
+                            className="bg-transparent border-none text-white/70 hover:text-white cursor-pointer p-1 flex items-center justify-center rounded w-7 h-7 shrink-0"
+                            title="Dismiss"
+                            aria-label="Dismiss Super Sender announcement"
+                        >
+                            <XIcon size={14} strokeWidth={2} />
                         </button>
                     </div>
                 )}
