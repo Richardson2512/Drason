@@ -1848,39 +1848,37 @@ export default function NewCampaignPage() {
                                                 conditions reference signals only later steps can have produced). */}
                                             {idx > 0 && (
                                                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}>
-                                                    <span className="text-[10px] text-gray-500">Send only if</span>
-                                                    <select
-                                                        value={step.condition || ''}
-                                                        onChange={e => updateStep(idx, { condition: e.target.value || null, branchToStepNumber: e.target.value ? step.branchToStepNumber : null })}
-                                                        className="px-1.5 py-0.5 text-[11px] rounded border bg-white outline-none cursor-pointer"
-                                                        style={{ borderColor: '#D1CBC5' }}
-                                                    >
-                                                        <option value="">always</option>
-                                                        <option value="if_no_reply">no reply yet</option>
-                                                        <option value="if_replied">lead replied</option>
-                                                        <option value="if_opened">a prior step was opened</option>
-                                                        <option value="if_not_opened">no prior opens</option>
-                                                        <option value="if_clicked">a prior step had a click</option>
-                                                        <option value="if_not_clicked">no clicks yet</option>
-                                                    </select>
+                                                    <span className="text-[10px] text-gray-500 shrink-0">Send only if</span>
+                                                    <div className="w-44">
+                                                        <CustomSelect
+                                                            value={step.condition || ''}
+                                                            onChange={(v) => updateStep(idx, { condition: v || null, branchToStepNumber: v ? step.branchToStepNumber : null })}
+                                                            options={[
+                                                                { value: '', label: 'always' },
+                                                                { value: 'if_no_reply', label: 'no reply yet' },
+                                                                { value: 'if_replied', label: 'lead replied' },
+                                                                { value: 'if_opened', label: 'a prior step was opened' },
+                                                                { value: 'if_not_opened', label: 'no prior opens' },
+                                                                { value: 'if_clicked', label: 'a prior step had a click' },
+                                                                { value: 'if_not_clicked', label: 'no clicks yet' },
+                                                            ]}
+                                                        />
+                                                    </div>
                                                     {step.condition && (
                                                         <>
-                                                            <span className="text-[10px] text-gray-500">otherwise</span>
-                                                            <select
-                                                                value={step.branchToStepNumber == null ? '' : String(step.branchToStepNumber)}
-                                                                onChange={e => updateStep(idx, { branchToStepNumber: e.target.value === '' ? null : parseInt(e.target.value) })}
-                                                                className="px-1.5 py-0.5 text-[11px] rounded border bg-white outline-none cursor-pointer"
-                                                                style={{ borderColor: '#D1CBC5' }}
-                                                            >
-                                                                <option value="">end sequence</option>
-                                                                {sequenceSteps
-                                                                    .filter(s => s.stepNumber !== step.stepNumber)
-                                                                    .map(s => (
-                                                                        <option key={s.id} value={String(s.stepNumber)}>
-                                                                            jump to Step {s.stepNumber}
-                                                                        </option>
-                                                                    ))}
-                                                            </select>
+                                                            <span className="text-[10px] text-gray-500 shrink-0">otherwise</span>
+                                                            <div className="w-40">
+                                                                <CustomSelect
+                                                                    value={step.branchToStepNumber == null ? '' : String(step.branchToStepNumber)}
+                                                                    onChange={(v) => updateStep(idx, { branchToStepNumber: v === '' ? null : parseInt(v) })}
+                                                                    options={[
+                                                                        { value: '', label: 'end sequence' },
+                                                                        ...sequenceSteps
+                                                                            .filter(s => s.stepNumber !== step.stepNumber)
+                                                                            .map(s => ({ value: String(s.stepNumber), label: `jump to Step ${s.stepNumber}` })),
+                                                                    ]}
+                                                                />
+                                                            </div>
                                                         </>
                                                     )}
                                                 </div>

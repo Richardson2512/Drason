@@ -117,6 +117,7 @@ export default function AIAssistPanel({
     // UI state
     const [showAdvanced, setShowAdvanced] = useState(false);
     const [editingUrl, setEditingUrl] = useState(false);
+    const [editingFields, setEditingFields] = useState(false);
 
     // ── Load profile on mount ──
     // apiClient unwraps `{success, data}` to just `data` on 200 responses, so
@@ -153,25 +154,75 @@ export default function AIAssistPanel({
         return () => { cancelled = true; };
     }, []);
 
-    // ── Extract profile from URL ──
-    const extractProfile = useCallback(async (url: string) => {
+    // ── Extract profile from one or more URLs ──
+    //
+    // Path: enqueue an async BullMQ job (POST /api/ai/profile/jobs), then
+    // poll GET /api/ai/profile/jobs/:id until state === 'completed' or
+    // 'failed'. The frontend never holds an HTTP connection across the
+    // Jina + OpenAI round-trip, so the page stays responsive even if 100
+    // other orgs are extracting at the same moment.
+    //
+    // Up to 5 URLs are supported (backend caps at MAX_URLS_PER_PROFILE).
+    // The extractor synthesizes across all sources — homepage + pricing
+    // + case-study, etc.
+    const extractProfile = useCallback(async (rawInput: string) => {
+        const urls = rawInput
+            .split(/[\s,]+/)
+            .map(u => u.trim())
+            .filter(Boolean);
+        if (urls.length === 0) {
+            setProfileError('Paste at least one URL');
+            return;
+        }
+        if (urls.length > 5) {
+            setProfileError('At most 5 URLs per profile');
+            return;
+        }
+
         setExtracting(true);
         setProfileError(null);
         try {
-            // apiClient unwraps the `{success, data}` envelope on 200 → `res` is the
-            // inner ProfileData. Errors throw with the API's message.
-            const res = await apiClient<{ source_url: string; profile: BusinessProfile; extracted_at: string; model_used: string }>('/api/ai/profile', {
+            const enqueue = await apiClient<{ job_id: string; source_urls: string[] }>('/api/ai/profile/jobs', {
                 method: 'POST',
-                body: JSON.stringify({ url: url.trim() }),
+                body: JSON.stringify(urls.length === 1 ? { url: urls[0] } : { urls }),
             });
-            if (res?.profile) {
-                setProfile(res.profile);
-                setSourceUrl(res.source_url || '');
-                setEditingUrl(false);
-                setUrlInput('');
-            } else {
-                setProfileError('Failed to build profile');
+            if (!enqueue?.job_id) {
+                setProfileError('Failed to enqueue extraction');
+                return;
             }
+
+            // Poll. Backoff schedule: 1s × 5 → 2s × 10 → 4s × 30 — caps at
+            // ~2 minutes total before giving up so a stuck job doesn't
+            // hang the panel forever.
+            const delays = [
+                ...Array(5).fill(1_000),
+                ...Array(10).fill(2_000),
+                ...Array(30).fill(4_000),
+            ];
+            for (const delay of delays) {
+                await new Promise(resolve => setTimeout(resolve, delay));
+                const status = await apiClient<{
+                    state: string;
+                    finished: boolean;
+                    result?: { profile: BusinessProfile; source_urls: string[] };
+                    error?: string;
+                }>(`/api/ai/profile/jobs/${enqueue.job_id}`).catch(() => null);
+
+                if (!status) continue;
+                if (status.state === 'completed' && status.result?.profile) {
+                    setProfile(status.result.profile);
+                    setSourceUrl(status.result.source_urls?.[0] || urls[0]);
+                    setEditingUrl(false);
+                    setUrlInput('');
+                    return;
+                }
+                if (status.state === 'failed') {
+                    setProfileError(status.error || 'Extraction failed');
+                    return;
+                }
+                // 'waiting' / 'active' / 'delayed' → keep polling
+            }
+            setProfileError('Extraction is taking longer than expected — check back in a moment.');
         } catch (err: unknown) {
             setProfileError((err as Error)?.message || 'Failed to build profile');
         } finally {
@@ -283,9 +334,19 @@ export default function AIAssistPanel({
                         profile={profile}
                         sourceUrl={sourceUrl}
                         onEdit={() => setEditingUrl(true)}
+                        onRefine={() => setEditingFields(v => !v)}
+                        refining={editingFields}
                         onRefresh={handleRefresh}
                         refreshing={extracting}
                     />
+
+                    {editingFields && (
+                        <ManualProfileEditor
+                            profile={profile}
+                            onSaved={(merged) => { setProfile(merged); setEditingFields(false); }}
+                            onCancel={() => setEditingFields(false)}
+                        />
+                    )}
 
                     {/* Generation controls */}
                     <div className="space-y-2 mt-3">
@@ -393,18 +454,25 @@ function ProfileSetup({
         <div className="space-y-2">
             <p className="text-[11px] text-gray-700 leading-relaxed">
                 Paste your company&apos;s website URL. The AI will read it and use it as context for every email generation across your templates and campaigns.
+                For richer output, paste up to <strong>5 URLs</strong> (homepage + pricing + a case study) separated by commas, spaces, or new lines — they&apos;ll be synthesized into one profile.
             </p>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 items-start">
                 <div className="flex-1 relative">
-                    <Globe size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                        type="url"
+                    <Globe size={12} className="absolute left-2.5 top-2 text-gray-400" />
+                    <textarea
                         value={urlInput}
                         onChange={e => setUrlInput(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && onExtract()}
+                        onKeyDown={e => {
+                            // Cmd/Ctrl+Enter submits without inserting a newline.
+                            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                                e.preventDefault();
+                                onExtract();
+                            }
+                        }}
                         disabled={extracting}
-                        placeholder="https://yourcompany.com"
-                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-400"
+                        rows={2}
+                        placeholder={'https://yourcompany.com\nhttps://yourcompany.com/pricing'}
+                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-violet-400 resize-y font-mono"
                     />
                 </div>
                 <button
@@ -441,11 +509,14 @@ function ProfileSetup({
 }
 
 function ProfileBadge({
-    profile, sourceUrl, onEdit, onRefresh, refreshing,
+    profile, sourceUrl, onEdit, onRefine, refining, onRefresh, refreshing,
 }: {
     profile: BusinessProfile;
     sourceUrl: string | null;
     onEdit: () => void;
+    /** Toggle the manual-edit panel for refining individual fields. */
+    onRefine: () => void;
+    refining: boolean;
     onRefresh: () => void;
     refreshing: boolean;
 }) {
@@ -469,15 +540,201 @@ function ProfileBadge({
                     </button>
                     <button
                         type="button"
+                        onClick={onRefine}
+                        title="Refine fields manually"
+                        className={`p-1 text-[10px] font-semibold ${refining ? 'text-violet-700' : 'text-gray-500 hover:text-violet-700'}`}
+                    >
+                        Refine
+                    </button>
+                    <button
+                        type="button"
                         onClick={onEdit}
-                        title="Change URL"
+                        title="Change URL(s)"
                         className="text-gray-500 hover:text-violet-700 p-1 text-[10px] font-semibold"
                     >
-                        Edit
+                        URL
                     </button>
                 </div>
             </div>
         </div>
+    );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Manual edit panel — refine fields the AI got wrong without re-scraping.
+// PATCHes /api/ai/profile with whatever subset the operator changed; the
+// backend deep-merges into the cached row.
+// ────────────────────────────────────────────────────────────────────
+
+function ManualProfileEditor({
+    profile, onSaved, onCancel,
+}: {
+    profile: BusinessProfile;
+    onSaved: (merged: BusinessProfile) => void;
+    onCancel: () => void;
+}) {
+    // Local working copy. Sections are edited in place; on save we send
+    // the whole shape (the backend deep-merges per-section). Keeping the
+    // form simple beats trying to track per-field dirty bits.
+    const [draft, setDraft] = useState<BusinessProfile>(profile);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const updateCompany = (k: keyof BusinessProfile['company'], v: string) =>
+        setDraft(d => ({ ...d, company: { ...d.company, [k]: v } as BusinessProfile['company'] }));
+    const updateOffering = <K extends keyof BusinessProfile['offering']>(k: K, v: BusinessProfile['offering'][K]) =>
+        setDraft(d => ({ ...d, offering: { ...d.offering, [k]: v } }));
+    const updateIcp = <K extends keyof BusinessProfile['icp']>(k: K, v: BusinessProfile['icp'][K]) =>
+        setDraft(d => ({ ...d, icp: { ...d.icp, [k]: v } }));
+    const updateValueProp = <K extends keyof BusinessProfile['value_prop']>(k: K, v: BusinessProfile['value_prop'][K]) =>
+        setDraft(d => ({ ...d, value_prop: { ...d.value_prop, [k]: v } }));
+    const updateVoice = <K extends keyof BusinessProfile['voice']>(k: K, v: BusinessProfile['voice'][K]) =>
+        setDraft(d => ({ ...d, voice: { ...d.voice, [k]: v } }));
+
+    const handleSave = async () => {
+        setSaving(true);
+        setError(null);
+        try {
+            const res = await apiClient<{ profile: BusinessProfile }>('/api/ai/profile', {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    company: draft.company,
+                    offering: draft.offering,
+                    icp: draft.icp,
+                    value_prop: draft.value_prop,
+                    voice: draft.voice,
+                }),
+            });
+            if (res?.profile) onSaved(res.profile);
+            else setError('Save failed');
+        } catch (err) {
+            setError((err as Error)?.message || 'Save failed');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    return (
+        <div className="mt-2 bg-white border border-violet-200 rounded-lg p-3 space-y-3 text-[11px]">
+            <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-violet-700">Refine profile fields</span>
+                <button onClick={onCancel} className="text-gray-400 hover:text-gray-600" aria-label="Close"><X size={12} /></button>
+            </div>
+
+            <FieldSection title="Company">
+                <FieldInput label="Name" value={draft.company.name} onChange={v => updateCompany('name', v)} />
+                <FieldInput label="One-liner (≤ 20 words)" value={draft.company.one_liner} onChange={v => updateCompany('one_liner', v)} />
+                <FieldInput label="Tagline" value={draft.company.tagline ?? ''} onChange={v => updateCompany('tagline', v)} optional />
+            </FieldSection>
+
+            <FieldSection title="Offering">
+                <FieldInput label="Category" value={draft.offering.category} onChange={v => updateOffering('category', v)} />
+                <ListInput label="Products" values={draft.offering.products} onChange={v => updateOffering('products', v)} />
+                <ListInput label="Differentiators" values={draft.offering.differentiators} onChange={v => updateOffering('differentiators', v)} />
+            </FieldSection>
+
+            <FieldSection title="Ideal Customer Profile">
+                <ListInput label="Roles" values={draft.icp.roles} onChange={v => updateIcp('roles', v)} />
+                <ListInput label="Industries" values={draft.icp.industries} onChange={v => updateIcp('industries', v)} />
+                <ListInput label="Pain points" values={draft.icp.pain_points} onChange={v => updateIcp('pain_points', v)} />
+            </FieldSection>
+
+            <FieldSection title="Value proposition">
+                <FieldInput label="Primary (≤ 30 words)" value={draft.value_prop.primary} onChange={v => updateValueProp('primary', v)} />
+                <ListInput label="Proof points" values={draft.value_prop.proof_points} onChange={v => updateValueProp('proof_points', v)} />
+            </FieldSection>
+
+            <FieldSection title="Voice">
+                <FieldInput label="Tone" value={draft.voice.tone} onChange={v => updateVoice('tone', v)} hint="casual / neutral / professional / direct" />
+                <FieldInput label="Formality" value={draft.voice.formality} onChange={v => updateVoice('formality', v)} hint="low / medium / high" />
+                <ListInput label="Distinctive phrases" values={draft.voice.distinctive_phrases} onChange={v => updateVoice('distinctive_phrases', v)} />
+            </FieldSection>
+
+            {error && <div className="text-[11px] text-red-700 bg-red-50 border border-red-200 rounded px-2 py-1">{error}</div>}
+
+            <div className="flex items-center justify-end gap-2">
+                <button
+                    type="button"
+                    onClick={onCancel}
+                    disabled={saving}
+                    className="text-[11px] text-gray-600 hover:text-gray-900 px-2 py-1 rounded"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="bg-violet-600 hover:bg-violet-700 disabled:bg-violet-300 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5"
+                >
+                    {saving && <Loader2 size={11} className="animate-spin" />}
+                    Save changes
+                </button>
+            </div>
+        </div>
+    );
+}
+
+function FieldSection({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <div className="space-y-1.5">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{title}</div>
+            {children}
+        </div>
+    );
+}
+
+function FieldInput({ label, value, onChange, hint, optional }: {
+    label: string;
+    value: string;
+    onChange: (v: string) => void;
+    hint?: string;
+    optional?: boolean;
+}) {
+    return (
+        <label className="block">
+            <span className="text-[10px] text-gray-600 flex items-center gap-1">
+                {label}
+                {optional && <span className="text-gray-400">(optional)</span>}
+                {hint && <span className="text-gray-400 text-[9px] italic">{hint}</span>}
+            </span>
+            <input
+                type="text"
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                className="w-full mt-0.5 text-xs bg-white border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-violet-400"
+            />
+        </label>
+    );
+}
+
+/** Edit a string-array field as a multi-line textarea — one entry per line.
+ *  Trade-off: doesn't allow reorder by drag. The operator can rearrange by
+ *  cutting + pasting lines, which beats building a real chip editor. */
+function ListInput({ label, values, onChange }: {
+    label: string;
+    values: string[];
+    onChange: (v: string[]) => void;
+}) {
+    const [text, setText] = useState(values.join('\n'));
+    // Keep local text in sync if parent values change (e.g. cancel/reload).
+    useEffect(() => { setText(values.join('\n')); }, [values.join('|')]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const commit = (v: string) => {
+        setText(v);
+        onChange(v.split('\n').map(s => s.trim()).filter(Boolean));
+    };
+
+    return (
+        <label className="block">
+            <span className="text-[10px] text-gray-600">{label} <span className="text-gray-400">(one per line)</span></span>
+            <textarea
+                value={text}
+                onChange={e => commit(e.target.value)}
+                rows={Math.max(2, Math.min(5, text.split('\n').length))}
+                className="w-full mt-0.5 text-xs bg-white border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-violet-400 resize-y"
+            />
+        </label>
     );
 }
 

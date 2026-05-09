@@ -21,6 +21,7 @@ interface ContactDetail {
     persona: string | null;
     phone: string | null;
     linkedin_url: string | null;
+    company_linkedin_url: string | null;
     source: string | null;
     status: string;
     health_classification: string;
@@ -75,6 +76,7 @@ export default function ContactDetailPage() {
         website: '',
         phone: '',
         linkedin_url: '',
+        company_linkedin_url: '',
     });
     const [allTags, setAllTags] = useState<TagItem[]>([]);
 
@@ -129,6 +131,7 @@ export default function ContactDetailPage() {
                         website: c.website || '',
                         phone: c.phone || '',
                         linkedin_url: c.linkedin_url || '',
+                        company_linkedin_url: c.company_linkedin_url || '',
                     });
                 }
                 setEditing(false);
@@ -167,6 +170,7 @@ export default function ContactDetailPage() {
             website: contact.website || '',
             phone: contact.phone || '',
             linkedin_url: contact.linkedin_url || '',
+            company_linkedin_url: contact.company_linkedin_url || '',
         });
         setEditing(true);
     };
@@ -181,6 +185,7 @@ export default function ContactDetailPage() {
             website: contact.website || '',
             phone: contact.phone || '',
             linkedin_url: contact.linkedin_url || '',
+            company_linkedin_url: contact.company_linkedin_url || '',
         });
         setEditing(false);
     };
@@ -346,6 +351,7 @@ export default function ContactDetailPage() {
                                 <EditableField icon={<Globe size={12} />} label="Website" value={drafts.website} onChange={(v) => setDrafts(d => ({ ...d, website: v }))} placeholder="acme.com" type="url" />
                                 <EditableField icon={<Phone size={12} />} label="Phone" value={drafts.phone} onChange={(v) => setDrafts(d => ({ ...d, phone: v }))} placeholder="+1 555 123 4567" type="tel" />
                                 <EditableField icon={<Linkedin size={12} />} label="LinkedIn" value={drafts.linkedin_url} onChange={(v) => setDrafts(d => ({ ...d, linkedin_url: v }))} placeholder="https://linkedin.com/in/..." type="url" />
+                                <EditableField icon={<Linkedin size={12} />} label="Company LinkedIn" value={drafts.company_linkedin_url} onChange={(v) => setDrafts(d => ({ ...d, company_linkedin_url: v }))} placeholder="https://linkedin.com/company/..." type="url" />
                             </>
                         ) : (
                             <>
@@ -355,6 +361,7 @@ export default function ContactDetailPage() {
                                 <Field icon={<Globe size={12} />} label="Website" value={contact.website} link={contact.website ? toUrl(contact.website) : null} />
                                 <Field icon={<Phone size={12} />} label="Phone" value={contact.phone} />
                                 <Field icon={<Linkedin size={12} />} label="LinkedIn" value={contact.linkedin_url} link={contact.linkedin_url} />
+                                <Field icon={<Linkedin size={12} />} label="Company LinkedIn" value={contact.company_linkedin_url} link={contact.company_linkedin_url} />
                             </>
                         )}
                         <Field icon={<Calendar size={12} />} label="Added" value={new Date(contact.created_at).toLocaleString()} />

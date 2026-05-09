@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DatePickerProps {
@@ -47,16 +48,57 @@ export default function DatePicker({ value, onChange, placeholder = 'Select a da
     const [open, setOpen] = useState(false);
     const [viewDate, setViewDate] = useState(() => selected || new Date());
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const popoverRef = useRef<HTMLDivElement>(null);
+
+    // Calendar popover is rendered via a portal so no ancestor's overflow
+    // or stacking context can clip it (the campaign creation modal uses
+    // overflow-hidden for rounded corners + scrolling, which previously
+    // chopped the calendar). Coords are computed from the trigger's
+    // bounding rect and refreshed on scroll/resize.
+    const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
+
+    // Compact fixed width — matches the pre-portal `minWidth: 260` so the
+    // calendar doesn't stretch to the trigger's width when the trigger is
+    // a wide form field.
+    const POPOVER_WIDTH = 260;
 
     // Sync the calendar view when the external value changes
     useEffect(() => {
         if (selected) setViewDate(selected);
     }, [selected]);
 
+    const updateCoords = () => {
+        if (!wrapperRef.current) return;
+        const r = wrapperRef.current.getBoundingClientRect();
+        // Anchor to the trigger's left edge, but if that would push the
+        // popover off the right side of the viewport, shift left so it
+        // stays on screen with an 8px margin.
+        const maxLeft = Math.max(8, window.innerWidth - POPOVER_WIDTH - 8);
+        const left = Math.min(Math.max(r.left, 8), maxLeft);
+        setCoords({ top: r.bottom + 4, left, width: POPOVER_WIDTH });
+    };
+
+    useLayoutEffect(() => {
+        if (!open) return;
+        updateCoords();
+        window.addEventListener('resize', updateCoords);
+        // capture phase so ancestor scrolls inside modals also reposition
+        window.addEventListener('scroll', updateCoords, true);
+        return () => {
+            window.removeEventListener('resize', updateCoords);
+            window.removeEventListener('scroll', updateCoords, true);
+        };
+    }, [open]);
+
+    // Outside-click — check the trigger wrapper AND the portal'd popover so
+    // clicking inside the open calendar doesn't count as "outside".
     useEffect(() => {
         if (!open) return;
         const handler = (e: MouseEvent) => {
-            if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) setOpen(false);
+            const t = e.target as Node;
+            if (wrapperRef.current?.contains(t)) return;
+            if (popoverRef.current?.contains(t)) return;
+            setOpen(false);
         };
         document.addEventListener('mousedown', handler);
         return () => document.removeEventListener('mousedown', handler);
@@ -110,10 +152,19 @@ export default function DatePicker({ value, onChange, placeholder = 'Select a da
                 <Calendar size={12} className="text-gray-400 shrink-0" />
             </button>
 
-            {open && (
+            {open && coords && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="absolute left-0 mt-1 bg-white z-[9999] rounded-lg overflow-hidden"
-                    style={{ border: '1px solid #D1CBC5', boxShadow: '0 6px 16px rgba(0,0,0,0.08)', minWidth: 260 }}
+                    ref={popoverRef}
+                    className="bg-white rounded-lg overflow-hidden"
+                    style={{
+                        position: 'fixed',
+                        top: coords.top,
+                        left: coords.left,
+                        width: coords.width,
+                        zIndex: 10000,
+                        border: '1px solid #D1CBC5',
+                        boxShadow: '0 6px 16px rgba(0,0,0,0.08)',
+                    }}
                 >
                     {/* Month header */}
                     <div className="flex items-center justify-between px-2 py-2" style={{ background: '#FAFAF8', borderBottom: '1px solid #E8E3DC' }}>
@@ -192,7 +243,8 @@ export default function DatePicker({ value, onChange, placeholder = 'Select a da
                             </button>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );
