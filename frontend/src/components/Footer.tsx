@@ -51,14 +51,19 @@ export default function Footer() {
  </nav>
  </div>
 
- {/* Product Guides */}
+ {/* Compare — Superkabe vs the rest of the cold-email category. */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Product Guides</h4>
+ <h4 className="font-bold text-gray-900 mb-2 text-base">Compare</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
- <Link href="/product/email-deliverability-protection" className="hover:text-blue-600 transition-colors whitespace-nowrap">Deliverability Guide</Link>
- <Link href="/product/domain-burnout-prevention-tool" className="hover:text-blue-600 transition-colors whitespace-nowrap">Domain Protection</Link>
- <Link href="/product/sender-reputation-monitoring" className="hover:text-blue-600 transition-colors whitespace-nowrap">Reputation</Link>
- <Link href="/product/automated-domain-healing" className="hover:text-blue-600 transition-colors whitespace-nowrap">Auto-Healing</Link>
+ <Link href="/blog/superkabe-vs-instantly" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Instantly</Link>
+ <Link href="/blog/superkabe-vs-smartlead" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Smartlead</Link>
+ <Link href="/blog/superkabe-vs-emailbison" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs EmailBison</Link>
+ <Link href="/blog/superkabe-vs-reply-io" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Reply.io</Link>
+ <Link href="/blog/superkabe-vs-woodpecker" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Woodpecker</Link>
+ <Link href="/blog/superkabe-vs-luella" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Luella</Link>
+ <Link href="/blog/superkabe-vs-warmup-tools" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Warmup Tools</Link>
+ <Link href="/blog/superkabe-vs-email-verification-tools" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Verification Tools</Link>
+ <Link href="/blog/superkabe-vs-manual-monitoring" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Manual Monitoring</Link>
  </nav>
  </div>
 
