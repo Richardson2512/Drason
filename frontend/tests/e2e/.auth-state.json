@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZmQ0MzUyNi0yMDk5LTQ0YzAtODMyNS1mZDVlNTY3NTZiNTkiLCJlbWFpbCI6ImRlbW9Ac3VwZXJrYWJlLmNvbSIsInJvbGUiOiJhZG1pbiIsIm9yZ0lkIjoiYmYwZTFhYmMtYWZhMi00ZDZkLTllZGUtZjYxOGM5MDE3ZTExIiwiYWNjb3VudElkIjpudWxsLCJhY3RpdmVPcmdhbml6YXRpb25JZCI6ImJmMGUxYWJjLWFmYTItNGQ2ZC05ZWRlLWY2MThjOTAxN2UxMSIsImlzQWdlbmN5T3duZXIiOmZhbHNlLCJzY29wZWRPcmdhbml6YXRpb25JZCI6bnVsbCwiaWF0IjoxNzc4NTgxNjYyLCJleHAiOjE3Nzg4NDA4NjJ9.7VfFGoCtvBCSUFWNYCT2sPUyfMUMWXoWKlgaUGYx-4c",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1778840862,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

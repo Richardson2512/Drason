@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { ChevronLeft, AlertTriangle, CheckCircle2, Loader2, RotateCw } from 'lucide-react';
+import CustomSelect from '@/components/ui/CustomSelect';
 
 type Provider = 'apollo' | 'zoominfo';
 
@@ -286,16 +287,14 @@ export default function LeadSourceDetailPage() {
                                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">
                                     Enroll in campaign (optional)
                                 </label>
-                                <select
+                                <CustomSelect
                                     value={targetCampaignId}
-                                    onChange={e => setTargetCampaignId(e.target.value)}
-                                    className="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-md focus:outline-none focus:border-slate-400 bg-white"
-                                >
-                                    <option value="">— none —</option>
-                                    {campaigns.map(c => (
-                                        <option key={c.id} value={c.id}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    onChange={setTargetCampaignId}
+                                    options={[
+                                        { value: '', label: '— none —' },
+                                        ...campaigns.map(c => ({ value: c.id, label: c.name })),
+                                    ]}
+                                />
                             </div>
                             <div>
                                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">

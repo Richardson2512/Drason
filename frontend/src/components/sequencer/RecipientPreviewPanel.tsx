@@ -46,6 +46,10 @@ interface PreviewResult {
 interface Props {
     subject: string;
     bodyHtml: string;
+    /** Inbox preview text (preheader). When non-empty, overrides the
+     *  body-derived snippet in every client's inbox-list view, matching
+     *  what real Gmail/Outlook/Apple Mail do at receive time. */
+    preheader?: string;
     senderName?: string;
     senderEmail?: string;
     /** Hide the issues panel (when host renders issues separately). */
@@ -86,6 +90,7 @@ const backendClientKey = (c: ClientId, d: DeviceId): string => {
 export default function RecipientPreviewPanel({
     subject,
     bodyHtml,
+    preheader = '',
     senderName = '',
     senderEmail = '',
     hideIssues = false,
@@ -115,6 +120,7 @@ export default function RecipientPreviewPanel({
                     body: JSON.stringify({
                         subject,
                         bodyHtml,
+                        preheader,
                         senderName,
                         senderEmail,
                         clients: ['gmail_desktop', 'gmail_mobile', 'apple_mail_macos', 'apple_mail_ios', 'outlook_mobile'],
@@ -128,12 +134,11 @@ export default function RecipientPreviewPanel({
         } finally {
             setLoading(false);
         }
-    }, [subject, bodyHtml, senderName, senderEmail, includeAiSummary]);
+    }, [subject, bodyHtml, preheader, senderName, senderEmail, includeAiSummary]);
 
     useEffect(() => {
         generate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [generate]);
 
     const wantedKey = backendClientKey(client, device);
     const previewData = result?.clients.find((c) => c.key === wantedKey) || result?.clients[0];

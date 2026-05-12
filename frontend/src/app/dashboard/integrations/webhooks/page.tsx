@@ -10,6 +10,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
+import CustomSelect from '@/components/ui/CustomSelect';
 import {
     Plus, Webhook, Copy, Check, RefreshCw, Trash2, Play, RotateCw, AlertTriangle,
     CircleDot, Loader2, X, ExternalLink, ChevronLeft, Eye, EyeOff,
@@ -564,18 +565,25 @@ function DeliveryLogTab({ endpointId }: { endpointId: string }) {
     return (
         <div>
             <div className="flex items-center gap-2 mb-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Filter</span>
-                {(['', 'pending', 'success', 'failed', 'dead_letter'] as const).map(s => (
-                    <button
-                        key={s || 'all'}
-                        type="button"
-                        onClick={() => setStatusFilter(s)}
-                        className={`text-[10px] px-2 py-0.5 border rounded transition-colors ${statusFilter === s ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
-                    >
-                        {s ? s.replace('_', ' ') : 'All'}
-                    </button>
-                ))}
-                <button type="button" onClick={load} className="ml-auto text-[10px] text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">
+                <div className="w-44">
+                    <CustomSelect
+                        value={statusFilter || ''}
+                        onChange={(v) => setStatusFilter(v as typeof statusFilter)}
+                        options={[
+                            { value: '',            label: 'All deliveries' },
+                            { value: 'pending',     label: 'Pending' },
+                            { value: 'success',     label: 'Success' },
+                            { value: 'failed',      label: 'Failed' },
+                            { value: 'dead_letter', label: 'Dead letter' },
+                        ]}
+                    />
+                </div>
+                <button
+                    type="button"
+                    onClick={load}
+                    aria-label="Refresh deliveries"
+                    className="ml-auto text-[10px] text-gray-500 hover:text-gray-800 inline-flex items-center gap-1"
+                >
                     <RefreshCw size={10} /> Refresh
                 </button>
             </div>
@@ -721,7 +729,7 @@ function CreateEndpointModal({
             <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                 <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h2 className="text-base font-bold text-gray-900">New webhook endpoint</h2>
-                    <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700"><X size={16} /></button>
+                    <button type="button" onClick={onClose} aria-label="Close" title="Close" className="text-gray-400 hover:text-gray-700"><X size={16} /></button>
                 </div>
 
                 <div className="px-6 py-5 space-y-4">

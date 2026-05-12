@@ -184,9 +184,9 @@ export default function PredictiveRisksPage() {
                     <div className="text-sm text-amber-900 mb-2">High Risk</div>
                     <div className="text-3xl font-bold text-amber-500">{report.high_risk_campaigns}</div>
                 </div>
-                <div className="p-6 bg-blue-100 border border-blue-300 rounded-xl">
-                    <div className="text-sm text-blue-900 mb-2">At Risk Total</div>
-                    <div className="text-3xl font-bold text-blue-500">{report.at_risk_campaigns}</div>
+                <div className="p-6 rounded-lg" style={{ background: '#FAFAF8', border: '1px solid #D1CBC5' }}>
+                    <div className="text-sm text-gray-700 mb-2">At Risk Total</div>
+                    <div className="text-3xl font-bold text-gray-900">{report.at_risk_campaigns}</div>
                 </div>
             </div>
 
@@ -309,7 +309,7 @@ export default function PredictiveRisksPage() {
                                                                 route ? (
                                                                     <Link
                                                                         href={route}
-                                                                        className="py-1.5 px-3.5 bg-blue-600 text-white border-none rounded-md text-xs font-semibold no-underline whitespace-nowrap"
+                                                                        className="py-1.5 px-3 bg-gray-900 hover:bg-gray-800 text-white border-none rounded-lg text-xs font-semibold no-underline whitespace-nowrap"
                                                                     >
                                                                         {btnLabel} →
                                                                     </Link>

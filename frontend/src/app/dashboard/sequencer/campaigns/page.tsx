@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Plus, Users, Mail, Tag as TagIcon } from 'lucide-react';
+import { Plus, Users, Mail, Tag as TagIcon, Search } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
@@ -44,6 +44,7 @@ export default function SequencerCampaignsPage() {
     const [allTags, setAllTags] = useState<TagItem[]>([]);
     const [tagFilter, setTagFilter] = useState<string[]>([]);
     const [showTagManager, setShowTagManager] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const fetchCampaigns = useCallback(async (tagIds: string[] = tagFilter) => {
         try {
@@ -135,8 +136,19 @@ export default function SequencerCampaignsPage() {
                 </div>
             </div>
 
-            {/* Tag filter */}
-            <div className="flex items-center gap-2">
+            {/* Filter bar — name search + tag filter */}
+            <div className="flex items-center gap-2 flex-wrap">
+                <div className="relative flex-1 max-w-md">
+                    <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        placeholder="Search campaigns by name…"
+                        className="w-full pl-7 pr-3 py-1.5 text-xs rounded-lg outline-none bg-white"
+                        style={{ border: '1px solid #D1CBC5' }}
+                    />
+                </div>
                 <div className="w-[180px]">
                     <MultiSelectDropdown
                         options={allTags.map(t => ({
@@ -224,7 +236,9 @@ export default function SequencerCampaignsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {campaigns.map((campaign) => (
+                            {campaigns
+                                .filter(c => !searchQuery.trim() || c.name.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+                                .map((campaign) => (
                                 <tr key={campaign.id} className="hover:bg-gray-50/50 transition-colors">
                                     <td className="px-4 py-3">
                                         <Link

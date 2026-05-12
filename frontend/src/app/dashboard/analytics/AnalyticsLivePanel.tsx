@@ -7,6 +7,7 @@ import type { DailyData } from '@/types/api';
 import { useCampaignList } from '@/hooks/useCampaignList';
 import DatePicker from '@/components/ui/DatePicker';
 import CustomSelect from '@/components/ui/CustomSelect';
+import MailboxComparisonPanel from '@/components/analytics/MailboxComparisonPanel';
 
 function formatShortDate(dateStr: string): string {
     const d = new Date(dateStr);
@@ -218,6 +219,11 @@ export default function AnalyticsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Mailbox comparison — independent of single/comparison campaign mode.
+                Uses the same date window as the campaign chart so the operator
+                reads both surfaces with one mental model. */}
+            <MailboxComparisonPanel startDate={startDate} endDate={endDate} />
 
             {/* ── SINGLE MODE ── */}
             {!isComparing && (

@@ -15,9 +15,11 @@
  * the dashboard's monochrome aesthetic.
  */
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { apiClient } from '@/lib/api';
-import { Loader2, Heart, ThumbsUp, MessageCircleQuestion, Users, Hourglass, X, AngryIcon, Clock4, HelpCircle, Flame, ArrowUpRight, ArrowDownRight, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Loader2, Heart, ThumbsUp, MessageCircleQuestion, Users, Hourglass, X, AngryIcon, Clock4, HelpCircle, Flame, ArrowUpRight, ArrowDownRight, ChevronRight, ExternalLink } from 'lucide-react';
 
 // ────────────────────────────────────────────────────────────────────
 // Types — mirror the backend payload shape
@@ -39,6 +41,8 @@ interface SubjectCorrelation {
 
 interface ReplySample {
     id: string;
+    /** EmailThread id — used to deep-link into Unibox via ?thread=<id>. */
+    thread_id: string;
     subject: string;
     from_email: string;
     snippet: string;
@@ -154,20 +158,37 @@ export default function ReplyQualityPanel({ days }: { days: number }) {
                             const count = data.breakdown[cls] || 0;
                             const pct = data.total_replies > 0 ? Math.round((count / data.total_replies) * 100) : 0;
                             const Icon = meta.icon;
+                            const isActive = drillIntoClass === cls;
                             return (
                                 <button
                                     key={cls}
                                     type="button"
-                                    onClick={() => count > 0 && setDrillIntoClass(cls)}
+                                    // Toggle behavior: click an active class to collapse, click
+                                    // another to switch, click a disabled (0-count) class is a no-op.
+                                    onClick={() => {
+                                        if (count === 0) return;
+                                        setDrillIntoClass(isActive ? null : cls);
+                                    }}
                                     disabled={count === 0}
                                     className="text-left px-3 py-2 rounded-lg border transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:border-gray-400 enabled:cursor-pointer"
-                                    style={{ borderColor: count > 0 ? meta.color + '40' : '#E5E7EB' }}
+                                    style={{
+                                        borderColor: isActive ? meta.color : (count > 0 ? meta.color + '40' : '#E5E7EB'),
+                                        background: isActive ? meta.color + '0D' : '#FFFFFF',
+                                        boxShadow: isActive ? `inset 0 0 0 1px ${meta.color}` : 'none',
+                                    }}
                                     title={meta.description}
+                                    aria-pressed={isActive}
                                 >
                                     <div className="flex items-center gap-1.5">
                                         <Icon size={11} style={{ color: meta.color }} />
                                         <span className="text-[10px] font-semibold text-gray-700">{meta.label}</span>
-                                        {count > 0 && <ChevronRight size={10} className="text-gray-300 ml-auto" />}
+                                        {count > 0 && (
+                                            <ChevronRight
+                                                size={10}
+                                                className="text-gray-400 ml-auto transition-transform"
+                                                style={{ transform: isActive ? 'rotate(90deg)' : 'none' }}
+                                            />
+                                        )}
                                     </div>
                                     <div className="mt-1 flex items-baseline gap-1.5">
                                         <span className="text-base font-bold text-gray-900 tabular-nums">{count}</span>
@@ -179,6 +200,17 @@ export default function ReplyQualityPanel({ days }: { days: number }) {
                     </div>
                 </div>
             </div>
+
+            {/* Inline drill-down table — renders directly below the class grid
+                when a non-zero class is selected. Replaces the prior modal so
+                the analytics page stays scannable in one continuous flow. */}
+            {drillIntoClass && (
+                <DrillDownTable
+                    cls={drillIntoClass}
+                    samples={drillSamples}
+                    onClose={() => setDrillIntoClass(null)}
+                />
+            )}
 
             {/* What works / what hurts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -200,14 +232,6 @@ export default function ReplyQualityPanel({ days }: { days: number }) {
                 />
             </div>
 
-            {/* Drill-down modal (samples) */}
-            {drillIntoClass && (
-                <DrillDownModal
-                    cls={drillIntoClass}
-                    samples={drillSamples}
-                    onClose={() => setDrillIntoClass(null)}
-                />
-            )}
         </div>
     );
 }
@@ -354,10 +378,14 @@ function ReplyDonut({ breakdown, total }: { breakdown: Record<string, number>; t
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Drill-down modal — sample replies for a class
+// Drill-down table — inline (non-modal) sample listing for one class.
+//
+// Anchored beneath the Reply Quality grid via the parent's conditional
+// render. Auto-scrolls into view on mount so a click near the bottom of
+// the page brings the table immediately under the cursor.
 // ────────────────────────────────────────────────────────────────────
 
-function DrillDownModal({
+function DrillDownTable({
     cls, samples, onClose,
 }: {
     cls: ReplyClass;
@@ -366,55 +394,157 @@ function DrillDownModal({
 }) {
     const meta = CLASS_META[cls];
     const Icon = meta.icon;
-    return (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
-            <div
-                className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col"
-                onClick={e => e.stopPropagation()}
-            >
-                <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background: meta.color + '15' }}>
-                            <Icon size={13} style={{ color: meta.color }} />
-                        </span>
-                        <div>
-                            <h2 className="text-sm font-bold text-gray-900">{meta.label} replies</h2>
-                            <p className="text-[10px] text-gray-500">{meta.description}</p>
-                        </div>
-                    </div>
-                    <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-700"><X size={16} /></button>
-                </div>
+    const ref = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        // Smooth-scroll the table into view on mount + when the class
+        // changes. block:'nearest' avoids jarring jumps when the table
+        // is already in view.
+        if (ref.current) {
+            ref.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }, [cls]);
 
-                <div className="flex-1 overflow-y-auto p-5 space-y-3">
-                    {samples.length === 0 ? (
-                        <p className="text-xs text-gray-400 italic text-center py-6">No examples available.</p>
-                    ) : (
-                        samples.map(s => (
-                            <div key={s.id} className="border border-[#E8E3DC] rounded-lg p-3">
-                                <div className="flex items-center justify-between gap-2 mb-1">
-                                    <span className="text-[11px] font-semibold text-gray-900 truncate">{s.from_email}</span>
-                                    <span className="text-[9px] text-gray-400 tabular-nums shrink-0">{new Date(s.received_at).toLocaleDateString()}</span>
-                                </div>
-                                <div className="text-[10px] text-gray-500 mb-1.5 truncate" title={s.subject}>Re: {s.subject}</div>
-                                <p className="text-xs text-gray-800 leading-relaxed">{s.snippet}</p>
-                                <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-                                    <span
-                                        className="text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold"
-                                        style={{ background: meta.color + '15', color: meta.color }}
-                                    >
-                                        {s.confidence} confidence
-                                    </span>
-                                    {s.signals.map(sig => (
-                                        <span key={sig} className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-mono">
-                                            {sig}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))
+    return (
+        <div ref={ref} className="premium-card p-4">
+            <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2 min-w-0">
+                    <span
+                        className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                        style={{ background: meta.color + '15' }}
+                    >
+                        <Icon size={13} style={{ color: meta.color }} />
+                    </span>
+                    <div className="min-w-0">
+                        <h2 className="text-sm font-bold text-gray-900 m-0">{meta.label} replies</h2>
+                        <p className="text-[10px] text-gray-500 m-0 mt-0.5">{meta.description}</p>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="text-[11px] font-semibold text-gray-500 hover:text-gray-900 bg-transparent border-none cursor-pointer flex items-center gap-1"
+                    aria-label="Close drill-down"
+                >
+                    <X size={12} /> Close
+                </button>
+            </div>
+
+            {samples.length === 0 ? (
+                <p className="text-xs text-gray-400 italic text-center py-6">No examples available.</p>
+            ) : (
+                <div className="overflow-x-auto">
+                    <table className="w-full text-xs border-collapse">
+                        <thead>
+                            <tr style={{ borderBottom: '1px solid #E8E3DC' }}>
+                                <th className="text-left text-[10px] uppercase tracking-wider text-gray-500 font-semibold py-2 pr-3">From</th>
+                                <th className="text-left text-[10px] uppercase tracking-wider text-gray-500 font-semibold py-2 pr-3">Subject</th>
+                                <th className="text-left text-[10px] uppercase tracking-wider text-gray-500 font-semibold py-2 pr-3">Snippet</th>
+                                <th className="text-left text-[10px] uppercase tracking-wider text-gray-500 font-semibold py-2 pr-3">Signals</th>
+                                <th className="text-right text-[10px] uppercase tracking-wider text-gray-500 font-semibold py-2 pr-2">Received</th>
+                                <th aria-hidden="true" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {samples.map(s => (
+                                // Each row is a Link wrapped via a styled <tr> that
+                                // delegates to next/link for client-side nav. The
+                                // <a> can't legally wrap a <tr>, so we render the
+                                // <tr> with a Link child that fills the trailing
+                                // cell, but also bind an onClick on the row itself
+                                // for the more natural "click anywhere on the row"
+                                // affordance. Both routes go through next/link's
+                                // SPA navigation (no full page reload).
+                                <ReplyRow key={s.id} sample={s} meta={meta} />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+    );
+}
+
+/**
+ * ReplyRow — clickable row that deep-links into the Unibox.
+ *
+ * Renders a normal <tr> (so it lives inside the table semantics) but
+ * routes through next/link via useRouter so SPA navigation is preserved.
+ * The trailing icon cell is also a real Link so keyboard users land on a
+ * proper focus target.
+ */
+function ReplyRow({
+    sample,
+    meta,
+}: {
+    sample: ReplySample;
+    meta: { color: string; label: string };
+}) {
+    const router = useRouter();
+    const href = `/dashboard/sequencer/unibox?thread=${encodeURIComponent(sample.thread_id)}`;
+    return (
+        <tr
+            onClick={() => router.push(href)}
+            onKeyDown={(e) => { if (e.key === 'Enter') router.push(href); }}
+            tabIndex={0}
+            role="link"
+            aria-label={`Open thread from ${sample.from_email} in Unibox`}
+            className="cursor-pointer hover:bg-[#FAFAF8] focus:bg-[#FAFAF8] focus:outline-none"
+            style={{ borderBottom: '1px solid #F0EBE3' }}
+        >
+            <td className="py-2 pr-3 align-top">
+                <span className="text-[11px] font-semibold text-gray-900 break-all">{sample.from_email}</span>
+            </td>
+            <td className="py-2 pr-3 align-top max-w-[180px]">
+                <span className="text-[11px] text-gray-700 truncate block" title={sample.subject}>
+                    Re: {sample.subject}
+                </span>
+            </td>
+            <td className="py-2 pr-3 align-top max-w-[360px]">
+                <p className="text-[11px] text-gray-800 leading-relaxed m-0 line-clamp-2">{sample.snippet}</p>
+            </td>
+            <td className="py-2 pr-3 align-top">
+                <div className="flex items-center gap-1 flex-wrap">
+                    <span
+                        className="text-[9px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold"
+                        style={{ background: meta.color + '15', color: meta.color }}
+                    >
+                        {sample.confidence}
+                    </span>
+                    {sample.signals.slice(0, 3).map(sig => (
+                        <span
+                            key={sig}
+                            className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-mono"
+                            title={sig}
+                        >
+                            {sig}
+                        </span>
+                    ))}
+                    {sample.signals.length > 3 && (
+                        <span
+                            className="text-[9px] text-gray-400"
+                            title={sample.signals.slice(3).join(', ')}
+                        >
+                            +{sample.signals.length - 3}
+                        </span>
                     )}
                 </div>
-            </div>
-        </div>
+            </td>
+            <td className="py-2 pr-2 align-top text-right whitespace-nowrap">
+                <span className="text-[10px] text-gray-400 tabular-nums">
+                    {new Date(sample.received_at).toLocaleDateString()}
+                </span>
+            </td>
+            <td className="py-2 align-top text-right pr-2 w-6">
+                <Link
+                    href={href}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-gray-400 hover:text-gray-800 inline-flex items-center"
+                    aria-label="Open in Unibox"
+                    title="Open in Unibox"
+                >
+                    <ExternalLink size={11} />
+                </Link>
+            </td>
+        </tr>
     );
 }

@@ -11,13 +11,15 @@
  */
 
 import Tabs, { useTabState, type TabItem } from '@/components/ui/Tabs';
-import { Wrench, GitBranch } from 'lucide-react';
+import { Wrench, GitBranch, Sparkles } from 'lucide-react';
 import GeneralSettingsPanel from './GeneralSettingsPanel';
 import RoutingPanel from './RoutingPanel';
+import LeadScoringPanel from './LeadScoringPanel';
 
 const TABS: TabItem[] = [
     { key: 'general', label: 'General', icon: <Wrench size={12} strokeWidth={1.75} /> },
     { key: 'routing', label: 'Routing', icon: <GitBranch size={12} strokeWidth={1.75} /> },
+    { key: 'scoring', label: 'Lead Scoring', icon: <Sparkles size={12} strokeWidth={1.75} /> },
 ];
 
 export default function ConfigurationPage() {
@@ -27,13 +29,14 @@ export default function ConfigurationPage() {
         <div className="px-6 py-6">
             <div className="mb-4">
                 <h1 className="text-xl font-bold text-gray-900 tracking-tight">Configuration</h1>
-                <p className="text-xs text-gray-500 mt-0.5">Account-level settings and routing rules.</p>
+                <p className="text-xs text-gray-500 mt-0.5">Account-level settings, routing rules, and lead scoring.</p>
             </div>
 
             <Tabs tabs={TABS} defaultTab="general" activeTab={active} onChange={setActive} />
 
             {active === 'general' && <GeneralSettingsPanel />}
             {active === 'routing' && <RoutingPanel />}
+            {active === 'scoring' && <LeadScoringPanel />}
         </div>
     );
 }

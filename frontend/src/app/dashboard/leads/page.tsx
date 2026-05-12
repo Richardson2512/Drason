@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import type { Lead, AuditLog, CampaignSummary, ScoreBreakdown, ScoreRefreshResult } from '@/types/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import { useSortFilterModal } from '@/hooks/useSortFilterModal';
@@ -94,9 +95,10 @@ function LeadsPageContent() {
             } else {
                 setLeads(Array.isArray(data) ? data : []);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Failed to fetch leads:', err);
             setLeads([]);
+            toast.error(err?.message || 'Failed to load leads');
         }
     }, [meta.page, meta.limit, leadTab, selectedCampaignFilter, searchQuery, sortFilter.values]);
 

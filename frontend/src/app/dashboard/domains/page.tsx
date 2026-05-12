@@ -4,6 +4,7 @@ import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import FindingsCard from '@/components/dashboard/FindingsCard';
 import { apiClient } from '@/lib/api';
+import toast from 'react-hot-toast';
 import type { Domain, Mailbox, Campaign, PaginatedResponse, AuditLog } from '@/types/api';
 import { getStatusColors } from '@/lib/statusColors';
 import { PlatformBadge } from '@/components/ui/PlatformBadge';
@@ -72,9 +73,10 @@ export default function DomainsPage() {
             } else {
                 setDomains([]);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Failed to fetch domains:', err);
             setDomains([]);
+            toast.error(err?.message || 'Failed to load domains');
         } finally {
             setLoading(false);
         }
@@ -384,8 +386,8 @@ export default function DomainsPage() {
                             </button>
                             <button
                                 onClick={handleApplySortFilter}
-                                className="flex-1 rounded-xl border-none bg-blue-500 text-white text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-600"
-                                style={{ padding: '0.75rem 1rem' }}
+                                className="flex-1 rounded-lg border-none bg-gray-900 text-white text-xs font-semibold cursor-pointer transition-colors hover:bg-gray-800"
+                                style={{ padding: '0.625rem 1rem' }}
                             >
                                 Done
                             </button>
@@ -586,7 +588,7 @@ function DomainDetailsView({
 
                     {/* Next Phase Preview */}
                     {selectedDomain.recovery_phase !== 'healthy' && (
-                        <div className="bg-blue-50 rounded-xl border border-blue-200 flex items-center gap-2" style={{ padding: '0.875rem 1rem' }}>
+                        <div className="rounded-lg flex items-center gap-2" style={{ padding: '0.875rem 1rem', background: '#FAFAF8', border: '1px solid #D1CBC5' }}>
                             <span className="text-base opacity-70">→</span>
                             <div className="font-semibold" style={{ fontSize: '0.85rem', color: '#1E40AF' }}>
                                 {selectedDomain.recovery_phase === 'paused' && 'Next: Quarantine (after cooldown)'}

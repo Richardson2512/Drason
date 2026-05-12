@@ -1,5 +1,6 @@
 'use client';
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronDown, Search } from 'lucide-react';
 
 interface Option {
@@ -41,18 +42,78 @@ export default function MultiSelectDropdown({
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
     const ref = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
+    // Menu is portalled to document.body so a parent with overflow:hidden,
+    // transform, or its own stacking context never clips it. Position is
+    // computed from the trigger's bounding rect on open + on scroll/resize.
+    // `placement` flips above the trigger when there isn't enough room below;
+    // `maxHeight` is clamped to the actual available viewport space so the
+    // menu's internal scroll handles the rest of the list.
+    const [menuRect, setMenuRect] = useState<
+        { top?: number; bottom?: number; left: number; width: number; maxHeight: number; placement: 'below' | 'above' }
+        | null
+    >(null);
 
-    // Close on outside click
+    // Outside-click detection — must check both the anchor wrapper AND the
+    // portalled menu since the menu lives outside the wrapper's DOM subtree.
     useEffect(() => {
         const handler = (e: MouseEvent) => {
-            if (ref.current && !ref.current.contains(e.target as Node)) {
-                setIsOpen(false);
-            }
+            const target = e.target as Node;
+            if (ref.current && ref.current.contains(target)) return;
+            if (menuRef.current && menuRef.current.contains(target)) return;
+            setIsOpen(false);
         };
         document.addEventListener('mousedown', handler);
         return () => document.removeEventListener('mousedown', handler);
     }, []);
+
+    // Compute portal coordinates whenever the menu opens, or when the page
+    // scrolls/resizes while it's open. useLayoutEffect avoids a one-frame
+    // flash where the menu would otherwise render at (0,0) before reposition.
+    useLayoutEffect(() => {
+        if (!isOpen) { setMenuRect(null); return; }
+        const update = () => {
+            const t = triggerRef.current;
+            if (!t) return;
+            const r = t.getBoundingClientRect();
+            const GAP = 4;           // breathing room between trigger + menu
+            const VIEWPORT_PAD = 8;  // never glue the menu to the viewport edge
+            const DESIRED_MAX = 320; // matches the prior maxHeight (20rem)
+            const viewportH = window.innerHeight;
+            const spaceBelow = viewportH - r.bottom - GAP - VIEWPORT_PAD;
+            const spaceAbove = r.top - GAP - VIEWPORT_PAD;
+            // Prefer below unless above has materially more room AND below is
+            // too cramped for a useful menu (under ~140px would show maybe two
+            // options + the search bar, which is jarring).
+            const flipUp = spaceBelow < 140 && spaceAbove > spaceBelow;
+            if (flipUp) {
+                setMenuRect({
+                    bottom: viewportH - r.top + GAP,
+                    left: r.left,
+                    width: r.width,
+                    maxHeight: Math.min(DESIRED_MAX, spaceAbove),
+                    placement: 'above',
+                });
+            } else {
+                setMenuRect({
+                    top: r.bottom + GAP,
+                    left: r.left,
+                    width: r.width,
+                    maxHeight: Math.max(140, Math.min(DESIRED_MAX, spaceBelow)),
+                    placement: 'below',
+                });
+            }
+        };
+        update();
+        window.addEventListener('scroll', update, true);
+        window.addEventListener('resize', update);
+        return () => {
+            window.removeEventListener('scroll', update, true);
+            window.removeEventListener('resize', update);
+        };
+    }, [isOpen]);
 
     // Reset the query each time the dropdown closes so the next open is clean,
     // and auto-focus the search input on open so users can type immediately.
@@ -102,6 +163,7 @@ export default function MultiSelectDropdown({
                 select reads as the same control type, just with multi-checkbox
                 semantics inside. */}
             <button
+                ref={triggerRef}
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full px-3 py-2 rounded-lg text-xs text-left bg-white flex items-center justify-between gap-2 cursor-pointer transition-colors hover:bg-[#FAFAF8] border border-[#D1CBC5]"
@@ -126,14 +188,26 @@ export default function MultiSelectDropdown({
                 />
             </button>
 
-            {isOpen && (
+            {isOpen && menuRect && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="absolute left-0 right-0 mt-1 bg-white overflow-hidden z-[9999] flex flex-col"
+                    ref={menuRef}
+                    className="bg-white overflow-hidden flex flex-col"
                     style={{
+                        position: 'fixed',
+                        // Anchor either top (open-below) or bottom (open-above)
+                        // depending on which side has room.
+                        ...(menuRect.placement === 'above'
+                            ? { bottom: menuRect.bottom }
+                            : { top: menuRect.top }),
+                        left: menuRect.left,
+                        width: menuRect.width,
+                        zIndex: 9999,
                         border: '1px solid #D1CBC5',
                         borderRadius: '8px',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                        maxHeight: '20rem',
+                        // Clamped to the actual viewport space available;
+                        // anything past this scrolls inside the options list.
+                        maxHeight: menuRect.maxHeight,
                     }}
                 >
                     {showSearch && (
@@ -238,7 +312,8 @@ export default function MultiSelectDropdown({
                             })
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );

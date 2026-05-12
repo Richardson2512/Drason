@@ -347,7 +347,7 @@ export default function WarmupPage() {
         );
     }
 
-    const consentOn = !!overview?.consent.consent;
+    const consentOn = !!overview?.consent?.consent;
 
     return (
         <div className="px-6 py-6">
@@ -624,15 +624,29 @@ export default function WarmupPage() {
                                 <MessagesSquare size={14} className="text-gray-700" />
                                 <h3 className="text-xs font-bold text-gray-900">Pool stats</h3>
                             </div>
-                            <div className="space-y-2 text-[11px]">
-                                <KvRow k="Mailboxes (this org)" v={String(overview?.counts.memberships_total ?? 0)} />
-                                <KvRow k="Active senders" v={String(overview?.counts.memberships_enabled ?? 0)} />
-                                <KvRow k="Spam recovered (lifetime)" v={String(overview?.lifetime.recovered_from_spam ?? 0)} />
-                                <KvRow k="Sent today (org-wide)" v={String(overview?.today.sent ?? 0)} />
-                            </div>
+                            {(() => {
+                                // Hoisted outside JSX expressions to dodge a Turbopack/SWC
+                                // transpile bug where optional-chaining inside `v={...}` emits
+                                // an undeclared `_ref` temporary.
+                                const counts = overview?.counts;
+                                const lifetime = overview?.lifetime;
+                                const today = overview?.today;
+                                const membershipsTotal = counts ? counts.memberships_total : 0;
+                                const membershipsEnabled = counts ? counts.memberships_enabled : 0;
+                                const recovered = lifetime ? lifetime.recovered_from_spam : 0;
+                                const sentToday = today ? today.sent : 0;
+                                return (
+                                    <div className="space-y-2 text-[11px]">
+                                        <KvRow k="Mailboxes (this org)" v={String(membershipsTotal ?? 0)} />
+                                        <KvRow k="Active senders" v={String(membershipsEnabled ?? 0)} />
+                                        <KvRow k="Spam recovered (lifetime)" v={String(recovered ?? 0)} />
+                                        <KvRow k="Sent today (org-wide)" v={String(sentToday ?? 0)} />
+                                    </div>
+                                );
+                            })()}
                         </div>
 
-                        {overview?.consent.consent && (
+                        {overview?.consent?.consent && (
                             <button
                                 onClick={() => setConsent(false)}
                                 disabled={busyConsent}

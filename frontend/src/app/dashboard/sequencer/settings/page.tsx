@@ -6,6 +6,7 @@ import { useDashboard } from '@/contexts/DashboardContext';
 import { apiClient } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import TimePicker from '@/components/ui/TimePicker';
+import ReplyActionsCard from '@/components/sequencer/ReplyActionsCard';
 
 interface SequencerSettings {
     id?: string;
@@ -282,6 +283,9 @@ export default function SequencerSettingsPage() {
             </div>
 
             {/* Notifications */}
+            {/* Reply auto-actions — per-class mapping to suppress/pause/alert. */}
+            <ReplyActionsCard />
+
             <div className="premium-card">
                 <div className="flex items-center gap-2 mb-4">
                     <Bell size={14} className="text-gray-500" />

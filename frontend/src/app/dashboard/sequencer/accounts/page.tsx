@@ -119,6 +119,10 @@ export default function ConnectedAccountsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [providerFilter, setProviderFilter] = useState<'all' | 'google' | 'microsoft' | 'smtp'>('all');
     const [sourceFilter, setSourceFilter] = useState<'all' | Exclude<AccountSource, null> | 'unknown'>('all');
+    // Connection-state filter — 'active' vs 'inactive' (error/expired). The
+    // underlying account row uses connection_status with three values; the
+    // filter collapses error+expired into one user-facing "not active" bucket.
+    const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [deleting, setDeleting] = useState(false);
     const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -134,6 +138,11 @@ export default function ConnectedAccountsPage() {
     // Filtered view used by the list + select-all + bulk actions
     const filteredAccounts = accounts.filter(a => {
         if (providerFilter !== 'all' && a.provider !== providerFilter) return false;
+        if (statusFilter !== 'all') {
+            const isActive = a.status === 'active';
+            if (statusFilter === 'active' && !isActive) return false;
+            if (statusFilter === 'inactive' && isActive) return false;
+        }
         if (sourceFilter !== 'all') {
             // 'unknown' is the synthetic bucket for legacy rows with null source.
             // Explicit ternary, not ??, to dodge the Turbopack nullish-coalescing
@@ -385,6 +394,17 @@ export default function ConnectedAccountsPage() {
                             ]}
                         />
                     </div>
+                    <div className="w-40">
+                        <CustomSelect
+                            value={statusFilter}
+                            onChange={(v) => setStatusFilter(v as any)}
+                            options={[
+                                { value: 'all', label: 'All statuses' },
+                                { value: 'active', label: 'Active' },
+                                { value: 'inactive', label: 'Not active' },
+                            ]}
+                        />
+                    </div>
                     <div className="w-44">
                         <CustomSelect
                             value={sourceFilter}
@@ -436,7 +456,7 @@ export default function ConnectedAccountsPage() {
                     <Search size={28} className="text-gray-300 mb-3" />
                     <h2 className="text-sm font-bold text-gray-900 mb-1">No mailboxes match your filters</h2>
                     <p className="text-xs text-gray-500 text-center max-w-md mb-4">Try clearing the search or changing the provider filter.</p>
-                    <button onClick={() => { setSearchQuery(''); setProviderFilter('all'); setSourceFilter('all'); }} className="px-3 py-1.5 text-xs text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
+                    <button onClick={() => { setSearchQuery(''); setProviderFilter('all'); setSourceFilter('all'); setStatusFilter('all'); }} className="px-3 py-1.5 text-xs text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50">
                         Clear filters
                     </button>
                 </div>
@@ -558,7 +578,7 @@ export default function ConnectedAccountsPage() {
                     <div className="bg-white rounded-xl w-[90%] max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', maxWidth: '512px' }}>
                         <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">{addType ? `Connect ${PROVIDER_META[addType].label}` : 'Connect Mailbox'}</h2>
-                            <button onClick={() => { setShowAddModal(false); setAddType(null); }} className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
+                            <button onClick={() => { setShowAddModal(false); setAddType(null); }} aria-label="Close" title="Close" className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
                         </div>
                         <div className="p-4">
                             {/* OAuth setup message */}

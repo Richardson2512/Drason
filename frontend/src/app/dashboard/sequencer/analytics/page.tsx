@@ -43,6 +43,25 @@ interface CampaignRow {
     bounce_rate: number;
 }
 
+interface MailboxRow {
+    id: string;
+    email: string;
+    display_name: string | null;
+    provider: 'google' | 'microsoft' | 'smtp';
+    connection_status: string;
+    daily_send_limit: number;
+    sends_today: number;
+    utilization_pct: number;
+    status: string;
+    recovery_phase: string;
+    last_activity_at: string | null;
+    total_sent: number;
+    total_replied: number;
+    total_bounced: number;
+    reply_rate: number;
+    bounce_rate: number;
+}
+
 export default function SequencerAnalyticsPage() {
     const [activeTab, setActiveTab] = useTabState(TABS, 'live');
     const [timeRange, setTimeRange] = useState('30d');
@@ -63,6 +82,23 @@ export default function SequencerAnalyticsPage() {
         bounceRate: 0,
     });
     const [campaigns, setCampaigns] = useState<CampaignRow[]>([]);
+    const [mailboxes, setMailboxes] = useState<MailboxRow[]>([]);
+    // Pagination inside each performance card. 10 rows per page keeps the
+    // analytics page scannable; full lists live one drill-down away on the
+    // campaigns / mailboxes pages.
+    const PAGE_SIZE = 10;
+    const [campaignsPage, setCampaignsPage] = useState(1);
+    const [mailboxesPage, setMailboxesPage] = useState(1);
+    // Reset page index when the underlying dataset changes (timeRange swap,
+    // refetch). Without this a user sitting on page 3 with 25 rows would
+    // see an empty table if the new dataset is shorter.
+    useEffect(() => { setCampaignsPage(1); }, [campaigns.length]);
+    useEffect(() => { setMailboxesPage(1); }, [mailboxes.length]);
+
+    const campaignsTotalPages = Math.max(1, Math.ceil(campaigns.length / PAGE_SIZE));
+    const mailboxesTotalPages = Math.max(1, Math.ceil(mailboxes.length / PAGE_SIZE));
+    const campaignsPageSlice = campaigns.slice((campaignsPage - 1) * PAGE_SIZE, campaignsPage * PAGE_SIZE);
+    const mailboxesPageSlice = mailboxes.slice((mailboxesPage - 1) * PAGE_SIZE, mailboxesPage * PAGE_SIZE);
 
     useEffect(() => {
         async function fetchAnalytics() {
@@ -80,9 +116,10 @@ export default function SequencerAnalyticsPage() {
                 // `{success, data}`, so `overviewRes` is the overview object directly and
                 // `campaignsRes` is the campaigns array. Backend uses snake_case keys;
                 // map into the camelCase state shape used by the UI.
-                const [overviewRes, campaignsRes] = await Promise.all([
+                const [overviewRes, campaignsRes, mailboxesRes] = await Promise.all([
                     apiClient<any>(`/api/sequencer/analytics?${qs}`),
                     apiClient<any>(`/api/sequencer/analytics/campaigns?${qs}`),
+                    apiClient<any>(`/api/sequencer/analytics/mailboxes?${qs}`),
                 ]);
 
                 if (overviewRes && typeof overviewRes === 'object') {
@@ -103,6 +140,11 @@ export default function SequencerAnalyticsPage() {
                     ? campaignsRes
                     : (campaignsRes?.campaigns ?? campaignsRes?.data ?? []);
                 setCampaigns(campaignsList);
+
+                const mailboxesList = Array.isArray(mailboxesRes)
+                    ? mailboxesRes
+                    : (mailboxesRes?.data ?? []);
+                setMailboxes(mailboxesList);
             } catch (err) {
                 console.error('Failed to fetch sequencer analytics:', err);
             } finally {
@@ -226,7 +268,7 @@ export default function SequencerAnalyticsPage() {
                                         </td>
                                     </tr>
                                 ) : (
-                                    campaigns.map(c => (
+                                    campaignsPageSlice.map(c => (
                                         <tr key={c.id} style={{ borderBottom: '1px solid #E5E7EB' }}>
                                             <td className="px-3 py-2 font-medium text-gray-900">{c.name}</td>
                                             <td className="px-3 py-2 text-right text-gray-700">{c.total_sent.toLocaleString()}</td>
@@ -249,6 +291,116 @@ export default function SequencerAnalyticsPage() {
                         </table>
                     </div>
                 )}
+                {!loading && campaigns.length > PAGE_SIZE && (
+                    <Pager
+                        page={campaignsPage}
+                        totalPages={campaignsTotalPages}
+                        rangeStart={(campaignsPage - 1) * PAGE_SIZE + 1}
+                        rangeEnd={Math.min(campaignsPage * PAGE_SIZE, campaigns.length)}
+                        total={campaigns.length}
+                        onPrev={() => setCampaignsPage(p => Math.max(1, p - 1))}
+                        onNext={() => setCampaignsPage(p => Math.min(campaignsTotalPages, p + 1))}
+                    />
+                )}
+            </div>
+
+            {/* Mailbox Performance Table — per-mailbox aggregates over the
+                current time range. Mirrors the Campaign Performance card's
+                shape so users can scan both with the same mental model. */}
+            <div className="premium-card">
+                <h2 className="text-sm font-bold text-gray-900 mb-3">Mailbox Performance</h2>
+                {loading ? (
+                    <LoadingSkeleton type="table" rows={5} />
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs">
+                            <thead>
+                                <tr style={{ borderBottom: '1px solid #D1CBC5', background: '#F7F2EB' }}>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Mailbox</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Provider</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500 text-right">Sent</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500 text-right">Reply %</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500 text-right">Bounce %</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500 text-right">Today / Cap</th>
+                                    <th className="px-3 py-2 text-[10px] font-semibold text-gray-500">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {mailboxes.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={7} className="px-3 py-8 text-center text-gray-400 text-xs">
+                                            No mailboxes connected. Connect a mailbox in Sequencer → Mailboxes to see per-mailbox analytics.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    mailboxesPageSlice.map(m => {
+                                        // Surface the most actionable status — recovery phase trumps
+                                        // raw status (a 'healthy' mailbox in 'quarantine' phase is
+                                        // not actually healthy from a sending standpoint).
+                                        const tone =
+                                            m.recovery_phase === 'paused' || m.status === 'paused'
+                                                ? { label: 'Paused',     bg: '#FEE2E2', fg: '#991B1B' }
+                                                : m.recovery_phase === 'quarantine'
+                                                ? { label: 'Quarantine', bg: '#FEE2E2', fg: '#991B1B' }
+                                                : m.recovery_phase === 'restricted_send' || m.recovery_phase === 'warm_recovery'
+                                                ? { label: 'Healing',    bg: '#FEF3C7', fg: '#92400E' }
+                                                : m.connection_status !== 'active'
+                                                ? { label: m.connection_status, bg: '#FEF3C7', fg: '#92400E' }
+                                                : m.status === 'warning'
+                                                ? { label: 'Warning',    bg: '#FEF3C7', fg: '#92400E' }
+                                                : { label: 'Healthy',    bg: '#ECFDF5', fg: '#059669' };
+                                        const utilTone = m.utilization_pct >= 90
+                                            ? '#DC2626'
+                                            : m.utilization_pct >= 70 ? '#D97706' : '#374151';
+                                        const providerLabel = m.provider === 'google' ? 'Gmail' : m.provider === 'microsoft' ? 'Outlook' : 'SMTP';
+                                        return (
+                                            <tr key={m.id} style={{ borderBottom: '1px solid #E5E7EB' }}>
+                                                <td className="px-3 py-2">
+                                                    <div className="text-gray-900 font-medium">{m.email}</div>
+                                                    {m.display_name && (
+                                                        <div className="text-[10px] text-gray-500 truncate">{m.display_name}</div>
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-2 text-gray-700">{providerLabel}</td>
+                                                <td className="px-3 py-2 text-right text-gray-700 tabular-nums">{m.total_sent.toLocaleString()}</td>
+                                                <td className="px-3 py-2 text-right text-gray-700 tabular-nums">{m.reply_rate}%</td>
+                                                <td
+                                                    className="px-3 py-2 text-right tabular-nums"
+                                                    style={{ color: m.bounce_rate >= 5 ? '#DC2626' : m.bounce_rate >= 2 ? '#D97706' : '#374151' }}
+                                                >
+                                                    {m.bounce_rate}%
+                                                </td>
+                                                <td className="px-3 py-2 text-right tabular-nums" style={{ color: utilTone }}>
+                                                    {m.sends_today} / {m.daily_send_limit}
+                                                    <span className="text-[9px] text-gray-400 ml-1">({m.utilization_pct}%)</span>
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <span
+                                                        className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize"
+                                                        style={{ background: tone.bg, color: tone.fg }}
+                                                    >
+                                                        {tone.label}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+                {!loading && mailboxes.length > PAGE_SIZE && (
+                    <Pager
+                        page={mailboxesPage}
+                        totalPages={mailboxesTotalPages}
+                        rangeStart={(mailboxesPage - 1) * PAGE_SIZE + 1}
+                        rangeEnd={Math.min(mailboxesPage * PAGE_SIZE, mailboxes.length)}
+                        total={mailboxes.length}
+                        onPrev={() => setMailboxesPage(p => Math.max(1, p - 1))}
+                        onNext={() => setMailboxesPage(p => Math.min(mailboxesTotalPages, p + 1))}
+                    />
+                )}
             </div>
 
             {/* Capacity ahead — forward-looking, source: ConnectedAccount.daily_send_limit. */}
@@ -262,6 +414,61 @@ export default function SequencerAnalyticsPage() {
                 </div>
             </div>
             </>)}
+        </div>
+    );
+}
+
+/**
+ * Pager — compact in-card pagination footer for the performance tables.
+ *
+ * Shows "X–Y of N" with prev/next chevrons. Both tables on this page
+ * use this same shape so the analytics surface reads consistently.
+ */
+function Pager({
+    page, totalPages, rangeStart, rangeEnd, total, onPrev, onNext,
+}: {
+    page: number;
+    totalPages: number;
+    rangeStart: number;
+    rangeEnd: number;
+    total: number;
+    onPrev: () => void;
+    onNext: () => void;
+}) {
+    return (
+        <div className="flex items-center justify-between gap-3 px-3 py-2 mt-2 rounded-lg" style={{ background: '#FAFAF8', border: '1px solid #E8E3DC' }}>
+            <span className="text-[11px] text-gray-500 tabular-nums">
+                {rangeStart}&ndash;{rangeEnd} of {total.toLocaleString()}
+            </span>
+            <div className="flex items-center gap-2">
+                <button
+                    type="button"
+                    onClick={onPrev}
+                    disabled={page <= 1}
+                    aria-label="Previous page"
+                    className="w-7 h-7 inline-flex items-center justify-center rounded-md bg-white cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50"
+                    style={{ border: '1px solid #D1CBC5' }}
+                >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                </button>
+                <span className="text-[11px] text-gray-700 tabular-nums">
+                    Page <strong>{page}</strong> of {totalPages}
+                </span>
+                <button
+                    type="button"
+                    onClick={onNext}
+                    disabled={page >= totalPages}
+                    aria-label="Next page"
+                    className="w-7 h-7 inline-flex items-center justify-center rounded-md bg-white cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50"
+                    style={{ border: '1px solid #D1CBC5' }}
+                >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
+            </div>
         </div>
     );
 }

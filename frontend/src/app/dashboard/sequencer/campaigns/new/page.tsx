@@ -2,15 +2,17 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Plus, Trash2, Copy, GripVertical, Clock, Check, Rocket, Loader2, Eye, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Trash2, Copy, GripVertical, Clock, Check, Rocket, Loader2, Eye, X, Sparkles } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Papa from 'papaparse';
 import CustomSelect from '@/components/ui/CustomSelect';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import DatePicker from '@/components/ui/DatePicker';
 import TimePicker from '@/components/ui/TimePicker';
 import AIAssistPanel from '@/components/sequencer/AIAssistPanel';
 import RecipientPreviewPanel from '@/components/sequencer/RecipientPreviewPanel';
+import SuppressionPicker, { type SuppressionRule } from '@/components/sequencer/SuppressionPicker';
 import toast from 'react-hot-toast';
 
 // Dynamic import to avoid SSR issues with Tiptap
@@ -39,6 +41,9 @@ interface SequenceStepData {
     delayDays: number;
     delayHours: number;
     subject: string;
+    /** Inbox preview text — see backend SequenceStep.preheader. Empty
+     *  string = let the recipient's client derive the snippet from body. */
+    preheader: string;
     bodyHtml: string;
     /**
      * Branching: when set, the dispatcher only sends this step if the lead's
@@ -53,6 +58,7 @@ interface SequenceStepData {
         id: string;
         label: string;
         subject: string;
+        preheader: string;
         bodyHtml: string;
         weight: number;
     }>;
@@ -258,7 +264,14 @@ export default function NewCampaignPage() {
     const [availableMailboxes, setAvailableMailboxes] = useState<MailboxOption[]>([]);
     const [selectedMailboxIds, setSelectedMailboxIds] = useState<Set<string>>(new Set());
     const [mailboxesLoading, setMailboxesLoading] = useState(false);
-    const [savedTemplates, setSavedTemplates] = useState<Array<{ id: string; name: string; subject: string; body_html: string; category: string }>>([]);
+    // Mailbox filters — health/provider/utilization. Empty Set on any axis
+    // means "no constraint." Filters apply visually to the list and to
+    // the "Select all" action so the operator can scope bulk picks too.
+    const [filterHealth, setFilterHealth] = useState<Set<string>>(new Set());
+    const [filterProvider, setFilterProvider] = useState<Set<string>>(new Set());
+    const [filterUtilization, setFilterUtilization] = useState<Set<string>>(new Set());
+    const [mailboxSearch, setMailboxSearch] = useState('');
+    const [savedTemplates, setSavedTemplates] = useState<Array<{ id: string; name: string; subject: string; preheader?: string; body_html: string; category: string }>>([]);
     const [templatePickerOpen, setTemplatePickerOpen] = useState<number | null>(null); // step index
     const templatePickerRef = useRef<HTMLDivElement>(null);
 
@@ -335,6 +348,11 @@ export default function NewCampaignPage() {
     // Cross-campaign deduplication toggle — when on, leads whose email already appears
     // in any OTHER campaign in the org are dropped server-side before insert.
     const [skipDuplicatesAcrossCampaigns, setSkipDuplicatesAcrossCampaigns] = useState(false);
+    // Unified suppression rules — see SuppressionPicker. The wizard ALSO
+    // keeps `skipDuplicatesAcrossCampaigns` as legacy state so old code
+    // paths and saved drafts still work; on submit it folds into the
+    // rules array if no all_campaigns rule is already present.
+    const [suppressionRules, setSuppressionRules] = useState<SuppressionRule[]>([]);
 
     // Lead Database import state
     const [dbSearchQuery, setDbSearchQuery] = useState('');
@@ -380,7 +398,7 @@ export default function NewCampaignPage() {
 
     // Step 3: Sequence
     const [sequenceSteps, setSequenceSteps] = useState<SequenceStepData[]>([
-        { id: safeRandomUUID(), stepNumber: 1, delayDays: 0, delayHours: 0, subject: '', bodyHtml: '', variants: [] },
+        { id: safeRandomUUID(), stepNumber: 1, delayDays: 0, delayHours: 0, subject: '', preheader: '', bodyHtml: '', variants: [] },
     ]);
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [previewStepIndex, setPreviewStepIndex] = useState<number | null>(null);
@@ -403,6 +421,40 @@ export default function NewCampaignPage() {
         email: 'alex@acme.com',
     };
     const [previewLead, setPreviewLead] = useState<Record<string, string>>(DEMO_LEAD);
+
+    // Health bucket derivation — same rules the mailbox card pill uses,
+    // surfaced as a single string so the filter chips can map cleanly:
+    //   'paused'      — explicit operator pause OR recovery_phase=paused
+    //   'in_recovery' — quarantine / restricted_send / warm_recovery
+    //   'warning'     — mailbox_status=warning (non-blocking issues)
+    //   'healthy'     — everything else
+    const mailboxHealth = (m: MailboxOption): 'paused' | 'in_recovery' | 'warning' | 'healthy' => {
+        if (m.recovery_phase === 'paused' || m.mailbox_status === 'paused') return 'paused';
+        if (m.recovery_phase === 'quarantine' || m.recovery_phase === 'restricted_send' || m.recovery_phase === 'warm_recovery') return 'in_recovery';
+        if (m.mailbox_status === 'warning') return 'warning';
+        return 'healthy';
+    };
+
+    const matchesFilters = (m: MailboxOption): boolean => {
+        if (filterHealth.size > 0 && !filterHealth.has(mailboxHealth(m))) return false;
+        if (filterProvider.size > 0 && !filterProvider.has(m.provider)) return false;
+        if (filterUtilization.size > 0 && !filterUtilization.has(m.utilization)) return false;
+        if (mailboxSearch.trim()) {
+            const q = mailboxSearch.trim().toLowerCase();
+            const hit =
+                m.email.toLowerCase().includes(q) ||
+                (m.display_name || '').toLowerCase().includes(q);
+            if (!hit) return false;
+        }
+        return true;
+    };
+
+    const filteredMailboxes = availableMailboxes.filter(matchesFilters);
+    const anyFilterActive =
+        filterHealth.size > 0 ||
+        filterProvider.size > 0 ||
+        filterUtilization.size > 0 ||
+        mailboxSearch.trim().length > 0;
 
     // Recipient preview — sender info derived from the first selected (or
     // first available) mailbox. Falls back to placeholder if no mailboxes
@@ -472,6 +524,7 @@ export default function NewCampaignPage() {
                         delayDays: s.delay_days ?? 0,
                         delayHours: s.delay_hours ?? 0,
                         subject: s.subject || '',
+                        preheader: s.preheader || '',
                         bodyHtml: s.body_html || '',
                         condition: s.condition ?? null,
                         branchToStepNumber: s.branch_to_step_number ?? null,
@@ -479,6 +532,7 @@ export default function NewCampaignPage() {
                             id: v.id || safeRandomUUID(),
                             label: v.variant_label || v.label || 'B',
                             subject: v.subject || '',
+                            preheader: v.preheader || '',
                             bodyHtml: v.body_html || '',
                             weight: v.weight ?? 50,
                         })) : [],
@@ -489,6 +543,15 @@ export default function NewCampaignPage() {
                 if (Array.isArray(c.accounts)) {
                     setSelectedMailboxIds(new Set(c.accounts.map((a: any) => a.account?.id).filter(Boolean)));
                 }
+
+                // Suppression rules — separate endpoint so the campaign detail
+                // payload doesn't bloat for campaigns with many rules.
+                // apiClient unwraps {success, data} → returns the array directly.
+                apiClient<SuppressionRule[]>(`/api/sequencer/campaigns/${editId}/suppression`)
+                    .then((sup) => {
+                        if (!cancelled && Array.isArray(sup)) setSuppressionRules(sup);
+                    })
+                    .catch(() => { /* non-fatal */ });
 
                 // Schedule
                 if (c.schedule_timezone) setTimezone(c.schedule_timezone);
@@ -823,6 +886,7 @@ export default function NewCampaignPage() {
             delayDays: 2,
             delayHours: 0,
             subject: '',
+            preheader: '',
             bodyHtml: '',
             variants: [],
         };
@@ -861,6 +925,7 @@ export default function NewCampaignPage() {
             id: safeRandomUUID(),
             label: nextLabel,
             subject: step.subject,
+            preheader: step.preheader,
             bodyHtml: step.bodyHtml,
             weight: Math.round(100 / (step.variants.length + 2)),
         };
@@ -969,12 +1034,14 @@ export default function NewCampaignPage() {
                 delay_days: s.delayDays,
                 delay_hours: s.delayHours,
                 subject: s.subject,
+                preheader: s.preheader,
                 body_html: s.bodyHtml,
                 condition: s.condition || null,
                 branch_to_step_number: s.branchToStepNumber ?? null,
                 variants: s.variants.map(v => ({
                     label: v.label,
                     subject: v.subject,
+                    preheader: v.preheader,
                     body_html: v.bodyHtml,
                     weight: v.weight,
                 })),
@@ -982,6 +1049,10 @@ export default function NewCampaignPage() {
             accountIds: Array.from(selectedMailboxIds),
             schedule: { timezone, start_time: startTime, end_time: endTime, days: activeDays, sendGapMinutes },
             settings: { espRouting, daily_limit: dailyLimit, stop_on_reply: stopOnReply, stop_on_bounce: true, track_opens: trackOpens, track_clicks: trackClicks, include_unsubscribe: includeUnsubscribe, eu_compliance_mode: euComplianceMode },
+            // Canonical suppression payload. Backend folds the legacy boolean
+            // into the rules array if both are sent, so we transmit both for
+            // backwards compat with the older API surface.
+            suppressionRules,
             skipDuplicatesAcrossCampaigns,
             leadSource,
             ...(leadSourceFile ? { leadSourceFile } : {}),
@@ -1221,44 +1292,15 @@ export default function NewCampaignPage() {
                             </div>
                         )}
 
-                        {/* Cross-campaign dedupe toggle — applies to all import methods below */}
-                        <div className="flex items-start gap-3 p-3 rounded-lg" style={{ border: '1px solid #D1CBC5', background: '#FAFAF8' }}>
-                            <button
-                                type="button"
-                                onClick={() => setSkipDuplicatesAcrossCampaigns(v => !v)}
-                                role="switch"
-                                aria-checked={skipDuplicatesAcrossCampaigns}
-                                className="relative shrink-0 cursor-pointer border-none"
-                                style={{
-                                    width: 34,
-                                    height: 20,
-                                    background: skipDuplicatesAcrossCampaigns ? '#111827' : '#D1CBC5',
-                                    borderRadius: 999,
-                                    transition: 'background 0.15s ease',
-                                    padding: 0,
-                                }}
-                            >
-                                <span
-                                    style={{
-                                        position: 'absolute',
-                                        top: 2,
-                                        left: skipDuplicatesAcrossCampaigns ? 16 : 2,
-                                        width: 16,
-                                        height: 16,
-                                        background: '#FFFFFF',
-                                        borderRadius: '50%',
-                                        transition: 'left 0.15s ease',
-                                        boxShadow: '0 1px 2px rgba(0,0,0,0.15)',
-                                    }}
-                                />
-                            </button>
-                            <div className="flex-1 min-w-0">
-                                <div className="text-xs font-semibold text-gray-900">Skip leads already in other campaigns</div>
-                                <div className="text-[10px] text-gray-500 mt-0.5">
-                                    When enabled, any lead whose email already appears in another campaign in this organization is dropped during import. Useful for preventing accidental overlap across sequences.
-                                </div>
-                            </div>
-                        </div>
+                        {/* Suppression picker — replaces the legacy "skip duplicates"
+                            toggle. Three modes: no filter, all campaigns, or pick
+                            specific campaigns (with an optional per-lead override).
+                            Persists as CampaignSuppression rules on save. */}
+                        <SuppressionPicker
+                            currentCampaignId={editId ?? null}
+                            rules={suppressionRules}
+                            onChange={setSuppressionRules}
+                        />
 
                         {/* Lead source tabs — always visible in both create and edit mode */}
                         {!mappingConfirmed && leads.length === 0 && (
@@ -1780,6 +1822,15 @@ export default function NewCampaignPage() {
                 {/* ==================== STEP 3: SEQUENCE ==================== */}
                 {currentStep === 2 && (
                     <div className="flex flex-col gap-4">
+                        {/* Saved-sequence loader — picks a Sequence from the
+                            templates page and clones its steps into wizard state.
+                            Replaces the current step list outright; we warn before
+                            clobbering hand-authored work. */}
+                        <LoadSavedSequence
+                            currentSteps={sequenceSteps}
+                            onLoad={(loaded) => setSequenceSteps(loaded)}
+                        />
+
                         {/* Step tabs */}
                         <div className="flex items-center gap-2 flex-wrap">
                             {sequenceSteps.map((step, i) => (
@@ -1930,7 +1981,7 @@ export default function NewCampaignPage() {
                                                                 <button
                                                                     key={t.id}
                                                                     onClick={() => {
-                                                                        updateStep(idx, { subject: t.subject, bodyHtml: t.body_html });
+                                                                        updateStep(idx, { subject: t.subject, preheader: t.preheader || '', bodyHtml: t.body_html });
                                                                         setTemplatePickerOpen(null);
                                                                     }}
                                                                     className="w-full text-left px-3 py-2 cursor-pointer transition-colors hover:bg-[#F5F1EA] bg-transparent border-none"
@@ -1984,6 +2035,10 @@ export default function NewCampaignPage() {
                                                 style={{ border: '1px solid #D1CBC5' }}
                                             />
                                         </div>
+                                        <PreheaderInput
+                                            value={step.preheader}
+                                            onChange={(v) => updateStep(idx, { preheader: v })}
+                                        />
                                         <RichTextEditor
                                             content={step.bodyHtml}
                                             onChange={html => updateStep(idx, { bodyHtml: html })}
@@ -2033,6 +2088,15 @@ export default function NewCampaignPage() {
                                                     style={{ border: '1px solid #D1CBC5' }}
                                                 />
                                             </div>
+                                            <PreheaderInput
+                                                value={variant.preheader}
+                                                placeholder={`Preheader (falls back to step's preheader if empty)`}
+                                                onChange={(v) => {
+                                                    const updated = [...step.variants];
+                                                    updated[vi] = { ...updated[vi], preheader: v };
+                                                    updateStep(idx, { variants: updated });
+                                                }}
+                                            />
                                             <RichTextEditor
                                                 content={variant.bodyHtml}
                                                 onChange={html => {
@@ -2064,27 +2128,65 @@ export default function NewCampaignPage() {
                                 </p>
                             </div>
                             {(() => {
-                                const selectableCount = availableMailboxes.filter(m => m.selectable).length;
-                                const selectedCount = availableMailboxes.filter(m => m.selectable && selectedMailboxIds.has(m.id)).length;
-                                const allSelectableSelected = selectableCount > 0 && selectedCount === selectableCount;
+                                // Scope Select-all to the FILTERED set so the bulk action
+                                // matches what the user can actually see on screen. With
+                                // no filters this is the same as before (every selectable
+                                // mailbox in the account).
+                                const scope = filteredMailboxes.filter(m => m.selectable);
+                                const scopeIds = new Set(scope.map(m => m.id));
+                                const selectedInScope = scope.filter(m => selectedMailboxIds.has(m.id)).length;
+                                const allInScopeSelected = scope.length > 0 && selectedInScope === scope.length;
                                 return (
                                     <button
                                         onClick={() => {
-                                            if (allSelectableSelected) {
-                                                setSelectedMailboxIds(new Set());
+                                            if (allInScopeSelected) {
+                                                // Deselect only within scope; selections outside the
+                                                // filter (e.g. previously picked then filter applied)
+                                                // are preserved.
+                                                const next = new Set(selectedMailboxIds);
+                                                scopeIds.forEach(id => next.delete(id));
+                                                setSelectedMailboxIds(next);
                                             } else {
-                                                setSelectedMailboxIds(new Set(availableMailboxes.filter(m => m.selectable).map(m => m.id)));
+                                                const next = new Set(selectedMailboxIds);
+                                                scopeIds.forEach(id => next.add(id));
+                                                setSelectedMailboxIds(next);
                                             }
                                         }}
-                                        disabled={selectableCount === 0}
+                                        disabled={scope.length === 0}
                                         className="px-3 py-1.5 rounded-lg text-[10px] font-semibold cursor-pointer bg-transparent border disabled:opacity-30"
                                         style={{ border: '1px solid #D1CBC5' }}
                                     >
-                                        {allSelectableSelected ? 'Deselect all' : `Select all (${selectableCount})`}
+                                        {allInScopeSelected
+                                            ? `Deselect ${anyFilterActive ? 'filtered' : 'all'} (${scope.length})`
+                                            : `Select ${anyFilterActive ? 'filtered' : 'all'} (${scope.length})`}
                                     </button>
                                 );
                             })()}
                         </div>
+
+                        {/* Filters + search — hidden until there's a non-trivial
+                            list. Each filter is its own multi-select dropdown
+                            (consistent with the unibox quality filter pattern). */}
+                        {!mailboxesLoading && availableMailboxes.length > 2 && (
+                            <MailboxFilterBar
+                                mailboxes={availableMailboxes}
+                                health={filterHealth}
+                                provider={filterProvider}
+                                utilization={filterUtilization}
+                                search={mailboxSearch}
+                                onHealth={setFilterHealth}
+                                onProvider={setFilterProvider}
+                                onUtilization={setFilterUtilization}
+                                onSearch={setMailboxSearch}
+                                bucketOf={mailboxHealth as (m: { mailbox_status: string; recovery_phase: string }) => 'paused' | 'in_recovery' | 'warning' | 'healthy'}
+                                onClearAll={() => {
+                                    setFilterHealth(new Set());
+                                    setFilterProvider(new Set());
+                                    setFilterUtilization(new Set());
+                                    setMailboxSearch('');
+                                }}
+                            />
+                        )}
 
                         {mailboxesLoading ? (
                             <div className="text-center py-12 text-xs text-gray-400">Loading mailboxes...</div>
@@ -2097,9 +2199,23 @@ export default function NewCampaignPage() {
                                     Connect a Mailbox →
                                 </a>
                             </div>
+                        ) : filteredMailboxes.length === 0 ? (
+                            <div className="text-center py-10 rounded-lg" style={{ border: '1px dashed #D1CBC5', background: '#FAFAF8' }}>
+                                <p className="text-sm font-semibold text-gray-900 mb-1">No mailboxes match these filters</p>
+                                <p className="text-[11px] text-gray-500 mb-3">
+                                    {availableMailboxes.length} mailbox{availableMailboxes.length === 1 ? '' : 'es'} hidden — clear filters to see them.
+                                </p>
+                                <button
+                                    onClick={() => { setFilterHealth(new Set()); setFilterProvider(new Set()); setFilterUtilization(new Set()); }}
+                                    className="px-3 py-1.5 text-[11px] font-semibold rounded-lg cursor-pointer bg-white border"
+                                    style={{ border: '1px solid #D1CBC5' }}
+                                >
+                                    Clear filters
+                                </button>
+                            </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                                {availableMailboxes.map(mb => {
+                                {filteredMailboxes.map(mb => {
                                     const isSelected = selectedMailboxIds.has(mb.id);
                                     const statusConfig = mb.recovery_phase === 'paused' || mb.mailbox_status === 'paused'
                                         ? { label: 'Paused', bg: '#FEE2E2', text: '#991B1B', dot: '#DC2626' }
@@ -2491,8 +2607,11 @@ export default function NewCampaignPage() {
                                 const step = sequenceSteps[reviewStepIdx];
                                 if (!step) return null;
                                 const source = reviewVariantIdx === 0
-                                    ? { subject: step.subject, bodyHtml: step.bodyHtml }
-                                    : step.variants[reviewVariantIdx - 1];
+                                    ? { subject: step.subject, preheader: step.preheader, bodyHtml: step.bodyHtml }
+                                    : (() => {
+                                        const v = step.variants[reviewVariantIdx - 1];
+                                        return v ? { subject: v.subject, preheader: v.preheader || step.preheader, bodyHtml: v.bodyHtml } : null;
+                                    })();
                                 if (!source) return null;
                                 return (
                                     <div className="rounded-lg overflow-hidden" style={{ border: '1px solid #D1CBC5', background: '#FAFAF8' }}>
@@ -2509,6 +2628,15 @@ export default function NewCampaignPage() {
                                                 dangerouslySetInnerHTML={{ __html: renderTemplate(source.subject, previewLead) || '<span class="text-gray-400 italic font-normal">No subject yet</span>' }}
                                             />
                                         </div>
+                                        {source.preheader && (
+                                            <div className="px-3 py-2 flex items-center gap-4 bg-white" style={{ borderBottom: '1px solid #E8E3DC' }}>
+                                                <span className="text-[10px] text-gray-400 uppercase font-semibold w-16 shrink-0">Preheader</span>
+                                                <span
+                                                    className="text-xs text-gray-600 flex-1 italic"
+                                                    dangerouslySetInnerHTML={{ __html: renderTemplate(source.preheader, previewLead) }}
+                                                />
+                                            </div>
+                                        )}
                                         <div className="px-3 py-4 bg-white">
                                             <div
                                                 className="text-sm text-gray-900 prose prose-sm max-w-none"
@@ -2533,8 +2661,11 @@ export default function NewCampaignPage() {
                                 const step = sequenceSteps[reviewStepIdx];
                                 if (!step) return null;
                                 const source = reviewVariantIdx === 0
-                                    ? { subject: step.subject, bodyHtml: step.bodyHtml }
-                                    : step.variants[reviewVariantIdx - 1];
+                                    ? { subject: step.subject, preheader: step.preheader, bodyHtml: step.bodyHtml }
+                                    : (() => {
+                                        const v = step.variants[reviewVariantIdx - 1];
+                                        return v ? { subject: v.subject, preheader: v.preheader || step.preheader, bodyHtml: v.bodyHtml } : null;
+                                    })();
                                 if (!source) return null;
                                 return (
                                     <div className="mt-4 pt-4" style={{ borderTop: '1px dashed #D1CBC5' }}>
@@ -2543,6 +2674,7 @@ export default function NewCampaignPage() {
                                         </div>
                                         <RecipientPreviewPanel
                                             subject={renderTemplate(source.subject, previewLead)}
+                                            preheader={renderTemplate(source.preheader || '', previewLead)}
                                             bodyHtml={renderTemplate(source.bodyHtml, previewLead)}
                                             senderName={previewSender.name}
                                             senderEmail={previewSender.email}
@@ -2624,12 +2756,13 @@ export default function NewCampaignPage() {
             {previewStepIndex !== null && sequenceSteps[previewStepIndex] && (() => {
                 const step = sequenceSteps[previewStepIndex];
                 const renders = [
-                    { label: 'A', weight: Math.round(100 / (step.variants.length + 1)), subject: step.subject, bodyHtml: step.bodyHtml },
-                    ...step.variants.map(v => ({ label: v.label, weight: v.weight, subject: v.subject, bodyHtml: v.bodyHtml })),
+                    { label: 'A', weight: Math.round(100 / (step.variants.length + 1)), subject: step.subject, preheader: step.preheader, bodyHtml: step.bodyHtml },
+                    ...step.variants.map(v => ({ label: v.label, weight: v.weight, subject: v.subject, preheader: v.preheader || step.preheader, bodyHtml: v.bodyHtml })),
                 ];
                 const activeIdx = Math.min(previewVariantTab, renders.length - 1);
                 const active = renders[activeIdx];
                 const renderedSubject = renderTemplate(active.subject, DEMO_LEAD);
+                const renderedPreheader = renderTemplate(active.preheader || '', DEMO_LEAD);
                 const renderedBody = renderTemplate(active.bodyHtml, DEMO_LEAD);
                 return (
                     <div
@@ -2680,6 +2813,7 @@ export default function NewCampaignPage() {
                             <div className="flex-1 overflow-y-auto bg-neutral-50 px-6 py-6">
                                 <RecipientPreviewPanel
                                     subject={renderedSubject}
+                                    preheader={renderedPreheader}
                                     bodyHtml={renderedBody}
                                     senderName={previewSender.name}
                                     senderEmail={previewSender.email}
@@ -2689,6 +2823,328 @@ export default function NewCampaignPage() {
                     </div>
                 );
             })()}
+        </div>
+    );
+}
+
+/**
+ * PreheaderInput — small reusable field for the preheader.
+ *
+ * Renders with the same styling language as the subject input. Cap hint
+ * at 100 chars is informational only (Gmail mobile shows ~50–90, Outlook
+ * up to ~140); we let the user write longer if they want and the client
+ * will truncate. Empty value is the no-preheader sentinel and is the
+ * recommended default for transactional-feeling sequences.
+ */
+function PreheaderInput({
+    value,
+    onChange,
+    placeholder = 'Preheader shown next to subject in inbox (optional)',
+}: {
+    value: string;
+    onChange: (next: string) => void;
+    placeholder?: string;
+}) {
+    const len = value.length;
+    const tone = len === 0 ? 'text-gray-400' : len > 100 ? 'text-amber-600' : 'text-gray-400';
+    return (
+        <div className="mb-2 relative">
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder={placeholder}
+                className="w-full px-3 py-1.5 pr-12 rounded-md text-xs outline-none"
+                style={{ border: '1px dashed #D1CBC5', background: '#FAFAF8' }}
+            />
+            <span className={`absolute right-2 top-1/2 -translate-y-1/2 text-[10px] tabular-nums ${tone}`}>{len}</span>
+        </div>
+    );
+}
+
+/**
+ * LoadSavedSequence — picks a saved sequence and clones its steps into
+ * the wizard's `sequenceSteps` state. Confirms before replacing existing
+ * non-empty step content so the user can't lose hand-authored work to a
+ * misclick.
+ */
+function LoadSavedSequence({
+    currentSteps,
+    onLoad,
+}: {
+    currentSteps: SequenceStepData[];
+    onLoad: (steps: SequenceStepData[]) => void;
+}) {
+    const [open, setOpen] = useState(false);
+    const [sequences, setSequences] = useState<Array<{ id: string; name: string; step_count: number; category: string; ai_model_used: string | null }>>([]);
+    const [loadingList, setLoadingList] = useState(false);
+    const [pickingId, setPickingId] = useState<string | null>(null);
+
+    const hasContent = currentSteps.some(s => s.subject.trim() || s.bodyHtml.trim());
+
+    const fetchList = async () => {
+        setLoadingList(true);
+        try {
+            const data = await apiClient<Array<{ id: string; name: string; step_count: number; category: string; ai_model_used: string | null }>>('/api/sequencer/sequences');
+            setSequences(Array.isArray(data) ? data : []);
+        } catch { /* non-fatal */ }
+        finally { setLoadingList(false); }
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+        if (sequences.length === 0) fetchList();
+    };
+
+    const handlePick = async (id: string) => {
+        if (hasContent) {
+            const ok = window.confirm(
+                'Loading a saved sequence will replace the steps you have here. Continue?',
+            );
+            if (!ok) return;
+        }
+        setPickingId(id);
+        try {
+            const full = await apiClient<{
+                steps: Array<{ step_number: number; delay_days: number; delay_hours: number; subject: string; preheader: string; body_html: string }>;
+            }>(`/api/sequencer/sequences/${id}`);
+            // Convert backend step shape → wizard SequenceStepData shape.
+            const loaded: SequenceStepData[] = (full.steps || []).map(s => ({
+                id: safeRandomUUID(),
+                stepNumber: s.step_number,
+                delayDays: s.delay_days,
+                delayHours: s.delay_hours,
+                subject: s.subject || '',
+                preheader: s.preheader || '',
+                bodyHtml: s.body_html || '',
+                variants: [],
+            }));
+            if (loaded.length === 0) {
+                toast.error('That sequence has no steps');
+                return;
+            }
+            onLoad(loaded);
+            setOpen(false);
+            toast.success(`Loaded ${loaded.length} step${loaded.length === 1 ? '' : 's'} from sequence`);
+        } catch (err) {
+            toast.error((err as Error)?.message || 'Failed to load sequence');
+        } finally {
+            setPickingId(null);
+        }
+    };
+
+    return (
+        <div className="rounded-lg flex items-center gap-2 px-3 py-2" style={{ background: '#F9FAFB', border: '1px dashed #D1CBC5' }}>
+            <Sparkles size={12} className="text-indigo-600 shrink-0" />
+            <div className="flex-1 text-[11px] text-gray-700">
+                <span className="font-semibold">Skip the blank page</span> — load steps from a saved sequence.
+            </div>
+            <button
+                type="button"
+                onClick={handleOpen}
+                className="text-[11px] font-semibold text-indigo-700 hover:text-indigo-900 bg-transparent border-none cursor-pointer"
+            >
+                Load from sequence →
+            </button>
+
+            {open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setOpen(false)}>
+                    <div
+                        className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[80vh] flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <header className="flex items-center justify-between p-4 border-b border-gray-100">
+                            <div>
+                                <h3 className="text-sm font-bold text-gray-900 m-0">Load a saved sequence</h3>
+                                <p className="text-[11px] text-gray-500 m-0 mt-0.5">Its steps will be cloned into this campaign.</p>
+                            </div>
+                            <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-700 bg-transparent border-none cursor-pointer p-1">
+                                <ChevronRight size={16} className="rotate-90" />
+                            </button>
+                        </header>
+
+                        <div className="flex-1 overflow-y-auto p-3">
+                            {loadingList ? (
+                                <div className="flex items-center gap-2 text-xs text-gray-500 py-3">
+                                    <Loader2 size={11} className="animate-spin" /> Loading sequences…
+                                </div>
+                            ) : sequences.length === 0 ? (
+                                <p className="text-xs text-gray-500 py-6 text-center">
+                                    No saved sequences yet. Build one from <strong>Templates → Sequences</strong>.
+                                </p>
+                            ) : (
+                                <ul className="m-0 p-0 list-none flex flex-col gap-1">
+                                    {sequences.map(s => (
+                                        <li key={s.id}>
+                                            <button
+                                                type="button"
+                                                onClick={() => handlePick(s.id)}
+                                                disabled={pickingId !== null}
+                                                className="w-full text-left px-3 py-2 rounded-lg cursor-pointer bg-white hover:bg-gray-50 border disabled:opacity-50"
+                                                style={{ border: '1px solid #E5E7EB' }}
+                                            >
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <span className="text-xs font-semibold text-gray-900 truncate">{s.name}</span>
+                                                    {pickingId === s.id && <Loader2 size={11} className="animate-spin text-gray-400" />}
+                                                </div>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <span className="text-[10px] text-gray-500">{s.step_count} step{s.step_count === 1 ? '' : 's'}</span>
+                                                    <span className="text-[10px] text-gray-400">·</span>
+                                                    <span className="text-[10px] text-gray-500">{s.category}</span>
+                                                    {s.ai_model_used && (
+                                                        <span className="text-[9px] text-indigo-700 font-bold ml-1 inline-flex items-center gap-0.5">
+                                                            <Sparkles size={8} /> AI
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+
+/**
+ * Mailbox filter bar — three dropdowns + a search input.
+ *
+ * Uses the canonical `MultiSelectDropdown` component (same one the
+ * contacts page uses for company / title / source / tag filters) so the
+ * theme — borders, hover, checkbox, search behaviour — is identical
+ * across every filter surface in the app. Per the dashboard convention,
+ * NEVER lay filter options out as a chip strip; always a dropdown.
+ */
+interface FilterMailbox {
+    id: string;
+    email: string;
+    display_name: string | null;
+    provider: 'google' | 'microsoft' | 'smtp';
+    utilization: 'underutilized' | 'balanced' | 'overutilized';
+    mailbox_status: string;
+    recovery_phase: string;
+}
+
+function MailboxFilterBar({
+    mailboxes,
+    health, provider, utilization, search,
+    onHealth, onProvider, onUtilization, onSearch,
+    bucketOf, onClearAll,
+}: {
+    mailboxes: FilterMailbox[];
+    health: Set<string>;
+    provider: Set<string>;
+    utilization: Set<string>;
+    search: string;
+    onHealth: (s: Set<string>) => void;
+    onProvider: (s: Set<string>) => void;
+    onUtilization: (s: Set<string>) => void;
+    onSearch: (s: string) => void;
+    bucketOf: (m: { mailbox_status: string; recovery_phase: string }) => 'paused' | 'in_recovery' | 'warning' | 'healthy';
+    onClearAll: () => void;
+}) {
+    // Pre-count each option value so the dropdown rows can show "(N)" —
+    // helps the operator anticipate the result set before committing.
+    const counts = {
+        health: { healthy: 0, warning: 0, in_recovery: 0, paused: 0 } as Record<string, number>,
+        provider: { google: 0, microsoft: 0, smtp: 0 } as Record<string, number>,
+        utilization: { underutilized: 0, balanced: 0, overutilized: 0 } as Record<string, number>,
+    };
+    for (const m of mailboxes) {
+        counts.health[bucketOf(m)] += 1;
+        counts.provider[m.provider] = (counts.provider[m.provider] || 0) + 1;
+        counts.utilization[m.utilization] = (counts.utilization[m.utilization] || 0) + 1;
+    }
+
+    // Bridge Set<string> ↔ string[] for the canonical component.
+    const toArr = (s: Set<string>) => Array.from(s);
+    const fromArr = (a: string[]) => new Set(a);
+    // Small colored dot used as the per-option icon — matches the
+    // "tag swatch" pattern in the contacts page tag dropdown without
+    // introducing a new visual primitive.
+    const Dot = ({ color }: { color: string }) => (
+        <span
+            className="w-2 h-2 rounded-full shrink-0"
+            style={{ background: color, display: 'inline-block' }}
+        />
+    );
+
+    const anyActive =
+        health.size > 0 || provider.size > 0 || utilization.size > 0 || search.trim().length > 0;
+
+    return (
+        <div className="flex items-center gap-2 flex-wrap">
+            {/* Search — mirrors the contacts-page search affordance. */}
+            <div className="relative">
+                <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => onSearch(e.target.value)}
+                    placeholder="Search by email or name..."
+                    className="w-[240px] pl-7 pr-3 py-2 text-xs rounded-lg outline-none bg-white"
+                    style={{ border: '1px solid #D1CBC5' }}
+                />
+                <svg
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2"
+                    width="11" height="11" viewBox="0 0 24 24" fill="none"
+                    stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                >
+                    <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+                </svg>
+            </div>
+
+            <div className="w-[170px]">
+                <MultiSelectDropdown
+                    placeholder="All health"
+                    selected={toArr(health)}
+                    onChange={(arr) => onHealth(fromArr(arr))}
+                    options={[
+                        { value: 'healthy',     label: `Healthy (${counts.health.healthy})`,         icon: <Dot color="#10B981" /> },
+                        { value: 'warning',     label: `Warning (${counts.health.warning})`,         icon: <Dot color="#F59E0B" /> },
+                        { value: 'in_recovery', label: `In recovery (${counts.health.in_recovery})`, icon: <Dot color="#F97316" /> },
+                        { value: 'paused',      label: `Paused (${counts.health.paused})`,           icon: <Dot color="#EF4444" /> },
+                    ]}
+                />
+            </div>
+            <div className="w-[170px]">
+                <MultiSelectDropdown
+                    placeholder="All providers"
+                    selected={toArr(provider)}
+                    onChange={(arr) => onProvider(fromArr(arr))}
+                    options={[
+                        { value: 'google',    label: `Gmail (${counts.provider.google})`,        icon: <Dot color="#374151" /> },
+                        { value: 'microsoft', label: `Outlook (${counts.provider.microsoft})`,   icon: <Dot color="#0EA5E9" /> },
+                        { value: 'smtp',      label: `SMTP / Relay (${counts.provider.smtp})`,   icon: <Dot color="#8B5CF6" /> },
+                    ]}
+                />
+            </div>
+            <div className="w-[180px]">
+                <MultiSelectDropdown
+                    placeholder="All utilization"
+                    selected={toArr(utilization)}
+                    onChange={(arr) => onUtilization(fromArr(arr))}
+                    options={[
+                        { value: 'underutilized', label: `Underutilized (${counts.utilization.underutilized})`, icon: <Dot color="#3B82F6" /> },
+                        { value: 'balanced',      label: `Balanced (${counts.utilization.balanced})`,           icon: <Dot color="#10B981" /> },
+                        { value: 'overutilized',  label: `Overutilized (${counts.utilization.overutilized})`,   icon: <Dot color="#F59E0B" /> },
+                    ]}
+                />
+            </div>
+
+            {anyActive && (
+                <button
+                    type="button"
+                    onClick={onClearAll}
+                    className="text-[11px] font-semibold text-gray-500 hover:text-gray-900 bg-transparent border-none cursor-pointer underline"
+                >
+                    Clear filters
+                </button>
+            )}
         </div>
     );
 }

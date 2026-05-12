@@ -4,8 +4,11 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText, Square, CheckSquare } from 'lucide-react';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import CustomSelect from '@/components/ui/CustomSelect';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDashboard } from '@/contexts/DashboardContext';
 
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
@@ -83,6 +86,9 @@ export default function UniboxPage() {
     //   so warmup + random inbound never show up regardless of which view is active.
     const [view, setView] = useState<'inbox' | 'sent' | 'all'>('inbox');
     const [filter, setFilter] = useState<'all' | 'unread' | 'starred'>('all');
+    // Reply-quality filter — comma-joined class names. Backed by the new
+    // /api/unibox/threads `quality_class` query param. Empty Set = no filter.
+    const [qualityFilter, setQualityFilter] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState('');
     const [refreshing, setRefreshing] = useState(false);
 
@@ -133,6 +139,7 @@ export default function UniboxPage() {
             if (filter === 'unread') params.set('unread', 'true');
             if (filter === 'starred') params.set('starred', 'true');
             if (searchQuery.trim()) params.set('search', searchQuery.trim());
+            if (qualityFilter.size > 0) params.set('quality_class', Array.from(qualityFilter).join(','));
 
             // apiClient auto-unwraps the `data` key, so when the response is
             // `{success, data: [...], meta: {...}}` it returns the array directly
@@ -146,7 +153,7 @@ export default function UniboxPage() {
         } catch { /* graceful */ }
         setLoading(false);
         setRefreshing(false);
-    }, [view, filter, searchQuery]);
+    }, [view, filter, searchQuery, qualityFilter]);
 
     const fetchThread = useCallback(async (threadId: string) => {
         setThreadLoading(true);
@@ -165,6 +172,25 @@ export default function UniboxPage() {
     }, []);
 
     useEffect(() => { fetchThreads(); }, [fetchThreads]);
+
+    // Deep-link support — when arriving with ?thread=<id> (e.g. from the
+    // Reply Quality analytics drill-down), auto-fetch + select that thread.
+    // We strip the param from the URL after consuming so a manual refresh
+    // doesn't re-select the same thread on top of the user's later choices.
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    useEffect(() => {
+        const tid = searchParams?.get('thread');
+        if (!tid) return;
+        if (selectedThread?.id === tid) return;
+        fetchThread(tid);
+        // Clean the URL — preserve any other params the user had.
+        const params = new URLSearchParams(searchParams?.toString() || '');
+        params.delete('thread');
+        const next = params.toString();
+        router.replace(`/dashboard/sequencer/unibox${next ? `?${next}` : ''}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams]);
 
     // Poll every 30 seconds
     useEffect(() => {
@@ -347,6 +373,28 @@ export default function UniboxPage() {
                     })}
                 </div>
 
+                {/* Reply-quality filter — uses the canonical MultiSelectDropdown
+                    so the theme matches the contacts page filters. Only shown
+                    on Inbox/All since outbound threads have no inbound class. */}
+                {view !== 'sent' && (
+                    <div className="w-[180px] shrink-0">
+                        <MultiSelectDropdown
+                            placeholder="Reply quality"
+                            selected={Array.from(qualityFilter)}
+                            onChange={(arr) => setQualityFilter(new Set(arr))}
+                            options={[
+                                { value: 'positive',  label: 'Positive',    icon: <span className="w-2 h-2 rounded-full" style={{ background: '#10B981', display: 'inline-block' }} /> },
+                                { value: 'qualified', label: 'Qualified',   icon: <span className="w-2 h-2 rounded-full" style={{ background: '#0891B2', display: 'inline-block' }} /> },
+                                { value: 'objection', label: 'Objection',   icon: <span className="w-2 h-2 rounded-full" style={{ background: '#F59E0B', display: 'inline-block' }} /> },
+                                { value: 'referral',  label: 'Referral',    icon: <span className="w-2 h-2 rounded-full" style={{ background: '#8B5CF6', display: 'inline-block' }} /> },
+                                { value: 'auto',      label: 'Auto / OOO',  icon: <span className="w-2 h-2 rounded-full" style={{ background: '#6B7280', display: 'inline-block' }} /> },
+                                { value: 'soft_no',   label: 'Soft no',     icon: <span className="w-2 h-2 rounded-full" style={{ background: '#F43F5E', display: 'inline-block' }} /> },
+                                { value: 'hard_no',   label: 'Hard no',     icon: <span className="w-2 h-2 rounded-full" style={{ background: '#DC2626', display: 'inline-block' }} /> },
+                            ]}
+                        />
+                    </div>
+                )}
+
                 {/* Grow spacer */}
                 <div className="flex-1" />
 
@@ -363,26 +411,17 @@ export default function UniboxPage() {
                     />
                 </div>
 
-                {/* Filter chips: All / Unread / Starred */}
-                <div className="flex items-center gap-1 shrink-0" role="group" aria-label="Filter threads">
-                    {(['all', 'unread', 'starred'] as const).map(f => {
-                        const isActive = filter === f;
-                        return (
-                            <button
-                                key={f}
-                                onClick={() => setFilter(f)}
-                                className="px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
-                                style={{
-                                    background: isActive ? '#111827' : '#F3F4F6',
-                                    color: isActive ? '#FFFFFF' : '#4B5563',
-                                    border: '1px solid',
-                                    borderColor: isActive ? '#111827' : '#E5E7EB',
-                                }}
-                            >
-                                {f === 'all' ? 'All' : f === 'unread' ? 'Unread' : 'Starred'}
-                            </button>
-                        );
-                    })}
+                {/* Inbox filter — themed dropdown per dashboard convention. */}
+                <div className="w-36 shrink-0">
+                    <CustomSelect
+                        value={filter}
+                        onChange={(v) => setFilter(v as typeof filter)}
+                        options={[
+                            { value: 'all',     label: 'All threads' },
+                            { value: 'unread',  label: 'Unread' },
+                            { value: 'starred', label: 'Starred' },
+                        ]}
+                    />
                 </div>
 
                 {/* Refresh */}
@@ -722,3 +761,4 @@ export default function UniboxPage() {
         </div>
     );
 }
+

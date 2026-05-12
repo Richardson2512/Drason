@@ -181,7 +181,8 @@ export default function LoadBalancingPage() {
                         {report.suggestions.length > 3 && (
                             <button
                                 onClick={() => router.push('/dashboard/load-balancing/suggestions')}
-                                className="px-4 py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-blue-100"
+                                className="px-3 py-1.5 bg-white text-gray-900 rounded-lg text-xs font-semibold cursor-pointer transition-colors hover:bg-[#FAFAF8]"
+                                style={{ border: '1px solid #D1CBC5' }}
                             >
                                 View All ({report.suggestions.length})
                             </button>

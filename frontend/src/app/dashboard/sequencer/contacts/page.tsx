@@ -46,6 +46,7 @@ const ALL_COLUMNS = [
     { key: 'source',      label: 'Source',            defaultVisible: false, width: 'min-w-[100px]' },
     { key: 'status',      label: 'Status',            defaultVisible: true,  width: 'min-w-[110px]' },
     { key: 'validation',  label: 'Validation',        defaultVisible: true,  width: 'min-w-[110px]' },
+    { key: 'score',       label: 'Lead score',        defaultVisible: true,  width: 'min-w-[150px]' },
     { key: 'tags',        label: 'Tags',              defaultVisible: true,  width: 'min-w-[180px]' },
     { key: 'campaigns',   label: 'Campaigns history', defaultVisible: true,  width: 'min-w-[100px]' },
     { key: 'created',     label: 'Added',             defaultVisible: true,  width: 'min-w-[80px]'  },
@@ -978,6 +979,9 @@ function ContactsPageContent() {
                                                         allTags,
                                                         onTagsChange: setContactTags,
                                                         onTagCreated: fetchTags,
+                                                        onScoreChange: (contactId, newScore) => {
+                                                            setContacts(curr => curr.map(x => x.id === contactId ? { ...x, lead_score: newScore } : x));
+                                                        },
                                                     })}
                                                 </td>
                                             ))}
@@ -1024,7 +1028,7 @@ function ContactsPageContent() {
                     <div className="bg-white rounded-xl w-[90%] max-w-xl max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
                         <div className="p-4 flex items-center justify-between sticky top-0 bg-white z-10" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">Add Contact</h2>
-                            <button onClick={() => !creatingContact && setShowAddModal(false)} className="text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none"><X size={16} /></button>
+                            <button onClick={() => !creatingContact && setShowAddModal(false)} aria-label="Close" title="Close" className="text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none"><X size={16} /></button>
                         </div>
                         <div className="p-4 flex flex-col gap-3">
                             <div>
@@ -1211,6 +1215,7 @@ interface RenderCellContext {
     allTags: TagItem[];
     onTagsChange: (contactId: string, tagIds: string[]) => Promise<void>;
     onTagCreated: () => Promise<void>;
+    onScoreChange: (contactId: string, newScore: number) => void;
 }
 
 function renderCell(
@@ -1251,6 +1256,14 @@ function renderCell(
             );
         case 'validation':
             return <ValidationPill status={c.validation_status} score={c.validation_score} />;
+        case 'score':
+            return (
+                <LeadScoreCell
+                    leadId={c.id}
+                    score={c.lead_score ?? 0}
+                    onScoreChange={(next) => ctx.onScoreChange(c.id, next)}
+                />
+            );
         case 'tags': {
             const tags = c.tags || [];
             const tagIds = tags.map(t => t.id);
@@ -1355,5 +1368,144 @@ export default function ContactsPage() {
         <Suspense fallback={null}>
             <ContactsPageContent />
         </Suspense>
+    );
+}
+
+/**
+ * Per-row lead score display with a "+" affordance that pops a menu of the
+ * org's custom scoring events. Clicking one fires POST /api/leads/:id/score-events
+ * which atomically inserts the event row, bumps lead_score_adjustments, and
+ * triggers recalculateLeadScore on the backend. We optimistically update the
+ * row's lead_score with the server-returned value.
+ *
+ * Custom events are pulled lazily on first open and cached on the component
+ * instance — same config applies to every row so each cell doesn't need its
+ * own fetch round trip.
+ */
+type ScoreEvent = { key: string; label: string; points: number; color?: string };
+let _scoreEventsCache: { value: ScoreEvent[] | null; expires: number } = { value: null, expires: 0 };
+
+async function fetchScoreEvents(): Promise<ScoreEvent[]> {
+    const now = Date.now();
+    if (_scoreEventsCache.value && _scoreEventsCache.expires > now) return _scoreEventsCache.value;
+    try {
+        const res = await apiClient<{ success: boolean; data: { events: ScoreEvent[] } }>('/api/leads/scoring/config');
+        const events = Array.isArray(res.data?.events) ? res.data.events : [];
+        _scoreEventsCache = { value: events, expires: now + 60_000 };
+        return events;
+    } catch {
+        return [];
+    }
+}
+
+function LeadScoreCell({
+    leadId,
+    score,
+    onScoreChange,
+}: {
+    leadId: string;
+    score: number;
+    onScoreChange: (newScore: number) => void;
+}) {
+    const [open, setOpen] = useState(false);
+    const [events, setEvents] = useState<ScoreEvent[] | null>(null);
+    const [busyKey, setBusyKey] = useState<string | null>(null);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!open) return;
+        if (events === null) fetchScoreEvents().then(setEvents);
+        const handler = (e: MouseEvent) => {
+            if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [open, events]);
+
+    const applyEvent = async (ev: ScoreEvent) => {
+        setBusyKey(ev.key);
+        try {
+            const res = await apiClient<{ success: boolean; data: { lead_score: number } }>(
+                `/api/leads/${leadId}/score-events`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event_key: ev.key }),
+                },
+            );
+            const next = res.data?.lead_score ?? score;
+            onScoreChange(next);
+            toast.success(`${ev.label} +${ev.points}`);
+            setOpen(false);
+        } catch (e: any) {
+            toast.error(e.message || 'Failed to record event');
+        } finally {
+            setBusyKey(null);
+        }
+    };
+
+    // Score color band — green/amber/red mirrors the validation pill scale.
+    const band = score >= 70 ? { bg: '#F0FDF4', fg: '#15803D' } :
+                 score >= 40 ? { bg: '#FFFBEB', fg: '#B45309' } :
+                              { bg: '#F1F5F9', fg: '#475569' };
+
+    return (
+        <div ref={ref} className="relative inline-flex items-center gap-1" onClick={e => e.stopPropagation()}>
+            <span
+                className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold tabular-nums"
+                style={{ background: band.bg, color: band.fg }}
+                title={`Lead score: ${score}/100`}
+            >
+                {score}
+            </span>
+            <button
+                onClick={() => setOpen(o => !o)}
+                className="w-5 h-5 rounded flex items-center justify-center text-gray-500 hover:bg-gray-100 cursor-pointer"
+                title="Log a custom event"
+            >
+                <Plus size={11} />
+            </button>
+
+            {open && (
+                <div
+                    className="absolute z-50 top-full left-0 mt-1 w-56 rounded-lg bg-white py-1"
+                    style={{ border: '1px solid #D1CBC5', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+                >
+                    <div className="px-3 py-2 text-[11px] font-semibold text-gray-500" style={{ borderBottom: '1px solid #F0EBE3' }}>
+                        Log custom event
+                    </div>
+                    {events === null ? (
+                        <div className="px-3 py-3 text-[11px] text-gray-400">Loading…</div>
+                    ) : events.length === 0 ? (
+                        <div className="px-3 py-3 text-[11px] text-gray-500">
+                            No custom events configured.{' '}
+                            <Link href="/dashboard/settings?tab=scoring" className="text-blue-600 hover:underline">
+                                Add some
+                            </Link>
+                        </div>
+                    ) : (
+                        events.map(ev => (
+                            <button
+                                key={ev.key}
+                                onClick={() => applyEvent(ev)}
+                                disabled={busyKey === ev.key}
+                                className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-xs text-left hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-50"
+                            >
+                                <span className="flex items-center gap-2 min-w-0">
+                                    <span
+                                        className="w-2 h-2 rounded-full shrink-0"
+                                        style={{ background: ev.color || '#16A34A' }}
+                                    />
+                                    <span className="truncate text-gray-900">{ev.label}</span>
+                                </span>
+                                <span className={`text-[11px] font-semibold tabular-nums ${ev.points >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
+                                    {ev.points >= 0 ? '+' : ''}{ev.points}
+                                </span>
+                            </button>
+                        ))
+                    )}
+                </div>
+            )}
+        </div>
     );
 }

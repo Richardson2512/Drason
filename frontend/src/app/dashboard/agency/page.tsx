@@ -300,11 +300,17 @@ export default function AgencyOverviewPage() {
                 </div>
             )}
 
-            <div className="mt-8 p-4 rounded-xl bg-gray-50 border border-gray-200 text-[11px] text-gray-600 leading-relaxed">
-                <span className="font-semibold text-gray-900">Frontend prototype.</span> Workspace data shown here is mock data
-                stored in your browser. Backend (Account → Organization mapping, per-workspace data isolation) lands in the
-                next iteration; the UI you're seeing is the target shape.
-            </div>
+            {/* Internal-only disclaimer — surfaced only when NEXT_PUBLIC_AGENCY_PROTOTYPE=1
+                so the prototype banner never ships to a paying customer. Backend wiring
+                (Account → Organization mapping, per-workspace isolation) is the next step;
+                remove this gate when the real data path lands. */}
+            {process.env.NEXT_PUBLIC_AGENCY_PROTOTYPE === '1' && (
+                <div className="mt-8 p-4 rounded-lg text-[11px] text-gray-600 leading-relaxed" style={{ background: '#FAFAF8', border: '1px solid #D1CBC5' }}>
+                    <span className="font-semibold text-gray-900">Frontend prototype.</span> Workspace data shown here is mock data
+                    stored in your browser. Backend (Account → Organization mapping, per-workspace data isolation) lands in the
+                    next iteration; the UI you&apos;re seeing is the target shape.
+                </div>
+            )}
         </div>
     );
 }

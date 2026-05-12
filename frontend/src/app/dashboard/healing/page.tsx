@@ -360,6 +360,8 @@ export default function HealingPipelinePage() {
     const [recoveryData, setRecoveryData] = useState<Record<string, any> | null>(null);
     const [warmupData, setWarmupData] = useState<Record<string, any> | null>(null);
     const [recentlyRecovered, setRecentlyRecovered] = useState<Array<Record<string, any>>>([]);
+    const [recoveredPage, setRecoveredPage] = useState(1);
+    const RECOVERED_PAGE_SIZE = 10;
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -579,17 +581,23 @@ export default function HealingPipelinePage() {
             )}
 
             {/* ── Section 5: Recently Recovered ───────────────────────────── */}
-            {!loading && recentlyRecovered.length > 0 && (
+            {!loading && recentlyRecovered.length > 0 && (() => {
+                const total = recentlyRecovered.length;
+                const totalPages = Math.max(1, Math.ceil(total / RECOVERED_PAGE_SIZE));
+                const page = Math.min(recoveredPage, totalPages);
+                const start = (page - 1) * RECOVERED_PAGE_SIZE;
+                const pageRows = recentlyRecovered.slice(start, start + RECOVERED_PAGE_SIZE);
+                return (
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-bold text-gray-900">
                             Recently Recovered
                         </h2>
-                        <span className="text-sm text-gray-400 font-medium">Last 7 days</span>
+                        <span className="text-sm text-gray-400 font-medium">Last 7 days · {total} total</span>
                     </div>
                     <div className="premium-card rounded-[20px]">
                         <div className="flex flex-col divide-y divide-gray-100">
-                            {recentlyRecovered.map((log, idx) => {
+                            {pageRows.map((log, idx) => {
                                 const entityName = log.entity_name || 'Unknown';
                                 const recoveredAt = log.recovered_at;
                                 const fromPhase = log.from_phase || '';
@@ -637,9 +645,36 @@ export default function HealingPipelinePage() {
                                 );
                             })}
                         </div>
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-between pt-3 mt-3 border-t border-gray-100">
+                                <span className="text-xs text-gray-500">
+                                    Showing {start + 1}–{Math.min(start + RECOVERED_PAGE_SIZE, total)} of {total}
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    <button
+                                        onClick={() => setRecoveredPage(p => Math.max(1, p - 1))}
+                                        disabled={page <= 1}
+                                        className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    >
+                                        Prev
+                                    </button>
+                                    <span className="text-xs text-gray-600 px-2">Page {page} / {totalPages}</span>
+                                    <button
+                                        onClick={() => setRecoveredPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={page >= totalPages}
+                                        className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
-            )}
+                );
+            })()}
 
             {/* ── Warmup Estimated Graduations (from warmup endpoint) ─────── */}
             {!loading && warmupData && warmupData.estimatedGraduations && warmupData.estimatedGraduations.length > 0 && (

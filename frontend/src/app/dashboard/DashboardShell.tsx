@@ -74,20 +74,68 @@ export default function DashboardShell({
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
-    // Super Sender announcement — dedicated-IP upsell. Persisted to
-    // localStorage so a one-click dismiss sticks across sessions; the user
-    // can still re-show it by clearing storage or visiting the dedicated
-    // /dashboard/sequencer/super-sender page (which is in the sidebar).
+    // Super Sender announcement — dedicated-IP upsell. Dismissal persists
+    // for 24h via a timestamp in localStorage; the banner re-appears the
+    // next day to nudge users who deferred. We also hide it permanently
+    // once the account has any active/pending IP (the API tells us via
+    // /api/super-sender summary.has_any_ip). The sidebar pill stays
+    // visible until purchase regardless of dismissal — small, low-contrast,
+    // never blocking.
+    const SUPER_SENDER_DISMISS_KEY = 'superkabe-super-sender-dismissed-at';
+    const SUPER_SENDER_DISMISS_TTL_MS = 24 * 60 * 60 * 1000;
     const [superSenderDismissed, setSuperSenderDismissed] = useState<boolean>(false);
+    const [accountHasIp, setAccountHasIp] = useState<boolean>(false);
+    // `superSenderChecked` gates the banner render until BOTH inputs are
+    // resolved: localStorage (sync, instant) and the /api/super-sender
+    // probe (async). Defaulting the dismissed/hasIp flags to `false` causes
+    // a flash on hard refresh — the banner paints, then disappears once
+    // the API returns. Holding until checked is the right trade: a few
+    // hundred ms of "banner not shown yet" beats a visible flicker.
+    const [superSenderChecked, setSuperSenderChecked] = useState<boolean>(false);
     useEffect(() => {
-        if (typeof window !== 'undefined' && localStorage.getItem('superkabe-super-sender-dismissed') === '1') {
-            setSuperSenderDismissed(true);
+        if (typeof window === 'undefined') return;
+        const raw = localStorage.getItem(SUPER_SENDER_DISMISS_KEY);
+        if (raw) {
+            const ts = parseInt(raw, 10);
+            if (!Number.isNaN(ts) && Date.now() - ts < SUPER_SENDER_DISMISS_TTL_MS) {
+                setSuperSenderDismissed(true);
+            } else {
+                // TTL expired — clear so future dismissals start a new window.
+                localStorage.removeItem(SUPER_SENDER_DISMISS_KEY);
+            }
         }
+    }, []);
+    // Pull the account's IP-purchase state. Hides both banner + pill once
+    // the user has bought. Single fetch on mount; the Super Sender page
+    // itself owns the live subscription. `setSuperSenderChecked(true)`
+    // fires in all branches (success, error, non-2xx) so the banner is
+    // never trapped behind a permanently-pending probe.
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const res = await fetch('/api/super-sender', { credentials: 'include' });
+                if (!res.ok) {
+                    if (!cancelled) setSuperSenderChecked(true);
+                    return;
+                }
+                const json = await res.json();
+                if (cancelled) return;
+                if (json?.data?.summary?.has_any_ip) {
+                    setAccountHasIp(true);
+                }
+                setSuperSenderChecked(true);
+            } catch {
+                // non-fatal — flip checked anyway so the banner can render
+                if (!cancelled) setSuperSenderChecked(true);
+            }
+        })();
+        return () => { cancelled = true; };
     }, []);
     const dismissSuperSender = () => {
         setSuperSenderDismissed(true);
         if (typeof window !== 'undefined') {
-            localStorage.setItem('superkabe-super-sender-dismissed', '1');
+            localStorage.setItem(SUPER_SENDER_DISMISS_KEY, String(Date.now()));
         }
     };
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -267,7 +315,7 @@ export default function DashboardShell({
                             { href: '/dashboard/sequencer/contacts', label: 'Contacts', icon: <Contact size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/analytics', label: 'Analytics', icon: <BarChart3 size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/accounts', label: 'Mailboxes', icon: <Mailbox size={13} strokeWidth={1.75} /> },
-                            { href: '/dashboard/sequencer/super-sender', label: 'Super Sender', icon: <Zap size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/sequencer/super-sender', label: 'Super Sender', icon: <Zap size={13} strokeWidth={1.75} />, pill: superSenderChecked && !accountHasIp ? 'Get one' : undefined },
                             { href: '/dashboard/sequencer/warmup', label: 'Warmup', icon: <Flame size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/sequencer/settings', label: 'Settings', icon: <Settings size={13} strokeWidth={1.75} /> },
                         ];
@@ -295,7 +343,7 @@ export default function DashboardShell({
 
                         const isActive = (href: string) => href === '/dashboard' ? pathname === href : pathname?.startsWith(href);
 
-                        const renderNavItem = (item: { href: string; label: string; icon: React.ReactNode; badge?: number }) => {
+                        const renderNavItem = (item: { href: string; label: string; icon: React.ReactNode; badge?: number; pill?: string }) => {
                             const active = isActive(item.href);
                             return (
                                 <Link
@@ -312,6 +360,14 @@ export default function DashboardShell({
                                         ) : null}
                                     </span>
                                     {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                                    {!isCollapsed && item.pill ? (
+                                        <span
+                                            className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                                            style={{ background: '#DBEAFE', color: '#1D4ED8', lineHeight: 1.2 }}
+                                        >
+                                            {item.pill}
+                                        </span>
+                                    ) : null}
                                 </Link>
                             );
                         };
@@ -323,14 +379,14 @@ export default function DashboardShell({
                                     onClick={() => toggleMode('sequencer')}
                                     className="nav-link cursor-pointer w-full text-left"
                                     style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', background: activeMode === 'sequencer' ? '#F5F1EA' : 'transparent' }}
-                                    title={isCollapsed ? 'Sequencer' : ''}
+                                    title={isCollapsed ? 'Super Sequencer' : ''}
                                 >
                                     <span className="nav-icon" style={{ color: activeMode === 'sequencer' ? '#111827' : '#6B7280' }}>
                                         <Send size={13} strokeWidth={1.75} />
                                     </span>
                                     {!isCollapsed && (
                                         <>
-                                            <span className="nav-label" style={{ fontWeight: activeMode === 'sequencer' ? 600 : 500, color: activeMode === 'sequencer' ? '#111827' : undefined }}>Sequencer</span>
+                                            <span className="nav-label" style={{ fontWeight: activeMode === 'sequencer' ? 600 : 500, color: activeMode === 'sequencer' ? '#111827' : undefined }}>Super Sequencer</span>
                                             <ChevronDown size={10} className="ml-auto" style={{ transform: activeMode === 'sequencer' ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s ease', color: '#9CA3AF' }} />
                                         </>
                                     )}
@@ -350,14 +406,14 @@ export default function DashboardShell({
                                     onClick={() => toggleMode('protection')}
                                     className="nav-link cursor-pointer w-full text-left"
                                     style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', background: activeMode === 'protection' ? '#F5F1EA' : 'transparent' }}
-                                    title={isCollapsed ? 'Protection' : ''}
+                                    title={isCollapsed ? 'Super Protect' : ''}
                                 >
                                     <span className="nav-icon" style={{ color: activeMode === 'protection' ? '#111827' : '#6B7280' }}>
                                         <Shield size={13} strokeWidth={1.75} />
                                     </span>
                                     {!isCollapsed && (
                                         <>
-                                            <span className="nav-label" style={{ fontWeight: activeMode === 'protection' ? 600 : 500, color: activeMode === 'protection' ? '#111827' : undefined }}>Protection</span>
+                                            <span className="nav-label" style={{ fontWeight: activeMode === 'protection' ? 600 : 500, color: activeMode === 'protection' ? '#111827' : undefined }}>Super Protect</span>
                                             <ChevronDown size={10} className="ml-auto" style={{ transform: activeMode === 'protection' ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s ease', color: '#9CA3AF' }} />
                                         </>
                                     )}
@@ -469,8 +525,9 @@ export default function DashboardShell({
 
                 {/* Super Sender announcement — dedicated-IP upsell. Sticks
                     to the top of the main content area so it's seen on any
-                    dashboard page. Per-user dismissal persists across sessions. */}
-                {!superSenderDismissed && pathname !== '/dashboard/sequencer/super-sender' && (
+                    dashboard page. Dismissal persists for 24h, then re-shows.
+                    Hidden permanently once the account has any IP purchased. */}
+                {superSenderChecked && !superSenderDismissed && !accountHasIp && pathname !== '/dashboard/sequencer/super-sender' && (
                     <div
                         className="flex items-center justify-between gap-4 sticky top-0 z-30 shadow-sm"
                         style={{

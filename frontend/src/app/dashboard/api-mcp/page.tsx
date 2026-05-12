@@ -280,7 +280,12 @@ export default function ApiMcpPage() {
                                 <code className="flex-1 text-sm font-mono text-gray-900 break-all select-all">
                                     {showRawKey ? newRawKey : '••••••••••••••••••••••••••••••••••••••••'}
                                 </code>
-                                <button onClick={() => setShowRawKey(!showRawKey)} className="p-1.5 rounded-md hover:bg-emerald-50 transition-colors border-none bg-transparent cursor-pointer">
+                                <button
+                                    onClick={() => setShowRawKey(!showRawKey)}
+                                    aria-label={showRawKey ? 'Hide API key' : 'Show API key'}
+                                    title={showRawKey ? 'Hide API key' : 'Show API key'}
+                                    className="p-1.5 rounded-md hover:bg-emerald-50 transition-colors border-none bg-transparent cursor-pointer"
+                                >
                                     {showRawKey ? <EyeOff size={14} className="text-slate-500" /> : <Eye size={14} className="text-slate-500" />}
                                 </button>
                                 <CopyBtn text={newRawKey} />

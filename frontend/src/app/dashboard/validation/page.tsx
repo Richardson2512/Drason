@@ -867,31 +867,34 @@ function ValidationPageContent() {
                         </div>
                     </div>
 
-                    {/* Filters */}
+                    {/* Filters — themed dropdowns per dashboard convention. */}
                     <div className="flex items-center gap-2 mb-3 flex-wrap">
-                        {['all', 'valid', 'risky', 'invalid', 'duplicate'].map(s => (
-                            <button
-                                key={s}
-                                onClick={() => { setStatusFilter(s); setBatchMeta(m => ({ ...m, page: 1 })); }}
-                                className="px-2.5 py-1 rounded-md text-[10px] font-semibold cursor-pointer transition-colors"
-                                style={{
-                                    background: statusFilter === s ? '#1F2937' : '#F3F4F6',
-                                    color: statusFilter === s ? '#FFFFFF' : '#4B5563',
-                                }}
-                            >{s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}</button>
-                        ))}
-                        <div className="w-px h-4 bg-gray-200 mx-1" />
-                        {['all', 'gmail', 'microsoft', 'yahoo', 'other'].map(e => (
-                            <button
-                                key={e}
-                                onClick={() => { setEspFilter(e); setBatchMeta(m => ({ ...m, page: 1 })); }}
-                                className="px-2.5 py-1 rounded-md text-[10px] font-semibold cursor-pointer transition-colors"
-                                style={{
-                                    background: espFilter === e ? '#1F2937' : '#F3F4F6',
-                                    color: espFilter === e ? '#FFFFFF' : '#4B5563',
-                                }}
-                            >{e === 'all' ? 'All ESP' : e.charAt(0).toUpperCase() + e.slice(1)}</button>
-                        ))}
+                        <div className="w-36">
+                            <CustomSelect
+                                value={statusFilter}
+                                onChange={(v) => { setStatusFilter(v); setBatchMeta(m => ({ ...m, page: 1 })); }}
+                                options={[
+                                    { value: 'all',       label: 'All statuses' },
+                                    { value: 'valid',     label: 'Valid' },
+                                    { value: 'risky',     label: 'Risky' },
+                                    { value: 'invalid',   label: 'Invalid' },
+                                    { value: 'duplicate', label: 'Duplicate' },
+                                ]}
+                            />
+                        </div>
+                        <div className="w-36">
+                            <CustomSelect
+                                value={espFilter}
+                                onChange={(v) => { setEspFilter(v); setBatchMeta(m => ({ ...m, page: 1 })); }}
+                                options={[
+                                    { value: 'all',       label: 'All ESPs' },
+                                    { value: 'gmail',     label: 'Gmail' },
+                                    { value: 'microsoft', label: 'Microsoft' },
+                                    { value: 'yahoo',     label: 'Yahoo' },
+                                    { value: 'other',     label: 'Other' },
+                                ]}
+                            />
+                        </div>
                         <div className="flex-1" />
                         <div className="relative">
                             <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -1000,7 +1003,7 @@ function ValidationPageContent() {
                                 {uploadStep === 'processing' && 'Validating...'}
                                 {uploadStep === 'done' && 'Upload Complete'}
                             </h2>
-                            <button onClick={resetUpload} className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
+                            <button onClick={resetUpload} aria-label="Reset upload" title="Reset upload" className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
                         </div>
 
                         <div className="p-4">

@@ -32,6 +32,7 @@ import toast from 'react-hot-toast';
 import ExportToOutreachModal from '@/components/ExportToOutreachModal';
 import ExportToJustCallModal from '@/components/ExportToJustCallModal';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import CustomSelect from '@/components/ui/CustomSelect';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -411,7 +412,7 @@ function SystemListSection({
     const rangeEnd = Math.min(page * PAGE_SIZE, total);
 
     return (
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-[#D1CBC5] bg-white p-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <h2 className="text-base font-bold text-gray-900 flex items-center gap-2">
@@ -432,7 +433,7 @@ function SystemListSection({
                     <button
                         onClick={onRefresh}
                         disabled={loading}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         title="Re-read today’s snapshot"
                     >
                         {loading ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
@@ -441,7 +442,7 @@ function SystemListSection({
                     <button
                         onClick={onExportOutreach}
                         disabled={!data || data.prospects.length === 0}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         title="Push these prospects to an Outreach sequence"
                     >
                         <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
@@ -450,7 +451,7 @@ function SystemListSection({
                     <button
                         onClick={onExportJustCall}
                         disabled={!data || data.prospects.length === 0}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs font-medium text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         title="Push these prospects to a JustCall sales-dialer campaign"
                     >
                         <img src="/logos/justcall-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
@@ -507,7 +508,7 @@ function SystemListSection({
                         </div>
                         <ProspectTable prospects={pagedProspects} />
                         {totalPages > 1 && (
-                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-neutral-200">
+                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#D1CBC5]">
                                 <div className="text-xs text-gray-500">
                                     Page <span className="text-gray-900 font-semibold">{page}</span> of <span className="text-gray-900 font-semibold">{totalPages}</span>
                                 </div>
@@ -515,7 +516,7 @@ function SystemListSection({
                                     <button
                                         onClick={() => setPage(p => Math.max(1, p - 1))}
                                         disabled={page === 1}
-                                        className="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                        className="inline-flex items-center gap-1 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
                                         <ChevronLeft size={12} />
                                         Previous
@@ -523,7 +524,7 @@ function SystemListSection({
                                     <button
                                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                         disabled={page === totalPages}
-                                        className="inline-flex items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                                        className="inline-flex items-center gap-1 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
                                         Next
                                         <ChevronRight size={12} />
@@ -572,7 +573,7 @@ function CustomListSection({
     onExportJustCall: () => void;
 }) {
     return (
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-[#D1CBC5] bg-white p-5">
             <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <h2 className="text-base font-bold text-gray-900">Custom List</h2>
@@ -588,7 +589,7 @@ function CustomListSection({
                         <button
                             onClick={onGenerate}
                             disabled={customLoading}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-2.5 py-1.5 text-xs text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         >
                             {customLoading ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
                             Refresh
@@ -599,10 +600,10 @@ function CustomListSection({
 
             {/* Rules panel — overflow-visible so the campaigns MultiSelectDropdown
                 isn't clipped when its panel expands below the field. */}
-            <div className="mt-4 rounded-lg border border-neutral-200">
+            <div className="mt-4 rounded-lg border border-[#D1CBC5]">
                 <button
                     onClick={onToggleRules}
-                    className={`w-full flex items-center justify-between px-4 py-2.5 hover:bg-neutral-50 cursor-pointer bg-transparent border-none ${rulesOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
+                    className={`w-full flex items-center justify-between px-4 py-2.5 hover:bg-[#FAFAF8] cursor-pointer bg-transparent border-none ${rulesOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
                 >
                     <span className="text-xs font-semibold text-gray-700 inline-flex items-center gap-1.5">
                         {rulesOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
@@ -636,7 +637,7 @@ function CustomListSection({
                     <button
                         onClick={onExportOutreach}
                         disabled={!customList || customList.length === 0}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         title="Push these prospects to an Outreach sequence"
                     >
                         <img src="/logos/outreach-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
@@ -645,7 +646,7 @@ function CustomListSection({
                     <button
                         onClick={onExportJustCall}
                         disabled={!customList || customList.length === 0}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                         title="Push these prospects to a JustCall sales-dialer campaign"
                     >
                         <img src="/logos/justcall-icon.png" alt="" className="h-3.5 w-3.5 object-contain" />
@@ -654,7 +655,7 @@ function CustomListSection({
                     <button
                         onClick={onDownload}
                         disabled={!customList || customList.length === 0 || customDownloadLoading}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#D1CBC5] bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-[#FAFAF8] disabled:opacity-50"
                     >
                         {customDownloadLoading ? <Loader2 size={12} className="animate-spin" /> : <Download size={12} />}
                         Download CSV
@@ -733,7 +734,7 @@ function RulesPanel({
     const allCampaignsSelected = selectedCampaigns.length === 0;
 
     return (
-        <div className="px-4 py-4 border-t border-neutral-200 bg-neutral-50/40">
+        <div className="px-4 py-4 border-t border-[#D1CBC5] bg-neutral-50/40">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="Minimum email opens" hint="At least this many opens within the time window.">
                     <input
@@ -742,20 +743,18 @@ function RulesPanel({
                         max={50}
                         value={minOpens}
                         onChange={(e) => onChange({ min_opens: parseInt(e.target.value || '0', 10) || 0 })}
-                        className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        className="w-24 rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
                 </Field>
 
                 <Field label="Time window for opens">
-                    <select
-                        value={timeWindowDays}
-                        onChange={(e) => onChange({ time_window_days: parseInt(e.target.value, 10) })}
-                        className="rounded-md border border-neutral-200 px-2 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-neutral-400"
-                    >
-                        {TIME_WINDOW_OPTIONS.map((o) => (
-                            <option key={o.value} value={o.value}>{o.label}</option>
-                        ))}
-                    </select>
+                    <div className="w-44">
+                        <CustomSelect
+                            value={String(timeWindowDays)}
+                            onChange={(v) => onChange({ time_window_days: parseInt(v, 10) })}
+                            options={TIME_WINDOW_OPTIONS.map(o => ({ value: String(o.value), label: o.label }))}
+                        />
+                    </div>
                 </Field>
 
                 <Field label="Require at least one link click" hint="When on, only prospects with a click qualify.">
@@ -764,7 +763,7 @@ function RulesPanel({
                             type="checkbox"
                             checked={requireClick}
                             onChange={(e) => onChange({ require_click: e.target.checked })}
-                            className="rounded border-neutral-300"
+                            className="rounded border-[#D1CBC5]"
                         />
                         Require click
                     </label>
@@ -776,7 +775,7 @@ function RulesPanel({
                             type="checkbox"
                             checked={requireNoReply}
                             onChange={(e) => onChange({ require_no_reply: e.target.checked })}
-                            className="rounded border-neutral-300"
+                            className="rounded border-[#D1CBC5]"
                         />
                         Exclude repliers
                     </label>
@@ -789,7 +788,7 @@ function RulesPanel({
                         max={90}
                         value={excludeRecentDays}
                         onChange={(e) => onChange({ exclude_recent_days: parseInt(e.target.value || '0', 10) || 0 })}
-                        className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        className="w-24 rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
                 </Field>
 
@@ -800,7 +799,7 @@ function RulesPanel({
                         max={1000}
                         value={maxListSize}
                         onChange={(e) => onChange({ max_list_size: parseInt(e.target.value || '0', 10) || 0 })}
-                        className="w-24 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        className="w-24 rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
                 </Field>
 
@@ -810,7 +809,7 @@ function RulesPanel({
                         placeholder='e.g. "VP, Director, Head, Chief"'
                         value={titleFilter}
                         onChange={(e) => onChange({ title_filter: e.target.value || null })}
-                        className="w-full rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        className="w-full rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
                     />
                 </Field>
 
@@ -857,7 +856,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 
 function ProspectTable({ prospects }: { prospects: Prospect[] }) {
     return (
-        <div className="overflow-x-auto rounded-lg border border-neutral-200">
+        <div className="overflow-x-auto rounded-lg border border-[#D1CBC5]">
             <table className="min-w-full text-xs">
                 <thead className="bg-neutral-50">
                     <tr className="text-left text-[10px] font-semibold uppercase tracking-wide text-gray-500">
@@ -944,8 +943,8 @@ function EmptyState({ kind, title, message }: { kind: 'info' | 'error' | 'placeh
         kind === 'error'
             ? 'border-rose-200 bg-rose-50 text-rose-900'
             : kind === 'placeholder'
-              ? 'border-dashed border-neutral-300 bg-neutral-50 text-neutral-700'
-              : 'border-neutral-200 bg-neutral-50 text-neutral-700';
+              ? 'border-dashed border-[#D1CBC5] bg-neutral-50 text-neutral-700'
+              : 'border-[#D1CBC5] bg-neutral-50 text-neutral-700';
     return (
         <div className={`rounded-lg border ${tint} px-4 py-8 text-center`}>
             <Icon size={20} className="mx-auto mb-2 opacity-70" />

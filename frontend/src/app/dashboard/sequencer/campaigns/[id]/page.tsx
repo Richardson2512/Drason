@@ -11,6 +11,7 @@ import {
 import { apiClient } from '@/lib/api';
 import ScheduleCalendarView from '@/components/sequencer/ScheduleCalendarView';
 import RecipientPreviewPanel from '@/components/sequencer/RecipientPreviewPanel';
+import DatePicker from '@/components/ui/DatePicker';
 import toast from 'react-hot-toast';
 import { useDashboard } from '@/contexts/DashboardContext';
 
@@ -18,6 +19,7 @@ interface Variant {
     id: string;
     label: string;
     subject: string;
+    preheader?: string;
     body_html: string;
     weight: number;
     sends?: number;
@@ -31,6 +33,7 @@ interface Step {
     delay_days: number;
     delay_hours: number;
     subject: string;
+    preheader?: string;
     body_html: string;
     variants: Variant[];
 }
@@ -113,6 +116,15 @@ export default function CampaignDetailPage() {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [previewModalStepId, setPreviewModalStepId] = useState<string | null>(null);
     const [previewModalVariantIdx, setPreviewModalVariantIdx] = useState(0);
+
+    // Custom date range for the stats row. When both dates are set, we hit
+    // /api/analytics/daily?campaign_id=...&start_date=...&end_date=... and
+    // sum the per-day buckets — otherwise the StatCards show the campaign's
+    // lifetime totals.
+    const [rangeStart, setRangeStart] = useState<string>('');
+    const [rangeEnd, setRangeEnd] = useState<string>('');
+    const [rangeStats, setRangeStats] = useState<{ sent: number; opens: number; clicks: number; replies: number; bounces: number; unsubscribes: number } | null>(null);
+    const [rangeLoading, setRangeLoading] = useState(false);
     useEffect(() => {
         if (!previewModalStepId) return;
         window.dispatchEvent(new Event('recipient-preview-open'));
@@ -137,6 +149,46 @@ export default function CampaignDetailPage() {
         if (id) fetchCampaign();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    // Refetch ranged stats whenever both dates are present (or clear them).
+    useEffect(() => {
+        if (!id || !rangeStart || !rangeEnd) {
+            setRangeStats(null);
+            return;
+        }
+        let cancelled = false;
+        const run = async () => {
+            setRangeLoading(true);
+            try {
+                const params = new URLSearchParams({
+                    campaign_id: String(id),
+                    start_date: rangeStart,
+                    end_date: rangeEnd,
+                });
+                const res = await apiClient<any>(`/api/analytics/daily?${params}`);
+                // Endpoint returns { daily: [{ date, sent, opens, clicks, replies, bounces, unsubscribes }, ...] }
+                // when called with a single campaign_id. Fall back to summing whatever array shape we find.
+                const rows: any[] = Array.isArray(res?.daily) ? res.daily
+                    : Array.isArray(res?.data?.daily) ? res.data.daily
+                    : Array.isArray(res) ? res : [];
+                const totals = rows.reduce((acc, r) => ({
+                    sent: acc.sent + (r.sent ?? r.sent_count ?? 0),
+                    opens: acc.opens + (r.opens ?? r.open_count ?? 0),
+                    clicks: acc.clicks + (r.clicks ?? r.click_count ?? 0),
+                    replies: acc.replies + (r.replies ?? r.reply_count ?? 0),
+                    bounces: acc.bounces + (r.bounces ?? r.bounce_count ?? 0),
+                    unsubscribes: acc.unsubscribes + (r.unsubscribes ?? r.unsubscribe_count ?? 0),
+                }), { sent: 0, opens: 0, clicks: 0, replies: 0, bounces: 0, unsubscribes: 0 });
+                if (!cancelled) setRangeStats(totals);
+            } catch (e: any) {
+                if (!cancelled) toast.error(e?.message || 'Failed to load stats for range');
+            } finally {
+                if (!cancelled) setRangeLoading(false);
+            }
+        };
+        run();
+        return () => { cancelled = true; };
+    }, [id, rangeStart, rangeEnd]);
 
     const doAction = async (action: 'launch' | 'pause' | 'resume' | 'delete') => {
         if (!campaign) return;
@@ -271,14 +323,39 @@ export default function CampaignDetailPage() {
                 </div>
             </div>
 
-            {/* Stats */}
+            {/* Stats — with optional date range filter. Leads count is total
+                (always lifetime); the rest reflect either lifetime totals or
+                the sum of /api/analytics/daily buckets when a range is set. */}
+            <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">
+                    {rangeStats ? `Stats · ${rangeStart} → ${rangeEnd}` : 'Stats · Lifetime'}
+                    {rangeLoading && <span className="ml-2 text-gray-400 normal-case">loading…</span>}
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-[150px]">
+                        <DatePicker value={rangeStart} onChange={setRangeStart} />
+                    </div>
+                    <span className="text-[11px] text-gray-400">→</span>
+                    <div className="w-[150px]">
+                        <DatePicker value={rangeEnd} onChange={setRangeEnd} />
+                    </div>
+                    {(rangeStart || rangeEnd) && (
+                        <button
+                            onClick={() => { setRangeStart(''); setRangeEnd(''); }}
+                            className="text-[11px] text-gray-500 hover:text-gray-900 underline decoration-dotted"
+                        >
+                            Clear
+                        </button>
+                    )}
+                </div>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 <StatCard icon={<Users size={13} />} label="Leads" value={campaign.lead_count ||campaign.total_leads ||0} />
-                <StatCard icon={<Send size={13} />} label="Sent" value={campaign.total_sent ||0} />
-                <StatCard icon={<Eye size={13} />} label="Opened" value={campaign.total_opened ||0} />
-                <StatCard icon={<MousePointerClick size={13} />} label="Clicked" value={campaign.total_clicked ||0} />
-                <StatCard icon={<MessageSquare size={13} />} label="Replied" value={campaign.total_replied ||0} />
-                <StatCard icon={<AlertTriangle size={13} />} label="Bounced" value={campaign.total_bounced ||0} />
+                <StatCard icon={<Send size={13} />} label="Sent" value={rangeStats ? rangeStats.sent : (campaign.total_sent ||0)} />
+                <StatCard icon={<Eye size={13} />} label="Opened" value={rangeStats ? rangeStats.opens : (campaign.total_opened ||0)} />
+                <StatCard icon={<MousePointerClick size={13} />} label="Clicked" value={rangeStats ? rangeStats.clicks : (campaign.total_clicked ||0)} />
+                <StatCard icon={<MessageSquare size={13} />} label="Replied" value={rangeStats ? rangeStats.replies : (campaign.total_replied ||0)} />
+                <StatCard icon={<AlertTriangle size={13} />} label="Bounced" value={rangeStats ? rangeStats.bounces : (campaign.total_bounced ||0)} />
             </div>
 
             {/* Schedule visualization */}
@@ -475,8 +552,15 @@ export default function CampaignDetailPage() {
                 const step = campaign.steps.find(s => s.id === previewModalStepId);
                 if (!step) return null;
                 const allVariants = [
-                    { label: 'A', subject: step.subject, body_html: step.body_html },
-                    ...(step.variants || []).map(v => ({ label: v.label, subject: v.subject, body_html: v.body_html })),
+                    { label: 'A', subject: step.subject, preheader: step.preheader || '', body_html: step.body_html },
+                    ...(step.variants || []).map(v => ({
+                        label: v.label,
+                        subject: v.subject,
+                        // Variant preheader falls back to the step's preheader, matching
+                        // the send-path resolution in pickVariant().
+                        preheader: v.preheader || step.preheader || '',
+                        body_html: v.body_html,
+                    })),
                 ];
                 const activeIdx = Math.min(previewModalVariantIdx, allVariants.length - 1);
                 const active = allVariants[activeIdx];
@@ -527,6 +611,7 @@ export default function CampaignDetailPage() {
                             <div className="flex-1 overflow-y-auto bg-neutral-50 px-6 py-6">
                                 <RecipientPreviewPanel
                                     subject={active.subject || ''}
+                                    preheader={active.preheader || ''}
                                     bodyHtml={active.body_html || ''}
                                     senderName={senderAccount?.display_name || senderAccount?.email?.split('@')[0] || 'You'}
                                     senderEmail={senderAccount?.email || 'you@yourdomain.com'}

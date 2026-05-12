@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Plus, Search, Edit3, Trash2, Copy, FileText, PenLine, Star, Loader2, Sparkles, X, Save, CheckCircle2, Eye, Folder, FolderPlus } from 'lucide-react';
+import { Plus, Search, Edit3, Trash2, Copy, FileText, PenLine, Star, Loader2, Sparkles, X, Save, CheckCircle2, Eye, Folder, FolderPlus, Workflow } from 'lucide-react';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import AIAssistPanel from '@/components/sequencer/AIAssistPanel';
 import RecipientPreviewPanel from '@/components/sequencer/RecipientPreviewPanel';
+import SequencesTab, { type SequencesTabHandle } from '@/components/sequencer/SequencesTab';
 
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
@@ -19,6 +20,7 @@ interface Template {
     id: string;
     name: string;
     subject: string;
+    preheader?: string;
     body_html: string;
     category: string;
     folder_id?: string | null;
@@ -54,7 +56,8 @@ type EditorMode =
 // ============================================================================
 
 export default function TemplatesPage() {
-    const [activeTab, setActiveTab] = useState<'templates' | 'signatures'>('templates');
+    const [activeTab, setActiveTab] = useState<'templates' | 'signatures' | 'sequences'>('templates');
+    const sequencesTabRef = useRef<SequencesTabHandle>(null);
     const [templates, setTemplates] = useState<Template[]>([]);
     const [signatures, setSignatures] = useState<Signature[]>([]);
     const [loading, setLoading] = useState(true);
@@ -68,6 +71,7 @@ export default function TemplatesPage() {
     // Template form fields
     const [templateName, setTemplateName] = useState('');
     const [templateSubject, setTemplateSubject] = useState('');
+    const [templatePreheader, setTemplatePreheader] = useState('');
     const [templateBody, setTemplateBody] = useState('');
     const [templateCategory, setTemplateCategory] = useState('general');
     const [templateFolderId, setTemplateFolderId] = useState<string | null>(null);
@@ -177,6 +181,7 @@ export default function TemplatesPage() {
     const resetTemplateForm = () => {
         setTemplateName('');
         setTemplateSubject('');
+        setTemplatePreheader('');
         setTemplateBody('');
         setTemplateCategory('general');
         // When creating from inside a folder view, pre-select that folder so
@@ -195,6 +200,7 @@ export default function TemplatesPage() {
         if (t) {
             setTemplateName(t.name);
             setTemplateSubject(t.subject);
+            setTemplatePreheader(t.preheader || '');
             setTemplateBody(t.body_html);
             setTemplateCategory(t.category);
             setTemplateFolderId(t.folder_id ?? null);
@@ -240,6 +246,7 @@ export default function TemplatesPage() {
             const body = {
                 name: templateName,
                 subject: templateSubject,
+                preheader: templatePreheader,
                 bodyHtml: templateBody,
                 category: templateCategory,
                 folder_id: templateFolderId,
@@ -440,12 +447,34 @@ export default function TemplatesPage() {
                     <h1 className="text-xl font-bold text-gray-900">Templates & Signatures</h1>
                     <p className="text-xs text-gray-500 mt-0.5">Reusable email templates and signatures for your campaigns</p>
                 </div>
-                <button
-                    onClick={handleNew}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 cursor-pointer"
-                >
-                    <Plus size={13} /> New {activeTab === 'templates' ? 'Template' : 'Signature'}
-                </button>
+                {activeTab !== 'sequences' ? (
+                    <button
+                        onClick={handleNew}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 cursor-pointer"
+                    >
+                        <Plus size={13} /> New {activeTab === 'templates' ? 'Template' : 'Signature'}
+                    </button>
+                ) : (
+                    // Sequence-specific actions live up here so they sit above
+                    // the search bar — matches the New Template / New Signature
+                    // slot for the other tabs. Triggers fire imperatively
+                    // through the SequencesTab handle.
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => sequencesTabRef.current?.openAi()}
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold cursor-pointer bg-white hover:bg-gray-50"
+                            style={{ border: '1px solid #D1CBC5', color: '#111827' }}
+                        >
+                            <Sparkles size={13} className="text-indigo-600" /> Generate with AI
+                        </button>
+                        <button
+                            onClick={() => sequencesTabRef.current?.openNew()}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 cursor-pointer"
+                        >
+                            <Plus size={13} /> New Sequence
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* ─── Tabs + Search ─── */}
@@ -454,12 +483,14 @@ export default function TemplatesPage() {
                     {[
                         { key: 'templates', label: 'Templates', icon: <FileText size={13} strokeWidth={1.75} />, count: templates.length },
                         { key: 'signatures', label: 'Signatures', icon: <PenLine size={13} strokeWidth={1.75} />, count: signatures.length },
+                        // Sequences tab — reusable multi-step skeletons (`SequencesTab` owns its own data).
+                        { key: 'sequences', label: 'Sequences', icon: <Workflow size={13} strokeWidth={1.75} />, count: null as number | null },
                     ].map(tab => {
                         const isActive = activeTab === tab.key;
                         return (
                             <button
                                 key={tab.key}
-                                onClick={() => { setActiveTab(tab.key as 'templates' | 'signatures'); setSearchQuery(''); closeEditor(); }}
+                                onClick={() => { setActiveTab(tab.key as 'templates' | 'signatures' | 'sequences'); setSearchQuery(''); closeEditor(); }}
                                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold cursor-pointer transition-colors"
                                 style={{
                                     background: isActive ? '#FFFFFF' : 'transparent',
@@ -469,7 +500,7 @@ export default function TemplatesPage() {
                             >
                                 {tab.icon}
                                 {tab.label}
-                                <span className="text-[10px] opacity-50">({tab.count})</span>
+                                {tab.count != null && <span className="text-[10px] opacity-50">({tab.count})</span>}
                             </button>
                         );
                     })}
@@ -695,10 +726,14 @@ export default function TemplatesPage() {
                             </div>
                         )
                     )}
+
+                    {activeTab === 'sequences' && (
+                        <SequencesTab ref={sequencesTabRef} searchQuery={searchQuery} />
+                    )}
                 </div>
 
                 {/* ═══ EDITOR PANE ═══ */}
-                {isEditing && (
+                {isEditing && activeTab !== 'sequences' && (
                     <div className="flex-1 min-w-0 bg-white flex flex-col rounded-xl overflow-hidden" style={{ border: '1px solid #D1CBC5' }}>
                         <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <div className="flex items-center gap-2">
@@ -763,6 +798,22 @@ export default function TemplatesPage() {
                                             className="w-full px-3 py-1.5 rounded-lg text-xs outline-none"
                                             style={{ border: '1px solid #D1CBC5' }}
                                         />
+                                    </Field>
+
+                                    <Field label="Preheader">
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={templatePreheader}
+                                                onChange={e => setTemplatePreheader(e.target.value)}
+                                                placeholder="Optional preheader shown next to subject in inbox"
+                                                className="w-full px-3 py-1.5 pr-12 rounded-lg text-xs outline-none"
+                                                style={{ border: '1px dashed #D1CBC5', background: '#FAFAF8' }}
+                                            />
+                                            <span className={`absolute right-2 top-1/2 -translate-y-1/2 text-[10px] tabular-nums ${templatePreheader.length > 100 ? 'text-amber-600' : 'text-gray-400'}`}>
+                                                {templatePreheader.length}
+                                            </span>
+                                        </div>
                                     </Field>
 
                                     <div>
@@ -932,6 +983,7 @@ export default function TemplatesPage() {
                         <div className="flex-1 overflow-y-auto bg-neutral-50 px-6 py-6">
                             <RecipientPreviewPanel
                                 subject={previewTemplate.subject || ''}
+                                preheader={previewTemplate.preheader || ''}
                                 bodyHtml={previewTemplate.body_html || ''}
                                 senderName="You"
                                 senderEmail="you@yourdomain.com"

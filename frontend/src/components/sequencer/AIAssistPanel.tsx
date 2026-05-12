@@ -199,6 +199,12 @@ export default function AIAssistPanel({
                 ...Array(10).fill(2_000),
                 ...Array(30).fill(4_000),
             ];
+            // 'unknown' = BullMQ can't resolve the job state (job evicted /
+            // retention expired / queue connection blip). Tolerate a few
+            // transients but bail rather than burning the full 2-minute
+            // budget on a job that's effectively lost.
+            const MAX_UNKNOWN_TICKS = 3;
+            let unknownTicks = 0;
             for (const delay of delays) {
                 await new Promise(resolve => setTimeout(resolve, delay));
                 const status = await apiClient<{
@@ -219,6 +225,14 @@ export default function AIAssistPanel({
                 if (status.state === 'failed') {
                     setProfileError(status.error || 'Extraction failed');
                     return;
+                }
+                if (status.state === 'unknown') {
+                    unknownTicks += 1;
+                    if (unknownTicks >= MAX_UNKNOWN_TICKS) {
+                        setProfileError('Extraction job was lost. Please try again.');
+                        return;
+                    }
+                    continue;
                 }
                 // 'waiting' / 'active' / 'delayed' → keep polling
             }
