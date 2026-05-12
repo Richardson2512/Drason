@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef, Suspense } from 'react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import { Search, Star, Archive, Mail, MailOpen, Send, RefreshCw, Inbox, User, Building2, Globe, Tag, BarChart3, FileText, Square, CheckSquare } from 'lucide-react';
@@ -68,7 +68,18 @@ interface LeadContext {
 // MAIN PAGE
 // ============================================================================
 
-export default function UniboxPage() {
+// Next 16 static prerender requires useSearchParams() to sit inside a
+// Suspense boundary. Wrap the real component below and export the wrapper
+// as the route default.
+export default function UniboxPageRoute() {
+    return (
+        <Suspense fallback={<div className="p-6 text-xs text-gray-500">Loading inbox…</div>}>
+            <UniboxPage />
+        </Suspense>
+    );
+}
+
+function UniboxPage() {
     const { hasCapability } = useDashboard();
     const canReply = hasCapability('reply_to_messages');
     const [threads, setThreads] = useState<EmailThread[]>([]);
