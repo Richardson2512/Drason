@@ -7,13 +7,20 @@ import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import DatePicker from '@/components/ui/DatePicker';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
+import {
+    Rocket, FileText, MessageSquare, Zap, Flame, Ban, TrendingUp,
+    Users, Mail, Globe, CheckCircle2, Scale, ScrollText,
+    User, Contact, Briefcase, Radio, Inbox, Repeat, Droplet, Bot, Target,
+    ClipboardList, Send, Shield, Clock, ChevronDown, CalendarRange, X as XIcon,
+    type LucideIcon,
+} from 'lucide-react';
 
 // ---- Types ----
 
 interface ReportTypeOption {
     key: string;
     label: string;
-    icon: string;
+    icon: LucideIcon;
     description: string;
 }
 
@@ -32,20 +39,47 @@ interface DomainOption {
 
 // ---- Constants ----
 
-const REPORT_TYPES: ReportTypeOption[] = [
-    { key: 'leads', label: 'Leads Report', icon: '\u{1F465}', description: 'All leads with scores, validation status, engagement metrics' },
-    { key: 'campaigns', label: 'Campaigns Report', icon: '\u{1F680}', description: 'Campaign performance, mailbox counts, send volumes' },
-    { key: 'mailboxes', label: 'Mailboxes Report', icon: '\u{1F4EB}', description: 'Mailbox health, recovery phases, bounce rates' },
-    { key: 'domains', label: 'Domains Report', icon: '\u{1F310}', description: 'Domain health, DNS status, mailbox distribution' },
-    { key: 'analytics', label: 'Analytics Report', icon: '\u{1F4C8}', description: 'Daily campaign metrics over time' },
-    { key: 'audit_logs', label: 'Audit Log Report', icon: '\u{1F4DC}', description: 'Complete action history and system events' },
-    { key: 'load_balancing', label: 'Load Balancing Report', icon: '⚖️', description: 'Mailbox load distribution across campaigns' },
-    { key: 'sequences', label: 'Sequences Report', icon: '\u{1F4DD}', description: 'Saved multi-step sequences with AI provenance' },
-    { key: 'super_sender', label: 'Super Sender Report', icon: '⚡', description: 'Dedicated IPs — state, warmup day, daily cap, 24h bounce/complaint stats' },
-    { key: 'reply_quality', label: 'Reply Quality Report', icon: '\u{1F4AC}', description: 'Classified inbound replies (positive / hard_no / OOO / etc.) with AI re-classification trail' },
-    { key: 'suppression', label: 'Suppression Report', icon: '\u{1F6AB}', description: 'Org-wide reply suppressions + per-campaign suppression rules' },
-    { key: 'warmup', label: 'Warmup Pool Report', icon: '\u{1F525}', description: 'Mailboxes in the cross-tenant warmup pool, ramp progress, spam recovery' },
-    { key: 'full', label: 'Full Report', icon: '\u{1F4CB}', description: 'Everything — all data across all sections' },
+type ReportGroup = 'sequencer' | 'protect' | 'linkedin' | 'full';
+
+interface GroupedReportTypeOption extends ReportTypeOption { group: ReportGroup }
+
+const REPORT_TYPES: GroupedReportTypeOption[] = [
+    // ── Super Sequencer ─────────────────────────────────────────────
+    { group: 'sequencer', key: 'campaigns',         label: 'Campaigns Report',          icon: Rocket,         description: 'Campaign performance, mailbox counts, send volumes' },
+    { group: 'sequencer', key: 'sequences',         label: 'Sequences Report',          icon: FileText,       description: 'Saved multi-step sequences with AI provenance' },
+    { group: 'sequencer', key: 'reply_quality',     label: 'Reply Quality Report',      icon: MessageSquare,  description: 'Classified inbound replies (positive / hard_no / OOO / etc.)' },
+    { group: 'sequencer', key: 'super_sender',      label: 'Super Sender Report',       icon: Zap,            description: 'Dedicated IPs — state, warmup day, 24h bounce/complaint stats' },
+    { group: 'sequencer', key: 'warmup',            label: 'Warmup Pool Report',        icon: Flame,          description: 'Mailboxes in the cross-tenant warmup pool, ramp progress' },
+    { group: 'sequencer', key: 'suppression',       label: 'Suppression Report',        icon: Ban,            description: 'Org-wide reply suppressions + per-campaign rules' },
+    { group: 'sequencer', key: 'analytics',         label: 'Analytics Report',          icon: TrendingUp,     description: 'Daily campaign metrics over time' },
+
+    // ── Super Protect ───────────────────────────────────────────────
+    { group: 'protect',   key: 'leads',             label: 'Leads Report',              icon: Users,          description: 'All leads with scores, validation status, engagement metrics' },
+    { group: 'protect',   key: 'mailboxes',         label: 'Mailboxes Report',          icon: Mail,           description: 'Mailbox health, recovery phases, bounce rates' },
+    { group: 'protect',   key: 'domains',           label: 'Domains Report',            icon: Globe,          description: 'Domain health, DNS status, mailbox distribution' },
+    { group: 'protect',   key: 'email_validation',  label: 'Email Validation Report',   icon: CheckCircle2,   description: 'Per-lead validation attempts (valid / risky / invalid / unknown) with source + score' },
+    { group: 'protect',   key: 'load_balancing',    label: 'Load Balancing Report',     icon: Scale,          description: 'Mailbox load distribution across campaigns' },
+    { group: 'protect',   key: 'audit_logs',        label: 'Audit Log Report',          icon: ScrollText,     description: 'Complete action history and system events' },
+
+    // ── Super LinkedIn ──────────────────────────────────────────────
+    { group: 'linkedin',  key: 'linkedin_accounts',   label: 'LinkedIn Accounts Report',   icon: User,         description: 'Connected accounts — type, status, capacity counters, in-campaign count' },
+    { group: 'linkedin',  key: 'linkedin_contacts',   label: 'LinkedIn Contacts Report',   icon: Contact,      description: 'LinkedIn profiles cached locally — connection state, ICP match, source' },
+    { group: 'linkedin',  key: 'linkedin_campaigns',  label: 'LinkedIn Campaigns Report',  icon: Briefcase,    description: 'Multi-channel campaigns — sent / accepted / replied per sender pool' },
+    { group: 'linkedin',  key: 'linkedin_signals',    label: 'Engagement Signals Report',  icon: Radio,        description: 'Polled engagement events (reactions / comments / shares) with mode + action taken' },
+    { group: 'linkedin',  key: 'linkedin_unibox',     label: 'LinkedIn Unibox Report',     icon: Inbox,        description: 'DM threads + auto-tag classifications (Interested / Not Interested / Generic)' },
+    { group: 'linkedin',  key: 'linkedin_sequences',  label: 'Step Executions Report',     icon: Repeat,       description: 'Per-step execution audit — sent / skipped / branched / failed with reasons' },
+    { group: 'linkedin',  key: 'linkedin_enrichment', label: 'Enrichment Waterfall Report', icon: Droplet,     description: 'Provider attempts per lead (HIT / EMPTY / RATE_LIMITED). BYOK — your vendor invoice is the source of truth for spend.' },
+    { group: 'linkedin',  key: 'linkedin_agents',     label: 'Agent Runs Report',          icon: Bot,          description: 'LLM agent telemetry — supervisor / ICP / enrichment / classifier with cost + latency' },
+    { group: 'linkedin',  key: 'linkedin_icp',        label: 'ICP Profiles Report',        icon: Target,       description: 'Workspace ICP filter sets and 30d match counts' },
+
+    // ── Catch-all ───────────────────────────────────────────────────
+    { group: 'full',      key: 'full', label: 'Full Report', icon: ClipboardList, description: 'Everything — all data across every section' },
+];
+
+const REPORT_GROUPS: { key: ReportGroup; label: string; icon: LucideIcon; description: string; accent: string }[] = [
+    { key: 'sequencer', label: 'Super Sequencer', icon: Send,      description: 'Email outreach, sequences, reply intelligence, warmup, dedicated IPs', accent: '#2563EB' },
+    { key: 'protect',   label: 'Super Protect',   icon: Shield,    description: 'Lead health, validation, mailbox + domain protection, audit log',     accent: '#7C3AED' },
+    { key: 'linkedin',  label: 'Super LinkedIn',  icon: Briefcase, description: 'LinkedIn accounts, contacts, signal feed, agent runs, enrichment',   accent: '#0A66C2' },
 ];
 
 const STATUS_OPTIONS: Record<string, string[]> = {
@@ -61,6 +95,16 @@ const STATUS_OPTIONS: Record<string, string[]> = {
     reply_quality: ['positive', 'qualified', 'objection', 'referral', 'soft_no', 'hard_no', 'angry', 'auto', 'unclassified'],
     suppression: [],
     warmup: ['warming', 'maintenance', 'paused', 'error'],
+    email_validation: ['valid', 'risky', 'invalid', 'unknown', 'error'],
+    linkedin_accounts: ['OK', 'CONNECTING', 'CREDENTIALS', 'ERROR', 'SYNC_SUCCESS', 'DELETED'],
+    linkedin_contacts: [],
+    linkedin_campaigns: ['draft', 'active', 'ongoing', 'paused', 'finished'],
+    linkedin_signals: ['REACTION', 'COMMENT', 'SHARE', 'REPOST'],
+    linkedin_unibox: ['Interested', 'Not Interested', 'Generic'],
+    linkedin_sequences: ['SCHEDULED', 'SENT', 'FAILED', 'SKIPPED', 'BRANCHED'],
+    linkedin_enrichment: ['HIT', 'EMPTY', 'ERROR', 'RATE_LIMITED', 'SKIPPED_HAS_FIELD'],
+    linkedin_agents: ['supervisor', 'signal_monitoring', 'icp_matcher', 'enrichment', 'reply_classifier'],
+    linkedin_icp: [],
     full: [],
 };
 
@@ -130,10 +174,11 @@ function loadRecentReports(): RecentReport[] {
 
 function saveRecentReport(report: RecentReport) {
     const existing = loadRecentReports();
-    // Keep up to 25 globally so per-type slices still have something to show
-    // even for less-used report types. The header modal shows all; the inline
-    // section on each report filters down to that type.
-    const updated = [report, ...existing].slice(0, 25);
+    // Keep up to 200 globally so per-type slices still have something to show
+    // even for less-used report types, and the paginated history (10/page)
+    // has meaningful depth. Modal shows all; the inline section filters
+    // down to the selected type.
+    const updated = [report, ...existing].slice(0, 200);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 }
 
@@ -152,6 +197,23 @@ export default function ReportsPage() {
     const [selectedEngagement, setSelectedEngagement] = useState<string>('');
     const [domains, setDomains] = useState<DomainOption[]>([]);
     const [recentReports, setRecentReports] = useState<RecentReport[]>([]);
+    // Custom date filter for the *history* (recent reports list) — both the
+    // inline scoped section and the modal use this same range.
+    const [historyStart, setHistoryStart] = useState<string>('');
+    const [historyEnd, setHistoryEnd] = useState<string>('');
+    const [historyDateOpen, setHistoryDateOpen] = useState(false);
+    // 1-based current page for the inline scoped recent-reports list.
+    const [recentPage, setRecentPage] = useState(1);
+    // 1-based current page for the modal recent-reports list.
+    const [modalRecentPage, setModalRecentPage] = useState(1);
+    const RECENT_PAGE_SIZE = 10;
+    // Which group accordion is open on the index view. Single-open at a
+    // time so the page doesn't get long; defaults to the first group.
+    const [expandedGroup, setExpandedGroup] = useState<ReportGroup | null>('sequencer');
+    // Same single-open accordion behaviour for the left rail once a report
+    // has been selected. Auto-tracks the active report's group so users
+    // always see their current selection without an extra click.
+    const [railExpandedGroup, setRailExpandedGroup] = useState<ReportGroup | null>('sequencer');
     const [generating, setGenerating] = useState(false);
     const [previewing, setPreviewing] = useState(false);
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -176,7 +238,33 @@ export default function ReportsPage() {
         setSelectedCampaignIds([]);
         setSelectedDomainIds([]);
         setSelectedEngagement('');
+        // Reset history pagination when switching report types so we
+        // don't land on an out-of-range page.
+        setRecentPage(1);
+        // Whenever the user picks a new report, make sure the left-rail
+        // accordion is showing the group it belongs to.
+        if (selectedType) {
+            const grp = REPORT_TYPES.find(r => r.key === selectedType)?.group;
+            if (grp) setRailExpandedGroup(grp);
+        }
     }, [selectedType]);
+
+    // Pull the history date filter back to page 1 whenever the range changes
+    // so users don't see a confusing "no rows on page 7" state.
+    useEffect(() => { setRecentPage(1); }, [historyStart, historyEnd]);
+    useEffect(() => { setModalRecentPage(1); }, [historyStart, historyEnd, recentOpen]);
+
+    // Filter recent reports by the user-chosen history date range. Inclusive
+    // of both endpoints. Empty strings = no bound on that side.
+    const filterByHistoryDate = useCallback((list: RecentReport[]) => {
+        if (!historyStart && !historyEnd) return list;
+        const startMs = historyStart ? new Date(historyStart + 'T00:00:00').getTime() : -Infinity;
+        const endMs = historyEnd ? new Date(historyEnd + 'T23:59:59.999').getTime() : Infinity;
+        return list.filter(r => {
+            const t = new Date(r.timestamp).getTime();
+            return t >= startMs && t <= endMs;
+        });
+    }, [historyStart, historyEnd]);
 
     const selectedReport = selectedType ? REPORT_TYPES.find(r => r.key === selectedType) : null;
 
@@ -290,7 +378,7 @@ export default function ReportsPage() {
     }, [selectedType, startDate, endDate, selectedStatuses, selectedCampaignIds, selectedDomainIds, selectedEngagement]);
 
     return (
-        <div className="p-4 flex flex-col gap-3" style={{ minHeight: 'calc(100vh - 4rem)' }}>
+        <div className="p-4 flex flex-col gap-3" style={{ minHeight: 'calc(100vh - 5rem)' }}>
             <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div>
                     <h1 className="text-xl font-bold text-gray-900">Reports</h1>
@@ -300,75 +388,270 @@ export default function ReportsPage() {
                             : 'Generate and download CSV reports for your data'}
                     </p>
                 </div>
-                <button
-                    onClick={() => setRecentOpen(true)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white text-gray-900 hover:bg-[#FAFAF8] cursor-pointer"
-                    style={{ border: '1px solid #D1CBC5' }}
-                >
-                    <span aria-hidden>{'\u{1F552}'}</span>
-                    Recent reports
-                    {recentReports.length > 0 && (
-                        <span className="ml-1 px-1.5 py-0.5 rounded-md bg-gray-900 text-white text-[10px]">
-                            {recentReports.length}
-                        </span>
+                <div className="flex items-center gap-2 relative">
+                    {/* History date filter — applies to both the inline scoped
+                        list and the modal. Empty range = no filter. */}
+                    <button
+                        onClick={() => setHistoryDateOpen(v => !v)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white text-gray-900 hover:bg-[#FAFAF8] cursor-pointer"
+                        style={{ border: '1px solid #D1CBC5' }}
+                        title="Filter history by date"
+                    >
+                        <CalendarRange className="w-3.5 h-3.5" />
+                        {historyStart || historyEnd
+                            ? `${historyStart || '…'} → ${historyEnd || '…'}`
+                            : 'Custom date'}
+                        {(historyStart || historyEnd) && (
+                            <span
+                                role="button"
+                                aria-label="Clear date filter"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setHistoryStart('');
+                                    setHistoryEnd('');
+                                }}
+                                className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded hover:bg-gray-200"
+                            >
+                                <XIcon className="w-3 h-3" />
+                            </span>
+                        )}
+                    </button>
+                    {historyDateOpen && (
+                        <div
+                            className="absolute right-[120px] top-full mt-1 z-50 bg-white rounded-lg p-3 flex flex-col gap-2 w-[320px]"
+                            style={{ border: '1px solid #D1CBC5', boxShadow: '0 6px 18px rgba(0,0,0,0.08)' }}
+                        >
+                            <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label className="block text-[10px] font-semibold text-gray-600 mb-1">From</label>
+                                    <DatePicker value={historyStart} onChange={setHistoryStart} />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-semibold text-gray-600 mb-1">To</label>
+                                    <DatePicker value={historyEnd} onChange={setHistoryEnd} />
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center pt-1">
+                                <button
+                                    onClick={() => { setHistoryStart(''); setHistoryEnd(''); }}
+                                    className="text-[11px] font-semibold text-gray-600 hover:text-gray-900 cursor-pointer"
+                                >
+                                    Clear
+                                </button>
+                                <button
+                                    onClick={() => setHistoryDateOpen(false)}
+                                    className="px-3 py-1.5 rounded-md bg-gray-900 text-white text-[11px] font-semibold hover:bg-gray-800 cursor-pointer"
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        </div>
                     )}
-                </button>
+                    <button
+                        onClick={() => setRecentOpen(true)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white text-gray-900 hover:bg-[#FAFAF8] cursor-pointer"
+                        style={{ border: '1px solid #D1CBC5' }}
+                    >
+                        <Clock className="w-3.5 h-3.5" />
+                        Recent reports
+                        {recentReports.length > 0 && (
+                            <span className="ml-1 px-1.5 py-0.5 rounded-md bg-gray-900 text-white text-[10px]">
+                                {recentReports.length}
+                            </span>
+                        )}
+                    </button>
+                </div>
             </div>
 
-            {/* Index view — original grid of report cards. As soon as a report is
-                picked, this swaps for the split layout (left rail + right panel). */}
+            {/* Index view — 3 expandable group cards (Super Sequencer /
+                Super Protect / Super LinkedIn). Clicking a group opens an
+                inner grid of that group's reports. "Full Report" sits as a
+                separate full-width tile below since it spans all groups.
+                As soon as a report is picked, this swaps for the split
+                layout (left rail + right panel). */}
             {!selectedReport ? (
-                <div className="premium-card">
-                    <h2 className="text-sm font-semibold text-gray-900 mb-3">Select Report Type</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-                        {REPORT_TYPES.map(rt => (
+                <div className="flex flex-col gap-3">
+                    {REPORT_GROUPS.map(g => {
+                        const isOpen = expandedGroup === g.key;
+                        const groupReports = REPORT_TYPES.filter(r => r.group === g.key);
+                        const GIcon = g.icon;
+                        return (
+                            <div key={g.key} className="premium-card !p-0 overflow-hidden">
+                                <button
+                                    type="button"
+                                    onClick={() => setExpandedGroup(isOpen ? null : g.key)}
+                                    aria-expanded={isOpen}
+                                    className="w-full flex items-center gap-3 px-4 py-3 text-left cursor-pointer hover:bg-[#FAFAF8] transition-colors"
+                                >
+                                    <div
+                                        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                                        style={{ background: `${g.accent}15`, color: g.accent }}
+                                    >
+                                        <GIcon className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="text-sm font-bold text-gray-900">{g.label}</div>
+                                        <div className="text-[11px] text-gray-500 mt-0.5">{g.description}</div>
+                                    </div>
+                                    <span className="text-[10px] font-semibold text-gray-500 mr-2">
+                                        {groupReports.length} report{groupReports.length === 1 ? '' : 's'}
+                                    </span>
+                                    <ChevronDown
+                                        className="shrink-0 text-gray-500 transition-transform"
+                                        width={14}
+                                        height={14}
+                                        style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                    />
+                                </button>
+                                {isOpen && (
+                                    <div className="px-3 pb-3 pt-1" style={{ borderTop: '1px solid #E8E3DC' }}>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mt-2">
+                                            {groupReports.map(rt => {
+                                                const RIcon = rt.icon;
+                                                return (
+                                                    <button
+                                                        key={rt.key}
+                                                        onClick={() => setSelectedType(rt.key)}
+                                                        className="text-left p-3 rounded-lg bg-white hover:bg-[#FAFAF8] transition-colors cursor-pointer"
+                                                        style={{ border: '1px solid #D1CBC5' }}
+                                                    >
+                                                        <div
+                                                            className="w-7 h-7 rounded-md flex items-center justify-center mb-2"
+                                                            style={{ background: `${g.accent}15`, color: g.accent }}
+                                                        >
+                                                            <RIcon className="w-3.5 h-3.5" />
+                                                        </div>
+                                                        <div className="font-semibold text-gray-900 text-xs">{rt.label}</div>
+                                                        <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">{rt.description}</div>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+
+                    {/* Full report — separate tile since it spans every group. */}
+                    {REPORT_TYPES.filter(r => r.group === 'full').map(rt => {
+                        const RIcon = rt.icon;
+                        return (
                             <button
                                 key={rt.key}
                                 onClick={() => setSelectedType(rt.key)}
-                                className="text-left p-3 rounded-lg bg-white hover:bg-[#FAFAF8] transition-colors cursor-pointer"
-                                style={{ border: '1px solid #D1CBC5' }}
+                                className="premium-card text-left flex items-center gap-3 hover:bg-[#FAFAF8] transition-colors cursor-pointer"
                             >
-                                <div className="text-xl mb-1.5">{rt.icon}</div>
-                                <div className="font-semibold text-gray-900 text-xs">{rt.label}</div>
-                                <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">{rt.description}</div>
+                                <div
+                                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                                    style={{ background: '#11182715', color: '#111827' }}
+                                >
+                                    <RIcon className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-bold text-gray-900">{rt.label}</div>
+                                    <div className="text-[11px] text-gray-500 mt-0.5">{rt.description}</div>
+                                </div>
                             </button>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
             ) : (
             <div className="flex flex-col md:flex-row gap-3 flex-1 min-h-0">
-                {/* ── Left rail: report type picker ─────────────────── */}
+                {/* ── Left rail: report type picker (collapsible groups) ── */}
                 <div className="md:w-[280px] md:shrink-0">
                     <div className="premium-card !p-2 flex flex-col gap-1 h-full">
                         <div className="px-2 py-1.5 text-[11px] font-semibold text-gray-500">
                             Report type
                         </div>
-                        <div
-                            className="
-                                flex md:flex-col gap-1
-                                overflow-x-auto md:overflow-x-visible md:overflow-y-auto
-                                snap-x snap-mandatory md:snap-none
-                                scrollbar-hide
-                            "
-                        >
-                            {REPORT_TYPES.map(rt => {
+                        <div className="flex flex-col gap-1.5">
+                            {REPORT_GROUPS.map(g => {
+                                const isOpen = railExpandedGroup === g.key;
+                                const groupReports = REPORT_TYPES.filter(r => r.group === g.key);
+                                const GIcon = g.icon;
+                                return (
+                                    <div
+                                        key={g.key}
+                                        className="rounded-lg overflow-hidden"
+                                        style={{ border: '1px solid #E8E3DC' }}
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={() => setRailExpandedGroup(isOpen ? null : g.key)}
+                                            aria-expanded={isOpen}
+                                            className="w-full flex items-center gap-2 px-2 py-1.5 text-left cursor-pointer hover:bg-[#FAFAF8] transition-colors"
+                                        >
+                                            <div
+                                                className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+                                                style={{ background: `${g.accent}15`, color: g.accent }}
+                                            >
+                                                <GIcon className="w-3 h-3" />
+                                            </div>
+                                            <span className="flex-1 text-[11px] font-bold text-gray-900 truncate">
+                                                {g.label}
+                                            </span>
+                                            <span className="text-[10px] font-semibold text-gray-500">
+                                                {groupReports.length}
+                                            </span>
+                                            <ChevronDown
+                                                className="shrink-0 text-gray-500 transition-transform"
+                                                width={12}
+                                                height={12}
+                                                style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                            />
+                                        </button>
+                                        {isOpen && (
+                                            <div className="flex flex-col gap-1 p-1.5" style={{ borderTop: '1px solid #E8E3DC' }}>
+                                                {groupReports.map(rt => {
+                                                    const isActive = selectedType === rt.key;
+                                                    const RIcon = rt.icon;
+                                                    return (
+                                                        <button
+                                                            key={rt.key}
+                                                            onClick={() => setSelectedType(rt.key)}
+                                                            title={rt.description}
+                                                            className={`
+                                                                text-left rounded-md px-2 py-1.5 transition-colors cursor-pointer
+                                                                flex items-center gap-2 w-full
+                                                                ${isActive
+                                                                    ? 'bg-gray-900 text-white'
+                                                                    : 'bg-white text-gray-700 hover:bg-[#FAFAF8]'}
+                                                            `}
+                                                        >
+                                                            <RIcon className="w-3.5 h-3.5 shrink-0" />
+                                                            <span className="text-[11px] font-semibold leading-tight truncate min-w-0">
+                                                                {rt.label}
+                                                            </span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+
+                            {/* Full report — flat tile under the groups since
+                                it spans every category. */}
+                            {REPORT_TYPES.filter(r => r.group === 'full').map(rt => {
                                 const isActive = selectedType === rt.key;
+                                const RIcon = rt.icon;
                                 return (
                                     <button
                                         key={rt.key}
                                         onClick={() => setSelectedType(rt.key)}
                                         title={rt.description}
                                         className={`
-                                            text-left rounded-lg px-2.5 py-2 transition-colors cursor-pointer
-                                            flex items-center gap-2 shrink-0 md:w-full
-                                            snap-start
+                                            text-left rounded-lg px-2 py-2 transition-colors cursor-pointer
+                                            flex items-center gap-2 w-full
                                             ${isActive
                                                 ? 'bg-gray-900 text-white'
                                                 : 'bg-white text-gray-700 hover:bg-[#FAFAF8]'}
                                         `}
+                                        style={!isActive ? { border: '1px solid #E8E3DC' } : undefined}
                                     >
-                                        <span className="text-sm leading-none shrink-0">{rt.icon}</span>
-                                        <span className="text-xs font-semibold leading-tight md:truncate md:min-w-0">
+                                        <RIcon className="w-3.5 h-3.5 shrink-0" />
+                                        <span className="text-[11px] font-bold leading-tight truncate min-w-0">
                                             {rt.label}
                                         </span>
                                     </button>
@@ -380,9 +663,20 @@ export default function ReportsPage() {
 
                 {/* ── Right panel: filters + recent reports ─────────── */}
                 <div className="flex-1 min-w-0 flex flex-col gap-3">
-                            <div className="premium-card">
+                            <div className="premium-card flex-1">
                                 <div className="flex items-start gap-3 mb-4">
-                                    <div className="text-2xl leading-none">{selectedReport.icon}</div>
+                                    {(() => {
+                                        const RIcon = selectedReport.icon;
+                                        const accent = REPORT_GROUPS.find(g => g.key === selectedReport.group)?.accent ?? '#111827';
+                                        return (
+                                            <div
+                                                className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                                                style={{ background: `${accent}15`, color: accent }}
+                                            >
+                                                <RIcon className="w-4 h-4" />
+                                            </div>
+                                        );
+                                    })()}
                                     <div className="min-w-0">
                                         <h2 className="text-sm font-semibold text-gray-900">{selectedReport.label}</h2>
                                         <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">{selectedReport.description}</p>
@@ -510,14 +804,34 @@ export default function ReportsPage() {
                         // Inline section scoped to the currently-selected report
                         // type. The global "Recent reports" button in the header
                         // still shows everything across all types.
-                        const scoped = recentReports.filter(r => r.type === selectedType).slice(0, 5);
-                        if (scoped.length === 0) return null;
+                        const allScoped = filterByHistoryDate(recentReports.filter(r => r.type === selectedType));
+                        if (allScoped.length === 0 && (historyStart || historyEnd)) {
+                            return (
+                                <div className="premium-card text-[11px] text-gray-500">
+                                    No {selectedReport?.label.toLowerCase()} history in the chosen date range.
+                                </div>
+                            );
+                        }
+                        if (allScoped.length === 0) return null;
+                        const totalPages = Math.max(1, Math.ceil(allScoped.length / RECENT_PAGE_SIZE));
+                        const safePage = Math.min(recentPage, totalPages);
+                        const startIdx = (safePage - 1) * RECENT_PAGE_SIZE;
+                        const scoped = allScoped.slice(startIdx, startIdx + RECENT_PAGE_SIZE);
                         return (
-                        <div className="premium-card">
-                            <h2 className="text-sm font-semibold text-gray-900 mb-3">Recent {selectedReport?.label}</h2>
-                            <div className="flex flex-col gap-1.5">
+                        <div className="premium-card flex flex-col min-h-0">
+                            <div className="flex items-center justify-between mb-3">
+                                <h2 className="text-sm font-semibold text-gray-900">
+                                    Recent {selectedReport?.label}
+                                    <span className="ml-2 text-[11px] font-normal text-gray-500">
+                                        {allScoped.length} total
+                                    </span>
+                                </h2>
+                            </div>
+                            <div className="flex flex-col gap-1.5 overflow-y-auto" style={{ maxHeight: '60vh' }}>
                                 {scoped.map(r => {
                                     const rt = REPORT_TYPES.find(t => t.key === r.type);
+                                    const RIcon = rt?.icon ?? FileText;
+                                    const accent = rt ? (REPORT_GROUPS.find(g => g.key === rt.group)?.accent ?? '#111827') : '#111827';
                                     const formattedDate = new Date(r.timestamp).toLocaleString('en-US', {
                                         month: 'short', day: 'numeric', year: 'numeric',
                                         hour: '2-digit', minute: '2-digit',
@@ -528,7 +842,12 @@ export default function ReportsPage() {
                                             className="flex items-center gap-3 p-2.5 rounded-lg bg-[#FAFAF8]"
                                             style={{ border: '1px solid #E8E3DC' }}
                                         >
-                                            <span className="text-base">{rt?.icon || '\u{1F4C4}'}</span>
+                                            <div
+                                                className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                                                style={{ background: `${accent}15`, color: accent }}
+                                            >
+                                                <RIcon className="w-3.5 h-3.5" />
+                                            </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="text-xs font-semibold text-gray-900">{r.label}</div>
                                                 <div className="text-[11px] text-gray-500 truncate">{r.filterSummary}</div>
@@ -538,6 +857,31 @@ export default function ReportsPage() {
                                     );
                                 })}
                             </div>
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-between gap-2 pt-3 mt-2" style={{ borderTop: '1px solid #E8E3DC' }}>
+                                    <span className="text-[11px] text-gray-500">
+                                        Page {safePage} of {totalPages}
+                                    </span>
+                                    <div className="flex items-center gap-1">
+                                        <button
+                                            onClick={() => setRecentPage(p => Math.max(1, p - 1))}
+                                            disabled={safePage === 1}
+                                            className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                            style={{ border: '1px solid #D1CBC5' }}
+                                        >
+                                            Prev
+                                        </button>
+                                        <button
+                                            onClick={() => setRecentPage(p => Math.min(totalPages, p + 1))}
+                                            disabled={safePage === totalPages}
+                                            className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                            style={{ border: '1px solid #D1CBC5' }}
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         );
                     })()}
@@ -551,12 +895,13 @@ export default function ReportsPage() {
                 so there's no backend change. */}
             {previewOpen && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={() => setPreviewOpen(false)}
                 >
                     <div
-                        className="bg-white rounded-xl flex flex-col w-full max-w-6xl"
-                        style={{ maxHeight: '85vh', border: '1px solid #D1CBC5', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
+                        className="bg-white rounded-2xl flex flex-col overflow-hidden"
+                        style={{ width: '98vw', height: '92vh', border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                         onClick={e => e.stopPropagation()}
                     >
                         <div
@@ -565,7 +910,10 @@ export default function ReportsPage() {
                         >
                             <div className="min-w-0">
                                 <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                                    <span className="text-base leading-none">{selectedReport?.icon}</span>
+                                    {selectedReport && (() => {
+                                        const RIcon = selectedReport.icon;
+                                        return <RIcon className="w-4 h-4 text-gray-700" />;
+                                    })()}
                                     {selectedReport?.label} — Preview
                                 </h3>
                                 <p className="text-[11px] text-gray-500 mt-0.5">
@@ -607,13 +955,13 @@ export default function ReportsPage() {
                                 </div>
                             )}
                             {!previewing && preview && preview.header.length > 0 && (
-                                <table className="w-full text-xs border-collapse">
+                                <table className="text-[11px] border-collapse" style={{ minWidth: '100%' }}>
                                     <thead className="sticky top-0 z-10" style={{ background: '#FAF7F1' }}>
                                         <tr>
                                             {preview.header.map((h, i) => (
                                                 <th
                                                     key={i}
-                                                    className="text-left font-semibold text-gray-700 px-3 py-2 whitespace-nowrap"
+                                                    className="text-left font-semibold text-gray-700 px-2.5 py-2 whitespace-nowrap"
                                                     style={{ borderBottom: '1px solid #D1CBC5' }}
                                                 >
                                                     {h}
@@ -634,8 +982,8 @@ export default function ReportsPage() {
                                                     {preview.header.map((_, ci) => (
                                                         <td
                                                             key={ci}
-                                                            className="px-3 py-1.5 text-gray-800 align-top max-w-[280px] truncate"
-                                                            style={{ borderBottom: '1px solid #F0EBE3' }}
+                                                            className="px-2.5 py-1.5 text-gray-800 align-top whitespace-nowrap"
+                                                            style={{ borderBottom: '1px solid #F0EBE3', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis' }}
                                                             title={row[ci] ?? ''}
                                                         >
                                                             {row[ci] ?? ''}
@@ -657,12 +1005,13 @@ export default function ReportsPage() {
                 can pull up history without first picking a report type. */}
             {recentOpen && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={() => setRecentOpen(false)}
                 >
                     <div
-                        className="bg-white rounded-xl flex flex-col w-full max-w-xl"
-                        style={{ maxHeight: '80vh', border: '1px solid #D1CBC5', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
+                        className="bg-white rounded-2xl flex flex-col w-full max-w-xl overflow-hidden"
+                        style={{ maxHeight: '80vh', border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                         onClick={e => e.stopPropagation()}
                     >
                         <div
@@ -686,14 +1035,50 @@ export default function ReportsPage() {
                             </button>
                         </div>
 
+                        {/* Custom date filter row — same state as the header
+                            button so the inline list and the modal stay in
+                            sync. Empty = no filter. */}
+                        <div className="px-4 py-3 flex items-end gap-2 flex-wrap" style={{ borderBottom: '1px solid #E8E3DC', background: '#FFFFFF' }}>
+                            <div className="flex-1 min-w-[140px]">
+                                <label className="block text-[10px] font-semibold text-gray-600 mb-1">From</label>
+                                <DatePicker value={historyStart} onChange={setHistoryStart} />
+                            </div>
+                            <div className="flex-1 min-w-[140px]">
+                                <label className="block text-[10px] font-semibold text-gray-600 mb-1">To</label>
+                                <DatePicker value={historyEnd} onChange={setHistoryEnd} />
+                            </div>
+                            <button
+                                onClick={() => { setHistoryStart(''); setHistoryEnd(''); }}
+                                disabled={!historyStart && !historyEnd}
+                                className="px-3 py-2 rounded-lg text-xs font-semibold bg-white text-gray-900 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                style={{ border: '1px solid #D1CBC5' }}
+                            >
+                                Clear
+                            </button>
+                        </div>
+
+                        {(() => {
+                            const filtered = filterByHistoryDate(recentReports);
+                            const totalPages = Math.max(1, Math.ceil(filtered.length / RECENT_PAGE_SIZE));
+                            const safePage = Math.min(modalRecentPage, totalPages);
+                            const startIdx = (safePage - 1) * RECENT_PAGE_SIZE;
+                            const pageRows = filtered.slice(startIdx, startIdx + RECENT_PAGE_SIZE);
+                            return (
+                        <>
                         <div className="flex-1 min-h-0 overflow-auto p-3 flex flex-col gap-1.5">
                             {recentReports.length === 0 ? (
                                 <div className="p-10 text-center text-xs text-gray-500">
                                     Generate a report to see it listed here.
                                 </div>
+                            ) : filtered.length === 0 ? (
+                                <div className="p-10 text-center text-xs text-gray-500">
+                                    No reports in the chosen date range.
+                                </div>
                             ) : (
-                                recentReports.map(r => {
+                                pageRows.map(r => {
                                     const rt = REPORT_TYPES.find(t => t.key === r.type);
+                                    const RIcon = rt?.icon ?? FileText;
+                                    const accent = rt ? (REPORT_GROUPS.find(g => g.key === rt.group)?.accent ?? '#111827') : '#111827';
                                     const formattedDate = new Date(r.timestamp).toLocaleString('en-US', {
                                         month: 'short', day: 'numeric', year: 'numeric',
                                         hour: '2-digit', minute: '2-digit',
@@ -709,7 +1094,12 @@ export default function ReportsPage() {
                                             style={{ border: '1px solid #E8E3DC' }}
                                             title="Open this report type"
                                         >
-                                            <span className="text-base">{rt?.icon || '\u{1F4C4}'}</span>
+                                            <div
+                                                className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                                                style={{ background: `${accent}15`, color: accent }}
+                                            >
+                                                <RIcon className="w-3.5 h-3.5" />
+                                            </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="text-xs font-semibold text-gray-900">{r.label}</div>
                                                 <div className="text-[11px] text-gray-500 truncate">{r.filterSummary}</div>
@@ -720,6 +1110,34 @@ export default function ReportsPage() {
                                 })
                             )}
                         </div>
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-between gap-2 px-4 py-2.5" style={{ borderTop: '1px solid #E8E3DC', background: '#FAF7F1' }}>
+                                <span className="text-[11px] text-gray-500">
+                                    Page {safePage} of {totalPages} · {filtered.length} report{filtered.length === 1 ? '' : 's'}
+                                </span>
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        onClick={() => setModalRecentPage(p => Math.max(1, p - 1))}
+                                        disabled={safePage === 1}
+                                        className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    >
+                                        Prev
+                                    </button>
+                                    <button
+                                        onClick={() => setModalRecentPage(p => Math.min(totalPages, p + 1))}
+                                        disabled={safePage === totalPages}
+                                        className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white text-gray-700 hover:bg-[#FAFAF8] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                        style={{ border: '1px solid #D1CBC5' }}
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        </>
+                            );
+                        })()}
                     </div>
                 </div>,
                 document.body,

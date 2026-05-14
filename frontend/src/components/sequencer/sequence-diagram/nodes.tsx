@@ -2,7 +2,10 @@
 
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { Mail, Clock, GitBranch, FlaskConical, CheckCircle2, XCircle, Reply, MailX } from 'lucide-react';
+import {
+    Mail, Clock, GitBranch, FlaskConical, CheckCircle2, XCircle, Reply, MailX,
+    UserCheck, MessageCircle, Send, Eye, UserPlus, Heart, Linkedin,
+} from 'lucide-react';
 import Image from 'next/image';
 
 /**
@@ -204,6 +207,79 @@ export const ExitNode = memo(({ data }: NodeProps) => {
 ExitNode.displayName = 'ExitNode';
 
 // ============================================================================
+// LINKEDIN ACTION NODE — any linkedin_* step type
+// ============================================================================
+
+export type LinkedInActionType =
+    | 'linkedin_view_profile'
+    | 'linkedin_follow'
+    | 'linkedin_like_post'
+    | 'linkedin_connection_request'
+    | 'linkedin_message'
+    | 'linkedin_inmail';
+
+const LINKEDIN_META: Record<LinkedInActionType, { label: string; icon: React.ReactNode; accent: string; accentBg: string }> = {
+    linkedin_view_profile:       { label: 'View profile',       icon: <Eye size={11} strokeWidth={2.25} />,         accent: '#F59E0B', accentBg: '#FFFBEB' },
+    linkedin_follow:             { label: 'Follow',             icon: <UserPlus size={11} strokeWidth={2.25} />,    accent: '#06B6D4', accentBg: '#ECFEFF' },
+    linkedin_like_post:          { label: 'Like recent post',   icon: <Heart size={11} strokeWidth={2.25} />,       accent: '#EC4899', accentBg: '#FDF2F8' },
+    linkedin_connection_request: { label: 'Connection request', icon: <UserCheck size={11} strokeWidth={2.25} />,   accent: '#0A66C2', accentBg: '#EFF6FF' },
+    linkedin_message:            { label: 'DM',                 icon: <MessageCircle size={11} strokeWidth={2.25} />,accent: '#16A34A', accentBg: '#F0FDF4' },
+    linkedin_inmail:             { label: 'InMail',             icon: <Send size={11} strokeWidth={2.25} />,        accent: '#8B5CF6', accentBg: '#F5F3FF' },
+};
+
+export interface LinkedInActionNodeData {
+    stepNumber: number;
+    actionType: LinkedInActionType;
+    /** Subject (InMail only) or empty. */
+    subject?: string | null;
+    /** Compact preview of the message body / note / reaction. */
+    preview?: string | null;
+    senderName?: string | null;
+}
+
+export const LinkedInActionNode = memo(({ data }: NodeProps) => {
+    const d = data as unknown as LinkedInActionNodeData;
+    const meta = LINKEDIN_META[d.actionType] ?? LINKEDIN_META.linkedin_view_profile;
+    return (
+        <div
+            className="rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow"
+            style={{ width: NODE_WIDTH, border: `1px solid ${meta.accent}33` }}
+        >
+            <Handle type="target" position={Position.Top} className="!bg-[#1E1E2F] !w-2 !h-2 !border-0" />
+
+            <div
+                className="px-3.5 py-2 flex items-center justify-between gap-2"
+                style={{ background: meta.accentBg, borderBottom: `1px solid ${meta.accent}22` }}
+            >
+                <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="shrink-0" style={{ color: meta.accent }}>{meta.icon}</span>
+                    <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: meta.accent }}>
+                        Step {d.stepNumber} — {meta.label}
+                    </span>
+                </div>
+                <Linkedin size={10} className="text-[#0A66C2] shrink-0" strokeWidth={2} />
+            </div>
+
+            {(d.subject || d.preview) && (
+                <div className="px-3.5 py-2.5">
+                    {d.subject && <p className="text-xs font-semibold text-[#1E1E2F] line-clamp-1 mb-1">{d.subject}</p>}
+                    {d.preview && <p className="text-[11px] text-[#6B5E4F] line-clamp-2 leading-relaxed">{d.preview}</p>}
+                </div>
+            )}
+
+            {d.senderName && (
+                <div className="px-3.5 py-1.5 border-t flex items-center gap-1.5" style={{ borderColor: '#F0EBE3', background: '#FAF8F5' }}>
+                    <span className="text-[10px] text-[#6B5E4F] truncate">via {d.senderName}</span>
+                </div>
+            )}
+
+            <Handle type="source" position={Position.Bottom} className="!bg-[#1E1E2F] !w-2 !h-2 !border-0" />
+        </div>
+    );
+});
+LinkedInActionNode.displayName = 'LinkedInActionNode';
+
+// ============================================================================
 // EXPORT MAP
 // ============================================================================
 
@@ -212,6 +288,7 @@ export const nodeTypes = {
     wait: WaitNode,
     branch: BranchNode,
     exit: ExitNode,
+    linkedin_action: LinkedInActionNode,
 };
 
 export const NODE_WIDTH_PX = NODE_WIDTH;

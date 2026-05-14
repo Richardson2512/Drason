@@ -293,12 +293,14 @@ export default function LeadScoringPanel() {
                 )}
             </div>
 
-            {/* Action bar */}
-            <div className="flex items-center justify-between gap-2 sticky bottom-0 bg-white py-2 -mx-0 mt-1">
+            {/* Action bar — sticky to the bottom of the panel. Transparent
+                 background so the parent's stone-tinted dashboard surface
+                 shows through; only the buttons themselves are surfaced. */}
+            <div className="flex items-center justify-between gap-2 sticky bottom-0 py-2 -mx-0 mt-1">
                 <button
                     onClick={resetDefaults}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white text-gray-700 text-xs font-semibold hover:bg-[#FAFAF8] cursor-pointer"
-                    style={{ border: '1px solid #D1CBC5' }}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-gray-700 text-xs font-semibold hover:bg-[#FAFAF8] cursor-pointer"
+                    style={{ border: '1px solid #D1CBC5', background: 'transparent' }}
                 >
                     <RotateCcw size={12} /> Reset built-in weights to defaults
                 </button>

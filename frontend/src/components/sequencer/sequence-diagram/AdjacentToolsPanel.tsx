@@ -1,15 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { ExternalLink, Phone, Linkedin } from 'lucide-react';
+import { ExternalLink, Phone } from 'lucide-react';
 
 /**
  * Side panel showing adjacent tools the user can hand off to AFTER the
- * Superkabe email sequence completes — calls, LinkedIn outreach, etc.
+ * Superkabe email sequence completes — phone follow-ups, etc.
  *
- * Architectural note: these are NOT sequence steps. Superkabe is email-only
- * by design. JustCall handles phone follow-ups; HeyReach handles LinkedIn
- * outreach. They run alongside the email sequence, not inside it.
+ * Architectural note: these are NOT sequence steps. LinkedIn outreach is a
+ * first-class step type inside the sequence (see Super LinkedIn). JustCall
+ * handles phone follow-ups in a separate channel.
  *
  * V1 reads org-level connection status — when an integration is connected,
  * the panel shows it as "available for handoff". When not connected, shows
@@ -45,16 +45,6 @@ export default function AdjacentToolsPanel({ connectionStatus = {} }: AdjacentTo
             connected: !!connectionStatus.justcall,
             settingsHref: '/dashboard/integrations',
         },
-        {
-            name: 'heyreach',
-            label: 'HeyReach',
-            channel: 'LinkedIn',
-            description: 'Continue outreach via LinkedIn DMs and connection requests.',
-            logo: '/logos/heyreach-icon.png',
-            icon: <Linkedin size={11} strokeWidth={2} />,
-            connected: !!connectionStatus.heyreach,
-            settingsHref: '/dashboard/integrations',
-        },
     ];
 
     return (
@@ -64,7 +54,7 @@ export default function AdjacentToolsPanel({ connectionStatus = {} }: AdjacentTo
                     Adjacent Tools
                 </h3>
                 <p className="text-[11px] text-[#6B5E4F] mt-0.5 leading-relaxed">
-                    Superkabe is email-only by design. Hand off to these tools for follow-ups in other channels.
+                    Hand off to these tools for follow-ups in channels Superkabe doesn't own natively.
                 </p>
             </div>
 

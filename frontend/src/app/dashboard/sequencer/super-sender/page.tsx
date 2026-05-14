@@ -507,8 +507,8 @@ function WorkspacePickerModal({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}>
+            <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 <header className="flex items-center justify-between p-5 border-b border-gray-100">
                     <div>
                         <h2 className="text-lg font-bold text-gray-900 m-0">

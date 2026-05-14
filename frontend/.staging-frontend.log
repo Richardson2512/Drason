@@ -1,0 +1,114 @@
+﻿
+> frontend@0.1.0 dev
+> next dev
+
+node.exe : ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (⚠ Warning: Next...not be correct.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ We detected multiple lockfiles and selected the directory of C:\Users\AMD\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\AMD\Drason-staging\frontend\package-lock.json
+   * C:\Users\AMD\Drason-staging\package-lock.json
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.50.236:3000
+- Environments: .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 2.2s
+ GET / 200 in 732ms (compile: 428ms, proxy.ts: 45ms, render: 259ms)
+ GET / 200 in 141ms (compile: 4ms, proxy.ts: 6ms, render: 131ms)
+⚠ Cross origin request detected from superkabe.lvh.me to /_next/* resource. In a future major version of Next.js, you 
+will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\AMD\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\AMD\Drason-staging\frontend\package-lock.json
+   * C:\Users\AMD\Drason-staging\package-lock.json
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.50.236:3000
+- Environments: .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 1036ms
+⚠ Cross origin request detected from superkabe.lvh.me to /_next/* resource. In a future major version of Next.js, you 
+will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 579ms (compile: 253ms, proxy.ts: 47ms, render: 279ms)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\AMD\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\AMD\Drason-staging\frontend\package-lock.json
+   * C:\Users\AMD\Drason-staging\package-lock.json
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.50.236:3000
+- Environments: .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 1021ms
+⚠ Cross origin request detected from superkabe.lvh.me to /_next/* resource. In a future major version of Next.js, you 
+will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 522ms (compile: 216ms, proxy.ts: 46ms, render: 260ms)
+ GET /sitemap.xml 200 in 611ms (compile: 578ms, proxy.ts: 3ms, render: 30ms)
+ GET /product/smartlead-infrastructure-protection 404 in 1275ms (compile: 1174ms, proxy.ts: 2ms, generate-params: 382ms, render: 98ms)
+ GET /product/smartlead-deliverability-protection 404 in 83ms (compile: 13ms, proxy.ts: 4ms, generate-params: 5ms, render: 65ms)
+ GET /product/instantly-infrastructure-protection 404 in 63ms (compile: 4ms, proxy.ts: 2ms, generate-params: 22µs, render: 57ms)
+ GET /product/reply-io-deliverability-protection 404 in 58ms (compile: 5ms, proxy.ts: 2ms, generate-params: 21µs, render: 51ms)
+ GET /product/emailbison-infrastructure-protection 404 in 61ms (compile: 5ms, proxy.ts: 2ms, generate-params: 26µs, render: 53ms)
+ GET /product/multi-platform-outbound-protection 404 in 63ms (compile: 5ms, proxy.ts: 2ms, generate-params: 23µs, render: 56ms)
+ GET /product/multi-platform-email-validation 404 in 66ms (compile: 4ms, proxy.ts: 2ms, generate-params: 34µs, render: 60ms)
+ GET /product/lead-control-plane 200 in 327ms (compile: 11ms, proxy.ts: 3ms, generate-params: 6ms, render: 313ms)
+ GET /product/esp-aware-routing 200 in 87ms (compile: 10ms, proxy.ts: 2ms, generate-params: 5ms, render: 75ms)
+ GET /testimonials 200 in 112ms (compile: 34ms, proxy.ts: 2ms, render: 75ms)
+ GET /sitemap.xml 200 in 67ms (compile: 44ms, proxy.ts: 3ms, render: 20ms)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\AMD\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if 
+it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\AMD\Drason-staging\frontend\package-lock.json
+   * C:\Users\AMD\Drason-staging\package-lock.json
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.50.236:3000
+- Environments: .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 1354ms
+⚠ Cross origin request detected from superkabe.lvh.me to /_next/* resource. In a future major version of Next.js, you 
+will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 750ms (compile: 292ms, proxy.ts: 80ms, render: 378ms)

@@ -23,6 +23,7 @@
  */
 
 import { useEffect, useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { X, CheckCircle2, AlertCircle, Loader2, Inbox, Search, ArrowLeft, Zap } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -270,14 +271,17 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
         onSuccess();
     };
 
-    return (
+    if (typeof document === 'undefined') return null;
+
+    return createPortal(
         <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
+            className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+            style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
             onClick={e => { if (e.target === e.currentTarget && !connecting && !importing) onClose(); }}
         >
             <div
-                className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
-                style={{ border: '1px solid #D1CBC5' }}
+                className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
             >
                 {/* Header */}
                 <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
@@ -578,7 +582,8 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 

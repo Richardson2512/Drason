@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDashboard } from '@/contexts/DashboardContext';
+import { sanitizeEmailHtml } from '@/lib/sanitizeEmailHtml';
 
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
@@ -265,8 +266,15 @@ function UniboxPage() {
     };
 
     const markUnread = async (threadId: string) => {
+        // Optimistic update — bump the badge AND flip the row so the
+        // operator sees the state change immediately. We only bump the
+        // counter if the thread was previously read (otherwise we'd
+        // double-count a re-mark-unread). On API failure we'd ideally
+        // revert; the existing pattern silently trusts the server.
+        const wasRead = threads.find(t => t.id === threadId)?.is_read !== false;
         await apiClient(`/api/unibox/threads/${threadId}`, { method: 'PATCH', body: JSON.stringify({ is_read: false }) });
         setThreads(prev => prev.map(t => t.id === threadId ? { ...t, is_read: false } : t));
+        if (wasRead) setUnreadCount(c => c + 1);
     };
 
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -599,7 +607,7 @@ function UniboxPage() {
                                         <div className="text-[10px] mb-1.5" style={{ color: msg.direction === 'outbound' ? '#9CA3AF' : '#6B7280' }}>
                                             {msg.from_name || msg.from_email} &middot; {new Date(msg.sent_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
                                         </div>
-                                        <div dangerouslySetInnerHTML={{ __html: msg.body_html }} />
+                                        <div dangerouslySetInnerHTML={{ __html: sanitizeEmailHtml(msg.body_html) }} />
                                     </div>
                                 </div>
                             ))}

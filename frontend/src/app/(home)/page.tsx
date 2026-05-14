@@ -26,7 +26,6 @@ import {
     HubSpotLogo,
     SalesforceLogo,
     OutreachLogo,
-    HeyreachLogo,
     JustcallLogo,
     ZapmailLogo,
     ScaledmailLogo,
@@ -147,7 +146,6 @@ const col2: MarqueeItem[] = [
     { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
     { Logo: OutreachLogo, name: 'Outreach', category: 'Sales engagement', status: 'soon' },
     { Logo: ScaledmailLogo, name: 'Scaledmail', category: 'Mailbox import', status: 'soon' },
-    { Logo: HeyreachLogo, name: 'Heyreach', category: 'LinkedIn outreach', status: 'soon' },
 ];
 const col3: MarqueeItem[] = [
     { Logo: WebhooksLogo, name: 'Webhooks', category: 'Developer', status: 'live' },
@@ -625,6 +623,9 @@ export default function LandingPage() {
  const faqSchema = {
  "@context": "https://schema.org",
  "@type": "FAQPage",
+ "@id": "https://www.superkabe.com/#faq",
+ "isPartOf": { "@id": "https://www.superkabe.com/#website" },
+ "about": { "@id": "https://www.superkabe.com/#software" },
  "mainEntity": [
  {
  "@type": "Question",
@@ -736,68 +737,12 @@ export default function LandingPage() {
  return (
  <div className="relative bg-[#F7F2EB] text-[#1E1E2F] overflow-hidden font-sans">
 
- {/* FAQPage Schema for AI Overviews */}
+ {/* FAQPage schema. Organization, WebSite, and SoftwareApplication are
+ emitted site-wide in the root layout — do not redeclare them here. */}
  <script
  type="application/ld+json"
  dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
  />
-
- {/* Explicit WebSite + Org Schema for Entity Resolution */}
- <script type="application/ld+json" dangerouslySetInnerHTML={{
- __html: JSON.stringify({
- "@context": "https://schema.org",
- "@type": "WebSite",
- name: "Superkabe",
- url: "https://www.superkabe.com",
- description: "Superkabe is an AI cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes, validate every email, and let the protection layer auto-pause, reroute, and heal senders in real time.",
- publisher: {
- "@id": "https://www.superkabe.com/#organization"
- },
- speakable: {
- "@type": "SpeakableSpecification",
- cssSelector: ["h1", ".page-subtitle", ".faq-section"]
- }
- })
- }} />
-
- {/* SoftwareApplication Schema for AI Product Comparison */}
- <script type="application/ld+json" dangerouslySetInnerHTML={{
- __html: JSON.stringify({
- "@context": "https://schema.org",
- "@type": "SoftwareApplication",
- "name": "Superkabe",
- "url": "https://www.superkabe.com/",
- "applicationCategory": "Cold email sending and deliverability platform",
- "operatingSystem": "Web-based (SaaS)",
- "description": "Superkabe is an AI cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending across Gmail, Microsoft 365, and SMTP, email validation, ESP-aware lead routing, and an auto-healing protection layer (auto-pause, auto-rotate, domain reputation monitoring) into a single product for outbound revenue teams.",
- "offers": {
- "@type": "Offer",
- "price": "19",
- "priceCurrency": "USD",
- "description": "Starter plan for founder-led teams — AI sequences, multi-mailbox sending, email validation, and the full deliverability protection stack.",
- "url": "https://www.superkabe.com/pricing"
- },
- "featureList": [
- "AI-generated cold email sequences with variant testing",
- "Multi-mailbox sending across Google Workspace, Microsoft 365, and SMTP",
- "ESP-aware lead routing for higher inbox placement",
- "Hybrid email validation (syntax, MX, disposable, catch-all + MillionVerifier API)",
- "Unified inbox for replies across all connected mailboxes",
- "Mailbox fatigue detection and auto-pausing",
- "DNS authentication enforcement for SPF, DKIM, and DMARC",
- "Domain burnout prevention using bounce-based gating",
- "Automated domain healing with 5-phase recovery pipeline",
- "Health gate classification (GREEN/YELLOW/RED) with risk-aware routing",
- "Predictive campaign risk monitoring and correlation engine",
- "Load balancing across mailboxes and campaigns",
- "Slack integration for real-time alerts and slash commands",
- "Lead-source ingestion from Clay via signed webhooks",
- "Reports and CSV export for leads, campaigns, mailboxes, domains",
- "Dedicated AI agents for cold email tasks (sequence writing, reply classification, send-time optimization)",
- "Public REST API v1 and MCP server for programmatic access"
- ]
- })
- }} />
 
  {/* ================= NAVBAR ================= */}
  <Navbar />

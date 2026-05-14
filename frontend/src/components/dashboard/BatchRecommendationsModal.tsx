@@ -62,8 +62,8 @@ export default function BatchRecommendationsModal({ isOpen, onClose, leadIds, le
     if (!isOpen) return null;
 
     return (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }} role="dialog" aria-modal="true" aria-labelledby="batch-recommendations-modal-title">
-            <div style={{ background: '#FFFFFF', borderRadius: '24px', maxWidth: '700px', width: '90%', maxHeight: '80vh', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)', padding: '1rem' }} role="dialog" aria-modal="true" aria-labelledby="batch-recommendations-modal-title">
+            <div style={{ background: '#FFFFFF', borderRadius: '16px', maxWidth: '700px', width: '100%', maxHeight: '90vh', display: 'flex', flexDirection: 'column', border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 {/* Header */}
                 <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #F3F4F6', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>

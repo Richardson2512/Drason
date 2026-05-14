@@ -7,7 +7,9 @@ import type { DailyData } from '@/types/api';
 import { useCampaignList } from '@/hooks/useCampaignList';
 import DatePicker from '@/components/ui/DatePicker';
 import CustomSelect from '@/components/ui/CustomSelect';
+import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import MailboxComparisonPanel from '@/components/analytics/MailboxComparisonPanel';
+import toast from 'react-hot-toast';
 
 function formatShortDate(dateStr: string): string {
     const d = new Date(dateStr);
@@ -103,26 +105,6 @@ export default function AnalyticsPage() {
     const avgOpenRate = totalSent > 0 ? ((totalOpens / totalSent) * 100).toFixed(1) : '0.0';
     const avgReplyRate = totalSent > 0 ? ((totalReplies / totalSent) * 100).toFixed(1) : '0.0';
 
-    const toggleCampaign = (id: string) => {
-        if (mode === 'single') {
-            setSelectedCampaignIds([id]);
-        } else {
-            setSelectedCampaignIds(prev =>
-                prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
-            );
-        }
-    };
-
-    const inputStyle = {
-        padding: '0.625rem 1rem',
-        borderRadius: '12px',
-        border: '1px solid #E5E7EB',
-        fontSize: '0.875rem',
-        outline: 'none',
-        background: '#FFFFFF',
-        color: '#111827',
-    };
-
     // Build comparison chart data (merged by date)
     const comparisonChartData = (() => {
         if (!comparisonData) return [];
@@ -143,22 +125,25 @@ export default function AnalyticsPage() {
     })();
 
     return (
-        <div className="p-4 flex flex-col gap-4">
-            <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="p-4 flex flex-col gap-3">
+            <div className="flex items-start justify-between flex-wrap gap-3">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
-                    <p className="text-sm text-gray-500 mt-1">Campaign performance trends</p>
+                    <h1 className="text-xl font-bold text-gray-900">Analytics</h1>
+                    <p className="text-xs text-gray-500 mt-1">Campaign performance trends</p>
                 </div>
-                <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
+                <div
+                    className="flex gap-0.5 rounded-lg p-0.5"
+                    style={{ background: '#FAFAF8', border: '1px solid #D1CBC5' }}
+                >
                     <button
                         onClick={() => { setMode('single'); if (selectedCampaignIds.length > 1) setSelectedCampaignIds([selectedCampaignIds[0]]); }}
-                        className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${mode === 'single' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer ${mode === 'single' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'}`}
                     >
                         Single
                     </button>
                     <button
                         onClick={() => setMode('compare')}
-                        className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${mode === 'compare' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                        className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer ${mode === 'compare' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'}`}
                     >
                         Compare
                     </button>
@@ -166,11 +151,11 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Filters */}
-            <div className="premium-card flex flex-col gap-4">
-                <div className="flex items-end gap-4 flex-wrap">
-                    <div className="flex-1 min-w-[200px]">
-                        <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                            {mode === 'compare' ? 'Select campaigns to compare' : 'Campaign'}
+            <div className="premium-card flex flex-col gap-3">
+                <div className="flex items-end gap-3 flex-wrap">
+                    <div className="flex-1 min-w-[220px]">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                            {mode === 'compare' ? 'Compare campaigns (pick 2)' : 'Campaign'}
                         </label>
                         {mode === 'single' ? (
                             <CustomSelect
@@ -181,49 +166,43 @@ export default function AnalyticsPage() {
                                 options={campaigns.map(c => ({ value: c.id, label: c.name }))}
                             />
                         ) : (
-                            <div className="flex flex-wrap gap-2">
-                                {campaigns.map((c, idx) => {
-                                    const isSelected = selectedCampaignIds.includes(c.id);
-                                    const colorIdx = selectedCampaignIds.indexOf(c.id);
-                                    const color = colorIdx >= 0 ? CAMPAIGN_COLORS[colorIdx % CAMPAIGN_COLORS.length] : '#9CA3AF';
-                                    return (
-                                        <button
-                                            key={c.id}
-                                            onClick={() => toggleCampaign(c.id)}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                                                isSelected
-                                                    ? 'text-white shadow-sm'
-                                                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
-                                            }`}
-                                            style={isSelected ? { backgroundColor: color, borderColor: color } : {}}
-                                        >
-                                            {c.name}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                            <MultiSelectDropdown
+                                placeholder={campaigns.length === 0 ? 'No campaigns' : 'Select up to 2 campaigns…'}
+                                selected={selectedCampaignIds}
+                                onChange={(next) => {
+                                    // Cap at exactly 2 selections. If the user tries
+                                    // to add a 3rd, ignore the addition and surface a
+                                    // gentle toast so it's not a silent failure.
+                                    if (next.length > 2) {
+                                        toast('You can only compare 2 campaigns at a time', { icon: '⚠️' });
+                                        return;
+                                    }
+                                    setSelectedCampaignIds(next);
+                                }}
+                                searchable
+                                searchPlaceholder="Search campaigns…"
+                                options={campaigns.map(c => ({ value: c.id, label: c.name }))}
+                            />
                         )}
                     </div>
-                    <div className="w-44">
-                        <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Start Date</label>
+                    <div className="w-40">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Start Date</label>
                         <DatePicker value={startDate} onChange={setStartDate} />
                     </div>
-                    <div className="w-44">
-                        <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">End Date</label>
+                    <div className="w-40">
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">End Date</label>
                         <DatePicker value={endDate} onChange={setEndDate} />
                     </div>
                 </div>
                 {mode === 'compare' && selectedCampaignIds.length < 2 && (
-                    <div className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                        Select at least 2 campaigns to compare
+                    <div
+                        className="text-[11px] text-amber-700 rounded-md px-2.5 py-1.5"
+                        style={{ background: '#FEF3C7', border: '1px solid #FDE68A' }}
+                    >
+                        Pick 2 campaigns to compare.
                     </div>
                 )}
             </div>
-
-            {/* Mailbox comparison — independent of single/comparison campaign mode.
-                Uses the same date window as the campaign chart so the operator
-                reads both surfaces with one mental model. */}
-            <MailboxComparisonPanel startDate={startDate} endDate={endDate} />
 
             {/* ── SINGLE MODE ── */}
             {!isComparing && (
@@ -288,22 +267,22 @@ export default function AnalyticsPage() {
 
                     {/* Summary Stats */}
                     {selectedCampaignIds.length > 0 && data.length > 0 && (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="p-5 bg-gray-50 rounded-2xl border border-gray-200">
-                                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">Total Sent</div>
-                                <div className="text-[1.75rem] font-bold text-gray-900">{totalSent.toLocaleString()}</div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="premium-card">
+                                <div className="text-[11px] text-gray-500 font-semibold mb-1">Total Sent</div>
+                                <div className="text-xl font-bold text-gray-900">{totalSent.toLocaleString()}</div>
                             </div>
-                            <div className="p-5 bg-blue-50 rounded-2xl border border-blue-200">
-                                <div className="text-blue-800 text-xs font-semibold uppercase tracking-wide mb-2">Avg Open Rate</div>
-                                <div className="text-[1.75rem] font-bold text-blue-900">{avgOpenRate}%</div>
+                            <div className="premium-card">
+                                <div className="text-[11px] text-gray-500 font-semibold mb-1">Avg Open Rate</div>
+                                <div className="text-xl font-bold" style={{ color: '#2563EB' }}>{avgOpenRate}%</div>
                             </div>
-                            <div className="p-5 bg-green-50 rounded-2xl border border-green-200">
-                                <div className="text-green-800 text-xs font-semibold uppercase tracking-wide mb-2">Avg Reply Rate</div>
-                                <div className="text-[1.75rem] font-bold text-green-700">{avgReplyRate}%</div>
+                            <div className="premium-card">
+                                <div className="text-[11px] text-gray-500 font-semibold mb-1">Avg Reply Rate</div>
+                                <div className="text-xl font-bold" style={{ color: '#16A34A' }}>{avgReplyRate}%</div>
                             </div>
-                            <div className="p-5 bg-red-50 rounded-2xl border border-red-200">
-                                <div className="text-red-800 text-xs font-semibold uppercase tracking-wide mb-2">Total Bounces</div>
-                                <div className="text-[1.75rem] font-bold text-red-600">{totalBounces.toLocaleString()}</div>
+                            <div className="premium-card">
+                                <div className="text-[11px] text-gray-500 font-semibold mb-1">Total Bounces</div>
+                                <div className="text-xl font-bold" style={{ color: '#DC2626' }}>{totalBounces.toLocaleString()}</div>
                             </div>
                         </div>
                     )}
@@ -323,7 +302,7 @@ export default function AnalyticsPage() {
                         <>
                             {/* Comparison Chart — Sends per campaign */}
                             <div className="premium-card">
-                                <h2 className="text-lg font-bold text-gray-900 mb-4">Sends Over Time</h2>
+                                <h2 className="text-sm font-semibold text-gray-900 mb-3">Sends Over Time</h2>
                                 <div className="h-[360px]">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <AreaChart data={comparisonChartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
@@ -354,7 +333,7 @@ export default function AnalyticsPage() {
 
                             {/* Comparison Table */}
                             <div className="premium-card">
-                                <h2 className="text-lg font-bold text-gray-900 mb-4">Campaign Comparison</h2>
+                                <h2 className="text-sm font-semibold text-gray-900 mb-3">Campaign Comparison</h2>
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm">
                                         <thead>
@@ -401,7 +380,7 @@ export default function AnalyticsPage() {
 
                             {/* Bar Chart — Side by side totals */}
                             <div className="premium-card">
-                                <h2 className="text-lg font-bold text-gray-900 mb-4">Total Performance</h2>
+                                <h2 className="text-sm font-semibold text-gray-900 mb-3">Total Performance</h2>
                                 <div className="h-[300px]">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
@@ -435,6 +414,11 @@ export default function AnalyticsPage() {
                     )}
                 </>
             )}
+
+            {/* Mailbox comparison — pinned at the very bottom of the page.
+                Uses the same date window as the campaign chart above so the
+                operator reads both surfaces with one mental model. */}
+            <MailboxComparisonPanel startDate={startDate} endDate={endDate} />
         </div>
     );
 }

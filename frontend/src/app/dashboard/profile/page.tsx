@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
 import { User, Lock, Save, CheckCircle, AlertCircle } from 'lucide-react';
 import { useDashboard } from '@/contexts/DashboardContext';
+import { CreditCard } from 'lucide-react';
 import AgencyModeCard from '@/components/settings/AgencyModeCard';
 
 export default function ProfilePage() {
-    const { user, refetchUser } = useDashboard();
+    const { user, refetchUser, subscription } = useDashboard();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [originalName, setOriginalName] = useState('');
@@ -233,6 +234,40 @@ export default function ProfilePage() {
                             Leave a Review on G2
                         </a>
                     </div>
+
+                    {/* Current pricing tier */}
+                    {(() => {
+                        const tierKey = (subscription?.tier || 'trial').toLowerCase();
+                        const TIER_META: Record<string, { label: string; gradient: string; chipBg: string; chipFg: string; description: string }> = {
+                            trial:      { label: 'Trial',      gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)', chipBg: '#DBEAFE', chipFg: '#1E40AF', description: 'Free trial — explore every feature before upgrading.' },
+                            starter:    { label: 'Starter',    gradient: 'linear-gradient(135deg, #6B7280, #4B5563)', chipBg: '#F3F4F6', chipFg: '#374151', description: 'Entry plan for solo founders and small teams.' },
+                            pro:        { label: 'Pro',        gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', chipBg: '#EDE9FE', chipFg: '#5B21B6', description: 'Pro plan — 1 LinkedIn account included.' },
+                            growth:     { label: 'Growth',     gradient: 'linear-gradient(135deg, #10B981, #059669)', chipBg: '#D1FAE5', chipFg: '#065F46', description: 'Growth plan — 2 LinkedIn accounts included.' },
+                            scale:      { label: 'Scale',      gradient: 'linear-gradient(135deg, #F59E0B, #D97706)', chipBg: '#FEF3C7', chipFg: '#92400E', description: 'Scale plan — 3 LinkedIn accounts included.' },
+                            enterprise: { label: 'Enterprise', gradient: 'linear-gradient(135deg, #E11D48, #BE123C)', chipBg: '#FCE7F3', chipFg: '#9F1239', description: 'Enterprise — bespoke quotas and white-glove onboarding.' },
+                        };
+                        const tier = TIER_META[tierKey] || { label: (subscription?.tier || 'Trial').replace(/_/g, ' '), gradient: 'linear-gradient(135deg, #6B7280, #4B5563)', chipBg: '#F3F4F6', chipFg: '#374151', description: 'Active plan.' };
+                        return (
+                            <div className="profile-card mt-5">
+                                <div className="flex items-center gap-2 mb-5">
+                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: tier.gradient }}>
+                                        <CreditCard size={14} color="#fff" />
+                                    </div>
+                                    <h2 className="text-base font-semibold text-gray-900 m-0">Current Plan</h2>
+                                </div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-sm text-gray-500">You&apos;re on</span>
+                                    <span
+                                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                                        style={{ background: tier.chipBg, color: tier.chipFg }}
+                                    >
+                                        {tier.label}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-gray-500 leading-relaxed m-0">{tier.description}</p>
+                            </div>
+                        );
+                    })()}
                 </div> {/* End Right Column */}
             </div> {/* End Flex Container */}
         </div>

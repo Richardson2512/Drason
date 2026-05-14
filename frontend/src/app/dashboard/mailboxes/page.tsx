@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { RowLimitSelector } from '@/components/ui/RowLimitSelector';
 import MailboxesEmptyState from '@/components/dashboard/MailboxesEmptyState';
@@ -742,16 +743,16 @@ export default function MailboxesPage() {
                 )}
             </div>
 
-            {/* Sort & Filter Modal */}
-            {sortFilter.isOpen && (
+            {/* Sort & Filter Modal — portaled to body. */}
+            {sortFilter.isOpen && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 flex items-center justify-center z-[1000] p-4"
-                    style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={() => sortFilter.close()}
                 >
                     <div
                         className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col"
-                        style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
+                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
@@ -865,7 +866,8 @@ export default function MailboxesPage() {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
 
             {/* Bulk Action Bar */}

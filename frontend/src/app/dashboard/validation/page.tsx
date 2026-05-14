@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
+import { createPortal } from 'react-dom';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
@@ -993,9 +994,9 @@ function ValidationPageContent() {
             )}
 
             {/* ==================== UPLOAD MODAL ==================== */}
-            {showUpload && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={(e) => { if (e.target === e.currentTarget && uploadStep === 'select') resetUpload(); }}>
-                    <div className="bg-white rounded-xl max-w-[560px] w-[90%] max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
+            {showUpload && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={(e) => { if (e.target === e.currentTarget && uploadStep === 'select') resetUpload(); }}>
+                    <div className="bg-white rounded-2xl max-w-[560px] w-full max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                         <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: '#D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">
                                 {uploadStep === 'select' && 'Upload CSV'}
@@ -1125,13 +1126,14 @@ function ValidationPageContent() {
                             )}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
 
             {/* ==================== ROUTE MODAL ==================== */}
-            {showRouteModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={(e) => { if (e.target === e.currentTarget) { setShowRouteModal(false); setRouteResult(null); } }}>
-                    <div className="bg-white rounded-xl max-w-[420px] w-[90%]" style={{ border: '1px solid #D1CBC5' }}>
+            {showRouteModal && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={(e) => { if (e.target === e.currentTarget) { setShowRouteModal(false); setRouteResult(null); } }}>
+                    <div className="bg-white rounded-2xl max-w-[420px] w-full" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                         <div className="p-4 border-b" style={{ borderColor: '#D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">Route {selectedIds.size} Leads to Campaign</h2>
                         </div>
@@ -1178,7 +1180,8 @@ function ValidationPageContent() {
                             )}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );

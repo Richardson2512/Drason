@@ -83,8 +83,8 @@ export default function ConsentReacceptanceModal() {
     else if (privacyBumped) docCopy = 'Privacy Policy';
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}>
+            <div className="bg-white rounded-2xl max-w-lg w-full p-8" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">We&apos;ve updated our {docCopy}</h2>
                 <p className="text-sm text-gray-600 mb-6">
                     To keep using Superkabe, please review and accept the latest version. This is required so we can

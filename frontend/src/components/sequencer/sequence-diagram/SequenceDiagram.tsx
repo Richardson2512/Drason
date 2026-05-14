@@ -37,7 +37,10 @@ export default function SequenceDiagram({ steps, settings, senders, minHeight = 
     return (
         <div
             className="rounded-xl overflow-hidden"
-            style={{ minHeight, border: '1px solid #D1CBC5', background: '#FBFAF7' }}
+            // ReactFlow uses height: 100% on its root div (via its CSS).
+            // The parent therefore needs a RESOLVED height — not just
+            // minHeight — or ReactFlow lays out at 0px and renders blank.
+            style={{ height: minHeight, minHeight, border: '1px solid #D1CBC5', background: '#FBFAF7' }}
         >
             <ReactFlowProvider>
                 <ReactFlow
@@ -68,11 +71,12 @@ export default function SequenceDiagram({ steps, settings, senders, minHeight = 
                     <MiniMap
                         nodeColor={(n) => {
                             switch (n.type) {
-                                case 'email':  return '#1E1E2F';
-                                case 'wait':   return '#D1CBC5';
-                                case 'branch': return '#6B5E4F';
-                                case 'exit':   return '#1F6F3A';
-                                default:       return '#1E1E2F';
+                                case 'email':            return '#1E1E2F';
+                                case 'wait':             return '#D1CBC5';
+                                case 'branch':           return '#6B5E4F';
+                                case 'exit':             return '#1F6F3A';
+                                case 'linkedin_action':  return '#0A66C2';
+                                default:                 return '#1E1E2F';
                             }
                         }}
                         nodeStrokeWidth={2}

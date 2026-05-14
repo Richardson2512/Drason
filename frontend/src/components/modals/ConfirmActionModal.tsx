@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ConfirmActionModalProps {
   isOpen: boolean;
@@ -45,18 +46,19 @@ export default function ConfirmActionModal({
   }, [isOpen, loading, onCancel]);
 
   if (!isOpen) return null;
+  if (typeof document === 'undefined') return null;
 
   const isDanger = variant === 'danger';
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 flex items-center justify-center z-[9999] p-8"
-      style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+      style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
       role="dialog"
       aria-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget && !loading) onCancel(); }}
     >
-      <div className="bg-white rounded-3xl max-w-[500px] w-full shadow-xl animate-fade-in">
+      <div className="bg-white rounded-2xl max-w-[500px] w-full animate-fade-in" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
         {/* Header */}
         <div className="p-8 pb-4">
           <div className="text-2xl font-extrabold text-gray-900 mb-2">
@@ -119,6 +121,7 @@ export default function ConfirmActionModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

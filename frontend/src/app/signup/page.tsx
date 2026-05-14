@@ -8,6 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { apiClient, startTokenRefresh } from '@/lib/api';
 import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
 import { marketingUrl } from '@/lib/urls';
+import { isFreeEmailDomain } from '@/lib/freeEmailDomains';
 
 function SignupContent() {
     const router = useRouter();
@@ -113,6 +114,14 @@ function SignupContent() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        // Business-email gate — mirrors the server check in
+        // authController.register. Surfaced client-side so users don't have
+        // to wait for the round-trip to see the rejection.
+        if (isFreeEmailDomain(email)) {
+            setError('Please use your work email to create an account. Personal email providers (Gmail, Yahoo, Outlook, iCloud, etc.) aren\'t supported for signup — Superkabe is a B2B platform and your organisation needs to be tied to a verifiable business domain.');
+            return;
+        }
 
         if (!acceptedTerms) {
             setError('You must accept the Terms of Service and Privacy Policy to create an account.');
@@ -220,7 +229,7 @@ function SignupContent() {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Email Address</label>
+                            <label className="text-[#718096] font-medium text-[11px] uppercase tracking-wide">Work Email</label>
                             <input
                                 type="email"
                                 className="w-full bg-white border border-[#E2E8F0] rounded-xl px-4 py-2 text-[#2D3748] focus:outline-none focus:ring-2 focus:ring-[#1C4532]/20 focus:border-[#1C4532] transition-all shadow-sm text-sm"
@@ -229,6 +238,15 @@ function SignupContent() {
                                 placeholder="you@company.com"
                                 required
                             />
+                            {email && isFreeEmailDomain(email) ? (
+                                <p className="text-[11px] text-rose-700 mt-1">
+                                    Use your work email — Gmail, Yahoo, Outlook and other personal providers aren&apos;t supported.
+                                </p>
+                            ) : (
+                                <p className="text-[11px] text-[#718096] mt-1">
+                                    Use your work email — Superkabe is a B2B platform.
+                                </p>
+                            )}
                         </div>
 
                         <div className="space-y-1">

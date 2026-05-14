@@ -7,6 +7,7 @@ import { apiClient } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import TimePicker from '@/components/ui/TimePicker';
 import ReplyActionsCard from '@/components/sequencer/ReplyActionsCard';
+import CrossChannelSuppressionCard from '@/components/shared/CrossChannelSuppressionCard';
 
 interface SequencerSettings {
     id?: string;
@@ -282,9 +283,15 @@ export default function SequencerSettingsPage() {
                 </div>
             </div>
 
-            {/* Notifications */}
             {/* Reply auto-actions — per-class mapping to suppress/pause/alert. */}
             <ReplyActionsCard />
+
+            {/* Cross-channel suppression — workspace-wide policy mirrored
+                on the Super LinkedIn settings page. Editing in either
+                surface flips the policy for every campaign in both. */}
+            <CrossChannelSuppressionCard />
+
+            {/* Notifications */}
 
             <div className="premium-card">
                 <div className="flex items-center gap-2 mb-4">

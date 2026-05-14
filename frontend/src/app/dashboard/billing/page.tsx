@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, Suspense } from 'react';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'next/navigation';
 import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
@@ -630,14 +631,15 @@ function BillingContent() {
                 without an explicit choice we have no legal basis to
                 preserve the data. Confirm button is disabled until one
                 of the two radios is selected. */}
-            {showCancelModal && (
+            {showCancelModal && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center px-4"
-                    style={{ background: 'rgba(15, 23, 42, 0.55)' }}
+                    className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={() => !actionLoading && setShowCancelModal(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7"
+                        className="bg-white rounded-2xl w-full max-w-lg p-7"
+                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex items-start gap-3 mb-2">
@@ -728,7 +730,8 @@ function BillingContent() {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );

@@ -17,6 +17,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { apiClient } from '@/lib/api';
+import { sanitizeEmailHtml } from '@/lib/sanitizeEmailHtml';
 import toast from 'react-hot-toast';
 import {
     Plus, Trash2, Copy, Sparkles, Loader2, X as XIcon,
@@ -807,7 +808,7 @@ function AiGenerateModal({
                                                     )}
                                                     <div
                                                         className="mt-2 text-xs text-gray-800 leading-relaxed"
-                                                        dangerouslySetInnerHTML={{ __html: s.body_html }}
+                                                        dangerouslySetInnerHTML={{ __html: sanitizeEmailHtml(s.body_html) }}
                                                     />
                                                 </div>
                                             )}

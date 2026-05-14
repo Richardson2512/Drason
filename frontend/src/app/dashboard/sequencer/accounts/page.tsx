@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { Plus, Mail, Shield, Wifi, WifiOff, Trash2, RefreshCw, Settings, X, Upload, Download, Loader2, Search, Zap, PlugZap } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -572,10 +573,11 @@ export default function ConnectedAccountsPage() {
                 />
             )}
 
-            {/* Add Account Modal */}
-            {showAddModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={e => { if (e.target === e.currentTarget) { setShowAddModal(false); setAddType(null); } }}>
-                    <div className="bg-white rounded-xl w-[90%] max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', maxWidth: '512px' }}>
+            {/* Add Account Modal — portaled to body so the backdrop covers
+                 the sidebar and the modal isn't bounded to the content column. */}
+            {showAddModal && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={e => { if (e.target === e.currentTarget) { setShowAddModal(false); setAddType(null); } }}>
+                    <div className="bg-white rounded-2xl w-full max-h-[80vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)', maxWidth: '512px' }}>
                         <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">{addType ? `Connect ${PROVIDER_META[addType].label}` : 'Connect Mailbox'}</h2>
                             <button onClick={() => { setShowAddModal(false); setAddType(null); }} aria-label="Close" title="Close" className="text-gray-400 hover:text-gray-600 cursor-pointer"><X size={16} /></button>
@@ -666,16 +668,18 @@ export default function ConnectedAccountsPage() {
                             ) : null}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
 
-            {/* Bulk disconnect confirmation — platform-themed */}
-            {showBulkDeleteConfirm && (
+            {/* Bulk disconnect confirmation — also portaled to body. */}
+            {showBulkDeleteConfirm && typeof document !== 'undefined' && createPortal(
                 <div
-                    className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[9998] p-4"
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={(e) => { if (e.target === e.currentTarget && !deleting) setShowBulkDeleteConfirm(false); }}
                 >
-                    <div className="bg-white rounded-xl w-full max-w-md" style={{ border: '1px solid #D1CBC5', boxShadow: '0 25px 50px rgba(0,0,0,0.15)' }}>
+                    <div className="bg-white rounded-2xl w-full max-w-md" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                         <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <div className="flex items-center gap-2">
                                 <div className="w-7 h-7 rounded-full bg-red-50 flex items-center justify-center">
@@ -719,7 +723,8 @@ export default function ConnectedAccountsPage() {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
         </div>
     );

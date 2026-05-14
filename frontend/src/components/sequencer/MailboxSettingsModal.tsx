@@ -173,8 +173,8 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
     const lastChecked = account?.tracking_domain_last_check_at ? new Date(account.tracking_domain_last_check_at) : null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-            <div className="bg-white w-full max-w-2xl max-h-[88vh] flex flex-col rounded-2xl overflow-hidden" style={{ border: '1px solid #D1CBC5' }}>
+        <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+            <div className="bg-white w-full max-w-2xl max-h-[88vh] flex flex-col rounded-2xl overflow-hidden" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 <div className="px-5 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
                     <div className="flex items-center gap-2">
                         <h2 className="text-sm font-semibold text-gray-900">Mailbox settings</h2>

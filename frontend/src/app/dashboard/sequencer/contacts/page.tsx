@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon } from 'lucide-react';
@@ -1022,10 +1023,12 @@ function ContactsPageContent() {
                 </>
             )}
 
-            {/* Add Contact Modal */}
-            {showAddModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]" onClick={e => { if (e.target === e.currentTarget && !creatingContact) setShowAddModal(false); }}>
-                    <div className="bg-white rounded-xl w-[90%] max-w-xl max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5' }}>
+            {/* Add Contact Modal — portaled to body so it escapes any
+                 ancestor transform/containing-block that would otherwise
+                 keep `fixed inset-0` bounded to the content column. */}
+            {showAddModal && typeof document !== 'undefined' && createPortal(
+                <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={e => { if (e.target === e.currentTarget && !creatingContact) setShowAddModal(false); }}>
+                    <div className="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                         <div className="p-4 flex items-center justify-between sticky top-0 bg-white z-10" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <h2 className="text-sm font-bold text-gray-900">Add Contact</h2>
                             <button onClick={() => !creatingContact && setShowAddModal(false)} aria-label="Close" title="Close" className="text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none"><X size={16} /></button>
@@ -1162,7 +1165,8 @@ function ContactsPageContent() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body,
             )}
 
             {dualReport && pendingAssignCampaign && (

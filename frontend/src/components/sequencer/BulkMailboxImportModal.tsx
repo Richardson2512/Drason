@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Upload, Download, FileText, CheckCircle2, AlertTriangle, XCircle, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -190,12 +191,15 @@ export default function BulkMailboxImportModal({ onClose, onSuccess }: {
         }
     };
 
-    return (
+    if (typeof document === 'undefined') return null;
+
+    return createPortal(
         <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
+            className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+            style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
             onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
         >
-            <div className="bg-white w-full max-w-3xl max-h-[88vh] flex flex-col rounded-2xl overflow-hidden" style={{ border: '1px solid #D1CBC5' }}>
+            <div className="bg-white w-full max-w-3xl max-h-[88vh] flex flex-col rounded-2xl overflow-hidden" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 {/* Header */}
                 <div className="px-5 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
                     <div className="flex items-center gap-2">
@@ -403,7 +407,8 @@ jane@example.com,google,Jane,150,,,,,,
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 

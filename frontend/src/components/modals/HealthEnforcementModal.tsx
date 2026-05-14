@@ -53,7 +53,7 @@ export default function HealthEnforcementModal({
     return (
         <div
             className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
-            style={{ background: 'rgba(0, 0, 0, 0.5)' }}
+            style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
             onClick={handleBackdropClick}
             role="dialog"
             aria-modal="true"
@@ -61,7 +61,8 @@ export default function HealthEnforcementModal({
         >
             <div
                 ref={modalRef}
-                className="animate-fade-in bg-white rounded-2xl max-w-[600px] w-full max-h-[90vh] overflow-auto shadow-xl"
+                className="animate-fade-in bg-white rounded-2xl max-w-[600px] w-full max-h-[90vh] overflow-auto"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
             >
                 {/* Header */}
                 <div className="p-8 border-b border-gray-100 rounded-t-2xl" style={{ background: 'linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%)' }}>

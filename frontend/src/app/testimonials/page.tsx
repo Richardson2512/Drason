@@ -13,6 +13,7 @@ interface Testimonial {
     role: string;
     company: string;
     logo: string;
+    date: string;
     metric?: { value: string; label: string };
     accent: 'orange' | 'blue' | 'green';
 }
@@ -25,6 +26,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Founder',
         company: 'Rihario',
         logo: '/image/customers/rihario-v2.png',
+        date: '2026-04-22',
         metric: { value: '0', label: 'Domains burned in Q1' },
         accent: 'orange',
     },
@@ -35,6 +37,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Head of Outbound',
         company: 'GoBengali',
         logo: '/image/customers/gobengali.png',
+        date: '2026-04-08',
         metric: { value: '+23%', label: 'Reply rate uplift' },
         accent: 'blue',
     },
@@ -45,6 +48,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'GTM Lead',
         company: 'PrompTrim',
         logo: '/image/customers/promptrim.png',
+        date: '2026-03-19',
         metric: { value: '3x', label: 'Campaign throughput' },
         accent: 'orange',
     },
@@ -55,6 +59,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Growth',
         company: 'Insightsnap',
         logo: '/image/customers/insightsnap.png',
+        date: '2026-03-05',
         metric: { value: '0.3%', label: 'Bounce rate' },
         accent: 'blue',
     },
@@ -65,6 +70,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Head of Operations',
         company: 'Vanishdrop',
         logo: '/image/customers/vanishdrop.png',
+        date: '2026-02-17',
         metric: { value: '100k+', label: 'Daily sends' },
         accent: 'blue',
     },
@@ -75,6 +81,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Founder',
         company: 'Syllabus Tracker',
         logo: '/image/customers/syllabus-tracker.png',
+        date: '2026-02-02',
         metric: { value: '+18', label: 'Reputation pts' },
         accent: 'green',
     },
@@ -85,6 +92,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'Head of Sales',
         company: 'Pricewise',
         logo: '/image/customers/pricewise.png',
+        date: '2026-01-21',
         metric: { value: '99.4%', label: 'Inbox placement' },
         accent: 'orange',
     },
@@ -95,6 +103,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'RevOps Manager',
         company: 'PrompTrim',
         logo: '/image/customers/promptrim.png',
+        date: '2026-01-09',
         accent: 'orange',
     },
     {
@@ -104,6 +113,7 @@ const TESTIMONIALS: Testimonial[] = [
         role: 'VP Growth',
         company: 'Insightsnap',
         logo: '/image/customers/insightsnap.png',
+        date: '2025-12-12',
         metric: { value: '1', label: 'Tool, not three' },
         accent: 'blue',
     },
@@ -193,37 +203,60 @@ function Card({ t }: { t: Testimonial }) {
 }
 
 export default function TestimonialsPage() {
-    const reviewSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'Product',
+    const productId = 'https://superkabe.com/#software';
+    const product = {
+        '@type': 'SoftwareApplication',
+        '@id': productId,
         name: 'Superkabe',
+        url: 'https://superkabe.com',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         description:
             'AI-powered cold email platform with native deliverability protection, multi-mailbox sending, and 5-phase domain healing.',
         brand: { '@type': 'Brand', name: 'Superkabe' },
-        aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.9',
-            reviewCount: TESTIMONIALS.length.toString(),
+    };
+
+    const reviews = TESTIMONIALS.map((t) => ({
+        '@type': 'Review',
+        reviewRating: {
+            '@type': 'Rating',
+            ratingValue: '5',
             bestRating: '5',
             worstRating: '1',
         },
-        review: TESTIMONIALS.map((t) => ({
-            '@type': 'Review',
-            reviewRating: {
-                '@type': 'Rating',
-                ratingValue: '5',
-                bestRating: '5',
+        author: {
+            '@type': 'Person',
+            name: t.author,
+            jobTitle: t.role,
+            worksFor: { '@type': 'Organization', name: t.company },
+        },
+        datePublished: t.date,
+        reviewBody: t.quote,
+        itemReviewed: { '@id': productId },
+    }));
+
+    const schema = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            product,
+            {
+                '@type': 'CollectionPage',
+                '@id': 'https://superkabe.com/testimonials#page',
+                url: 'https://superkabe.com/testimonials',
+                name: 'Customer Testimonials | Superkabe',
+                description:
+                    'See how outbound teams use Superkabe to send AI-personalized cold email at scale, protect deliverability, and heal burned domains automatically.',
+                mainEntity: { '@id': productId },
+                hasPart: reviews,
             },
-            author: { '@type': 'Person', name: t.author },
-            reviewBody: t.quote,
-        })),
+        ],
     };
 
     return (
         <div className="relative bg-[#F7F2EB] text-[#1E1E2F] min-h-screen font-sans">
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
             />
 
             <Navbar />

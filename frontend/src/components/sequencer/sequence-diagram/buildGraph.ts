@@ -27,11 +27,15 @@ import { NODE_WIDTH_PX } from './nodes';
 export interface SequenceStepInput {
     id: string;
     step_number: number;
+    /** Channel/executor selector — 'email' or any linkedin_* type. */
+    step_type?: string | null;
+    /** Polymorphic per-step payload (note_template, body_template, reaction_type…). */
+    step_config?: Record<string, unknown> | null;
     delay_days: number;
     delay_hours: number;
     subject: string;
     body_html: string;
-    condition?: string | null;            // 'if_no_reply' | 'if_replied' | etc.
+    condition?: string | null;            // 'if_no_reply' | 'if_replied' | 'if_connection' | etc.
     branch_to_step_number?: number | null;
     variants?: Array<{
         id: string;
@@ -68,13 +72,42 @@ const NODE_SEP = 40;
 
 interface ConditionMeta { label: string; positive: boolean; positiveLabel: string; negativeLabel: string }
 const CONDITION_LABELS: Record<string, ConditionMeta> = {
-    if_no_reply:    { label: 'Replied?',  positive: false, positiveLabel: 'Replied',   negativeLabel: 'No reply' },
-    if_replied:     { label: 'Replied?',  positive: true,  positiveLabel: 'Replied',   negativeLabel: 'No reply' },
-    if_opened:      { label: 'Opened?',   positive: true,  positiveLabel: 'Opened',    negativeLabel: "Didn't open" },
-    if_not_opened:  { label: 'Opened?',   positive: false, positiveLabel: 'Opened',    negativeLabel: "Didn't open" },
-    if_clicked:     { label: 'Clicked?',  positive: true,  positiveLabel: 'Clicked',   negativeLabel: "Didn't click" },
-    if_not_clicked: { label: 'Clicked?',  positive: false, positiveLabel: 'Clicked',   negativeLabel: "Didn't click" },
+    if_no_reply:        { label: 'Replied?',    positive: false, positiveLabel: 'Replied',   negativeLabel: 'No reply' },
+    if_replied:         { label: 'Replied?',    positive: true,  positiveLabel: 'Replied',   negativeLabel: 'No reply' },
+    if_opened:          { label: 'Opened?',     positive: true,  positiveLabel: 'Opened',    negativeLabel: "Didn't open" },
+    if_not_opened:      { label: 'Opened?',     positive: false, positiveLabel: 'Opened',    negativeLabel: "Didn't open" },
+    if_clicked:         { label: 'Clicked?',    positive: true,  positiveLabel: 'Clicked',   negativeLabel: "Didn't click" },
+    if_not_clicked:     { label: 'Clicked?',    positive: false, positiveLabel: 'Clicked',   negativeLabel: "Didn't click" },
+    if_connection:      { label: 'Connected?',  positive: true,  positiveLabel: 'Accepted',  negativeLabel: 'Pending' },
+    if_not_connection:  { label: 'Connected?',  positive: false, positiveLabel: 'Accepted',  negativeLabel: 'Pending' },
 };
+
+function isLinkedInStep(stepType: string | null | undefined): boolean {
+    return typeof stepType === 'string' && stepType.startsWith('linkedin_');
+}
+
+function buildLinkedInPreview(stepType: string, step: SequenceStepInput): { subject: string | null; preview: string | null } {
+    const cfg = (step.step_config || {}) as Record<string, unknown>;
+    switch (stepType) {
+        case 'linkedin_connection_request':
+            return { subject: null, preview: (cfg.note_template as string) || '(blank connection request)' };
+        case 'linkedin_message':
+            return { subject: null, preview: (cfg.body_template as string) || '' };
+        case 'linkedin_inmail':
+            return { subject: (cfg.subject as string) || step.subject || null, preview: (cfg.body as string) || '' };
+        case 'linkedin_like_post': {
+            const reaction = (cfg.reaction_type as string) || 'LIKE';
+            const window = (cfg.post_selection_timespan_days as number) ?? 30;
+            return { subject: null, preview: `React with ${reaction}, looking back ${window} days` };
+        }
+        case 'linkedin_view_profile':
+            return { subject: null, preview: 'Visit profile (lead sees "viewed your profile")' };
+        case 'linkedin_follow':
+            return { subject: null, preview: 'Follow the lead' };
+        default:
+            return { subject: null, preview: null };
+    }
+}
 
 // ============================================================================
 // PROVIDER → LOGO PATH
@@ -153,25 +186,43 @@ export function buildSequenceGraph(
             attachTargetId = `email-${step.step_number}`;
         }
 
-        // ─── Email node ────────────────────────────────────────────────
-        const emailId = `email-${step.step_number}`;
+        // ─── Action node — email vs linkedin_* ─────────────────────────
+        const stepType = step.step_type || 'email';
+        const isLinkedIn = isLinkedInStep(stepType);
+        const emailId = `step-${step.step_number}`;
         const sender = senderPool.length > 0 ? senderPool[i % senderPool.length] : null;
 
-        nodes.push({
-            id: emailId,
-            type: 'email',
-            data: {
-                stepNumber: step.step_number,
-                subject: step.subject,
-                bodyPreview: stripHtml(step.body_html).slice(0, 140),
-                senderEmail: sender?.email ?? null,
-                senderProvider: sender?.provider ?? null,
-                senderProviderLogo: sender ? providerLogo(sender.provider) : null,
-                variantCount: step.variants?.length ?? 1,
-                ...aggregateVariantStats(step.variants),
-            },
-            position: { x: 0, y: 0 },
-        });
+        if (isLinkedIn) {
+            const li = buildLinkedInPreview(stepType, step);
+            nodes.push({
+                id: emailId,
+                type: 'linkedin_action',
+                data: {
+                    stepNumber: step.step_number,
+                    actionType: stepType,
+                    subject: li.subject,
+                    preview: li.preview ? li.preview.slice(0, 140) : null,
+                    senderName: null,
+                },
+                position: { x: 0, y: 0 },
+            });
+        } else {
+            nodes.push({
+                id: emailId,
+                type: 'email',
+                data: {
+                    stepNumber: step.step_number,
+                    subject: step.subject,
+                    bodyPreview: stripHtml(step.body_html).slice(0, 140),
+                    senderEmail: sender?.email ?? null,
+                    senderProvider: sender?.provider ?? null,
+                    senderProviderLogo: sender ? providerLogo(sender.provider) : null,
+                    variantCount: step.variants?.length ?? 1,
+                    ...aggregateVariantStats(step.variants),
+                },
+                position: { x: 0, y: 0 },
+            });
+        }
 
         if (!isImmediate) {
             // Wait node already wired to pending; just connect wait → email
@@ -180,8 +231,8 @@ export function buildSequenceGraph(
             edges.push(makeEdge(pending, emailId));
         }
 
-        // ─── Stop-on-reply off-ramp ────────────────────────────────────
-        if (stop_on_reply) {
+        // ─── Stop-on-reply off-ramp (email only) ───────────────────────
+        if (stop_on_reply && !isLinkedIn) {
             const replyExitId = `${emailId}-exit-replied`;
             nodes.push({
                 id: replyExitId,
@@ -200,8 +251,8 @@ export function buildSequenceGraph(
             });
         }
 
-        // ─── Stop-on-bounce off-ramp ───────────────────────────────────
-        if (stop_on_bounce) {
+        // ─── Stop-on-bounce off-ramp (email only) ──────────────────────
+        if (stop_on_bounce && !isLinkedIn) {
             const bounceExitId = `${emailId}-exit-bounced`;
             nodes.push({
                 id: bounceExitId,

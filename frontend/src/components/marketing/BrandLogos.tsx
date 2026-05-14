@@ -8,7 +8,7 @@
  *   - vectorlogo.zone — microsoft (4-color square), salesforce
  *   - svgporn.com — webhooks
  *   - Brand websites (next/static, webflow assets, apple-touch-icon, favicon
- *     paths) — apollo, zoominfo, outreach, justcall, heyreach, zapmail,
+ *     paths) — apollo, zoominfo, outreach, justcall, zapmail,
  *     scaledmail. Where a brand publishes only a wordmark, we use their
  *     square apple-touch-icon / favicon PNG so the chip slot stays uniform.
  *
@@ -104,12 +104,7 @@ export function OutreachLogo({ size = 28 }: Props) {
     return <LogoImg src="/logos/outreach-icon.png" alt="Outreach" size={size} />;
 }
 
-// ─── LinkedIn outreach + dialer ──────────────────────────────────────────────
-
-export function HeyreachLogo({ size = 28 }: Props) {
-    // Square favicon (256×256) — sharper at chip size than their wordmark.
-    return <LogoImg src="/logos/heyreach-icon.png" alt="HeyReach" size={size} />;
-}
+// ─── Dialer ──────────────────────────────────────────────────────────────────
 
 export function JustcallLogo({ size = 28 }: Props) {
     return <LogoImg src="/logos/justcall-icon.png" alt="Justcall" size={size} />;

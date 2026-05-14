@@ -205,10 +205,16 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 200px;
 }
-/* Promote the scroll container to its own compositor layer */
+/* Promote the scroll container to its own compositor layer.
+   IMPORTANT: do NOT add `transform`, `filter`, `will-change: transform`,
+   `perspective`, or `contain: paint/strict/content` here — any of those
+   create a containing block for `position: fixed` descendants, which
+   would bound every modal/overlay to the content column instead of the
+   viewport (and let the sidebar peek through the backdrop).
+   `will-change: scroll-position` alone gives modern compositors the hint
+   they need without creating that containing block. */
 .light-theme main {
   will-change: scroll-position;
-  transform: translateZ(0);
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }

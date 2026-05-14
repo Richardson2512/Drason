@@ -7,6 +7,7 @@ import {
     ArrowLeft, Play, Pause, Trash2, Loader2, Users, Mail, MousePointerClick,
     MessageSquare, AlertTriangle, Clock, Send, Zap, ShieldCheck, Eye, Pencil,
     FileText, Database, Hand, Webhook, GitMerge, X, Workflow,
+    Linkedin, UserCheck, MessageCircle, Heart, UserPlus,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import ScheduleCalendarView from '@/components/sequencer/ScheduleCalendarView';
@@ -30,12 +31,46 @@ interface Variant {
 interface Step {
     id: string;
     step_number: number;
+    step_type?: string;
+    step_config?: Record<string, unknown> | null;
     delay_days: number;
     delay_hours: number;
     subject: string;
     preheader?: string;
     body_html: string;
     variants: Variant[];
+}
+
+interface LinkedInSenderRow {
+    id: string;
+    linkedin_account_id: string;
+    display_name: string;
+    account_type: string;
+    status: string;
+    rotation_priority: number;
+    enabled: boolean;
+}
+
+const LINKEDIN_STEP_LABELS: Record<string, { label: string; icon: React.ReactNode; accent: string; accentBg: string }> = {
+    linkedin_view_profile:       { label: 'View profile',       icon: <Eye size={11} />,           accent: '#F59E0B', accentBg: '#FFFBEB' },
+    linkedin_follow:             { label: 'Follow',             icon: <UserPlus size={11} />,      accent: '#06B6D4', accentBg: '#ECFEFF' },
+    linkedin_like_post:          { label: 'Like recent post',   icon: <Heart size={11} />,         accent: '#EC4899', accentBg: '#FDF2F8' },
+    linkedin_connection_request: { label: 'Connection request', icon: <UserCheck size={11} />,     accent: '#0A66C2', accentBg: '#EFF6FF' },
+    linkedin_message:            { label: 'LinkedIn DM',        icon: <MessageCircle size={11} />, accent: '#16A34A', accentBg: '#F0FDF4' },
+    linkedin_inmail:             { label: 'InMail',             icon: <Send size={11} />,          accent: '#8B5CF6', accentBg: '#F5F3FF' },
+};
+
+function linkedInPreview(step: Step): string {
+    const cfg = (step.step_config || {}) as Record<string, string | number | undefined>;
+    switch (step.step_type) {
+        case 'linkedin_connection_request': return (cfg.note_template as string) || '(blank connection request)';
+        case 'linkedin_message':            return (cfg.body_template as string) || '';
+        case 'linkedin_inmail':             return [cfg.subject as string, cfg.body as string].filter(Boolean).join(' · ');
+        case 'linkedin_like_post':          return `Reaction: ${cfg.reaction_type || 'LIKE'} · looking back ${cfg.post_selection_timespan_days ?? 30}d`;
+        case 'linkedin_view_profile':       return 'Visit profile';
+        case 'linkedin_follow':             return 'Follow the lead';
+        default:                            return '';
+    }
 }
 
 interface Account {
@@ -76,6 +111,7 @@ interface Campaign {
     lead_imports?: LeadImportRow[];
     steps: Step[];
     accounts: Account[];
+    linkedin_senders?: LinkedInSenderRow[];
     created_at: string;
     launched_at: string | null;
 }
@@ -125,6 +161,7 @@ export default function CampaignDetailPage() {
     const [rangeEnd, setRangeEnd] = useState<string>('');
     const [rangeStats, setRangeStats] = useState<{ sent: number; opens: number; clicks: number; replies: number; bounces: number; unsubscribes: number } | null>(null);
     const [rangeLoading, setRangeLoading] = useState(false);
+    const [skipStats, setSkipStats] = useState<{ total_skipped: number; reasons: Array<{ skip_reason: string | null; label: string; step_type: string; count: number }> } | null>(null);
     useEffect(() => {
         if (!previewModalStepId) return;
         window.dispatchEvent(new Event('recipient-preview-open'));
@@ -149,6 +186,49 @@ export default function CampaignDetailPage() {
         if (id) fetchCampaign();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    // Skip stats — fetched once per page load. Light-weight aggregate so
+    // we don't poll it; the widget tells operators which precondition
+    // caused leads to bypass which step types.
+    useEffect(() => {
+        if (!id) return;
+        apiClient<{ total_skipped: number; reasons: Array<{ skip_reason: string | null; label: string; step_type: string; count: number }> }>(
+            `/api/sequencer/campaigns/${id}/skip-stats`,
+        )
+            .then(res => setSkipStats(res || null))
+            .catch(() => { /* widget hides on error */ });
+    }, [id]);
+
+    // Live health poll — fires every 30s while the campaign is active so a
+    // mid-view auto-pause (e.g. healing pipeline pauses every mailbox)
+    // surfaces immediately rather than waiting for the next manual refresh.
+    // Refocus refetch covers the case where the user tabbed away.
+    useEffect(() => {
+        if (!id || !campaign || campaign.status !== 'active') return;
+        let cancelled = false;
+        const poll = async () => {
+            try {
+                const health = await apiClient<any>(`/api/sequencer/campaigns/${id}/health`);
+                if (cancelled) return;
+                const nextStatus = health?.status;
+                if (nextStatus && nextStatus !== campaign.status) {
+                    if (nextStatus === 'paused' && health?.auto_paused) {
+                        toast.error(`Campaign auto-paused: ${health.paused_reason || 'unknown reason'}`, { duration: 8000 });
+                    }
+                    await fetchCampaign();
+                }
+            } catch { /* health endpoint is best-effort; ignore */ }
+        };
+        const interval = setInterval(poll, 30_000);
+        const onFocus = () => { void poll(); };
+        window.addEventListener('focus', onFocus);
+        return () => {
+            cancelled = true;
+            clearInterval(interval);
+            window.removeEventListener('focus', onFocus);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, campaign?.status]);
 
     // Refetch ranged stats whenever both dates are present (or clear them).
     useEffect(() => {
@@ -195,6 +275,25 @@ export default function CampaignDetailPage() {
         if (action === 'delete') {
             setShowDeleteConfirm(true);
             return;
+        }
+        if (action === 'launch') {
+            // Preflight — the backend rejects launches that don't have
+            // steps + accounts, but the apiClient toasts the raw error
+            // (e.g. "Campaign has no sequence steps") *after* the round
+            // trip. Catching it here lets us route the operator to the
+            // wizard with a more useful message and avoid the half-second
+            // dead state where the button spins.
+            const missing: string[] = [];
+            if (!campaign.steps || campaign.steps.length === 0) missing.push('a sequence step');
+            const hasLinkedInSteps = (campaign.steps || []).some(s => s.step_type?.startsWith('linkedin_'));
+            const hasEmailSteps = (campaign.steps || []).some(s => !s.step_type || !s.step_type.startsWith('linkedin_'));
+            if (hasEmailSteps && (!campaign.accounts || campaign.accounts.length === 0)) missing.push('an email account');
+            if (hasLinkedInSteps && (!campaign.linkedin_senders || campaign.linkedin_senders.length === 0)) missing.push('a LinkedIn sender');
+            if (campaign.lead_count === 0) missing.push('at least one lead');
+            if (missing.length > 0) {
+                toast.error(`Can't launch — campaign is missing ${missing.join(', ')}. Open the editor to fix.`);
+                return;
+            }
         }
         setActing(action);
         try {
@@ -273,15 +372,17 @@ export default function CampaignDetailPage() {
                     <Link
                         href={`/dashboard/sequencer/campaigns/${campaign.id}/sequence`}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-gray-700 border border-[#D1CBC5] text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-50"
+                        title="Read-only flow diagram"
                     >
-                        <Workflow size={12} /> View sequence
+                        <Workflow size={12} /> Diagram
                     </Link>
                     {canEdit && (campaign.status === 'draft' || campaign.status === 'active' || campaign.status === 'paused') && (
                         <Link
                             href={`/dashboard/sequencer/campaigns/new?id=${campaign.id}`}
                             className="flex items-center gap-1.5 px-3 py-1.5 text-gray-700 border border-[#D1CBC5] text-xs font-semibold rounded-lg cursor-pointer hover:bg-gray-50"
+                            title="Add or edit email + LinkedIn steps"
                         >
-                            <Pencil size={12} /> Edit
+                            <Pencil size={12} /> Edit steps
                         </Link>
                     )}
                     {canLaunchPause && campaign.status === 'draft' && (
@@ -323,6 +424,26 @@ export default function CampaignDetailPage() {
                 </div>
             </div>
 
+            {campaign.status === 'active' && campaign.lead_count === 0 && (
+                <div
+                    className="rounded-lg px-3 py-2 flex items-start gap-2 text-xs"
+                    style={{ border: '1px solid #D1CBC5', background: '#FFFBEB' }}
+                >
+                    <AlertTriangle size={14} className="text-amber-600 mt-0.5 shrink-0" />
+                    <div className="text-gray-700">
+                        <span className="font-semibold">No leads enrolled.</span> This campaign is active but has nothing to send.
+                        {canEdit && (
+                            <Link
+                                href={`/dashboard/sequencer/campaigns/new?id=${campaign.id}`}
+                                className="ml-1 text-amber-700 underline decoration-dotted hover:text-amber-900"
+                            >
+                                Add leads
+                            </Link>
+                        )} to start sending.
+                    </div>
+                </div>
+            )}
+
             {/* Stats — with optional date range filter. Leads count is total
                 (always lifetime); the rest reflect either lifetime totals or
                 the sum of /api/analytics/daily buckets when a range is set. */}
@@ -333,11 +454,29 @@ export default function CampaignDetailPage() {
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-[150px]">
-                        <DatePicker value={rangeStart} onChange={setRangeStart} />
+                        <DatePicker
+                            value={rangeStart}
+                            onChange={(v) => {
+                                setRangeStart(v);
+                                if (v && rangeEnd && new Date(v) > new Date(rangeEnd)) {
+                                    setRangeEnd('');
+                                    toast.error('Start must be before end — cleared the end date.');
+                                }
+                            }}
+                        />
                     </div>
                     <span className="text-[11px] text-gray-400">→</span>
                     <div className="w-[150px]">
-                        <DatePicker value={rangeEnd} onChange={setRangeEnd} />
+                        <DatePicker
+                            value={rangeEnd}
+                            onChange={(v) => {
+                                if (v && rangeStart && new Date(v) < new Date(rangeStart)) {
+                                    toast.error('End must be after start.');
+                                    return;
+                                }
+                                setRangeEnd(v);
+                            }}
+                        />
                     </div>
                     {(rangeStart || rangeEnd) && (
                         <button
@@ -390,6 +529,44 @@ export default function CampaignDetailPage() {
                 </div>
             </div>
 
+            {/* Skip reasons — why dispatcher bypassed steps. Surfaces things
+                like "Lead has no LinkedIn URL on file" so operators can see
+                whether their list quality or step ordering is wasting capacity. */}
+            {skipStats && skipStats.total_skipped > 0 && (
+                <div className="premium-card p-3">
+                    <h2 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
+                        <AlertTriangle size={12} /> Why steps were skipped
+                        <span className="text-[10px] font-normal text-gray-500">
+                            ({skipStats.total_skipped.toLocaleString()} total)
+                        </span>
+                    </h2>
+                    <div className="flex flex-col gap-1.5">
+                        {skipStats.reasons.slice(0, 8).map((r, i) => (
+                            <div
+                                key={`${r.skip_reason}-${r.step_type}-${i}`}
+                                className="flex items-start justify-between gap-3 p-2 rounded-md"
+                                style={{ background: '#FAFAF8', border: '1px solid #F0EBE3' }}
+                            >
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-[11px] text-gray-800 leading-snug">{r.label}</div>
+                                    <div className="text-[9px] uppercase tracking-wide text-gray-400 mt-0.5 font-semibold">
+                                        on {r.step_type}
+                                    </div>
+                                </div>
+                                <div className="text-xs font-bold tabular-nums text-gray-900 shrink-0">
+                                    {r.count.toLocaleString()}
+                                </div>
+                            </div>
+                        ))}
+                        {skipStats.reasons.length > 8 && (
+                            <div className="text-[10px] text-gray-400 mt-1">
+                                +{skipStats.reasons.length - 8} more skip reason{skipStats.reasons.length - 8 === 1 ? '' : 's'}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {/* Steps */}
             <div className="premium-card p-3">
                 <h2 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
@@ -399,34 +576,58 @@ export default function CampaignDetailPage() {
                     <p className="text-xs text-gray-500 py-2">No steps configured.</p>
                 ) : (
                     <div className="flex flex-col gap-2">
-                        {campaign.steps.map((step) => (
-                            <div key={step.id} className="rounded-lg p-2.5" style={{ border: '1px solid #E8E3DC' }}>
-                                <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[11px] font-semibold text-gray-900">Step {step.step_number}</span>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] text-gray-500">
-                                            {step.step_number === 1
-                                                ? 'Send immediately'
-                                                : `+${step.delay_days}d ${step.delay_hours}h delay`}
+                        {campaign.steps.map((step) => {
+                            const isLinkedIn = step.step_type && step.step_type.startsWith('linkedin_');
+                            const liMeta = isLinkedIn ? LINKEDIN_STEP_LABELS[step.step_type as string] : null;
+                            return (
+                                <div
+                                    key={step.id}
+                                    className="rounded-lg p-2.5"
+                                    style={{ border: isLinkedIn && liMeta ? `1px solid ${liMeta.accent}44` : '1px solid #E8E3DC', background: isLinkedIn && liMeta ? liMeta.accentBg : undefined }}
+                                >
+                                    <div className="flex items-center justify-between mb-1">
+                                        <span className="text-[11px] font-semibold text-gray-900 flex items-center gap-1.5">
+                                            {liMeta && <span style={{ color: liMeta.accent }}>{liMeta.icon}</span>}
+                                            Step {step.step_number}
+                                            {liMeta && (
+                                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded" style={{ background: '#FFFFFF', color: liMeta.accent, border: `1px solid ${liMeta.accent}33` }}>
+                                                    {liMeta.label}
+                                                </span>
+                                            )}
                                         </span>
-                                        <button
-                                            onClick={() => { setPreviewModalVariantIdx(0); setPreviewModalStepId(step.id); }}
-                                            className="inline-flex items-center gap-1 text-[10px] font-medium text-gray-700 hover:text-gray-900 cursor-pointer bg-transparent border-none px-1.5 py-0.5 rounded hover:bg-gray-50"
-                                            title="Preview as recipient"
-                                        >
-                                            <Eye size={11} />
-                                            Preview as recipient
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] text-gray-500">
+                                                {step.step_number === 1
+                                                    ? 'Send immediately'
+                                                    : `+${step.delay_days}d ${step.delay_hours}h delay`}
+                                            </span>
+                                            {!isLinkedIn && (
+                                                <button
+                                                    onClick={() => { setPreviewModalVariantIdx(0); setPreviewModalStepId(step.id); }}
+                                                    className="inline-flex items-center gap-1 text-[10px] font-medium text-gray-700 hover:text-gray-900 cursor-pointer bg-transparent border-none px-1.5 py-0.5 rounded hover:bg-gray-50"
+                                                    title="Preview as recipient"
+                                                >
+                                                    <Eye size={11} />
+                                                    Preview as recipient
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
+                                    {isLinkedIn ? (
+                                        <p className="text-xs text-gray-700 line-clamp-2">{linkedInPreview(step) || '(no body)'}</p>
+                                    ) : (
+                                        <>
+                                            <p className="text-xs text-gray-900 font-medium truncate">{step.subject || '(no subject)'}</p>
+                                            {step.variants && step.variants.length > 0 && (
+                                                <p className="text-[10px] text-gray-400 mt-1">
+                                                    {step.variants.length} variant{step.variants.length === 1 ? '' : 's'}
+                                                </p>
+                                            )}
+                                        </>
+                                    )}
                                 </div>
-                                <p className="text-xs text-gray-900 font-medium truncate">{step.subject || '(no subject)'}</p>
-                                {step.variants && step.variants.length > 0 && (
-                                    <p className="text-[10px] text-gray-400 mt-1">
-                                        {step.variants.length} variant{step.variants.length === 1 ? '' : 's'}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>
@@ -491,15 +692,43 @@ export default function CampaignDetailPage() {
                 )}
             </div>
 
+            {/* LinkedIn sender pool — only rendered for mixed-channel
+                campaigns (any campaign with linkedin_* steps). The wizard
+                attaches CampaignLinkedInSender rows; the dispatcher reads
+                from the same table when executing LinkedIn steps. */}
+            {campaign.linkedin_senders && campaign.linkedin_senders.length > 0 && (
+                <div className="premium-card p-3">
+                    <h2 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
+                        <Linkedin size={12} className="text-[#0A66C2]" /> LinkedIn sender pool <span className="text-gray-400 font-normal">({campaign.linkedin_senders.length})</span>
+                    </h2>
+                    <div className="flex flex-col gap-1.5">
+                        {campaign.linkedin_senders.map((s) => (
+                            <div key={s.id} className="flex items-center justify-between text-xs">
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-gray-900 truncate">{s.display_name}</p>
+                                    <p className="text-[10px] text-gray-500 capitalize">{s.account_type.replace(/_/g, ' ')}</p>
+                                </div>
+                                <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                                    s.status === 'OK' ? 'bg-emerald-50 text-emerald-700' :
+                                    s.status === 'ERROR' ? 'bg-red-50 text-red-700' :
+                                    'bg-amber-50 text-amber-700'
+                                }`}>{s.status}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Delete Confirmation Modal — platform-themed */}
             {showDeleteConfirm && (
                 <div
-                    className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[9998] p-4"
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={(e) => { if (e.target === e.currentTarget && acting !== 'delete') setShowDeleteConfirm(false); }}
                 >
                     <div
-                        className="bg-white rounded-xl w-full max-w-md"
-                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 25px 50px rgba(0,0,0,0.15)' }}
+                        className="bg-white rounded-2xl w-full max-w-md"
+                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                     >
                         <div className="p-4 flex items-center justify-between" style={{ borderBottom: '1px solid #D1CBC5' }}>
                             <div className="flex items-center gap-2">
@@ -525,7 +754,7 @@ export default function CampaignDetailPage() {
                                 This also removes {campaign.lead_count?.toLocaleString() || 0} campaign lead record{campaign.lead_count === 1 ? '' : 's'} and {campaign.steps.length} sequence step{campaign.steps.length === 1 ? '' : 's'}. This action can&apos;t be undone.
                             </p>
                         </div>
-                        <div className="p-3 flex justify-end gap-2" style={{ borderTop: '1px solid #E8E3DC', background: '#FAFAF8' }}>
+                        <div className="p-3 flex justify-end gap-2" style={{ borderTop: '1px solid #D1CBC5', background: '#FAFAF8' }}>
                             <button
                                 onClick={() => setShowDeleteConfirm(false)}
                                 disabled={acting === 'delete'}
@@ -567,10 +796,11 @@ export default function CampaignDetailPage() {
                 const senderAccount = campaign.accounts?.[0]?.account;
                 return (
                     <div
-                        className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9998] p-4"
+                        className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                        style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                         onClick={(e) => { if (e.target === e.currentTarget) setPreviewModalStepId(null); }}
                     >
-                        <div className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col shadow-2xl overflow-hidden" style={{ border: '1px solid #E5E5E5' }}>
+                        <div className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col overflow-hidden" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                             <div className="px-6 py-4 flex items-center justify-between bg-white" style={{ borderBottom: '1px solid #E5E5E5' }}>
                                 <div className="flex items-center gap-4">
                                     <div className="w-9 h-9 rounded-lg bg-neutral-900 text-white flex items-center justify-center">

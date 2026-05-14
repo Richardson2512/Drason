@@ -13,7 +13,7 @@ import type { SequenceStepInput, SenderAttribution } from '@/components/sequence
 /**
  * Campaign sequence diagram — visual flow of the email sequence with
  * lead sources at the top, sync targets at the bottom, and adjacent
- * tools (JustCall, HeyReach) on the side.
+ * tools (JustCall, LinkedIn outreach) on the side.
  *
  * Email-only by design. Multi-channel handoffs are explicit (Adjacent
  * Tools panel) rather than fake-step nodes inside the sequence.
@@ -99,11 +99,11 @@ export default function CampaignSequenceDiagramPage({ params }: { params: Promis
                 <div className="flex items-center gap-2 mb-1">
                     <Workflow size={16} strokeWidth={2} className="text-[#1E1E2F]" />
                     <h1 className="text-xl font-semibold text-[#1E1E2F]">
-                        Sequence flow{campaign?.name ? ` — ${campaign.name}` : ''}
+                        Sequence diagram{campaign?.name ? ` — ${campaign.name}` : ''}
                     </h1>
                 </div>
                 <p className="text-xs text-[#6B5E4F]">
-                    Visual map of how this campaign runs: where leads come from, what the email sequence does, and where outcomes flow.
+                    Read-only flow map: lead sources at the top, email sequence in the middle, sync targets at the bottom. To add or edit steps (email or LinkedIn), use <Link href={`/dashboard/sequencer/campaigns/new?id=${id}`} className="underline decoration-dotted text-[#1E1E2F] hover:text-black">Edit steps</Link>.
                 </p>
             </div>
 

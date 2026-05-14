@@ -23,6 +23,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
     X,
     Upload,
@@ -433,15 +434,17 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
     // ── Render ───────────────────────────────────────────────────────────
 
     if (!open) return null;
+    if (typeof document === 'undefined') return null;
 
-    return (
+    return createPortal(
         <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
+            className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+            style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
             onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
         >
             <div
-                className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
-                style={{ border: '1px solid #D1CBC5' }}
+                className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
             >
                 {/* Header */}
                 <div
@@ -529,7 +532,8 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 
@@ -543,6 +547,18 @@ function titleFor(stage: Stage): string {
         case 'configure-crm':     return 'Import from CRM';
     }
 }
+
+// Contact-database providers we have backend scaffolding for (services/
+// enrichment/providers). Each card surfaces "Not connected" until a real
+// connection wizard lands — pattern matches Apollo when its connections
+// list is empty. Connection setup lives at /dashboard/integrations.
+const CONTACT_DB_PROVIDERS: Array<{ key: string; label: string; logo: string }> = [
+    { key: 'clay',     label: 'Clay',     logo: '/brands/clay.svg' },
+    { key: 'surfe',    label: 'Surfe',    logo: '/brands/surfe.svg' },
+    { key: 'lusha',    label: 'Lusha',    logo: '/brands/lusha.svg' },
+    { key: 'hunter',   label: 'Hunter',   logo: '/brands/hunter.svg' },
+    { key: 'zoominfo', label: 'ZoomInfo', logo: '/brands/zoominfo.svg' },
+];
 
 function SourcePicker(props: {
     loadingConns: boolean;
@@ -592,6 +608,27 @@ function SourcePicker(props: {
                         disabledReason={!apolloAvailable && !loadingConns ? 'Connect Apollo under Integrations → Contact Databases' : undefined}
                         onClick={onPickApollo}
                     />
+                </div>
+            </div>
+
+            {/* Contact databases — enrichment-provider sources. Cards are
+                "Not connected" placeholders until each provider's connection
+                wizard ships. Clicking a not-connected card surfaces the
+                same disabledReason pattern as Apollo. */}
+            <div className="flex flex-col gap-2">
+                <SectionHeader label="Contact databases" hint="Connect via Integrations" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    {CONTACT_DB_PROVIDERS.map(p => (
+                        <ActionCard
+                            key={p.key}
+                            icon={<BrandLogo src={p.logo} alt={p.label} />}
+                            title={p.label}
+                            subtitle="Not connected"
+                            available={false}
+                            disabledReason={`Connect ${p.label} under Integrations → Contact Databases`}
+                            onClick={() => { /* no-op until connection wizard */ }}
+                        />
+                    ))}
                 </div>
             </div>
 

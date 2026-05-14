@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Hunter">
+  <rect width="64" height="64" rx="14" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <!-- Hunter's mark is a stylised orange fox/hunter character with pointed
+       ears and a friendly muzzle, in their warm-orange. -->
+  <g fill="#FA5320">
+    <!-- Fox head -->
+    <path d="M32 14 C 22 14, 16 22, 16 32 C 16 42, 22 52, 32 52 C 42 52, 48 42, 48 32 C 48 22, 42 14, 32 14 Z M 22 18 L 18 12 L 26 18 Z M 42 18 L 38 18 L 46 12 Z"/>
+  </g>
+  <!-- Eyes -->
+  <circle cx="26" cy="30" r="2" fill="#FFFFFF"/>
+  <circle cx="38" cy="30" r="2" fill="#FFFFFF"/>
+  <!-- Snout / nose -->
+  <ellipse cx="32" cy="40" rx="3" ry="2" fill="#FFFFFF"/>
+</svg>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon, Flame, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, LogOut, User, LayoutDashboard, Bell, Users, Rocket, Mailbox, Globe, ShieldCheck, LineChart, Sparkles, HeartPulse, FileText, Settings, ScrollText, CreditCard, Wrench, BadgeCheck, Send, Mail, Inbox, BookTemplate, Contact, BarChart3, Link2, Shield, Plug, Code, LifeBuoy, PhoneCall, Clock, X as XIcon, Flame, Zap, Linkedin, Radar, Target } from 'lucide-react';
 import { logout as serverLogout, apiClient } from '@/lib/api';
 import { consumeIntendedReturnTo } from '@/lib/auth-client';
 import CustomSelect from '@/components/ui/CustomSelect';
@@ -12,6 +12,7 @@ import { HelpPanel, HelpPanelTrigger } from '@/components/HelpPanel';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ConsentReacceptanceModal from '@/components/ConsentReacceptanceModal';
 import ValidationBanner from '@/components/dashboard/ValidationBanner';
+import AssessmentProgressFloater from '@/components/dashboard/AssessmentProgressFloater';
 import WorkspaceSwitcher from '@/components/dashboard/WorkspaceSwitcher';
 import { useDashboard } from '@/contexts/DashboardContext';
 import type { AssessmentStatusResponse, Organization, UnreadCountResponse } from '@/types/api';
@@ -61,14 +62,36 @@ export default function DashboardShell({
     }, [isCollapsed]);
     // SSR has no localStorage, so the initial value must match between server
     // and first client render. We sync from localStorage after mount.
-    const [activeMode, setActiveMode] = useState<'sequencer' | 'protection' | null>('sequencer');
+    const [activeMode, setActiveMode] = useState<'sequencer' | 'protection' | 'linkedin' | null>('sequencer');
     useEffect(() => {
         if (typeof window === 'undefined') return;
         const stored = localStorage.getItem('superkabe-dashboard-mode');
-        if (stored === 'sequencer' || stored === 'protection') {
+        if (stored === 'sequencer' || stored === 'protection' || stored === 'linkedin') {
             setActiveMode(stored);
         }
     }, []);
+
+    // On every route change, snap the sidebar to the section that owns
+    // the current URL. Without this, a full-page nav (e.g. window.location
+    // = '/dashboard/linkedin/campaigns/123') restores the LAST toggled
+    // mode from localStorage — which can disagree with the URL after the
+    // user toggled into a different section earlier in the session.
+    useEffect(() => {
+        if (!pathname) return;
+        if (pathname.startsWith('/dashboard/linkedin'))     setActiveMode('linkedin');
+        else if (pathname.startsWith('/dashboard/sequencer')) setActiveMode('sequencer');
+        else if (
+            pathname === '/dashboard' ||
+            pathname.startsWith('/dashboard/leads') ||
+            pathname.startsWith('/dashboard/campaigns') ||
+            pathname.startsWith('/dashboard/mailboxes') ||
+            pathname.startsWith('/dashboard/domains') ||
+            pathname.startsWith('/dashboard/infrastructure') ||
+            pathname.startsWith('/dashboard/analytics') ||
+            pathname.startsWith('/dashboard/insights') ||
+            pathname.startsWith('/dashboard/healing')
+        ) setActiveMode('protection');
+    }, [pathname]);
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [helpPanelOpen, setHelpPanelOpen] = useState(false);
     const [systemMode, setSystemMode] = useState<string>('');
@@ -163,10 +186,11 @@ export default function DashboardShell({
                         setAssessmentJustFinished(true);
                         // Dispatch a custom event so child pages can refresh their data
                         window.dispatchEvent(new CustomEvent('assessment-complete'));
-                        // Auto-clear the "complete" state after 2 seconds
+                        // Hold the "complete" floater for 8s so it's visible without
+                        // being intrusive. Manual dismiss is also wired in the floater.
                         setTimeout(() => {
                             setAssessmentJustFinished(false);
-                        }, 2000);
+                        }, 8000);
                     }
                     wasInProgress = inProgress;
                 })
@@ -302,7 +326,7 @@ export default function DashboardShell({
                     />
 
                     {(() => {
-                        const toggleMode = (mode: 'sequencer' | 'protection') => {
+                        const toggleMode = (mode: 'sequencer' | 'protection' | 'linkedin') => {
                             const next = activeMode === mode ? null : mode;
                             setActiveMode(next);
                             if (next && typeof window !== 'undefined') localStorage.setItem('superkabe-dashboard-mode', next);
@@ -333,10 +357,23 @@ export default function DashboardShell({
                             { href: '/dashboard/settings', label: 'Configuration', icon: <Wrench size={13} strokeWidth={1.75} /> },
                         ];
 
+                        const linkedinItems = [
+                            { href: '/dashboard/linkedin', label: 'Overview', icon: <LayoutDashboard size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/accounts', label: 'Accounts', icon: <Users size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/campaigns', label: 'Campaigns', icon: <Rocket size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/contacts', label: 'Contacts', icon: <Contact size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/unibox', label: 'Unibox', icon: <Inbox size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/signals', label: 'Signals', icon: <Radar size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/icp', label: 'ICP Profiles', icon: <Target size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/analytics', label: 'Analytics', icon: <BarChart3 size={13} strokeWidth={1.75} /> },
+                            { href: '/dashboard/linkedin/settings', label: 'Settings', icon: <Settings size={13} strokeWidth={1.75} /> },
+                        ];
+
                         const sharedItems = [
                             { href: '/dashboard/integrations', label: 'Integrations', icon: <Plug size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/api-mcp', label: 'API & MCP', icon: <Code size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/notifications', label: 'Notifications', icon: <Bell size={13} strokeWidth={1.75} />, badge: unreadCount },
+                            { href: '/dashboard/reports', label: 'Reports', icon: <FileText size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/billing', label: 'Billing', icon: <CreditCard size={13} strokeWidth={1.75} /> },
                             { href: '/dashboard/audit', label: 'Audit Log', icon: <ScrollText size={13} strokeWidth={1.75} /> },
                         ];
@@ -421,6 +458,33 @@ export default function DashboardShell({
                                 {activeMode === 'protection' && !isCollapsed && (
                                     <div className="flex flex-col gap-0.5 pl-2">
                                         {protectionItems.map(renderNavItem)}
+                                    </div>
+                                )}
+
+                                {/* Divider */}
+                                {!isCollapsed && <div className="h-px my-1" style={{ background: '#E8E3DC' }} />}
+                                {isCollapsed && <div className="h-1" />}
+
+                                {/* Super LinkedIn Section */}
+                                <button
+                                    onClick={() => toggleMode('linkedin')}
+                                    className="nav-link cursor-pointer w-full text-left"
+                                    style={{ justifyContent: isCollapsed ? 'center' : 'flex-start', background: activeMode === 'linkedin' ? '#F5F1EA' : 'transparent' }}
+                                    title={isCollapsed ? 'Super LinkedIn' : ''}
+                                >
+                                    <span className="nav-icon" style={{ color: activeMode === 'linkedin' ? '#111827' : '#6B7280' }}>
+                                        <Linkedin size={13} strokeWidth={1.75} />
+                                    </span>
+                                    {!isCollapsed && (
+                                        <>
+                                            <span className="nav-label" style={{ fontWeight: activeMode === 'linkedin' ? 600 : 500, color: activeMode === 'linkedin' ? '#111827' : undefined }}>Super LinkedIn</span>
+                                            <ChevronDown size={10} className="ml-auto" style={{ transform: activeMode === 'linkedin' ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.15s ease', color: '#9CA3AF' }} />
+                                        </>
+                                    )}
+                                </button>
+                                {activeMode === 'linkedin' && !isCollapsed && (
+                                    <div className="flex flex-col gap-0.5 pl-2">
+                                        {linkedinItems.map(renderNavItem)}
                                     </div>
                                 )}
 
@@ -572,44 +636,18 @@ export default function DashboardShell({
                 {/* Email Validation Activity Banner */}
                 <ValidationBanner />
 
-                {/* Infrastructure Assessment Progress Overlay — hidden on settings page where sync modal already shows health check progress */}
-                {assessmentInProgress && pathname !== '/dashboard/settings' && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[100]">
-                        <div className="bg-white rounded-[20px] px-12 py-10 max-w-[440px] w-[90%] text-center" style={{
-                            boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
-                            animation: 'slideIn 0.3s ease-out'
-                        }}>
-                            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center" style={{
-                                background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)',
-                            }}>
-                                <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-500 rounded-full" style={{
-                                    animation: 'spin 1s linear infinite'
-                                }} />
-                            </div>
-                            <h3 className="m-0 mb-2 text-xl font-bold text-[#1E1B4B]">
-                                Infrastructure Assessment Running
-                            </h3>
-                            <p className="m-0 mb-6 text-[0.9rem] text-gray-500 leading-normal">
-                                Checking DNS records, bounce rates, and mailbox health across all domains. This takes a moment — data will refresh automatically when complete.
-                            </p>
-                            <div className="flex items-center justify-center gap-2 p-3 px-4 bg-[#F5F3FF] rounded-xl text-[0.8rem] text-[#7C3AED] font-semibold">
-                                <span style={{ animation: 'pulse 1.5s infinite' }}>●</span>
-                                Assessment in progress...
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Assessment Complete Flash */}
-                {assessmentJustFinished && !assessmentInProgress && (
-                    <div className="fixed top-4 left-1/2 -translate-x-1/2 border-2 border-emerald-400 rounded-2xl p-4 px-6 flex items-center gap-3 z-[100]" style={{
-                        background: 'linear-gradient(135deg, #ECFDF5, #D1FAE5)',
-                        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                        animation: 'slideIn 0.3s ease-out'
-                    }}>
-                        <span className="text-xl">✓</span>
-                        <span className="text-[0.9rem] font-semibold text-[#065F46]">Assessment complete — data refreshed</span>
-                    </div>
+                {/* Infrastructure assessment — non-blocking bottom-right
+                    floater. The full-screen modal was removed so the dashboard
+                    stays usable while DNS / DNSBL checks run in the background.
+                    Sending continues normally; the real-time execution gate
+                    (mailbox status, domain pause, recovery phase, bounce rate)
+                    governs whether a specific send is allowed. Hidden on
+                    /dashboard/settings where the sync modal already covers it. */}
+                {pathname !== '/dashboard/settings' && (
+                    <AssessmentProgressFloater
+                        inProgress={assessmentInProgress}
+                        justFinished={assessmentJustFinished}
+                    />
                 )}
 
                 {/* Trial Countdown Floating Popup — dashboard-native styling.
@@ -658,7 +696,12 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                {pathname === '/dashboard/sequencer/unibox' ? (
+                {/* Full-bleed routes — Unibox pages render their own toolbar
+                    + 3-column layout that needs to fill the viewport. The
+                    py-2 px-3 wrapper used elsewhere introduces visible gaps
+                    around them. Extend this whitelist for any future
+                    edge-to-edge route. */}
+                {(pathname === '/dashboard/sequencer/unibox' || pathname === '/dashboard/linkedin/unibox') ? (
                     <ErrorBoundary resetKey={pathname || ''}>
                         {children}
                     </ErrorBoundary>
@@ -677,9 +720,10 @@ export default function DashboardShell({
 
             {/* Support Ticket Modal */}
             {showTicketModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[9998]" onClick={() => { if (!ticketSubmitting) setShowTicketModal(false); }}>
-                    <div className="bg-white rounded-[20px] max-w-[520px] w-[90%] p-8" style={{
-                        boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+                <div className="fixed inset-0 backdrop-blur-[2px] flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)' }} onClick={() => { if (!ticketSubmitting) setShowTicketModal(false); }}>
+                    <div className="bg-white rounded-2xl max-w-[520px] w-full p-8" style={{
+                        border: '1px solid #D1CBC5',
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)',
                         animation: 'slideIn 0.3s ease-out',
                     }} onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center mb-6">
@@ -771,9 +815,10 @@ export default function DashboardShell({
 
             {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
             {showUpgradeModal && pathname !== '/dashboard/billing' && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9999]">
-                    <div className="bg-white rounded-3xl max-w-[480px] w-[90%] py-12 px-10 text-center" style={{
-                        boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+                <div className="fixed inset-0 backdrop-blur-[2px] flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.65)' }}>
+                    <div className="bg-white rounded-2xl max-w-[480px] w-full py-12 px-10 text-center" style={{
+                        border: '1px solid #D1CBC5',
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)',
                     }}>
                         <div className="text-[3rem] mb-4">⏰</div>
                         <h2 className="text-2xl font-extrabold text-gray-900 mb-3">

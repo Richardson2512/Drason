@@ -2,7 +2,12 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Plus, Trash2, Copy, GripVertical, Clock, Check, Rocket, Loader2, Eye, X, Sparkles } from 'lucide-react';
+import {
+    ChevronLeft, ChevronRight, Plus, Trash2, Copy, GripVertical, Clock,
+    Check, Rocket, Loader2, Eye, X, Sparkles,
+    Mail, Linkedin, UserCheck, MessageCircle, Send, UserPlus, Heart, ChevronDown,
+    Search, AlertTriangle,
+} from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import dynamic from 'next/dynamic';
 import Papa from 'papaparse';
@@ -14,6 +19,9 @@ import AIAssistPanel from '@/components/sequencer/AIAssistPanel';
 import RecipientPreviewPanel from '@/components/sequencer/RecipientPreviewPanel';
 import SuppressionPicker, { type SuppressionRule } from '@/components/sequencer/SuppressionPicker';
 import toast from 'react-hot-toast';
+import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
+import TagPicker from '@/components/sequencer/TagPicker';
+import { type TagItem } from '@/components/sequencer/TagManagerModal';
 
 // Dynamic import to avoid SSR issues with Tiptap
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
@@ -35,9 +43,23 @@ function safeRandomUUID(): string {
 // TYPES
 // ============================================================================
 
+/** Channel step type vocabulary — mirrors backend stepTypeRegistry. */
+type WizardStepType =
+    | 'email'
+    | 'linkedin_view_profile'
+    | 'linkedin_follow'
+    | 'linkedin_like_post'
+    | 'linkedin_connection_request'
+    | 'linkedin_message'
+    | 'linkedin_inmail'
+    | 'find_linkedin_url';
+
 interface SequenceStepData {
     id: string;
     stepNumber: number;
+    /** Channel + executor selector. Drives the editor shape and the sender
+     *  pool the dispatcher pulls from. */
+    stepType: WizardStepType;
     delayDays: number;
     delayHours: number;
     subject: string;
@@ -54,6 +76,10 @@ interface SequenceStepData {
      */
     condition?: string | null;
     branchToStepNumber?: number | null;
+    /** Polymorphic per-step payload — note_template for CR, body_template
+     *  for DM/InMail, reaction_type for like-post, etc. Backend validates
+     *  against stepTypeRegistry.config_schema before persisting. */
+    stepConfig?: Record<string, unknown>;
     variants: Array<{
         id: string;
         label: string;
@@ -63,6 +89,76 @@ interface SequenceStepData {
         weight: number;
     }>;
 }
+
+const STEP_TYPE_META: Record<WizardStepType, {
+    label: string;
+    shortLabel: string;
+    icon: React.ReactNode;
+    accent: string;
+    accentBg: string;
+    description: string;
+    channel: 'email' | 'linkedin' | 'utility';
+}> = {
+    email: {
+        label: 'Email',
+        shortLabel: 'Email',
+        icon: <Mail size={11} />, accent: '#2563EB', accentBg: '#EFF6FF',
+        description: 'Send an email from the campaign\'s mailbox pool.',
+        channel: 'email',
+    },
+    linkedin_view_profile: {
+        label: 'LinkedIn — View profile',
+        shortLabel: 'View profile',
+        icon: <Eye size={11} />, accent: '#F59E0B', accentBg: '#FFFBEB',
+        description: 'Visit the lead\'s profile — they get a "viewed your profile" notification.',
+        channel: 'linkedin',
+    },
+    linkedin_follow: {
+        label: 'LinkedIn — Follow',
+        shortLabel: 'Follow',
+        icon: <UserPlus size={11} />, accent: '#06B6D4', accentBg: '#ECFEFF',
+        description: 'Follow the lead. Must precede any connection request in the sequence.',
+        channel: 'linkedin',
+    },
+    linkedin_like_post: {
+        label: 'LinkedIn — Like a recent post',
+        shortLabel: 'Like post',
+        icon: <Heart size={11} />, accent: '#EC4899', accentBg: '#FDF2F8',
+        description: 'React to a recent post (warm-up). Skips if no recent post found.',
+        channel: 'linkedin',
+    },
+    linkedin_connection_request: {
+        label: 'LinkedIn — Connection request',
+        shortLabel: 'Connection',
+        icon: <UserCheck size={11} />, accent: '#0A66C2', accentBg: '#EFF6FF',
+        description: 'Send a connection request (optional note). Skipped if already 1st-degree.',
+        channel: 'linkedin',
+    },
+    linkedin_message: {
+        label: 'LinkedIn — DM',
+        shortLabel: 'DM',
+        icon: <MessageCircle size={11} />, accent: '#16A34A', accentBg: '#F0FDF4',
+        description: 'Direct message — requires 1st-degree connection. Schedule after a CR step.',
+        channel: 'linkedin',
+    },
+    linkedin_inmail: {
+        label: 'LinkedIn — InMail',
+        shortLabel: 'InMail',
+        icon: <Send size={11} />, accent: '#8B5CF6', accentBg: '#F5F3FF',
+        description: 'InMail — requires a paid tier (Premium, Sales Navigator, or Recruiter). Credits consumed on closed profiles only. Classic accounts can\'t send InMail.',
+        channel: 'linkedin',
+    },
+    find_linkedin_url: {
+        label: 'Find LinkedIn URL',
+        shortLabel: 'Find LinkedIn',
+        icon: <Search size={11} />, accent: '#0891B2', accentBg: '#ECFEFF',
+        description: 'Run the workspace enrichment waterfall to discover the lead\'s LinkedIn URL. Skipped for contacts that already have one. Requires at least one enrichment provider connected.',
+        channel: 'utility',
+    },
+};
+
+const isLinkedInStepType = (t: WizardStepType) =>
+    t !== 'email' && t !== 'find_linkedin_url';
 
 interface CampaignLead {
     email: string;
@@ -103,7 +199,12 @@ const FIELD_VARIANTS: Record<string, string[]> = {
     website: ['website', 'url', 'web', 'domain', 'company_url', 'company_website', 'site', 'homepage'],
 };
 
-const PERSONALIZATION_TOKENS = ['first_name', 'last_name', 'full_name', 'company', 'website', 'email'];
+// Standard lead fields + one AI-generated token. signal_icebreaker is
+// only populated when the lead was promoted by a LinkedIn engagement
+// signal (the supervisor calls signalIcebreakerService after enrichment).
+// For leads imported via CSV / manual add, the token resolves to empty
+// at send time and the renderer falls back inline.
+const PERSONALIZATION_TOKENS = ['first_name', 'last_name', 'full_name', 'company', 'website', 'email', 'signal_icebreaker'];
 
 const TIMEZONES = [
     { value: 'Pacific/Midway', label: '(GMT-11:00) Midway Island, Samoa' },
@@ -264,6 +365,20 @@ export default function NewCampaignPage() {
     const [availableMailboxes, setAvailableMailboxes] = useState<MailboxOption[]>([]);
     const [selectedMailboxIds, setSelectedMailboxIds] = useState<Set<string>>(new Set());
     const [mailboxesLoading, setMailboxesLoading] = useState(false);
+
+    // ── LinkedIn senders (mixed-channel) ──────────────────────────────────
+    // Only meaningful when the sequence contains a linkedin_* step. Loaded
+    // unconditionally on mount so we have the list ready if the operator
+    // adds a LinkedIn step later in the flow.
+    interface LinkedInSenderOption {
+        id: string;
+        display_name: string;
+        account_type: string;
+        status: string;
+    }
+    const [availableLinkedInAccounts, setAvailableLinkedInAccounts] = useState<LinkedInSenderOption[]>([]);
+    const [selectedLinkedInSenderIds, setSelectedLinkedInSenderIds] = useState<Set<string>>(new Set());
+    const [linkedInAccountsLoading, setLinkedInAccountsLoading] = useState(false);
     // Mailbox filters — health/provider/utilization. Empty Set on any axis
     // means "no constraint." Filters apply visually to the list and to
     // the "Select all" action so the operator can scope bulk picks too.
@@ -285,6 +400,15 @@ export default function NewCampaignPage() {
             .then(res => setSavedTemplates(Array.isArray(res) ? res : (res?.templates || res?.data || [])))
             .catch(() => setSavedTemplates([]));
 
+        // Org-level tags — drives the TagPicker dropdown on Step 1.
+        fetchOrgTags();
+
+        // Enrichment providers — used to warn the operator when adding a
+        // find_linkedin_url step with zero providers configured.
+        apiClient<{ count: number; providers: Array<{ id: string; code: string; order_index: number }> }>('/api/sequencer/enrichment-providers/status')
+            .then(res => setEnrichmentProviders(res?.providers || []))
+            .catch(() => setEnrichmentProviders([]));
+
         // Fetch connected mailboxes with Protection status + utilization
         setMailboxesLoading(true);
         apiClient<any>('/api/sequencer/accounts')
@@ -294,6 +418,21 @@ export default function NewCampaignPage() {
             })
             .catch(() => setAvailableMailboxes([]))
             .finally(() => setMailboxesLoading(false));
+
+        // LinkedIn accounts — surfaced if the operator adds a linkedin_* step.
+        setLinkedInAccountsLoading(true);
+        apiClient<any>('/api/linkedin/accounts')
+            .then(res => {
+                const list = Array.isArray(res?.accounts) ? res.accounts : (Array.isArray(res) ? res : (res?.data || []));
+                setAvailableLinkedInAccounts(list.map((a: any) => ({
+                    id: a.id,
+                    display_name: a.display_name || a.name || '(unnamed account)',
+                    account_type: a.account_type || 'standard',
+                    status: a.status || 'OK',
+                })));
+            })
+            .catch(() => setAvailableLinkedInAccounts([]))
+            .finally(() => setLinkedInAccountsLoading(false));
 
         // Pre-fill Schedule + Settings from the org's Sequencer defaults
         apiClient<any>('/api/sequencer/settings')
@@ -332,7 +471,21 @@ export default function NewCampaignPage() {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [templatePickerOpen]);
-    const [campaignTags, setCampaignTags] = useState('');
+    const [campaignTags, setCampaignTags] = useState(''); // legacy Smartlead-import string array — preserved on edit-mode roundtrip
+    // Org-level tag relation (TagLinks). selectedTagIds drives the picker; allTags is fetched once on mount.
+    const [allTags, setAllTags] = useState<TagItem[]>([]);
+    const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+    // Enrichment provider waterfall — drives the find_linkedin_url
+    // warnings. Loaded once on mount; refreshed only if the operator
+    // opens this wizard again after configuring a provider in another tab.
+    const [enrichmentProviders, setEnrichmentProviders] = useState<Array<{ id: string; code: string; order_index: number }>>([]);
+
+    const fetchOrgTags = async () => {
+        try {
+            const res = await apiClient<{ tags: TagItem[] }>('/api/sequencer/tags');
+            setAllTags(res?.tags || []);
+        } catch { /* non-fatal */ }
+    };
 
     // Step 2: Leads
     const [leads, setLeads] = useState<CampaignLead[]>([]);
@@ -398,7 +551,7 @@ export default function NewCampaignPage() {
 
     // Step 3: Sequence
     const [sequenceSteps, setSequenceSteps] = useState<SequenceStepData[]>([
-        { id: safeRandomUUID(), stepNumber: 1, delayDays: 0, delayHours: 0, subject: '', preheader: '', bodyHtml: '', variants: [] },
+        { id: safeRandomUUID(), stepNumber: 1, stepType: 'email', delayDays: 0, delayHours: 0, subject: '', preheader: '', bodyHtml: '', stepConfig: {}, variants: [] },
     ]);
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [previewStepIndex, setPreviewStepIndex] = useState<number | null>(null);
@@ -511,9 +664,15 @@ export default function NewCampaignPage() {
             .then((c: any) => {
                 if (cancelled || !c) return;
                 setCampaignName(c.name || '');
-                // Wizard "tags" field is the legacy Smartlead-import string array.
-                // The proper org-level tag relation lives under c.tags (objects).
+                // Legacy Smartlead-import string array — preserved here so a
+                // re-save doesn't drop pre-existing legacy tags. The wizard
+                // no longer exposes UI to edit them; new tagging happens via
+                // the org-level TagPicker below.
                 setCampaignTags(Array.isArray(c.legacy_tags) ? c.legacy_tags.join(', ') : '');
+                // Hydrate org-level tag pills (c.tags = [{id, name, color}, ...]).
+                if (Array.isArray(c.tags)) {
+                    setSelectedTagIds(c.tags.map((t: any) => t.id).filter(Boolean));
+                }
                 setEditStatus(c.status || '');
 
                 // Sequence steps with variants
@@ -521,11 +680,13 @@ export default function NewCampaignPage() {
                     setSequenceSteps(c.steps.map((s: any) => ({
                         id: s.id || safeRandomUUID(),
                         stepNumber: s.step_number,
+                        stepType: (s.step_type || 'email') as WizardStepType,
                         delayDays: s.delay_days ?? 0,
                         delayHours: s.delay_hours ?? 0,
                         subject: s.subject || '',
                         preheader: s.preheader || '',
                         bodyHtml: s.body_html || '',
+                        stepConfig: (s.step_config && typeof s.step_config === 'object') ? s.step_config : {},
                         condition: s.condition ?? null,
                         branchToStepNumber: s.branch_to_step_number ?? null,
                         variants: Array.isArray(s.variants) ? s.variants.map((v: any) => ({
@@ -542,6 +703,11 @@ export default function NewCampaignPage() {
                 // Mailboxes — accounts array is [{ account: {...} }, ...]
                 if (Array.isArray(c.accounts)) {
                     setSelectedMailboxIds(new Set(c.accounts.map((a: any) => a.account?.id).filter(Boolean)));
+                }
+
+                // LinkedIn senders — for mixed-channel campaigns.
+                if (Array.isArray(c.linkedin_senders)) {
+                    setSelectedLinkedInSenderIds(new Set(c.linkedin_senders.map((s: any) => s.linkedin_account_id).filter(Boolean)));
                 }
 
                 // Suppression rules — separate endpoint so the campaign detail
@@ -586,14 +752,36 @@ export default function NewCampaignPage() {
 
     // ========== NAVIGATION ==========
 
+    const stepIsAuthored = (s: SequenceStepData): boolean => {
+        if (s.stepType === 'email') {
+            return s.subject.trim().length > 0 && s.bodyHtml.trim().length > 0;
+        }
+        const cfg = (s.stepConfig || {}) as Record<string, string | undefined>;
+        if (s.stepType === 'linkedin_connection_request') return (cfg.note_template || '').trim().length > 0;
+        if (s.stepType === 'linkedin_message')            return (cfg.body_template || '').trim().length > 0;
+        if (s.stepType === 'linkedin_inmail')             return (cfg.subject || '').trim().length > 0 && (cfg.body || '').trim().length > 0;
+        // view_profile / follow / like_post have no message body.
+        return true;
+    };
+
+    const sequenceHasLinkedIn = sequenceSteps.some(s => isLinkedInStepType(s.stepType));
+    const sequenceHasEmail = sequenceSteps.some(s => s.stepType === 'email');
+
     const isStepComplete = (step: number) => {
         switch (step) {
             case 0: return campaignName.trim().length > 0;
             case 1: return isEditMode
                 ? ((existingLeadCount - removeLeadIds.size) + leads.length) > 0
                 : leads.length > 0;
-            case 2: return sequenceSteps.length > 0 && sequenceSteps[0].subject.trim().length > 0 && sequenceSteps[0].bodyHtml.trim().length > 0;
-            case 3: return selectedMailboxIds.size > 0; // Mailboxes step
+            case 2: return sequenceSteps.length > 0 && sequenceSteps.every(stepIsAuthored);
+            case 3: {
+                // Email steps need a mailbox; LinkedIn steps need a sender
+                // pool. Mixed campaigns need both. (Pure-LinkedIn sequences
+                // legitimately have zero mailboxes.)
+                const mailboxOk = !sequenceHasEmail || selectedMailboxIds.size > 0;
+                const linkedinOk = !sequenceHasLinkedIn || selectedLinkedInSenderIds.size > 0;
+                return mailboxOk && linkedinOk;
+            }
             case 4: return activeDays.length > 0;       // Schedule step
             case 5: return true;                         // Settings — all optional with defaults
             default: return true;
@@ -879,15 +1067,40 @@ export default function NewCampaignPage() {
 
     // ========== SEQUENCE HELPERS ==========
 
-    const addStep = () => {
+    const addStep = (stepType: WizardStepType = 'email') => {
+        // Minimum 3-hour gap between steps. The first step can be 0/0
+        // ("send immediately"); subsequent steps default to 2 days which keeps
+        // us comfortably above the minimum without surprising the operator.
+        const isFirst = sequenceSteps.length === 0;
+        const defaultDelayDays = isFirst ? 0 : 2;
+        const defaultConfig: Record<string, unknown> = (() => {
+            switch (stepType) {
+                case 'linkedin_connection_request':
+                    return { note_template: 'Hi {{first_name}}, came across your profile and would love to connect.' };
+                case 'linkedin_message':
+                    return { body_template: 'Hi {{first_name}}, thanks for connecting! Quick thought…' };
+                case 'linkedin_inmail':
+                    return { subject: '{{first_name}} — quick thought', body: 'Hi {{first_name}}, ...' };
+                case 'linkedin_like_post':
+                    return { reaction_type: 'LIKE', post_selection_timespan_days: 30, skip_if_no_post: true };
+                default:
+                    return {};
+            }
+        })();
         const newStep: SequenceStepData = {
             id: safeRandomUUID(),
             stepNumber: sequenceSteps.length + 1,
-            delayDays: 2,
+            stepType,
+            delayDays: defaultDelayDays,
             delayHours: 0,
             subject: '',
             preheader: '',
             bodyHtml: '',
+            stepConfig: defaultConfig,
+            // DMs / InMails make sense only after a connection landed —
+            // mirror the LinkedIn-only wizard default so operators don't
+            // accidentally send a DM to a stranger.
+            condition: (stepType === 'linkedin_message' || stepType === 'linkedin_inmail') ? 'if_connection' : null,
             variants: [],
         };
         setSequenceSteps([...sequenceSteps, newStep]);
@@ -1031,6 +1244,8 @@ export default function NewCampaignPage() {
             name: campaignName,
             steps: sequenceSteps.map(s => ({
                 step_number: s.stepNumber,
+                step_type: s.stepType,
+                step_config: s.stepConfig ?? {},
                 delay_days: s.delayDays,
                 delay_hours: s.delayHours,
                 subject: s.subject,
@@ -1038,6 +1253,9 @@ export default function NewCampaignPage() {
                 body_html: s.bodyHtml,
                 condition: s.condition || null,
                 branch_to_step_number: s.branchToStepNumber ?? null,
+                // Variants are an email-only concept for now. Backend
+                // accepts them on any step_type but the dispatcher only
+                // uses them for the email executor.
                 variants: s.variants.map(v => ({
                     label: v.label,
                     subject: v.subject,
@@ -1047,6 +1265,13 @@ export default function NewCampaignPage() {
                 })),
             })),
             accountIds: Array.from(selectedMailboxIds),
+            // Mixed-channel sender pool. Backend creates one
+            // CampaignLinkedInSender row per id, with rotation_priority
+            // following selection order.
+            linkedinSenders: Array.from(selectedLinkedInSenderIds).map((id, idx) => ({
+                linkedin_account_id: id,
+                rotation_priority: idx,
+            })),
             schedule: { timezone, start_time: startTime, end_time: endTime, days: activeDays, sendGapMinutes },
             settings: { espRouting, daily_limit: dailyLimit, stop_on_reply: stopOnReply, stop_on_bounce: true, track_opens: trackOpens, track_clicks: trackClicks, include_unsubscribe: includeUnsubscribe, eu_compliance_mode: euComplianceMode },
             // Canonical suppression payload. Backend folds the legacy boolean
@@ -1067,6 +1292,23 @@ export default function NewCampaignPage() {
         return editPayload;
     };
 
+    // Persist the org-level tag set via the dedicated /tags endpoint. The
+    // create/update endpoints don't accept tagIds inline, so we PUT after
+    // the campaign row is committed. Non-fatal: a tag-persist failure
+    // doesn't roll back the campaign.
+    const persistTags = async (campaignId: string) => {
+        try {
+            await apiClient(`/api/sequencer/campaigns/${campaignId}/tags`, {
+                method: 'PUT',
+                body: JSON.stringify({ tagIds: selectedTagIds }),
+            });
+        } catch (err: any) {
+            // Toast on failure so the operator knows the tags didn't stick,
+            // even though the campaign itself saved successfully.
+            toast.error(`Campaign saved but tag update failed: ${err?.message || 'unknown error'}`);
+        }
+    };
+
     const handleLaunch = async () => {
         setLaunching(true);
         setLaunchError('');
@@ -1076,6 +1318,7 @@ export default function NewCampaignPage() {
                     method: 'PATCH',
                     body: JSON.stringify(buildPayload()),
                 });
+                await persistTags(editId);
                 // Only call /launch for drafts — active/paused campaigns stay in their current state
                 if (!isAlreadyLaunched) {
                     await apiClient(`/api/sequencer/campaigns/${editId}/launch`, { method: 'POST' });
@@ -1088,6 +1331,7 @@ export default function NewCampaignPage() {
                 body: JSON.stringify(buildPayload()),
             });
             if (campaign?.id) {
+                await persistTags(campaign.id);
                 await apiClient(`/api/sequencer/campaigns/${campaign.id}/launch`, { method: 'POST' });
             }
             router.push('/dashboard/sequencer/campaigns');
@@ -1106,13 +1350,15 @@ export default function NewCampaignPage() {
                     method: 'PATCH',
                     body: JSON.stringify(buildPayload()),
                 });
+                await persistTags(editId);
                 router.push(`/dashboard/sequencer/campaigns/${editId}`);
                 return;
             }
-            await apiClient('/api/sequencer/campaigns', {
+            const created = await apiClient<{ id: string }>('/api/sequencer/campaigns', {
                 method: 'POST',
                 body: JSON.stringify(buildPayload()),
             });
+            if (created?.id) await persistTags(created.id);
             router.push('/dashboard/sequencer/campaigns');
         } catch (err: any) {
             setLaunchError(err.message || 'Failed to save draft');
@@ -1138,9 +1384,13 @@ export default function NewCampaignPage() {
                 <button onClick={() => router.back()} className="text-xs text-gray-500 hover:text-gray-700 cursor-pointer">Cancel</button>
             </div>
 
-            {/* Step Indicator — all steps clickable */}
+            {/* Step Indicator — all steps clickable. The "Mailboxes" stage
+                label switches to "Senders" when the sequence has any
+                linkedin_* step, since the operator picks LinkedIn accounts
+                on that stage too. */}
             <div className="flex items-center gap-1">
-                {STEPS.map((label, i) => {
+                {STEPS.map((rawLabel, i) => {
+                    const label = (rawLabel === 'Mailboxes' && sequenceHasLinkedIn) ? 'Senders' : rawLabel;
                     const complete = i < 5 && isStepComplete(i);
                     const active = i === currentStep;
                     return (
@@ -1181,16 +1431,30 @@ export default function NewCampaignPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-700 mb-1.5">Tags (comma separated)</label>
-                            <input
-                                type="text"
-                                value={campaignTags}
-                                onChange={e => setCampaignTags(e.target.value)}
-                                placeholder="e.g. enterprise, q2-2026, outbound"
-                                className="w-full px-3 py-2 rounded-lg text-xs outline-none"
-                                style={{ border: '1px solid #D1CBC5' }}
-                            />
-                            <p className="text-[10px] text-gray-400 mt-1">Tags help you organize and filter campaigns later.</p>
+                            <label className="block text-xs font-semibold text-gray-700 mb-1.5">Tags</label>
+                            <div className="flex items-center gap-1.5 flex-wrap min-h-[34px] px-2 py-1.5 rounded-lg" style={{ border: '1px solid #D1CBC5', background: '#FFFFFF' }}>
+                                {selectedTagIds.length > 0 && allTags
+                                    .filter(t => selectedTagIds.includes(t.id))
+                                    .map(t => (
+                                        <span
+                                            key={t.id}
+                                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
+                                            style={{ background: t.color ? `${t.color}22` : '#F3F4F6', color: t.color || '#374151' }}
+                                        >
+                                            {t.name}
+                                        </span>
+                                    ))}
+                                <TagPicker
+                                    allTags={allTags}
+                                    selectedIds={selectedTagIds}
+                                    onChange={(ids) => setSelectedTagIds(ids)}
+                                    onTagCreated={fetchOrgTags}
+                                    align="left"
+                                />
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-1">
+                                Apply org-level tags to organize and filter. Create new ones inline.
+                            </p>
                         </div>
                     </div>
                 )}
@@ -1831,34 +2095,32 @@ export default function NewCampaignPage() {
                             onLoad={(loaded) => setSequenceSteps(loaded)}
                         />
 
-                        {/* Step tabs */}
+                        {/* Step tabs — chip per step, accent by channel */}
                         <div className="flex items-center gap-2 flex-wrap">
-                            {sequenceSteps.map((step, i) => (
-                                <button
-                                    key={step.id}
-                                    onClick={() => setActiveStepIndex(i)}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors"
-                                    style={{
-                                        background: activeStepIndex === i ? '#111827' : '#F3F4F6',
-                                        color: activeStepIndex === i ? '#FFFFFF' : '#4B5563',
-                                    }}
-                                >
-                                    {i === 0 ? <Clock size={10} /> : <Clock size={10} />}
-                                    Step {step.stepNumber}
-                                    {step.variants.length > 0 && (
-                                        <span className="text-[9px] px-1 rounded" style={{ background: 'rgba(255,255,255,0.2)' }}>
-                                            {step.variants.length + 1} variants
-                                        </span>
-                                    )}
-                                </button>
-                            ))}
-                            <button
-                                onClick={addStep}
-                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                                style={{ border: '1px dashed #D1CBC5' }}
-                            >
-                                <Plus size={10} /> Add Step
-                            </button>
+                            {sequenceSteps.map((step, i) => {
+                                const meta = STEP_TYPE_META[step.stepType];
+                                const active = activeStepIndex === i;
+                                return (
+                                    <button
+                                        key={step.id}
+                                        onClick={() => setActiveStepIndex(i)}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors"
+                                        style={{
+                                            background: active ? meta.accent : meta.accentBg,
+                                            color: active ? '#FFFFFF' : meta.accent,
+                                        }}
+                                    >
+                                        {meta.icon}
+                                        Step {step.stepNumber} · {meta.shortLabel}
+                                        {step.variants.length > 0 && (
+                                            <span className="text-[9px] px-1 rounded" style={{ background: active ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.06)' }}>
+                                                {step.variants.length + 1} variants
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                            <AddStepDropdown onPick={(t) => addStep(t)} />
                         </div>
 
                         {/* Active step editor */}
@@ -1908,10 +2170,15 @@ export default function NewCampaignPage() {
                                                                 { value: '', label: 'always' },
                                                                 { value: 'if_no_reply', label: 'no reply yet' },
                                                                 { value: 'if_replied', label: 'lead replied' },
-                                                                { value: 'if_opened', label: 'a prior step was opened' },
-                                                                { value: 'if_not_opened', label: 'no prior opens' },
-                                                                { value: 'if_clicked', label: 'a prior step had a click' },
-                                                                { value: 'if_not_clicked', label: 'no clicks yet' },
+                                                                ...(step.stepType === 'email' ? [
+                                                                    { value: 'if_opened', label: 'a prior step was opened' },
+                                                                    { value: 'if_not_opened', label: 'no prior opens' },
+                                                                    { value: 'if_clicked', label: 'a prior step had a click' },
+                                                                    { value: 'if_not_clicked', label: 'no clicks yet' },
+                                                                ] : [
+                                                                    { value: 'if_connection', label: 'lead accepted the connection' },
+                                                                    { value: 'if_not_connection', label: 'still not connected' },
+                                                                ]),
                                                             ]}
                                                         />
                                                     </div>
@@ -1956,6 +2223,60 @@ export default function NewCampaignPage() {
                                         </div>
                                     </div>
 
+                                    {/* Channel-aware editor — email shows subject/preheader/body
+                                        + A/B variants; LinkedIn touch points render LinkedInStepEditor;
+                                        utility steps (find_linkedin_url) render a compact
+                                        no-message card explaining what the step does + a
+                                        warning if no enrichment providers are connected. */}
+                                    {isLinkedInStepType(step.stepType) && (
+                                        <LinkedInStepEditor
+                                            step={step}
+                                            onUpdate={(patch) => updateStep(idx, patch)}
+                                            personalizationTokens={allTokens}
+                                        />
+                                    )}
+                                    {step.stepType === 'find_linkedin_url' && (
+                                        <div className="p-3 rounded-lg" style={{ border: '1px solid #D1CBC5', background: '#ECFEFF' }}>
+                                            <div className="flex items-start gap-2 mb-2">
+                                                <Search size={14} className="text-cyan-700 mt-0.5 shrink-0" />
+                                                <div>
+                                                    <div className="text-xs font-bold text-gray-900">Find LinkedIn URL via enrichment waterfall</div>
+                                                    <p className="m-0 mt-1 text-[11px] text-gray-600 leading-snug">
+                                                        Discovers the lead&apos;s LinkedIn profile using your connected enrichment providers. Contacts that already have a URL on file are skipped (no provider cost). Place this BEFORE any LinkedIn touch points so they have a URL to act on.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            {enrichmentProviders.length === 0 ? (
+                                                <div className="mt-2 rounded-md px-2.5 py-2 flex items-start gap-2" style={{ border: '1px solid #FCD34D', background: '#FFFBEB' }}>
+                                                    <AlertTriangle size={12} className="text-amber-700 mt-0.5 shrink-0" />
+                                                    <div className="text-[11px] text-amber-900 leading-snug">
+                                                        <span className="font-semibold">No enrichment provider connected.</span> This step will skip every contact until at least one provider is configured.{' '}
+                                                        <a href="/dashboard/settings/enrichment" className="underline decoration-dotted hover:text-amber-950" target="_blank" rel="noreferrer">
+                                                            Connect a provider →
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            ) : enrichmentProviders.length === 1 ? (
+                                                <div className="mt-2 text-[11px] text-gray-700">
+                                                    Provider: <span className="font-semibold capitalize">{enrichmentProviders[0].code.toLowerCase()}</span>
+                                                </div>
+                                            ) : (
+                                                <div className="mt-2 text-[11px] text-gray-700">
+                                                    Waterfall:{' '}
+                                                    <span className="font-semibold">
+                                                        {enrichmentProviders
+                                                            .slice()
+                                                            .sort((a, b) => a.order_index - b.order_index)
+                                                            .map(p => p.code.charAt(0).toUpperCase() + p.code.slice(1).toLowerCase())
+                                                            .join(' → ')}
+                                                    </span>
+                                                    <span className="text-gray-500"> · first hit wins. Configure order in Settings → Enrichment.</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {step.stepType === 'email' && (<>
                                     {/* Subject + Body (Variant A / main) */}
                                     <div className="p-3 rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
                                         <div className="flex items-center justify-between mb-2">
@@ -2110,6 +2431,7 @@ export default function NewCampaignPage() {
                                             />
                                         </div>
                                     ))}
+                                    </>)}
 
                                 </div>
                             );
@@ -2117,9 +2439,10 @@ export default function NewCampaignPage() {
                     </div>
                 )}
 
-                {/* ==================== STEP 4: MAILBOXES ==================== */}
+                {/* ==================== STEP 4: MAILBOXES / SENDERS ==================== */}
                 {currentStep === 3 && (
                     <div className="flex flex-col gap-4">
+                      {sequenceHasEmail && (<>
                         <div className="flex items-start justify-between">
                             <div>
                                 <h3 className="text-sm font-bold text-gray-900">Choose Mailboxes</h3>
@@ -2321,6 +2644,102 @@ export default function NewCampaignPage() {
                                 </span>
                             </div>
                         )}
+                      </>)}
+
+                        {/* LinkedIn sender pool — only surfaced when the
+                            sequence contains a linkedin_* step. Mirrors the
+                            picker used by the LinkedIn-only wizard. */}
+                        {sequenceHasLinkedIn && (
+                            <div className="mt-6">
+                                <div className="flex items-start justify-between mb-2">
+                                    <div className="flex items-center gap-2">
+                                        <Linkedin size={14} strokeWidth={1.75} className="text-[#0A66C2]" />
+                                        <div>
+                                            <h3 className="text-sm font-bold text-gray-900">LinkedIn sender pool</h3>
+                                            <p className="text-[11px] text-gray-500 mt-0.5">
+                                                Pick the LinkedIn accounts that will execute the LinkedIn steps in this sequence. Workspace caps and working-hours are enforced at dispatch time.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {availableLinkedInAccounts.length > 0 && (
+                                        <button
+                                            onClick={() => {
+                                                const allIds = new Set(availableLinkedInAccounts.map(a => a.id));
+                                                const allPicked = availableLinkedInAccounts.length > 0 && availableLinkedInAccounts.every(a => selectedLinkedInSenderIds.has(a.id));
+                                                setSelectedLinkedInSenderIds(allPicked ? new Set() : allIds);
+                                            }}
+                                            className="px-3 py-1.5 rounded-lg text-[10px] font-semibold cursor-pointer bg-transparent border"
+                                            style={{ border: '1px solid #D1CBC5' }}
+                                        >
+                                            {availableLinkedInAccounts.length > 0 && availableLinkedInAccounts.every(a => selectedLinkedInSenderIds.has(a.id))
+                                                ? `Deselect all (${availableLinkedInAccounts.length})`
+                                                : `Select all (${availableLinkedInAccounts.length})`}
+                                        </button>
+                                    )}
+                                </div>
+
+                                {linkedInAccountsLoading ? (
+                                    <div className="flex items-center justify-center py-6 text-xs text-gray-500">
+                                        <Loader2 size={14} className="animate-spin mr-2" /> Loading LinkedIn accounts…
+                                    </div>
+                                ) : availableLinkedInAccounts.length === 0 ? (
+                                    <div className="rounded-lg p-4 text-center" style={{ background: '#FEF3C7', border: '1px solid #FDE68A' }}>
+                                        <p className="text-xs font-semibold text-amber-900 mb-2">No LinkedIn accounts connected</p>
+                                        <p className="text-[11px] text-amber-800 mb-3">Connect at least one account before launching a campaign that includes LinkedIn steps.</p>
+                                        <a
+                                            href="/dashboard/linkedin/accounts"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-block px-3 py-1.5 rounded-md bg-amber-600 text-white text-[11px] font-semibold no-underline"
+                                        >
+                                            Connect LinkedIn account →
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                        {availableLinkedInAccounts.map(a => {
+                                            const picked = selectedLinkedInSenderIds.has(a.id);
+                                            return (
+                                                <button
+                                                    key={a.id}
+                                                    onClick={() => setSelectedLinkedInSenderIds(prev => {
+                                                        const next = new Set(prev);
+                                                        if (next.has(a.id)) next.delete(a.id); else next.add(a.id);
+                                                        return next;
+                                                    })}
+                                                    className="text-left rounded-lg px-3 py-2.5 cursor-pointer transition-colors"
+                                                    style={{
+                                                        background: picked ? '#EFF6FF' : '#FFFFFF',
+                                                        border: picked ? '2px solid #0A66C2' : '1px solid #E8E3DC',
+                                                    }}
+                                                >
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <div className="min-w-0">
+                                                            <div className="text-sm font-semibold text-gray-900 truncate">{a.display_name}</div>
+                                                            <div className="text-[10px] text-gray-500 capitalize">{a.account_type.replace(/_/g, ' ')}</div>
+                                                        </div>
+                                                        <span
+                                                            className="text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0"
+                                                            style={{ background: a.status === 'OK' ? '#DCFCE7' : '#FEF3C7', color: a.status === 'OK' ? '#15803D' : '#B45309' }}
+                                                        >
+                                                            {a.status}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+
+                                {selectedLinkedInSenderIds.size > 0 && (
+                                    <div className="mt-2 p-3 rounded-lg" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+                                        <span className="text-xs font-semibold text-blue-900">
+                                            {selectedLinkedInSenderIds.size} LinkedIn account{selectedLinkedInSenderIds.size === 1 ? '' : 's'} selected
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -2486,13 +2905,82 @@ export default function NewCampaignPage() {
                             </div>
                         )}
 
+                        {/* LinkedIn coverage preflight — only shown when the sequence
+                            has at least one linkedin_* touch point. Tells the operator
+                            how many imported leads have a LinkedIn URL on file and
+                            therefore can actually be acted on by those steps. Goes
+                            quiet if a find_linkedin_url step precedes the first
+                            linkedin_* step (the waterfall will fill the gaps). */}
+                        {(() => {
+                            const firstLinkedInIdx = sequenceSteps.findIndex(s => isLinkedInStepType(s.stepType));
+                            if (firstLinkedInIdx === -1) return null;
+                            const findStepIdx = sequenceSteps.findIndex(s => s.stepType === 'find_linkedin_url');
+                            const findCoversTouches = findStepIdx !== -1 && findStepIdx < firstLinkedInIdx;
+
+                            const totalLeads = leads.length;
+                            if (totalLeads === 0) return null;
+                            const withLinkedIn = leads.filter(l => {
+                                const v = (l.linkedin_url || l.linkedin || l['linkedin_profile_url'] || '').toString();
+                                return v.trim().length > 0;
+                            }).length;
+                            const missing = totalLeads - withLinkedIn;
+                            const pct = Math.round((withLinkedIn / totalLeads) * 100);
+
+                            if (missing === 0) {
+                                return (
+                                    <div className="p-3 rounded-lg flex items-start gap-2 text-[11px]" style={{ border: '1px solid #D1CBC5', background: '#F0FDF4' }}>
+                                        <Linkedin size={13} className="text-emerald-700 mt-0.5 shrink-0" />
+                                        <div className="text-gray-700">
+                                            All <span className="font-semibold">{totalLeads.toLocaleString()}</span> leads have a LinkedIn URL on file — every LinkedIn step will fire.
+                                        </div>
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <div className="p-3 rounded-lg flex items-start gap-2 text-[11px]" style={{ border: '1px solid #D1CBC5', background: findCoversTouches ? '#ECFEFF' : '#FFFBEB' }}>
+                                    {findCoversTouches
+                                        ? <Search size={13} className="text-cyan-700 mt-0.5 shrink-0" />
+                                        : <AlertTriangle size={13} className="text-amber-700 mt-0.5 shrink-0" />}
+                                    <div className="text-gray-700">
+                                        <div className="font-semibold text-gray-900">
+                                            LinkedIn coverage: {withLinkedIn.toLocaleString()} / {totalLeads.toLocaleString()} ({pct}%)
+                                        </div>
+                                        {findCoversTouches ? (
+                                            <p className="m-0 mt-0.5 text-gray-600 leading-snug">
+                                                A Find LinkedIn URL step runs first — the {missing.toLocaleString()} missing URL{missing === 1 ? '' : 's'} will be enriched before any LinkedIn touch point.{enrichmentProviders.length === 0 ? ' Connect an enrichment provider in Settings → Enrichment to make this work.' : ''}
+                                            </p>
+                                        ) : (
+                                            <p className="m-0 mt-0.5 text-gray-600 leading-snug">
+                                                {missing.toLocaleString()} contact{missing === 1 ? '' : 's'} will skip every LinkedIn step. They&apos;ll still receive email steps. Add a <button type="button" onClick={() => setCurrentStep(2)} className="underline decoration-dotted bg-transparent border-none cursor-pointer text-amber-900 p-0">Find LinkedIn URL</button> step before the first LinkedIn touch point to enrich missing URLs.
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })()}
+
                         <h3 className="text-sm font-bold text-gray-900">Campaign Summary</h3>
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="p-3 rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
                                 <div className="text-[10px] text-gray-400 uppercase font-semibold mb-1">Campaign</div>
                                 <div className="text-sm font-bold text-gray-900">{campaignName}</div>
-                                {campaignTags && <div className="text-[10px] text-gray-500 mt-0.5">Tags: {campaignTags}</div>}
+                                {selectedTagIds.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                        {allTags
+                                            .filter(t => selectedTagIds.includes(t.id))
+                                            .map(t => (
+                                                <span
+                                                    key={t.id}
+                                                    className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-medium"
+                                                    style={{ background: t.color ? `${t.color}22` : '#F3F4F6', color: t.color || '#374151' }}
+                                                >
+                                                    {t.name}
+                                                </span>
+                                            ))}
+                                    </div>
+                                )}
                             </div>
                             <div className="p-3 rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
                                 <div className="text-[10px] text-gray-400 uppercase font-semibold mb-1">Leads</div>
@@ -2766,10 +3254,11 @@ export default function NewCampaignPage() {
                 const renderedBody = renderTemplate(active.bodyHtml, DEMO_LEAD);
                 return (
                     <div
-                        className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9998] p-4"
+                        className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                        style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                         onClick={(e) => { if (e.target === e.currentTarget) setPreviewStepIndex(null); }}
                     >
-                        <div className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col shadow-2xl overflow-hidden" style={{ border: '1px solid #E5E5E5' }}>
+                        <div className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col overflow-hidden" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                             {/* Header */}
                             <div className="px-6 py-4 flex items-center justify-between bg-white" style={{ borderBottom: '1px solid #E5E5E5' }}>
                                 <div className="flex items-center gap-4">
@@ -2879,6 +3368,7 @@ function LoadSavedSequence({
     const [sequences, setSequences] = useState<Array<{ id: string; name: string; step_count: number; category: string; ai_model_used: string | null }>>([]);
     const [loadingList, setLoadingList] = useState(false);
     const [pickingId, setPickingId] = useState<string | null>(null);
+    const [pendingPickId, setPendingPickId] = useState<string | null>(null);
 
     const hasContent = currentSteps.some(s => s.subject.trim() || s.bodyHtml.trim());
 
@@ -2898,25 +3388,30 @@ function LoadSavedSequence({
 
     const handlePick = async (id: string) => {
         if (hasContent) {
-            const ok = window.confirm(
-                'Loading a saved sequence will replace the steps you have here. Continue?',
-            );
-            if (!ok) return;
+            setPendingPickId(id);
+            return;
         }
+        await doPick(id);
+    };
+
+    const doPick = async (id: string) => {
         setPickingId(id);
         try {
             const full = await apiClient<{
                 steps: Array<{ step_number: number; delay_days: number; delay_hours: number; subject: string; preheader: string; body_html: string }>;
             }>(`/api/sequencer/sequences/${id}`);
             // Convert backend step shape → wizard SequenceStepData shape.
+            // Saved sequences are email-only — they predate multi-channel.
             const loaded: SequenceStepData[] = (full.steps || []).map(s => ({
                 id: safeRandomUUID(),
                 stepNumber: s.step_number,
+                stepType: 'email' as WizardStepType,
                 delayDays: s.delay_days,
                 delayHours: s.delay_hours,
                 subject: s.subject || '',
                 preheader: s.preheader || '',
                 bodyHtml: s.body_html || '',
+                stepConfig: {},
                 variants: [],
             }));
             if (loaded.length === 0) {
@@ -2947,8 +3442,26 @@ function LoadSavedSequence({
                 Load from sequence →
             </button>
 
+            <ConfirmActionModal
+                isOpen={pendingPickId !== null}
+                title="Replace your current steps?"
+                icon="🔄"
+                message="Loading a saved sequence will overwrite the steps you've authored here."
+                consequences={['Your current subject lines, preheaders, and bodies will be replaced.', 'Variants and step-config (LinkedIn step types) will be cleared — saved sequences are email-only.']}
+                confirmLabel="Replace steps"
+                variant="warning"
+                loading={pickingId !== null}
+                onConfirm={async () => {
+                    const id = pendingPickId;
+                    if (!id) return;
+                    setPendingPickId(null);
+                    await doPick(id);
+                }}
+                onCancel={() => { if (pickingId === null) setPendingPickId(null); }}
+            />
+
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setOpen(false)}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={() => setOpen(false)}>
                     <div
                         className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[80vh] flex flex-col"
                         onClick={(e) => e.stopPropagation()}
@@ -3145,6 +3658,278 @@ function MailboxFilterBar({
                     Clear filters
                 </button>
             )}
+        </div>
+    );
+}
+
+/**
+ * AddStepDropdown — single "+ Add step" button that opens a channel-grouped
+ * menu of step types. Replaces the legacy email-only "+ Add Step" button so
+ * operators can mix LinkedIn touch points into an email sequence (and
+ * vice-versa).
+ */
+function AddStepDropdown({ onPick }: { onPick: (t: WizardStepType) => void }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!open) return;
+        const handler = (e: MouseEvent) => {
+            if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [open]);
+
+    return (
+        <div ref={ref} className="relative">
+            <button
+                onClick={() => setOpen(v => !v)}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-50 bg-transparent"
+                style={{ border: '1px dashed #D1CBC5' }}
+            >
+                <Plus size={10} /> Add step <ChevronDown size={10} />
+            </button>
+            {open && (
+                <div
+                    className="absolute top-full left-0 mt-1 bg-white z-50 overflow-hidden"
+                    style={{ minWidth: 280, border: '1px solid #D1CBC5', borderRadius: 10, boxShadow: '0 8px 20px rgba(0,0,0,0.10)' }}
+                >
+                    <div className="px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-gray-400" style={{ borderBottom: '1px solid #F0EBE3', background: '#FAFAF8' }}>
+                        Email
+                    </div>
+                    <StepPickerRow type="email" onPick={(t) => { onPick(t); setOpen(false); }} />
+                    <div className="px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-gray-400" style={{ borderTop: '1px solid #F0EBE3', borderBottom: '1px solid #F0EBE3', background: '#FAFAF8' }}>
+                        LinkedIn
+                    </div>
+                    {([
+                        'linkedin_view_profile',
+                        'linkedin_follow',
+                        'linkedin_like_post',
+                        'linkedin_connection_request',
+                        'linkedin_message',
+                        'linkedin_inmail',
+                    ] as WizardStepType[]).map(t => (
+                        <StepPickerRow key={t} type={t} onPick={(picked) => { onPick(picked); setOpen(false); }} />
+                    ))}
+                    <div className="px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-gray-400" style={{ borderTop: '1px solid #F0EBE3', borderBottom: '1px solid #F0EBE3', background: '#FAFAF8' }}>
+                        Utility
+                    </div>
+                    <StepPickerRow type="find_linkedin_url" onPick={(picked) => { onPick(picked); setOpen(false); }} />
+                </div>
+            )}
+        </div>
+    );
+}
+
+function StepPickerRow({ type, onPick }: { type: WizardStepType; onPick: (t: WizardStepType) => void }) {
+    const meta = STEP_TYPE_META[type];
+    return (
+        <button
+            onClick={() => onPick(type)}
+            className="w-full text-left px-3 py-2 cursor-pointer flex items-start gap-2 hover:bg-[#F5F1EA] bg-transparent border-none"
+        >
+            <span
+                className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+                style={{ background: meta.accentBg, color: meta.accent }}
+            >
+                {meta.icon}
+            </span>
+            <span className="flex-1 min-w-0">
+                <span className="block text-xs font-semibold text-gray-900">{meta.label}</span>
+                <span className="block text-[10px] text-gray-500 leading-snug">{meta.description}</span>
+            </span>
+        </button>
+    );
+}
+
+/**
+ * LinkedInStepEditor — channel-aware editor surfaced for any linkedin_*
+ * step type. Mirrors the field shape used by the LinkedIn-only wizard so a
+ * connection request shows a 300-char note, a DM shows a body template, an
+ * InMail shows subject + body, and the no-message types (view / follow /
+ * like) just show a short helper card.
+ */
+function LinkedInStepEditor({
+    step, onUpdate, personalizationTokens,
+}: {
+    step: SequenceStepData;
+    onUpdate: (patch: Partial<SequenceStepData>) => void;
+    personalizationTokens: string[];
+}) {
+    const meta = STEP_TYPE_META[step.stepType];
+    const cfg = (step.stepConfig || {}) as Record<string, string | number | boolean | undefined>;
+
+    // Pre-coerce each config slot so JSX value={...} never inlines a
+    // `(x as Type) ?? default` expression. Turbopack 16.1.x miscompiles
+    // that pattern inside JSX attribute values into a `_ref` temp variable
+    // that loses its declaration during HMR, producing a runtime
+    // ReferenceError. Extracting into typed locals sidesteps the bug —
+    // see https://github.com/vercel/next.js/issues/* (filed downstream).
+    const noteTemplate = typeof cfg.note_template === 'string' ? cfg.note_template : '';
+    const bodyTemplate = typeof cfg.body_template === 'string' ? cfg.body_template : '';
+    const inmailSubject = typeof cfg.subject === 'string' ? cfg.subject : '';
+    const inmailBody = typeof cfg.body === 'string' ? cfg.body : '';
+    const reactionType = typeof cfg.reaction_type === 'string' ? cfg.reaction_type : 'LIKE';
+    const lookbackDays = typeof cfg.post_selection_timespan_days === 'number' ? cfg.post_selection_timespan_days : 30;
+
+    const setCfg = (patch: Record<string, unknown>) => {
+        onUpdate({ stepConfig: { ...(step.stepConfig || {}), ...patch } });
+    };
+
+    const insertToken = (current: string, token: string, applySetter: (v: string) => void) => {
+        applySetter(`${current || ''}{{${token}}}`);
+    };
+
+    return (
+        <div className="p-3 rounded-lg flex flex-col gap-3" style={{ border: `1px solid ${meta.accent}33`, background: meta.accentBg }}>
+            <div className="flex items-start gap-2">
+                <span
+                    className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+                    style={{ background: meta.accent, color: '#FFFFFF' }}
+                >
+                    {meta.icon}
+                </span>
+                <div className="min-w-0">
+                    <div className="text-xs font-bold text-gray-900">{meta.label}</div>
+                    <div className="text-[11px] text-gray-600 leading-snug">{meta.description}</div>
+                </div>
+            </div>
+
+            {step.stepType === 'linkedin_connection_request' && (
+                <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Connection note <span className="text-gray-400 font-medium">(optional, 300 chars max)</span></label>
+                    <textarea
+                        value={noteTemplate}
+                        onChange={e => setCfg({ note_template: e.target.value.slice(0, 300) })}
+                        rows={3}
+                        placeholder="Hi {{first_name}}, came across your profile and would love to connect."
+                        className="w-full px-2.5 py-1.5 text-xs rounded-md outline-none resize-none bg-white"
+                        style={{ border: '1px solid #D1CBC5' }}
+                    />
+                    <div className="flex items-center justify-between mt-1">
+                        <TokenChips tokens={personalizationTokens} onInsert={(tk) => insertToken(noteTemplate, tk, (v) => setCfg({ note_template: v.slice(0, 300) }))} />
+                        <span className="text-[10px] text-gray-500">{noteTemplate.length} / 300</span>
+                    </div>
+                    <label className="flex items-center gap-1.5 mt-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={Boolean(cfg.use_workspace_default_note_fallback)}
+                            onChange={e => setCfg({ use_workspace_default_note_fallback: e.target.checked })}
+                        />
+                        <span className="text-[10px] text-gray-600">Send blank CR if note can't render (e.g. missing first name)</span>
+                    </label>
+                </div>
+            )}
+
+            {step.stepType === 'linkedin_message' && (
+                <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">DM body</label>
+                    <textarea
+                        value={bodyTemplate}
+                        onChange={e => setCfg({ body_template: e.target.value })}
+                        rows={5}
+                        placeholder="Hi {{first_name}}, thanks for connecting!"
+                        className="w-full px-2.5 py-1.5 text-xs rounded-md outline-none resize-none bg-white"
+                        style={{ border: '1px solid #D1CBC5' }}
+                    />
+                    <TokenChips tokens={personalizationTokens} onInsert={(tk) => insertToken(bodyTemplate, tk, (v) => setCfg({ body_template: v }))} />
+                </div>
+            )}
+
+            {step.stepType === 'linkedin_inmail' && (
+                <>
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">InMail subject</label>
+                        <input
+                            type="text"
+                            value={inmailSubject}
+                            onChange={e => setCfg({ subject: e.target.value })}
+                            placeholder="{{first_name}} — quick thought"
+                            className="w-full px-2.5 py-1.5 text-xs rounded-md outline-none bg-white"
+                            style={{ border: '1px solid #D1CBC5' }}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">InMail body</label>
+                        <textarea
+                            value={inmailBody}
+                            onChange={e => setCfg({ body: e.target.value })}
+                            rows={5}
+                            placeholder="Hi {{first_name}}, ..."
+                            className="w-full px-2.5 py-1.5 text-xs rounded-md outline-none resize-none bg-white"
+                            style={{ border: '1px solid #D1CBC5' }}
+                        />
+                        <TokenChips tokens={personalizationTokens} onInsert={(tk) => insertToken(inmailBody, tk, (v) => setCfg({ body: v }))} />
+                    </div>
+                </>
+            )}
+
+            {step.stepType === 'linkedin_like_post' && (
+                <div className="flex items-center gap-3 flex-wrap">
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Reaction</label>
+                        <select
+                            value={reactionType}
+                            onChange={e => setCfg({ reaction_type: e.target.value })}
+                            className="px-2 py-1 text-xs rounded-md outline-none bg-white"
+                            style={{ border: '1px solid #D1CBC5' }}
+                        >
+                            {['LIKE', 'PRAISE', 'EMPATHY', 'INTEREST', 'APPRECIATION', 'MAYBE', 'FUNNY'].map(r => (
+                                <option key={r} value={r}>{r.charAt(0) + r.slice(1).toLowerCase()}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase mb-1">Lookback</label>
+                        <div className="flex items-center gap-1">
+                            <input
+                                type="number"
+                                min={1}
+                                max={365}
+                                value={lookbackDays}
+                                onChange={e => setCfg({ post_selection_timespan_days: parseInt(e.target.value) || 30 })}
+                                className="w-16 px-2 py-1 text-xs rounded-md outline-none bg-white"
+                                style={{ border: '1px solid #D1CBC5' }}
+                            />
+                            <span className="text-[10px] text-gray-500">days</span>
+                        </div>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={Boolean(cfg.skip_if_no_post)}
+                            onChange={e => setCfg({ skip_if_no_post: e.target.checked })}
+                        />
+                        <span className="text-[10px] text-gray-600">Skip step if no recent post found</span>
+                    </label>
+                </div>
+            )}
+
+            {(step.stepType === 'linkedin_view_profile' || step.stepType === 'linkedin_follow') && (
+                <div className="text-[11px] text-gray-600 italic">
+                    No message body for this step — the dispatcher executes the action and moves the lead to the next step.
+                </div>
+            )}
+        </div>
+    );
+}
+
+function TokenChips({ tokens, onInsert }: { tokens: string[]; onInsert: (token: string) => void }) {
+    if (tokens.length === 0) return null;
+    return (
+        <div className="flex flex-wrap items-center gap-1 mt-1">
+            <span className="text-[9px] uppercase text-gray-400 mr-1">Insert</span>
+            {tokens.slice(0, 6).map(tk => (
+                <button
+                    key={tk}
+                    onClick={() => onInsert(tk)}
+                    className="text-[10px] px-1.5 py-0.5 rounded bg-white text-gray-700 cursor-pointer hover:bg-gray-50"
+                    style={{ border: '1px solid #D1CBC5' }}
+                >
+                    {`{{${tk}}}`}
+                </button>
+            ))}
         </div>
     );
 }

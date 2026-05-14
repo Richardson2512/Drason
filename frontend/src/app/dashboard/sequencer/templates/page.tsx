@@ -912,10 +912,11 @@ export default function TemplatesPage() {
             {/* ─── Delete folder confirmation ───────────────────────────── */}
             {pendingDeleteFolder && (
                 <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center z-[9999] p-4"
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={(e) => { if (e.target === e.currentTarget && !deletingFolder) setPendingDeleteFolder(null); }}
                 >
-                    <div className="bg-white rounded-xl w-full max-w-md" style={{ border: '1px solid #D1CBC5' }}>
+                    <div className="bg-white rounded-2xl w-full max-w-md" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                         <div className="p-5">
                             <h3 className="text-sm font-bold text-gray-900 mb-2">
                                 Delete folder &ldquo;{pendingDeleteFolder.name}&rdquo;?
@@ -953,12 +954,13 @@ export default function TemplatesPage() {
                 template's subject + body in an inbox simulation. */}
             {previewTemplate && (
                 <div
-                    className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9998] p-4"
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={(e) => { if (e.target === e.currentTarget) setPreviewTemplate(null); }}
                 >
                     <div
-                        className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col shadow-2xl overflow-hidden"
-                        style={{ border: '1px solid #E5E5E5' }}
+                        className="bg-white rounded-2xl w-full max-w-[1480px] h-[94vh] flex flex-col overflow-hidden"
+                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                     >
                         <div className="px-6 py-4 flex items-center justify-between bg-white" style={{ borderBottom: '1px solid #E5E5E5' }}>
                             <div className="flex items-center gap-4">

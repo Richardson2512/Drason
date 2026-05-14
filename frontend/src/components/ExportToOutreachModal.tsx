@@ -184,9 +184,10 @@ export default function ExportToOutreachModal(props: ExportToOutreachProps) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose}>
             <div
-                className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative"
+                className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                 onClick={(e) => e.stopPropagation()}
             >
                 <button

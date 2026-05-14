@@ -619,11 +619,13 @@ export default function CampaignsPage() {
             {/* Sort & Filter Modal */}
             {sortFilter.isOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-4"
+                    className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+                    style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
                     onClick={() => sortFilter.close()}
                 >
                     <div
-                        className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
+                        className="bg-white rounded-2xl max-w-[500px] w-full max-h-[90vh] overflow-hidden flex flex-col"
+                        style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}

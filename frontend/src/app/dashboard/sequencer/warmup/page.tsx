@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 import {
@@ -1146,10 +1147,12 @@ function ConfigModal({ membership, maxTargetDaily, onClose, onSaved }: {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
+    if (typeof document === 'undefined') return null;
+    return createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose}>
             <div
-                className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative"
+                className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                 onClick={e => e.stopPropagation()}
             >
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close">
@@ -1184,7 +1187,8 @@ function ConfigModal({ membership, maxTargetDaily, onClose, onSaved }: {
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 
@@ -1238,10 +1242,12 @@ function PoolConfigModal({ mailboxCount, maxTargetDaily, onClose, onSaved }: {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
+    if (typeof document === 'undefined') return null;
+    return createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={onClose}>
             <div
-                className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative"
+                className="bg-white rounded-2xl max-w-md w-full p-6 relative"
+                style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}
                 onClick={e => e.stopPropagation()}
             >
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" aria-label="Close">
@@ -1302,7 +1308,8 @@ function PoolConfigModal({ mailboxCount, maxTargetDaily, onClose, onSaved }: {
                     </div>
                 )}
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 

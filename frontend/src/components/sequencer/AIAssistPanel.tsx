@@ -17,6 +17,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '@/lib/api';
+import { sanitizeEmailHtml } from '@/lib/sanitizeEmailHtml';
 import { Sparkles, RefreshCw, Globe, ChevronDown, Loader2, CheckCircle2, AlertCircle, X } from 'lucide-react';
 
 // ────────────────────────────────────────────────────────────────────
@@ -793,7 +794,7 @@ function ResultPreview({
                 <div className="text-[9px] font-semibold text-gray-500 uppercase tracking-wider">Body preview</div>
                 <div
                     className="text-xs text-gray-700 mt-0.5 line-clamp-5 prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: email.body_html }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeEmailHtml(email.body_html) }}
                 />
             </div>
             {email.reasoning && (

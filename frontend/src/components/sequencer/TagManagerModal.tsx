@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Plus, Tag as TagIcon, Trash2, Loader2, Check, Edit3 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -190,12 +191,15 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
         } catch { /* auto-toast */ }
     };
 
-    return (
+    if (typeof document === 'undefined') return null;
+
+    return createPortal(
         <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
+            className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+            style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }}
             onClick={e => { if (e.target === e.currentTarget) onClose(); }}
         >
-            <div className="bg-white w-full max-w-lg max-h-[88vh] flex flex-col rounded-xl overflow-hidden" style={{ border: '1px solid #D1CBC5' }}>
+            <div className="bg-white w-full max-w-lg max-h-[88vh] flex flex-col rounded-2xl overflow-hidden" style={{ border: '1px solid #D1CBC5', boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.08)' }}>
                 {/* Header */}
                 <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid #D1CBC5' }}>
                     <div className="flex items-center gap-2">
@@ -340,7 +344,8 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
                     </p>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body,
     );
 }
 
