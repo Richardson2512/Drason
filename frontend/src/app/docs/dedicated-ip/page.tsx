@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
     title: 'Dedicated IP | Superkabe Docs',
     description:
-        'How dedicated IPs work in Superkabe — 1 IP per workspace on AWS SES, automatic warm-up, full reputation control, $39/month per IP.',
+        'How dedicated IPs work in Superkabe - 1 IP per workspace on AWS SES, automatic warm-up, full reputation control, $39/month per IP.',
     alternates: { canonical: '/docs/dedicated-ip' },
     openGraph: {
         title: 'Dedicated IP | Superkabe Docs',
@@ -31,12 +31,12 @@ export default function DedicatedIpDocsPage() {
                 <h2 className="text-2xl font-bold mb-4 text-gray-900 mt-0">What is a dedicated IP?</h2>
                 <p className="text-gray-700 mb-4 text-lg">
                     A dedicated IP is an internet address used exclusively by one workspace to send email.
-                    No other Superkabe customer — and no other workspace inside your account — sends from
+                    No other Superkabe customer - and no other workspace inside your account - sends from
                     it. The IP&apos;s sender reputation is shaped only by your sending behavior.
                 </p>
                 <p className="text-gray-600 mb-0">
                     By default, Superkabe sends through the IPs of your connected mailbox provider
-                    (Gmail, Outlook, or your custom SMTP). That&apos;s a shared pool — fast to set up and
+                    (Gmail, Outlook, or your custom SMTP). That&apos;s a shared pool - fast to set up and
                     free, but reputation is partly out of your hands. The dedicated IP add-on routes the
                     custom-SMTP send path through an isolated AWS SES IP that&apos;s yours alone.
                 </p>
@@ -71,7 +71,7 @@ export default function DedicatedIpDocsPage() {
                     <h3 className="text-xl font-bold text-gray-900 mb-2 mt-0">Automatic warm-up</h3>
                     <p className="text-gray-600 mb-0">
                         A fresh IP has no sending history, so mailbox providers throttle it aggressively.
-                        Superkabe applies a default 4–8 week warm-up curve — starting at 50–100 sends/day
+                        Superkabe applies a default 4–8 week warm-up curve - starting at 50–100 sends/day
                         and ramping up weekly. The throttle is enforced at the send queue, so you can
                         plan campaigns without worrying about overshooting.
                     </p>
@@ -93,7 +93,7 @@ export default function DedicatedIpDocsPage() {
                         The same monitoring stack that protects your shared-pool sends runs at the IP
                         level on your dedicated IP: DNSBL scans, Gmail Postmaster Tools, Outlook SNDS,
                         and ESP-aware routing. If the IP gets listed or the reputation slips, the IP
-                        enters the 5-phase healing pipeline — and Superkabe pages you immediately.
+                        enters the 5-phase healing pipeline - and Superkabe pages you immediately.
                     </p>
                 </div>
             </div>
@@ -152,7 +152,7 @@ export default function DedicatedIpDocsPage() {
                 </div>
                 <p className="text-emerald-50/85 mb-4">
                     Add-on, billed monthly. Stacks on top of any plan (Starter, Pro, Growth, Scale, or
-                    Enterprise). No setup fee. Cancel anytime — the IP is reclaimed at the end of the
+                    Enterprise). No setup fee. Cancel anytime - the IP is reclaimed at the end of the
                     billing period.
                 </p>
                 <Link
@@ -172,7 +172,7 @@ export default function DedicatedIpDocsPage() {
                     <summary className="font-semibold text-gray-900 cursor-pointer">Does a dedicated IP work with Gmail / Outlook OAuth mailboxes?</summary>
                     <p className="text-gray-600 mt-3 mb-0">
                         No. OAuth-connected Gmail and Microsoft mailboxes always send through Google&apos;s
-                        and Microsoft&apos;s own IPs — that&apos;s a fundamental property of OAuth-based
+                        and Microsoft&apos;s own IPs - that&apos;s a fundamental property of OAuth-based
                         sending and no platform can change it. Dedicated IPs only apply to the
                         custom-SMTP send path. If your workspace is OAuth-only, a dedicated IP is not
                         useful for you.
@@ -202,7 +202,7 @@ export default function DedicatedIpDocsPage() {
                 <details className="bg-white border border-[#D1CBC5] p-5 group">
                     <summary className="font-semibold text-gray-900 cursor-pointer">Can I assign one IP to multiple workspaces?</summary>
                     <p className="text-gray-600 mt-3 mb-0">
-                        No. The whole point of a dedicated IP is reputation isolation — sharing one
+                        No. The whole point of a dedicated IP is reputation isolation - sharing one
                         across workspaces defeats that. If you have three workspaces that each need
                         dedicated IPs, you purchase three add-ons.
                     </p>
@@ -212,7 +212,7 @@ export default function DedicatedIpDocsPage() {
                     <summary className="font-semibold text-gray-900 cursor-pointer">Can I edit the warm-up throttle?</summary>
                     <p className="text-gray-600 mt-3 mb-0">
                         Yes, but you&apos;ll see a warning modal first. Raising the daily cap faster than
-                        the recommended curve is the single most common cause of permanent IP burn —
+                        the recommended curve is the single most common cause of permanent IP burn -
                         we surface the warning so you confirm intent. If your campaign timing requires
                         a faster ramp, you can override.
                     </p>
@@ -223,7 +223,7 @@ export default function DedicatedIpDocsPage() {
                     <p className="text-gray-600 mt-3 mb-0">
                         Cancellation is effective at the end of the current billing period. The IP
                         is returned to AWS SES&apos;s pool and the workspace falls back to the shared
-                        send path. Your sending history on that IP is gone — if you re-purchase later,
+                        send path. Your sending history on that IP is gone - if you re-purchase later,
                         you&apos;ll get a fresh IP that needs warming again.
                     </p>
                 </details>

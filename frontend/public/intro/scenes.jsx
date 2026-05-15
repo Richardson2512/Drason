@@ -1,7 +1,7 @@
 /* global React, Stage, Sprite, useTime, useSprite, Easing, interpolate, animate */
 
 // =============================================================================
-// Superkabe product intro — 38s, 1920x1080
+// Superkabe product intro - 38s, 1920x1080
 // 0.0 – 4.0   Brand mark reveal
 // 4.0 – 8.5   AI prompt → sequence drafted
 // 8.5 – 13.5  Email validation pipeline
@@ -75,7 +75,7 @@ function Eyebrow({ children, style }) {
 }
 
 // ============================================================================
-// SCENE 1 — Brand mark reveal (0 – 4.0s)
+// SCENE 1 - Brand mark reveal (0 – 4.0s)
 // ============================================================================
 function Scene1() {
   return (
@@ -126,9 +126,9 @@ function Scene1() {
 }
 
 // ============================================================================
-// SCENE 2 — AI prompt (4.0 – 8.5s)
+// SCENE 2 - AI prompt (4.0 – 8.5s)
 // ============================================================================
-const PROMPT = 'Founder reaching out to Series A B2B SaaS — friendly, 90 words.';
+const PROMPT = 'Founder reaching out to Series A B2B SaaS - friendly, 90 words.';
 function Scene2() {
   return (
     <Sprite start={4.0} end={8.5}>
@@ -161,7 +161,7 @@ function Scene2() {
               </div>
               <div style={{ fontSize: 26, fontWeight: 600, color: C.ink1000, letterSpacing: '-0.01em', marginBottom: 8 }}>Quick question, {'{{first_name}}'}</div>
               <div style={{ fontSize: 20, lineHeight: 1.55, color: C.ink800 }}>
-                Saw {'{{company}}'} just hired three SDRs — fast-moving team. We help groups your size keep their cold-email infrastructure healthy when volume jumps from warmup to live…
+                Saw {'{{company}}'} just hired three SDRs - fast-moving team. We help groups your size keep their cold-email infrastructure healthy when volume jumps from warmup to live…
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ function Scene2() {
 }
 
 // ============================================================================
-// SCENE 3 — Email validation pipeline (8.5 – 13.5s)
+// SCENE 3 - Email validation pipeline (8.5 – 13.5s)
 // ============================================================================
 const VAL_STAGES = [
   { n: 1, label: 'Syntax' },
@@ -253,7 +253,7 @@ function Scene3() {
 }
 
 // ============================================================================
-// SCENE 4 — Mailbox health board (13.5 – 18.0s)
+// SCENE 4 - Mailbox health board (13.5 – 18.0s)
 // ============================================================================
 const ROWS = [
   { mb: 'rob@send.superkabe.com',   esp: 'gmail',   bounce: '0.4%', tone: 'ok',   state: 'GREEN' },
@@ -316,7 +316,7 @@ function Scene4() {
 }
 
 // ============================================================================
-// SCENE 5 — Bounce → auto-pause (18.0 – 22.5s)
+// SCENE 5 - Bounce → auto-pause (18.0 – 22.5s)
 // ============================================================================
 function Scene5() {
   return (
@@ -376,7 +376,7 @@ function Scene5() {
 }
 
 // ============================================================================
-// SCENE 6 — 5-phase healing pipeline (22.5 – 28.0s)
+// SCENE 6 - 5-phase healing pipeline (22.5 – 28.0s)
 // ============================================================================
 const PHASES = ['Pause', 'Quarantine', 'Restricted', 'Warm Recovery', 'Healthy'];
 function Scene6() {
@@ -441,7 +441,7 @@ function Scene6() {
 }
 
 // ============================================================================
-// SCENE 7 — Native integrations (28.0 – 33.0s)
+// SCENE 7 - Native integrations (28.0 – 33.0s)
 // ============================================================================
 const INTEGRATIONS = [
   { name: 'Gmail',         cat: 'Mailbox provider',    status: 'Live', logo: 'assets/integrations/gmail.svg' },
@@ -466,9 +466,9 @@ function Scene7() {
         return (
           <div style={{ position: 'absolute', inset: 0, padding: 100, display: 'flex', flexDirection: 'column', justifyContent: 'center', opacity: op(localTime) }}>
             <Eyebrow>Native integrations</Eyebrow>
-            <div style={{ fontSize: 56, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 12 }}>Plugs into your stack — no middleman.</div>
+            <div style={{ fontSize: 56, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 12 }}>Plugs into your stack - no middleman.</div>
             <div style={{ fontSize: 22, color: C.ink800, marginBottom: 40, maxWidth: 1300 }}>
-              Pull leads from Clay, Apollo, ZoomInfo. Send through Gmail, Microsoft 365, SMTP. Sync to HubSpot, Salesforce, Slack — live in minutes.
+              Pull leads from Clay, Apollo, ZoomInfo. Send through Gmail, Microsoft 365, SMTP. Sync to HubSpot, Salesforce, Slack - live in minutes.
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }}>
@@ -511,7 +511,7 @@ function Scene7() {
 }
 
 // ============================================================================
-// SCENE 8 — Closing lockup (33.0 – 38.0s)
+// SCENE 8 - Closing lockup (33.0 – 38.0s)
 // ============================================================================
 function Scene8() {
   return (
@@ -531,7 +531,7 @@ function Scene8() {
               <div style={{ fontSize: 110, fontWeight: 600, letterSpacing: '-0.04em' }}>Superkabe</div>
             </div>
             <div style={{ marginTop: 36, fontSize: 30, color: 'rgba(255,255,255,0.7)', opacity: subOp, fontWeight: 400, textAlign: 'center', maxWidth: 1300 }}>
-              AI sequences · email validation · multi-mailbox sending · auto-healing — one platform.
+              AI sequences · email validation · multi-mailbox sending · auto-healing - one platform.
             </div>
             <div style={{ marginTop: 56, opacity: taglineOp }}>
               <span style={{ fontFamily: FONT, fontSize: 56, fontWeight: 600, letterSpacing: '-0.02em', color: C.orange500 }}>

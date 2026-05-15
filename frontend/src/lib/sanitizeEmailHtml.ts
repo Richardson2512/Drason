@@ -4,17 +4,17 @@
  * Used wherever the dashboard pipes an untrusted (inbound reply) or
  * partially-trusted (operator-authored or AI-generated) HTML body into
  * `dangerouslySetInnerHTML`. The strict profile keeps text formatting +
- * links + images and strips every script vector — event handlers, style
- * tags, inline JS schemes — so a phishing-shaped reply or a coworker's
+ * links + images and strips every script vector - event handlers, style
+ * tags, inline JS schemes - so a phishing-shaped reply or a coworker's
  * cheeky template can't pop a prompt in another user's browser.
  *
  * Call sites that must use this:
- *   - app/dashboard/sequencer/unibox  (inbound replies — highest risk)
+ *   - app/dashboard/sequencer/unibox  (inbound replies - highest risk)
  *   - components/sequencer/SequencesTab  (AI-generated sequence steps)
  *   - components/sequencer/AIAssistPanel  (AI email previews)
  *   - app/dashboard/sequencer/templates (template card previews)
  *
- * DO NOT inline a different sanitizer in any of those — keep this central.
+ * DO NOT inline a different sanitizer in any of those - keep this central.
  */
 
 import DOMPurify from 'isomorphic-dompurify';

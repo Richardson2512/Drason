@@ -122,7 +122,7 @@ export default function MillionVerifierAlternativesPage() {
  />
 
  <p className="text-lg text-gray-700 leading-relaxed mb-12">
- Full disclosure: Superkabe uses MillionVerifier internally as our API verification provider. We chose them deliberately for the cost-to-accuracy ratio. So this comparison comes from a place of genuine familiarity with the product — and an honest understanding of where it falls short.
+ Full disclosure: Superkabe uses MillionVerifier internally as our API verification provider. We chose them deliberately for the cost-to-accuracy ratio. So this comparison comes from a place of genuine familiarity with the product - and an honest understanding of where it falls short.
  </p>
 
  {/* Key Takeaways */}
@@ -172,7 +172,7 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 1. Superkabe */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
- <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — MillionVerifier inside + monitoring + healing</h3>
+ <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - MillionVerifier inside + monitoring + healing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  If you are already using MillionVerifier and want more, Superkabe is the natural next step. You get the same MillionVerifier verification engine plus health scoring for catch-all risk, role-based addresses, and disposable domains. Leads route directly into Smartlead campaigns after validation. No CSV exports. No manual imports.
  </p>
@@ -184,7 +184,7 @@ export default function MillionVerifierAlternativesPage() {
  </p>
  <ul className="space-y-1 text-gray-600 text-sm">
  <li><strong>Best for:</strong> Teams already using MillionVerifier who want the full protection stack</li>
- <li><strong>Pricing:</strong> $49/mo flat — MillionVerifier verification included</li>
+ <li><strong>Pricing:</strong> $49/mo flat - MillionVerifier verification included</li>
  <li><strong>Limitation:</strong> Built for cold outbound on Smartlead. Not a standalone verification API</li>
  </ul>
  <p className="text-sm mt-3">
@@ -194,7 +194,7 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 2. ZeroBounce */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">2. ZeroBounce — the accuracy upgrade</h3>
+ <h3 className="font-bold text-gray-900 mb-2">2. ZeroBounce - the accuracy upgrade</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  If your issue with MillionVerifier is accuracy, ZeroBounce is the direct upgrade. Roughly 98% detection rate, the best in the industry. Plus features MillionVerifier completely lacks: activity scoring (when was this email last active?), spam trap detection, and data enrichment (name, gender, location).
  </p>
@@ -210,7 +210,7 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 3. NeverBounce */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">3. NeverBounce — faster API, better bulk processing</h3>
+ <h3 className="font-bold text-gray-900 mb-2">3. NeverBounce - faster API, better bulk processing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  NeverBounce sits between MillionVerifier and ZeroBounce on both price and accuracy. Roughly 97% accuracy at $0.008 per email base price (drops with volume). The real advantage over MillionVerifier: a faster, more reliable real-time API and better bulk processing that handles 500,000+ lists smoothly.
  </p>
@@ -226,7 +226,7 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 4. Clearout */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">4. Clearout — 98% accuracy claim, credit-based pricing</h3>
+ <h3 className="font-bold text-gray-900 mb-2">4. Clearout - 98% accuracy claim, credit-based pricing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Clearout claims 98% accuracy, though independent testing puts it closer to 96%. Credit-based pricing works out to about $0.006 per email at volume, roughly 50% more than MillionVerifier but still cheaper than ZeroBounce or NeverBounce. The Google Sheets add-on and WordPress plugin are useful for teams working in those environments.
  </p>
@@ -242,9 +242,9 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 5. DeBounce */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">5. DeBounce — similar price point, lower accuracy</h3>
+ <h3 className="font-bold text-gray-900 mb-2">5. DeBounce - similar price point, lower accuracy</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- DeBounce competes directly with MillionVerifier on price at $0.002 per email — actually cheaper. The catch is accuracy. Around 92-93% in practice, which means roughly 20-30 more invalid addresses per 1,000 compared to MillionVerifier. For teams where absolute lowest cost is the priority and a few extra bounces per thousand are acceptable, DeBounce is an option.
+ DeBounce competes directly with MillionVerifier on price at $0.002 per email - actually cheaper. The catch is accuracy. Around 92-93% in practice, which means roughly 20-30 more invalid addresses per 1,000 compared to MillionVerifier. For teams where absolute lowest cost is the priority and a few extra bounces per thousand are acceptable, DeBounce is an option.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Syntax checks and disposable email detection work fine. The API exists but is noticeably slower than MillionVerifier, NeverBounce, or ZeroBounce. Bulk processing handles medium lists. DeBounce is a budget tool that trades accuracy for savings. That trade-off makes more sense at low volume where a few extra bounces do not materially impact your domain health.
@@ -258,12 +258,12 @@ export default function MillionVerifierAlternativesPage() {
 
  {/* 6. Bouncer */}
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">6. Bouncer — EU-based, GDPR compliant</h3>
+ <h3 className="font-bold text-gray-900 mb-2">6. Bouncer - EU-based, GDPR compliant</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Bouncer is a European-based verification tool that leads with GDPR compliance. If your company has strict data processing requirements that mandate EU data residency, Bouncer is one of the few verification tools that can meet those requirements natively. Accuracy is solid at around 96%, comparable to NeverBounce.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- Pricing lands around $0.008 per email, similar to NeverBounce. The &quot;Toxicity Check&quot; feature identifies spam traps, complainers, and litigators — useful data for cold email teams operating in regulated markets. The API is clean and well-documented. For teams outside the EU without specific compliance needs, the advantage over other tools is marginal.
+ Pricing lands around $0.008 per email, similar to NeverBounce. The &quot;Toxicity Check&quot; feature identifies spam traps, complainers, and litigators - useful data for cold email teams operating in regulated markets. The API is clean and well-documented. For teams outside the EU without specific compliance needs, the advantage over other tools is marginal.
  </p>
  <ul className="space-y-1 text-gray-600 text-sm">
  <li><strong>Best for:</strong> EU-based teams with strict data processing and GDPR compliance requirements</li>

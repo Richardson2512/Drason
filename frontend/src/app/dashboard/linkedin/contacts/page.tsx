@@ -14,13 +14,13 @@ import TagPicker, { TagPillList } from '@/components/sequencer/TagPicker';
 import { apiClient } from '@/lib/api';
 
 /**
- * Super LinkedIn Contacts — feature-parity with /dashboard/sequencer/contacts:
+ * Super LinkedIn Contacts - feature-parity with /dashboard/sequencer/contacts:
  * columns toggler, CSV export, Add Contact, tag picker, paginated table,
  * bulk-select action bar. Adds a new "From Super Sequencer" import path
  * (reuse email-side contacts that already carry a linkedin_url) on top
  * of the standard sources.
  *
- * Tags use the org-wide /api/sequencer/tags surface — same table the
+ * Tags use the org-wide /api/sequencer/tags surface - same table the
  * email contacts page reads from, so a tag created here also appears
  * there. Workspace-scoped, not channel-scoped.
  */
@@ -130,7 +130,7 @@ export default function LinkedInContactsPage() {
     const [sourceFilter, setSourceFilter] = useState('all');
     const [tagFilter, setTagFilter] = useState<string[]>([]);
     // LinkedIn-specific filters that aren't on the sequencer side because
-    // LinkedIn data is title/company-rich — even when the columns aren't
+    // LinkedIn data is title/company-rich - even when the columns aren't
     // visible users still want to narrow by these.
     const [sequenceStatusFilter, setSequenceStatusFilter] = useState('all');
     const [companyFilter, setCompanyFilter] = useState('');
@@ -178,7 +178,7 @@ export default function LinkedInContactsPage() {
     // Backend filters do the heavy lifting (status, source, tags, search,
     // company/title facets). Client-side filtering is only used for the
     // "sequence status" pseudo-filter that's derived from
-    // connection_status + campaign_count — no SQL column for that.
+    // connection_status + campaign_count - no SQL column for that.
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [totalCount, setTotalCount] = useState(0);
@@ -212,7 +212,7 @@ export default function LinkedInContactsPage() {
 
     useEffect(() => { void fetchContacts(); }, [fetchContacts]);
 
-    // Refetch when the tab regains focus — picks up contacts added by
+    // Refetch when the tab regains focus - picks up contacts added by
     // the supervisor agent (signal monitor → enrichment → CampaignLead
     // upsert) or by other operators editing in another tab.
     useEffect(() => {
@@ -379,7 +379,7 @@ export default function LinkedInContactsPage() {
 
     const handleBulkDelete = async () => {
         if (selectedIds.size === 0) return;
-        if (!window.confirm(`Remove ${selectedIds.size} contact${selectedIds.size === 1 ? '' : 's'}? This deletes the Lead row from the workspace — both Super LinkedIn and Super Sequencer will lose it.`)) return;
+        if (!window.confirm(`Remove ${selectedIds.size} contact${selectedIds.size === 1 ? '' : 's'}? This deletes the Lead row from the workspace - both Super LinkedIn and Super Sequencer will lose it.`)) return;
         setBulkDeleting(true);
         try {
             const resp = await apiClient<{ data: { deleted: number } }>(
@@ -398,7 +398,7 @@ export default function LinkedInContactsPage() {
 
     // Per-row tag update. The underlying Lead row is shared between
     // Super LinkedIn and Super Sequencer, so we call the unified
-    // /api/sequencer/contacts/:id/tags endpoint — a tag added here also
+    // /api/sequencer/contacts/:id/tags endpoint - a tag added here also
     // shows up on the email-side contact view, which is what operators
     // expect from a "workspace-level lead" model. The list is
     // optimistically updated, then reconciled from the server response.
@@ -652,7 +652,7 @@ export default function LinkedInContactsPage() {
                                 <tr><td colSpan={visibleCols.length + 2} className="px-4 py-10 text-center text-xs text-gray-500">
                                     {filtered.length === 0 && contacts.length > 0
                                         ? 'No contacts match the current filters.'
-                                        : 'No contacts yet — click Import contacts to add some.'}
+                                        : 'No contacts yet - click Import contacts to add some.'}
                                 </td></tr>
                             ) : pageItems.map(c => {
                                 const status = STATUS_BADGE[c.connection_status];
@@ -672,7 +672,7 @@ export default function LinkedInContactsPage() {
                                         )}
                                         {showCol('company') && (
                                             <td className="px-4 py-3">
-                                                <div className="text-sm text-gray-900">{c.company || '—'}</div>
+                                                <div className="text-sm text-gray-900">{c.company || '-'}</div>
                                                 <div className="text-[0.7rem] text-gray-500">{c.title || c.headline || ''}</div>
                                             </td>
                                         )}
@@ -688,12 +688,12 @@ export default function LinkedInContactsPage() {
                                         )}
                                         {showCol('email') && (
                                             <td className="px-4 py-3">
-                                                <span className="text-xs text-gray-700 font-mono">{c.email || '—'}</span>
+                                                <span className="text-xs text-gray-700 font-mono">{c.email || '-'}</span>
                                             </td>
                                         )}
                                         {showCol('phone') && (
                                             <td className="px-4 py-3">
-                                                <span className="text-xs text-gray-700 font-mono">{c.phone || '—'}</span>
+                                                <span className="text-xs text-gray-700 font-mono">{c.phone || '-'}</span>
                                             </td>
                                         )}
                                         {showCol('source') && (
@@ -730,7 +730,7 @@ export default function LinkedInContactsPage() {
                                             <td className="px-4 py-3 text-center">
                                                 {c.campaign_count > 0
                                                     ? <span className="text-sm font-semibold text-blue-700">{c.campaign_count}</span>
-                                                    : <span className="text-gray-400">—</span>}
+                                                    : <span className="text-gray-400">-</span>}
                                             </td>
                                         )}
                                         {showCol('created') && (
@@ -797,7 +797,7 @@ export default function LinkedInContactsPage() {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Import modal — direct sources (CSV), 6 contact databases (Apollo,
+// Import modal - direct sources (CSV), 6 contact databases (Apollo,
 // Clay, Surfe, Lusha, Hunter, ZoomInfo), CRM (HubSpot/Salesforce), and
 // the LinkedIn-specific "From Super Sequencer" pull.
 // ────────────────────────────────────────────────────────────────────
@@ -848,7 +848,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
 
     // Load sequencer-side leads + LinkedIn campaigns when the user picks
     // the "From Super Sequencer" stage. Both calls are cheap enough that
-    // we hit them on every open of that stage — operator-facing fresh
+    // we hit them on every open of that stage - operator-facing fresh
     // data beats a stale cache.
     useEffect(() => {
         if (stage !== 'sequencer') return;
@@ -876,7 +876,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
             }
         }).finally(() => { if (!cancelled) setSeqLoading(false); });
         return () => { cancelled = true; };
-    // We intentionally don't depend on seqTargetCampaignId — it's set
+    // We intentionally don't depend on seqTargetCampaignId - it's set
     // inside this effect and we don't want a loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stage]);
@@ -885,7 +885,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
     // Minimal CSV parser: splits on newlines, expects header row with
     // at least `linkedin_url` (case-insensitive, snake-case). All
     // other columns are optional. Encoding is whatever the browser
-    // hands us via FileReader — Excel-saved UTF-16 CSVs will land
+    // hands us via FileReader - Excel-saved UTF-16 CSVs will land
     // here as garbled bytes, which is fine to fail loudly on.
     const parseCsv = (text: string): Array<Record<string, string>> => {
         const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
@@ -893,7 +893,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
         const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_'));
         const rows: Array<Record<string, string>> = [];
         for (let i = 1; i < lines.length; i++) {
-            // Naive split — doesn't handle commas inside quoted fields.
+            // Naive split - doesn't handle commas inside quoted fields.
             // For richer CSVs we'd reach for papaparse; this covers the
             // vast majority of operator-pasted exports.
             const cells = lines[i].split(',').map(c => c.trim());
@@ -924,7 +924,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
                     source: 'csv',
                 }));
             if (valid.length === 0) {
-                toast.error('No valid rows found — every row must have a linkedin.com/in/<slug> URL.');
+                toast.error('No valid rows found - every row must have a linkedin.com/in/<slug> URL.');
                 setCsvParsing(false);
                 return;
             }
@@ -969,12 +969,12 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
         }
     };
 
-    // Direct sources — CSV uses the lucide spreadsheet icon since it
+    // Direct sources - CSV uses the lucide spreadsheet icon since it
     // isn't a vendor brand.
     const DIRECT: ProviderCard[] = [
         { key: 'csv',       label: 'Upload CSV',  available: true, subtitle: 'Drop a CSV file', fallbackIcon: <FileSpreadsheet size={20} className="text-emerald-600" /> },
     ];
-    // Contact databases — official SVG logos under /brands/. Cards are
+    // Contact databases - official SVG logos under /brands/. Cards are
     // disabled until each provider's connection wizard ships; clicking
     // a not-connected card surfaces the same "Connect under Integrations"
     // pattern the sequencer modal uses.
@@ -1112,7 +1112,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
                             </p>
                             <div className="rounded-lg p-3 bg-blue-50/60" style={{ border: '1px solid #BFDBFE' }}>
                                 <p className="text-[0.75rem] text-blue-900">
-                                    The Lead row is shared — tags, score, and history carry over automatically.
+                                    The Lead row is shared - tags, score, and history carry over automatically.
                                     Enrolling just upserts a CampaignLead row for each selected contact.
                                 </p>
                             </div>
@@ -1228,7 +1228,7 @@ function ImportContactsModal({ onClose, onImported }: { onClose: () => void; onI
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Add Contact modal — single-row create form. Mirrors the sequencer
+// Add Contact modal - single-row create form. Mirrors the sequencer
 // Add Contact UX: name + linkedin URL required, company/title/email/phone
 // optional. Tag picker inline so the contact lands in the right buckets
 // immediately.

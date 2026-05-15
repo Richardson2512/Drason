@@ -184,7 +184,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* Superkabe */}
  <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
- <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — Validation + monitoring + healing</h3>
+ <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - Validation + monitoring + healing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Superkabe is not a verification tool that added monitoring as a feature. It is an infrastructure protection platform that includes verification. The core product monitors bounce rates in real-time across all your mailboxes and domains, auto-pauses mailboxes that cross thresholds, and heals damaged infrastructure through graduated recovery phases.
  </p>
@@ -198,7 +198,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* NeverBounce */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">2. NeverBounce — Fast bulk processing</h3>
+ <h3 className="font-bold text-gray-900 mb-2">2. NeverBounce - Fast bulk processing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  NeverBounce is a strong ZeroBounce competitor for pure verification. Its real-time API is fast, bulk processing handles large lists efficiently, and accuracy is solid at around 96-97%. The &quot;Verify+&quot; feature attempts to verify catch-all addresses more aggressively than most tools.
  </p>
@@ -209,7 +209,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* MillionVerifier */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">3. MillionVerifier — Best price per verification</h3>
+ <h3 className="font-bold text-gray-900 mb-2">3. MillionVerifier - Best price per verification</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  MillionVerifier is the budget king. At roughly $0.50 per 1,000 verifications, it is 6-8x cheaper than ZeroBounce. Accuracy is slightly lower (around 95-96%) but still catches the vast majority of invalid addresses. For teams verifying 50,000+ emails per month, the cost savings are substantial.
  </p>
@@ -220,7 +220,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* Clearout */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">4. Clearout — Good API, limited integrations</h3>
+ <h3 className="font-bold text-gray-900 mb-2">4. Clearout - Good API, limited integrations</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Clearout offers a clean API, decent accuracy (around 96%), and useful features like role-based email detection and disposable domain blocking. The API documentation is well-structured, which matters if you are building custom integrations.
  </p>
@@ -231,7 +231,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* DeBounce */}
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">5. DeBounce — Budget option</h3>
+ <h3 className="font-bold text-gray-900 mb-2">5. DeBounce - Budget option</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  DeBounce competes on price with MillionVerifier at about $1 per 1,000 verifications. Accuracy is decent but not best-in-class. Where DeBounce is useful: quick bulk cleaning of large lists when you need good-enough verification at a low price point. It handles disposable email detection and syntax validation well.
  </p>
@@ -242,7 +242,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  {/* Scrubby */}
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">6. Scrubby — Catch-all focused</h3>
+ <h3 className="font-bold text-gray-900 mb-2">6. Scrubby - Catch-all focused</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  Scrubby takes a different approach. Instead of standard SMTP verification, it specializes in validating catch-all email addresses. Most verification tools flag catch-all addresses as &quot;risky&quot; or &quot;unknown&quot; because the server accepts everything. Scrubby attempts to determine whether the specific mailbox on a catch-all domain is actually active.
  </p>
@@ -362,7 +362,7 @@ export default function ZeroBounceAlternativesArticle() {
 
  <BottomCtaStrip
                     headline="Validation is a snapshot. Monitoring is continuous."
-                    body="ZeroBounce checks lists. Superkabe checks every send — real-time bounce monitoring, threshold-based auto-pause, and 5-phase healing."
+                    body="ZeroBounce checks lists. Superkabe checks every send - real-time bounce monitoring, threshold-based auto-pause, and 5-phase healing."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

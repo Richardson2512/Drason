@@ -9,7 +9,7 @@ import OrganizationDetailsCard from '@/components/settings/OrganizationDetailsCa
 import PostmasterToolsCard from '@/components/settings/PostmasterToolsCard';
 
 // NOTE: Clay and Slack integrations moved to /dashboard/integrations/clay
-// and /dashboard/integrations/slack — they're surfaced from the
+// and /dashboard/integrations/slack - they're surfaced from the
 // integrations grid now instead of crowding this Settings page.
 // Postmaster Tools stays here (it's a deliverability monitoring config,
 // not a connector users browse for in the integrations grid).
@@ -50,7 +50,7 @@ export default function Settings() {
                 {/* Organization Info */}
                 <OrganizationDetailsCard org={org} />
 
-                {/* Postmaster Tools — Google deliverability monitoring config.
+                {/* Postmaster Tools - Google deliverability monitoring config.
                     Not a "connector" the user shops for; configured per
                     domain after sending starts. Lives here rather than on
                     the integrations grid. */}

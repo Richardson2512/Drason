@@ -9,7 +9,7 @@ import CrossChannelSuppressionCard from '@/components/shared/CrossChannelSuppres
 // Signal-monitoring mode taxonomy (mirrors the protection-side System Mode
 // pattern in components/settings/SystemModeCard.tsx). One-liners per spec.
 const SIGNAL_MODES = [
-    { key: 'OBSERVE', label: 'Observe', icon: <Eye size={16} />,       desc: 'Log signals and notify only — no auto-action.',                         color: '#D97706', activeBg: '#FFFBEB', badgeBg: '#FDE68A', badgeColor: '#92400E' },
+    { key: 'OBSERVE', label: 'Observe', icon: <Eye size={16} />,       desc: 'Log signals and notify only - no auto-action.',                         color: '#D97706', activeBg: '#FFFBEB', badgeBg: '#FDE68A', badgeColor: '#92400E' },
     { key: 'SUGGEST', label: 'Suggest', icon: <Lightbulb size={16} />, desc: 'Queue ICP-matched signals for your approval before any action fires.', color: '#2563EB', activeBg: '#EFF6FF', badgeBg: '#BFDBFE', badgeColor: '#1E40AF' },
     { key: 'ENFORCE', label: 'Enforce', icon: <Lock size={16} />,      desc: 'Auto-route matched signals into cold-call lists or campaigns.',          color: '#7C3AED', activeBg: '#F5F3FF', badgeBg: '#DDD6FE', badgeColor: '#5B21B6' },
 ];
@@ -20,7 +20,7 @@ interface Provider {
     description: string;
 }
 
-// Strict BYOK — the customer supplies the API key (and webhook for Clay)
+// Strict BYOK - the customer supplies the API key (and webhook for Clay)
 // on a per-org settings panel, and pays the vendor directly. We deliberately
 // don't surface per-hit cost: we have no reliable read on the customer's
 // actual rate (volume discounts, plan tier, contract pricing) and any
@@ -29,9 +29,9 @@ const INITIAL_PROVIDERS: Provider[] = [
     { name: 'Apollo',   enabled: true,  description: 'Primary contact-data source. Strong for B2B SaaS in US/EU.' },
     { name: 'Clay',     enabled: true,  description: 'Fallback for missing email + phone enrichment via Clay\'s waterfall.' },
     { name: 'Surfe',    enabled: true,  description: 'Tertiary fallback. Good APAC + tech-startup coverage.' },
-    { name: 'Lusha',    enabled: false, description: 'Phone-first enrichment. Disabled — opt in if Apollo/Clay misses too many phones.' },
-    { name: 'Hunter',   enabled: false, description: 'Email-only enrichment. Disabled — Apollo+Clay covers Hunter\'s hits.' },
-    { name: 'ZoomInfo', enabled: false, description: 'Disabled — credentials not configured.' },
+    { name: 'Lusha',    enabled: false, description: 'Phone-first enrichment. Disabled - opt in if Apollo/Clay misses too many phones.' },
+    { name: 'Hunter',   enabled: false, description: 'Email-only enrichment. Disabled - Apollo+Clay covers Hunter\'s hits.' },
+    { name: 'ZoomInfo', enabled: false, description: 'Disabled - credentials not configured.' },
 ];
 
 // Map provider display names to the brand SVGs we ship under /public/brands.
@@ -57,7 +57,7 @@ const NOTIF_EVENTS = [
 
 export default function LinkedInSettingsPage() {
     const [providers, setProviders] = useState(INITIAL_PROVIDERS);
-    const [defaultNote, setDefaultNote] = useState('Hi {{first_name}}, saw your post on {{topic}} — building something adjacent at Superkabe and would love your take.');
+    const [defaultNote, setDefaultNote] = useState('Hi {{first_name}}, saw your post on {{topic}} - building something adjacent at Superkabe and would love your take.');
     const [useFallback, setUseFallback] = useState(true);
     const [signalMode, setSignalMode] = useState<'OBSERVE' | 'SUGGEST' | 'ENFORCE'>('SUGGEST');
 
@@ -182,7 +182,7 @@ export default function LinkedInSettingsPage() {
                 </div>
             </div>
 
-            {/* Workspace-wide policy — same card mounted on the Sequencer
+            {/* Workspace-wide policy - same card mounted on the Sequencer
                 settings page. Editing here flips the policy for every
                 campaign across both modules. */}
             <CrossChannelSuppressionCard />

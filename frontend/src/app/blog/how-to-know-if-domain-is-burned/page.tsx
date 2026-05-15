@@ -54,7 +54,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  {
  "@type": "Question",
  "name": "Can I use a burned domain for anything else?",
- "acceptedAnswer": { "@type": "Answer", "text": "A burned sending domain should not be used for cold email, but it can still function for other purposes. You can use it for a landing page, website hosting, or warm email to people who have opted in. The sending reputation is what is damaged — the domain itself still resolves. However, if the domain is on Spamhaus or similar critical blacklists, even transactional emails from that domain may have deliverability issues. Some teams park burned domains for 6-12 months then attempt re-warming, though success rates are low." }
+ "acceptedAnswer": { "@type": "Answer", "text": "A burned sending domain should not be used for cold email, but it can still function for other purposes. You can use it for a landing page, website hosting, or warm email to people who have opted in. The sending reputation is what is damaged - the domain itself still resolves. However, if the domain is on Spamhaus or similar critical blacklists, even transactional emails from that domain may have deliverability issues. Some teams park burned domains for 6-12 months then attempt re-warming, though success rates are low." }
  },
  {
  "@type": "Question",
@@ -93,16 +93,16 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> A single warning sign is a problem to fix — 3 or more together means the domain is burned</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> A single warning sign is a problem to fix - 3 or more together means the domain is burned</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools is the most authoritative source for domain reputation data</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Recovery is possible if caught within the first 1-2 weeks — after 30 days, replacement is faster</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Recovery is possible if caught within the first 1-2 weeks - after 30 days, replacement is faster</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Automated monitoring detects burnout early enough to save most domains before they are fully burned</li>
  </ul>
  </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-gray-600 leading-relaxed mb-6">
- &ldquo;Burned&rdquo; is not a technical classification — it is an operational reality. A burned domain is one where ISPs have decided that emails from your domain are unwanted, and they are routing them to spam or rejecting them outright. There is no single threshold that defines &ldquo;burned.&rdquo; Instead, it is a constellation of signals that together indicate your domain reputation has degraded beyond the point where normal sending is effective. Here are the 7 signs to watch for.
+ &ldquo;Burned&rdquo; is not a technical classification - it is an operational reality. A burned domain is one where ISPs have decided that emails from your domain are unwanted, and they are routing them to spam or rejecting them outright. There is no single threshold that defines &ldquo;burned.&rdquo; Instead, it is a constellation of signals that together indicate your domain reputation has degraded beyond the point where normal sending is effective. Here are the 7 signs to watch for.
  </p>
 
  <h2 id="bounce-rate-above-3" className="text-2xl font-bold text-gray-900 mt-12 mb-4">1. Bounce rate above 3%</h2>
@@ -113,7 +113,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  Check your bounce rate in your sending platform (Smartlead, Instantly) and calculate it as: <code className="bg-gray-100 px-1 text-sm">(bounced emails / total sent) x 100</code>. Look at the trend, not just the current number. A domain with 1.5% bounce rate that has been climbing by 0.3% per week is heading toward burnout even though it has not crossed 3% yet.
  </p>
  <div className="bg-amber-50 border border-amber-200 p-5 mb-6">
- <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> Stop sending from this domain immediately. <Link href="/blog/reduce-cold-email-bounce-rate" className="text-blue-600 hover:text-blue-800">Investigate the bounce causes</Link> — are they hard bounces (invalid addresses) or soft bounces (reputation-based rejections)? Hard bounces indicate a list quality problem. Soft bounces indicate the domain is already being flagged by ISPs.</p>
+ <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> Stop sending from this domain immediately. <Link href="/blog/reduce-cold-email-bounce-rate" className="text-blue-600 hover:text-blue-800">Investigate the bounce causes</Link> - are they hard bounces (invalid addresses) or soft bounces (reputation-based rejections)? Hard bounces indicate a list quality problem. Soft bounces indicate the domain is already being flagged by ISPs.</p>
  </div>
 
  <h2 id="all-emails-spam" className="text-2xl font-bold text-gray-900 mt-12 mb-4">2. All emails going to spam</h2>
@@ -129,13 +129,13 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
 
  <h2 id="postmaster-low-bad" className="text-2xl font-bold text-gray-900 mt-12 mb-4">3. Google Postmaster shows LOW or BAD reputation</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- <a href="https://postmaster.google.com" target="_blank" rel="nofollow noopener noreferrer">Google Postmaster Tools</a> is the single most authoritative data source for how Gmail perceives your domain. It shows four reputation levels: HIGH, MEDIUM, LOW, and BAD. A domain at LOW is in serious trouble. A domain at BAD is effectively burned for Gmail — which represents roughly 30-40% of all email recipients.
+ <a href="https://postmaster.google.com" target="_blank" rel="nofollow noopener noreferrer">Google Postmaster Tools</a> is the single most authoritative data source for how Gmail perceives your domain. It shows four reputation levels: HIGH, MEDIUM, LOW, and BAD. A domain at LOW is in serious trouble. A domain at BAD is effectively burned for Gmail - which represents roughly 30-40% of all email recipients.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  If you do not have Google Postmaster connected, set it up now. It takes 5 minutes and requires adding a DNS TXT record to verify domain ownership. The tool shows reputation, spam rate, authentication ratios (SPF, DKIM, DMARC), and delivery errors. Note that data has a 24-48 hour delay, so what you see today reflects your sending from 1-2 days ago.
  </p>
  <div className="bg-amber-50 border border-amber-200 p-5 mb-6">
- <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> If reputation is LOW, stop live campaigns and run warmup-only for 2-3 weeks. Monitor Postmaster daily for improvement. If reputation is BAD and has been for more than 2 weeks, recovery is unlikely — begin preparing a replacement domain. See our <Link href="/blog/domain-reputation-recovery-guide" className="text-blue-600 hover:text-blue-800">domain reputation recovery guide</Link> for the full process.</p>
+ <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> If reputation is LOW, stop live campaigns and run warmup-only for 2-3 weeks. Monitor Postmaster daily for improvement. If reputation is BAD and has been for more than 2 weeks, recovery is unlikely - begin preparing a replacement domain. See our <Link href="/blog/domain-reputation-recovery-guide" className="text-blue-600 hover:text-blue-800">domain reputation recovery guide</Link> for the full process.</p>
  </div>
 
  <h2 id="listed-critical-blacklists" className="text-2xl font-bold text-gray-900 mt-12 mb-4">4. Listed on critical blacklists</h2>
@@ -154,7 +154,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
  Cold email open rates typically range from 15-30% for well-targeted campaigns. If your open rate has dropped below 5% and you have verified that your subject lines are not the problem (test the same subject lines from a different, healthy domain), the emails are landing in spam. ISPs are not even showing them to recipients.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- A gradual decline over weeks suggests progressive reputation damage. A sudden drop to near-zero suggests an acute event — a blacklisting, a DNS failure, or a recipient server blocking your domain entirely. Check your sending platform&rsquo;s analytics for the date the decline started and cross-reference with any changes you made (new campaign, volume increase, new lead source).
+ A gradual decline over weeks suggests progressive reputation damage. A sudden drop to near-zero suggests an acute event - a blacklisting, a DNS failure, or a recipient server blocking your domain entirely. Check your sending platform&rsquo;s analytics for the date the decline started and cross-reference with any changes you made (new campaign, volume increase, new lead source).
  </p>
  <div className="bg-amber-50 border border-amber-200 p-5 mb-6">
  <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> Send the same email from a healthy domain to a small test list. If open rates are normal from the other domain, the issue is confirmed as domain reputation. If open rates are low from both domains, the problem may be content-related or ISP-wide.</p>
@@ -162,10 +162,10 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
 
  <h2 id="warmup-scores-declining" className="text-2xl font-bold text-gray-900 mt-12 mb-4">6. Warmup tool shows declining scores</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- If you are running warmup alongside live campaigns (which you should be), your warmup tool will show inbox placement scores. A healthy warmup score is 85-100%. If warmup scores are declining — dropping from 90% to 70% to 50% over successive days — your domain reputation is actively degrading and the warmup cannot keep up.
+ If you are running warmup alongside live campaigns (which you should be), your warmup tool will show inbox placement scores. A healthy warmup score is 85-100%. If warmup scores are declining - dropping from 90% to 70% to 50% over successive days - your domain reputation is actively degrading and the warmup cannot keep up.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- Warmup tools like <a href="https://www.warmupinbox.com" target="_blank" rel="nofollow noopener noreferrer">Warmup Inbox</a> or Instantly&rsquo;s built-in warmup show how many of their test emails landed in inbox vs spam. This is a leading indicator — warmup scores often decline 3-5 days before live campaign metrics show problems because warmup systems check placement actively rather than relying on open tracking.
+ Warmup tools like <a href="https://www.warmupinbox.com" target="_blank" rel="nofollow noopener noreferrer">Warmup Inbox</a> or Instantly&rsquo;s built-in warmup show how many of their test emails landed in inbox vs spam. This is a leading indicator - warmup scores often decline 3-5 days before live campaign metrics show problems because warmup systems check placement actively rather than relying on open tracking.
  </p>
  <div className="bg-amber-50 border border-amber-200 p-5 mb-6">
  <p className="text-amber-900 text-sm m-0"><strong>What to do:</strong> If warmup scores drop below 70%, reduce live volume by 50% immediately. If they drop below 50%, stop live campaigns entirely and run warmup-only until scores recover above 85%. See our guide on <Link href="/blog/why-cold-emails-go-to-spam" className="text-blue-600 hover:text-blue-800">why cold emails go to spam after warmup</Link>.</p>
@@ -235,17 +235,17 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
 
  <h2 id="superkabe-detects-burnout" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe detects domain burnout early</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- The 7 warning signs above are all detectable before the domain is fully burned — if you have monitoring in place. Superkabe tracks all of these signals in real time and takes automated action to prevent burnout:
+ The 7 warning signs above are all detectable before the domain is fully burned - if you have monitoring in place. Superkabe tracks all of these signals in real time and takes automated action to prevent burnout:
  </p>
  <div className="space-y-3 mb-8">
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Predictive risk scoring:</strong> Superkabe assigns a <Link href="/docs/risk-scoring" className="text-blue-600 hover:text-blue-800">health score</Link> to every domain and mailbox based on bounce rate trends, blacklist status, DNS health, and sending patterns. When a domain&rsquo;s score declines, you get an alert before the damage becomes visible in campaign metrics.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Auto-pause before the 3% threshold:</strong> Superkabe does not wait until a domain is burned to act. Mailboxes are auto-paused when bounce rates approach dangerous levels — typically at the 2-2.5% range — before ISPs have time to downgrade your reputation.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Auto-pause before the 3% threshold:</strong> Superkabe does not wait until a domain is burned to act. Mailboxes are auto-paused when bounce rates approach dangerous levels - typically at the 2-2.5% range - before ISPs have time to downgrade your reputation.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">5-phase healing pipeline:</strong> Paused mailboxes enter Superkabe&rsquo;s <Link href="/docs/warmup-recovery" className="text-blue-600 hover:text-blue-800">automated recovery pipeline</Link> — assessment, cooldown, re-warmup, validation send, and restoration. This is the same recovery process described above, but fully automated.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">5-phase healing pipeline:</strong> Paused mailboxes enter Superkabe&rsquo;s <Link href="/docs/warmup-recovery" className="text-blue-600 hover:text-blue-800">automated recovery pipeline</Link> - assessment, cooldown, re-warmup, validation send, and restoration. This is the same recovery process described above, but fully automated.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Continuous DNS and blacklist monitoring:</strong> Superkabe checks <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:text-blue-800">SPF, DKIM, and DMARC</Link> health and queries 410 blacklists continuously. DNS failures and new blacklist listings trigger immediate alerts.</p>
@@ -271,7 +271,7 @@ export default function HowToKnowIfDomainIsBurnedArticle() {
 
  <BottomCtaStrip
  headline="Detect domain burnout before it happens"
- body={`Superkabe monitors every warning sign of domain burnout in real time — bounce rates, blacklists, DNS health — and auto-pauses mailboxes before the damage becomes permanent.`}
+ body={`Superkabe monitors every warning sign of domain burnout in real time - bounce rates, blacklists, DNS health - and auto-pauses mailboxes before the damage becomes permanent.`}
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />

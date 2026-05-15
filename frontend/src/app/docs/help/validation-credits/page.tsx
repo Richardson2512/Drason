@@ -104,7 +104,7 @@ export default function ValidationCreditsPage() {
  If you upload a CSV batch and credits are exhausted mid-batch, remaining leads are flagged with <strong>&ldquo;Monthly validation credit limit reached. Upgrade your plan.&rdquo;</strong> instead of being validated. Leads already validated in the batch are unaffected.
  </p>
  <p className="text-amber-700 text-sm">
- Upgrade to a higher plan at <strong>Dashboard &rarr; Billing</strong> to increase your monthly limit. Credits reset on your billing anniversary &mdash; unused credits do not roll over.
+ Upgrade to a higher plan at <strong>Dashboard &rarr; Billing</strong> to increase your monthly limit. Credits reset on your billing anniversary - unused credits do not roll over.
  </p>
  </div>
 
@@ -123,10 +123,10 @@ export default function ValidationCreditsPage() {
  <h2 id="optimization" className="text-3xl font-bold mb-6 text-gray-900">Optimizing Credit Usage</h2>
  <div className="bg-white border border-[#D1CBC5] p-6 mb-12">
  <ul className="space-y-3 text-gray-600">
- <li><strong>Deduplicate before upload</strong> &mdash; remove obvious duplicates from your CSV before uploading. Superkabe catches them, but deduplicating client-side saves processing time.</li>
- <li><strong>Use Clay for enrichment</strong> &mdash; Clay leads are typically higher quality than raw CSV imports. Your Clay invalid rate will be lower, meaning fewer wasted credits.</li>
- <li><strong>Leverage caching</strong> &mdash; validation results are cached for 30 days per domain. Re-importing the same leads within 30 days uses cached results (no credit spent).</li>
- <li><strong>Monitor source quality</strong> &mdash; check the &ldquo;Invalid Rate by Source&rdquo; chart on the validation analytics page. If CSV uploads have a 15% invalid rate, the list source needs cleanup.</li>
+ <li><strong>Deduplicate before upload</strong> - remove obvious duplicates from your CSV before uploading. Superkabe catches them, but deduplicating client-side saves processing time.</li>
+ <li><strong>Use Clay for enrichment</strong> - Clay leads are typically higher quality than raw CSV imports. Your Clay invalid rate will be lower, meaning fewer wasted credits.</li>
+ <li><strong>Leverage caching</strong> - validation results are cached for 30 days per domain. Re-importing the same leads within 30 days uses cached results (no credit spent).</li>
+ <li><strong>Monitor source quality</strong> - check the &ldquo;Invalid Rate by Source&rdquo; chart on the validation analytics page. If CSV uploads have a 15% invalid rate, the list source needs cleanup.</li>
  </ul>
  </div>
 

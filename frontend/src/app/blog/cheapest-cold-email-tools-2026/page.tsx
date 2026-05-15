@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description: 'The cheapest cold email tools of 2026 ranked by real cost at scale, including Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, and Mailshake.',
     openGraph: {
         title: 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)',
-        description: '"Cheap" depends on volume model. We rank the cheapest cold email tools of 2026 by total cost of ownership at three volume tiers — solo, growing team, agency.',
+        description: '"Cheap" depends on volume model. We rank the cheapest cold email tools of 2026 by total cost of ownership at three volume tiers - solo, growing team, agency.',
         url: '/blog/cheapest-cold-email-tools-2026',
         siteName: 'Superkabe',
         type: 'article',
@@ -92,7 +92,7 @@ export default function CheapestColdEmailToolsPage() {
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe Starter at $19/month is the cheapest cold email tool by starting price — and includes built-in protection</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe Starter at $19/month is the cheapest cold email tool by starting price - and includes built-in protection</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Saleshandy at $25/month is the cheapest tool that bundles a B2B lead database</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> EmailBison wins on per-send economics at very high volume single-tenant</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Per-user pricing tools (Lemlist, Mailshake) become uneconomical past 10 reps</li>
@@ -102,20 +102,20 @@ export default function CheapestColdEmailToolsPage() {
 
 
                 <div className="prose prose-lg max-w-none">
-                    <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology — what &quot;cheapest&quot; means here</h2>
+                    <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology - what &quot;cheapest&quot; means here</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
                         We rank by total cost of ownership at three operating tiers: <strong>Solo</strong> (1 user, 5 mailboxes, 5K sends/month), <strong>Growing team</strong> (5 users, 30 mailboxes, 60K sends/month), and <strong>Agency</strong> (15 users, 200 mailboxes, 300K sends/month). Sticker prices are the starting tier; real costs include the upgrade tier each tool requires to hit those volumes.
                     </p>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        We also include <em>protection cost</em> — what it costs to run the tool safely, including separate validation services, monitoring tools, or platform add-ons that the cheapest tier may not include.
+                        We also include <em>protection cost</em> - what it costs to run the tool safely, including separate validation services, monitoring tools, or platform add-ons that the cheapest tier may not include.
                     </p>
 
                     <h2 id="ranked" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 cheapest tools ranked</h2>
 
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — $19/mo flat, includes protection</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - $19/mo flat, includes protection</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe Starter at <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">$19/month</Link> includes unlimited domains, unlimited mailboxes for native sending, 20K monthly sends, 3K validation credits, AI sequence generation, real-time bounce monitoring, threshold-based auto-pause, and the 5-phase healing pipeline. Protection is built in — no separate monitoring tool needed.
+                            Superkabe Starter at <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">$19/month</Link> includes unlimited domains, unlimited mailboxes for native sending, 20K monthly sends, 3K validation credits, AI sequence generation, real-time bounce monitoring, threshold-based auto-pause, and the 5-phase healing pipeline. Protection is built in - no separate monitoring tool needed.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             For a solo founder, $19/mo replaces an Instantly subscription ($37/mo) plus a separate validation service ($30+/mo) plus the cost of the domain that gets burned because there&apos;s no auto-pause. Effective TCO at solo tier is the lowest in the category.
@@ -128,9 +128,9 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Saleshandy — $25/mo with bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Saleshandy - $25/mo with bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> at $25/month bundles a 700M+ contact lead database with a sequencer. For a solo founder needing both leads and a sender, the bundled model can beat buying both separately. Deliverability tooling is light — no auto-pause or healing.
+                            <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> at $25/month bundles a 700M+ contact lead database with a sequencer. For a solo founder needing both leads and a sender, the bundled model can beat buying both separately. Deliverability tooling is light - no auto-pause or healing.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Starting price:</strong> $25/mo · <strong>Best tier:</strong> Outreach Pro at higher volumes</li>
@@ -140,9 +140,9 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — $37/mo with bundled warmup</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - $37/mo with bundled warmup</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> at $37/month (Growth tier) is the cheapest tool that bundles a strong warmup network. AI sequencing and the unified inbox are included. Per-active-lead pricing scales sharply — Hyperscale at 100K leads is $358/mo.
+                            <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> at $37/month (Growth tier) is the cheapest tool that bundles a strong warmup network. AI sequencing and the unified inbox are included. Per-active-lead pricing scales sharply - Hyperscale at 100K leads is $358/mo.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Starting price:</strong> $37/mo · <strong>Hyperscale:</strong> $358/mo for 100K leads</li>
@@ -152,9 +152,9 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison — volume-based, cheapest at high tiers</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison - volume-based, cheapest at high tiers</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> uses volume-based pricing. At 500K+ sends/month single-tenant, the per-send economics typically beat every other tool on this list. Sparser product surface — no warmup, no protection, no AI sequencing.
+                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> uses volume-based pricing. At 500K+ sends/month single-tenant, the per-send economics typically beat every other tool on this list. Sparser product surface - no warmup, no protection, no AI sequencing.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Pricing:</strong> Volume-based</li>
@@ -164,7 +164,7 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Smartlead — $39/mo with mature feature surface</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Smartlead - $39/mo with mature feature surface</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> at $39/month is competitive on starting price but per-active-lead pricing accelerates at scale. The platform is the most mature on the sender side, with a deep webhook ecosystem and good agency tooling.
                         </p>
@@ -176,7 +176,7 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker — $54/mo with strong reply branching</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker - $54/mo with strong reply branching</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> starts higher than the field at $54/month but ships if-campaign reply branching that nothing else on this list does as well.
                         </p>
@@ -188,7 +188,7 @@ export default function CheapestColdEmailToolsPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake — $59/user with multichannel</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake - $59/user with multichannel</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> at $59/user/mo is most expensive at small scale and breaks the math at large scale. It targets sales-engagement use cases, not cold-at-volume.
                         </p>
@@ -290,12 +290,12 @@ export default function CheapestColdEmailToolsPage() {
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool in 2026?</h3><p className="text-gray-600 text-sm">Superkabe Starter at $19/month — includes unlimited domains, unlimited mailboxes, AI sequencing, and built-in protection.</p></div>
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool with deliverability protection?</h3><p className="text-gray-600 text-sm">Superkabe — only platform that ships auto-pause and 5-phase healing at flat per-tier pricing starting at $19/month.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool in 2026?</h3><p className="text-gray-600 text-sm">Superkabe Starter at $19/month - includes unlimited domains, unlimited mailboxes, AI sequencing, and built-in protection.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool with deliverability protection?</h3><p className="text-gray-600 text-sm">Superkabe - only platform that ships auto-pause and 5-phase healing at flat per-tier pricing starting at $19/month.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Is Smartlead the cheapest cold email tool?</h3><p className="text-gray-600 text-sm">No. Smartlead starts at $39/month with per-active-lead pricing. At low volume Superkabe and Saleshandy are cheaper; at high volume EmailBison and Superkabe typically beat Smartlead.</p></div>
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Are free cold email tools worth using?</h3><p className="text-gray-600 text-sm">For testing the category, yes. For production outbound, the $19-49/month range is where the value cliff actually drops — protection, validation, and reliability all live there.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Are free cold email tools worth using?</h3><p className="text-gray-600 text-sm">For testing the category, yes. For production outbound, the $19-49/month range is where the value cliff actually drops - protection, validation, and reliability all live there.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">How does per-active-lead pricing affect cost at scale?</h3><p className="text-gray-600 text-sm">Per-active-lead pricing inflates with sequence length and lead retention. At 100K active leads, per-active-lead platforms run $358/month while per-tier platforms (Superkabe Growth $199) include unlimited leads.</p></div>
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool for agencies?</h3><p className="text-gray-600 text-sm">Superkabe — flat per-tier pricing with per-workspace isolation, automated protection, and unlimited mailboxes.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the cheapest cold email tool for agencies?</h3><p className="text-gray-600 text-sm">Superkabe - flat per-tier pricing with per-workspace isolation, automated protection, and unlimited mailboxes.</p></div>
                 </div>
             </article>
 

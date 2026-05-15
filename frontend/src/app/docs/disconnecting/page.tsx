@@ -25,8 +25,8 @@ export default function DisconnectingDocsPage() {
             </p>
 
             <p className="text-gray-600 leading-relaxed mb-8">
-                Every integration in Superkabe can be disconnected at any time. This page walks through every disconnect path —
-                from the smallest (revoking a single API key) to the largest (full account deletion under GDPR right-to-erasure) —
+                Every integration in Superkabe can be disconnected at any time. This page walks through every disconnect path -
+                from the smallest (revoking a single API key) to the largest (full account deletion under GDPR right-to-erasure) -
                 with the exact UI location, what happens server-side, and the user-visible behavior of any in-flight work.
                 Sections are ordered from least destructive to most destructive.
             </p>
@@ -34,15 +34,15 @@ export default function DisconnectingDocsPage() {
             <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                 <h3 className="font-bold text-blue-900 text-lg mb-3">Quick Reference</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>API key</strong> — Dashboard → API & MCP → API Keys tab</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Claude / OAuth-MCP</strong> — Dashboard → Integrations → Claude</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Mailbox</strong> — Dashboard → Sequencer → Accounts</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Slack</strong> — Dashboard → Integrations → Slack</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Migration keys</strong> — Dashboard → Migration → from-Smartlead / from-Instantly</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Webhook endpoint</strong> — Dashboard → Integrations → Webhooks</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Team member</strong> — Dashboard → Settings → Team</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Pause account</strong> — /pricing → cancel subscription</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Delete account</strong> — Dashboard → Data Rights</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>API key</strong> - Dashboard → API & MCP → API Keys tab</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Claude / OAuth-MCP</strong> - Dashboard → Integrations → Claude</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Mailbox</strong> - Dashboard → Sequencer → Accounts</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Slack</strong> - Dashboard → Integrations → Slack</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Migration keys</strong> - Dashboard → Migration → from-Smartlead / from-Instantly</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Webhook endpoint</strong> - Dashboard → Integrations → Webhooks</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Team member</strong> - Dashboard → Settings → Team</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Pause account</strong> - /pricing → cancel subscription</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Delete account</strong> - Dashboard → Data Rights</div>
                 </div>
             </div>
 
@@ -51,7 +51,7 @@ export default function DisconnectingDocsPage() {
             <p className="text-gray-600 leading-relaxed mb-4">
                 Superkabe API keys are issued from the dashboard and used by your scripts, your MCP server processes, or any
                 third-party automation hitting <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">api.superkabe.com</code>.
-                Each key is stored as a SHA-256 hash — Superkabe never holds the plaintext after issuance, which means a revoked key cannot be
+                Each key is stored as a SHA-256 hash - Superkabe never holds the plaintext after issuance, which means a revoked key cannot be
                 restored. If you need to rotate a key, issue a new one before revoking the old one.
             </p>
 
@@ -61,21 +61,21 @@ export default function DisconnectingDocsPage() {
                     <li><strong>1.</strong> Open <strong>Dashboard → API &amp; MCP</strong></li>
                     <li><strong>2.</strong> Switch to the <strong>API Keys</strong> tab</li>
                     <li><strong>3.</strong> Click the trash icon next to the key you want to revoke</li>
-                    <li><strong>4.</strong> Confirm in the modal — revocation is immediate</li>
+                    <li><strong>4.</strong> Confirm in the modal - revocation is immediate</li>
                 </ol>
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">What happens after revocation</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
                 <li>Any in-flight HTTP request authenticated with the key returns <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">401 Unauthorized</code> on the next call</li>
-                <li>Long-running processes that hold the key (e.g. an MCP server on your laptop) start failing — you&apos;ll need to issue a new key and update the process&apos;s environment</li>
+                <li>Long-running processes that hold the key (e.g. an MCP server on your laptop) start failing - you&apos;ll need to issue a new key and update the process&apos;s environment</li>
                 <li>The key&apos;s usage history (call counts, last-seen timestamps) is preserved for audit purposes</li>
             </ul>
 
             <div className="bg-red-50 border border-red-200 p-6 mb-12">
                 <h3 className="text-lg font-bold text-red-700 mb-2">Irreversible</h3>
                 <p className="text-gray-700 text-sm">
-                    Keys are stored as SHA-256 hashes. Once revoked, the original token cannot be reconstructed —
+                    Keys are stored as SHA-256 hashes. Once revoked, the original token cannot be reconstructed -
                     even by Superkabe. Always issue and deploy the replacement key before revoking the old one.
                 </p>
             </div>
@@ -86,7 +86,7 @@ export default function DisconnectingDocsPage() {
                 When you connect Claude (or any OAuth-MCP client) to Superkabe, an OAuth grant is issued for that client and
                 stored against your organization. Disconnecting revokes every access token <em>and</em> refresh token for the
                 <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800 mx-1">(org, client_id)</code>
-                pair atomically — there is no half-state where access is gone but refresh still works.
+                pair atomically - there is no half-state where access is gone but refresh still works.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 p-6 mb-6">
@@ -103,10 +103,10 @@ export default function DisconnectingDocsPage() {
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">What happens to Claude</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-12">
-                <li>Claude.ai will receive a <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">401</code> on its next call to the connector URL — both bare <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp</code> and per-org <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp/&lt;org-slug&gt;</code> tokens are revoked together (the revoke is keyed on <code>(org, client_id)</code>, not on URL).</li>
-                <li>The user is prompted by Claude to re-authorize Superkabe — the standard OAuth consent flow</li>
+                <li>Claude.ai will receive a <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">401</code> on its next call to the connector URL - both bare <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp</code> and per-org <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/mcp/&lt;org-slug&gt;</code> tokens are revoked together (the revoke is keyed on <code>(org, client_id)</code>, not on URL).</li>
+                <li>The user is prompted by Claude to re-authorize Superkabe - the standard OAuth consent flow</li>
                 <li>Re-authorizing creates a fresh grant; the old grant remains in the audit log marked <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">revoked</code></li>
-                <li>If the customer has multiple per-org connectors in Claude (e.g. an agency with several client orgs), disconnecting from one org&apos;s dashboard only revokes that org&apos;s grant — connectors for other orgs are unaffected.</li>
+                <li>If the customer has multiple per-org connectors in Claude (e.g. an agency with several client orgs), disconnecting from one org&apos;s dashboard only revokes that org&apos;s grant - connectors for other orgs are unaffected.</li>
             </ul>
 
             {/* ==================== 3. Mailbox ==================== */}
@@ -138,7 +138,7 @@ export default function DisconnectingDocsPage() {
                 <h3 className="text-lg font-bold text-amber-700 mb-2">Reconnecting later</h3>
                 <p className="text-gray-700 text-sm">
                     Reconnecting a previously-disconnected mailbox is a fresh OAuth flow (Gmail/Microsoft) or a brand-new
-                    set of SMTP credentials. There is no resumption of the old session — health history, warmup state,
+                    set of SMTP credentials. There is no resumption of the old session - health history, warmup state,
                     and mailbox identity are reset from the moment the new connection is made.
                 </p>
             </div>
@@ -146,7 +146,7 @@ export default function DisconnectingDocsPage() {
             {/* ==================== 4. Slack ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">4. Disconnecting Slack</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Slack is used to broadcast every significant infrastructure event — auto-pauses, healings, threshold breaches,
+                Slack is used to broadcast every significant infrastructure event - auto-pauses, healings, threshold breaches,
                 campaign pauses. Disconnecting it removes the encrypted bot token and clears the
                 <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800 mx-1">SLACK_CONNECTED</code>
                 organization setting.
@@ -186,14 +186,14 @@ export default function DisconnectingDocsPage() {
             </div>
 
             <p className="text-gray-600 mb-12">
-                After discard, the migration wizard reverts to the empty state. To run another import, paste a fresh key —
+                After discard, the migration wizard reverts to the empty state. To run another import, paste a fresh key -
                 the previous import&apos;s record (what was imported, when) is preserved in the migration log.
             </p>
 
             {/* ==================== 6. Webhook Endpoints ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">6. Revoking a Webhook Endpoint</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Webhook endpoints receive event payloads from Superkabe — campaign events, lead state changes, mailbox health
+                Webhook endpoints receive event payloads from Superkabe - campaign events, lead state changes, mailbox health
                 transitions. Deleting an endpoint stops Superkabe from sending events to that URL immediately.
             </p>
 
@@ -211,7 +211,7 @@ export default function DisconnectingDocsPage() {
                 <li>No new events are dispatched to the endpoint URL</li>
                 <li>Pending retries (queued for previously-failed deliveries) are <strong>cancelled</strong></li>
                 <li>Past delivery records remain available in the <strong>audit log for 30 days</strong> for forensic review</li>
-                <li>Events themselves still occur and are persisted internally — only the outbound HTTP delivery is stopped</li>
+                <li>Events themselves still occur and are persisted internally - only the outbound HTTP delivery is stopped</li>
             </ul>
 
             {/* ==================== 7. Team member ==================== */}
@@ -226,7 +226,7 @@ export default function DisconnectingDocsPage() {
                 <ol className="space-y-2 text-gray-600 text-sm">
                     <li><strong>1.</strong> Open <strong>Dashboard → Settings → Team</strong></li>
                     <li><strong>2.</strong> Click <strong>Remove</strong> next to the member</li>
-                    <li><strong>3.</strong> Confirm — their JWT is invalidated immediately</li>
+                    <li><strong>3.</strong> Confirm - their JWT is invalidated immediately</li>
                 </ol>
             </div>
 
@@ -243,8 +243,8 @@ export default function DisconnectingDocsPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">8. Pausing the Entire Account (No Deletion)</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
                 If you want to stop sending without losing your data, cancel your subscription. Going to a <strong>trial-expired</strong>
-                or <strong>canceled</strong> subscription state pauses sending across every campaign in the organization, but every row —
-                campaigns, sequences, leads, mailbox connections, audit logs — stays in place.
+                or <strong>canceled</strong> subscription state pauses sending across every campaign in the organization, but every row -
+                campaigns, sequences, leads, mailbox connections, audit logs - stays in place.
             </p>
 
             <div className="bg-gray-50 border border-gray-200 p-6 mb-6">
@@ -264,7 +264,7 @@ export default function DisconnectingDocsPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">9. Full Account Deletion (GDPR Right to Erasure)</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
                 For a complete erasure of your data, Superkabe provides a GDPR-compliant deletion flow. Before triggering deletion,
-                you can export everything Superkabe holds about you via the same Data Rights page — this is a one-click JSON export
+                you can export everything Superkabe holds about you via the same Data Rights page - this is a one-click JSON export
                 covering organization, user, leads, campaigns, mailbox metadata, validation results, and a 30-day usage snapshot.
             </p>
 
@@ -273,13 +273,13 @@ export default function DisconnectingDocsPage() {
                 <ol className="space-y-2 text-gray-600 text-sm">
                     <li><strong>1.</strong> (Recommended) Open <strong>Dashboard → Data Rights</strong> and click <strong>Export my data</strong> first</li>
                     <li><strong>2.</strong> On the same page, click <strong>Delete my account</strong></li>
-                    <li><strong>3.</strong> Confirm — a 30-day soft-delete window begins</li>
+                    <li><strong>3.</strong> Confirm - a 30-day soft-delete window begins</li>
                 </ol>
             </div>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">The 30-day soft-delete window</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li>Your account is immediately marked inaccessible — no logins, no API access, no incoming webhooks accepted</li>
+                <li>Your account is immediately marked inaccessible - no logins, no API access, no incoming webhooks accepted</li>
                 <li>Data is <strong>retained but locked</strong> for 30 days</li>
                 <li>During this window, <Link href="/contact" className="text-blue-600 hover:text-blue-800">contact support</Link> to request restoration</li>
                 <li>After 30 days, a sweep worker performs the irreversible hard purge</li>
@@ -318,7 +318,7 @@ export default function DisconnectingDocsPage() {
                 <ul className="space-y-3 text-gray-600 text-sm">
                     <li>
                         <strong className="text-gray-900">In-flight sends complete.</strong> When you disconnect a mailbox, the
-                        send-queue dispatcher allows the current batch to finish before the mailbox stops accepting new work —
+                        send-queue dispatcher allows the current batch to finish before the mailbox stops accepting new work -
                         no half-sent messages, no orphaned SMTP transcripts.
                     </li>
                     <li>
@@ -333,7 +333,7 @@ export default function DisconnectingDocsPage() {
                     </li>
                     <li>
                         <strong className="text-gray-900">API calls return 401 instantly on a revoked key.</strong> There is no
-                        grace period — the revocation is checked against the SHA-256 hash on every authenticated request.
+                        grace period - the revocation is checked against the SHA-256 hash on every authenticated request.
                     </li>
                     <li>
                         <strong className="text-gray-900">A removed team member is logged out everywhere.</strong> JWT

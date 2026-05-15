@@ -52,7 +52,7 @@ export default function LinkedInIcpPage() {
     const [pendingDelete, setPendingDelete] = useState<{ id: string; consequences: string[] } | null>(null);
     const [deleting, setDeleting] = useState(false);
 
-    // Customer registry — drives the "differentiate customers vs prospects"
+    // Customer registry - drives the "differentiate customers vs prospects"
     // banner and the CSV-upload modal. Loaded once on mount; refreshed
     // after a successful CSV import.
     const [customers, setCustomers] = useState<CustomerSummary | null>(null);
@@ -108,7 +108,7 @@ export default function LinkedInIcpPage() {
         // Fetch the delete-impact report so the operator sees what
         // gets affected. We tombstone the ICP (soft-delete) so the
         // audit rows survive, but a referencing rule will silently
-        // stop matching on this ICP — worth surfacing.
+        // stop matching on this ICP - worth surfacing.
         const consequences: string[] = [];
         try {
             const resp = await apiClient<{ data: { recent_matches_30d: number; total_matches: number; referencing_rules: Array<{ id: string }> } }>(
@@ -119,7 +119,7 @@ export default function LinkedInIcpPage() {
             if (total_matches > 0 && total_matches > recent_matches_30d) consequences.push(`${total_matches} total audit rows are preserved (soft-delete).`);
             if (referencing_rules.length > 0) consequences.push(`${referencing_rules.length} monitoring rule${referencing_rules.length === 1 ? '' : 's'} reference this ICP and will silently no-op on this filter.`);
         } catch { /* impact fetch is best-effort */ }
-        consequences.push('Tombstoned, not hard-deleted — contact support to restore.');
+        consequences.push('Tombstoned, not hard-deleted - contact support to restore.');
         setMenuOpenFor(null);
         setPendingDelete({ id, consequences });
     };
@@ -168,7 +168,7 @@ export default function LinkedInIcpPage() {
                 </button>
             </div>
 
-            {/* Customer-source banner — Superkabe doesn't natively know who
+            {/* Customer-source banner - Superkabe doesn't natively know who
                 is already a customer vs a prospect. The engager-relationship
                 resolver only flags "Customer" when this registry has a
                 match (by email or LinkedIn slug). Two ways to populate it:
@@ -343,7 +343,7 @@ function CustomerSourceBanner({
         : crm?.provider === 'salesforce' ? 'Salesforce'
         : 'your CRM';
 
-    // STATE 1 — Customer registry has rows. Green "loaded" banner.
+    // STATE 1 - Customer registry has rows. Green "loaded" banner.
     if (total > 0) {
         return (
             <div
@@ -352,7 +352,7 @@ function CustomerSourceBanner({
             >
                 <CheckCircle2 size={14} className="text-emerald-700 shrink-0" />
                 <div className="flex-1 text-[11px] text-emerald-900 leading-snug">
-                    <span className="font-semibold">Customer registry loaded</span> — {total.toLocaleString()} customer {total === 1 ? 'company' : 'companies'} tracked
+                    <span className="font-semibold">Customer registry loaded</span> - {total.toLocaleString()} customer {total === 1 ? 'company' : 'companies'} tracked
                     {hasCrm && hasCsv ? ' via CRM + CSV.'
                         : hasCrm ? ` via ${sources.hubspot ? 'HubSpot' : 'Salesforce'}.`
                         : hasCsv ? ' via CSV upload.'
@@ -369,7 +369,7 @@ function CustomerSourceBanner({
         );
     }
 
-    // STATE 2 — CRM is connected but the first sync hasn't populated the
+    // STATE 2 - CRM is connected but the first sync hasn't populated the
     // registry yet. Reassurance + offer CSV as a bootstrap path.
     if (crmConnected) {
         return (
@@ -383,11 +383,11 @@ function CustomerSourceBanner({
                     </div>
                     <div className="flex-1">
                         <p className="text-xs font-bold text-blue-900 m-0">
-                            {providerLabel} connected{crm?.account_name ? ` — ${crm.account_name}` : ''}
+                            {providerLabel} connected{crm?.account_name ? ` - ${crm.account_name}` : ''}
                         </p>
                         <p className="text-[11px] text-blue-900 mt-1 mb-2 leading-relaxed">
                             Customer accounts from {providerLabel} will be pulled in automatically so we never enroll your existing customers in cold-outreach sequences. The first sync runs within a few minutes of connection; once it completes, customer engagers will start showing the <em>Customer</em> badge on signal pages.
-                            {' '}If you want to label engagers immediately, you can also upload a CSV of customer companies as a bootstrap — anything synced from {providerLabel} later will merge cleanly.
+                            {' '}If you want to label engagers immediately, you can also upload a CSV of customer companies as a bootstrap - anything synced from {providerLabel} later will merge cleanly.
                         </p>
                         <div className="flex items-center gap-2 flex-wrap mt-1.5">
                             <button
@@ -410,7 +410,7 @@ function CustomerSourceBanner({
         );
     }
 
-    // STATE 3 — No CRM, no customers. Amber prompt with both paths.
+    // STATE 3 - No CRM, no customers. Amber prompt with both paths.
     return (
         <div
             className="rounded-lg p-3.5"
@@ -425,8 +425,8 @@ function CustomerSourceBanner({
                         Tell Superkabe which companies are already your customers
                     </p>
                     <p className="text-[11px] text-amber-900 mt-1 mb-2 leading-relaxed">
-                        When someone engages with your LinkedIn posts, we can only label them <em>Customer</em> when their current employer matches a company in your customer list. Customer tracking is company-level (B2B) — we use company name and optionally the company's LinkedIn page (e.g. <code className="px-1 rounded bg-amber-100 text-[10px]">linkedin.com/company/acme</code>) as the match keys.
-                        Connect a CRM (HubSpot / Salesforce) so we pull customer accounts automatically — or upload a CSV with company names and LinkedIn URLs if you don't run a CRM. Without one of these, every engager will show up as a net-new prospect.
+                        When someone engages with your LinkedIn posts, we can only label them <em>Customer</em> when their current employer matches a company in your customer list. Customer tracking is company-level (B2B) - we use company name and optionally the company's LinkedIn page (e.g. <code className="px-1 rounded bg-amber-100 text-[10px]">linkedin.com/company/acme</code>) as the match keys.
+                        Connect a CRM (HubSpot / Salesforce) so we pull customer accounts automatically - or upload a CSV with company names and LinkedIn URLs if you don't run a CRM. Without one of these, every engager will show up as a net-new prospect.
                     </p>
                     <div className="flex items-center gap-2 flex-wrap mt-1.5">
                         <a
@@ -492,7 +492,7 @@ function CustomerCsvUploadModal({
                     domain: domainKey ? (r[domainKey] || '').trim() || null : null,
                 })).filter(r => r.company_name);
                 if (parsed.length === 0) {
-                    setParseError('Every row was missing a company_name — at least one company is required per row.');
+                    setParseError('Every row was missing a company_name - at least one company is required per row.');
                     return;
                 }
                 setRows(parsed);
@@ -830,17 +830,17 @@ function IcpEditorModal({
                             type="checkbox" checked={form.enabled}
                             onChange={e => setForm(f => ({ ...f, enabled: e.target.checked }))}
                         />
-                        Enabled — the signal monitoring agent will route engagements matching this ICP.
+                        Enabled - the signal monitoring agent will route engagements matching this ICP.
                     </label>
 
                     {/* Empty-filter warning */}
                     {isEmptyFilters && (
                         <div className="text-[0.7rem] px-3 py-2 rounded-md bg-amber-50 border border-amber-200 text-amber-900">
-                            <strong>No filters set.</strong> This ICP would match every profile — usually a misconfiguration. Add at least one title / industry / company size / geo.
+                            <strong>No filters set.</strong> This ICP would match every profile - usually a misconfiguration. Add at least one title / industry / company size / geo.
                         </div>
                     )}
 
-                    {/* Test / preview panel — only in edit mode (we need a
+                    {/* Test / preview panel - only in edit mode (we need a
                         saved id to call the test endpoint). For create
                         mode, the operator can save and re-open to test. */}
                     {mode === 'edit' && initial && (
@@ -850,7 +850,7 @@ function IcpEditorModal({
                                 onClick={() => setTestOpen(o => !o)}
                                 className="text-[11px] font-semibold text-violet-700 hover:text-violet-900 cursor-pointer"
                             >
-                                {testOpen ? '— Hide' : '+ Test this ICP against a sample profile'}
+                                {testOpen ? '- Hide' : '+ Test this ICP against a sample profile'}
                             </button>
                             {testOpen && (
                                 <div className="mt-2 p-3 rounded-md bg-violet-50/40 border border-violet-200 flex flex-col gap-2">

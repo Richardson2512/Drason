@@ -52,8 +52,8 @@ export default function LinkedInSequenceDiagram({
         <div
             className="rounded-xl overflow-hidden"
             // ReactFlow uses height: 100% on its root div (via its CSS).
-            // The parent therefore needs a RESOLVED height — not just
-            // minHeight — or ReactFlow lays out at 0px and renders blank.
+            // The parent therefore needs a RESOLVED height - not just
+            // minHeight - or ReactFlow lays out at 0px and renders blank.
             style={{ height: minHeight, minHeight, border: '1px solid #D1CBC5', background: '#FBFAF7' }}
         >
             <ReactFlowProvider>

@@ -48,7 +48,7 @@ const REPORT_TYPES: GroupedReportTypeOption[] = [
     { group: 'sequencer', key: 'campaigns',         label: 'Campaigns Report',          icon: Rocket,         description: 'Campaign performance, mailbox counts, send volumes' },
     { group: 'sequencer', key: 'sequences',         label: 'Sequences Report',          icon: FileText,       description: 'Saved multi-step sequences with AI provenance' },
     { group: 'sequencer', key: 'reply_quality',     label: 'Reply Quality Report',      icon: MessageSquare,  description: 'Classified inbound replies (positive / hard_no / OOO / etc.)' },
-    { group: 'sequencer', key: 'super_sender',      label: 'Super Sender Report',       icon: Zap,            description: 'Dedicated IPs — state, warmup day, 24h bounce/complaint stats' },
+    { group: 'sequencer', key: 'super_sender',      label: 'Super Sender Report',       icon: Zap,            description: 'Dedicated IPs - state, warmup day, 24h bounce/complaint stats' },
     { group: 'sequencer', key: 'warmup',            label: 'Warmup Pool Report',        icon: Flame,          description: 'Mailboxes in the cross-tenant warmup pool, ramp progress' },
     { group: 'sequencer', key: 'suppression',       label: 'Suppression Report',        icon: Ban,            description: 'Org-wide reply suppressions + per-campaign rules' },
     { group: 'sequencer', key: 'analytics',         label: 'Analytics Report',          icon: TrendingUp,     description: 'Daily campaign metrics over time' },
@@ -62,18 +62,18 @@ const REPORT_TYPES: GroupedReportTypeOption[] = [
     { group: 'protect',   key: 'audit_logs',        label: 'Audit Log Report',          icon: ScrollText,     description: 'Complete action history and system events' },
 
     // ── Super LinkedIn ──────────────────────────────────────────────
-    { group: 'linkedin',  key: 'linkedin_accounts',   label: 'LinkedIn Accounts Report',   icon: User,         description: 'Connected accounts — type, status, capacity counters, in-campaign count' },
-    { group: 'linkedin',  key: 'linkedin_contacts',   label: 'LinkedIn Contacts Report',   icon: Contact,      description: 'LinkedIn profiles cached locally — connection state, ICP match, source' },
-    { group: 'linkedin',  key: 'linkedin_campaigns',  label: 'LinkedIn Campaigns Report',  icon: Briefcase,    description: 'Multi-channel campaigns — sent / accepted / replied per sender pool' },
+    { group: 'linkedin',  key: 'linkedin_accounts',   label: 'LinkedIn Accounts Report',   icon: User,         description: 'Connected accounts - type, status, capacity counters, in-campaign count' },
+    { group: 'linkedin',  key: 'linkedin_contacts',   label: 'LinkedIn Contacts Report',   icon: Contact,      description: 'LinkedIn profiles cached locally - connection state, ICP match, source' },
+    { group: 'linkedin',  key: 'linkedin_campaigns',  label: 'LinkedIn Campaigns Report',  icon: Briefcase,    description: 'Multi-channel campaigns - sent / accepted / replied per sender pool' },
     { group: 'linkedin',  key: 'linkedin_signals',    label: 'Engagement Signals Report',  icon: Radio,        description: 'Polled engagement events (reactions / comments / shares) with mode + action taken' },
     { group: 'linkedin',  key: 'linkedin_unibox',     label: 'LinkedIn Unibox Report',     icon: Inbox,        description: 'DM threads + auto-tag classifications (Interested / Not Interested / Generic)' },
-    { group: 'linkedin',  key: 'linkedin_sequences',  label: 'Step Executions Report',     icon: Repeat,       description: 'Per-step execution audit — sent / skipped / branched / failed with reasons' },
-    { group: 'linkedin',  key: 'linkedin_enrichment', label: 'Enrichment Waterfall Report', icon: Droplet,     description: 'Provider attempts per lead (HIT / EMPTY / RATE_LIMITED). BYOK — your vendor invoice is the source of truth for spend.' },
-    { group: 'linkedin',  key: 'linkedin_agents',     label: 'Agent Runs Report',          icon: Bot,          description: 'LLM agent telemetry — supervisor / ICP / enrichment / classifier with cost + latency' },
+    { group: 'linkedin',  key: 'linkedin_sequences',  label: 'Step Executions Report',     icon: Repeat,       description: 'Per-step execution audit - sent / skipped / branched / failed with reasons' },
+    { group: 'linkedin',  key: 'linkedin_enrichment', label: 'Enrichment Waterfall Report', icon: Droplet,     description: 'Provider attempts per lead (HIT / EMPTY / RATE_LIMITED). BYOK - your vendor invoice is the source of truth for spend.' },
+    { group: 'linkedin',  key: 'linkedin_agents',     label: 'Agent Runs Report',          icon: Bot,          description: 'LLM agent telemetry - supervisor / ICP / enrichment / classifier with cost + latency' },
     { group: 'linkedin',  key: 'linkedin_icp',        label: 'ICP Profiles Report',        icon: Target,       description: 'Workspace ICP filter sets and 30d match counts' },
 
     // ── Catch-all ───────────────────────────────────────────────────
-    { group: 'full',      key: 'full', label: 'Full Report', icon: ClipboardList, description: 'Everything — all data across every section' },
+    { group: 'full',      key: 'full', label: 'Full Report', icon: ClipboardList, description: 'Everything - all data across every section' },
 ];
 
 const REPORT_GROUPS: { key: ReportGroup; label: string; icon: LucideIcon; description: string; accent: string }[] = [
@@ -111,7 +111,7 @@ const STATUS_OPTIONS: Record<string, string[]> = {
 const STORAGE_KEY = 'superkabe_recent_reports';
 const PREVIEW_ROW_LIMIT = 50;
 
-// Minimal RFC 4180-ish CSV parser — handles quoted fields and "" escapes,
+// Minimal RFC 4180-ish CSV parser - handles quoted fields and "" escapes,
 // which is enough for the backend's csv-stringify output.
 function parseCsvRows(text: string, maxRows: number): { header: string[]; rows: string[][]; totalDataRows: number } {
     const rawLines = text.split(/\r?\n/);
@@ -120,7 +120,7 @@ function parseCsvRows(text: string, maxRows: number): { header: string[]; rows: 
         const t = l.trim();
         if (!t) continue;
         // Skip section dividers from the "full" report. We preview the first
-        // section only — the divider marks the start of the next section.
+        // section only - the divider marks the start of the next section.
         if (t.startsWith('---') && dataLines.length > 0) break;
         if (t.startsWith('---')) continue;
         dataLines.push(l);
@@ -197,7 +197,7 @@ export default function ReportsPage() {
     const [selectedEngagement, setSelectedEngagement] = useState<string>('');
     const [domains, setDomains] = useState<DomainOption[]>([]);
     const [recentReports, setRecentReports] = useState<RecentReport[]>([]);
-    // Custom date filter for the *history* (recent reports list) — both the
+    // Custom date filter for the *history* (recent reports list) - both the
     // inline scoped section and the modal use this same range.
     const [historyStart, setHistoryStart] = useState<string>('');
     const [historyEnd, setHistoryEnd] = useState<string>('');
@@ -389,7 +389,7 @@ export default function ReportsPage() {
                     </p>
                 </div>
                 <div className="flex items-center gap-2 relative">
-                    {/* History date filter — applies to both the inline scoped
+                    {/* History date filter - applies to both the inline scoped
                         list and the modal. Empty range = no filter. */}
                     <button
                         onClick={() => setHistoryDateOpen(v => !v)}
@@ -463,7 +463,7 @@ export default function ReportsPage() {
                 </div>
             </div>
 
-            {/* Index view — 3 expandable group cards (Super Sequencer /
+            {/* Index view - 3 expandable group cards (Super Sequencer /
                 Super Protect / Super LinkedIn). Clicking a group opens an
                 inner grid of that group's reports. "Full Report" sits as a
                 separate full-width tile below since it spans all groups.
@@ -533,7 +533,7 @@ export default function ReportsPage() {
                         );
                     })}
 
-                    {/* Full report — separate tile since it spans every group. */}
+                    {/* Full report - separate tile since it spans every group. */}
                     {REPORT_TYPES.filter(r => r.group === 'full').map(rt => {
                         const RIcon = rt.icon;
                         return (
@@ -631,7 +631,7 @@ export default function ReportsPage() {
                                 );
                             })}
 
-                            {/* Full report — flat tile under the groups since
+                            {/* Full report - flat tile under the groups since
                                 it spans every category. */}
                             {REPORT_TYPES.filter(r => r.group === 'full').map(rt => {
                                 const isActive = selectedType === rt.key;
@@ -889,7 +889,7 @@ export default function ReportsPage() {
             </div>
             )}
 
-            {/* Preview modal — portalled to body so it's never clipped by the
+            {/* Preview modal - portalled to body so it's never clipped by the
                 dashboard's overflow:hidden shells. Renders the first N rows of
                 exactly what the CSV download would contain, parsed client-side
                 so there's no backend change. */}
@@ -914,7 +914,7 @@ export default function ReportsPage() {
                                         const RIcon = selectedReport.icon;
                                         return <RIcon className="w-4 h-4 text-gray-700" />;
                                     })()}
-                                    {selectedReport?.label} — Preview
+                                    {selectedReport?.label} - Preview
                                 </h3>
                                 <p className="text-[11px] text-gray-500 mt-0.5">
                                     {previewing
@@ -923,7 +923,7 @@ export default function ReportsPage() {
                                             ? `Showing first ${preview.rows.length} of ${preview.totalDataRows} row${preview.totalDataRows === 1 ? '' : 's'}`
                                             : ''}
                                     {selectedType === 'full' && preview && (
-                                        <span className="ml-1 text-amber-700">· Full report has multiple sections — only the first is shown</span>
+                                        <span className="ml-1 text-amber-700">· Full report has multiple sections - only the first is shown</span>
                                     )}
                                 </p>
                             </div>
@@ -1001,7 +1001,7 @@ export default function ReportsPage() {
                 document.body,
             )}
 
-            {/* Recent reports modal — accessible from the page header so users
+            {/* Recent reports modal - accessible from the page header so users
                 can pull up history without first picking a report type. */}
             {recentOpen && typeof document !== 'undefined' && createPortal(
                 <div
@@ -1035,7 +1035,7 @@ export default function ReportsPage() {
                             </button>
                         </div>
 
-                        {/* Custom date filter row — same state as the header
+                        {/* Custom date filter row - same state as the header
                             button so the inline list and the modal stay in
                             sync. Empty = no filter. */}
                         <div className="px-4 py-3 flex items-end gap-2 flex-wrap" style={{ borderBottom: '1px solid #E8E3DC', background: '#FFFFFF' }}>

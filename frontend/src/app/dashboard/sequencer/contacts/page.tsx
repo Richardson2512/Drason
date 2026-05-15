@@ -125,7 +125,7 @@ function ContactsPageContent() {
         return () => document.removeEventListener('mousedown', handler);
     }, [showFilterMenu]);
 
-    // Column picker — visibility persisted to localStorage.
+    // Column picker - visibility persisted to localStorage.
     const [visibleCols, setVisibleCols] = useState<ColumnKey[]>(DEFAULT_VISIBLE_COLS);
     const [showColumnMenu, setShowColumnMenu] = useState(false);
     const columnMenuRef = useRef<HTMLDivElement>(null);
@@ -136,7 +136,7 @@ function ContactsPageContent() {
             const parsed = JSON.parse(raw) as string[];
             const valid = parsed.filter((k): k is ColumnKey => ALL_COLUMNS.some(c => c.key === k));
             if (valid.length > 0) setVisibleCols(valid);
-        } catch { /* ignore — fall back to defaults */ }
+        } catch { /* ignore - fall back to defaults */ }
     }, []);
     const toggleColumn = (key: ColumnKey) => {
         setVisibleCols(prev => {
@@ -239,11 +239,11 @@ function ContactsPageContent() {
             const res = await apiClient<{ tags: TagItem[] }>('/api/sequencer/tags');
             setAllTags(res?.tags || []);
         } catch {
-            // non-fatal — tag UI just shows empty
+            // non-fatal - tag UI just shows empty
         }
     }, []);
 
-    // Facet loader — populates the company / title dropdowns with distinct values
+    // Facet loader - populates the company / title dropdowns with distinct values
     // from the org's contact pool. Refetches after CSV imports / bulk creates so
     // newly-added companies appear in the dropdown without a page reload.
     const fetchFacets = useCallback(async () => {
@@ -254,7 +254,7 @@ function ContactsPageContent() {
             setTitleFacets(data?.titles || []);
             setSourceFacets(data?.sources || []);
         } catch {
-            // non-fatal — filter dropdowns just stay empty
+            // non-fatal - filter dropdowns just stay empty
         }
     }, []);
 
@@ -437,7 +437,7 @@ function ContactsPageContent() {
             const risky = res?.risky ?? 0;
             const invalid = res?.invalid ?? 0;
             const remaining = res?.credits_remaining;
-            const summary = `Verified ${res?.processed || 0} — ${valid} valid, ${risky} risky, ${invalid} invalid`;
+            const summary = `Verified ${res?.processed || 0} - ${valid} valid, ${risky} risky, ${invalid} invalid`;
             toast.success(remaining !== null && remaining !== undefined ? `${summary}. ${remaining} credits left.` : summary);
             await fetchContacts(meta.page, searchQuery, statusFilter);
         } catch {
@@ -495,12 +495,12 @@ function ContactsPageContent() {
                 report.suppressedCount > 0;
 
             if (!hasConflicts) {
-                // No conflicts — commit directly with default exclude=true (no-op anyway)
+                // No conflicts - commit directly with default exclude=true (no-op anyway)
                 await commitAssign(campaignId, true);
                 return;
             }
 
-            // Show modal — operator decides
+            // Show modal - operator decides
             setDualReport(report);
             setPendingAssignCampaign({ id: campaignId, name: campaign.name });
         } catch {
@@ -581,7 +581,7 @@ function ContactsPageContent() {
 
     const displayName = (c: Contact) => {
         const name = [c.first_name, c.last_name].filter(Boolean).join(' ');
-        return name || '—';
+        return name || '-';
     };
 
     return (
@@ -679,7 +679,7 @@ function ContactsPageContent() {
                     )}
                 </div>
 
-                {/* Filter button — opens a popover with the categorical
+                {/* Filter button - opens a popover with the categorical
                     enum filters (Sequence status + Email validation). Keeps
                     the main row uncluttered for the high-cardinality entity
                     filters next to it. Active count badge appears when any
@@ -810,7 +810,7 @@ function ContactsPageContent() {
 
             </div>
 
-            {/* Bulk-action row — only renders when contacts are selected.
+            {/* Bulk-action row - only renders when contacts are selected.
                 Lives on its own line below the filters so it doesn't compete
                 with the filter dropdowns for horizontal space. Pre-pends a
                 "N selected" indicator so the operator sees the scope of the
@@ -824,7 +824,7 @@ function ContactsPageContent() {
                         <button
                             onClick={() => setShowBulkTagMenu(v => !v)}
                             disabled={verifying || assigning || allTags.length === 0}
-                            title={allTags.length === 0 ? 'No tags yet — create one in "Manage tags" first' : 'Apply a tag to selected'}
+                            title={allTags.length === 0 ? 'No tags yet - create one in "Manage tags" first' : 'Apply a tag to selected'}
                             className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-gray-700 rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50 disabled:opacity-50"
                         >
                             <TagIcon size={11} /> Tag
@@ -1023,7 +1023,7 @@ function ContactsPageContent() {
                 </>
             )}
 
-            {/* Add Contact Modal — portaled to body so it escapes any
+            {/* Add Contact Modal - portaled to body so it escapes any
                  ancestor transform/containing-block that would otherwise
                  keep `fixed inset-0` bounded to the content column. */}
             {showAddModal && typeof document !== 'undefined' && createPortal(
@@ -1210,7 +1210,7 @@ function ContactsPageContent() {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Cell renderer — single source of truth for how each column displays.
+// Cell renderer - single source of truth for how each column displays.
 // Keeps the table JSX flat and lets new columns be added by extending
 // ALL_COLUMNS + this switch, no other changes required.
 // ────────────────────────────────────────────────────────────────────
@@ -1242,9 +1242,9 @@ function renderCell(
         case 'name':
             return <span className="text-gray-600">{displayName(c)}</span>;
         case 'company':
-            return <span className="text-gray-600">{c.company || '—'}</span>;
+            return <span className="text-gray-600">{c.company || '-'}</span>;
         case 'title':
-            return <span className="text-gray-600">{c.title || '—'}</span>;
+            return <span className="text-gray-600">{c.title || '-'}</span>;
         case 'source':
             return <SourcePill source={c.source} />;
         case 'status':
@@ -1302,7 +1302,7 @@ function renderCell(
 }
 
 function ValidationPill({ status, score }: { status?: string | null; score?: number | null }) {
-    if (!status) return <span className="text-gray-300 text-[11px]">—</span>;
+    if (!status) return <span className="text-gray-300 text-[11px]">-</span>;
     const colors: Record<string, { bg: string; fg: string }> = {
         valid:   { bg: '#F0FDF4', fg: '#15803D' },
         risky:   { bg: '#FFFBEB', fg: '#B45309' },
@@ -1323,13 +1323,13 @@ function ValidationPill({ status, score }: { status?: string | null; score?: num
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Source pill — color-coded provenance indicator on each contact row.
+// Source pill - color-coded provenance indicator on each contact row.
 // Mirrors the labels used on the campaign detail page's Lead Sources panel
 // so the same source reads the same way across the sequencer.
 // ────────────────────────────────────────────────────────────────────
 
 function SourcePill({ source }: { source?: string }) {
-    if (!source) return <span className="text-gray-300 text-[11px]">—</span>;
+    if (!source) return <span className="text-gray-300 text-[11px]">-</span>;
     const meta = sourceMeta(source);
     return (
         <span
@@ -1362,7 +1362,7 @@ function sourceMeta(source: string): { label: string; bg: string; fg: string; bo
     }
 }
 
-// Suspense wrapper — required by Next.js 16 because ContactsPageContent calls
+// Suspense wrapper - required by Next.js 16 because ContactsPageContent calls
 // useSearchParams() (to pre-fill the search box from `?email=` when the user
 // arrives from the cold-call-list View link). Without the boundary, the
 // production build's static-page generator (`next build`) bails out with
@@ -1383,7 +1383,7 @@ export default function ContactsPage() {
  * row's lead_score with the server-returned value.
  *
  * Custom events are pulled lazily on first open and cached on the component
- * instance — same config applies to every row so each cell doesn't need its
+ * instance - same config applies to every row so each cell doesn't need its
  * own fetch round trip.
  */
 type ScoreEvent = { key: string; label: string; points: number; color?: string };
@@ -1448,7 +1448,7 @@ function LeadScoreCell({
         }
     };
 
-    // Score color band — green/amber/red mirrors the validation pill scale.
+    // Score color band - green/amber/red mirrors the validation pill scale.
     const band = score >= 70 ? { bg: '#F0FDF4', fg: '#15803D' } :
                  score >= 40 ? { bg: '#FFFBEB', fg: '#B45309' } :
                               { bg: '#F1F5F9', fg: '#475569' };

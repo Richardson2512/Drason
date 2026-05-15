@@ -66,7 +66,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  "name": "What is the difference between DMARC p=none, p=quarantine, and p=reject?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "p=none tells receiving servers to take no action on emails that fail authentication — it's a monitoring-only mode. p=quarantine instructs servers to route failing emails to spam. p=reject tells servers to block failing emails entirely. Most outbound teams should start with p=none for monitoring, then progress to p=quarantine, and eventually p=reject once authentication is fully verified."
+ "text": "p=none tells receiving servers to take no action on emails that fail authentication - it's a monitoring-only mode. p=quarantine instructs servers to route failing emails to spam. p=reject tells servers to block failing emails entirely. Most outbound teams should start with p=none for monitoring, then progress to p=quarantine, and eventually p=reject once authentication is fully verified."
  }
  },
  {
@@ -122,7 +122,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  <article>
  <BlogHeader
  tag="Free Tools"
- title="Free DMARC Lookup & Generator Tool — Configure Your Domain's Email Policy"
+ title="Free DMARC Lookup & Generator Tool - Configure Your Domain's Email Policy"
  dateModified="2026-04-25"
  authorName="Robert Smith"
  authorRole="Email Infrastructure Engineer · Superkabe"
@@ -154,7 +154,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
- DMARC (Domain-based Message Authentication, Reporting, and Conformance) is the third and final layer of the email authentication stack. While <Link href="/blog/free-spf-lookup-tool" className="text-blue-600 hover:underline">SPF</Link> authorizes sending servers and <Link href="/blog/free-dkim-lookup-tool" className="text-blue-600 hover:underline">DKIM</Link> cryptographically signs each email, DMARC provides the enforcement policy. It tells receiving servers exactly what to do when an email fails authentication &mdash; and gives domain owners visibility into who is sending email on their behalf.
+ DMARC (Domain-based Message Authentication, Reporting, and Conformance) is the third and final layer of the email authentication stack. While <Link href="/blog/free-spf-lookup-tool" className="text-blue-600 hover:underline">SPF</Link> authorizes sending servers and <Link href="/blog/free-dkim-lookup-tool" className="text-blue-600 hover:underline">DKIM</Link> cryptographically signs each email, DMARC provides the enforcement policy. It tells receiving servers exactly what to do when an email fails authentication - and gives domain owners visibility into who is sending email on their behalf.
  </p>
 
  <h2 id="what-is-dmarc" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is DMARC and Why Does Every Domain Need It?</h2>
@@ -168,7 +168,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Without DMARC, receiving servers have no explicit instructions for handling emails that fail SPF or DKIM checks. They may deliver spoofed emails, route them to spam, or reject them &mdash; the behavior is entirely up to each ISP&apos;s internal heuristics. DMARC removes this ambiguity by giving domain owners explicit control over failure handling.
+ Without DMARC, receiving servers have no explicit instructions for handling emails that fail SPF or DKIM checks. They may deliver spoofed emails, route them to spam, or reject them - the behavior is entirely up to each ISP&apos;s internal heuristics. DMARC removes this ambiguity by giving domain owners explicit control over failure handling.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For outbound email teams, DMARC is also a compliance requirement. Since February 2024, Google and Yahoo mandate that all bulk senders have a published DMARC record. Domains without DMARC will have their emails throttled or rejected by these providers, regardless of SPF and DKIM status.
@@ -182,7 +182,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">p=none (Monitor Only)</h3>
  <p className="text-gray-600 text-sm mb-3">
- This policy tells receiving servers to take no action on emails that fail authentication. Emails are delivered normally regardless of authentication results. The purpose of <code className="bg-gray-100 px-1 text-xs">p=none</code> is purely monitoring &mdash; you receive aggregate reports showing who is sending email using your domain and whether those emails pass or fail authentication.
+ This policy tells receiving servers to take no action on emails that fail authentication. Emails are delivered normally regardless of authentication results. The purpose of <code className="bg-gray-100 px-1 text-xs">p=none</code> is purely monitoring - you receive aggregate reports showing who is sending email using your domain and whether those emails pass or fail authentication.
  </p>
  <p className="text-gray-600 text-sm">
  <strong>When to use:</strong> During initial DMARC deployment, or when you are still identifying all legitimate email sources for a domain.
@@ -202,7 +202,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">p=reject (Block Entirely)</h3>
  <p className="text-gray-600 text-sm mb-3">
- This is the strongest policy level. It tells receiving servers to reject emails that fail authentication outright &mdash; they are never delivered to the recipient. This provides maximum protection against domain spoofing but carries risk: if any legitimate email source is not properly configured for SPF/DKIM alignment, those emails will be blocked.
+ This is the strongest policy level. It tells receiving servers to reject emails that fail authentication outright - they are never delivered to the recipient. This provides maximum protection against domain spoofing but carries risk: if any legitimate email source is not properly configured for SPF/DKIM alignment, those emails will be blocked.
  </p>
  <p className="text-gray-600 text-sm">
  <strong>When to use:</strong> After running <code className="bg-gray-100 px-1 text-xs">p=quarantine</code> successfully for 2-4 weeks with no legitimate emails being affected.
@@ -215,11 +215,11 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  </p>
 
  <ol className="space-y-4 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>Week 1-2: p=none</strong> &mdash; Publish a DMARC record with <code className="bg-gray-100 px-1.5 py-0.5 text-sm">p=none</code> and <code className="bg-gray-100 px-1.5 py-0.5 text-sm">rua=mailto:your-reports@domain.com</code>. Monitor aggregate reports to identify all email sources.</li>
- <li><strong>Week 3-4: p=quarantine; pct=25</strong> &mdash; Move to quarantine but only apply the policy to 25% of failing emails. This catches major issues without blocking all traffic.</li>
- <li><strong>Week 5-6: p=quarantine; pct=100</strong> &mdash; Increase to 100% quarantine. Monitor for any legitimate emails landing in spam.</li>
- <li><strong>Week 7-8: p=reject; pct=25</strong> &mdash; Start rejecting, but only 25% of failing emails. This gives you a safety margin during the transition.</li>
- <li><strong>Week 9+: p=reject; pct=100</strong> &mdash; Full enforcement. All emails failing authentication are rejected outright.</li>
+ <li><strong>Week 1-2: p=none</strong> - Publish a DMARC record with <code className="bg-gray-100 px-1.5 py-0.5 text-sm">p=none</code> and <code className="bg-gray-100 px-1.5 py-0.5 text-sm">rua=mailto:your-reports@domain.com</code>. Monitor aggregate reports to identify all email sources.</li>
+ <li><strong>Week 3-4: p=quarantine; pct=25</strong> - Move to quarantine but only apply the policy to 25% of failing emails. This catches major issues without blocking all traffic.</li>
+ <li><strong>Week 5-6: p=quarantine; pct=100</strong> - Increase to 100% quarantine. Monitor for any legitimate emails landing in spam.</li>
+ <li><strong>Week 7-8: p=reject; pct=25</strong> - Start rejecting, but only 25% of failing emails. This gives you a safety margin during the transition.</li>
+ <li><strong>Week 9+: p=reject; pct=100</strong> - Full enforcement. All emails failing authentication are rejected outright.</li>
  </ol>
 
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -237,7 +237,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  Aggregate reports are XML documents sent by receiving mail servers (typically once per day) that summarize authentication results for your domain. They show the volume of emails processed, which IPs sent them, and whether each email passed or failed SPF, DKIM, and DMARC alignment.
  </p>
  <p className="text-gray-600 text-sm">
- <strong>You should always enable rua.</strong> These reports are the foundation of DMARC monitoring. Without them, you are flying blind &mdash; you have no visibility into who is sending email using your domain or whether authentication is working.
+ <strong>You should always enable rua.</strong> These reports are the foundation of DMARC monitoring. Without them, you are flying blind - you have no visibility into who is sending email using your domain or whether authentication is working.
  </p>
  </div>
 
@@ -263,9 +263,9 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  The <Link href="/tools/dmarc-lookup" className="text-blue-600 hover:underline">DMARC Lookup tool</Link> checks your domain&apos;s existing DMARC configuration:
  </p>
  <ol className="space-y-3 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>Enter your domain</strong> &mdash; Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>).</li>
- <li><strong>Run the lookup</strong> &mdash; The tool queries the TXT record at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">_dmarc.yourdomain.com</code>.</li>
- <li><strong>Review the results</strong> &mdash; See your current policy level, reporting addresses, alignment mode, and percentage value.</li>
+ <li><strong>Enter your domain</strong> - Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>).</li>
+ <li><strong>Run the lookup</strong> - The tool queries the TXT record at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">_dmarc.yourdomain.com</code>.</li>
+ <li><strong>Review the results</strong> - See your current policy level, reporting addresses, alignment mode, and percentage value.</li>
  </ol>
 
  <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">DMARC Generator Tool</h3>
@@ -273,11 +273,11 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  The <Link href="/tools/dmarc-generator" className="text-blue-600 hover:underline">DMARC Generator tool</Link> creates a properly formatted DMARC record:
  </p>
  <ol className="space-y-3 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>Select your policy level</strong> &mdash; Choose none, quarantine, or reject based on where you are in the rollout process.</li>
- <li><strong>Add reporting addresses</strong> &mdash; Enter email addresses for aggregate (rua) and optionally forensic (ruf) reports.</li>
- <li><strong>Configure alignment</strong> &mdash; Choose relaxed (default, recommended) or strict alignment for SPF and DKIM.</li>
- <li><strong>Set the percentage</strong> &mdash; Specify what percentage of failing emails the policy applies to (default is 100).</li>
- <li><strong>Copy the record</strong> &mdash; The tool outputs a complete DMARC TXT record ready to publish at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">_dmarc.yourdomain.com</code>.</li>
+ <li><strong>Select your policy level</strong> - Choose none, quarantine, or reject based on where you are in the rollout process.</li>
+ <li><strong>Add reporting addresses</strong> - Enter email addresses for aggregate (rua) and optionally forensic (ruf) reports.</li>
+ <li><strong>Configure alignment</strong> - Choose relaxed (default, recommended) or strict alignment for SPF and DKIM.</li>
+ <li><strong>Set the percentage</strong> - Specify what percentage of failing emails the policy applies to (default is 100).</li>
+ <li><strong>Copy the record</strong> - The tool outputs a complete DMARC TXT record ready to publish at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">_dmarc.yourdomain.com</code>.</li>
  </ol>
 
  <h2 id="alignment-modes" className="text-2xl font-bold text-gray-900 mt-12 mb-4">DMARC Alignment: Strict vs Relaxed</h2>
@@ -301,7 +301,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
 
  <h2 id="google-yahoo-requirements" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Google and Yahoo DMARC Requirements</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Since February 2024, Google and Yahoo enforce specific email authentication requirements for bulk senders. These requirements are not optional &mdash; non-compliance results in throttling and rejection of your emails. Here is what you need:
+ Since February 2024, Google and Yahoo enforce specific email authentication requirements for bulk senders. These requirements are not optional - non-compliance results in throttling and rejection of your emails. Here is what you need:
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -331,7 +331,7 @@ export default function FreeDmarcLookupGeneratorToolArticle() {
  <div className="space-y-6 mb-12">
  <div className="border border-gray-100 p-6">
  <h3 className="font-bold text-gray-900 mb-2">What is the difference between DMARC p=none, p=quarantine, and p=reject?</h3>
- <p className="text-gray-600 text-sm"><code className="bg-gray-100 px-1 text-xs">p=none</code> tells receiving servers to take no action on failing emails &mdash; it is monitoring only. <code className="bg-gray-100 px-1 text-xs">p=quarantine</code> instructs servers to route failing emails to spam. <code className="bg-gray-100 px-1 text-xs">p=reject</code> tells servers to block failing emails entirely. Start with none, progress to quarantine, and eventually to reject.</p>
+ <p className="text-gray-600 text-sm"><code className="bg-gray-100 px-1 text-xs">p=none</code> tells receiving servers to take no action on failing emails - it is monitoring only. <code className="bg-gray-100 px-1 text-xs">p=quarantine</code> instructs servers to route failing emails to spam. <code className="bg-gray-100 px-1 text-xs">p=reject</code> tells servers to block failing emails entirely. Start with none, progress to quarantine, and eventually to reject.</p>
  </div>
  <div className="border border-gray-100 p-6">
  <h3 className="font-bold text-gray-900 mb-2">Is DMARC required for email sending in 2024 and beyond?</h3>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Shared dashboard page header — unifies the Protection + Sequencer pages
+ * Shared dashboard page header - unifies the Protection + Sequencer pages
  * under the same visual rhythm:
  *   - text-2xl bold title
  *   - text-sm gray subtitle

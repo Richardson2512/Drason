@@ -55,7 +55,7 @@ export default function WhySpfDmarcFailingArticle() {
  {
  "@type": "Question",
  "name": "Does DMARC fail if only SPF fails but DKIM passes?",
- "acceptedAnswer": { "@type": "Answer", "text": "No. DMARC passes if either SPF or DKIM passes with domain alignment. So if SPF fails but DKIM passes and the DKIM signing domain aligns with the From domain, DMARC will pass. This is why setting up both SPF and DKIM is important — they act as backup for each other." }
+ "acceptedAnswer": { "@type": "Answer", "text": "No. DMARC passes if either SPF or DKIM passes with domain alignment. So if SPF fails but DKIM passes and the DKIM signing domain aligns with the From domain, DMARC will pass. This is why setting up both SPF and DKIM is important - they act as backup for each other." }
  }
  ]
  };
@@ -89,16 +89,16 @@ export default function WhySpfDmarcFailingArticle() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> SPF allows only 10 DNS lookups — exceeding this silently breaks authentication</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> You can only have one SPF record per domain — multiple records cause a PermError</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DMARC passes if either SPF or DKIM passes with alignment — set up both as backup</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> SPF allows only 10 DNS lookups - exceeding this silently breaks authentication</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> You can only have one SPF record per domain - multiple records cause a PermError</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DMARC passes if either SPF or DKIM passes with alignment - set up both as backup</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Start DMARC with p=none to monitor, then move to p=quarantine, then p=reject</li>
  </ul>
  </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-gray-600 leading-relaxed mb-6">
- You checked your email headers and saw &quot;SPF: FAIL&quot; or &quot;DMARC: FAIL.&quot; Or maybe your deliverability tanked and someone told you to check your DNS records. Either way, failing email authentication is one of the fastest ways to land in spam — and fixing it requires understanding exactly what broke and why. Here is a complete diagnosis and fix guide for every common SPF, DKIM, and DMARC failure.
+ You checked your email headers and saw &quot;SPF: FAIL&quot; or &quot;DMARC: FAIL.&quot; Or maybe your deliverability tanked and someone told you to check your DNS records. Either way, failing email authentication is one of the fastest ways to land in spam - and fixing it requires understanding exactly what broke and why. Here is a complete diagnosis and fix guide for every common SPF, DKIM, and DMARC failure.
  </p>
 
  <h2 id="spf-failures" className="text-2xl font-bold text-gray-900 mt-12 mb-4">SPF failure causes</h2>
@@ -122,7 +122,7 @@ export default function WhySpfDmarcFailingArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Too many DNS lookups (the 10-lookup limit)</h3>
  <p className="text-gray-600 leading-relaxed mb-4">
- The SPF specification limits DNS lookups to 10 per record. Each <code className="bg-gray-100 px-2 py-0.5 text-sm">include:</code>, <code className="bg-gray-100 px-2 py-0.5 text-sm">a:</code>, <code className="bg-gray-100 px-2 py-0.5 text-sm">mx:</code>, and <code className="bg-gray-100 px-2 py-0.5 text-sm">redirect:</code> mechanism counts as one lookup. But includes can be nested — <code className="bg-gray-100 px-2 py-0.5 text-sm">include:_spf.google.com</code> itself triggers 3-4 additional lookups internally. If your total exceeds 10, SPF returns a PermError and fails.
+ The SPF specification limits DNS lookups to 10 per record. Each <code className="bg-gray-100 px-2 py-0.5 text-sm">include:</code>, <code className="bg-gray-100 px-2 py-0.5 text-sm">a:</code>, <code className="bg-gray-100 px-2 py-0.5 text-sm">mx:</code>, and <code className="bg-gray-100 px-2 py-0.5 text-sm">redirect:</code> mechanism counts as one lookup. But includes can be nested - <code className="bg-gray-100 px-2 py-0.5 text-sm">include:_spf.google.com</code> itself triggers 3-4 additional lookups internally. If your total exceeds 10, SPF returns a PermError and fails.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  <strong>How to check:</strong> The <Link href="/tools/spf-lookup" className="text-blue-600 hover:text-blue-800">SPF Lookup tool</Link> shows the total lookup count. Alternatively, run <code className="bg-gray-100 px-2 py-0.5 text-sm">dig TXT yourdomain.com</code> and manually trace each include.
@@ -142,10 +142,10 @@ export default function WhySpfDmarcFailingArticle() {
  <strong>How to fix:</strong> Merge all sending sources into a single SPF record. Delete the duplicate and combine the includes:
  </p>
  <div className="bg-gray-900 text-green-400 p-4 font-mono text-sm mb-4 overflow-x-auto">
- <p className="m-0 text-red-400">// WRONG — two separate SPF records</p>
+ <p className="m-0 text-red-400">// WRONG - two separate SPF records</p>
  <p className="m-0">v=spf1 include:_spf.google.com ~all</p>
  <p className="m-0">v=spf1 include:sendgrid.net ~all</p>
- <p className="m-0 mt-3 text-red-400">// CORRECT — one merged record</p>
+ <p className="m-0 mt-3 text-red-400">// CORRECT - one merged record</p>
  <p className="m-0">v=spf1 include:_spf.google.com include:sendgrid.net ~all</p>
  </div>
 
@@ -183,7 +183,7 @@ export default function WhySpfDmarcFailingArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Wrong key length (1024 vs 2048 bit)</h3>
  <p className="text-gray-600 leading-relaxed mb-4">
- DKIM keys come in 1024-bit and 2048-bit lengths. The industry standard is moving to 2048-bit for stronger security. Some receiving servers may flag 1024-bit keys as weak, though most still accept them. The more common issue is publishing a 2048-bit key in a DNS TXT record that exceeds the 255-character string limit — this requires splitting the key into two strings within the same TXT record.
+ DKIM keys come in 1024-bit and 2048-bit lengths. The industry standard is moving to 2048-bit for stronger security. Some receiving servers may flag 1024-bit keys as weak, though most still accept them. The more common issue is publishing a 2048-bit key in a DNS TXT record that exceeds the 255-character string limit - this requires splitting the key into two strings within the same TXT record.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  <strong>How to fix:</strong> If your provider offers 2048-bit keys, use them. If the DNS record fails to save due to length, your registrar may need the key split into two quoted strings within a single TXT record. Most modern DNS providers handle this automatically, but some older panels require manual splitting.
@@ -191,12 +191,12 @@ export default function WhySpfDmarcFailingArticle() {
 
  <h2 id="dmarc-failures" className="text-2xl font-bold text-gray-900 mt-12 mb-4">DMARC failure causes</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- DMARC (Domain-based Message Authentication, Reporting and Conformance) ties SPF and DKIM together. It passes if at least one of them passes <em>with domain alignment</em> — meaning the domain in the SPF or DKIM check matches the domain in the From header.
+ DMARC (Domain-based Message Authentication, Reporting and Conformance) ties SPF and DKIM together. It passes if at least one of them passes <em>with domain alignment</em> - meaning the domain in the SPF or DKIM check matches the domain in the From header.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">SPF and DKIM both failing</h3>
  <p className="text-gray-600 leading-relaxed mb-4">
- DMARC requires at least one of SPF or DKIM to pass with alignment. If both fail, DMARC automatically fails. This is the most common scenario — fix your SPF and DKIM issues first (see sections above), and DMARC will pass.
+ DMARC requires at least one of SPF or DKIM to pass with alignment. If both fail, DMARC automatically fails. This is the most common scenario - fix your SPF and DKIM issues first (see sections above), and DMARC will pass.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  <strong>How to check:</strong> Look at the email headers for all three results. If SPF and DKIM both show FAIL, focus on fixing those first. Use the <Link href="/tools/dmarc-lookup" className="text-blue-600 hover:text-blue-800">Superkabe DMARC Lookup tool</Link> to verify your DMARC record is published correctly.
@@ -204,7 +204,7 @@ export default function WhySpfDmarcFailingArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Alignment mode mismatch (strict vs relaxed)</h3>
  <p className="text-gray-600 leading-relaxed mb-4">
- DMARC alignment means the domain in the From header must match the domain authenticated by SPF or DKIM. In <strong>relaxed mode</strong> (the default), subdomains count — so mail from <code className="bg-gray-100 px-2 py-0.5 text-sm">user@sub.yourdomain.com</code> aligns with SPF for <code className="bg-gray-100 px-2 py-0.5 text-sm">yourdomain.com</code>. In <strong>strict mode</strong>, the domains must match exactly.
+ DMARC alignment means the domain in the From header must match the domain authenticated by SPF or DKIM. In <strong>relaxed mode</strong> (the default), subdomains count - so mail from <code className="bg-gray-100 px-2 py-0.5 text-sm">user@sub.yourdomain.com</code> aligns with SPF for <code className="bg-gray-100 px-2 py-0.5 text-sm">yourdomain.com</code>. In <strong>strict mode</strong>, the domains must match exactly.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  If you set <code className="bg-gray-100 px-2 py-0.5 text-sm">aspf=s</code> or <code className="bg-gray-100 px-2 py-0.5 text-sm">adkim=s</code> (strict) in your DMARC record, and your emails come from a subdomain while your authentication is set up on the root domain, alignment fails even though the underlying checks pass.
@@ -255,7 +255,7 @@ export default function WhySpfDmarcFailingArticle() {
 
  <h2 id="superkabe-dns-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Superkabe monitors DNS health continuously</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- Fixing SPF, DKIM, and DMARC once is not enough. DNS records can break silently — a provider rotates DKIM keys, someone on your team adds a second SPF record, a DNS migration drops records. You will not know until your emails start hitting spam.
+ Fixing SPF, DKIM, and DMARC once is not enough. DNS records can break silently - a provider rotates DKIM keys, someone on your team adds a second SPF record, a DNS migration drops records. You will not know until your emails start hitting spam.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  Superkabe&apos;s <Link href="/docs/help/dns-setup" className="text-blue-600 hover:text-blue-800">infrastructure assessment</Link> checks all three authentication records across every sending domain connected to your account. Checks run continuously, not just at setup time. If an SPF record adds a lookup that pushes you past the 10-lookup limit, if a DKIM key stops resolving, or if a DMARC record is deleted during a DNS migration, you get an alert before your next campaign sends unauthenticated emails.
@@ -276,7 +276,7 @@ export default function WhySpfDmarcFailingArticle() {
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">Does DMARC fail if only SPF fails but DKIM passes? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
- <p className="mt-3 text-sm text-gray-600">No. DMARC passes if either SPF or DKIM passes with domain alignment. So if SPF fails but DKIM passes and the DKIM signing domain aligns with the From domain, DMARC will pass. This is why setting up both SPF and DKIM is important — they act as backup for each other.</p>
+ <p className="mt-3 text-sm text-gray-600">No. DMARC passes if either SPF or DKIM passes with domain alignment. So if SPF fails but DKIM passes and the DKIM signing domain aligns with the From domain, DMARC will pass. This is why setting up both SPF and DKIM is important - they act as backup for each other.</p>
  </details>
  </div>
  </div>

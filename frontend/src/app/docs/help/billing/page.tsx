@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans — two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
+ description: 'Learn about Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
  alternates: { canonical: '/docs/help/billing' },
  openGraph: {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans — two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
+ description: 'Learn about Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
  url: '/docs/help/billing',
  siteName: 'Superkabe',
  type: 'article',
@@ -101,7 +101,7 @@ export default function BillingPage() {
  <p className="text-gray-600 mb-4">
  Your plan defines two caps: monthly email sends and email-validation credits.
  Usage is tracked in real-time on the billing page with rolling 30-day counts, and once you hit either cap that resource is paused until the cap resets.
- Domains, mailboxes, leads, and protection coverage are unlimited at every tier &mdash; scale your infra without scaling your bill.
+ Domains, mailboxes, leads, and protection coverage are unlimited at every tier - scale your infra without scaling your bill.
  </p>
 
  {/* Email Validation Credits */}
@@ -113,15 +113,15 @@ export default function BillingPage() {
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Automatic use</strong> &mdash; every lead ingested from Clay or API is validated before routing to Smartlead/Instantly/EmailBison. No manual action required.</span>
+ <span><strong>Automatic use</strong> - every lead ingested from Clay or API is validated before routing to Smartlead/Instantly/EmailBison. No manual action required.</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Cached results</strong> &mdash; Superkabe caches validation results for 30 days, so re-ingesting the same email doesn&apos;t re-spend a credit.</span>
+ <span><strong>Cached results</strong> - Superkabe caches validation results for 30 days, so re-ingesting the same email doesn&apos;t re-spend a credit.</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Tracked on Billing &rarr; Usage</strong> &mdash; &ldquo;Emails Validated&rdquo; stat card shows lifetime total across all sources (internal + MillionVerifier).</span>
+ <span><strong>Tracked on Billing &rarr; Usage</strong> - &ldquo;Emails Validated&rdquo; stat card shows lifetime total across all sources (internal + MillionVerifier).</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
@@ -166,19 +166,19 @@ export default function BillingPage() {
  <ul className="space-y-2 text-gray-600">
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Date</strong> &mdash; When the invoice was generated</span>
+ <span><strong>Date</strong> - When the invoice was generated</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Amount</strong> &mdash; Total charged (in USD)</span>
+ <span><strong>Amount</strong> - Total charged (in USD)</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Status</strong> &mdash; Paid, pending, or failed</span>
+ <span><strong>Status</strong> - Paid, pending, or failed</span>
  </li>
  <li className="flex items-start gap-2">
  <span>&#x2022;</span>
- <span><strong>Download</strong> &mdash; PDF receipt for your records</span>
+ <span><strong>Download</strong> - PDF receipt for your records</span>
  </li>
  </ul>
  </div>

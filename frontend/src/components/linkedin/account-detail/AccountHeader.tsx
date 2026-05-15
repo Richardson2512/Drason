@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * AccountHeader — top-of-page card for /dashboard/linkedin/accounts/[id]
+ * AccountHeader - top-of-page card for /dashboard/linkedin/accounts/[id]
  * and its post-type subpages (posts / articles / reposts /
  * thought-leadership). Fetches the account once per mount and renders:
  *   - avatar + display name + status pill + account-type pill
  *   - "Connected X ago · N posts tracked for signals" subtitle
  *   - capacity strip (invites today/week, messages, inmails, profile views)
  *
- * Kept dumb on the fetch side — no caching between routes; the response
+ * Kept dumb on the fetch side - no caching between routes; the response
  * is small so a re-fetch per nav is fine. If we later want to dedupe,
  * lift to a React Query layer.
  */
@@ -100,7 +100,7 @@ export default function AccountHeader({ accountId }: { accountId: string }) {
     // bails on `if (ctx) return`, and localLoading is initialized to
     // !ctx === false so we go straight to the render path that reads
     // from context). The local fetch is a defensive fallback for callers
-    // that render AccountHeader outside the layout — admin pages,
+    // that render AccountHeader outside the layout - admin pages,
     // standalone debug surfaces, future embedded contexts.
     const ctx = useContext(AccountDetailContext);
 
@@ -110,7 +110,7 @@ export default function AccountHeader({ accountId }: { accountId: string }) {
     const [localError, setLocalError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (ctx) return; // Layout owns the fetch — see docstring above.
+        if (ctx) return; // Layout owns the fetch - see docstring above.
         let cancelled = false;
         setLocalLoading(true);
         apiClient<{ account: AccountDetail; post_stats: PostStats }>(`/api/linkedin/accounts/${accountId}`)
@@ -148,14 +148,14 @@ export default function AccountHeader({ accountId }: { accountId: string }) {
 
     const status = STATUS_PILL[account.status] ?? null;
     const rateLimit = ctx?.unipileRateLimit ?? null;
-    // Banner shows only on sustained throttling — a single 429 retried
+    // Banner shows only on sustained throttling - a single 429 retried
     // successfully isn't worth alarming the operator. Threshold tuned to:
     //   - count_5m >= 3 (Unipile is *currently* throttling, retries
     //     not catching up)
     //   - or count_60m >= 5 (multiple distinct hits over the last hour
     //     suggesting the account is over its Unipile quota)
     // A single isolated 429 that the client recovered from on retry stays
-    // silent — the operator doesn't need to see those.
+    // silent - the operator doesn't need to see those.
     const showRateLimitBanner = Boolean(rateLimit && (rateLimit.count_5m >= 3 || rateLimit.count_60m >= 5));
 
     return (
@@ -206,7 +206,7 @@ export default function AccountHeader({ accountId }: { accountId: string }) {
                             {rateLimit.count_5m > 0
                                 ? `${rateLimit.count_5m} rate-limit event${rateLimit.count_5m === 1 ? '' : 's'} in the last 5 min `
                                 : `${rateLimit.count_60m} rate-limit event${rateLimit.count_60m === 1 ? '' : 's'} in the last hour `}
-                            — expect delayed polling and sends. The client will retry with backoff automatically.
+                            - expect delayed polling and sends. The client will retry with backoff automatically.
                         </div>
                     </div>
                 )}

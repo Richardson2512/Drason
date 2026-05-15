@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * ImportLeadsModal — unified entry point for pulling leads into the contacts
+ * ImportLeadsModal - unified entry point for pulling leads into the contacts
  * page from CSV, Apollo, HubSpot, and Salesforce.
  *
  * Flow:
@@ -12,10 +12,10 @@
  *        - CRM → checkbox grid of HubSpot lists + Salesforce list-views,
  *                multi-select across both providers; spawns one job per item
  *   3. dispatch: CSV resolves synchronously and refetches contacts.
- *      Apollo/CRM emit job descriptors via onJobsSpawned and the modal closes —
+ *      Apollo/CRM emit job descriptors via onJobsSpawned and the modal closes -
  *      ImportProgressTray takes over from there.
  *
- * Per-source field-mapping is intentionally NOT in this modal — power-users
+ * Per-source field-mapping is intentionally NOT in this modal - power-users
  * who need custom field mapping use the per-connection wizards under
  * /dashboard/integrations/{lead-sources,crm}/[id]. This modal sends no
  * field_mapping override, so the worker uses whatever's already saved on
@@ -277,7 +277,7 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
                     if (updated > 0 && updated !== duplicates) parts.push(`${updated} updated`);
                     if (duplicates > 0) parts.push(`${duplicates} already existed`);
                     if (rejected > 0) parts.push(`${rejected} rejected`);
-                    const msg = parts.length > 0 ? `Imported ${res?.total ?? payload.length} — ${parts.join(', ')}` : `Processed ${res?.total ?? payload.length} rows`;
+                    const msg = parts.length > 0 ? `Imported ${res?.total ?? payload.length} - ${parts.join(', ')}` : `Processed ${res?.total ?? payload.length} rows`;
                     if (created > 0 || updated > 0) toast.success(msg); else toast(msg);
                     onCsvImported();
                     onClose();
@@ -371,7 +371,7 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
         const spawned: SpawnedJob[] = [];
         const failures: string[] = [];
 
-        // HubSpot — one job per selected list
+        // HubSpot - one job per selected list
         if (hubspotConn && crmSelection.hubspot.size > 0) {
             for (const listId of crmSelection.hubspot) {
                 const list = hubspotLists.find(l => l.id === listId);
@@ -394,7 +394,7 @@ export default function ImportLeadsModal({ open, onClose, onJobsSpawned, onCsvIm
             }
         }
 
-        // Salesforce — one job per selected view
+        // Salesforce - one job per selected view
         if (salesforceConn && crmSelection.salesforce.size > 0) {
             for (const viewId of crmSelection.salesforce) {
                 const view = salesforceViews.find(v => v.id === viewId);
@@ -550,7 +550,7 @@ function titleFor(stage: Stage): string {
 
 // Contact-database providers we have backend scaffolding for (services/
 // enrichment/providers). Each card surfaces "Not connected" until a real
-// connection wizard lands — pattern matches Apollo when its connections
+// connection wizard lands - pattern matches Apollo when its connections
 // list is empty. Connection setup lives at /dashboard/integrations.
 const CONTACT_DB_PROVIDERS: Array<{ key: string; label: string; logo: string }> = [
     { key: 'clay',     label: 'Clay',     logo: '/brands/clay.svg' },
@@ -583,7 +583,7 @@ function SourcePicker(props: {
 
     return (
         <div className="flex flex-col gap-4">
-            {/* Direct sources — single-action cards */}
+            {/* Direct sources - single-action cards */}
             <div className="flex flex-col gap-2">
                 <SectionHeader label="Direct" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -611,7 +611,7 @@ function SourcePicker(props: {
                 </div>
             </div>
 
-            {/* Contact databases — enrichment-provider sources. Cards are
+            {/* Contact databases - enrichment-provider sources. Cards are
                 "Not connected" placeholders until each provider's connection
                 wizard ships. Clicking a not-connected card surfaces the
                 same disabledReason pattern as Apollo. */}
@@ -632,7 +632,7 @@ function SourcePicker(props: {
                 </div>
             </div>
 
-            {/* CRM — multi-select cards */}
+            {/* CRM - multi-select cards */}
             <div className="flex flex-col gap-2">
                 <SectionHeader label="CRM" hint="Pick one or both" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -699,7 +699,7 @@ function BrandLogo({ src, alt }: { src: string; alt: string }) {
     );
 }
 
-/** Single-action card — clicking advances the modal to the per-source step. */
+/** Single-action card - clicking advances the modal to the per-source step. */
 function ActionCard(props: { icon: React.ReactNode; title: string; subtitle: string; available: boolean; disabledReason?: string; onClick: () => void }) {
     const { icon, title, subtitle, available, disabledReason, onClick } = props;
     return (
@@ -722,7 +722,7 @@ function ActionCard(props: { icon: React.ReactNode; title: string; subtitle: str
     );
 }
 
-/** Multi-select card — clicking toggles the checkbox; user proceeds via the CRM "Continue" button below. */
+/** Multi-select card - clicking toggles the checkbox; user proceeds via the CRM "Continue" button below. */
 function ToggleCard(props: { icon: React.ReactNode; title: string; subtitle: string; checked: boolean; available: boolean; disabledReason?: string; onToggle: () => void }) {
     const { icon, title, subtitle, checked, available, disabledReason, onToggle } = props;
     return (

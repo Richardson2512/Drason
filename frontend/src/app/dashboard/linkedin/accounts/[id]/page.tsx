@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * Account detail — "All" feed view.
+ * Account detail - "All" feed view.
  *
  * Subpages live alongside this route:
- *   /accounts/[id]/posts                — plain posts (excludes thought leadership)
- *   /accounts/[id]/articles             — LinkedIn long-form articles
- *   /accounts/[id]/reposts              — reshared content
- *   /accounts/[id]/thought-leadership   — derived bucket of high-signal posts
+ *   /accounts/[id]/posts                - plain posts (excludes thought leadership)
+ *   /accounts/[id]/articles             - LinkedIn long-form articles
+ *   /accounts/[id]/reposts              - reshared content
+ *   /accounts/[id]/thought-leadership   - derived bucket of high-signal posts
  *
  * Each renders the same AccountHeader + FeedTabsNav chrome and a
  * PostsFeed scoped to one `kind`. The URL is the source of truth for

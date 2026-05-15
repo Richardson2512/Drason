@@ -178,7 +178,7 @@ export default function PostEngagementsPage({ params }: { params: Promise<{ id: 
                 return bT.localeCompare(aT);
             });
         }
-        // 'most_engaged' is the API default — no resort needed.
+        // 'most_engaged' is the API default - no resort needed.
         return sorted;
     }, [data, eventType, icpFilter, connFilter, relationshipFilter, sortMode]);
 

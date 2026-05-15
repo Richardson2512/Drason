@@ -90,7 +90,7 @@ export default function CampaignsPage() {
         } catch (err: any) {
             console.error('Failed to fetch campaigns:', err);
             setFetchError(err.message || 'Failed to load campaigns');
-            // Don't wipe existing campaigns on error — keep stale data visible
+            // Don't wipe existing campaigns on error - keep stale data visible
         } finally {
             setLoading(false);
         }
@@ -214,7 +214,7 @@ export default function CampaignsPage() {
                 <div className="mb-4 shrink-0">
                     <h1 className="text-xl font-bold text-gray-900 mb-3">Campaigns</h1>
 
-                    {/* Stats bar — interactive. Clicking a pill filters the
+                    {/* Stats bar - interactive. Clicking a pill filters the
                         list; "All" clears. Replaces the status dropdown. */}
                     {entityStats?.campaigns && (
                         <div className="mb-3">
@@ -523,7 +523,7 @@ export default function CampaignsPage() {
                                     </div>
                                     {selectedCampaign.mailboxes.map((mb: Mailbox) => (
                                         <div key={mb.id} className="grid gap-3 px-3 py-2.5 rounded-lg bg-neutral-50 border border-slate-100 items-center" style={{ gridTemplateColumns: '1fr auto auto auto' }}>
-                                            {/* Email — truncated */}
+                                            {/* Email - truncated */}
                                             <div className="truncate text-[0.8rem] font-medium text-slate-800" title={mb.email}>
                                                 {mb.email}
                                             </div>
@@ -603,7 +603,7 @@ export default function CampaignsPage() {
                                 'Campaign will be reactivated on the email platform',
                                 'Emails will start sending again immediately',
                                 selectedCampaign.paused_by === 'system'
-                                    ? 'This campaign was paused by Superkabe due to health issues — the underlying issue may not be resolved'
+                                    ? 'This campaign was paused by Superkabe due to health issues - the underlying issue may not be resolved'
                                     : 'Leads in sequence will continue where they left off',
                             ]
                     }

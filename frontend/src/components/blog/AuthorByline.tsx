@@ -47,7 +47,7 @@ function MonogramAvatar({ initials }: { initials: string }) {
 }
 
 export default function AuthorByline({ name, role, photoSrc }: AuthorBylineProps) {
-    // We try the photo path; if it 404s the browser shows alt text — but to
+    // We try the photo path; if it 404s the browser shows alt text - but to
     // avoid broken-image flashes we render the monogram fallback unless an
     // explicit photoSrc is supplied. Once you drop real images in
     // /public/authors/, pass photoSrc explicitly per post.

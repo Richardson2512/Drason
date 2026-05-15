@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 
 /**
- * Bulk mailbox import via CSV — paste/upload, preview, submit.
+ * Bulk mailbox import via CSV - paste/upload, preview, submit.
  *
  * For one-click bulk import via reseller APIs (Zapmail, Premium Inboxes,
  * Mission Inbox, Scaled Mail), see ResellerImportModal. This modal is the
@@ -20,7 +20,7 @@ import toast from 'react-hot-toast';
  *   - email      (required)
  *   - provider   (required: smtp | google | microsoft)
  *   - SMTP rows must include smtpHost / smtpPort / smtpUsername / smtpPassword
- *   - google / microsoft rows are created in oauth_pending state — the user
+ *   - google / microsoft rows are created in oauth_pending state - the user
  *     authorizes them individually after import via the existing OAuth flow.
  *
  * Hard cap: 200 rows per submission (matches backend MAX_BULK_ROWS).
@@ -117,7 +117,7 @@ function parseCsv(raw: string): ParsedRow[] {
     return rows;
 }
 
-/** Minimal CSV splitter — handles quoted cells with commas, no streaming. */
+/** Minimal CSV splitter - handles quoted cells with commas, no streaming. */
 function splitLine(line: string): string[] {
     const out: string[] = [];
     let cur = '';
@@ -301,8 +301,8 @@ jane@example.com,google,Jane,150,,,,,,
                                                 {parsed.map((row, i) => (
                                                     <tr key={i} className="border-t border-gray-100">
                                                         <td className="px-3 py-1.5 text-gray-400 tabular-nums">{i + 1}</td>
-                                                        <td className="px-3 py-1.5 text-gray-700 font-medium truncate max-w-[200px]">{row.email || '—'}</td>
-                                                        <td className="px-3 py-1.5 text-gray-500 capitalize">{row.provider || '—'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-700 font-medium truncate max-w-[200px]">{row.email || '-'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-500 capitalize">{row.provider || '-'}</td>
                                                         <td className="px-3 py-1.5">
                                                             {row.localError ? (
                                                                 <span className="inline-flex items-center gap-1 text-[11px] text-red-600">
@@ -353,7 +353,7 @@ jane@example.com,google,Jane,150,,,,,,
                                             {results.results.map((r) => (
                                                 <tr key={r.row} className="border-t border-gray-100">
                                                     <td className="px-3 py-1.5 text-gray-400 tabular-nums">{r.row}</td>
-                                                    <td className="px-3 py-1.5 text-gray-700 font-medium truncate max-w-[200px]">{r.email || '—'}</td>
+                                                    <td className="px-3 py-1.5 text-gray-700 font-medium truncate max-w-[200px]">{r.email || '-'}</td>
                                                     <td className="px-3 py-1.5">
                                                         {r.status === 'created' && (
                                                             <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700">

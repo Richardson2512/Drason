@@ -1,1 +1,1 @@
-// Intentionally empty — used to replace unneeded polyfill modules
+// Intentionally empty - used to replace unneeded polyfill modules

@@ -62,7 +62,7 @@ export default function MailboxRotationPage() {
  <span className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
  <div>
  <h3 className="font-bold text-gray-900">Platform Swap</h3>
- <p className="text-gray-600 text-sm">The standby mailbox is added to the affected campaigns on your sending platform (Smartlead, Instantly, or EmailBison). This happens via API &mdash; no manual action needed.</p>
+ <p className="text-gray-600 text-sm">The standby mailbox is added to the affected campaigns on your sending platform (Smartlead, Instantly, or EmailBison). This happens via API - no manual action needed.</p>
  </div>
  </li>
  <li className="flex items-start gap-4">
@@ -136,7 +136,7 @@ export default function MailboxRotationPage() {
  <h3 className="font-bold text-gray-900 mb-2">All Mailboxes Paused</h3>
  <p className="text-gray-600 text-sm">
  If every single mailbox assigned to a campaign is paused (or removed during recovery), the campaign itself is
- <strong> automatically paused</strong> on the sending platform. This is the only condition that triggers a campaign-level pause &mdash;
+ <strong> automatically paused</strong> on the sending platform. This is the only condition that triggers a campaign-level pause -
  bounce rate alone never pauses a campaign directly.
  </p>
  </div>
@@ -148,9 +148,9 @@ export default function MailboxRotationPage() {
  <div className="space-y-4 text-sm text-gray-700">
  <p>You have 3 mailboxes on <strong>acmecorp.com</strong>:</p>
  <div className="bg-white p-4 border border-purple-200 space-y-2">
- <p>&#x2022; <strong>john@acmecorp.com</strong> &mdash; Active in Campaign A and Campaign B</p>
- <p>&#x2022; <strong>sarah@acmecorp.com</strong> &mdash; Active in Campaign A</p>
- <p>&#x2022; <strong>mike@acmecorp.com</strong> &mdash; Standby (healthy, not in any campaigns)</p>
+ <p>&#x2022; <strong>john@acmecorp.com</strong> - Active in Campaign A and Campaign B</p>
+ <p>&#x2022; <strong>sarah@acmecorp.com</strong> - Active in Campaign A</p>
+ <p>&#x2022; <strong>mike@acmecorp.com</strong> - Standby (healthy, not in any campaigns)</p>
  </div>
  <p><strong>What happens when john@acmecorp.com bounces above 3%:</strong></p>
  <div className="bg-white p-4 border border-purple-200 space-y-2">
@@ -183,7 +183,7 @@ export default function MailboxRotationPage() {
  <h2 className="text-xl font-bold mb-3 text-amber-900">Important Note on Platform Sync</h2>
  <p className="text-amber-800">
  Mailbox rotation happens on your sending platform (Smartlead, Instantly, EmailBison) via their API. If the platform
- API is temporarily unavailable, the swap will be retried. Check your audit logs if a rotation seems delayed &mdash;
+ API is temporarily unavailable, the swap will be retried. Check your audit logs if a rotation seems delayed -
  you&rsquo;ll see the exact API response and retry attempts.
  </p>
  </div>

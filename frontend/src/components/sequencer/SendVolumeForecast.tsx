@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api';
 
 /**
  * Forward-looking projection of how many emails the org CAN send over the
- * next 7 days. The hero stat is the weekly capacity total — that's the
+ * next 7 days. The hero stat is the weekly capacity total - that's the
  * forecast number the user is asking the page about. Today's used quota
  * is a small footer detail, not the headline.
  *
@@ -92,7 +92,7 @@ export default function SendVolumeForecast() {
                 )}
             </div>
 
-            {/* Hero — 7-day total */}
+            {/* Hero - 7-day total */}
             <div>
                 <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-bold text-gray-900 tabular-nums">{projectionTotal.toLocaleString()}</span>
@@ -105,7 +105,7 @@ export default function SendVolumeForecast() {
                 </div>
             </div>
 
-            {/* 7-day chart — the hero visual */}
+            {/* 7-day chart - the hero visual */}
             {(() => {
                 const max = Math.max(...data.projection.map((p) => p.capacity), 1);
                 return (
@@ -171,10 +171,10 @@ export default function SendVolumeForecast() {
                 </div>
             )}
 
-            {/* Today footer — small, secondary */}
+            {/* Today footer - small, secondary */}
             <div className="text-[11px] text-gray-400 italic">
                 Today: {data.today_remaining.toLocaleString()} of {data.daily_capacity.toLocaleString()} remaining
-                {data.eligible_mailboxes === 0 && ' · No eligible mailboxes — connect or resume to start sending.'}
+                {data.eligible_mailboxes === 0 && ' · No eligible mailboxes - connect or resume to start sending.'}
             </div>
         </div>
     );

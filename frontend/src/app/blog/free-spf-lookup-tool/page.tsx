@@ -122,7 +122,7 @@ export default function FreeSpfLookupToolArticle() {
  <article>
  <BlogHeader
  tag="Free Tools"
- title="Free SPF Record Lookup Tool — Check Your SPF Records"
+ title="Free SPF Record Lookup Tool - Check Your SPF Records"
  dateModified="2026-04-25"
  authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
@@ -136,7 +136,7 @@ export default function FreeSpfLookupToolArticle() {
  />
 
  <p className="text-lg text-gray-700 leading-relaxed mb-12">
- Your SPF record is the first line of defense in email authentication. If it&apos;s misconfigured &mdash; or missing entirely &mdash; every email you send is at risk of landing in spam. Use our <Link href="/tools/spf-lookup" className="underline">free SPF lookup tool</Link> to check your domain in seconds.
+ Your SPF record is the first line of defense in email authentication. If it&apos;s misconfigured - or missing entirely - every email you send is at risk of landing in spam. Use our <Link href="/tools/spf-lookup" className="underline">free SPF lookup tool</Link> to check your domain in seconds.
  </p>
 
  {/* Key Takeaways */}
@@ -153,12 +153,12 @@ export default function FreeSpfLookupToolArticle() {
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
- SPF (Sender Policy Framework) is one of the three core email authentication protocols &mdash; alongside <Link href="/blog/free-dkim-lookup-tool" className="text-blue-600 hover:underline">DKIM</Link> and <Link href="/blog/free-dmarc-lookup-generator-tool" className="text-blue-600 hover:underline">DMARC</Link> &mdash; that determine whether your emails reach the inbox or get rejected. For outbound email teams managing multiple sending domains, verifying your SPF configuration is not optional. A single misconfigured record can silently break authentication for every email sent from that domain.
+ SPF (Sender Policy Framework) is one of the three core email authentication protocols - alongside <Link href="/blog/free-dkim-lookup-tool" className="text-blue-600 hover:underline">DKIM</Link> and <Link href="/blog/free-dmarc-lookup-generator-tool" className="text-blue-600 hover:underline">DMARC</Link> - that determine whether your emails reach the inbox or get rejected. For outbound email teams managing multiple sending domains, verifying your SPF configuration is not optional. A single misconfigured record can silently break authentication for every email sent from that domain.
  </p>
 
  <h2 id="what-is-spf" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Is SPF and Why Does It Matter?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- SPF is a DNS-based email authentication protocol defined in RFC 7208. It allows domain owners to declare which mail servers are authorized to send email on behalf of their domain. When a receiving server gets an email, it checks the sender&apos;s domain for an SPF record &mdash; a TXT record published in DNS &mdash; and verifies whether the originating IP address is listed as an authorized sender.
+ SPF is a DNS-based email authentication protocol defined in RFC 7208. It allows domain owners to declare which mail servers are authorized to send email on behalf of their domain. When a receiving server gets an email, it checks the sender&apos;s domain for an SPF record - a TXT record published in DNS - and verifies whether the originating IP address is listed as an authorized sender.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  If the sending IP matches an entry in the SPF record, the email passes SPF authentication. If it doesn&apos;t, the receiving server takes action based on the qualifier specified in the record: reject the email (<code className="bg-gray-100 px-1.5 py-0.5 text-sm">-all</code>), mark it as suspicious (<code className="bg-gray-100 px-1.5 py-0.5 text-sm">~all</code>), or allow it through (<code className="bg-gray-100 px-1.5 py-0.5 text-sm">+all</code>, which you should never use).
@@ -184,16 +184,16 @@ export default function FreeSpfLookupToolArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">SPF Mechanism Types</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">include:</code> &mdash; Checks another domain&apos;s SPF record (counts as a DNS lookup)</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">ip4:</code> / <code className="bg-gray-100 px-1 text-xs">ip6:</code> &mdash; Authorizes a specific IP address or CIDR range (no lookup cost)</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">a</code> &mdash; Authorizes the domain&apos;s A record IP (counts as a lookup)</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">mx</code> &mdash; Authorizes IPs from the domain&apos;s MX records (counts as a lookup)</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">redirect=</code> &mdash; Delegates SPF evaluation to another domain entirely</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">include:</code> - Checks another domain&apos;s SPF record (counts as a DNS lookup)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">ip4:</code> / <code className="bg-gray-100 px-1 text-xs">ip6:</code> - Authorizes a specific IP address or CIDR range (no lookup cost)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">a</code> - Authorizes the domain&apos;s A record IP (counts as a lookup)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">mx</code> - Authorizes IPs from the domain&apos;s MX records (counts as a lookup)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <code className="bg-gray-100 px-1 text-xs">redirect=</code> - Delegates SPF evaluation to another domain entirely</li>
  </ul>
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical constraint to understand is the <strong>10-lookup limit</strong>. Every <code className="bg-gray-100 px-1.5 py-0.5 text-sm">include</code>, <code className="bg-gray-100 px-1.5 py-0.5 text-sm">a</code>, <code className="bg-gray-100 px-1.5 py-0.5 text-sm">mx</code>, and <code className="bg-gray-100 px-1.5 py-0.5 text-sm">redirect</code> mechanism triggers a DNS lookup. If the total number of lookups exceeds 10 &mdash; including nested lookups within included records &mdash; SPF evaluation returns a PermError and the check fails. This failure is silent: you won&apos;t receive any error notification, but every email from that domain will fail SPF authentication.
+ The critical constraint to understand is the <strong>10-lookup limit</strong>. Every <code className="bg-gray-100 px-1.5 py-0.5 text-sm">include</code>, <code className="bg-gray-100 px-1.5 py-0.5 text-sm">a</code>, <code className="bg-gray-100 px-1.5 py-0.5 text-sm">mx</code>, and <code className="bg-gray-100 px-1.5 py-0.5 text-sm">redirect</code> mechanism triggers a DNS lookup. If the total number of lookups exceeds 10 - including nested lookups within included records - SPF evaluation returns a PermError and the check fails. This failure is silent: you won&apos;t receive any error notification, but every email from that domain will fail SPF authentication.
  </p>
 
  <h2 id="how-to-use-tool" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How to Use the Free SPF Lookup Tool</h2>
@@ -202,10 +202,10 @@ export default function FreeSpfLookupToolArticle() {
  </p>
 
  <ol className="space-y-4 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>Enter your domain</strong> &mdash; Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>) into the input field. Do not include <code className="bg-gray-100 px-1.5 py-0.5 text-sm">https://</code> or any subdomain prefix.</li>
- <li><strong>Run the lookup</strong> &mdash; Click the lookup button. The tool queries your domain&apos;s DNS TXT records and finds the SPF entry.</li>
- <li><strong>Review the parsed record</strong> &mdash; The tool displays your full SPF record, breaks down each mechanism, counts the total DNS lookups, and identifies the qualifier type.</li>
- <li><strong>Check for issues</strong> &mdash; Look for warnings about exceeding the 10-lookup limit, missing include statements for your email providers, or weak qualifiers like <code className="bg-gray-100 px-1.5 py-0.5 text-sm">~all</code>.</li>
+ <li><strong>Enter your domain</strong> - Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>) into the input field. Do not include <code className="bg-gray-100 px-1.5 py-0.5 text-sm">https://</code> or any subdomain prefix.</li>
+ <li><strong>Run the lookup</strong> - Click the lookup button. The tool queries your domain&apos;s DNS TXT records and finds the SPF entry.</li>
+ <li><strong>Review the parsed record</strong> - The tool displays your full SPF record, breaks down each mechanism, counts the total DNS lookups, and identifies the qualifier type.</li>
+ <li><strong>Check for issues</strong> - Look for warnings about exceeding the 10-lookup limit, missing include statements for your email providers, or weak qualifiers like <code className="bg-gray-100 px-1.5 py-0.5 text-sm">~all</code>.</li>
  </ol>
 
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -230,7 +230,7 @@ export default function FreeSpfLookupToolArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">Issue 2: Missing Include Statements</h3>
  <p className="text-gray-600 text-sm mb-3">
- When you add a new email sending service &mdash; such as Smartlead, Instantly, or SendGrid &mdash; you must add its SPF include to your DNS record. If you forget, every email sent through that service will fail SPF authentication because the sending IP won&apos;t be in your authorized list.
+ When you add a new email sending service - such as Smartlead, Instantly, or SendGrid - you must add its SPF include to your DNS record. If you forget, every email sent through that service will fail SPF authentication because the sending IP won&apos;t be in your authorized list.
  </p>
  <p className="text-gray-600 text-sm">
  <strong>Fix:</strong> Check your email provider&apos;s documentation for the correct SPF include value. Add it to your existing SPF record. Use the <Link href="/tools/spf-generator" className="text-blue-600 hover:underline">SPF Generator</Link> to rebuild your record with all providers included.
@@ -240,7 +240,7 @@ export default function FreeSpfLookupToolArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">Issue 3: Wrong Qualifier (~all vs -all)</h3>
  <p className="text-gray-600 text-sm mb-3">
- Using <code className="bg-gray-100 px-1 text-xs">~all</code> (tilde, soft fail) instead of <code className="bg-gray-100 px-1 text-xs">-all</code> (hyphen, hard fail) is a common mistake. Soft fail tells receiving servers to accept emails from unauthorized IPs but mark them. Hard fail tells servers to reject them outright. For outbound teams, <code className="bg-gray-100 px-1 text-xs">-all</code> is the correct choice &mdash; it provides stronger protection against spoofing and signals to ISPs that you are serious about authentication.
+ Using <code className="bg-gray-100 px-1 text-xs">~all</code> (tilde, soft fail) instead of <code className="bg-gray-100 px-1 text-xs">-all</code> (hyphen, hard fail) is a common mistake. Soft fail tells receiving servers to accept emails from unauthorized IPs but mark them. Hard fail tells servers to reject them outright. For outbound teams, <code className="bg-gray-100 px-1 text-xs">-all</code> is the correct choice - it provides stronger protection against spoofing and signals to ISPs that you are serious about authentication.
  </p>
  <p className="text-gray-600 text-sm">
  <strong>Fix:</strong> Change the last mechanism in your SPF record from <code className="bg-gray-100 px-1 text-xs">~all</code> to <code className="bg-gray-100 px-1 text-xs">-all</code>. Make sure all legitimate senders are included first, as hard fail will block unauthorized sources.
@@ -275,10 +275,10 @@ export default function FreeSpfLookupToolArticle() {
  Here&apos;s how SPF fits into the decision flow when a receiving server processes an incoming email:
  </p>
  <ol className="space-y-3 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>SPF check</strong> &mdash; The receiving server queries the sender&apos;s domain for an SPF record and checks if the originating IP is authorized.</li>
- <li><strong>DKIM check</strong> &mdash; The server verifies the cryptographic signature in the email header against the public key in DNS.</li>
- <li><strong>DMARC alignment</strong> &mdash; The server checks whether the From header domain aligns with the domain that passed SPF or DKIM.</li>
- <li><strong>Policy enforcement</strong> &mdash; If alignment fails, the receiving server applies the DMARC policy (none, quarantine, or reject).</li>
+ <li><strong>SPF check</strong> - The receiving server queries the sender&apos;s domain for an SPF record and checks if the originating IP is authorized.</li>
+ <li><strong>DKIM check</strong> - The server verifies the cryptographic signature in the email header against the public key in DNS.</li>
+ <li><strong>DMARC alignment</strong> - The server checks whether the From header domain aligns with the domain that passed SPF or DKIM.</li>
+ <li><strong>Policy enforcement</strong> - If alignment fails, the receiving server applies the DMARC policy (none, quarantine, or reject).</li>
  </ol>
  <p className="text-gray-600 leading-relaxed mb-6">
  SPF alone is not sufficient. An email can pass SPF but still fail DMARC if the domains don&apos;t align. This is why all three protocols must be configured correctly on every sending domain. Use our <Link href="/blog/email-authentication-checker-tools" className="text-blue-600 hover:underline">complete authentication checker</Link> to verify all three at once.

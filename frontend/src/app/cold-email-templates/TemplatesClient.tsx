@@ -77,7 +77,7 @@ export default function TemplatesClient({
 
     return (
         <div>
-            {/* ─── Search bar — prominent, centered ─────────────────── */}
+            {/* ─── Search bar - prominent, centered ─────────────────── */}
             <div className="mb-5 flex justify-center">
                 <div className="relative w-full max-w-2xl">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B5E4F]" size={18} />
@@ -100,7 +100,7 @@ export default function TemplatesClient({
                 </div>
             </div>
 
-            {/* ─── Filter bar — compact dropdowns ──────────────────── */}
+            {/* ─── Filter bar - compact dropdowns ──────────────────── */}
             <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#6B5E4F] font-semibold mr-1">
                     <Filter size={12} strokeWidth={2} />
@@ -215,7 +215,7 @@ export default function TemplatesClient({
 }
 
 // ============================================================================
-// FILTER DROPDOWN — searchable, click-outside-to-close, count-aware
+// FILTER DROPDOWN - searchable, click-outside-to-close, count-aware
 // ============================================================================
 
 interface FilterOption {

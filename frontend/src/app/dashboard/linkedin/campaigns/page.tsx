@@ -1,10 +1,10 @@
 'use client';
 
 /**
- * Super LinkedIn — campaigns list.
+ * Super LinkedIn - campaigns list.
  *
  * Reads `/api/sequencer/campaigns?channel=linkedin` for real data. Empty
- * orgs render a true zero-state CTA card — no demo/narrative scaffolding,
+ * orgs render a true zero-state CTA card - no demo/narrative scaffolding,
  * so operators never confuse fake rows for real campaigns.
  */
 
@@ -66,8 +66,8 @@ function apiToRow(c: ApiCampaignRow): Campaign {
         finished: c.lead_count ?? 0,
         failed: c.total_bounced ?? 0,
         cr_sent: c.total_sent ?? 0,
-        cr_accept_rate: '—',
-        reply_rate: c.total_sent && c.total_sent > 0 ? `${Math.round((c.total_replied / c.total_sent) * 100)}%` : '—',
+        cr_accept_rate: '-',
+        reply_rate: c.total_sent && c.total_sent > 0 ? `${Math.round((c.total_replied / c.total_sent) * 100)}%` : '-',
         last_action: c.launched_at ? `Launched ${new Date(c.launched_at).toLocaleDateString()}` : `Created ${new Date(c.created_at).toLocaleDateString()}`,
     };
 }
@@ -114,7 +114,7 @@ export default function LinkedInCampaignsPage() {
                 const p = perfById.get(c.id);
                 if (p) {
                     row.cr_sent = p.sent;
-                    row.cr_accept_rate = p.sent > 0 ? `${Math.round(p.accept_rate * 100)}%` : '—';
+                    row.cr_accept_rate = p.sent > 0 ? `${Math.round(p.accept_rate * 100)}%` : '-';
                 }
                 return row;
             }));
@@ -131,7 +131,7 @@ export default function LinkedInCampaignsPage() {
     // Refetch when the tab regains focus or the document becomes visible
     // again. Avoids the operator-confusing stale state where Launch in
     // one tab leaves the campaign as "draft" in another until they
-    // manually reload. Cheaper than polling — only fires when the user
+    // manually reload. Cheaper than polling - only fires when the user
     // actually switches back.
     useEffect(() => {
         const onFocus = () => { void fetchCampaigns(); };
@@ -221,7 +221,7 @@ export default function LinkedInCampaignsPage() {
                     </div>
                     <h2 className="text-sm font-bold text-gray-900">No campaigns yet</h2>
                     <p className="text-xs text-gray-500 mt-1 max-w-sm">
-                        Build a LinkedIn outreach sequence — connect a sender, attach an ICP, define your steps, and launch.
+                        Build a LinkedIn outreach sequence - connect a sender, attach an ICP, define your steps, and launch.
                     </p>
                     <Link
                         href="/dashboard/linkedin/campaigns/new"
@@ -242,7 +242,7 @@ export default function LinkedInCampaignsPage() {
                                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Finished</th>
                                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Failed</th>
                                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Connection-request acceptance rate over the last 30 days">Accept % (30d)</th>
-                                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Lifetime reply rate — replies received / total sent across the entire campaign history">Reply % (life)</th>
+                                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" title="Lifetime reply rate - replies received / total sent across the entire campaign history">Reply % (life)</th>
                                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Last action</th>
                                 <th className="w-12"></th>
                             </tr>

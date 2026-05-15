@@ -31,7 +31,7 @@ export default function SlackIntegrationPage() {
  </p>
  <ol className="space-y-2 text-gray-600">
  <li>Receive instant push alerts when mailboxes or domains are paused or at risk.</li>
- <li>Get real-time recommendations in Suggest mode — so your team can act before damage occurs.</li>
+ <li>Get real-time recommendations in Suggest mode - so your team can act before damage occurs.</li>
  <li>Be notified of load balancing changes, predictive risk warnings, and recovery completions.</li>
  <li>Run interactive Slash Commands to fetch live health data without opening the dashboard.</li>
  </ol>
@@ -83,8 +83,8 @@ export default function SlackIntegrationPage() {
  <div className="bg-amber-50 border border-amber-200 p-5">
  <h3 className="text-lg font-bold text-amber-700 mb-2">Suggest Mode</h3>
  <p className="text-sm text-gray-600">
- Slack alerts are sent as <strong>recommendations</strong>. No automated actions are taken — your team decides what to do.
- Each alert clearly states <em>&quot;No action taken — manual intervention recommended.&quot;</em>
+ Slack alerts are sent as <strong>recommendations</strong>. No automated actions are taken - your team decides what to do.
+ Each alert clearly states <em>&quot;No action taken - manual intervention recommended.&quot;</em>
  </p>
  </div>
  <div className="bg-red-50 border border-red-200 p-5">
@@ -305,7 +305,7 @@ export default function SlackIntegrationPage() {
  <p className="mb-2">Fetches the current status, health score, and recovery phase of a specific mailbox.</p>
  <p className="text-xs text-purple-700 bg-purple-100 p-2 ">
  <strong>Example:</strong> <code>/superkabe mailbox john@superkabe.ai</code><br />
- <strong>Response:</strong> &quot;john@superkabe.ai — Status: HEALTHY, Score: 85, Phase: active, Sends: 142, Bounces: 2&quot;
+ <strong>Response:</strong> &quot;john@superkabe.ai - Status: HEALTHY, Score: 85, Phase: active, Sends: 142, Bounces: 2&quot;
  </p>
  </div>
  </li>
@@ -314,7 +314,7 @@ export default function SlackIntegrationPage() {
  /superkabe org
  </code>
  <div className="text-purple-900 text-sm">
- <p className="mb-2">Returns an executive summary of your organization&apos;s infrastructure — total mailboxes, domains, active campaigns, and any critical risks.</p>
+ <p className="mb-2">Returns an executive summary of your organization&apos;s infrastructure - total mailboxes, domains, active campaigns, and any critical risks.</p>
  <p className="text-xs text-purple-700 bg-purple-100 p-2 ">
  <strong>Example:</strong> <code>/superkabe org</code><br />
  <strong>Response:</strong> &quot;12 mailboxes across 3 domains. 5 active campaigns. 1 mailbox in recovery. System mode: Suggest.&quot;
@@ -357,7 +357,7 @@ export default function SlackIntegrationPage() {
  </p>
  <ul className="space-y-2 text-gray-600">
  <li><a href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">How monitoring &amp; enforcement works</a></li>
- <li><a href="/docs/getting-started" className="text-blue-600 hover:text-blue-800">Getting started — connect mailboxes &amp; launch a campaign</a></li>
+ <li><a href="/docs/getting-started" className="text-blue-600 hover:text-blue-800">Getting started - connect mailboxes &amp; launch a campaign</a></li>
  <li><a href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800">Import from Smartlead</a></li>
  </ul>
  </div>

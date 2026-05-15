@@ -49,7 +49,7 @@ export default function ValidationBanner() {
                     setState('complete');
                 }, 3000);
             } else if (currentTotal > 0 && prevTotal === 0) {
-                // First load — set baseline, don't show banner
+                // First load - set baseline, don't show banner
                 setPrevTotal(currentTotal);
                 setSummary(data.summary);
                 return;
@@ -116,7 +116,7 @@ export default function ValidationBanner() {
                                     color: summary.invalid > 0 ? '#991B1B' : '#065F46'
                                 }}>
                                     {newBatchCount} lead{newBatchCount !== 1 ? 's' : ''} validated
-                                    {summary.invalid > 0 && ` — ${summary.invalid} blocked`}
+                                    {summary.invalid > 0 && ` - ${summary.invalid} blocked`}
                                 </p>
                                 <p className="m-0 text-xs mt-0.5 flex items-center gap-3" style={{
                                     color: summary.invalid > 0 ? '#7F1D1D' : '#047857'

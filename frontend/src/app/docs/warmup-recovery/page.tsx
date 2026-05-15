@@ -275,7 +275,7 @@ export default function WarmupRecoveryPage() {
  <h3 className="text-xl font-bold text-blue-700 mb-2">📊 Key Insights</h3>
  <ul className="space-y-2 text-gray-600 m-0">
  <li>• <strong>Automated graduation</strong> via daily warmup worker checks</li>
- <li>• <strong>Zero manual intervention</strong> — system progresses mailboxes automatically</li>
+ <li>• <strong>Zero manual intervention</strong> - system progresses mailboxes automatically</li>
  <li>• <strong>Guaranteed engagement</strong> through your platform's reciprocal warmup network</li>
  <li>• <strong>Progressive volume ramping</strong> ensures safe reputational recovery</li>
  <li>• <strong>Zero tolerance for bounces</strong> during recovery prevents false positives</li>

@@ -7,7 +7,7 @@
  * onto the legacy "Settings & Configuration" page.
  *
  * Re-styled to match the integrations page theme (white cards,
- * #E2E8F0 borders, rounded-xl, subtle status pills) — the legacy
+ * #E2E8F0 borders, rounded-xl, subtle status pills) - the legacy
  * SlackIntegrationCard component used a heavier "premium-card" look
  * with rounded-3xl + bigger padding that didn't match the rest of
  * /dashboard/integrations.

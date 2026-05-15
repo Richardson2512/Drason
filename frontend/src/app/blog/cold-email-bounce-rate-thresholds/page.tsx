@@ -81,7 +81,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  "name": "What is a safe bounce rate for cold email campaigns?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Below 2% is safe. Between 2% and 3% requires immediate attention — investigate the source of bounces and pause if they are concentrated on specific mailboxes. Above 3% means you should pause the campaign and investigate before sending any more volume. Above 5% means active reputation damage is occurring."
+ "text": "Below 2% is safe. Between 2% and 3% requires immediate attention - investigate the source of bounces and pause if they are concentrated on specific mailboxes. Above 3% means you should pause the campaign and investigate before sending any more volume. Above 5% means active reputation damage is occurring."
  }
  },
  {
@@ -141,7 +141,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Thresholds Nobody Publishes Clearly</h2>
  <p>
- ISPs do not publish a clean table that says &ldquo;above X% you get blacklisted.&rdquo; Their systems are more nuanced than that — they factor in volume, velocity, domain age, authentication, engagement history, and complaint rates alongside bounce data. But there are observable thresholds where behavior changes. Here they are.
+ ISPs do not publish a clean table that says &ldquo;above X% you get blacklisted.&rdquo; Their systems are more nuanced than that - they factor in volume, velocity, domain age, authentication, engagement history, and complaint rates alongside bounce data. But there are observable thresholds where behavior changes. Here they are.
  </p>
 
  <div className="overflow-x-auto my-8">
@@ -196,7 +196,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  </div>
 
  <p>
- A few things jump out from this table. First, Microsoft is the hardest to monitor because they silently filter rather than bounce. You can have a serious deliverability problem at Outlook and not know it for weeks. Second, the complaint threshold (0.3% at Google, even lower at Microsoft) is easier to cross than you think — it only takes 3 complaints per 1,000 emails.
+ A few things jump out from this table. First, Microsoft is the hardest to monitor because they silently filter rather than bounce. You can have a serious deliverability problem at Outlook and not know it for weeks. Second, the complaint threshold (0.3% at Google, even lower at Microsoft) is easier to cross than you think - it only takes 3 complaints per 1,000 emails.
  </p>
  <p>
  For more on how bounces compound into deliverability problems, see our deep dive on{' '}
@@ -209,17 +209,17 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Escalation Ladder: What Happens When You Cross Thresholds</h2>
  <p>
- ISPs do not go from &ldquo;everything is fine&rdquo; to &ldquo;you are blacklisted&rdquo; overnight. There is a progression. Understanding it gives you a window to react — if you are monitoring.
+ ISPs do not go from &ldquo;everything is fine&rdquo; to &ldquo;you are blacklisted&rdquo; overnight. There is a progression. Understanding it gives you a window to react - if you are monitoring.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Stage 1: Throttling (Bounce Rate 2-3%)</h3>
  <p>
- The ISP slows down how many of your emails it accepts per hour. Your campaign still sends, but delivery is delayed. Open rates might dip slightly. Most teams do not notice this stage. That is the problem — it feels normal, so nothing changes.
+ The ISP slows down how many of your emails it accepts per hour. Your campaign still sends, but delivery is delayed. Open rates might dip slightly. Most teams do not notice this stage. That is the problem - it feels normal, so nothing changes.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Stage 2: Spam Folder Placement (Bounce Rate 3-5%)</h3>
  <p>
- Your emails arrive but land in spam or promotions. Open rates drop from 40-50% to 10-15%. Reply rates crater. Your campaign looks like it is failing, but the issue is not the copy or the list — it is placement. Most teams respond by changing subject lines or rewriting sequences. The actual problem is infrastructure.
+ Your emails arrive but land in spam or promotions. Open rates drop from 40-50% to 10-15%. Reply rates crater. Your campaign looks like it is failing, but the issue is not the copy or the list - it is placement. Most teams respond by changing subject lines or rewriting sequences. The actual problem is infrastructure.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Stage 3: Rejection (Bounce Rate 5-8%)</h3>
@@ -252,7 +252,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  DKIM adds a cryptographic signature to your outgoing emails. The receiving server checks this signature against a public key in your DNS. If the signature matches, the email is verified as genuinely from your domain and unaltered in transit.
  </p>
  <p>
- Most email providers generate DKIM keys for you. You copy the provided DNS record into your domain registrar. The common mistake is forgetting to set up DKIM for each sending service — if you use Google Workspace AND Smartlead, both need their own DKIM records.
+ Most email providers generate DKIM keys for you. You copy the provided DNS record into your domain registrar. The common mistake is forgetting to set up DKIM for each sending service - if you use Google Workspace AND Smartlead, both need their own DKIM records.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">DMARC (Domain-based Message Authentication)</h3>
@@ -278,13 +278,13 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  Here is what makes bounce damage so dangerous: it does not spike and reset. It accumulates.
  </p>
  <p>
- Day one: you send 200 emails, 10 bounce. That is a 5% bounce rate. Not great, but you might not notice. Day two: you send another 200 emails. Maybe only 6 bounce this time — 3%. Better, right? Wrong. The ISP is looking at your rolling average. Over 48 hours, you have sent 400 emails with 16 bounces. Your two-day average is 4%. And the damage from day one has already started degrading your reputation score.
+ Day one: you send 200 emails, 10 bounce. That is a 5% bounce rate. Not great, but you might not notice. Day two: you send another 200 emails. Maybe only 6 bounce this time - 3%. Better, right? Wrong. The ISP is looking at your rolling average. Over 48 hours, you have sent 400 emails with 16 bounces. Your two-day average is 4%. And the damage from day one has already started degrading your reputation score.
  </p>
  <p>
  By day three, even if you send a perfectly clean batch, you are sending from a domain with a damaged reputation. Your deliverability is already lower. Fewer emails reach the inbox. The ones that do get less engagement because the ISP is applying stricter filtering. Lower engagement signals further reputation decline.
  </p>
  <p>
- This is the compounding loop. Bounces cause reputation damage, which causes lower deliverability, which causes lower engagement, which causes further reputation damage. Breaking this loop requires immediate action — not at the end of the week when you review your dashboard, but within minutes of the first bounce spike.
+ This is the compounding loop. Bounces cause reputation damage, which causes lower deliverability, which causes lower engagement, which causes further reputation damage. Breaking this loop requires immediate action - not at the end of the week when you review your dashboard, but within minutes of the first bounce spike.
  </p>
  </section>
 
@@ -294,13 +294,13 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  Not all bounces carry the same weight.
  </p>
  <p>
- <strong>Hard bounces</strong> — invalid address, domain does not exist, permanent delivery failure — are a direct signal to the ISP that you are sending to addresses you should not be sending to. This suggests purchased or unvalidated lists. A single hard bounce is roughly 5-10x more damaging to reputation than a soft bounce.
+ <strong>Hard bounces</strong> - invalid address, domain does not exist, permanent delivery failure - are a direct signal to the ISP that you are sending to addresses you should not be sending to. This suggests purchased or unvalidated lists. A single hard bounce is roughly 5-10x more damaging to reputation than a soft bounce.
  </p>
  <p>
- <strong>Soft bounces</strong> — mailbox full, temporary server issue, rate limiting — are less severe individually. The ISP treats them as transient problems. But sustained soft bounces (the same address bouncing soft three days in a row) eventually get reclassified as hard bounce equivalents.
+ <strong>Soft bounces</strong> - mailbox full, temporary server issue, rate limiting - are less severe individually. The ISP treats them as transient problems. But sustained soft bounces (the same address bouncing soft three days in a row) eventually get reclassified as hard bounce equivalents.
  </p>
  <p>
- For cold outreach, hard bounces are the primary threat because you are sending to addresses for the first time. You have no sending history with these contacts. If the email is invalid, it hard bounces immediately. This is why pre-send validation is not a nice-to-have — it is the primary defense against the most damaging type of bounce.
+ For cold outreach, hard bounces are the primary threat because you are sending to addresses for the first time. You have no sending history with these contacts. If the email is invalid, it hard bounces immediately. This is why pre-send validation is not a nice-to-have - it is the primary defense against the most damaging type of bounce.
  </p>
  </section>
 
@@ -355,7 +355,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  </div>
 
  <p>
- The pattern is clear: every day of delay roughly doubles your recovery time. Catching a bounce spike at 3% and pausing within an hour means a 1-2 week recovery. Missing it for three days and letting it hit 7% means a month. This is why real-time monitoring is not a luxury — it is the difference between a minor setback and a major infrastructure failure.
+ The pattern is clear: every day of delay roughly doubles your recovery time. Catching a bounce spike at 3% and pausing within an hour means a 1-2 week recovery. Missing it for three days and letting it hit 7% means a month. This is why real-time monitoring is not a luxury - it is the difference between a minor setback and a major infrastructure failure.
  </p>
  <p>
  For actionable steps to bring your bounce rate down, read our guide on{' '}
@@ -378,7 +378,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  <li><strong>Forward-confirmed rDNS:</strong> Your sending IP must have valid reverse DNS that matches forward DNS.</li>
  </ul>
  <p>
- The biggest change in 2025-2026 has been enforcement consistency. In early 2024, Google was lenient — some senders without DMARC still got through. Now, non-compliance results in immediate delivery failures or spam placement. There is no grace period.
+ The biggest change in 2025-2026 has been enforcement consistency. In early 2024, Google was lenient - some senders without DMARC still got through. Now, non-compliance results in immediate delivery failures or spam placement. There is no grace period.
  </p>
  </section>
 
@@ -400,7 +400,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Automated Healing Pipeline</h3>
  <p>
- After pausing, Superkabe enters a healing phase. The mailbox goes through a structured recovery: reduced volume, warm-only traffic, gradual ramp-up, and health verification before full resume. This mirrors what deliverability consultants recommend — but it happens automatically. For details on the monitoring architecture, see our{' '}
+ After pausing, Superkabe enters a healing phase. The mailbox goes through a structured recovery: reduced volume, warm-only traffic, gradual ramp-up, and health verification before full resume. This mirrors what deliverability consultants recommend - but it happens automatically. For details on the monitoring architecture, see our{' '}
  <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">
  monitoring documentation
  </Link>.
@@ -408,7 +408,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Domain-Level Aggregation</h3>
  <p>
- Superkabe does not just monitor individual mailboxes — it aggregates health at the domain level. If three mailboxes on the same domain are all trending toward trouble, the system sees the pattern even if no individual mailbox has crossed the threshold yet. This catches domain-level problems that mailbox-level monitoring misses.
+ Superkabe does not just monitor individual mailboxes - it aggregates health at the domain level. If three mailboxes on the same domain are all trending toward trouble, the system sees the pattern even if no individual mailbox has crossed the threshold yet. This catches domain-level problems that mailbox-level monitoring misses.
  </p>
  </section>
 
@@ -441,7 +441,7 @@ export default function ColdEmailBounceRateThresholdsArticle() {
  Deliverability in 2026 is not about tricks or hacks. ISPs have gotten smarter. Google, Yahoo, and Microsoft have aligned on authentication requirements. Blocklists are faster at catching bad behavior. The window between &ldquo;everything is fine&rdquo; and &ldquo;your domain is damaged&rdquo; is narrower than ever.
  </p>
  <p>
- The teams that maintain high deliverability are not doing anything clever. They are validating before sending, monitoring in real time, and pausing fast when something goes wrong. That is it. The difference between a team that burns a domain every month and a team that runs clean for a year is not luck — it is infrastructure.
+ The teams that maintain high deliverability are not doing anything clever. They are validating before sending, monitoring in real time, and pausing fast when something goes wrong. That is it. The difference between a team that burns a domain every month and a team that runs clean for a year is not luck - it is infrastructure.
  </p>
  </section>
 

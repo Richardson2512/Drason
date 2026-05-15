@@ -132,7 +132,7 @@ export default function RealTimeMonitoringArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Domain reputation can degrade from healthy to blacklisted in 4-6 hours during active sending</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Periodic inbox placement tests (GlockApps, MailReach) miss rapid degradation events between tests</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Real-time monitoring tracks bounce rates, DNS authentication, blacklist status, and sending volume continuously</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Monitoring alone is not enough — automated protection (auto-pause, domain gating) prevents damage before it compounds</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Monitoring alone is not enough - automated protection (auto-pause, domain gating) prevents damage before it compounds</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines real-time monitoring with automated enforcement across Smartlead, Instantly, and EmailBison</li>
  </ul>
  </div>
@@ -145,13 +145,13 @@ export default function RealTimeMonitoringArticle() {
  {/* Section 1 */}
  <h2 id="what-is-real-time-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What is real-time email infrastructure monitoring?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Real-time email infrastructure monitoring is the continuous, automated observation of every component in your cold email sending stack — domains, mailboxes, DNS records, and delivery metrics — updated as events occur rather than on a schedule. It is fundamentally different from both one-time audits and periodic testing.
+ Real-time email infrastructure monitoring is the continuous, automated observation of every component in your cold email sending stack - domains, mailboxes, DNS records, and delivery metrics - updated as events occur rather than on a schedule. It is fundamentally different from both one-time audits and periodic testing.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- A one-time infrastructure assessment (like Superkabe&apos;s pre-send audit) evaluates your setup before you begin sending. It catches misconfigured DNS records, missing DMARC policies, and domains that are not properly warmed. This is essential, but it is a snapshot — it tells you the state of your infrastructure at a single point in time.
+ A one-time infrastructure assessment (like Superkabe&apos;s pre-send audit) evaluates your setup before you begin sending. It catches misconfigured DNS records, missing DMARC policies, and domains that are not properly warmed. This is essential, but it is a snapshot - it tells you the state of your infrastructure at a single point in time.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Real-time monitoring picks up where the assessment ends. Once sending begins, your infrastructure is under constant pressure. Every email you send generates signals — bounces, opens, replies, complaints — that ISPs use to update your reputation scores. A domain that passed every check at 9 AM can be blacklisted by 1 PM if a batch of bad leads generates a spike in hard bounces.
+ Real-time monitoring picks up where the assessment ends. Once sending begins, your infrastructure is under constant pressure. Every email you send generates signals - bounces, opens, replies, complaints - that ISPs use to update your reputation scores. A domain that passed every check at 9 AM can be blacklisted by 1 PM if a batch of bad leads generates a spike in hard bounces.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Cold email demands continuous monitoring because reputation degrades in hours, not days. Marketing email teams sending to opted-in lists can afford daily or weekly monitoring cadences. Cold outbound teams sending to unverified recipients cannot. The velocity of reputation damage in cold email is simply too fast for any non-continuous approach.
@@ -160,7 +160,7 @@ export default function RealTimeMonitoringArticle() {
  {/* Section 2 */}
  <h2 id="periodic-testing-not-enough" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why is periodic testing not enough for cold email?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Periodic inbox placement testing — using tools like GlockApps, MailReach, or InboxAlly — sends seed emails to test accounts and checks whether they land in the inbox, spam, or are rejected. These tests provide valuable data, but they have a fundamental limitation: they only tell you what happened at the moment you ran the test.
+ Periodic inbox placement testing - using tools like GlockApps, MailReach, or InboxAlly - sends seed emails to test accounts and checks whether they land in the inbox, spam, or are rejected. These tests provide valuable data, but they have a fundamental limitation: they only tell you what happened at the moment you ran the test.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Cold email infrastructure does not degrade linearly. It degrades in sudden, sharp events. A domain can go from 98% inbox placement to blacklisted in a single afternoon. The trigger is usually a concentrated burst of hard bounces or spam complaints from a single campaign or lead batch. By the time your next scheduled test runs, the damage is already done.
@@ -212,7 +212,7 @@ export default function RealTimeMonitoringArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The gap between test intervals is where domains get burned. A 24-hour testing cadence creates a 24-hour window of exposure. Even a 4-hour testing cadence still leaves a 4-hour gap — more than enough time for a domain to go from healthy to permanently damaged. Real-time monitoring eliminates this gap entirely.
+ The gap between test intervals is where domains get burned. A 24-hour testing cadence creates a 24-hour window of exposure. Even a 4-hour testing cadence still leaves a 4-hour gap - more than enough time for a domain to go from healthy to permanently damaged. Real-time monitoring eliminates this gap entirely.
  </p>
 
  {/* Section 3 */}
@@ -279,7 +279,7 @@ export default function RealTimeMonitoringArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Bounce rate per mailbox is the highest-priority metric. It is the earliest indicator of a problem and the most actionable. A single mailbox exceeding 3% bounce rate can be paused without affecting the rest of your infrastructure. If the problem is not caught at the mailbox level, it escalates to the domain level — where the blast radius is much larger and recovery takes weeks.
+ Bounce rate per mailbox is the highest-priority metric. It is the earliest indicator of a problem and the most actionable. A single mailbox exceeding 3% bounce rate can be paused without affecting the rest of your infrastructure. If the problem is not caught at the mailbox level, it escalates to the domain level - where the blast radius is much larger and recovery takes weeks.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  DNS authentication status should be monitored continuously because records can be accidentally deleted or misconfigured during domain management changes. A missing SPF or DKIM record does not immediately block emails, but it causes a rapid reputation decline as ISPs treat unauthenticated mail as suspicious.
@@ -294,7 +294,7 @@ export default function RealTimeMonitoringArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Layer 1: Webhook-Based Data Ingestion</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- Superkabe sends from your own mailboxes (Gmail, Microsoft 365, or SMTP) so every bounce, delivery, open, reply, and complaint event is captured directly from the SMTP transcript or via Postmaster Tools / SNDS / FBL feedback loops — the same data ISPs see, at the same time.
+ Superkabe sends from your own mailboxes (Gmail, Microsoft 365, or SMTP) so every bounce, delivery, open, reply, and complaint event is captured directly from the SMTP transcript or via Postmaster Tools / SNDS / FBL feedback loops - the same data ISPs see, at the same time.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Bounce events processed within seconds of occurrence</li>
@@ -320,7 +320,7 @@ export default function RealTimeMonitoringArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Layer 3: Automated Threshold Enforcement</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- When health scores breach configurable thresholds, Superkabe takes automated action. This is what separates monitoring from protection. The system does not wait for a human to notice a dashboard alert — it acts within seconds of a threshold breach.
+ When health scores breach configurable thresholds, Superkabe takes automated action. This is what separates monitoring from protection. The system does not wait for a human to notice a dashboard alert - it acts within seconds of a threshold breach.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">&#9679;</span> <strong>3% mailbox bounce rate:</strong> Warning alert sent. Mailbox flagged for observation.</li>
@@ -332,7 +332,7 @@ export default function RealTimeMonitoringArticle() {
  {/* Section 5 */}
  <h2 id="monitoring-vs-testing-vs-protection" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What is the difference between monitoring, testing, and protection?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- The email deliverability space uses three terms — monitoring, testing, and protection — that are often conflated but describe fundamentally different capabilities. Understanding the distinction is critical for building a complete infrastructure defense.
+ The email deliverability space uses three terms - monitoring, testing, and protection - that are often conflated but describe fundamentally different capabilities. Understanding the distinction is critical for building a complete infrastructure defense.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -369,7 +369,7 @@ export default function RealTimeMonitoringArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Most outbound teams use testing tools and assume they have monitoring covered. They do not. Testing tells you the result (inbox vs spam) but not the cause (which metric is degrading). Monitoring tells you the cause but requires you to act on it. Protection handles both — it identifies the cause and acts on it automatically.
+ Most outbound teams use testing tools and assume they have monitoring covered. They do not. Testing tells you the result (inbox vs spam) but not the cause (which metric is degrading). Monitoring tells you the cause but requires you to act on it. Protection handles both - it identifies the cause and acts on it automatically.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The ideal setup combines all three: periodic testing for inbox placement validation, continuous monitoring for metric visibility, and automated protection to prevent damage between human review cycles. Superkabe provides the monitoring and protection layers, while integrating with testing tools for complete coverage.
@@ -400,12 +400,12 @@ export default function RealTimeMonitoringArticle() {
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</span>
- <span><strong>Enable auto-pause rules.</strong> Turn on automated enforcement so that Superkabe can pause mailboxes and gate domains on the sending platform when thresholds are breached. This is the critical step that converts monitoring into protection — without enforcement, you are still relying on humans to react in time.</span>
+ <span><strong>Enable auto-pause rules.</strong> Turn on automated enforcement so that Superkabe can pause mailboxes and gate domains on the sending platform when thresholds are breached. This is the critical step that converts monitoring into protection - without enforcement, you are still relying on humans to react in time.</span>
  </li>
  </ul>
 
  <p className="text-gray-600 leading-relaxed mb-8">
- Once configured, Superkabe begins monitoring immediately. The infrastructure assessment score provides an at-a-glance view of your overall sending health, while drill-down views show individual domain and mailbox metrics. The system runs continuously with no manual intervention required — you only need to respond to alerts for investigation and remediation.
+ Once configured, Superkabe begins monitoring immediately. The infrastructure assessment score provides an at-a-glance view of your overall sending health, while drill-down views show individual domain and mailbox metrics. The system runs continuously with no manual intervention required - you only need to respond to alerts for investigation and remediation.
  </p>
 
  <BottomCtaStrip
@@ -419,7 +419,7 @@ export default function RealTimeMonitoringArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe continuously monitors domain health, mailbox bounce rates, and DNS authentication status across all your sending platforms. When metrics breach configurable thresholds, it auto-pauses mailboxes, gates domains, and redistributes traffic — preventing reputation damage before it compounds.
+ Superkabe continuously monitors domain health, mailbox bounce rates, and DNS authentication status across all your sending platforms. When metrics breach configurable thresholds, it auto-pauses mailboxes, gates domains, and redistributes traffic - preventing reputation damage before it compounds.
  </p>
  </div>
  </article>

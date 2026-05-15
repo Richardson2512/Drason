@@ -321,7 +321,7 @@ export default function AdminDashboardPage() {
                     <div className="flex items-center justify-between">
                         <div>
                             <h2 className="text-[1.2rem] font-bold text-gray-800">
-                                Impact Report{selectedOrg ? ` — ${selectedOrg.name}` : ''}
+                                Impact Report{selectedOrg ? ` - ${selectedOrg.name}` : ''}
                             </h2>
                             <p className="text-[0.8rem] text-gray-400 mt-0.5">Protection metrics and activity for this organization</p>
                         </div>

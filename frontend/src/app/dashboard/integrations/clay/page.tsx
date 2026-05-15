@@ -152,7 +152,7 @@ export default function ClayIntegrationPage() {
                             <li>Header: <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-[11px]">X-Organization-ID: {orgId || 'your-org-id'}</code></li>
                             <li>
                                 Header: <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-[11px]">X-Clay-Secret: &lt;your secret above&gt;</code>
-                                <span className="text-slate-500"> — paste the webhook secret as a header value (same security model as a bearer token).</span>
+                                <span className="text-slate-500"> - paste the webhook secret as a header value (same security model as a bearer token).</span>
                             </li>
                             <li>Body: paste the JSON shape from the docs and replace each value with a Clay column reference</li>
                         </ol>

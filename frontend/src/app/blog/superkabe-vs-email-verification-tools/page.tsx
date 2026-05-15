@@ -10,7 +10,7 @@ export const metadata: Metadata = {
  description: "Email verification tools like ZeroBounce and NeverBounce check if an email exists. Superkabe protects the sender. Different layers, complementary tools.",
  openGraph: {
  title: "Email Verification vs Email Infrastructure Protection",
- description: 'ZeroBounce checks if the recipient is real. Superkabe protects the sender from damage. Verification and infrastructure protection are different layers — most teams need both.',
+ description: 'ZeroBounce checks if the recipient is real. Superkabe protects the sender from damage. Verification and infrastructure protection are different layers - most teams need both.',
  url: '/blog/superkabe-vs-email-verification-tools',
  siteName: 'Superkabe',
  type: 'article',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  twitter: {
      card: 'summary_large_image',
      title: 'Email Verification vs Email Infrastructure Protection',
-     description: 'ZeroBounce checks if the recipient is real. Superkabe protects the sender from damage. Verification and infrastructure protection are different layers — most teams need both.',
+     description: 'ZeroBounce checks if the recipient is real. Superkabe protects the sender from damage. Verification and infrastructure protection are different layers - most teams need both.',
      images: ['/image/og-image.png'],
  },
  alternates: {
@@ -301,8 +301,8 @@ export default function SuperkabeVsEmailVerificationArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Two-layer protection model</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Layer 1 — Recipient protection (verification):</strong> Remove invalid addresses before sending. Reduce hard bounces to near zero. Flag catch-all and role-based addresses. Tools: ZeroBounce, NeverBounce, MillionVerifier, or Superkabe&apos;s built-in validation</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Layer 2 — Sender protection (infrastructure):</strong> Monitor live bounce rates across all mailboxes. Auto-pause before ISP thresholds are breached. Validate DNS continuously. Heal damaged domains through structured recovery. Tool: Superkabe</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Layer 1 - Recipient protection (verification):</strong> Remove invalid addresses before sending. Reduce hard bounces to near zero. Flag catch-all and role-based addresses. Tools: ZeroBounce, NeverBounce, MillionVerifier, or Superkabe&apos;s built-in validation</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Layer 2 - Sender protection (infrastructure):</strong> Monitor live bounce rates across all mailboxes. Auto-pause before ISP thresholds are breached. Validate DNS continuously. Heal damaged domains through structured recovery. Tool: Superkabe</li>
  </ul>
  </div>
 

@@ -75,7 +75,7 @@ const PROVIDER_META: Record<Provider, { name: string; logo: string }> = {
 };
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', year: 'numeric',
         hour: 'numeric', minute: '2-digit',
@@ -418,7 +418,7 @@ export default function CrmConnectionDetailPage() {
                                                 <td className="py-2 pr-3 text-right text-red-700">{j.records_failed.toLocaleString()}</td>
                                                 <td className="py-2 pr-3 text-slate-500">{formatDate(j.started_at)}</td>
                                                 <td className="py-2 pr-3 text-slate-500">{formatDate(j.finished_at)}</td>
-                                                <td className="py-2 pr-3 text-red-700 max-w-[200px] truncate" title={j.error_message || ''}>{j.error_message || '—'}</td>
+                                                <td className="py-2 pr-3 text-red-700 max-w-[200px] truncate" title={j.error_message || ''}>{j.error_message || '-'}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -437,7 +437,7 @@ export default function CrmConnectionDetailPage() {
                 consequences={[
                     'Pending activity pushes will be cancelled',
                     'OAuth tokens will be wiped from our database',
-                    'Imported leads stay — only the connection mapping is removed',
+                    'Imported leads stay - only the connection mapping is removed',
                     'You can reconnect anytime from the CRM dashboard',
                 ]}
                 confirmLabel={disconnecting ? 'Disconnecting…' : 'Disconnect'}

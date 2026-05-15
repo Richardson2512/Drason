@@ -61,9 +61,9 @@ export default function TopEmailDeliverabilityToolsArticle() {
  };
 
  const tools = [
- { rank: 1, name: 'Google Postmaster Tools', url: 'https://postmaster.google.com', bestFor: 'Free Gmail reputation data', price: 'Free', description: 'Google Postmaster Tools is the authoritative source for how Gmail sees your sending domains. It shows domain reputation (HIGH/MEDIUM/LOW/BAD), spam rate, authentication success ratios, and delivery errors. Every cold email team should have this connected — it is the only way to see Gmail\'s actual verdict on your domains. The limitation: it only covers Gmail, updates with 24-48 hour delay, and provides no alerting or automation.' },
+ { rank: 1, name: 'Google Postmaster Tools', url: 'https://postmaster.google.com', bestFor: 'Free Gmail reputation data', price: 'Free', description: 'Google Postmaster Tools is the authoritative source for how Gmail sees your sending domains. It shows domain reputation (HIGH/MEDIUM/LOW/BAD), spam rate, authentication success ratios, and delivery errors. Every cold email team should have this connected - it is the only way to see Gmail\'s actual verdict on your domains. The limitation: it only covers Gmail, updates with 24-48 hour delay, and provides no alerting or automation.' },
  { rank: 2, name: 'Superkabe', url: 'https://www.superkabe.com', bestFor: 'Active infrastructure protection for cold email', price: 'From $49/mo', description: 'Superkabe is purpose-built for cold email infrastructure protection. It sits between your enrichment tools (Clay, Apollo) and your sending platforms (Smartlead, Instantly, EmailBison) and actively monitors bounce rates, DNS health, and mailbox status in real time. When bounce rates spike, Superkabe auto-pauses the affected mailbox before the domain burns. The 5-phase healing pipeline automatically recovers paused mailboxes through graduated warmup. Unique features include ESP-aware mailbox routing (scores mailboxes by per-ESP bounce rate), hybrid email validation with CSV upload, and cross-platform monitoring.' },
- { rank: 3, name: 'GlockApps', url: 'https://glockapps.com', bestFor: 'Inbox placement testing', price: 'From $59/mo', description: 'GlockApps tests where your emails land — inbox, spam, promotions, or missing — across major providers. You send a test email to their seed list and get a placement report within minutes. Valuable for testing new domains, templates, and warmup progress. The limitation: it tests point-in-time placement, not continuous monitoring. It does not watch your live campaigns or auto-pause on problems.' },
+ { rank: 3, name: 'GlockApps', url: 'https://glockapps.com', bestFor: 'Inbox placement testing', price: 'From $59/mo', description: 'GlockApps tests where your emails land - inbox, spam, promotions, or missing - across major providers. You send a test email to their seed list and get a placement report within minutes. Valuable for testing new domains, templates, and warmup progress. The limitation: it tests point-in-time placement, not continuous monitoring. It does not watch your live campaigns or auto-pause on problems.' },
  { rank: 4, name: 'MXToolbox', url: 'https://mxtoolbox.com', bestFor: 'DNS and blacklist monitoring', price: 'Free / from $99/mo', description: 'MXToolbox is the industry standard for DNS diagnostics. It checks SPF, DKIM, DMARC, blacklist status, MX records, and SMTP connectivity. The free tier handles one-off lookups. Paid plans add monitoring with alerts when records change or IPs hit blacklists. Essential for diagnosing deliverability issues but does not monitor sending behavior or bounce rates.' },
  { rank: 5, name: 'Mail-Tester', url: 'https://www.mail-tester.com', bestFor: 'Quick spam score checks', price: 'Free (limited) / $30/mo', description: 'Mail-Tester gives you a 0-10 score on how spammy your email looks. Send a test email to their unique address, and it checks authentication, content, blacklists, and formatting. Simple and fast for pre-send sanity checks. Not designed for ongoing monitoring or infrastructure protection.' },
  { rank: 6, name: 'Sender Score by Validity', url: 'https://senderscore.org', bestFor: 'IP reputation scoring', price: 'Free', description: 'Sender Score assigns a 0-100 reputation score to your sending IP addresses based on complaint rates, unknown user rates, and infrastructure quality. Useful for understanding how ISPs perceive your IPs. The limitation for cold email: most teams use shared IPs from Smartlead or Google Workspace, so the score reflects the provider\'s pool, not your individual sending behavior.' },
@@ -99,7 +99,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools is free and irreplaceable for Gmail reputation data — connect it first</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools is free and irreplaceable for Gmail reputation data - connect it first</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only tool that actively protects infrastructure with auto-pause and healing</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> GlockApps and Mail-Tester test placement but do not monitor live campaigns</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Most teams need 2-3 tools: reputation data (Postmaster) + active protection (Superkabe) + diagnostics (MXToolbox)</li>
@@ -164,13 +164,13 @@ export default function TopEmailDeliverabilityToolsArticle() {
  </p>
  <div className="space-y-3 mb-12">
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 1 — Reputation data:</strong> Google Postmaster Tools (free). Tells you how Gmail sees your domains. Non-negotiable.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 1 - Reputation data:</strong> Google Postmaster Tools (free). Tells you how Gmail sees your domains. Non-negotiable.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 2 — Active protection:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. Monitors bounce rates in real time, auto-pauses before thresholds are breached, heals mailboxes through graduated recovery, validates leads before send, routes by ESP performance.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 2 - Active protection:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. Monitors bounce rates in real time, auto-pauses before thresholds are breached, heals mailboxes through graduated recovery, validates leads before send, routes by ESP performance.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 3 — Diagnostics:</strong> MXToolbox (free tier). For when something goes wrong and you need to trace DNS or blacklist issues.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 3 - Diagnostics:</strong> MXToolbox (free tier). For when something goes wrong and you need to trace DNS or blacklist issues.</p>
  </div>
  </div>
 
@@ -193,7 +193,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
 
  <BottomCtaStrip
                     headline="Deliverability that protects itself"
-                    body="Most deliverability tools tell you what went wrong after the fact. Superkabe acts before reputation damage compounds — auto-pause, gating, and healing built in."
+                    body="Most deliverability tools tell you what went wrong after the fact. Superkabe acts before reputation damage compounds - auto-pause, gating, and healing built in."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

@@ -29,7 +29,7 @@ export default function CsvUploadPage() {
  Go to <strong>Dashboard &rarr; Email Validation &rarr; Upload CSV</strong>. Drop your CSV file, confirm column mapping, and Superkabe validates every email, classifies each recipient by ESP (Gmail, Microsoft, Yahoo), and lets you route valid leads to any campaign.
  </p>
  <p className="text-blue-700 text-sm">
- You can also use this as standalone validation &mdash; upload, validate, and export a clean list without routing to any campaign.
+ You can also use this as standalone validation - upload, validate, and export a clean list without routing to any campaign.
  </p>
  </div>
 
@@ -65,23 +65,23 @@ export default function CsvUploadPage() {
  <h2 id="upload-steps" className="text-3xl font-bold mb-6 text-gray-900">Upload Steps</h2>
  <div className="space-y-4 mb-12">
  <div className="bg-white border border-[#D1CBC5] p-6">
- <h3 className="font-bold text-gray-900 mb-2">Step 1 &mdash; Open Upload Modal</h3>
- <p className="text-gray-600 text-sm">Navigate to <strong>Dashboard &rarr; Email Validation</strong> and click <strong>Upload CSV</strong>. Optionally pre-select a target campaign &mdash; or leave it as &ldquo;Decide after validation&rdquo; to route manually later.</p>
+ <h3 className="font-bold text-gray-900 mb-2">Step 1 - Open Upload Modal</h3>
+ <p className="text-gray-600 text-sm">Navigate to <strong>Dashboard &rarr; Email Validation</strong> and click <strong>Upload CSV</strong>. Optionally pre-select a target campaign - or leave it as &ldquo;Decide after validation&rdquo; to route manually later.</p>
  </div>
  <div className="bg-white border border-[#D1CBC5] p-6">
- <h3 className="font-bold text-gray-900 mb-2">Step 2 &mdash; Drop CSV and Confirm Mapping</h3>
+ <h3 className="font-bold text-gray-900 mb-2">Step 2 - Drop CSV and Confirm Mapping</h3>
  <p className="text-gray-600 text-sm">Drag and drop your file or click to browse. Superkabe parses the headers and auto-detects which columns map to which fields. Review the detected mapping and adjust any that are wrong. A 3-row preview shows how data will be interpreted.</p>
  </div>
  <div className="bg-white border border-[#D1CBC5] p-6">
- <h3 className="font-bold text-gray-900 mb-2">Step 3 &mdash; Validation Runs</h3>
+ <h3 className="font-bold text-gray-900 mb-2">Step 3 - Validation Runs</h3>
  <p className="text-gray-600 text-sm">Click <strong>Confirm &amp; Validate</strong>. Superkabe processes each lead through the full validation pipeline (syntax, MX, disposable, catch-all, conditional API probe) and classifies the recipient ESP. A progress bar shows real-time valid/invalid/risky counts.</p>
  </div>
  <div className="bg-white border border-[#D1CBC5] p-6">
- <h3 className="font-bold text-gray-900 mb-2">Step 4 &mdash; Review Results</h3>
+ <h3 className="font-bold text-gray-900 mb-2">Step 4 - Review Results</h3>
  <p className="text-gray-600 text-sm">After processing, the results table shows every lead with status (valid, risky, invalid, duplicate), validation score, ESP bucket (Gmail, Microsoft, Yahoo, Other), and rejection reason if applicable. Filter by status or ESP, search by email.</p>
  </div>
  <div className="bg-white border border-[#D1CBC5] p-6">
- <h3 className="font-bold text-gray-900 mb-2">Step 5 &mdash; Route or Export</h3>
+ <h3 className="font-bold text-gray-900 mb-2">Step 5 - Route or Export</h3>
  <p className="text-gray-600 text-sm">Select valid leads using checkboxes and click <strong>Route to Campaign</strong> to push them to Smartlead, Instantly, or EmailBison. Or click <strong>Export Clean List</strong> to download a CSV of valid leads only. <strong>Full Results</strong> exports all statuses with scores.</p>
  </div>
  </div>
@@ -89,9 +89,9 @@ export default function CsvUploadPage() {
  <h2 id="duplicates" className="text-3xl font-bold mb-6 text-gray-900">How Duplicates Are Handled</h2>
  <div className="bg-white border border-[#D1CBC5] p-6 mb-12">
  <ul className="space-y-3 text-gray-600">
- <li><strong>Within the same upload</strong> &mdash; if the same email appears twice in one CSV, the second row is marked as &ldquo;Duplicate within this upload&rdquo; and skipped. No credit spent.</li>
- <li><strong>Across uploads</strong> &mdash; if the same email was uploaded in a previous batch, it is marked as &ldquo;Previously uploaded&rdquo; with the prior validation status. No credit spent.</li>
- <li><strong>Already in a campaign</strong> &mdash; if the lead already exists in Superkabe and is active in a campaign, it is flagged as a duplicate.</li>
+ <li><strong>Within the same upload</strong> - if the same email appears twice in one CSV, the second row is marked as &ldquo;Duplicate within this upload&rdquo; and skipped. No credit spent.</li>
+ <li><strong>Across uploads</strong> - if the same email was uploaded in a previous batch, it is marked as &ldquo;Previously uploaded&rdquo; with the prior validation status. No credit spent.</li>
+ <li><strong>Already in a campaign</strong> - if the lead already exists in Superkabe and is active in a campaign, it is flagged as a duplicate.</li>
  </ul>
  </div>
 

@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'API Documentation (v1) | Superkabe Docs',
- description: 'Complete documentation for the Superkabe v1 REST API — authentication, scopes, every endpoint, request/response schemas, errors, and SDK examples.',
+ description: 'Complete documentation for the Superkabe v1 REST API - authentication, scopes, every endpoint, request/response schemas, errors, and SDK examples.',
  alternates: { canonical: '/docs/api-documentation' },
  openGraph: {
  title: 'API Documentation (v1) | Superkabe Docs',
- description: 'Complete documentation for the Superkabe v1 REST API — authentication, scopes, every endpoint, request/response schemas, errors, and SDK examples.',
+ description: 'Complete documentation for the Superkabe v1 REST API - authentication, scopes, every endpoint, request/response schemas, errors, and SDK examples.',
  url: '/docs/api-documentation',
  siteName: 'Superkabe',
  type: 'article',
@@ -155,7 +155,7 @@ function RequestLifecycleDiagram() {
  <line x1="75" y1="200" x2="675" y2="200" stroke="#059669" strokeDasharray="3 3" />
  <line x1="75" y1="170" x2="75" y2="200" stroke="#059669" strokeDasharray="3 3" />
  </svg>
- <figcaption className="text-xs text-gray-500 text-center mt-2">Fig 2. Request lifecycle — each gate is enforced before the controller runs. Failure at any stage returns the matching HTTP status and short-circuits.</figcaption>
+ <figcaption className="text-xs text-gray-500 text-center mt-2">Fig 2. Request lifecycle - each gate is enforced before the controller runs. Failure at any stage returns the matching HTTP status and short-circuits.</figcaption>
  </figure>
  );
 }
@@ -242,8 +242,8 @@ export default function APIReferencePage() {
  </p>
 
  <ol className="space-y-3 text-gray-600 mb-6 list-decimal list-inside">
- <li><strong>API key</strong> — long-lived, issued from the dashboard, scoped to a single organization with a bounded set of permissions. Prefix <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">sk_live_</code> for production, <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">sk_test_</code> for staging.</li>
- <li><strong>JWT access token</strong> — short-lived, issued by the login flow, used by the dashboard itself. Carries the full scope of the logged-in user's role.</li>
+ <li><strong>API key</strong> - long-lived, issued from the dashboard, scoped to a single organization with a bounded set of permissions. Prefix <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">sk_live_</code> for production, <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">sk_test_</code> for staging.</li>
+ <li><strong>JWT access token</strong> - short-lived, issued by the login flow, used by the dashboard itself. Carries the full scope of the logged-in user's role.</li>
  </ol>
 
  <AuthFlowDiagram />
@@ -277,14 +277,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</Code>
  <h3 className="text-2xl font-semibold mt-8 mb-3 text-gray-900">2.3 Key storage model</h3>
  <p className="text-gray-600 mb-4">Each API key row stores:</p>
  <ul className="space-y-2 text-gray-600 mb-8 list-disc list-inside">
- <li><code>id</code> — ULID, not used for auth</li>
- <li><code>key_prefix</code> — the first 8 characters of the key, shown in the dashboard list so you can identify a key without seeing the secret</li>
- <li><code>key_hash</code> — SHA-256 hash of the full key; the only way to verify a request token</li>
- <li><code>name</code> — human label</li>
- <li><code>scopes</code> — an array of permission strings (see §3)</li>
- <li><code>last_used_at</code> — updated on each successful request</li>
- <li><code>expires_at</code> — optional, enforced at verify time</li>
- <li><code>revoked_at</code> — when present, every request fails <code>401</code></li>
+ <li><code>id</code> - ULID, not used for auth</li>
+ <li><code>key_prefix</code> - the first 8 characters of the key, shown in the dashboard list so you can identify a key without seeing the secret</li>
+ <li><code>key_hash</code> - SHA-256 hash of the full key; the only way to verify a request token</li>
+ <li><code>name</code> - human label</li>
+ <li><code>scopes</code> - an array of permission strings (see §3)</li>
+ <li><code>last_used_at</code> - updated on each successful request</li>
+ <li><code>expires_at</code> - optional, enforced at verify time</li>
+ <li><code>revoked_at</code> - when present, every request fails <code>401</code></li>
  </ul>
 
  {/* ═════════════════════════════════════════════════════════════ */}
@@ -294,7 +294,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</Code>
  Scopes are permission strings attached to an API key. They follow the pattern <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">resource:action</code>. Each endpoint enforces exactly one scope; missing the scope returns <code>403 Missing required scope: X</code>.
  </p>
  <p className="text-gray-600 mb-6">
- JWT tokens (used by the dashboard) skip the scope check — they always have full access because the scope is implied by the user's role.
+ JWT tokens (used by the dashboard) skip the scope check - they always have full access because the scope is implied by the user's role.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -354,7 +354,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</Code>
  <p className="text-gray-600 mb-4">All timestamps are ISO 8601 strings in UTC, e.g. <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700">&quot;2026-04-24T14:32:10.000Z&quot;</code>. Clients should parse them as UTC and convert to the user's timezone for display.</p>
 
  <h3 className="text-2xl font-semibold mt-8 mb-3 text-gray-900">Identifiers</h3>
- <p className="text-gray-600 mb-4">All resource IDs are strings. Native sequencer resources use UUIDs; legacy platform-synced resources carry the upstream platform's ID verbatim. Never parse or type-assert IDs — treat them as opaque.</p>
+ <p className="text-gray-600 mb-4">All resource IDs are strings. Native sequencer resources use UUIDs; legacy platform-synced resources carry the upstream platform's ID verbatim. Never parse or type-assert IDs - treat them as opaque.</p>
 
  <h3 className="text-2xl font-semibold mt-8 mb-3 text-gray-900">Nulls vs omitted fields</h3>
  <p className="text-gray-600 mb-4">Optional fields that have no value are returned as <code>null</code>, not omitted. A field that is entirely absent from a response was not requested or is not applicable to that resource type.</p>
@@ -375,9 +375,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</Code>
  </tr>
  </thead>
  <tbody className="divide-y divide-gray-100">
- <tr><td className="px-4 py-3 font-mono text-green-700 font-semibold">200</td><td className="px-4 py-3 text-gray-600">OK</td><td className="px-4 py-3 text-gray-600">Successful read</td><td className="px-4 py-3 text-gray-600">—</td></tr>
+ <tr><td className="px-4 py-3 font-mono text-green-700 font-semibold">200</td><td className="px-4 py-3 text-gray-600">OK</td><td className="px-4 py-3 text-gray-600">Successful read</td><td className="px-4 py-3 text-gray-600">-</td></tr>
  <tr><td className="px-4 py-3 font-mono text-green-700 font-semibold">201</td><td className="px-4 py-3 text-gray-600">Created</td><td className="px-4 py-3 text-gray-600">Resource created (e.g. new campaign)</td><td className="px-4 py-3 text-gray-600">Read <code>data.id</code></td></tr>
- <tr><td className="px-4 py-3 font-mono text-green-700 font-semibold">204</td><td className="px-4 py-3 text-gray-600">No content</td><td className="px-4 py-3 text-gray-600">Successful action with no body</td><td className="px-4 py-3 text-gray-600">—</td></tr>
+ <tr><td className="px-4 py-3 font-mono text-green-700 font-semibold">204</td><td className="px-4 py-3 text-gray-600">No content</td><td className="px-4 py-3 text-gray-600">Successful action with no body</td><td className="px-4 py-3 text-gray-600">-</td></tr>
  <tr><td className="px-4 py-3 font-mono text-amber-700 font-semibold">400</td><td className="px-4 py-3 text-gray-600">Bad request</td><td className="px-4 py-3 text-gray-600">Missing / malformed field</td><td className="px-4 py-3 text-gray-600">Fix input, do not retry</td></tr>
  <tr><td className="px-4 py-3 font-mono text-amber-700 font-semibold">401</td><td className="px-4 py-3 text-gray-600">Unauthorized</td><td className="px-4 py-3 text-gray-600">Missing / invalid / revoked token</td><td className="px-4 py-3 text-gray-600">Re-issue a key, do not retry</td></tr>
  <tr><td className="px-4 py-3 font-mono text-amber-700 font-semibold">403</td><td className="px-4 py-3 text-gray-600">Forbidden</td><td className="px-4 py-3 text-gray-600">Scope check failed or feature-gate (tier)</td><td className="px-4 py-3 text-gray-600">Grant scope or upgrade tier</td></tr>
@@ -391,7 +391,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`}</Code>
  </div>
 
  <h3 className="text-2xl font-semibold mt-8 mb-3 text-gray-900">Retry strategy</h3>
- <Code lang="js">{`// Pseudocode — safe retry loop
+ <Code lang="js">{`// Pseudocode - safe retry loop
 async function call(req, attempt = 0) {
  const res = await fetch(req);
  if (res.ok) return res.json();
@@ -462,7 +462,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <h4 className="text-xl font-semibold mt-6 mb-2 text-gray-800">Bulk import leads</h4>
  <Endpoint method="POST" path="/leads/bulk" />
  <p className="text-gray-600 mb-2">Scope: <code>leads:write</code></p>
- <p className="text-gray-600 mb-4">Import up to <strong>5,000 leads per request</strong>. Duplicates are detected case-insensitively on <code>email</code> within the organization and are skipped (not errored). Newly created leads enter with status <code>held</code> and <code>validation_status: null</code> — validation is a separate step.</p>
+ <p className="text-gray-600 mb-4">Import up to <strong>5,000 leads per request</strong>. Duplicates are detected case-insensitively on <code>email</code> within the organization and are skipped (not errored). Newly created leads enter with status <code>held</code> and <code>validation_status: null</code> - validation is a separate step.</p>
  <h5 className="font-semibold text-gray-800 mb-2">Request body</h5>
  <Code lang="json">{`{
  "leads": [
@@ -521,9 +521,9 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <tbody className="divide-y divide-gray-100">
  <tr><td className="px-4 py-2 font-mono">page</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">1</td><td className="px-4 py-2 text-gray-600">&ge; 1</td></tr>
  <tr><td className="px-4 py-2 font-mono">limit</td><td className="px-4 py-2">integer</td><td className="px-4 py-2">50</td><td className="px-4 py-2 text-gray-600">1 to 100</td></tr>
- <tr><td className="px-4 py-2 font-mono">status</td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td><td className="px-4 py-2 text-gray-600">held · active · paused · blocked</td></tr>
- <tr><td className="px-4 py-2 font-mono">validation_status</td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td><td className="px-4 py-2 text-gray-600">valid · risky · invalid · unknown · pending</td></tr>
- <tr><td className="px-4 py-2 font-mono">search</td><td className="px-4 py-2">string</td><td className="px-4 py-2">—</td><td className="px-4 py-2 text-gray-600">case-insensitive email substring</td></tr>
+ <tr><td className="px-4 py-2 font-mono">status</td><td className="px-4 py-2">string</td><td className="px-4 py-2">-</td><td className="px-4 py-2 text-gray-600">held · active · paused · blocked</td></tr>
+ <tr><td className="px-4 py-2 font-mono">validation_status</td><td className="px-4 py-2">string</td><td className="px-4 py-2">-</td><td className="px-4 py-2 text-gray-600">valid · risky · invalid · unknown · pending</td></tr>
+ <tr><td className="px-4 py-2 font-mono">search</td><td className="px-4 py-2">string</td><td className="px-4 py-2">-</td><td className="px-4 py-2 text-gray-600">case-insensitive email substring</td></tr>
  </tbody>
  </table>
  </div>
@@ -571,7 +571,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <p className="text-gray-600 mb-4">Creates a campaign in <code>draft</code> status with its sequence steps, variants, and (optionally) an initial lead set. Assigned leads are passed through the health gate:</p>
  <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1">
  <li><Pill tone="red">RED</Pill> leads are blocked and excluded from the campaign (counted as <code>leads_blocked</code>).</li>
- <li><Pill tone="amber">YELLOW</Pill> leads are added with status <code>paused</code> — safe for operator review.</li>
+ <li><Pill tone="amber">YELLOW</Pill> leads are added with status <code>paused</code> - safe for operator review.</li>
  <li><Pill tone="green">GREEN</Pill> leads are added with status <code>active</code>.</li>
  </ul>
  <h5 className="font-semibold text-gray-800 mb-2">Request body</h5>
@@ -648,7 +648,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <h4 className="text-xl font-semibold mt-8 mb-2 text-gray-800">Update campaign</h4>
  <Endpoint method="PATCH" path="/campaigns/:id" />
  <p className="text-gray-600 mb-2">Scope: <code>campaigns:write</code></p>
- <p className="text-gray-600 mb-4">Only updatable in <code>draft</code> or <code>paused</code> state — <code>PATCH</code> on an <code>active</code> campaign returns <code>400 &quot;Cannot update an active campaign. Pause it first.&quot;</code> Updatable fields:</p>
+ <p className="text-gray-600 mb-4">Only updatable in <code>draft</code> or <code>paused</code> state - <code>PATCH</code> on an <code>active</code> campaign returns <code>400 &quot;Cannot update an active campaign. Pause it first.&quot;</code> Updatable fields:</p>
  <Code lang="json">{`{
  "name": "New name",
  "daily_limit": 100,
@@ -658,7 +658,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  "schedule_end_time": "18:00",
  "schedule_days": ["mon","tue","wed","thu","fri","sat"]
 }`}</Code>
- <p className="text-gray-600 mb-4">Sequence steps and variants are <em>not</em> editable through this endpoint — rebuild the campaign or edit through the dashboard.</p>
+ <p className="text-gray-600 mb-4">Sequence steps and variants are <em>not</em> editable through this endpoint - rebuild the campaign or edit through the dashboard.</p>
 
  <h4 className="text-xl font-semibold mt-8 mb-2 text-gray-800">Launch campaign</h4>
  <Endpoint method="POST" path="/campaigns/:id/launch" />
@@ -715,7 +715,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  "contact_email": "prospect@bigcorp.com",
  "contact_name": "Alex Prospect",
  "subject": "Re: Quick question about BigCorp",
- "body_text": "Happy to chat — how about Thursday at 2pm?",
+ "body_text": "Happy to chat - how about Thursday at 2pm?",
  "received_at": "2026-04-24T14:32:10.000Z"
  }
  ]
@@ -732,8 +732,8 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <h5 className="font-semibold text-gray-800 mb-2">Request body</h5>
  <Code lang="json">{`{
  "thread_id": "thr_123",
- "body_html": "<p>Thursday at 2pm works — sending a calendar invite now.</p>",
- "body_text": "Thursday at 2pm works — sending a calendar invite now."
+ "body_html": "<p>Thursday at 2pm works - sending a calendar invite now.</p>",
+ "body_text": "Thursday at 2pm works - sending a calendar invite now."
 }`}</Code>
  <p className="text-gray-600 mb-4">Provide <code>body_html</code> or <code>body_text</code>, or both. At least one is required. If both are provided, multipart/alternative is constructed automatically.</p>
  <Code lang="response">{`{
@@ -769,7 +769,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  <h3 id="mailboxes" className="text-2xl font-bold mt-10 mb-3 text-gray-900">7.6 Mailboxes</h3>
  <Endpoint method="GET" path="/mailboxes" />
  <p className="text-gray-600 mb-2">Scope: <code>mailboxes:read</code></p>
- <p className="text-gray-600 mb-4">Every sending account connected to your organization — Gmail, Microsoft 365, SMTP, and shadow mailboxes for connected platforms. Sorted alphabetically by email.</p>
+ <p className="text-gray-600 mb-4">Every sending account connected to your organization - Gmail, Microsoft 365, SMTP, and shadow mailboxes for connected platforms. Sorted alphabetically by email.</p>
  <Code lang="response">{`{
  "success": true,
  "data": [
@@ -817,7 +817,7 @@ X-RateLimit-Reset: 1713968400 # unix seconds when the window resets`}</Code>
  {/* ═════════════════════════════════════════════════════════════ */}
  <h2 id="idempotency" className="text-3xl font-bold mt-16 mb-4 text-gray-900">8. Idempotency</h2>
  <p className="text-gray-600 mb-4">
- <strong>Read endpoints</strong> (<code>GET</code>) are naturally idempotent. <strong>Write endpoints</strong> that you want to retry safely — particularly <code>POST /leads/bulk</code>, <code>POST /campaigns</code>, and <code>POST /replies</code> — accept an optional header:
+ <strong>Read endpoints</strong> (<code>GET</code>) are naturally idempotent. <strong>Write endpoints</strong> that you want to retry safely - particularly <code>POST /leads/bulk</code>, <code>POST /campaigns</code>, and <code>POST /replies</code> - accept an optional header:
  </p>
  <Code lang="bash">{`Idempotency-Key: <any unique string, max 255 chars>`}</Code>
  <p className="text-gray-600 mb-4">

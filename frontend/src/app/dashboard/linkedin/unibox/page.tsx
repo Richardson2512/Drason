@@ -9,7 +9,7 @@ import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
 import { useDashboard } from '@/contexts/DashboardContext';
 
 // ============================================================================
-// TYPES — server response shapes from /api/linkedin/unibox/*
+// TYPES - server response shapes from /api/linkedin/unibox/*
 // ============================================================================
 
 interface UniboxThread {
@@ -23,7 +23,7 @@ interface UniboxThread {
     auto_tag: 'Interested' | 'Not Interested' | 'Generic' | null;
     preview: string;
     last_message_at: string | null;
-    /** Direction of the most recent message — drives the Inbox/Sent/All
+    /** Direction of the most recent message - drives the Inbox/Sent/All
      *  tab filtering. NULL when Unipile didn't provide it (older API
      *  payload); UI treats null as "unknown" and includes the thread in
      *  every view rather than guessing. */
@@ -80,9 +80,9 @@ export default function LinkedInUniboxPage() {
     const [messages, setMessages] = useState<UniboxMessage[]>([]);
     const [threadLoading, setThreadLoading] = useState(false);
 
-    // Filters — mirror the sequencer's view/filter split.
+    // Filters - mirror the sequencer's view/filter split.
     const [view, setView] = useState<'inbox' | 'sent' | 'all'>('inbox');
-    // 'replied' was removed — direction filtering lives on the view
+    // 'replied' was removed - direction filtering lives on the view
     // tabs now (Inbox/Sent/All driven by last_message_direction).
     const [filter, setFilter] = useState<'all' | 'unread'>('all');
     const [tagFilter, setTagFilter] = useState<Set<string>>(new Set());
@@ -98,7 +98,7 @@ export default function LinkedInUniboxPage() {
     const fetchThreads = useCallback(async () => {
         try {
             // Push filters server-side where supported. `auto_tags` is
-            // now a backend-supported query param — saves us fetching
+            // now a backend-supported query param - saves us fetching
             // every thread just to filter to 5 "Interested" rows
             // client-side.
             const qs = new URLSearchParams();
@@ -168,7 +168,7 @@ export default function LinkedInUniboxPage() {
         };
     }, [selectedThread, fetchThread]);
 
-    // Refetch the thread list on tab focus — catches new threads
+    // Refetch the thread list on tab focus - catches new threads
     // arrived while the operator was elsewhere. Cheaper than polling
     // on a fixed interval and matches the pattern we used for
     // Campaigns / Contacts / Accounts.
@@ -235,7 +235,7 @@ export default function LinkedInUniboxPage() {
 
     // Most filtering is server-side now. The only client-side filter
     // left is `searchQuery` (free-text over counterparty + preview)
-    // and the view tab — both of which need client-side filtering
+    // and the view tab - both of which need client-side filtering
     // because they operate on the rendered row state, not stable
     // queryable fields.
     const filtered = threads.filter(t => {
@@ -245,9 +245,9 @@ export default function LinkedInUniboxPage() {
         }
         // View filter is now grounded in `last_message_direction` (real
         // data from Unipile). Threads where direction is unknown (null)
-        // appear in every view — that's safer than dropping them based
+        // appear in every view - that's safer than dropping them based
         // on a guess. The legacy `filter === 'replied'` reading
-        // unread_count is preserved but is essentially a no-op now —
+        // unread_count is preserved but is essentially a no-op now -
         // operators should use the view tabs for direction filtering.
         if (view === 'inbox' && t.last_message_direction === 'OUTBOUND') return false;
         if (view === 'sent' && t.last_message_direction === 'INBOUND') return false;
@@ -264,7 +264,7 @@ export default function LinkedInUniboxPage() {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 overflow-hidden bg-white">
-            {/* Account-error banner — one of the org's LinkedIn accounts
+            {/* Account-error banner - one of the org's LinkedIn accounts
                 returned an error during the Unipile merge. Threads from
                 other accounts are still visible; this surfaces the gap
                 so the operator knows their inbox is incomplete. */}
@@ -316,7 +316,7 @@ export default function LinkedInUniboxPage() {
                     })}
                 </div>
 
-                {/* Auto-tag filter — multi-select pill dropdown */}
+                {/* Auto-tag filter - multi-select pill dropdown */}
                 <div className="w-[180px] shrink-0">
                     <MultiSelectDropdown
                         placeholder="Auto-tag"

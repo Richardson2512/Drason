@@ -15,7 +15,7 @@
  * later requires no structural changes.
  */
 
-// ── Sales team — the org's own users / LinkedIn senders ──────────────────────
+// ── Sales team - the org's own users / LinkedIn senders ──────────────────────
 
 export const SALES_TEAM = [
     { id: 'sender-eugin',  name: 'Eugin Richardson', title: 'Founder',         linkedin_account: 'eugin-richardson',  account_type: 'PREMIUM',   status: 'OK' },
@@ -24,16 +24,16 @@ export const SALES_TEAM = [
     { id: 'sender-shared', name: 'Drason SDR',       title: 'Outbound SDR',    linkedin_account: 'drason-sdr',        account_type: 'CLASSIC',   status: 'CREDENTIALS' },
 ] as const;
 
-// ── Posts — content the prospects engaged with ───────────────────────────────
+// ── Posts - content the prospects engaged with ───────────────────────────────
 //
 // Each entry is shaped to mirror the live /api/linkedin/accounts/:id/posts
 // payload so the PostsFeed can render demo posts using the same component
 // code. Spread across the four buckets the account-detail subpages render:
 //
-//   post        — short-form opinion / observation
-//   article     — long-form (LinkedIn article)
-//   repost      — reshared third-party content
-//   <thought leadership> — derived bucket: post_kind='post' AND text ≥ 500
+//   post        - short-form opinion / observation
+//   article     - long-form (LinkedIn article)
+//   repost      - reshared third-party content
+//   <thought leadership> - derived bucket: post_kind='post' AND text ≥ 500
 //                          chars AND reaction_count ≥ 25
 //
 // 'post-eugin-launch', 'post-asha-pricing', 'post-ben-latency' are kept as
@@ -41,7 +41,7 @@ export const SALES_TEAM = [
 
 export interface DemoPost {
     id: string;
-    /** Account this post belongs to — refs SALES_TEAM[].id. */
+    /** Account this post belongs to - refs SALES_TEAM[].id. */
     author_id: string;
     /** "Minutes ago" anchor so the relative-time math stays demo-stable. */
     posted_at_minutes_ago: number;
@@ -64,13 +64,13 @@ export const DEMO_POSTS: DemoPost[] = [
         post_urn: 'urn:li:activity:7184000000000000001',
         text: `5 launch lessons from shipping our v3 last quarter.
 
-1. The riskiest part of a launch isn't the launch — it's the 30 days after, when half the team has already moved on and the bugs land.
+1. The riskiest part of a launch isn't the launch - it's the 30 days after, when half the team has already moved on and the bugs land.
 2. "Beta cohort" is a euphemism for "people who'll forgive you once." Don't waste them.
 3. Pricing changes always read as "we're now expensive" even when the rebundle is genuinely better. Lead with the rebundle.
 4. Press is a lagging indicator. Customer Slack channels are leading. We should have been reading them daily, not weekly.
 5. Most launch wins compound. Most launch misses also compound. Pay attention to both feedback loops the same day.
 
-If you're shipping a v-something in Q3, happy to compare notes — drop a comment and I'll DM you what we did differently between v2 and v3.`,
+If you're shipping a v-something in Q3, happy to compare notes - drop a comment and I'll DM you what we did differently between v2 and v3.`,
         reaction_count: 184,
         comment_count: 27,
         share_count: 9,
@@ -82,7 +82,7 @@ If you're shipping a v-something in Q3, happy to compare notes — drop a commen
         post_kind: 'article',
         post_urn: 'urn:li:article:7184000000000000002',
         text: `What I wish I'd known about cold-email deliverability before we shipped Drason
-After two years of running 90+ mailbox pools in production, the deliverability myths I believed at the start cost us about six months. Here's the full breakdown of what we learned — domain warmup curves, why the "150/day" rule is a folk tale, where Google's classifiers actually live in 2025, and the three signals that genuinely predict inbox placement.
+After two years of running 90+ mailbox pools in production, the deliverability myths I believed at the start cost us about six months. Here's the full breakdown of what we learned - domain warmup curves, why the "150/day" rule is a folk tale, where Google's classifiers actually live in 2025, and the three signals that genuinely predict inbox placement.
 
 This is the long version; the short version is: stop optimizing for sends-per-day and start optimizing for reply-per-thousand. The rest of the article walks through how to instrument that.`,
         reaction_count: 312,
@@ -95,7 +95,7 @@ This is the long version; the short version is: stop optimizing for sends-per-da
         posted_at_minutes_ago: 60 * 48, // 2d
         post_kind: 'repost',
         post_urn: 'urn:li:share:7184000000000000003',
-        text: `Worth reposting — Yui's breakdown on PLG funnel decay is the cleanest writeup I've seen.
+        text: `Worth reposting - Yui's breakdown on PLG funnel decay is the cleanest writeup I've seen.
 
 Especially the bit about activation cohorts that look great in week 1 and quietly fall off a cliff in week 4. We see the exact same pattern on the cold-outreach side: campaigns that look "active" by send-volume but flatlined on reply rate two weeks in.`,
         reaction_count: 47,
@@ -123,13 +123,13 @@ Especially the bit about activation cohorts that look great in week 1 and quietl
 
 Three things that surprised me on the way:
 
-1. The leading indicator that actually predicts pipeline is "% of replies that are >40 words" — not opens, not clicks, not replies-as-a-count. A two-word "thanks remove me" reply is not a reply.
+1. The leading indicator that actually predicts pipeline is "% of replies that are >40 words" - not opens, not clicks, not replies-as-a-count. A two-word "thanks remove me" reply is not a reply.
 
 2. Sender quality compounds harder than mailbox capacity. One trusted senior sender outperforms 4 SDRs sharing capacity, on the same list, every time we've measured it. We were under-investing in seniority because we were optimising send count, which is silly because the cost is the same.
 
 3. Cold-outreach as a channel is dying for the median ICP and getting BETTER for the top decile. The bifurcation is real. If your data isn't picking out the top decile, you're effectively running against the median, and that's why the channel feels harder year over year.
 
-If you're rebuilding your own outbound rubric this quarter, I'd start with question 1 — instrument %-of-replies->40-words for last 90 days and see what it tells you. Took us a Saturday afternoon.`,
+If you're rebuilding your own outbound rubric this quarter, I'd start with question 1 - instrument %-of-replies->40-words for last 90 days and see what it tells you. Took us a Saturday afternoon.`,
         reaction_count: 268,
         comment_count: 52,
         share_count: 19,
@@ -142,7 +142,7 @@ If you're rebuilding your own outbound rubric this quarter, I'd start with quest
         posted_at_minutes_ago: 60 * 4, // 4h ago
         post_kind: 'post',
         post_urn: 'urn:li:activity:7184000000000000006',
-        text: `Pricing for product-led B2B — our take after three repricings in 18 months:
+        text: `Pricing for product-led B2B - our take after three repricings in 18 months:
 
 - "Per seat" is fine for productivity tools. It breaks the moment your product is a workflow that one user runs on behalf of a team.
 - Usage-based pricing is great in theory and a nightmare to forecast against. Customers want a number they can put in a budget.
@@ -159,7 +159,7 @@ What's working for you in 2026?`,
         posted_at_minutes_ago: 60 * 18, // 18h ago
         post_kind: 'article',
         post_urn: 'urn:li:article:7184000000000000007',
-        text: `Decoding PLG funnel decay — why your week-4 activation cohorts look fine and your week-12 cohorts don't
+        text: `Decoding PLG funnel decay - why your week-4 activation cohorts look fine and your week-12 cohorts don't
 We instrumented a 12-week cohort study across 7 PLG companies and the pattern was identical: activation rate is fine in week 1, decay sets in around week 4, and by week 12 you've lost 60-70% of the cohort. Aggregate metrics hide the decay because new sign-ups mask the curve.
 
 This article walks through the instrumentation, the three rituals that fix the leak, and why we now think "weekly active accounts" is the wrong North Star for early-stage PLG.`,
@@ -180,12 +180,12 @@ They're A/B testing message copy on cold outbound. But the variance between two 
 What we did differently this quarter, in plain language:
 
 - Stopped A/B testing copy. The hours spent on subject-line variations were not paying for themselves.
-- Built one signal per ICP. For founders: "just raised, mentioned hiring SDRs." For RevOps: "Salesforce post engagement in last 30d." For PLG growth: "moved from Series A to Series B in last 6 months." That's it — three ICPs, three signals, each one boolean.
+- Built one signal per ICP. For founders: "just raised, mentioned hiring SDRs." For RevOps: "Salesforce post engagement in last 30d." For PLG growth: "moved from Series A to Series B in last 6 months." That's it - three ICPs, three signals, each one boolean.
 - Routed only signal-positive prospects into the active sequences. Signal-negative ones got tagged for the warm-up pool and pulled later when conditions changed.
 
 Reply rate moved from 6.2% to 14.8%. The copy didn't change. What changed was the population we were sending to.
 
-If you're a growth lead spending all your time on copy and your reply rate has plateaued — the lever isn't the copy. It's the list.`,
+If you're a growth lead spending all your time on copy and your reply rate has plateaued - the lever isn't the copy. It's the list.`,
         reaction_count: 241,
         comment_count: 44,
         share_count: 17,
@@ -209,9 +209,9 @@ If you're a growth lead spending all your time on copy and your reply rate has p
         posted_at_minutes_ago: 60 * 8, // 8h ago
         post_kind: 'post',
         post_urn: 'urn:li:activity:7184000000000000010',
-        text: `How we cut cold-email reply latency 4x — from 11min median to 2min 40s.
+        text: `How we cut cold-email reply latency 4x - from 11min median to 2min 40s.
 
-What didn't work: faster typing, hotkey templates, AI-suggested replies. What worked: a 30-minute pre-shift review of the queue so every reply already had context loaded in my head. Boring answer but the data is unambiguous — context-loaded replies close 2.7x more meetings than zero-context "fast" replies.
+What didn't work: faster typing, hotkey templates, AI-suggested replies. What worked: a 30-minute pre-shift review of the queue so every reply already had context loaded in my head. Boring answer but the data is unambiguous - context-loaded replies close 2.7x more meetings than zero-context "fast" replies.
 
 If you're an SDR drowning in inbox: the bottleneck is rarely typing speed. It's almost always context-switching.`,
         reaction_count: 142,
@@ -241,7 +241,7 @@ If you're an SDR drowning in inbox: the bottleneck is rarely typing speed. It's 
 
 2. Founders consistently lie about their team size, in both directions. The 5-person team that says "we're 15" wants to look bigger to seem investable; the 80-person team that says "we're a small team" wants to seem scrappy. We've stopped trusting the answer and we just look at LinkedIn employee count before the call.
 
-3. The single highest-leverage discovery question I've found: "Walk me through the last time this problem came up — what happened, what did you try?" Not "what's keeping you up at night" (every disco asks it), not "what's your current stack" (rarely surprising). The narrative answer surfaces real pain way faster than the inventory answer.
+3. The single highest-leverage discovery question I've found: "Walk me through the last time this problem came up - what happened, what did you try?" Not "what's keeping you up at night" (every disco asks it), not "what's your current stack" (rarely surprising). The narrative answer surfaces real pain way faster than the inventory answer.
 
 4. Buyers who turn the camera on close ~3x more often than buyers who don't. I'm not claiming causation. But I'm done pretending it's a small effect.
 
@@ -263,13 +263,13 @@ Not advice, just patterns. If you're an SDR or AE and your discovery feels formu
     },
 ];
 
-/** Legacy alias — keeps the old `findPost(id)` callers + the SIGNALS
+/** Legacy alias - keeps the old `findPost(id)` callers + the SIGNALS
  *  array's `post_id` references resolving to the same set. */
 export const POSTS = Object.fromEntries(
     DEMO_POSTS.map(p => [p.id.replace(/^post-/, '').replace(/-/g, '_'), p]),
 ) as Record<string, DemoPost>;
 
-// ── ICPs — same shape as the IcpProfile API rows ─────────────────────────────
+// ── ICPs - same shape as the IcpProfile API rows ─────────────────────────────
 
 export const ICPS = [
     {
@@ -305,7 +305,7 @@ export const ICPS = [
     {
         id: 'icp-healthcare',
         name: 'Healthcare ops (paused)',
-        description: 'Hospital-network ops leaders. Paused — not pursuing this segment Q2.',
+        description: 'Hospital-network ops leaders. Paused - not pursuing this segment Q2.',
         titles: ['VP Operations', 'COO', 'Director of Operations'],
         industries: ['Healthcare', 'Hospital & Health Care'],
         company_sizes: ['501-1000', '1001-5000', '5000+'],
@@ -314,7 +314,7 @@ export const ICPS = [
     },
 ] as const;
 
-// ── Prospects — the cast that recurs on signals + contacts + unibox ──────────
+// ── Prospects - the cast that recurs on signals + contacts + unibox ──────────
 
 export interface Prospect {
     id: string;
@@ -540,7 +540,7 @@ export const PROSPECTS: Prospect[] = [
     },
 ];
 
-// ── Campaigns — cross-feature, with the prospects above as leads ─────────────
+// ── Campaigns - cross-feature, with the prospects above as leads ─────────────
 
 export interface DemoCampaign {
     id: string;
@@ -561,10 +561,10 @@ export interface DemoCampaign {
 }
 
 export const CAMPAIGNS: DemoCampaign[] = [
-    // ── Super LinkedIn — LinkedIn-only campaigns ────────────────────────
+    // ── Super LinkedIn - LinkedIn-only campaigns ────────────────────────
     {
         id: 'camp-plg-growth-q2',
-        name: 'PLG Heads of Growth — Q2',
+        name: 'PLG Heads of Growth - Q2',
         channel: 'linkedin',
         status: 'active',
         icp_id: 'icp-plg-growth',
@@ -574,7 +574,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-revops-us-east',
-        name: 'RevOps US East — touch 1',
+        name: 'RevOps US East - touch 1',
         channel: 'linkedin',
         status: 'paused',
         icp_id: 'icp-revops',
@@ -584,7 +584,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-founders-li-only',
-        name: 'Founders Series-A — LinkedIn warm-up',
+        name: 'Founders Series-A - LinkedIn warm-up',
         channel: 'linkedin',
         status: 'active',
         icp_id: 'icp-saas-founders',
@@ -594,7 +594,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-content-engagers',
-        name: 'Content engagers — Eugin Q3 launch',
+        name: 'Content engagers - Eugin Q3 launch',
         channel: 'linkedin',
         status: 'active',
         icp_id: 'icp-plg-growth',
@@ -604,7 +604,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-bio-health-vps',
-        name: 'Bio/Health VPs — warm only',
+        name: 'Bio/Health VPs - warm only',
         channel: 'linkedin',
         status: 'draft',
         icp_id: 'icp-healthcare',
@@ -613,10 +613,10 @@ export const CAMPAIGNS: DemoCampaign[] = [
         counts: { pending: 0, in_sequence: 0, finished: 0, replied: 0, accept_rate: 0, reply_rate: 0 },
     },
 
-    // ── Super Sequencer — mixed (email + LinkedIn) and email-only ─────
+    // ── Super Sequencer - mixed (email + LinkedIn) and email-only ─────
     {
         id: 'camp-founders-series-a',
-        name: 'Founders — Series A SaaS (mixed)',
+        name: 'Founders - Series A SaaS (mixed)',
         channel: 'mixed',
         status: 'active',
         icp_id: 'icp-saas-founders',
@@ -626,7 +626,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-revops-mixed-q3',
-        name: 'RevOps US — email-first + LinkedIn nudge',
+        name: 'RevOps US - email-first + LinkedIn nudge',
         channel: 'mixed',
         status: 'active',
         icp_id: 'icp-revops',
@@ -636,7 +636,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
     {
         id: 'camp-newsletter-warmup',
-        name: 'Newsletter signups — drip (email-only)',
+        name: 'Newsletter signups - drip (email-only)',
         channel: 'email',
         status: 'active',
         icp_id: 'icp-plg-growth',
@@ -646,7 +646,7 @@ export const CAMPAIGNS: DemoCampaign[] = [
     },
 ];
 
-// ── Campaign sequences — the per-campaign schema rendered on the
+// ── Campaign sequences - the per-campaign schema rendered on the
 //    /campaigns/[id]/sequence page. One DemoSequenceStep[] per
 //    CAMPAIGNS entry, sized to show off the diagram (follow → CR →
 //    DM, sometimes preceded by view-profile and/or punctuated by an
@@ -675,79 +675,79 @@ export interface DemoSequenceStep {
 
 export const CAMPAIGN_SEQUENCES: Record<string, DemoSequenceStep[]> = {
     // ─────────────────────────────────────────────────────────────────────
-    // Super LinkedIn — LinkedIn-only sequences. NO email steps allowed.
+    // Super LinkedIn - LinkedIn-only sequences. NO email steps allowed.
     // Channel discipline: Super LinkedIn is single-channel by design;
     // anything that combines email + LinkedIn lives on Super Sequencer.
     // ─────────────────────────────────────────────────────────────────────
 
-    // PLG growth leaders — post-like + DM rhythm with an InMail escape.
+    // PLG growth leaders - post-like + DM rhythm with an InMail escape.
     'camp-plg-growth-q2': [
         { id: 'step-plg-1', step_number: 1, step_type: 'linkedin_follow',             delay_days: 0, delay_hours: 0, subject: null, body: null, condition: null },
         { id: 'step-plg-2', step_number: 2, step_type: 'linkedin_like_post',          delay_days: 2, delay_hours: 0, subject: null, body: null, condition: null },
-        { id: 'step-plg-3', step_number: 3, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0, subject: null, body: 'Hey {{first_name}} — your post on funnel decay was the cleanest framing I\'ve seen this quarter. Building outbound tooling in the same neighbourhood; would love to connect.', condition: null },
-        { id: 'step-plg-4', step_number: 4, step_type: 'linkedin_message',            delay_days: 5, delay_hours: 0, subject: null, body: 'Thanks for connecting, {{first_name}}! Curious — when you instrument cohort decay at {{company}}, are you doing it in your data warehouse or somewhere else? Working on the outbound equivalent and your read would be gold.', condition: 'if_connection' },
-        { id: 'step-plg-5', step_number: 5, step_type: 'linkedin_inmail',             delay_days: 7, delay_hours: 0, subject: 'Open to a 15-min on outbound signal at {{company}}?', body: 'Hi {{first_name}} — Drason runs signal-based outbound for PLG growth teams. We measure replies-per-thousand, not sends-per-day. If outbound is on your Q3 roadmap, happy to show 15 mins of how we\'d structure it for {{company}} specifically. Worth a look?', condition: 'if_not_connection' },
+        { id: 'step-plg-3', step_number: 3, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0, subject: null, body: 'Hey {{first_name}} - your post on funnel decay was the cleanest framing I\'ve seen this quarter. Building outbound tooling in the same neighbourhood; would love to connect.', condition: null },
+        { id: 'step-plg-4', step_number: 4, step_type: 'linkedin_message',            delay_days: 5, delay_hours: 0, subject: null, body: 'Thanks for connecting, {{first_name}}! Curious - when you instrument cohort decay at {{company}}, are you doing it in your data warehouse or somewhere else? Working on the outbound equivalent and your read would be gold.', condition: 'if_connection' },
+        { id: 'step-plg-5', step_number: 5, step_type: 'linkedin_inmail',             delay_days: 7, delay_hours: 0, subject: 'Open to a 15-min on outbound signal at {{company}}?', body: 'Hi {{first_name}} - Drason runs signal-based outbound for PLG growth teams. We measure replies-per-thousand, not sends-per-day. If outbound is on your Q3 roadmap, happy to show 15 mins of how we\'d structure it for {{company}} specifically. Worth a look?', condition: 'if_not_connection' },
     ],
 
-    // RevOps US — short, polite, three touches.
+    // RevOps US - short, polite, three touches.
     'camp-revops-us-east': [
         { id: 'step-rev-1', step_number: 1, step_type: 'linkedin_view_profile',       delay_days: 0, delay_hours: 0,  subject: null, body: null, condition: null },
-        { id: 'step-rev-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0,  subject: null, body: 'Hi {{first_name}}, building tooling for RevOps leaders on the outbound side — would love to connect and learn how you\'re thinking about it at {{company}}.', condition: null },
-        { id: 'step-rev-3', step_number: 3, step_type: 'linkedin_message',            delay_days: 7, delay_hours: 0,  subject: null, body: 'Thanks for connecting, {{first_name}}! Quick one: when SDR reply-quality dips at {{company}}, where do you usually start looking — list, copy, or sender mix? We\'ve built tooling that answers that one specifically.', condition: 'if_connection' },
+        { id: 'step-rev-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0,  subject: null, body: 'Hi {{first_name}}, building tooling for RevOps leaders on the outbound side - would love to connect and learn how you\'re thinking about it at {{company}}.', condition: null },
+        { id: 'step-rev-3', step_number: 3, step_type: 'linkedin_message',            delay_days: 7, delay_hours: 0,  subject: null, body: 'Thanks for connecting, {{first_name}}! Quick one: when SDR reply-quality dips at {{company}}, where do you usually start looking - list, copy, or sender mix? We\'ve built tooling that answers that one specifically.', condition: 'if_connection' },
     ],
 
-    // Founders Series-A — LinkedIn-only warm-up (separate from the
+    // Founders Series-A - LinkedIn-only warm-up (separate from the
     // mixed `camp-founders-series-a` campaign, which lives on Sequencer).
     'camp-founders-li-only': [
         { id: 'step-fli-1', step_number: 1, step_type: 'linkedin_view_profile',       delay_days: 0, delay_hours: 0, subject: null, body: null, condition: null },
         { id: 'step-fli-2', step_number: 2, step_type: 'linkedin_follow',             delay_days: 0, delay_hours: 6, subject: null, body: null, condition: null },
-        { id: 'step-fli-3', step_number: 3, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0, subject: null, body: 'Hi {{first_name}}, came across your work at {{company}} — building Drason in the same neighbourhood. Would love to swap notes on what\'s working for outbound at your stage.', condition: null },
-        { id: 'step-fli-4', step_number: 4, step_type: 'linkedin_message',            delay_days: 4, delay_hours: 0, subject: null, body: 'Thanks for connecting, {{first_name}}! Quick one — if you had to pick the single hardest part of running outbound at {{company}}\'s stage, what would it be? Genuinely curious; I collect answers and the patterns are interesting.', condition: 'if_connection' },
+        { id: 'step-fli-3', step_number: 3, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0, subject: null, body: 'Hi {{first_name}}, came across your work at {{company}} - building Drason in the same neighbourhood. Would love to swap notes on what\'s working for outbound at your stage.', condition: null },
+        { id: 'step-fli-4', step_number: 4, step_type: 'linkedin_message',            delay_days: 4, delay_hours: 0, subject: null, body: 'Thanks for connecting, {{first_name}}! Quick one - if you had to pick the single hardest part of running outbound at {{company}}\'s stage, what would it be? Genuinely curious; I collect answers and the patterns are interesting.', condition: 'if_connection' },
     ],
 
-    // Content engagers — fed by the signal poller on Eugin\'s launch post.
+    // Content engagers - fed by the signal poller on Eugin\'s launch post.
     'camp-content-engagers': [
         { id: 'step-ce-1', step_number: 1, step_type: 'linkedin_view_profile',       delay_days: 0, delay_hours: 0, subject: null, body: null, condition: null },
-        { id: 'step-ce-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 0, delay_hours: 12, subject: null, body: 'Hey {{first_name}} — thanks for the {{reaction}} on the launch post. I\'d love to connect; I\'m building Drason and your read on cold-outreach problems would mean a lot.', condition: null },
-        { id: 'step-ce-3', step_number: 3, step_type: 'linkedin_message',            delay_days: 3, delay_hours: 0, subject: null, body: 'Appreciate the connect, {{first_name}}! Followup on the post — what landed for you, and what felt off? Won\'t pitch; just collecting honest reads from people who pay attention to this space.', condition: 'if_connection' },
+        { id: 'step-ce-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 0, delay_hours: 12, subject: null, body: 'Hey {{first_name}} - thanks for the {{reaction}} on the launch post. I\'d love to connect; I\'m building Drason and your read on cold-outreach problems would mean a lot.', condition: null },
+        { id: 'step-ce-3', step_number: 3, step_type: 'linkedin_message',            delay_days: 3, delay_hours: 0, subject: null, body: 'Appreciate the connect, {{first_name}}! Followup on the post - what landed for you, and what felt off? Won\'t pitch; just collecting honest reads from people who pay attention to this space.', condition: 'if_connection' },
     ],
 
-    // Draft healthcare-VPs sequence — paused until ICP approves Q3 targeting.
+    // Draft healthcare-VPs sequence - paused until ICP approves Q3 targeting.
     'camp-bio-health-vps': [
         { id: 'step-bio-1', step_number: 1, step_type: 'linkedin_view_profile',       delay_days: 0, delay_hours: 0, subject: null, body: null, condition: null },
-        { id: 'step-bio-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 2, delay_hours: 0, subject: null, body: 'Hi {{first_name}}, working on outbound tooling that respects the compliance surface of healthcare orgs — would love to connect and trade notes.', condition: null },
+        { id: 'step-bio-2', step_number: 2, step_type: 'linkedin_connection_request', delay_days: 2, delay_hours: 0, subject: null, body: 'Hi {{first_name}}, working on outbound tooling that respects the compliance surface of healthcare orgs - would love to connect and trade notes.', condition: null },
     ],
 
     // ─────────────────────────────────────────────────────────────────────
-    // Super Sequencer — mixed (email + LinkedIn) and email-only sequences.
+    // Super Sequencer - mixed (email + LinkedIn) and email-only sequences.
     // Channel discipline: ONLY campaigns rendered on the Sequencer surfaces.
     // Never accessible from the Super LinkedIn list / detail / schema.
     // ─────────────────────────────────────────────────────────────────────
 
     // Mixed: email opener, LinkedIn warm-up + CR + DM, email breakup.
     'camp-founders-series-a': [
-        { id: 'step-fsa-1', step_number: 1, step_type: 'email',                       delay_days: 0, delay_hours: 0,  subject: 'Quick thought, {{first_name}}', body: 'Hey {{first_name}} — we built Drason for founders who hate the look of cold-outreach tools but still need pipeline. Two-line ask: would you be open to a 15-min look at how we do signal-based outbound for SaaS founders specifically? — Eugin', condition: null },
+        { id: 'step-fsa-1', step_number: 1, step_type: 'email',                       delay_days: 0, delay_hours: 0,  subject: 'Quick thought, {{first_name}}', body: 'Hey {{first_name}} - we built Drason for founders who hate the look of cold-outreach tools but still need pipeline. Two-line ask: would you be open to a 15-min look at how we do signal-based outbound for SaaS founders specifically? - Eugin', condition: null },
         { id: 'step-fsa-2', step_number: 2, step_type: 'linkedin_view_profile',       delay_days: 1, delay_hours: 0,  subject: null, body: null, condition: 'if_no_reply' },
         { id: 'step-fsa-3', step_number: 3, step_type: 'linkedin_follow',             delay_days: 0, delay_hours: 6,  subject: null, body: null, condition: 'if_no_reply' },
-        { id: 'step-fsa-4', step_number: 4, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0,  subject: null, body: 'Hi {{first_name}}, came across your work at {{company}} — building Drason in the same neighbourhood. Would love to swap notes on what\'s working for outbound at your stage.', condition: 'if_no_reply' },
+        { id: 'step-fsa-4', step_number: 4, step_type: 'linkedin_connection_request', delay_days: 1, delay_hours: 0,  subject: null, body: 'Hi {{first_name}}, came across your work at {{company}} - building Drason in the same neighbourhood. Would love to swap notes on what\'s working for outbound at your stage.', condition: 'if_no_reply' },
         { id: 'step-fsa-5', step_number: 5, step_type: 'linkedin_message',            delay_days: 4, delay_hours: 0,  subject: null, body: 'Thanks for connecting, {{first_name}}! Quick context: we focus on signal-based outbound for founders going Series-A → B. If pipeline is on the Q3 list, happy to show the playbook (15 min, no slides). Worth a look?', condition: 'if_connection' },
-        { id: 'step-fsa-6', step_number: 6, step_type: 'email',                       delay_days: 3, delay_hours: 0,  subject: 'Closing the loop — {{first_name}}', body: 'Hey {{first_name}} — last note from me. Mind if I keep an eye on what you\'re building over the next quarter, and reach back out when timing works better? Either way, good luck with the build.', condition: 'if_no_reply' },
+        { id: 'step-fsa-6', step_number: 6, step_type: 'email',                       delay_days: 3, delay_hours: 0,  subject: 'Closing the loop - {{first_name}}', body: 'Hey {{first_name}} - last note from me. Mind if I keep an eye on what you\'re building over the next quarter, and reach back out when timing works better? Either way, good luck with the build.', condition: 'if_no_reply' },
     ],
 
     // Mixed: email-first three touches, LinkedIn CR nudge for non-responders.
     'camp-revops-mixed-q3': [
-        { id: 'step-rmq-1', step_number: 1, step_type: 'email',                       delay_days: 0, delay_hours: 0,  subject: 'A short read for {{first_name}}', body: 'Hi {{first_name}} — when reply-quality dips on your team, where do you usually start looking — list, copy, or sender mix? We built tooling to answer that one specifically and would love your read.', condition: null },
-        { id: 'step-rmq-2', step_number: 2, step_type: 'email',                       delay_days: 3, delay_hours: 0,  subject: 'Re: A short read for {{first_name}}', body: 'Adding context to the earlier note — we surface 9 reply classes per thread and a sender-quality score that compounds across campaigns. 15 minutes if useful?', condition: 'if_no_reply' },
+        { id: 'step-rmq-1', step_number: 1, step_type: 'email',                       delay_days: 0, delay_hours: 0,  subject: 'A short read for {{first_name}}', body: 'Hi {{first_name}} - when reply-quality dips on your team, where do you usually start looking - list, copy, or sender mix? We built tooling to answer that one specifically and would love your read.', condition: null },
+        { id: 'step-rmq-2', step_number: 2, step_type: 'email',                       delay_days: 3, delay_hours: 0,  subject: 'Re: A short read for {{first_name}}', body: 'Adding context to the earlier note - we surface 9 reply classes per thread and a sender-quality score that compounds across campaigns. 15 minutes if useful?', condition: 'if_no_reply' },
         { id: 'step-rmq-3', step_number: 3, step_type: 'linkedin_view_profile',       delay_days: 2, delay_hours: 0,  subject: null, body: null, condition: 'if_no_reply' },
-        { id: 'step-rmq-4', step_number: 4, step_type: 'linkedin_connection_request', delay_days: 0, delay_hours: 12, subject: null, body: 'Hi {{first_name}}, sent a couple of notes over email — wanted to add LinkedIn so we\'re on each other\'s radar. No pitch attached.', condition: 'if_no_reply' },
-        { id: 'step-rmq-5', step_number: 5, step_type: 'email',                       delay_days: 4, delay_hours: 0,  subject: 'Closing the loop — {{first_name}}', body: 'Last note from me. Mind if I save your name for when timing\'s better? Either way, hope the quarter wraps well.', condition: 'if_no_reply' },
+        { id: 'step-rmq-4', step_number: 4, step_type: 'linkedin_connection_request', delay_days: 0, delay_hours: 12, subject: null, body: 'Hi {{first_name}}, sent a couple of notes over email - wanted to add LinkedIn so we\'re on each other\'s radar. No pitch attached.', condition: 'if_no_reply' },
+        { id: 'step-rmq-5', step_number: 5, step_type: 'email',                       delay_days: 4, delay_hours: 0,  subject: 'Closing the loop - {{first_name}}', body: 'Last note from me. Mind if I save your name for when timing\'s better? Either way, hope the quarter wraps well.', condition: 'if_no_reply' },
     ],
 
-    // Email-only newsletter drip — the legacy email-channel case.
+    // Email-only newsletter drip - the legacy email-channel case.
     'camp-newsletter-warmup': [
-        { id: 'step-nw-1', step_number: 1, step_type: 'email', delay_days: 0, delay_hours: 0,  subject: 'Welcome, {{first_name}}', body: 'Hey {{first_name}} — thanks for joining. This is a slow drip (one email a week, never more) on what we\'re learning about outbound. First note coming Wednesday.', condition: null },
-        { id: 'step-nw-2', step_number: 2, step_type: 'email', delay_days: 4, delay_hours: 0,  subject: 'Reply rate vs send count', body: 'Counter-intuitive: the SDRs we work with who halved their send count usually tripled their pipeline. The link below walks through why — it\'s mostly a measurement problem.', condition: null },
-        { id: 'step-nw-3', step_number: 3, step_type: 'email', delay_days: 7, delay_hours: 0,  subject: 'How we measure sender quality', body: 'A short breakdown of the sender-quality score Drason maintains per mailbox — what goes in, what it predicts, and how we use it to route sends. Half the article is the failure modes.', condition: null },
+        { id: 'step-nw-1', step_number: 1, step_type: 'email', delay_days: 0, delay_hours: 0,  subject: 'Welcome, {{first_name}}', body: 'Hey {{first_name}} - thanks for joining. This is a slow drip (one email a week, never more) on what we\'re learning about outbound. First note coming Wednesday.', condition: null },
+        { id: 'step-nw-2', step_number: 2, step_type: 'email', delay_days: 4, delay_hours: 0,  subject: 'Reply rate vs send count', body: 'Counter-intuitive: the SDRs we work with who halved their send count usually tripled their pipeline. The link below walks through why - it\'s mostly a measurement problem.', condition: null },
+        { id: 'step-nw-3', step_number: 3, step_type: 'email', delay_days: 7, delay_hours: 0,  subject: 'How we measure sender quality', body: 'A short breakdown of the sender-quality score Drason maintains per mailbox - what goes in, what it predicts, and how we use it to route sends. Half the article is the failure modes.', condition: null },
         { id: 'step-nw-4', step_number: 4, step_type: 'email', delay_days: 7, delay_hours: 0,  subject: 'Want a closer look?', body: 'Last note in the drip: if any of this resonated, hit reply with a one-line "yes" and I\'ll send a 4-min walkthrough video that goes deeper. No call required.', condition: null },
     ],
 };
@@ -805,7 +805,7 @@ export function findPost(id: string) {
     return DEMO_POSTS.find(p => p.id === id);
 }
 
-/** Short display title — for articles, the literal first line; for plain
+/** Short display title - for articles, the literal first line; for plain
  *  posts and reposts, the first sentence truncated to ~90 chars. */
 export function postTitle(p: DemoPost): string {
     const first = p.text.split('\n').find(l => l.trim().length > 0)?.trim() ?? '';
@@ -836,7 +836,7 @@ export function findDemoSequence(campaignId: string): DemoSequenceStep[] {
     return CAMPAIGN_SEQUENCES[campaignId] ?? [];
 }
 
-/** Prospects who engaged with a given post — derived from SIGNALS. */
+/** Prospects who engaged with a given post - derived from SIGNALS. */
 export function getDemoEngagersForPost(postId: string): Array<Prospect & { event_type: DemoSignal['event_type']; reaction_type: DemoSignal['reaction_type']; minutes_ago: number }> {
     const events = SIGNALS.filter(s => s.post_id === postId);
     const seen = new Set<string>();

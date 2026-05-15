@@ -1,15 +1,15 @@
 'use client';
 
 /**
- * Watchlist create wizard — five compact stages so operators can't
+ * Watchlist create wizard - five compact stages so operators can't
  * accidentally configure a watchlist that would blow past LinkedIn's
  * per-account action budget. Each stage is gated on the previous.
  *
- *   1. Basics            — name + 1-5 keywords
- *   2. Audience filter   — pick an ICP profile
- *   3. Exclusions        — slugs / company terms to drop
- *   4. Volume + cadence  — min_reaction_count + daily_signal_budget
- *   5. Routing           — manual review vs auto-push to a campaign
+ *   1. Basics            - name + 1-5 keywords
+ *   2. Audience filter   - pick an ICP profile
+ *   3. Exclusions        - slugs / company terms to drop
+ *   4. Volume + cadence  - min_reaction_count + daily_signal_budget
+ *   5. Routing           - manual review vs auto-push to a campaign
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -171,7 +171,7 @@ export default function WatchlistWizardPage() {
                 })}
             </div>
 
-            {/* Stage 1 — Basics */}
+            {/* Stage 1 - Basics */}
             {stage === 1 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
@@ -179,14 +179,14 @@ export default function WatchlistWizardPage() {
                         <input
                             value={name}
                             onChange={e => setName(e.target.value)}
-                            placeholder='e.g. "Founders posting about cold outbound — Q3"'
+                            placeholder='e.g. "Founders posting about cold outbound - Q3"'
                             className="w-full px-3 py-2 text-sm rounded-lg outline-none bg-white"
                             style={{ border: '1px solid #D1CBC5' }}
                         />
                     </div>
                     <div>
                         <div className="flex items-center justify-between mb-1.5">
-                            <label className="text-xs font-semibold text-gray-700">Keywords * <span className="text-gray-400 font-normal">(up to 5 — each runs its own search per scan)</span></label>
+                            <label className="text-xs font-semibold text-gray-700">Keywords * <span className="text-gray-400 font-normal">(up to 5 - each runs its own search per scan)</span></label>
                             <span className="text-[10px] text-gray-500 tabular-nums">{keywords.length} / 5</span>
                         </div>
                         <div className="flex items-center gap-2 mb-2">
@@ -228,7 +228,7 @@ export default function WatchlistWizardPage() {
                 </div>
             )}
 
-            {/* Stage 2 — Audience filter */}
+            {/* Stage 2 - Audience filter */}
             {stage === 2 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
@@ -243,7 +243,7 @@ export default function WatchlistWizardPage() {
                         className="w-full px-3 py-2 text-sm rounded-lg outline-none bg-white cursor-pointer"
                         style={{ border: '1px solid #D1CBC5' }}
                     >
-                        <option value="">— No ICP filter (accept all engagers) —</option>
+                        <option value="">- No ICP filter (accept all engagers) -</option>
                         {icps.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
                     </select>
                     {icps.length === 0 && (
@@ -258,7 +258,7 @@ export default function WatchlistWizardPage() {
                 </div>
             )}
 
-            {/* Stage 3 — Exclusions */}
+            {/* Stage 3 - Exclusions */}
             {stage === 3 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
@@ -274,7 +274,7 @@ export default function WatchlistWizardPage() {
                                 value={exclSlugInput}
                                 onChange={e => setExclSlugInput(e.target.value)}
                                 onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addExcl('slug'); } }}
-                                placeholder='linkedin.com/in/jdoe — or just "jdoe"'
+                                placeholder='linkedin.com/in/jdoe - or just "jdoe"'
                                 className="flex-1 px-3 py-1.5 text-xs rounded-lg outline-none bg-white"
                                 style={{ border: '1px solid #D1CBC5' }}
                             />
@@ -296,7 +296,7 @@ export default function WatchlistWizardPage() {
                                 value={exclCompanyInput}
                                 onChange={e => setExclCompanyInput(e.target.value)}
                                 onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addExcl('company'); } }}
-                                placeholder={`e.g. "Acme" — matches anywhere in the engager's headline`}
+                                placeholder={`e.g. "Acme" - matches anywhere in the engager's headline`}
                                 className="flex-1 px-3 py-1.5 text-xs rounded-lg outline-none bg-white"
                                 style={{ border: '1px solid #D1CBC5' }}
                             />
@@ -318,13 +318,13 @@ export default function WatchlistWizardPage() {
                 </div>
             )}
 
-            {/* Stage 4 — Volume / cadence */}
+            {/* Stage 4 - Volume / cadence */}
             {stage === 4 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
                         <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-1.5"><Gauge size={12} /> Volume + cadence</h2>
                         <p className="text-[11px] text-gray-500 mt-1">
-                            We cap each watchlist's daily output to protect your LinkedIn accounts from automation blocks. These defaults are conservative — raise them after a few clean scans.
+                            We cap each watchlist's daily output to protect your LinkedIn accounts from automation blocks. These defaults are conservative - raise them after a few clean scans.
                         </p>
                     </div>
                     <div>
@@ -336,10 +336,10 @@ export default function WatchlistWizardPage() {
                             className="w-32 px-3 py-1.5 text-sm rounded-lg outline-none bg-white"
                             style={{ border: '1px solid #D1CBC5' }}
                         />
-                        <p className="text-[10px] text-gray-500 mt-1">Posts below this threshold are skipped before we hydrate engagers — keeps low-engagement noise out + saves API budget.</p>
+                        <p className="text-[10px] text-gray-500 mt-1">Posts below this threshold are skipped before we hydrate engagers - keeps low-engagement noise out + saves API budget.</p>
                     </div>
                     <div>
-                        <label className="block text-[11px] font-semibold text-gray-700 mb-1.5">Daily signal budget (max matches per day) — capped at 100</label>
+                        <label className="block text-[11px] font-semibold text-gray-700 mb-1.5">Daily signal budget (max matches per day) - capped at 100</label>
                         <input
                             type="number" min={1} max={100}
                             value={dailyBudget}
@@ -362,7 +362,7 @@ export default function WatchlistWizardPage() {
                 </div>
             )}
 
-            {/* Stage 5 — Routing */}
+            {/* Stage 5 - Routing */}
             {stage === 5 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
@@ -399,7 +399,7 @@ export default function WatchlistWizardPage() {
                                 className="w-full px-3 py-2 text-sm rounded-lg outline-none bg-white cursor-pointer"
                                 style={{ border: '1px solid #D1CBC5' }}
                             >
-                                <option value="">— Pick a LinkedIn campaign —</option>
+                                <option value="">- Pick a LinkedIn campaign -</option>
                                 {campaigns.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                             </select>
                             {campaigns.length === 0 && (

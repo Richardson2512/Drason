@@ -59,12 +59,12 @@ export default function ReplyIoAlternativesPage() {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            { "@type": "Question", "name": "What is the best Reply.io alternative in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe is the strongest Reply.io alternative for teams focused on cold email at scale. It ships native AI sequencing, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and built-in deliverability protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline, ESP-aware routing). Reply.io is multichannel-first with per-user pricing — better suited for SDR teams blending email with calls and LinkedIn." } },
-            { "@type": "Question", "name": "Why are teams switching from Reply.io?", "acceptedAnswer": { "@type": "Answer", "text": "Three reasons. Per-user pricing scales poorly past 5 reps. There is no automated bounce-rate auto-pause — domains burn before anyone notices. The platform is multichannel-engagement-first, not cold-email-volume-first, so mailbox-fleet management at 50+ mailboxes is less mature than Smartlead, Instantly, or Superkabe." } },
-            { "@type": "Question", "name": "Is Reply.io cheaper than Smartlead or Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "No. Reply.io's per-user model starts at ~$60/user/month — at 5 reps that is $300/month. Smartlead starts at $39/month with unlimited users. Instantly starts at $37/month. Superkabe Starter is $19/month with unlimited mailboxes. Reply.io makes sense when calling and LinkedIn integration are core, not when cold email volume is the priority." } },
+            { "@type": "Question", "name": "What is the best Reply.io alternative in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe is the strongest Reply.io alternative for teams focused on cold email at scale. It ships native AI sequencing, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and built-in deliverability protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline, ESP-aware routing). Reply.io is multichannel-first with per-user pricing - better suited for SDR teams blending email with calls and LinkedIn." } },
+            { "@type": "Question", "name": "Why are teams switching from Reply.io?", "acceptedAnswer": { "@type": "Answer", "text": "Three reasons. Per-user pricing scales poorly past 5 reps. There is no automated bounce-rate auto-pause - domains burn before anyone notices. The platform is multichannel-engagement-first, not cold-email-volume-first, so mailbox-fleet management at 50+ mailboxes is less mature than Smartlead, Instantly, or Superkabe." } },
+            { "@type": "Question", "name": "Is Reply.io cheaper than Smartlead or Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "No. Reply.io's per-user model starts at ~$60/user/month - at 5 reps that is $300/month. Smartlead starts at $39/month with unlimited users. Instantly starts at $37/month. Superkabe Starter is $19/month with unlimited mailboxes. Reply.io makes sense when calling and LinkedIn integration are core, not when cold email volume is the priority." } },
             { "@type": "Question", "name": "Does Reply.io have built-in deliverability protection?", "acceptedAnswer": { "@type": "Answer", "text": "Reply.io includes basic email validation and bounce reporting but does not auto-pause mailboxes when bounce rate crosses a threshold. There is no healing pipeline. Superkabe is the only platform on this list that ships threshold-based auto-pause and a 5-phase healing pipeline as standard." } },
             { "@type": "Question", "name": "How do I migrate from Reply.io to Superkabe?", "acceptedAnswer": { "@type": "Answer", "text": "Connect your Gmail, Microsoft 365, or SMTP mailboxes via OAuth or encrypted credentials, re-build sequences in Superkabe's native sequencer (or paste from Reply.io), and import contact lists via CSV. Sending switches to Superkabe immediately; the protection layer (auto-pause, 5-phase healing, ESP-aware routing) runs against every send from day one." } },
-            { "@type": "Question", "name": "Which Reply.io alternative is best for multichannel teams?", "acceptedAnswer": { "@type": "Answer", "text": "If multichannel (email + calls + LinkedIn) is core to the workflow, Mailshake is the closest direct alternative. If the team is willing to specialize — cold email through Superkabe, calls through a separate dialer — the cost and deliverability protection improve significantly." } }
+            { "@type": "Question", "name": "Which Reply.io alternative is best for multichannel teams?", "acceptedAnswer": { "@type": "Answer", "text": "If multichannel (email + calls + LinkedIn) is core to the workflow, Mailshake is the closest direct alternative. If the team is willing to specialize - cold email through Superkabe, calls through a separate dialer - the cost and deliverability protection improve significantly." } }
         ]
     };
 
@@ -92,7 +92,7 @@ export default function ReplyIoAlternativesPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Reply.io is a multichannel sales engagement platform — email, calls, LinkedIn, all stitched together. That is its strength and its constraint. Teams that primarily need cold email at scale hit the same walls: per-user pricing, no automated auto-pause, and mailbox-fleet management designed for SDR teams rather than agencies. Here are seven ranked alternatives.
+                    Reply.io is a multichannel sales engagement platform - email, calls, LinkedIn, all stitched together. That is its strength and its constraint. Teams that primarily need cold email at scale hit the same walls: per-user pricing, no automated auto-pause, and mailbox-fleet management designed for SDR teams rather than agencies. Here are seven ranked alternatives.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -101,8 +101,8 @@ export default function ReplyIoAlternativesPage() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reply.io is multichannel-first; cold-email-first alternatives are 3-5× cheaper at 5+ reps</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only alternative that ships native auto-pause and a 5-phase healing pipeline</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead and Instantly match Reply.io feature-for-feature on the email side at flat-tier pricing</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reply.io's AI features are competent but not differentiated — every alternative on this list ships AI sequencing</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is same-day — connect Gmail / Microsoft 365 / SMTP mailboxes, import sequences, sending swaps over</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reply.io's AI features are competent but not differentiated - every alternative on this list ships AI sequencing</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is same-day - connect Gmail / Microsoft 365 / SMTP mailboxes, import sequences, sending swaps over</li>
                     </ul>
                 </div>
 
@@ -124,9 +124,9 @@ export default function ReplyIoAlternativesPage() {
                     <h2 id="alternatives" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 Reply.io alternatives ranked</h2>
 
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — sender + protection layer in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - sender + protection layer in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe ships native AI sequencing through your own Google Workspace, Microsoft 365, or SMTP mailboxes — plus the only built-in protection layer on this list. Pre-send validation (syntax / MX / disposable / catch-all / conditional MillionVerifier probe). Real-time bounce monitoring on a rolling 100-send window. Auto-pause at 3% bounce rate after a 60-send minimum, with a 5-bounce safety net. 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) that recovers paused mailboxes automatically.
+                            Superkabe ships native AI sequencing through your own Google Workspace, Microsoft 365, or SMTP mailboxes - plus the only built-in protection layer on this list. Pre-send validation (syntax / MX / disposable / catch-all / conditional MillionVerifier probe). Real-time bounce monitoring on a rolling 100-send window. Auto-pause at 3% bounce rate after a 60-send minimum, with a 5-bounce safety net. 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) that recovers paused mailboxes automatically.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             ESP-aware routing scores each mailbox by its 30-day per-ESP bounce rate and uses a 60% capacity / 40% performance blend. 400+ DNSBL monitoring runs continuously. Flat-tier pricing replaces Reply.io's per-user model.
@@ -134,7 +134,7 @@ export default function ReplyIoAlternativesPage() {
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Cold-email-first teams running 10+ domains who care about not burning them</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> No native dialer or LinkedIn touches — pure cold email focus</li>
+                            <li><strong>Limitation:</strong> No native dialer or LinkedIn touches - pure cold email focus</li>
                         </ul>
                         <p className="text-sm mt-3">
                             <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link>
@@ -142,7 +142,7 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — mature sender at flat-tier pricing</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - mature sender at flat-tier pricing</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> matches Reply.io feature-for-feature on the email side: unlimited mailboxes, multi-step sequences, A/B variants, mailbox rotation, comprehensive webhooks. Flat-tier pricing instead of per-user. No auto-pause, ESP routing is provider-level.
                         </p>
@@ -154,7 +154,7 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — bundled warmup + lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - bundled warmup + lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> bundles a strong warmup network and B2B lead database. Per-active-lead pricing scales sharply at the upper tiers, but at small-to-mid volume the value is real.
                         </p>
@@ -166,7 +166,7 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison — high-volume single-tenant sender</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison - high-volume single-tenant sender</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets high-volume single-tenant teams with volume-based pricing that undercuts most alternatives at the upper tiers. Sparse UI, no bundled warmup or lead database, no native protection layer.
                         </p>
@@ -178,9 +178,9 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist — personalization-first with strong warmup</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist - personalization-first with strong warmup</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features (custom variables in images, dynamic landing pages, video personalization) and ships Lemwarm, one of the most respected warmup networks. Per-user pricing — same problem as Reply.io.
+                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features (custom variables in images, dynamic landing pages, video personalization) and ships Lemwarm, one of the most respected warmup networks. Per-user pricing - same problem as Reply.io.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Personalization-heavy SDR teams under 10 reps</li>
@@ -190,7 +190,7 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker — strong reply detection, established</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker - strong reply detection, established</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> built its reputation on reliability and reply detection. Bounce shield blocks invalid addresses on the way out. "If-campaign" branching is genuinely useful for nurture flows. No auto-pause or healing pipeline.
                         </p>
@@ -202,9 +202,9 @@ export default function ReplyIoAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Saleshandy — budget bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Saleshandy - budget bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a 700M+ contact lead database with a sequencer at a notably lower starting price. Basic deliverability tooling — no ESP-aware routing, no auto-pause.
+                            <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a 700M+ contact lead database with a sequencer at a notably lower starting price. Basic deliverability tooling - no ESP-aware routing, no auto-pause.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Solo and small teams that need leads + sender bundled</li>
@@ -298,7 +298,7 @@ export default function ReplyIoAlternativesPage() {
                     <h2 id="when-to-stay" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When to stay with Reply.io</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Multichannel — email + calls + LinkedIn — is core to the workflow, not an afterthought</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Multichannel - email + calls + LinkedIn - is core to the workflow, not an afterthought</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Team is under 5 reps and per-user pricing is comfortable</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> CRM-first workflow with deep Salesforce / HubSpot integration</li>
                         </ul>
@@ -316,7 +316,7 @@ export default function ReplyIoAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Replace Reply.io with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at flat-tier pricing instead of per-user."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - at flat-tier pricing instead of per-user."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -325,7 +325,7 @@ export default function ReplyIoAlternativesPage() {
                 <div className="space-y-4 mb-12">
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">What is the best Reply.io alternative in 2026?</h3>
-                        <p className="text-gray-600 text-sm">Superkabe — native AI sequencing plus the only built-in protection layer (auto-pause at 3% bounce after 60 sends, 5-phase healing pipeline) at flat-tier pricing.</p>
+                        <p className="text-gray-600 text-sm">Superkabe - native AI sequencing plus the only built-in protection layer (auto-pause at 3% bounce after 60 sends, 5-phase healing pipeline) at flat-tier pricing.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Is Reply.io cheaper than Smartlead or Instantly?</h3>

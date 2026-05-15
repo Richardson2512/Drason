@@ -36,7 +36,7 @@ interface AutocompleteState {
 
 export default function RichTextEditor({ content, onChange, placeholder, personalizationTokens = [], signatures, enableImages = false }: RichTextEditorProps) {
     // When `signatures` prop is not passed (e.g. inside the signature editor itself),
-    // hide the Insert Signature button entirely — it would be nonsensical.
+    // hide the Insert Signature button entirely - it would be nonsensical.
     const signatureInsertEnabled = signatures !== undefined;
     const signatureList = signatures || [];
     const containerRef = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
         onUpdate: ({ editor }) => {
             // Canonical write path: normalize Tiptap's emit so user-intended
             // blank lines (which Tiptap stores as <p></p> / <p><br></p> /
-            // <p>text<br></p>) become <p>&nbsp;</p> — the only form that
+            // <p>text<br></p>) become <p>&nbsp;</p> - the only form that
             // renders with visible height in browsers, email clients, and
             // every preview surface.
             //
@@ -220,7 +220,7 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
         if (!editor) return;
         // Empty paragraph forces a real blank line above the signature in
         // TipTap (a bare <br/> would get absorbed by the preceding paragraph
-        // when followed by a block-level element). No horizontal rule —
+        // when followed by a block-level element). No horizontal rule -
         // matches modern email client behavior (Gmail / Outlook / Apple
         // Mail) and keeps cold sends looking personal rather than templated.
         editor.chain().focus().insertContent(`<p></p>${signature.html_content}`).run();
@@ -316,7 +316,7 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
                     </>
                 )}
 
-                {/* Spintax helper — inserts a sample {a|b|c} block at the cursor.
+                {/* Spintax helper - inserts a sample {a|b|c} block at the cursor.
                     The send pipeline resolves spintax per-recipient so each lead
                     sees a different variant; breaks ISP pattern fingerprinting. */}
                 <div className="w-px h-4 mx-1" style={{ background: '#D1CBC5' }} />
@@ -325,7 +325,7 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
                     onClick={() => editor?.chain().focus().insertContent('{Hi|Hey|Hello}').run()}
                     className="text-[10px] px-2 py-1 rounded-md cursor-pointer flex items-center gap-1 transition-colors hover:bg-[#E8E3DC]"
                     style={{ border: '1px solid #D1CBC5', color: '#6B7280' }}
-                    title="Insert spintax — {a|b|c} rotates per recipient to break spam-filter pattern matching"
+                    title="Insert spintax - {a|b|c} rotates per recipient to break spam-filter pattern matching"
                 >
                     {`{a|b|c}`} Spintax
                 </button>
@@ -368,7 +368,7 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
                     </>
                 )}
 
-                {/* Insert Signature dropdown — only when caller opts in by passing `signatures` */}
+                {/* Insert Signature dropdown - only when caller opts in by passing `signatures` */}
                 {signatureInsertEnabled && (
                 <>
                 <div className="w-px h-4 mx-1" style={{ background: '#D1CBC5' }} />

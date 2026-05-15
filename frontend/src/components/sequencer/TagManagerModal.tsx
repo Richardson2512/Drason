@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * TagManagerModal — create / rename / recolor / delete tags.
+ * TagManagerModal - create / rename / recolor / delete tags.
  *
  * Org-scoped: lists every tag the org has defined, with a count of how
  * many contacts each tag is applied to. Inline rename + color picker.
@@ -114,7 +114,7 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
 
     // Lock background scroll while the modal is open. The dashboard's
     // actual scroll container is `<main id="main-content">` (set in
-    // DashboardShell), NOT the body — so setting body overflow does
+    // DashboardShell), NOT the body - so setting body overflow does
     // nothing. We lock both for safety; the main element is the one
     // that actually matters in this app.
     useEffect(() => {
@@ -180,7 +180,7 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
         if (tag.contact_count > 0) parts.push(`${tag.contact_count} contact${tag.contact_count === 1 ? '' : 's'}`);
         if (tag.campaign_count > 0) parts.push(`${tag.campaign_count} campaign${tag.campaign_count === 1 ? '' : 's'}`);
         const msg = parts.length > 0
-            ? `Delete "${tag.name}"? It's currently applied to ${parts.join(' and ')} — they will lose this tag.`
+            ? `Delete "${tag.name}"? It's currently applied to ${parts.join(' and ')} - they will lose this tag.`
             : `Delete "${tag.name}"?`;
         if (!confirm(msg)) return;
         try {
@@ -236,7 +236,7 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
                             Add
                         </button>
                     </div>
-                    {/* Inline color row — no popover. Click a dot to pick.
+                    {/* Inline color row - no popover. Click a dot to pick.
                         Active dot gets a dark ring. Same pattern as
                         GitHub/Linear label pickers. */}
                     <ColorRow value={newColor} onChange={setNewColor} />
@@ -340,7 +340,7 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
                 {/* Footer */}
                 <div className="px-4 py-2 shrink-0" style={{ borderTop: '1px solid #E8E3DC', background: '#FAFAF8' }}>
                     <p className="text-[10px] text-gray-400">
-                        Deleting a tag removes it from every contact — no contact data is lost.
+                        Deleting a tag removes it from every contact - no contact data is lost.
                     </p>
                 </div>
             </div>
@@ -349,7 +349,7 @@ export default function TagManagerModal({ onClose, onChanged }: TagManagerModalP
     );
 }
 
-/** Inline horizontal row of tag-shape swatches — the simplest possible
+/** Inline horizontal row of tag-shape swatches - the simplest possible
  *  color picker. No popover, no overlap. Active swatch gets a dark ring;
  *  hover gets a soft ring. */
 function ColorRow({

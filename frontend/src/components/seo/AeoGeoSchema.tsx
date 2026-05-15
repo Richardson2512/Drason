@@ -6,10 +6,10 @@ import React from 'react';
  * Emits four coordinated JSON-LD blocks that answer engines and generative
  * search platforms specifically look for:
  *
- * 1. BreadcrumbList — path context for deep links
- * 2. SpeakableSpecification — tells voice assistants what to read aloud
- * 3. Author Person with sameAs — E-E-A-T signal for GEO
- * 4. Dataset (optional) — marks benchmark data as citable research
+ * 1. BreadcrumbList - path context for deep links
+ * 2. SpeakableSpecification - tells voice assistants what to read aloud
+ * 3. Author Person with sameAs - E-E-A-T signal for GEO
+ * 4. Dataset (optional) - marks benchmark data as citable research
  *
  * Used by the 5 cold-email-tools blog posts to close AEO/GEO gaps beyond
  * the baseline BlogPosting + FAQPage schema.

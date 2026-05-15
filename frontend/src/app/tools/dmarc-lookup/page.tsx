@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const faqItems = [
  {
  question: 'What is a DMARC record?',
- answer: 'A DMARC (Domain-based Message Authentication, Reporting, and Conformance) record is a DNS TXT record published at _dmarc.yourdomain.com. It tells receiving mail servers what to do with emails that fail SPF and DKIM authentication checks — deliver them, quarantine them, or reject them entirely.',
+ answer: 'A DMARC (Domain-based Message Authentication, Reporting, and Conformance) record is a DNS TXT record published at _dmarc.yourdomain.com. It tells receiving mail servers what to do with emails that fail SPF and DKIM authentication checks - deliver them, quarantine them, or reject them entirely.',
  },
  {
  question: 'Why is DMARC important for email deliverability?',
@@ -28,7 +28,7 @@ const faqItems = [
  },
  {
  question: 'What is the difference between p=none, p=quarantine, and p=reject?',
- answer: 'p=none is monitor-only mode — failing emails are still delivered, but you receive reports. p=quarantine tells receivers to send failing emails to spam or junk. p=reject instructs receivers to block failing emails entirely. Most domains should start at p=none, analyze reports, then gradually move to p=quarantine and eventually p=reject.',
+ answer: 'p=none is monitor-only mode - failing emails are still delivered, but you receive reports. p=quarantine tells receivers to send failing emails to spam or junk. p=reject instructs receivers to block failing emails entirely. Most domains should start at p=none, analyze reports, then gradually move to p=quarantine and eventually p=reject.',
  },
  {
  question: 'How long does it take for DMARC changes to take effect?',

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Post-connect onboarding modal — fires once after a fresh LinkedIn
+ * Post-connect onboarding modal - fires once after a fresh LinkedIn
  * account connection (the URL carries `?connected=1` on return from the
  * Unipile hosted-auth redirect).
  *
@@ -94,7 +94,7 @@ export function markOnboardingDismissed(): void {
         window.localStorage.setItem(DISMISSED_KEY, '1');
     } catch {
         // localStorage can be unavailable in incognito with storage disabled.
-        // Silently no-op — modal will re-fire next session, which is fine.
+        // Silently no-op - modal will re-fire next session, which is fine.
     }
 }
 
@@ -150,7 +150,7 @@ export default function PostConnectOnboardingModal({ open, onClose }: PostConnec
                             <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                                 <Radar className="w-3 h-3 inline-block mr-1 -mt-0.5 text-[#0A66C2]" />
                                 Every post, article, and thought-leadership update on this account is now monitored for engagement signals.
-                                Set up the four pieces below so engaging profiles flow straight into your outbound — email, cold call, and follow-up sequences.
+                                Set up the four pieces below so engaging profiles flow straight into your outbound - email, cold call, and follow-up sequences.
                             </p>
                         </div>
                     </div>

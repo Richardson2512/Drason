@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * Super LinkedIn — new campaign wizard.
+ * Super LinkedIn - new campaign wizard.
  *
  * Single-channel by design: Super LinkedIn campaigns are LinkedIn-only.
  * Multi-channel sequences (LinkedIn touches mixed with email) live on
  * `/dashboard/sequencer/campaigns/new`.
  *
  * Three steps, no leaving the page:
- *   1. Basics      — name, stop-on-reply toggle
- *   2. Sender pool — pick connected LinkedIn accounts
- *   3. Sequence    — add touch points with day/hour gaps + per-step copy
+ *   1. Basics      - name, stop-on-reply toggle
+ *   2. Sender pool - pick connected LinkedIn accounts
+ *   3. Sequence    - add touch points with day/hour gaps + per-step copy
  *
  * On Create we POST /api/linkedin/campaigns which writes the Campaign +
  * SequenceSteps + CampaignLinkedInSender attachments atomically and
@@ -77,7 +77,7 @@ const STEP_META: Record<StepType, {
         label: 'View profile',
         icon: <Eye className="w-3.5 h-3.5" />,
         accent: '#F59E0B',
-        description: 'Visit the lead\'s profile (warm-up — lead sees you in "viewed your profile").',
+        description: 'Visit the lead\'s profile (warm-up - lead sees you in "viewed your profile").',
         needsBody: false, needsNote: false, needsSubject: false,
     },
     linkedin_follow: {
@@ -105,14 +105,14 @@ const STEP_META: Record<StepType, {
         label: 'Direct message',
         icon: <MessageCircle className="w-3.5 h-3.5" />,
         accent: '#16A34A',
-        description: 'Send a DM. Requires the lead to be a 1st-degree connection — schedule after a connection request.',
+        description: 'Send a DM. Requires the lead to be a 1st-degree connection - schedule after a connection request.',
         needsBody: true, needsNote: false, needsSubject: false,
     },
     linkedin_inmail: {
         label: 'InMail',
         icon: <Send className="w-3.5 h-3.5" />,
         accent: '#8B5CF6',
-        description: 'Send an InMail. Requires a paid tier — Premium (5-15/mo), Sales Navigator (~50/mo), or Recruiter (30-150+/mo). Credits consumed on closed profiles only. Classic / free accounts can\'t send InMail.',
+        description: 'Send an InMail. Requires a paid tier - Premium (5-15/mo), Sales Navigator (~50/mo), or Recruiter (30-150+/mo). Credits consumed on closed profiles only. Classic / free accounts can\'t send InMail.',
         needsBody: true, needsNote: false, needsSubject: true,
     },
 };
@@ -142,21 +142,21 @@ export default function LinkedInCampaignWizardPage() {
     const isEditMode = !!editId;
     const [stage, setStage] = useState<1 | 2 | 3>(1);
 
-    // Stage 1 — basics
+    // Stage 1 - basics
     const [name, setName] = useState('');
     const [stopOnReply, setStopOnReply] = useState(true);
 
-    // Stage 2 — senders
+    // Stage 2 - senders
     const [allSenders, setAllSenders] = useState<SenderOption[]>([]);
     const [loadingSenders, setLoadingSenders] = useState(true);
     const [pickedSenderIds, setPickedSenderIds] = useState<string[]>([]);
 
-    // Stage 3 — sequence
+    // Stage 3 - sequence
     const [steps, setSteps] = useState<StepRow[]>([
         // Sensible default: warm-up view → CR → message
         { id: cryptoId(), step_type: 'linkedin_view_profile',       delay_days: 0, delay_hours: 0, subject: '', body: '', note: '',                                                                       condition: null },
-        { id: cryptoId(), step_type: 'linkedin_connection_request', delay_days: 2, delay_hours: 0, subject: '', body: '', note: 'Hi {{first_name}}, came across your profile — building something adjacent and would love to swap notes.', condition: null },
-        { id: cryptoId(), step_type: 'linkedin_message',            delay_days: 3, delay_hours: 0, subject: '', body: 'Thanks for connecting, {{first_name}}! Quick thought — would love your read on...',   note: '', condition: 'if_connection' },
+        { id: cryptoId(), step_type: 'linkedin_connection_request', delay_days: 2, delay_hours: 0, subject: '', body: '', note: 'Hi {{first_name}}, came across your profile - building something adjacent and would love to swap notes.', condition: null },
+        { id: cryptoId(), step_type: 'linkedin_message',            delay_days: 3, delay_hours: 0, subject: '', body: 'Thanks for connecting, {{first_name}}! Quick thought - would love your read on...',   note: '', condition: 'if_connection' },
     ]);
 
     // Submit
@@ -226,12 +226,12 @@ export default function LinkedInCampaignWizardPage() {
                 id: a.id, display_name: a.display_name, account_type: a.account_type, status: a.status,
             }));
             setAllSenders(list);
-            // Only auto-pick the first account on the initial load — a
+            // Only auto-pick the first account on the initial load - a
             // focus-triggered refetch should preserve whatever the user
             // already selected.
             if (autoPickFirst && list.length > 0) setPickedSenderIds([list[0].id]);
         } catch {
-            // ignore — keep the previous list visible
+            // ignore - keep the previous list visible
         } finally {
             setLoadingSenders(false);
         }
@@ -243,7 +243,7 @@ export default function LinkedInCampaignWizardPage() {
 
     // Refetch on focus / visibility so a sender connected in the
     // Accounts page (other tab) shows up in the wizard without a full
-    // reload. Subsequent refetches don't auto-pick — the wizard
+    // reload. Subsequent refetches don't auto-pick - the wizard
     // preserves the operator's existing selection.
     useEffect(() => {
         const onFocus = () => { void fetchSenders(false); };
@@ -414,7 +414,7 @@ export default function LinkedInCampaignWizardPage() {
                 ))}
             </div>
 
-            {/* Stage 1 — Basics */}
+            {/* Stage 1 - Basics */}
             {stage === 1 && (
                 <div className="premium-card flex flex-col gap-4">
                     <div>
@@ -422,7 +422,7 @@ export default function LinkedInCampaignWizardPage() {
                         <input
                             value={name}
                             onChange={e => setName(e.target.value)}
-                            placeholder="e.g. Founders — Series A SaaS (LinkedIn-only)"
+                            placeholder="e.g. Founders - Series A SaaS (LinkedIn-only)"
                             className="w-full px-3 py-2 text-sm rounded-lg outline-none bg-white"
                             style={{ border: '1px solid #D1CBC5' }}
                         />
@@ -454,7 +454,7 @@ export default function LinkedInCampaignWizardPage() {
                 </div>
             )}
 
-            {/* Stage 2 — Senders */}
+            {/* Stage 2 - Senders */}
             {stage === 2 && (
                 <div className="premium-card flex flex-col gap-3">
                     <div>
@@ -527,7 +527,7 @@ export default function LinkedInCampaignWizardPage() {
                 </div>
             )}
 
-            {/* Stage 3 — Sequence */}
+            {/* Stage 3 - Sequence */}
             {stage === 3 && (
                 <div className="flex flex-col gap-3">
                     <div className="premium-card">
@@ -611,7 +611,7 @@ export default function LinkedInCampaignWizardPage() {
 
                                         {meta.needsNote && (
                                             <div className="pl-12">
-                                                <label className="block text-[10px] font-semibold text-gray-600 mb-1">Connection note ({s.note.length} / 300 chars — LinkedIn limit)</label>
+                                                <label className="block text-[10px] font-semibold text-gray-600 mb-1">Connection note ({s.note.length} / 300 chars - LinkedIn limit)</label>
                                                 <textarea
                                                     value={s.note}
                                                     maxLength={300}
@@ -705,7 +705,7 @@ export default function LinkedInCampaignWizardPage() {
     );
 }
 
-// Small id helper — crypto.randomUUID() is available in modern browsers.
+// Small id helper - crypto.randomUUID() is available in modern browsers.
 function cryptoId(): string {
     if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) return crypto.randomUUID();
     return Math.random().toString(36).slice(2);

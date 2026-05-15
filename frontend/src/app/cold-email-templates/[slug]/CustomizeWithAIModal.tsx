@@ -260,12 +260,12 @@ export default function CustomizeWithAIModal({
                         </div>
                     )}
 
-                    {/* Quota indicator — hidden for authed users (unlimited) */}
+                    {/* Quota indicator - hidden for authed users (unlimited) */}
                     {meta && !meta.authed && !isAuthenticated && (
                         <p className="text-xs text-[#6B5E4F] mb-1">
                             {meta.remaining > 0
                                 ? `${meta.remaining} of ${meta.limit} free generations remaining today`
-                                : `Daily limit reached — resets ${formatResetTime(meta.resetAt)}`}
+                                : `Daily limit reached - resets ${formatResetTime(meta.resetAt)}`}
                             {' · '}
                             <a
                                 href={`/signup?from=${encodeURIComponent(`/cold-email-templates/${templateSlug}`)}&intent=ai-customize`}
@@ -401,7 +401,7 @@ export async function readSseStream(
                 else if (event === 'error') handlers.onError?.(parsed.error || 'unknown error');
                 else if (event === 'done') handlers.onDone?.();
             } catch {
-                /* malformed frame — skip */
+                /* malformed frame - skip */
             }
         }
     }

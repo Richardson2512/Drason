@@ -8,12 +8,12 @@ import type { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
- title: 'Product Hub — The AI Cold Email Platform | Superkabe',
- description: 'Everything inside Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing all from one product.',
+ title: 'Product Hub - The AI Cold Email Platform | Superkabe',
+ description: 'Everything inside Superkabe - the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing all from one product.',
  alternates: { canonical: '/product' },
  openGraph: {
- title: 'Product Hub — The AI Cold Email Platform | Superkabe',
- description: 'AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing — all in one platform.',
+ title: 'Product Hub - The AI Cold Email Platform | Superkabe',
+ description: 'AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing - all in one platform.',
  url: '/product',
  siteName: 'Superkabe',
  type: 'website',
@@ -32,7 +32,7 @@ export default function ProductIndexPage() {
  title: 'AI Sequencer & Native Sending',
  links: [
  { title: 'AI Cold Email Sequences', href: '/product/ai-cold-email-sequences', desc: 'Multi-step AI-drafted sequences with per-step variant testing, grounded in your ICP and voice.' },
- { title: 'ESP-Aware Routing + Health Gate', href: '/product/esp-aware-sending-health-gate', desc: 'GREEN/YELLOW/RED scoring and pre-send health gate — Gmail↔Gmail, Outlook↔Outlook matching.' },
+ { title: 'ESP-Aware Routing + Health Gate', href: '/product/esp-aware-sending-health-gate', desc: 'GREEN/YELLOW/RED scoring and pre-send health gate - Gmail↔Gmail, Outlook↔Outlook matching.' },
  { title: 'Unlimited Multi-Mailbox Sending', href: '/product/unlimited-multi-mailbox-sending', desc: 'Google Workspace, Microsoft 365, and custom SMTP with no per-seat limits.' },
  { title: 'Cold Email Sending Analytics', href: '/product/cold-email-sending-analytics', desc: 'Send funnel, inbox placement, and domain-health analytics with HMAC-signed tracking tokens.' },
  ]
@@ -90,8 +90,8 @@ export default function ProductIndexPage() {
  const jsonLd = {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
- "name": "Superkabe Product Hub — AI Cold Email Platform with Deliverability Protection",
- "description": "Everything inside Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing from one product.",
+ "name": "Superkabe Product Hub - AI Cold Email Platform with Deliverability Protection",
+ "description": "Everything inside Superkabe - the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing from one product.",
  "url": "https://www.superkabe.com/product",
  "publisher": {
  "@type": "Organization",
@@ -124,7 +124,7 @@ export default function ProductIndexPage() {
  <MarketingBackdrop />
 
  <main className="flex-1 max-w-6xl mx-auto px-6 w-full pt-32 md:pt-40 pb-16">
- {/* Mailivery-style header — tag pill + huge H1 + subtitle */}
+ {/* Mailivery-style header - tag pill + huge H1 + subtitle */}
  <div className="mb-20">
  <div className="mb-8">
  <span className="inline-block px-5 py-1.5 rounded-full bg-gray-900 text-white text-sm font-medium">
@@ -135,10 +135,10 @@ export default function ProductIndexPage() {
  className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 leading-[1.1] mb-6"
  style={{ letterSpacing: '-0.02em' }}
  >
- The AI cold email platform — every layer, one product
+ The AI cold email platform - every layer, one product
  </h1>
  <p className="text-lg md:text-xl text-gray-600 max-w-3xl leading-relaxed">
- Superkabe is an AI cold email platform with native deliverability protection. Explore the full product — AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and the healing layer that keeps senders alive.
+ Superkabe is an AI cold email platform with native deliverability protection. Explore the full product - AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and the healing layer that keeps senders alive.
  </p>
  <hr className="mt-10 border-0 border-t border-gray-900" />
  </div>
@@ -187,7 +187,7 @@ export default function ProductIndexPage() {
  </div>
 
  <BottomCtaStrip
- headline="One platform — every layer of cold email"
+ headline="One platform - every layer of cold email"
  body="AI sequences, multi-mailbox sending, validation, real-time monitoring, threshold-based auto-pause, and the 5-phase healing pipeline. 14-day free trial, no credit card required."
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See pricing', href: '/pricing' }}

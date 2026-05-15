@@ -1,20 +1,20 @@
 'use client';
 
 /**
- * Super LinkedIn — overview page.
+ * Super LinkedIn - overview page.
  *
  * Live dashboard for the LinkedIn module. Wires up:
  *   - KPI strip (analytics/kpi + signal-lead-funnel, 30-day window)
  *   - Recent signals (signals/feed, last 7)
  *   - Active campaigns (analytics/campaign-perf, 30-day window)
- *   - Agent stack health (analytics/agent-telemetry, 24h window) —
+ *   - Agent stack health (analytics/agent-telemetry, 24h window) -
  *     surfaces supervisor / ICP matcher / enrichment / reply classifier
  *     so operators can see at-a-glance whether the 24/7 stack is alive.
  *   - SUGGEST review queue count + click-through
  *   - Rule-health banner for monitoring rules with deleted refs
  *   - Zero-state onboarding when the org has no connected accounts yet
  *
- * Refetches on tab focus / visibility — matches the pattern on every
+ * Refetches on tab focus / visibility - matches the pattern on every
  * other LinkedIn page so jumping between tabs always sees fresh state.
  */
 
@@ -163,7 +163,7 @@ export default function LinkedInOverviewPage() {
             apiClient<CampaignRow[]>('/api/linkedin/analytics/campaign-perf?range=30d').catch(() => []),
             apiClient<SignalLeadPayload>('/api/linkedin/analytics/signal-lead-funnel?range=30d').catch(() => null),
             apiClient<{ data: FeedRow[] } | FeedRow[]>('/api/linkedin/signals/feed?limit=7').catch(() => null),
-            // Agent telemetry — 24h window is the operator-meaningful slice.
+            // Agent telemetry - 24h window is the operator-meaningful slice.
             // The endpoint reads filters via `range`; we want a tight
             // window for "is the stack alive RIGHT NOW".
             apiClient<AgentTelemetryRow[]>('/api/linkedin/analytics/agent-telemetry?range=7d').catch(() => []),
@@ -188,7 +188,7 @@ export default function LinkedInOverviewPage() {
         return () => { cancelled = true; };
     }, [fetchAll]);
 
-    // Refetch on focus + visibility — matches the pattern on every other
+    // Refetch on focus + visibility - matches the pattern on every other
     // LinkedIn page. Operator launches a campaign in another tab → comes
     // back to Overview → counters reflect reality.
     useEffect(() => {
@@ -211,49 +211,49 @@ export default function LinkedInOverviewPage() {
     const KPI_TILES = [
         {
             label: 'LinkedIn accounts',
-            value: loading ? '—' : senders.length.toLocaleString(),
+            value: loading ? '-' : senders.length.toLocaleString(),
             delta: 'connected senders',
             icon: <Users size={14} strokeWidth={1.75} />, tint: 'bg-blue-50 text-blue-700',
         },
         {
             label: 'Active campaigns',
-            value: loading ? '—' : activeCampaignsCount.toLocaleString(),
+            value: loading ? '-' : activeCampaignsCount.toLocaleString(),
             delta: `of ${totalCampaigns} total`,
             icon: <Rocket size={14} strokeWidth={1.75} />, tint: 'bg-emerald-50 text-emerald-700',
         },
         {
             label: 'Connection requests',
-            value: loading ? '—' : (kpi?.invites_sent ?? 0).toLocaleString(),
+            value: loading ? '-' : (kpi?.invites_sent ?? 0).toLocaleString(),
             delta: 'sent · last 30 days',
             icon: <Send size={14} strokeWidth={1.75} />, tint: 'bg-violet-50 text-violet-700',
         },
         {
             label: 'Acceptance rate',
-            value: loading ? '—' : pct(kpi?.acceptance_rate ?? 0),
+            value: loading ? '-' : pct(kpi?.acceptance_rate ?? 0),
             delta: `${(kpi?.accepted ?? 0).toLocaleString()} accepted`,
             icon: <Heart size={14} strokeWidth={1.75} />, tint: 'bg-rose-50 text-rose-700',
         },
         {
             label: 'DMs sent',
-            value: loading ? '—' : (kpi?.dms_sent ?? 0).toLocaleString(),
+            value: loading ? '-' : (kpi?.dms_sent ?? 0).toLocaleString(),
             delta: 'messages + InMails',
             icon: <MessageCircle size={14} strokeWidth={1.75} />, tint: 'bg-amber-50 text-amber-700',
         },
         {
             label: 'Reply rate',
-            value: loading ? '—' : pct(kpi?.reply_rate ?? 0),
+            value: loading ? '-' : pct(kpi?.reply_rate ?? 0),
             delta: `${(kpi?.replies_received ?? 0).toLocaleString()} replies`,
             icon: <MessageSquare size={14} strokeWidth={1.75} />, tint: 'bg-indigo-50 text-indigo-700',
         },
         {
             label: 'Engagement signals',
-            value: loading ? '—' : engagementEvents.toLocaleString(),
+            value: loading ? '-' : engagementEvents.toLocaleString(),
             delta: `${icpMatched.toLocaleString()} matched ICP`,
             icon: <Radar size={14} strokeWidth={1.75} />, tint: 'bg-sky-50 text-sky-700',
         },
         {
             label: 'Profiles from engagement',
-            value: loading ? '—' : profilesFromEngagement.toLocaleString(),
+            value: loading ? '-' : profilesFromEngagement.toLocaleString(),
             delta: 'new leads · 30d',
             icon: <UserPlus size={14} strokeWidth={1.75} />, tint: 'bg-teal-50 text-teal-700',
         },
@@ -279,7 +279,7 @@ export default function LinkedInOverviewPage() {
                 </Link>
             </div>
 
-            {/* Zero-state onboarding — first thing a brand-new org sees.
+            {/* Zero-state onboarding - first thing a brand-new org sees.
                 Walks them through the linear "connect → ICP → campaign"
                 path before they see a wall of zeros. */}
             {showZeroState && (
@@ -321,7 +321,7 @@ export default function LinkedInOverviewPage() {
                 </div>
             )}
 
-            {/* Rule-health banner — surfaces dangling SignalMonitoringRule
+            {/* Rule-health banner - surfaces dangling SignalMonitoringRule
                 refs (deleted campaigns or tombstoned ICPs) the supervisor
                 would silently skip. Same source the Signals page uses. */}
             {ruleIssues.length > 0 && (
@@ -339,7 +339,7 @@ export default function LinkedInOverviewPage() {
                 </div>
             )}
 
-            {/* SUGGEST review queue badge — engagers waiting for operator
+            {/* SUGGEST review queue badge - engagers waiting for operator
                 approval before enrollment. Click-through to the inline
                 queue on the Signals page. */}
             {reviewQueueCount > 0 && (
@@ -454,7 +454,7 @@ export default function LinkedInOverviewPage() {
                 </div>
             </div>
 
-            {/* Agent stack health — surfaces the 24/7 supervisor + 4
+            {/* Agent stack health - surfaces the 24/7 supervisor + 4
                 agents so operators can see at-a-glance whether the
                 always-on layer is alive. 7-day window because most ops
                 care about "is this healthy?" not "what happened in the
@@ -511,7 +511,7 @@ export default function LinkedInOverviewPage() {
                 )}
             </div>
 
-            {/* Sub-surface nav cards — every page in the LinkedIn module
+            {/* Sub-surface nav cards - every page in the LinkedIn module
                 should be one click from Overview. Sidebar already has
                 them but a visual card row reinforces the surface area
                 for first-time users. */}

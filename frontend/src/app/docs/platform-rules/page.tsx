@@ -54,7 +54,7 @@ export default function PlatformRulesPage() {
  <div className="bg-amber-50 border border-amber-200 p-6 mb-6">
  <h3 className="text-xl font-semibold text-amber-700 mb-3">⚠️ WARNING Threshold</h3>
  <p className="text-gray-700 mb-2"><strong>3 bounces</strong> within <strong>60 sends</strong></p>
- <p className="text-gray-500 text-sm mb-4">~5% bounce rate — early detection</p>
+ <p className="text-gray-500 text-sm mb-4">~5% bounce rate - early detection</p>
  <p className="text-gray-600">
  <strong>Action:</strong> Mailbox transitions to <code className="px-2 py-1 bg-amber-100 text-amber-700">warning</code> state
  </p>
@@ -63,7 +63,7 @@ export default function PlatformRulesPage() {
  <div className="bg-red-50 border border-red-200 p-6 mb-8">
  <h3 className="text-xl font-semibold text-red-700 mb-3">🛑 PAUSE Threshold</h3>
  <p className="text-gray-700 mb-2"><strong>5 bounces</strong> within <strong>100 sends</strong></p>
- <p className="text-gray-500 text-sm mb-4">5% bounce rate — hard stop</p>
+ <p className="text-gray-500 text-sm mb-4">5% bounce rate - hard stop</p>
  <p className="text-gray-600">
  <strong>Action:</strong> Mailbox transitions to <code className="px-2 py-1 bg-red-100 text-red-700">paused</code> state
  </p>

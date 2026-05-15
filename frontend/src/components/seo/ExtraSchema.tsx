@@ -20,7 +20,7 @@ export interface ItemListSchemaData {
 /**
  * Supplementary schema.org blocks that complement BlogPosting / TechArticle.
  *
- * NOTE on HowTo: Google deprecated HowTo rich results in Sept 2023 — they're
+ * NOTE on HowTo: Google deprecated HowTo rich results in Sept 2023 - they're
  * now restricted to Android-related content. The component below is preserved
  * as an inert no-op so existing call sites don't break, but it intentionally
  * renders nothing. Use the page's narrative content + ItemList for ranked

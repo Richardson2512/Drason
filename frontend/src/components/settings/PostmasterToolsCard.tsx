@@ -19,7 +19,7 @@ export default function PostmasterToolsCard({ embedded = false }: { embedded?: b
             const r = await apiClient<{ success: boolean } & PostmasterStatus>('/api/postmaster/status');
             setStatus(r);
         } catch {
-            // non-fatal — leave stale state
+            // non-fatal - leave stale state
         }
     };
 
@@ -105,7 +105,7 @@ export default function PostmasterToolsCard({ embedded = false }: { embedded?: b
             {!status?.connected ? (
                 <div>
                     <p className="text-sm text-slate-600 mb-4">
-                        Connect the Google account that owns your sending domains in Postmaster Tools. We pull reputation data daily for every verified domain — drives the Domain Reputation card and auto-pause thresholds.
+                        Connect the Google account that owns your sending domains in Postmaster Tools. We pull reputation data daily for every verified domain - drives the Domain Reputation card and auto-pause thresholds.
                     </p>
                     <button onClick={connect} disabled={busy} className="px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50">
                         {busy ? 'Opening Google…' : 'Connect Postmaster Tools'}
@@ -114,8 +114,8 @@ export default function PostmasterToolsCard({ embedded = false }: { embedded?: b
             ) : (
                 <div className="space-y-3">
                     <div className="text-xs text-slate-500 space-y-1">
-                        <div>Connected: {status.connectedAt ? new Date(status.connectedAt).toLocaleString() : '—'}</div>
-                        <div>Last fetch: {status.lastFetchAt ? new Date(status.lastFetchAt).toLocaleString() : '— (next 03:00 UTC)'}</div>
+                        <div>Connected: {status.connectedAt ? new Date(status.connectedAt).toLocaleString() : '-'}</div>
+                        <div>Last fetch: {status.lastFetchAt ? new Date(status.lastFetchAt).toLocaleString() : '- (next 03:00 UTC)'}</div>
                         {status.lastError && <div className="text-rose-600">Last error: {status.lastError}</div>}
                     </div>
                     <div className="flex gap-2">

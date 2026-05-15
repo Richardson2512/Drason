@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Best EmailBison Alternatives for Cold Email in 2026 — Superkabe';
+export const alt = 'Best EmailBison Alternatives for Cold Email in 2026 - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

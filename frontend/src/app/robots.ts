@@ -11,10 +11,10 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
                 disallow: privateDisallow,
             },
-            // Major AI crawlers — explicitly allowed on all public content
+            // Major AI crawlers - explicitly allowed on all public content
             ...[
                 'GPTBot',           // OpenAI training crawler
-                'OAI-SearchBot',    // OpenAI live-search crawler (ChatGPT browsing) — separate from GPTBot
+                'OAI-SearchBot',    // OpenAI live-search crawler (ChatGPT browsing) - separate from GPTBot
                 'ChatGPT-User',     // OpenAI on-demand fetcher when a user asks ChatGPT to read a URL
                 'Google-Extended',  // Google Gemini
                 'ClaudeBot',        // Anthropic Claude training

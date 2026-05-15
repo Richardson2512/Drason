@@ -83,7 +83,7 @@ export async function apiClient<T>(
             // so we can show "Invalid credentials" etc.
         }
 
-        // Global Subscription Gate — show upgrade modal for expired/canceled/past_due
+        // Global Subscription Gate - show upgrade modal for expired/canceled/past_due
         if (response.status === 403 && data?.upgrade_required) {
             if (typeof window !== 'undefined') {
                 window.dispatchEvent(new CustomEvent('subscription-expired', {
@@ -96,7 +96,7 @@ export async function apiClient<T>(
             throw new Error(data.message || 'Subscription required');
         }
 
-        // Global Consent Gate — show re-acceptance modal when ToS / Privacy
+        // Global Consent Gate - show re-acceptance modal when ToS / Privacy
         // version has bumped. Backend returns 412 with { requires_consent_update,
         // missing: ['tos'|'privacy'], current_versions: { tos, privacy } }.
         if (response.status === 412 && data?.requires_consent_update) {
@@ -119,7 +119,7 @@ export async function apiClient<T>(
         }
 
             // Return data.data when the standardized envelope is present, even
-            // if data.data is null/0/''/false — those are real values an
+            // if data.data is null/0/''/false - those are real values an
             // endpoint might intentionally return. Falling back to the wrapper
             // object on falsy data.data caused empty-state pages to crash on
             // `wrapper.someField` reads. Legacy responses (no `success` field)
@@ -196,14 +196,14 @@ export function stopTokenRefresh(): void {
 }
 
 /**
- * Logout — clears server cookie and stops refresh.
+ * Logout - clears server cookie and stops refresh.
  */
 export async function logout(): Promise<void> {
     stopTokenRefresh();
     try {
         await apiClient('/api/auth/logout', { method: 'POST' });
     } catch {
-        // Best-effort — even if the API call fails, clear local state
+        // Best-effort - even if the API call fails, clear local state
     }
     window.location.assign('/login');
 }

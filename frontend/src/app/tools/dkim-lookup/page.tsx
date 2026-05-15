@@ -86,7 +86,7 @@ const faqSchema = {
  "name": "How do I find my DKIM selector?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Open any email sent from your domain and view the full email headers. Look for the DKIM-Signature header and find the s= tag — that is your selector. For example, Google Workspace typically uses 'google' as the selector, Microsoft 365 uses 'selector1' or 'selector2', and other providers use varying conventions.",
+ "text": "Open any email sent from your domain and view the full email headers. Look for the DKIM-Signature header and find the s= tag - that is your selector. For example, Google Workspace typically uses 'google' as the selector, Microsoft 365 uses 'selector1' or 'selector2', and other providers use varying conventions.",
  },
  },
  {
@@ -94,7 +94,7 @@ const faqSchema = {
  "name": "What does an empty DKIM public key (p=) mean?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "An empty p= tag in a DKIM record means the key has been revoked. This is the standard way to decommission a DKIM key — the record stays in DNS but with an empty public key value. Emails signed with a revoked key will fail DKIM verification. This is commonly done during key rotation or when migrating to a new email provider.",
+ "text": "An empty p= tag in a DKIM record means the key has been revoked. This is the standard way to decommission a DKIM key - the record stays in DNS but with an empty public key value. Emails signed with a revoked key will fail DKIM verification. This is commonly done during key rotation or when migrating to a new email provider.",
  },
  },
  {
@@ -102,7 +102,7 @@ const faqSchema = {
  "name": "Can a domain have multiple DKIM records?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Each DKIM record uses a different selector, so a domain can have as many DKIM keys as needed. This is common when a domain sends email through multiple services — each service gets its own selector and key pair. For example, your primary email might use 'google' while your marketing platform uses 'k1'.",
+ "text": "Yes. Each DKIM record uses a different selector, so a domain can have as many DKIM keys as needed. This is common when a domain sends email through multiple services - each service gets its own selector and key pair. For example, your primary email might use 'google' while your marketing platform uses 'k1'.",
  },
  },
  {
@@ -165,7 +165,7 @@ export default function DkimLookupPage() {
  When you send an email, your mail server creates a digital signature using a private key and adds it to the message headers as a <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">DKIM-Signature</code> header. The receiving server then looks up the corresponding public key in your domain&apos;s DNS records and uses it to verify the signature.
  </p>
  <p>
- The DKIM public key is stored as a TXT record at <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">selector._domainkey.yourdomain.com</code>. The selector allows you to have multiple DKIM keys for the same domain &mdash; useful when you send email through different services (e.g., your primary email provider, a marketing platform, and a transactional email service).
+ The DKIM public key is stored as a TXT record at <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">selector._domainkey.yourdomain.com</code>. The selector allows you to have multiple DKIM keys for the same domain - useful when you send email through different services (e.g., your primary email provider, a marketing platform, and a transactional email service).
  </p>
  <p>
  DKIM is one of the three core email authentication protocols (alongside SPF and DMARC) required by Google and Yahoo for bulk senders since February 2024. Without a valid DKIM record, your emails are more likely to be flagged as spam or rejected entirely.
@@ -189,7 +189,7 @@ export default function DkimLookupPage() {
  Search for the <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">DKIM-Signature</code> header.
  </li>
  <li>
- Find the <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">s=</code> tag &mdash; that value is your selector.
+ Find the <code className="px-1.5 py-0.5 bg-gray-100 text-sm font-mono">s=</code> tag - that value is your selector.
  </li>
  </ol>
  <div className="mt-4 bg-gray-900 text-green-400 p-4 font-mono text-sm overflow-x-auto">
@@ -277,7 +277,7 @@ export default function DkimLookupPage() {
  <code className="px-2 py-1 bg-[#D4F0DC] text-[#1C4532] font-mono text-sm font-bold shrink-0">t=y</code>
  <div>
  <p className="font-semibold text-gray-900 text-sm">Flags</p>
- <p className="text-sm text-gray-600"><code className="px-1 py-0.5 bg-gray-100 text-xs">t=y</code> means the domain is testing DKIM (receivers should treat failures leniently). <code className="px-1 py-0.5 bg-gray-100 text-xs">t=s</code> means strict mode &mdash; the signing domain must exactly match the From header domain.</p>
+ <p className="text-sm text-gray-600"><code className="px-1 py-0.5 bg-gray-100 text-xs">t=y</code> means the domain is testing DKIM (receivers should treat failures leniently). <code className="px-1 py-0.5 bg-gray-100 text-xs">t=s</code> means strict mode - the signing domain must exactly match the From header domain.</p>
  </div>
  </div>
  </div>
@@ -302,7 +302,7 @@ export default function DkimLookupPage() {
  {[
  {
  q: 'What is a DKIM record?',
- a: 'A DKIM (DomainKeys Identified Mail) record is a DNS TXT record containing a public cryptographic key. When you send an email, your mail server signs the message with a private key. The receiving server looks up this DKIM record, retrieves the public key, and uses it to verify the signature — confirming the email is authentic and unaltered.',
+ a: 'A DKIM (DomainKeys Identified Mail) record is a DNS TXT record containing a public cryptographic key. When you send an email, your mail server signs the message with a private key. The receiving server looks up this DKIM record, retrieves the public key, and uses it to verify the signature - confirming the email is authentic and unaltered.',
  },
  {
  q: 'What is a DKIM selector?',
@@ -318,7 +318,7 @@ export default function DkimLookupPage() {
  },
  {
  q: 'Can a domain have multiple DKIM records?',
- a: 'Yes. Each DKIM record uses a different selector, so a domain can publish as many DKIM keys as needed. This is common when sending through multiple services — each gets its own selector and key pair.',
+ a: 'Yes. Each DKIM record uses a different selector, so a domain can publish as many DKIM keys as needed. This is common when sending through multiple services - each gets its own selector and key pair.',
  },
  {
  q: 'What key length should my DKIM key be?',
@@ -393,7 +393,7 @@ export default function DkimLookupPage() {
  <div className="bg-white border border-gray-100 shadow-sm p-8 md:p-10 text-center">
  <h2 className="text-xl font-bold text-gray-900 mb-3">Monitor DKIM Across All Your Domains</h2>
  <p className="text-gray-600 text-sm max-w-lg mx-auto mb-6">
- This free tool checks one record at a time. Superkabe monitors DKIM, SPF, and DMARC across all your sending domains automatically &mdash; every 24 hours &mdash; and alerts you before misconfigurations damage deliverability.
+ This free tool checks one record at a time. Superkabe monitors DKIM, SPF, and DMARC across all your sending domains automatically - every 24 hours - and alerts you before misconfigurations damage deliverability.
  </p>
  <Link
  href="/signup"

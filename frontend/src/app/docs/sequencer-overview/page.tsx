@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Sequencer Overview | Superkabe Docs',
-    description: 'How Superkabe\'s native sequencer works end-to-end — campaigns, sequence steps, A/B variants, mailbox pool dispatch, ESP routing, reply tracking, and the handoff to the protection layer.',
+    description: 'How Superkabe\'s native sequencer works end-to-end - campaigns, sequence steps, A/B variants, mailbox pool dispatch, ESP routing, reply tracking, and the handoff to the protection layer.',
     alternates: { canonical: '/docs/sequencer-overview' },
     openGraph: {
         title: 'Sequencer Overview | Superkabe Docs',
-        description: 'How Superkabe\'s native sequencer works end-to-end — from campaign to dispatch to reply tracking, with the protection-layer handoff explained.',
+        description: 'How Superkabe\'s native sequencer works end-to-end - from campaign to dispatch to reply tracking, with the protection-layer handoff explained.',
         url: '/docs/sequencer-overview',
         siteName: 'Superkabe',
         type: 'article',
@@ -21,7 +21,7 @@ export default function SequencerOverviewDocsPage() {
                 Sequencer Overview
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                The sending half of Superkabe — campaigns, sequences, dispatch, and how it hands off to the protection layer.
+                The sending half of Superkabe - campaigns, sequences, dispatch, and how it hands off to the protection layer.
             </p>
 
             {/* ==================== TL;DR ==================== */}
@@ -42,7 +42,7 @@ export default function SequencerOverviewDocsPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">The Entity Model</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
                 Six tables make up the sequencer&apos;s sending model. Most operations the dispatcher does are joins across
-                these — knowing the model is the fastest way to predict what the system will do in any given situation.
+                these - knowing the model is the fastest way to predict what the system will do in any given situation.
             </p>
 
             <div className="overflow-x-auto mb-8">
@@ -58,7 +58,7 @@ export default function SequencerOverviewDocsPage() {
                         <tr className="border-b border-gray-100">
                             <td className="p-3 font-mono text-indigo-700">Campaign</td>
                             <td className="p-3 text-gray-700">A named send program with a sequence, schedule, and a pool of mailboxes</td>
-                            <td className="p-3 text-gray-500">Persistent — paused when finished</td>
+                            <td className="p-3 text-gray-500">Persistent - paused when finished</td>
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="p-3 font-mono text-indigo-700">SequenceStep</td>
@@ -73,7 +73,7 @@ export default function SequencerOverviewDocsPage() {
                         <tr className="border-b border-gray-100">
                             <td className="p-3 font-mono text-indigo-700">CampaignLead</td>
                             <td className="p-3 text-gray-700">A lead enrolled in this campaign. Carries current_step, next_send_at, sticky mailbox, status</td>
-                            <td className="p-3 text-gray-500">Per enrollment — terminal on reply / bounce / unsubscribe / completion</td>
+                            <td className="p-3 text-gray-500">Per enrollment - terminal on reply / bounce / unsubscribe / completion</td>
                         </tr>
                         <tr className="border-b border-gray-100">
                             <td className="p-3 font-mono text-indigo-700">CampaignAccount</td>
@@ -91,7 +91,7 @@ export default function SequencerOverviewDocsPage() {
 
             <p className="text-gray-600 leading-relaxed mb-4">
                 The protection layer adds <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Mailbox</code> and
-                <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Domain</code> rows alongside ConnectedAccount —
+                <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Domain</code> rows alongside ConnectedAccount -
                 see the <Link href="/docs/state-machine" className="text-blue-600 hover:underline">State Machine</Link> doc for how
                 those interact with the sequencer.
             </p>
@@ -154,7 +154,7 @@ export default function SequencerOverviewDocsPage() {
                     <div className="font-bold text-gray-900 text-sm mb-2">3. Per-mailbox-per-campaign override</div>
                     <p className="text-gray-600 text-sm">
                         <code className="px-1.5 py-0.5 bg-white border border-purple-200 text-purple-800 text-xs">CampaignAccount.daily_limit_override</code>.
-                        Caps how much one specific mailbox contributes to one specific campaign — used when a mailbox is shared across campaigns.
+                        Caps how much one specific mailbox contributes to one specific campaign - used when a mailbox is shared across campaigns.
                     </p>
                 </div>
                 <div className="bg-amber-50 border border-amber-100 p-5">
@@ -231,15 +231,15 @@ export default function SequencerOverviewDocsPage() {
                 <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Lead.status</code> table. A lead marked
                 <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">unsubscribed</code> or
                 <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">bounced</code> at the org level is filtered out of every
-                campaign — not just the one where the event happened. This is required for CAN-SPAM § 5(a)(4)(A), CASL § 11(3), and
+                campaign - not just the one where the event happened. This is required for CAN-SPAM § 5(a)(4)(A), CASL § 11(3), and
                 GDPR Art. 21 compliance.
             </p>
 
             {/* ==================== Handoff to Protection ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Handoff to the Protection Layer</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                The sequencer is the <em>active</em> half of the platform — it dispatches mail. The protection layer is the
-                <em> reactive</em> half — it watches what the sequencer just did and intervenes if the data goes bad. The handoff
+                The sequencer is the <em>active</em> half of the platform - it dispatches mail. The protection layer is the
+                <em> reactive</em> half - it watches what the sequencer just did and intervenes if the data goes bad. The handoff
                 between them happens at three exact points:
             </p>
 
@@ -266,7 +266,7 @@ export default function SequencerOverviewDocsPage() {
                         If a mailbox is <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">connection_status='disconnected'</code>{' '}
                         (e.g. paused, expired, recovering), the dispatcher skips it. If
                         <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">recovery_phase</code> is in a constrained phase, the
-                        warmup_limit cap kicks in. The sequencer never overrides protection — protection always wins.
+                        warmup_limit cap kicks in. The sequencer never overrides protection - protection always wins.
                     </p>
                 </div>
             </div>
@@ -286,27 +286,27 @@ export default function SequencerOverviewDocsPage() {
 
             <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-700">
                 <li>
-                    <strong>CAN-SPAM § 5(a)(5)</strong> — every commercial email must carry a valid postal address. The dispatcher
+                    <strong>CAN-SPAM § 5(a)(5)</strong> - every commercial email must carry a valid postal address. The dispatcher
                     refuses to send any campaign where <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Organization.mailing_address</code>{' '}
                     is null and fires a Slack alert until the operator configures one.
                 </li>
                 <li>
-                    <strong>RFC 8058 / Gmail bulk-sender policy</strong> — every send carries
+                    <strong>RFC 8058 / Gmail bulk-sender policy</strong> - every send carries
                     <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">List-Unsubscribe</code> +
                     <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">List-Unsubscribe-Post</code> headers. One-click
                     unsubscribe is mandatory above 5K sends/day.
                 </li>
                 <li>
-                    <strong>GDPR Art. 21 / CASL § 11(3)</strong> — unsubscribes propagate org-wide via the Lead.status cascade. The
+                    <strong>GDPR Art. 21 / CASL § 11(3)</strong> - unsubscribes propagate org-wide via the Lead.status cascade. The
                     dispatcher checks it as defense-in-depth against partial transaction failures.
                 </li>
                 <li>
-                    <strong>EU compliance mode</strong> — when <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Campaign.eu_compliance_mode=true</code>,
+                    <strong>EU compliance mode</strong> - when <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">Campaign.eu_compliance_mode=true</code>,
                     the tracking pixel is suppressed (ePrivacy Art. 5(3) requires explicit consent for tracking cookies/pixels for
                     EU recipients).
                 </li>
                 <li>
-                    <strong>RFC 3464 DSN parsing</strong> — async bounces (mailbox accepted then later rejected) are captured by the
+                    <strong>RFC 3464 DSN parsing</strong> - async bounces (mailbox accepted then later rejected) are captured by the
                     IMAP poller and converted to BounceEvents so suppression can fire.
                 </li>
             </ul>
@@ -314,15 +314,15 @@ export default function SequencerOverviewDocsPage() {
             {/* ==================== What's NOT in the sequencer ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What&apos;s NOT in the Sequencer</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Worth being explicit about — these are protection-layer responsibilities and the sequencer never touches them:
+                Worth being explicit about - these are protection-layer responsibilities and the sequencer never touches them:
             </p>
 
             <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-700">
-                <li>Pausing a mailbox — owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">monitoringService.pauseMailbox</code></li>
-                <li>The 5-phase healing pipeline — owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">healingService</code></li>
-                <li>DNSBL / IP blacklist checks — owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">dnsblService</code> + <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">mailboxIpBlacklistWorker</code></li>
-                <li>SPF / DKIM / DMARC validation — owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">infrastructureAssessmentService</code></li>
-                <li>Domain warming / cooldowns — owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">warmupService</code> + <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">warmupTrackingWorker</code></li>
+                <li>Pausing a mailbox - owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">monitoringService.pauseMailbox</code></li>
+                <li>The 5-phase healing pipeline - owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">healingService</code></li>
+                <li>DNSBL / IP blacklist checks - owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">dnsblService</code> + <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">mailboxIpBlacklistWorker</code></li>
+                <li>SPF / DKIM / DMARC validation - owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">infrastructureAssessmentService</code></li>
+                <li>Domain warming / cooldowns - owned by <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">warmupService</code> + <code className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-sm">warmupTrackingWorker</code></li>
             </ul>
 
             {/* ==================== Related Reading ==================== */}

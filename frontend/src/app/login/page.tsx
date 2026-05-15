@@ -165,7 +165,7 @@ function LoginContent() {
                         redirects bare slash back to /login, so a Next.js
                         Link href slash would feel like a no-op click. */}
                     <a href={marketingUrl('/')} className="flex items-center gap-2 mb-8 w-fit mx-auto no-underline">
-                        <Image src="/image/logo-v2.png" alt="Superkabe — back to home" width={32} height={32} />
+                        <Image src="/image/logo-v2.png" alt="Superkabe - back to home" width={32} height={32} />
                         <span className="font-bold text-xl text-[#171923]">Superkabe</span>
                     </a>
 
@@ -247,7 +247,7 @@ function LoginContent() {
                             </Link>
                         </div>
 
-                        {/* Client-mode toggle — small inline link, default flow stays unchanged */}
+                        {/* Client-mode toggle - small inline link, default flow stays unchanged */}
                         <div className="flex items-center justify-center -mt-1">
                             <button
                                 type="button"
@@ -316,7 +316,7 @@ function LoginContent() {
                                 className={`absolute inset-0 transition-all duration-500 transform ${index === currentSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
                             >
                                 <div className="bg-white rounded-[32px] p-8 pb-0 shadow-2xl overflow-hidden relative h-full flex flex-col">
-                                    {/* Floating Stats — anchored to the card's top-right corner,
+                                    {/* Floating Stats - anchored to the card's top-right corner,
                                         permanently out of the way of the title (top-left), the
                                         "Learn more" CTA (mid-left), and the rotated mockup cards
                                         (bottom-right). Zero overlap regardless of how long the

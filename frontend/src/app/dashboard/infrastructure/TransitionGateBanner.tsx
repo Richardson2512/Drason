@@ -46,8 +46,8 @@ export default function TransitionGateBanner({ gateData, onAcknowledge, acknowle
                             }}
                         >
                             {acknowledging ? 'Acknowledging...' : gateData.score === 0
-                                ? '🔒 All Entities Paused — Manual Healing Required'
-                                : '✅ I Understand the Risks — Proceed'
+                                ? '🔒 All Entities Paused - Manual Healing Required'
+                                : '✅ I Understand the Risks - Proceed'
                             }
                         </button>
                         <span className="text-xs text-[#92400E]">

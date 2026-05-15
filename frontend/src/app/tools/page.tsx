@@ -145,7 +145,7 @@ export default function ToolsPage() {
  <Navbar />
  <MarketingBackdrop />
 
- {/* Mailivery-style header — width-locked to match blog index (max-w-6xl) */}
+ {/* Mailivery-style header - width-locked to match blog index (max-w-6xl) */}
  <header className="max-w-6xl mx-auto px-6 pt-32 md:pt-40 pb-10">
  <div className="max-w-3xl">
  <div className="mb-8 inline-flex items-center gap-3">
@@ -215,7 +215,7 @@ export default function ToolsPage() {
 
  <div className="space-y-6 text-gray-600 leading-relaxed">
  <p>
- Email authentication is the foundation of inbox placement. Without properly configured SPF, DKIM, and DMARC records, receiving mail servers have no way to verify that your emails are legitimate. The result: messages land in spam, get rejected, or worse &mdash; your domain gets flagged as a spoofing source.
+ Email authentication is the foundation of inbox placement. Without properly configured SPF, DKIM, and DMARC records, receiving mail servers have no way to verify that your emails are legitimate. The result: messages land in spam, get rejected, or worse - your domain gets flagged as a spoofing source.
  </p>
 
  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
@@ -241,7 +241,7 @@ export default function ToolsPage() {
  <div className="mt-10 p-6 bg-gray-50 border border-gray-200">
  <h3 className="font-bold text-gray-900 mb-2">Need continuous monitoring?</h3>
  <p className="text-sm text-gray-600 mb-4">
- These free tools check your records on demand. Superkabe monitors SPF, DKIM, and DMARC across all your sending domains automatically &mdash; every 24 hours &mdash; and alerts you before misconfigurations cause deliverability failures.
+ These free tools check your records on demand. Superkabe monitors SPF, DKIM, and DMARC across all your sending domains automatically - every 24 hours - and alerts you before misconfigurations cause deliverability failures.
  </p>
  <Link
  href="/signup"
@@ -330,7 +330,7 @@ export default function ToolsPage() {
 
  <BottomCtaStrip
  headline="Stop checking DNS by hand"
- body="These free tools check on demand. Superkabe monitors SPF, DKIM, DMARC, and bounce health across every sending domain — every 60 seconds — and auto-pauses before damage compounds."
+ body="These free tools check on demand. Superkabe monitors SPF, DKIM, DMARC, and bounce health across every sending domain - every 60 seconds - and auto-pauses before damage compounds."
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />

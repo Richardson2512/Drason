@@ -3,7 +3,7 @@
 /**
  * Interactive stat pills used across Leads, Mailboxes, Domains, and
  * Campaigns. When `onToggle` is provided, each pill acts as a filter
- * button — clicking "Healthy" shows only healthy entities, clicking the
+ * button - clicking "Healthy" shows only healthy entities, clicking the
  * "All" pill clears filters. This replaces the old pattern where the
  * page rendered stat pills AND a separate filter dropdown/tab row that
  * duplicated the same taxonomy.
@@ -19,7 +19,7 @@ interface StatItem {
     key?: string;
     label: string;
     value: number;
-    /** Small dot color — green/amber/red/blue semantic hint. */
+    /** Small dot color - green/amber/red/blue semantic hint. */
     color: string;
 }
 

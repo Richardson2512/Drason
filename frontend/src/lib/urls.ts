@@ -5,7 +5,7 @@
  * marketing site) is gated on the presence of `NEXT_PUBLIC_APP_URL` and
  * `NEXT_PUBLIC_MARKETING_URL` env vars. When those are unset, the helpers
  * return relative paths and the existing single-domain behavior continues
- * to work — that's the staging fallback so we can ship the routing without
+ * to work - that's the staging fallback so we can ship the routing without
  * forcing the prod cutover.
  *
  * Set both env vars to opt into subdomain mode. Examples:
@@ -33,7 +33,7 @@ export function appUrl(path: string): string {
 }
 
 /**
- * Build a URL for a marketing route. Same rules as `appUrl` — absolute in
+ * Build a URL for a marketing route. Same rules as `appUrl` - absolute in
  * subdomain mode, relative otherwise.
  */
 export function marketingUrl(path: string): string {

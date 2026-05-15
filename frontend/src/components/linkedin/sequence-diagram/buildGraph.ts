@@ -19,7 +19,7 @@ import { LINKEDIN_NODE_WIDTH_PX, LINKEDIN_NODE_HEIGHT_PX } from './nodes';
  */
 
 // ────────────────────────────────────────────────────────────────────
-// Input types — mirror the campaign-side SequenceStep API shape, with
+// Input types - mirror the campaign-side SequenceStep API shape, with
 // the Phase-3 additions (step_type + step_config) folded in.
 // ────────────────────────────────────────────────────────────────────
 
@@ -48,7 +48,7 @@ export interface LinkedInSequenceStepInput {
 
 export interface LinkedInDiagramOptions {
     senders?: Array<{ name: string; type?: string }>;
-    /** When TRUE, terminate every step with an "exit — replied" off-ramp
+    /** When TRUE, terminate every step with an "exit - replied" off-ramp
      *  on the lead's first reply. */
     stopOnReply?: boolean;
 }
@@ -128,7 +128,7 @@ export function buildLinkedInSequenceGraph(
             nodes.push({
                 id: notFoundExitId,
                 type: 'exit',
-                data: { reason: 'skipped', label: 'No email found — drops out' },
+                data: { reason: 'skipped', label: 'No email found - drops out' },
                 position: { x: 0, y: 0 },
             });
             edges.push({
@@ -181,7 +181,7 @@ export function buildLinkedInSequenceGraph(
             nodes.push({
                 id: dropId,
                 type: 'exit',
-                data: { reason: 'completed', label: branchMeta.positive ? `Dropped — ${branchMeta.negativeLabel}` : `Dropped — ${branchMeta.positiveLabel}` },
+                data: { reason: 'completed', label: branchMeta.positive ? `Dropped - ${branchMeta.negativeLabel}` : `Dropped - ${branchMeta.positiveLabel}` },
                 position: { x: 0, y: 0 },
             });
             edges.push({

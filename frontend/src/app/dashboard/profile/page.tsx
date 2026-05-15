@@ -69,8 +69,8 @@ export default function ProfilePage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
-            // Backend clears the auth cookie on success — every subsequent
-            // API call would 401 — so push the user to /login explicitly
+            // Backend clears the auth cookie on success - every subsequent
+            // API call would 401 - so push the user to /login explicitly
             // instead of leaving them on a half-broken page until the next
             // fetch fires.
             setPasswordMessage({ type: 'success', text: 'Password changed. Redirecting to sign in…' });
@@ -96,7 +96,7 @@ export default function ProfilePage() {
             <h1 className="text-xl font-bold text-gray-900 mb-0.5">Profile</h1>
             <p className="text-xs text-gray-500 mb-8">Manage your account details and security</p>
 
-            {/* Agency Mode — manage multiple client workspaces (Scale/Enterprise) */}
+            {/* Agency Mode - manage multiple client workspaces (Scale/Enterprise) */}
             <AgencyModeCard />
 
             <div className="flex flex-wrap gap-8 items-start">
@@ -239,12 +239,12 @@ export default function ProfilePage() {
                     {(() => {
                         const tierKey = (subscription?.tier || 'trial').toLowerCase();
                         const TIER_META: Record<string, { label: string; gradient: string; chipBg: string; chipFg: string; description: string }> = {
-                            trial:      { label: 'Trial',      gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)', chipBg: '#DBEAFE', chipFg: '#1E40AF', description: 'Free trial — explore every feature before upgrading.' },
+                            trial:      { label: 'Trial',      gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)', chipBg: '#DBEAFE', chipFg: '#1E40AF', description: 'Free trial - explore every feature before upgrading.' },
                             starter:    { label: 'Starter',    gradient: 'linear-gradient(135deg, #6B7280, #4B5563)', chipBg: '#F3F4F6', chipFg: '#374151', description: 'Entry plan for solo founders and small teams.' },
-                            pro:        { label: 'Pro',        gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', chipBg: '#EDE9FE', chipFg: '#5B21B6', description: 'Pro plan — 1 LinkedIn account included.' },
-                            growth:     { label: 'Growth',     gradient: 'linear-gradient(135deg, #10B981, #059669)', chipBg: '#D1FAE5', chipFg: '#065F46', description: 'Growth plan — 2 LinkedIn accounts included.' },
-                            scale:      { label: 'Scale',      gradient: 'linear-gradient(135deg, #F59E0B, #D97706)', chipBg: '#FEF3C7', chipFg: '#92400E', description: 'Scale plan — 3 LinkedIn accounts included.' },
-                            enterprise: { label: 'Enterprise', gradient: 'linear-gradient(135deg, #E11D48, #BE123C)', chipBg: '#FCE7F3', chipFg: '#9F1239', description: 'Enterprise — bespoke quotas and white-glove onboarding.' },
+                            pro:        { label: 'Pro',        gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', chipBg: '#EDE9FE', chipFg: '#5B21B6', description: 'Pro plan - 1 LinkedIn account included.' },
+                            growth:     { label: 'Growth',     gradient: 'linear-gradient(135deg, #10B981, #059669)', chipBg: '#D1FAE5', chipFg: '#065F46', description: 'Growth plan - 2 LinkedIn accounts included.' },
+                            scale:      { label: 'Scale',      gradient: 'linear-gradient(135deg, #F59E0B, #D97706)', chipBg: '#FEF3C7', chipFg: '#92400E', description: 'Scale plan - 3 LinkedIn accounts included.' },
+                            enterprise: { label: 'Enterprise', gradient: 'linear-gradient(135deg, #E11D48, #BE123C)', chipBg: '#FCE7F3', chipFg: '#9F1239', description: 'Enterprise - bespoke quotas and white-glove onboarding.' },
                         };
                         const tier = TIER_META[tierKey] || { label: (subscription?.tier || 'Trial').replace(/_/g, ' '), gradient: 'linear-gradient(135deg, #6B7280, #4B5563)', chipBg: '#F3F4F6', chipFg: '#374151', description: 'Active plan.' };
                         return (

@@ -30,9 +30,9 @@ export default function APIIntegrationPage() {
  Superkabe provides three primary integration points:
  </p>
  <ol className="space-y-2 text-gray-600">
- <li><strong>1. Clay Webhook</strong> — Receive enriched leads from Clay tables</li>
- <li><strong>2. Direct Ingestion API</strong> — Programmatic lead submission</li>
- <li><strong>3. Campaign Resolution API</strong> — Automate stalled campaign recovery</li>
+ <li><strong>1. Clay Webhook</strong> - Receive enriched leads from Clay tables</li>
+ <li><strong>2. Direct Ingestion API</strong> - Programmatic lead submission</li>
+ <li><strong>3. Campaign Resolution API</strong> - Automate stalled campaign recovery</li>
  </ol>
  </div>
 

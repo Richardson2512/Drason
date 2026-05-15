@@ -35,7 +35,7 @@ export default function DedicatedIpHelpPage() {
             </div>
 
             {/* Step 1 */}
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 1 — Purchase the add-on</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 1 - Purchase the add-on</h2>
             <div className="space-y-4 mb-8">
                 <div className="bg-white border border-[#D1CBC5] p-5">
                     <p className="text-gray-700 mb-3">Open the dashboard and navigate to:</p>
@@ -45,7 +45,7 @@ export default function DedicatedIpHelpPage() {
                     <p className="text-gray-600 mb-0">
                         Click <strong>Add a dedicated IP</strong>. You&apos;ll be redirected to the
                         billing portal to confirm the $39/month charge. After payment, the IP is
-                        provisioned on AWS SES — typically within 2–10 minutes.
+                        provisioned on AWS SES - typically within 2–10 minutes.
                     </p>
                 </div>
                 <div className="bg-blue-50 border border-blue-200 p-4 text-sm text-blue-900">
@@ -55,7 +55,7 @@ export default function DedicatedIpHelpPage() {
             </div>
 
             {/* Step 2 */}
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 2 — Assign it to a workspace</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 2 - Assign it to a workspace</h2>
             <p className="text-gray-700 mb-4">
                 A dedicated IP isn&apos;t doing anything until you bind it to a workspace. The
                 cardinality is strict: <strong>1 IP : 1 workspace</strong>.
@@ -78,7 +78,7 @@ export default function DedicatedIpHelpPage() {
             </div>
 
             {/* Step 3 */}
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 3 — Warm up the IP</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 3 - Warm up the IP</h2>
             <p className="text-gray-700 mb-4">
                 Superkabe sets the throttle automatically. You don&apos;t have to do anything for the
                 default schedule to run.
@@ -119,13 +119,13 @@ export default function DedicatedIpHelpPage() {
                 <p className="text-rose-900 mb-0">
                     Aggressive ramps are the single most common cause of permanent IP burn. Mailbox
                     providers see &quot;new IP, sudden volume&quot; as a textbook spam signal and flag it
-                    in days — and that flag can stick for months. The warning isn&apos;t bureaucratic;
+                    in days - and that flag can stick for months. The warning isn&apos;t bureaucratic;
                     it&apos;s the most expensive lesson in deliverability, given to you for free.
                 </p>
             </div>
 
             {/* Step 4 */}
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 4 — Monitor reputation</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 4 - Monitor reputation</h2>
             <p className="text-gray-700 mb-6">
                 Once the IP is warming, monitoring runs automatically. You see the data in two
                 places:
@@ -143,7 +143,7 @@ export default function DedicatedIpHelpPage() {
                 <div className="bg-white border border-[#D1CBC5] p-5">
                     <h3 className="text-lg font-bold text-gray-900 mb-2 mt-0">In your alerts inbox</h3>
                     <p className="text-gray-600 mb-0">
-                        You&apos;re paged automatically (Slack, email, or webhook — whatever you&apos;ve
+                        You&apos;re paged automatically (Slack, email, or webhook - whatever you&apos;ve
                         configured) when the IP is listed on a DNSBL, complaint rate breaches 0.1%,
                         bounce rate breaches 2%, or the IP enters the healing pipeline.
                     </p>
@@ -151,7 +151,7 @@ export default function DedicatedIpHelpPage() {
             </div>
 
             {/* Step 5 */}
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 5 — Respond to alerts</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 mt-12">Step 5 - Respond to alerts</h2>
             <p className="text-gray-700 mb-4">
                 If the IP gets flagged, Superkabe takes the first action automatically: sends pause,
                 the IP enters Phase 1 of healing. You then have two choices:
@@ -184,7 +184,7 @@ export default function DedicatedIpHelpPage() {
                     <p className="text-gray-600 mt-3 mb-0">
                         That&apos;s the throttle working as intended. During warm-up, the daily cap is
                         below your full plan limit. The send queue holds excess sends for the next
-                        day. If you genuinely need faster ramp, edit the schedule — but read the
+                        day. If you genuinely need faster ramp, edit the schedule - but read the
                         warning first.
                     </p>
                 </details>
@@ -194,7 +194,7 @@ export default function DedicatedIpHelpPage() {
                     <p className="text-gray-600 mt-3 mb-0">
                         Yes. The IP is provisioned and reserved as soon as you purchase, regardless
                         of assignment. If you don&apos;t plan to use it within a week, cancel and
-                        re-purchase later — the warm-up state will reset anyway.
+                        re-purchase later - the warm-up state will reset anyway.
                     </p>
                 </details>
 
@@ -202,7 +202,7 @@ export default function DedicatedIpHelpPage() {
                     <summary className="font-semibold text-gray-900 cursor-pointer">Can I move my IP to a new workspace mid-warm-up?</summary>
                     <p className="text-gray-600 mt-3 mb-0">
                         Yes. The warm-up state is tracked at the IP level, so reassigning doesn&apos;t
-                        reset the curve — the new workspace continues from wherever the IP left off.
+                        reset the curve - the new workspace continues from wherever the IP left off.
                     </p>
                 </details>
 
@@ -211,7 +211,7 @@ export default function DedicatedIpHelpPage() {
                     <p className="text-gray-600 mt-3 mb-0">
                         One IP per workspace is the rule, so the cheapest answer is one $39/mo
                         subscription per workspace. If you have 5 workspaces and only 2 actually
-                        need isolation, only buy 2 IPs — the other 3 use the shared pool.
+                        need isolation, only buy 2 IPs - the other 3 use the shared pool.
                     </p>
                 </details>
 
@@ -230,7 +230,7 @@ export default function DedicatedIpHelpPage() {
             <div className="border-t border-[#D1CBC5] pt-8 mt-12">
                 <p className="text-sm text-gray-500 mb-3">Related</p>
                 <div className="flex flex-wrap gap-3">
-                    <Link href="/docs/dedicated-ip" className="text-sm font-semibold text-[#1C4532] hover:underline">Dedicated IP — overview →</Link>
+                    <Link href="/docs/dedicated-ip" className="text-sm font-semibold text-[#1C4532] hover:underline">Dedicated IP - overview →</Link>
                     <Link href="/docs/help/auto-healing" className="text-sm font-semibold text-[#1C4532] hover:underline">5-phase healing pipeline →</Link>
                     <Link href="/docs/help/billing" className="text-sm font-semibold text-[#1C4532] hover:underline">Billing &amp; add-ons →</Link>
                     <Link href="/blog/dedicated-ip-cold-email" className="text-sm font-semibold text-[#1C4532] hover:underline">Blog: Dedicated vs shared →</Link>

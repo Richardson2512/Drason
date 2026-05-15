@@ -24,35 +24,35 @@ export const releaseNotes: ReleaseNote[] = [
         headline: 'Lead Control Plane and ESP-Aware Routing',
         summary: 'Superkabe becomes the primary lead entry point. Upload CSVs directly, validate every email, classify recipients by ESP, and route to the best-performing mailboxes automatically.',
         features: [
-            'Lead Control Plane — CSV upload with validation, ESP classification, and campaign routing',
-            'ESP-Aware Mailbox Scoring — route leads to mailboxes with the lowest bounce rate for the recipient ESP',
-            'SendEvent + ReplyEvent tracking — every email sent and replied is recorded per mailbox per ESP',
-            'ESP Performance Matrix dashboard — per-mailbox bounce rates broken down by Gmail, Microsoft, Yahoo',
+            'Lead Control Plane - CSV upload with validation, ESP classification, and campaign routing',
+            'ESP-Aware Mailbox Scoring - route leads to mailboxes with the lowest bounce rate for the recipient ESP',
+            'SendEvent + ReplyEvent tracking - every email sent and replied is recorded per mailbox per ESP',
+            'ESP Performance Matrix dashboard - per-mailbox bounce rates broken down by Gmail, Microsoft, Yahoo',
             'Validation credits with monthly tier limits and enforcement',
-            'Cross-batch duplicate detection — prevents double-processing across uploads',
-            'Rejection reason tracking — disposable, no MX, syntax, SMTP fail, catch-all breakdown',
-            'Analytics deep-dive — invalid rate by source, rejection reasons chart, 30-day trend',
+            'Cross-batch duplicate detection - prevents double-processing across uploads',
+            'Rejection reason tracking - disposable, no MX, syntax, SMTP fail, catch-all breakdown',
+            'Analytics deep-dive - invalid rate by source, rejection reasons chart, 30-day trend',
         ],
         sections: [
             {
                 title: 'Lead Control Plane',
-                description: 'Every lead now enters through Superkabe — whether from a CSV upload, Clay webhook, or API call. Superkabe validates, classifies, and routes before anything reaches your sending platform.',
+                description: 'Every lead now enters through Superkabe - whether from a CSV upload, Clay webhook, or API call. Superkabe validates, classifies, and routes before anything reaches your sending platform.',
                 items: [
                     { title: 'CSV upload with auto-mapping', detail: 'Drag and drop a CSV file. Superkabe auto-detects column headers (email, first name, last name, company, title, score) and lets you confirm or override the mapping before processing.' },
                     { title: 'Bulk validation pipeline', detail: 'Every lead runs through the full hybrid validation pipeline: syntax check, MX lookup, disposable detection, catch-all detection, and conditional MillionVerifier API probe. Results are cached for 30 days.' },
                     { title: 'ESP classification', detail: 'During validation, Superkabe resolves the recipient domain MX records and classifies the ESP: Gmail, Microsoft 365, Yahoo, or Other. This classification drives the ESP-aware routing downstream.' },
                     { title: 'Post-validation routing', detail: 'After validation, select leads from the results table and route them to any campaign across Smartlead, Instantly, or EmailBison. Or pre-select a campaign before upload for automatic routing.' },
-                    { title: 'Export clean lists', detail: 'Download validated leads as CSV — export only valid leads (clean list) or full results with status, score, and ESP classification columns.' },
+                    { title: 'Export clean lists', detail: 'Download validated leads as CSV - export only valid leads (clean list) or full results with status, score, and ESP classification columns.' },
                 ],
             },
             {
                 title: 'ESP-Aware Mailbox Scoring',
-                description: 'When routing a lead, Superkabe scores each mailbox in the campaign against the recipient ESP using 30-day rolling performance data — not just naive ESP matching.',
+                description: 'When routing a lead, Superkabe scores each mailbox in the campaign against the recipient ESP using 30-day rolling performance data - not just naive ESP matching.',
                 items: [
                     { title: 'SendEvent + ReplyEvent capture', detail: 'Every EMAIL_SENT and EMAIL_REPLIED webhook from Smartlead now creates a tracking event with the recipient ESP classification. This builds the per-mailbox performance dataset over time.' },
                     { title: 'Performance aggregation worker', detail: 'Every 6 hours, Superkabe aggregates send, bounce, and reply events from the last 30 days, grouped by mailbox and recipient ESP. The result is a performance score per cell in the mailbox-ESP matrix.' },
                     { title: 'Mailbox scoring at route time', detail: 'When pushing a lead to Smartlead, Superkabe scores candidate mailboxes by their 30-day bounce rate to the recipient ESP. Top 3 mailboxes are pinned via assigned_email_accounts. Smartlead sends from only those mailboxes.' },
-                    { title: 'Warming up fallback', detail: 'When a mailbox-ESP cell has fewer than 30 sends, Superkabe skips ESP scoring and lets the platform pick — preventing routing decisions based on noise.' },
+                    { title: 'Warming up fallback', detail: 'When a mailbox-ESP cell has fewer than 30 sends, Superkabe skips ESP scoring and lets the platform pick - preventing routing decisions based on noise.' },
                 ],
             },
             {
@@ -141,7 +141,7 @@ export const releaseNotes: ReleaseNote[] = [
         summary: 'The biggest architectural change since launch. All status transitions now go through a centralized state machine, and the healing pipeline graduates mailboxes through 5 controlled phases instead of binary pause/resume.',
         features: [
             '5-phase healing pipeline (paused → quarantine → restricted → warm → healthy)',
-            'State machine migration — single authority for all status changes',
+            'State machine migration - single authority for all status changes',
             'Mailbox rotation with standby mailboxes',
             'Correlation engine for cross-entity failure detection',
         ],
@@ -151,7 +151,7 @@ export const releaseNotes: ReleaseNote[] = [
                 description: 'When a mailbox gets paused, it no longer sits in limbo. It enters a graduated recovery with explicit criteria at each phase.',
                 items: [
                     { title: 'Phase 0: Paused', detail: 'Cooldown timer with exponential backoff (24h first offense, 72h second, 7 days third+). Mailbox removed from all campaigns on the sending platform.' },
-                    { title: 'Phase 1: Quarantine', detail: 'Cooldown expired. System checks domain DNS health — SPF, DKIM, blacklists. If the domain is broken, the mailbox stays here. No point warming up on a poisoned domain.' },
+                    { title: 'Phase 1: Quarantine', detail: 'Cooldown expired. System checks domain DNS health - SPF, DKIM, blacklists. If the domain is broken, the mailbox stays here. No point warming up on a poisoned domain.' },
                     { title: 'Phase 2: Restricted Send', detail: 'DNS passed. Warmup re-enabled at 10 emails/day. Must complete 15 clean sends with zero bounces. Repeat offenders need 25.' },
                     { title: 'Phase 3: Warm Recovery', detail: 'Volume increases to 50/day with +5/day ramp. Must sustain 3+ days with bounce rate under 2%.' },
                     { title: 'Phase 4: Healthy', detail: 'Full recovery. Re-added to all campaigns. Maintenance warmup continues. Resilience score gets +10 bonus.' },
@@ -159,11 +159,11 @@ export const releaseNotes: ReleaseNote[] = [
             },
             {
                 title: 'State Machine Migration',
-                description: 'All 24+ direct status writes across the codebase were migrated to entityStateService — the single authority for status changes.',
+                description: 'All 24+ direct status writes across the codebase were migrated to entityStateService - the single authority for status changes.',
                 items: [
                     { title: 'Centralized state transitions', detail: 'entityStateService.ts validates every transition before execution. Invalid transitions (e.g., healthy → warm_recovery) are rejected. Full audit trail for every state change.' },
                     { title: 'Cooldown and locking', detail: 'Cooldown timers with exponential backoff. Optimistic locking on phase transitions prevents race conditions between workers.' },
-                    { title: 'Key rule enforced', detail: 'Campaigns NEVER pause on bounce rate alone — only when ALL mailboxes are paused or removed.' },
+                    { title: 'Key rule enforced', detail: 'Campaigns NEVER pause on bounce rate alone - only when ALL mailboxes are paused or removed.' },
                 ],
             },
             {

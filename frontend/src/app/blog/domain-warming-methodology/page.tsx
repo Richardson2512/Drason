@@ -143,10 +143,10 @@ export default function DomainWarmingArticle() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Domain warming takes 6-8 weeks — there are no shortcuts without consequences</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Domain warming takes 6-8 weeks - there are no shortcuts without consequences</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Start at 5-10 emails/day per mailbox, ramping to 40-50 by week 4-6</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> ISPs track both mailbox-level AND domain-level volume — aggregate matters</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Unverified leads during warming are catastrophic — one bad batch burns the domain</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> ISPs track both mailbox-level AND domain-level volume - aggregate matters</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Unverified leads during warming are catastrophic - one bad batch burns the domain</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe applies tighter thresholds during warming (2 bounces = warning, 20% = gate)</li>
  </ul>
  </div>
@@ -160,7 +160,7 @@ export default function DomainWarmingArticle() {
 
  <h2 id="why-is-domain-warming-required" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why Is Domain Warming Required for Cold Email?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- When a new domain begins sending email, ISPs have no historical data to assess its trustworthiness. Without sending history, the domain starts with a neutral reputation — not positive, not negative. ISPs treat emails from neutral-reputation domains with suspicion, routing them to spam or applying heavy throttling.
+ When a new domain begins sending email, ISPs have no historical data to assess its trustworthiness. Without sending history, the domain starts with a neutral reputation - not positive, not negative. ISPs treat emails from neutral-reputation domains with suspicion, routing them to spam or applying heavy throttling.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The warming process generates positive engagement signals (opens, replies, non-bounces) that build the domain&apos;s reputation score over time. Each successful delivery without a bounce or spam complaint contributes to the domain&apos;s credibility with ISPs.
@@ -266,12 +266,12 @@ export default function DomainWarmingArticle() {
 
  <h2 id="how-superkabe-protects-warming-domains" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Does Superkabe Protect Warming Domains?</h2>
  <p className="text-gray-600 leading-relaxed mb-8">
- Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold—significantly stricter than industry averages of 5-10%—prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
+ Superkabe applies industry-aligned bounce rate protection at all times. Mailboxes auto-pause at 3% bounce rate (after 60 sends), with early warnings at 2%. This aggressive threshold-significantly stricter than industry averages of 5-10%-prevents reputation damage before it occurs. During recovery, mailboxes must maintain &lt;2% bounce rates to graduate back to healthy status, ensuring only verified-clean senders resume outreach.
  </p>
 
  <BottomCtaStrip
                     headline="Key Takeaway"
-                    body="Domain warming is not optional — it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Superkabe enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it."
+                    body="Domain warming is not optional - it is the foundation of sustainable outbound operations. Rushing the process or cutting corners destroys domains that take weeks to replace. Superkabe enforces warming-phase discipline automatically, ensuring you build reputation instead of burning it."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

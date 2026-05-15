@@ -155,7 +155,7 @@ export default function CampaignDetailPage() {
 
     // Custom date range for the stats row. When both dates are set, we hit
     // /api/analytics/daily?campaign_id=...&start_date=...&end_date=... and
-    // sum the per-day buckets — otherwise the StatCards show the campaign's
+    // sum the per-day buckets - otherwise the StatCards show the campaign's
     // lifetime totals.
     const [rangeStart, setRangeStart] = useState<string>('');
     const [rangeEnd, setRangeEnd] = useState<string>('');
@@ -187,7 +187,7 @@ export default function CampaignDetailPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    // Skip stats — fetched once per page load. Light-weight aggregate so
+    // Skip stats - fetched once per page load. Light-weight aggregate so
     // we don't poll it; the widget tells operators which precondition
     // caused leads to bypass which step types.
     useEffect(() => {
@@ -199,7 +199,7 @@ export default function CampaignDetailPage() {
             .catch(() => { /* widget hides on error */ });
     }, [id]);
 
-    // Live health poll — fires every 30s while the campaign is active so a
+    // Live health poll - fires every 30s while the campaign is active so a
     // mid-view auto-pause (e.g. healing pipeline pauses every mailbox)
     // surfaces immediately rather than waiting for the next manual refresh.
     // Refocus refetch covers the case where the user tabbed away.
@@ -277,7 +277,7 @@ export default function CampaignDetailPage() {
             return;
         }
         if (action === 'launch') {
-            // Preflight — the backend rejects launches that don't have
+            // Preflight - the backend rejects launches that don't have
             // steps + accounts, but the apiClient toasts the raw error
             // (e.g. "Campaign has no sequence steps") *after* the round
             // trip. Catching it here lets us route the operator to the
@@ -291,7 +291,7 @@ export default function CampaignDetailPage() {
             if (hasLinkedInSteps && (!campaign.linkedin_senders || campaign.linkedin_senders.length === 0)) missing.push('a LinkedIn sender');
             if (campaign.lead_count === 0) missing.push('at least one lead');
             if (missing.length > 0) {
-                toast.error(`Can't launch — campaign is missing ${missing.join(', ')}. Open the editor to fix.`);
+                toast.error(`Can't launch - campaign is missing ${missing.join(', ')}. Open the editor to fix.`);
                 return;
             }
         }
@@ -444,7 +444,7 @@ export default function CampaignDetailPage() {
                 </div>
             )}
 
-            {/* Stats — with optional date range filter. Leads count is total
+            {/* Stats - with optional date range filter. Leads count is total
                 (always lifetime); the rest reflect either lifetime totals or
                 the sum of /api/analytics/daily buckets when a range is set. */}
             <div className="flex items-center justify-between flex-wrap gap-2">
@@ -460,7 +460,7 @@ export default function CampaignDetailPage() {
                                 setRangeStart(v);
                                 if (v && rangeEnd && new Date(v) > new Date(rangeEnd)) {
                                     setRangeEnd('');
-                                    toast.error('Start must be before end — cleared the end date.');
+                                    toast.error('Start must be before end - cleared the end date.');
                                 }
                             }}
                         />
@@ -529,7 +529,7 @@ export default function CampaignDetailPage() {
                 </div>
             </div>
 
-            {/* Skip reasons — why dispatcher bypassed steps. Surfaces things
+            {/* Skip reasons - why dispatcher bypassed steps. Surfaces things
                 like "Lead has no LinkedIn URL on file" so operators can see
                 whether their list quality or step ordering is wasting capacity. */}
             {skipStats && skipStats.total_skipped > 0 && (
@@ -648,7 +648,7 @@ export default function CampaignDetailPage() {
                 </div>
             )}
 
-            {/* Lead sources — provenance panel. One row per CampaignLeadImport
+            {/* Lead sources - provenance panel. One row per CampaignLeadImport
                 batch (CSV upload, Clay ingest, manual add, API push). For CSV
                 rows the filename is shown so users can audit which file added
                 which leads. Empty state hides the section to avoid clutter on
@@ -692,7 +692,7 @@ export default function CampaignDetailPage() {
                 )}
             </div>
 
-            {/* LinkedIn sender pool — only rendered for mixed-channel
+            {/* LinkedIn sender pool - only rendered for mixed-channel
                 campaigns (any campaign with linkedin_* steps). The wizard
                 attaches CampaignLinkedInSender rows; the dispatcher reads
                 from the same table when executing LinkedIn steps. */}
@@ -719,7 +719,7 @@ export default function CampaignDetailPage() {
                 </div>
             )}
 
-            {/* Delete Confirmation Modal — platform-themed */}
+            {/* Delete Confirmation Modal - platform-themed */}
             {showDeleteConfirm && (
                 <div
                     className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
@@ -776,7 +776,7 @@ export default function CampaignDetailPage() {
                 </div>
             )}
 
-            {/* Recipient Preview Modal — full-bleed, with client + device pickers */}
+            {/* Recipient Preview Modal - full-bleed, with client + device pickers */}
             {previewModalStepId && (() => {
                 const step = campaign.steps.find(s => s.id === previewModalStepId);
                 if (!step) return null;
@@ -876,14 +876,14 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Lead source row — one CampaignLeadImport batch
+// Lead source row - one CampaignLeadImport batch
 // ────────────────────────────────────────────────────────────────────
 
 function LeadSourceRow({ imp }: { imp: LeadImportRow }) {
     const meta = sourceMeta(imp.source);
     const Icon = meta.icon;
 
-    // Primary label — filename takes precedence for CSV; everyone else falls
+    // Primary label - filename takes precedence for CSV; everyone else falls
     // back to the human-readable source name ("Clay ingest", "Manual add").
     const primary = imp.source_file
         ? imp.source_file

@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api';
 /**
  * Backward-looking history of how many emails actually went out each day.
  * Source: `SendEvent` (one row per delivered message). Distinct from the
- * forward-looking SendCapacityForecast — this shows what was, not what could be.
+ * forward-looking SendCapacityForecast - this shows what was, not what could be.
  */
 
 type Range = '7d' | '14d' | '30d' | '90d';
@@ -71,11 +71,11 @@ export default function DailySentHistory() {
             {loading && <div className="h-32 flex items-center justify-center text-xs text-gray-400">Loading…</div>}
 
             {!loading && data && (() => {
-                // Hoist optional-chain reads out of JSX — Turbopack sometimes mis-
+                // Hoist optional-chain reads out of JSX - Turbopack sometimes mis-
                 // transpiles `data.peak_day?.count ?? 0` inline as a JSX prop
                 // expression, throwing "_ref is not defined" at runtime.
                 const peakCount = data.peak_day ? data.peak_day.count : 0;
-                const peakDateLabel = data.peak_day ? formatShortDate(data.peak_day.date) : '—';
+                const peakDateLabel = data.peak_day ? formatShortDate(data.peak_day.date) : '-';
                 return (
                     <>
                         {/* Three top-line stats */}
@@ -111,7 +111,7 @@ export default function DailySentHistory() {
                         })()}
                     </div>
 
-                        {/* Axis labels — start, middle, end */}
+                        {/* Axis labels - start, middle, end */}
                         {data.points.length > 1 && (
                             <div className="flex items-center justify-between text-[10px] text-gray-400 px-1 -mt-2 tabular-nums">
                                 <span>{formatShortDate(data.points[0].date)}</span>

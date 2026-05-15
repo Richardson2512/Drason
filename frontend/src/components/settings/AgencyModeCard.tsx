@@ -184,7 +184,7 @@ export default function AgencyModeCard() {
                                     </div>
                                 )}
                                 <div className="text-[9px] text-gray-400 italic mt-2">
-                                    Logo upload comes later — right now agency &amp; client brands show as letter avatars in the sidebar.
+                                    Logo upload comes later - right now agency &amp; client brands show as letter avatars in the sidebar.
                                 </div>
                             </div>
 
@@ -209,7 +209,7 @@ export default function AgencyModeCard() {
                         <h3 className="text-lg font-bold text-gray-900 mb-2">Turn off Agency Mode?</h3>
                         <p className="text-sm text-gray-600 mb-5 leading-relaxed">
                             The workspace switcher will hide and you'll go back to a single-workspace view. Your client workspaces
-                            and their data are preserved — you can re-enable Agency Mode any time to bring them back.
+                            and their data are preserved - you can re-enable Agency Mode any time to bring them back.
                         </p>
                         <div className="flex gap-2 justify-end">
                             <button

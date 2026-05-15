@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LinkedInSenderComparisonPanel — pick up to 2 LinkedIn accounts and view
+ * LinkedInSenderComparisonPanel - pick up to 2 LinkedIn accounts and view
  * a side-by-side daily breakdown of invites / messages / inmails over the
  * configured date window. Mirrors the role of MailboxComparisonPanel on
  * the email side, but slimmed down because the LinkedIn surface only has

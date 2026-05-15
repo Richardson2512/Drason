@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * CrossChannelSuppressionCard — workspace-level "what happens when a lead
+ * CrossChannelSuppressionCard - workspace-level "what happens when a lead
  * replies on one channel" setting. Same card is mounted on both the
  * Sequencer settings page and the Super LinkedIn settings page; the
  * value is org-scoped, so editing it in either place flips the policy
@@ -12,7 +12,7 @@
  * cross-module org config; we reuse it from both surfaces rather than
  * duplicating the route.)
  *
- * Four modes — see crossChannelSuppressionService.ts for the source of
+ * Four modes - see crossChannelSuppressionService.ts for the source of
  * truth on what each one does at dispatch time.
  */
 
@@ -48,14 +48,14 @@ const MODES: ModeOption[] = [
         key: 'CLASSIFIED',
         label: 'Classified',
         summary: 'Only intent-bearing replies pause the other channel.',
-        detail: 'Replies are auto-classified into nine classes by the reply classifier. The other channel pauses only on Positive, Qualified, Hard-no, or Angry. Generic / auto-replies / soft-no / objection / referral stay channel-scoped — they don\'t silence the other side.',
+        detail: 'Replies are auto-classified into nine classes by the reply classifier. The other channel pauses only on Positive, Qualified, Hard-no, or Angry. Generic / auto-replies / soft-no / objection / referral stay channel-scoped - they don\'t silence the other side.',
         isDefault: true,
     },
     {
         key: 'ASYMMETRIC',
         label: 'Asymmetric',
         summary: 'Email replies always pause LinkedIn. LinkedIn replies pause email only if intent-bearing.',
-        detail: 'Reflects how most teams actually treat the two channels — email is the higher-intent surface, LinkedIn is more conversational. Any reply on email is treated as a signal worth honouring; LinkedIn replies only stop email when the classifier sees clear intent.',
+        detail: 'Reflects how most teams actually treat the two channels - email is the higher-intent surface, LinkedIn is more conversational. Any reply on email is treated as a signal worth honouring; LinkedIn replies only stop email when the classifier sees clear intent.',
     },
 ];
 

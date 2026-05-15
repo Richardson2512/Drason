@@ -29,7 +29,7 @@ export default function EspRoutingPage() {
  When a lead is routed to a campaign, Superkabe classifies the recipient&apos;s email provider (Gmail, Microsoft, Yahoo) via MX lookup, then scores each mailbox in the campaign based on its <strong>30-day bounce rate to that specific ESP</strong>. The top 3 performing mailboxes are pinned for this lead via <code>assigned_email_accounts</code>. The sending platform only uses those mailboxes for this specific lead.
  </p>
  <p className="text-blue-700 text-sm">
- This goes beyond simple ESP matching. A Gmail mailbox with a 2% bounce rate to Gmail recipients gets a low score &mdash; an Outlook mailbox with 0.1% bounce rate to Gmail gets a high score. Performance beats provider matching.
+ This goes beyond simple ESP matching. A Gmail mailbox with a 2% bounce rate to Gmail recipients gets a low score - an Outlook mailbox with 0.1% bounce rate to Gmail gets a high score. Performance beats provider matching.
  </p>
  </div>
 
@@ -79,7 +79,7 @@ export default function EspRoutingPage() {
  <h2 id="warming-up" className="text-3xl font-bold mb-6 text-gray-900">What Does &ldquo;Warming Up&rdquo; Mean?</h2>
  <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-12 ">
  <p className="text-amber-800 mb-3">
- ESP scoring requires at least <strong>30 sends per mailbox per ESP bucket</strong> before the score is considered reliable. Until that threshold is reached, the cell shows &ldquo;warming up&rdquo; in the ESP Performance Matrix and scoring is skipped &mdash; the sending platform picks the mailbox instead.
+ ESP scoring requires at least <strong>30 sends per mailbox per ESP bucket</strong> before the score is considered reliable. Until that threshold is reached, the cell shows &ldquo;warming up&rdquo; in the ESP Performance Matrix and scoring is skipped - the sending platform picks the mailbox instead.
  </p>
  <p className="text-amber-700 text-sm">
  At 10,000 sends/month with 20 mailboxes and 4 ESP buckets, you&apos;ll have reliable data within 3&ndash;4 weeks of normal sending.
@@ -90,10 +90,10 @@ export default function EspRoutingPage() {
  <div className="bg-white border border-[#D1CBC5] p-6 mb-12">
  <p className="text-gray-600 mb-4">The matrix on the Email Validation page shows each mailbox&apos;s bounce rate per ESP:</p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#D1FAE5' }} /> <strong className="text-emerald-700">&lt;1% bounce rate</strong> &mdash; healthy. This mailbox performs well for this ESP.</li>
- <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#FEF3C7' }} /> <strong className="text-amber-700">1&ndash;2% bounce rate</strong> &mdash; warning. Monitor closely, may degrade further.</li>
- <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#FEE2E2' }} /> <strong className="text-red-700">&gt;2% bounce rate</strong> &mdash; problematic. Superkabe avoids routing this ESP&apos;s leads to this mailbox.</li>
- <li><span className="text-gray-400 text-xs mr-2">warming up</span> &mdash; fewer than 30 sends in this cell. Not enough data to score.</li>
+ <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#D1FAE5' }} /> <strong className="text-emerald-700">&lt;1% bounce rate</strong> - healthy. This mailbox performs well for this ESP.</li>
+ <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#FEF3C7' }} /> <strong className="text-amber-700">1&ndash;2% bounce rate</strong> - warning. Monitor closely, may degrade further.</li>
+ <li><span className="inline-block w-3 h-3 mr-2" style={{ background: '#FEE2E2' }} /> <strong className="text-red-700">&gt;2% bounce rate</strong> - problematic. Superkabe avoids routing this ESP&apos;s leads to this mailbox.</li>
+ <li><span className="text-gray-400 text-xs mr-2">warming up</span> - fewer than 30 sends in this cell. Not enough data to score.</li>
  </ul>
  </div>
 

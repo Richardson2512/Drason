@@ -19,7 +19,7 @@ export default function DashboardLayout({
             <AgencyModeProvider>
                 <DashboardShell>
                     {/* Suspense boundary is required for any child page that
-                        reads useSearchParams() — Next.js App Router will
+                        reads useSearchParams() - Next.js App Router will
                         bail out of static prerendering otherwise. Putting
                         it at the layout level covers every dashboard page
                         in one place so individual pages don't need to

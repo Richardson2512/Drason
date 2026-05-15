@@ -64,7 +64,7 @@ export default function ValidationActivityPanel({ isExpanded, onToggle }: Valida
                 setData(activityData);
             }
         } catch {
-            // Silent — validation activity is supplementary
+            // Silent - validation activity is supplementary
         } finally {
             setLoading(false);
         }
@@ -84,7 +84,7 @@ export default function ValidationActivityPanel({ isExpanded, onToggle }: Valida
 
     return (
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-            {/* Header — always visible */}
+            {/* Header - always visible */}
             <button
                 onClick={onToggle}
                 className="w-full px-4 py-3 flex items-center justify-between bg-transparent border-none cursor-pointer hover:bg-gray-50 transition-colors"

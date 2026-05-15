@@ -7,7 +7,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'How to Check Your Domain Reputation for Cold Email',
- description: 'Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks.',
+ description: 'Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda - what each checks.',
  openGraph: {
  title: 'How to Check Your Domain Reputation for Cold Email',
  description: 'Compare 6 domain reputation tools for cold email senders. Learn what ISPs evaluate, which tools matter most, and what to do when Google Postmaster shows bad reputation.',
@@ -32,7 +32,7 @@ export default function HowToCheckDomainReputationArticle() {
  "@context": "https://schema.org",
  "@type": "BlogPosting",
  "headline": "How to check your domain reputation for cold email (2026 guide)",
- "description": "Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda — what each checks.",
+ "description": "Compare 6 domain reputation tools for cold email. Google Postmaster, Microsoft SNDS, MXToolbox, Sender Score, Talos, Barracuda - what each checks.",
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
@@ -85,7 +85,7 @@ export default function HowToCheckDomainReputationArticle() {
  "name": "Is Sender Score accurate for cold email senders?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Sender Score from Validity rates your IP address on a 0-100 scale, but it has significant limitations for cold email. First, it measures IP reputation, not domain reputation — and most cold email senders use shared IPs through platforms like Smartlead or Instantly. Second, it updates slowly (weekly at best). Third, the score often does not correlate with actual inbox placement at specific ISPs. It is useful as a general indicator but should not be your primary monitoring tool."
+ "text": "Sender Score from Validity rates your IP address on a 0-100 scale, but it has significant limitations for cold email. First, it measures IP reputation, not domain reputation - and most cold email senders use shared IPs through platforms like Smartlead or Instantly. Second, it updates slowly (weekly at best). Third, the score often does not correlate with actual inbox placement at specific ISPs. It is useful as a general indicator but should not be your primary monitoring tool."
  }
  },
  {
@@ -93,7 +93,7 @@ export default function HowToCheckDomainReputationArticle() {
  "name": "Can I check domain reputation for free?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Google Postmaster Tools, Microsoft SNDS, MXToolbox Blacklist Check, Talos Intelligence, and Barracuda Reputation are all free. Sender Score from Validity also offers a free tier. These tools cover the essentials: Gmail reputation, Outlook reputation, blacklist status, and IP reputation. The limitation is that they are reactive — you have to manually check each one, and data is 24-48 hours old by the time you see it."
+ "text": "Yes. Google Postmaster Tools, Microsoft SNDS, MXToolbox Blacklist Check, Talos Intelligence, and Barracuda Reputation are all free. Sender Score from Validity also offers a free tier. These tools cover the essentials: Gmail reputation, Outlook reputation, blacklist status, and IP reputation. The limitation is that they are reactive - you have to manually check each one, and data is 24-48 hours old by the time you see it."
  }
  },
  {
@@ -214,7 +214,7 @@ export default function HowToCheckDomainReputationArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">Engagement signals</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Opens, replies, and clicks tell ISPs that recipients want your email. Low engagement across a sending domain signals irrelevance. Gmail weighs engagement particularly heavily — if recipients consistently ignore or delete your emails without reading them, reputation degrades even without bounces or complaints.
+ Opens, replies, and clicks tell ISPs that recipients want your email. Low engagement across a sending domain signals irrelevance. Gmail weighs engagement particularly heavily - if recipients consistently ignore or delete your emails without reading them, reputation degrades even without bounces or complaints.
  </p>
  </div>
  </div>
@@ -252,14 +252,14 @@ export default function HowToCheckDomainReputationArticle() {
  The most important tool for cold email senders. Period. Google Postmaster shows your domain reputation at Gmail and Google Workspace on a four-tier scale: High, Medium, Low, Bad. It also reports spam rate, IP reputation, authentication success rates, and delivery errors. Since roughly 70% of B2B email addresses are on Google&apos;s infrastructure, this is where reputation matters most.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
- <strong>Limitation:</strong> Data is delayed 24-48 hours. You are seeing yesterday&apos;s reputation, not what is happening right now. It also requires minimum sending volume to display data — if you send fewer than ~100 emails per day to Gmail, the dashboard stays blank. And it only covers Gmail. Your Outlook reputation is invisible here.
+ <strong>Limitation:</strong> Data is delayed 24-48 hours. You are seeing yesterday&apos;s reputation, not what is happening right now. It also requires minimum sending volume to display data - if you send fewer than ~100 emails per day to Gmail, the dashboard stays blank. And it only covers Gmail. Your Outlook reputation is invisible here.
  </p>
  </div>
 
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">2. Microsoft SNDS (Smart Network Data Services)</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- Microsoft&apos;s equivalent for Outlook, Hotmail, and Live.com. Shows spam complaint rates, trap hits, and IP reputation for mail sent to Microsoft addresses. Less granular than Google Postmaster — it reports at the IP level, not the domain level — but essential if any meaningful portion of your list uses Outlook.
+ Microsoft&apos;s equivalent for Outlook, Hotmail, and Live.com. Shows spam complaint rates, trap hits, and IP reputation for mail sent to Microsoft addresses. Less granular than Google Postmaster - it reports at the IP level, not the domain level - but essential if any meaningful portion of your list uses Outlook.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
  <strong>Limitation:</strong> Requires IP-level access, which is tricky for cold email senders on shared infrastructure. If you send through Smartlead or Instantly, you may not control the IPs. Reports are also IP-based, so if you share an IP with other senders, the data blends your behavior with theirs.
@@ -269,7 +269,7 @@ export default function HowToCheckDomainReputationArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">3. MXToolbox</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- The go-to blacklist checker. MXToolbox scans your domain and IP against 100+ blacklists simultaneously. It also checks DNS records (SPF, DKIM, DMARC, MX), tests SMTP connectivity, and provides a general deliverability overview. The blacklist check is what most people use it for — it answers the question &quot;am I listed anywhere?&quot; in one search.
+ The go-to blacklist checker. MXToolbox scans your domain and IP against 100+ blacklists simultaneously. It also checks DNS records (SPF, DKIM, DMARC, MX), tests SMTP connectivity, and provides a general deliverability overview. The blacklist check is what most people use it for - it answers the question &quot;am I listed anywhere?&quot; in one search.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
  <strong>Limitation:</strong> No ISP-specific reputation data. MXToolbox tells you if you are blacklisted, but it does not tell you what Google or Microsoft thinks of your domain. It is a diagnostic tool, not a reputation dashboard. The free tier also limits the number of checks per day.
@@ -289,10 +289,10 @@ export default function HowToCheckDomainReputationArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">5. Talos Intelligence (Cisco)</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- Cisco&apos;s threat intelligence platform that rates domains and IPs on a three-tier scale: Good, Neutral, Poor. It draws on data from Cisco&apos;s massive email filtering network. Useful as a cross-reference — if Talos says &quot;Poor&quot; while Google Postmaster says &quot;Medium,&quot; you have a broader problem than just one ISP.
+ Cisco&apos;s threat intelligence platform that rates domains and IPs on a three-tier scale: Good, Neutral, Poor. It draws on data from Cisco&apos;s massive email filtering network. Useful as a cross-reference - if Talos says &quot;Poor&quot; while Google Postmaster says &quot;Medium,&quot; you have a broader problem than just one ISP.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
- <strong>Limitation:</strong> Limited granularity (only three tiers) and no actionable diagnostics. It tells you if there is a problem but not what is causing it. Also skewed toward enterprise email filtering — many corporate mail servers use Cisco&apos;s IronPort, so this score matters for enterprise prospects.
+ <strong>Limitation:</strong> Limited granularity (only three tiers) and no actionable diagnostics. It tells you if there is a problem but not what is causing it. Also skewed toward enterprise email filtering - many corporate mail servers use Cisco&apos;s IronPort, so this score matters for enterprise prospects.
  </p>
  </div>
 
@@ -378,7 +378,7 @@ export default function HowToCheckDomainReputationArticle() {
  </p>
 
  {/* Section 4 */}
- <h2 id="bad-reputation-fix" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Google Postmaster shows bad reputation — now what</h2>
+ <h2 id="bad-reputation-fix" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Google Postmaster shows bad reputation - now what</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
  &quot;Bad&quot; is the lowest tier on Google Postmaster&apos;s four-level scale. If you are seeing this, Gmail is routing the vast majority of your emails to spam for all Gmail and Google Workspace recipients. Your inbox placement rate at Gmail is likely below 10%. This is not a minor issue. It means your domain is essentially blocked at Gmail.
  </p>
@@ -405,7 +405,7 @@ export default function HowToCheckDomainReputationArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Identify the cause</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Check Google Postmaster for the specific metrics that degraded. High spam rate? High bounce rate? Authentication failures? Check MXToolbox for blacklists. Verify DNS records are intact (SPF, DKIM, DMARC). Review the campaigns that were running when reputation dropped — usually one specific campaign or list is the culprit.
+ Check Google Postmaster for the specific metrics that degraded. High spam rate? High bounce rate? Authentication failures? Check MXToolbox for blacklists. Verify DNS records are intact (SPF, DKIM, DMARC). Review the campaigns that were running when reputation dropped - usually one specific campaign or list is the culprit.
  </p>
  </div>
  </div>
@@ -417,7 +417,7 @@ export default function HowToCheckDomainReputationArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Fix the root cause</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- If bounces caused it: clean your list, add email validation before sending, remove the bad addresses. If spam complaints caused it: rewrite your copy, tighten targeting, make sure your unsubscribe link works. If DNS failed: fix the records and verify them. If blacklisted: submit removal requests (most blacklists have self-service removal). Do not skip this step — if you restart sending without fixing the cause, you will end up right back at &quot;Bad.&quot;
+ If bounces caused it: clean your list, add email validation before sending, remove the bad addresses. If spam complaints caused it: rewrite your copy, tighten targeting, make sure your unsubscribe link works. If DNS failed: fix the records and verify them. If blacklisted: submit removal requests (most blacklists have self-service removal). Do not skip this step - if you restart sending without fixing the cause, you will end up right back at &quot;Bad.&quot;
  </p>
  </div>
  </div>
@@ -451,13 +451,13 @@ export default function HowToCheckDomainReputationArticle() {
  {/* Section 5 */}
  <h2 id="reactive-vs-realtime" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Reactive checking vs real-time monitoring</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Everything I have described so far is reactive. You open a dashboard, check a number, and respond to what you find. This is fine at small scale — 2-3 domains, 5-10 mailboxes. You can keep up by spending 10-15 minutes per day checking dashboards.
+ Everything I have described so far is reactive. You open a dashboard, check a number, and respond to what you find. This is fine at small scale - 2-3 domains, 5-10 mailboxes. You can keep up by spending 10-15 minutes per day checking dashboards.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The problem is timing. Google Postmaster data is 24-48 hours old. MXToolbox blacklist checks are point-in-time snapshots. By the time you see &quot;Bad&quot; reputation in Google Postmaster, the damage happened two days ago and has been compounding since. In cold email, two days of compounding damage can turn a recoverable situation into a burned domain.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Consider a real scenario: you push a batch of 3,000 leads from Clay into a campaign across 6 mailboxes on 2 domains. The list has an 8% invalid rate — 240 bad addresses. Those bounces hit over the first 12 hours of sending. By hour 6, both domains have crossed the 2% bounce threshold. By hour 12, one domain is at 5%. You check Google Postmaster the next morning and see... nothing, because the data has not updated yet. You check 48 hours later and see &quot;Low.&quot; By then, the domain has been sending at a degraded reputation for two full days.
+ Consider a real scenario: you push a batch of 3,000 leads from Clay into a campaign across 6 mailboxes on 2 domains. The list has an 8% invalid rate - 240 bad addresses. Those bounces hit over the first 12 hours of sending. By hour 6, both domains have crossed the 2% bounce threshold. By hour 12, one domain is at 5%. You check Google Postmaster the next morning and see... nothing, because the data has not updated yet. You check 48 hours later and see &quot;Low.&quot; By then, the domain has been sending at a degraded reputation for two full days.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Real-time monitoring flips this model. Instead of checking ISP dashboards after the fact, you track the leading indicators: bounce events, complaint signals, and sending velocity as they happen. A 2% bounce rate fires the warning state and the mailbox is flagged for monitoring. The pause threshold is 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. The domain never crosses the danger threshold because the problematic mailbox was stopped within minutes, not days.

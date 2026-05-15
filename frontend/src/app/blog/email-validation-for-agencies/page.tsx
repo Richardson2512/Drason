@@ -50,7 +50,7 @@ export default function EmailValidationForAgenciesArticle() {
  "name": "How do agencies handle email validation across multiple clients?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Agencies need per-client isolation — each client's domains, mailboxes, and campaigns must be monitored independently so that one client's bounce problem doesn't affect another's. Superkabe organizes infrastructure by client, applying the same validation rules while keeping health data and healing workflows completely separate."
+ "text": "Agencies need per-client isolation - each client's domains, mailboxes, and campaigns must be monitored independently so that one client's bounce problem doesn't affect another's. Superkabe organizes infrastructure by client, applying the same validation rules while keeping health data and healing workflows completely separate."
  }
  },
  {
@@ -74,7 +74,7 @@ export default function EmailValidationForAgenciesArticle() {
  "name": "How much does email validation cost at agency scale?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Per-email verification services (ZeroBounce, NeverBounce, etc.) charge $0.30-3.00 per 1,000 emails. At agency scale — say 50,000 leads per month across 15 clients — that's $15-150 per month just for verification, with no monitoring or healing. Superkabe's flat pricing includes validation, real-time monitoring, and automated healing regardless of volume, making costs predictable for agency budgeting."
+ "text": "Per-email verification services (ZeroBounce, NeverBounce, etc.) charge $0.30-3.00 per 1,000 emails. At agency scale - say 50,000 leads per month across 15 clients - that's $15-150 per month just for verification, with no monitoring or healing. Superkabe's flat pricing includes validation, real-time monitoring, and automated healing regardless of volume, making costs predictable for agency budgeting."
  }
  },
  {
@@ -132,7 +132,7 @@ export default function EmailValidationForAgenciesArticle() {
 
  <section className="mb-10">
  <p>
- If you run a cold email agency, you already know the stakes are different. When an individual SDR burns a domain, it is their company&apos;s problem. When you burn a domain, it is your client&apos;s problem. And it becomes your problem very quickly — in the form of a churned account and a bad review.
+ If you run a cold email agency, you already know the stakes are different. When an individual SDR burns a domain, it is their company&apos;s problem. When you burn a domain, it is your client&apos;s problem. And it becomes your problem very quickly - in the form of a churned account and a bad review.
  </p>
  <p>
  The uncomfortable truth about agency cold email is this: you are operating infrastructure that belongs to someone else. Their domains. Their reputation. Their deliverability. You are the one pressing send, but they are the ones who feel the damage when something goes wrong.
@@ -160,7 +160,7 @@ export default function EmailValidationForAgenciesArticle() {
  <li>150+ active campaigns</li>
  </ul>
  <p>
- Now ask yourself: how do you monitor 225 mailboxes for bounce rate spikes? Manually checking each one in Smartlead or Instantly? That is a full-time job — except it needs to happen at 2 AM when a bounce spike starts, not at 9 AM when you open your laptop.
+ Now ask yourself: how do you monitor 225 mailboxes for bounce rate spikes? Manually checking each one in Smartlead or Instantly? That is a full-time job - except it needs to happen at 2 AM when a bounce spike starts, not at 9 AM when you open your laptop.
  </p>
  <p>
  We talked to an agency founder last month who was literally setting alarms to check bounce rates at midnight. He had burned two client domains in one week and was terrified of it happening again. His monitoring tool was a spreadsheet. His response time was measured in hours, sometimes days.
@@ -183,14 +183,14 @@ export default function EmailValidationForAgenciesArticle() {
  <ul className="list-disc pl-6 space-y-2">
  <li><strong>Domain replacement cost:</strong> $10-15/year. Trivial.</li>
  <li><strong>DNS setup and authentication:</strong> 30 minutes of work. Minor.</li>
- <li><strong>Warmup time:</strong> 14-21 days of gradual volume increase. This is not minor — it means 3 weeks before that domain is productive again.</li>
+ <li><strong>Warmup time:</strong> 14-21 days of gradual volume increase. This is not minor - it means 3 weeks before that domain is productive again.</li>
  <li><strong>Lost sending capacity:</strong> During recovery, you lose 3-4 mailboxes worth of daily sends. At 40 emails per mailbox per day, that is 120-160 fewer emails daily for 4-6 weeks.</li>
  <li><strong>Pipeline impact:</strong> 120 emails/day x 30 days x 3% reply rate = 108 missed conversations. At a $15,000 average deal size and 5% close rate, that is roughly $81,000 in pipeline risk. Conservatively, $20,000 in actual lost revenue.</li>
  </ul>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Cost of Validation</h3>
  <p>
- Superkabe&apos;s plans range from $49/month for small teams to $349/month for agencies managing many clients. That includes validation, monitoring, and healing — not just a verification check.
+ Superkabe&apos;s plans range from $49/month for small teams to $349/month for agencies managing many clients. That includes validation, monitoring, and healing - not just a verification check.
  </p>
  <p>
  One prevented domain burn pays for 1-7 years of the validation service, depending on your plan. For agencies, the math is even more lopsided because you are managing multiple clients&apos; infrastructure. A single domain burn could cost you the client relationship entirely, which at $2,000-5,000/month in retainer fees means $24,000-60,000 in annual revenue at risk.
@@ -222,7 +222,7 @@ export default function EmailValidationForAgenciesArticle() {
  <tr className="border-b border-gray-100">
  <td className="px-4 py-3 font-medium">Per-client isolation</td>
  <td className="px-4 py-3 text-gray-400">Not needed</td>
- <td className="px-4 py-3 text-red-700 font-medium">Critical — one client&apos;s problem cannot affect another</td>
+ <td className="px-4 py-3 text-red-700 font-medium">Critical - one client&apos;s problem cannot affect another</td>
  </tr>
  <tr className="border-b border-gray-100 bg-gray-50">
  <td className="px-4 py-3 font-medium">Multi-tenant monitoring</td>
@@ -237,17 +237,17 @@ export default function EmailValidationForAgenciesArticle() {
  <tr className="border-b border-gray-100 bg-gray-50">
  <td className="px-4 py-3 font-medium">Predictable pricing</td>
  <td className="px-4 py-3">Nice to have</td>
- <td className="px-4 py-3 text-red-700 font-medium">Essential for agency margins — per-email costs destroy profitability</td>
+ <td className="px-4 py-3 text-red-700 font-medium">Essential for agency margins - per-email costs destroy profitability</td>
  </tr>
  <tr className="border-b border-gray-100">
  <td className="px-4 py-3 font-medium">Automated healing</td>
  <td className="px-4 py-3">Helpful</td>
- <td className="px-4 py-3 text-red-700 font-medium">Mandatory — you cannot manually heal 225 mailboxes</td>
+ <td className="px-4 py-3 text-red-700 font-medium">Mandatory - you cannot manually heal 225 mailboxes</td>
  </tr>
  <tr>
  <td className="px-4 py-3 font-medium">Multi-platform support</td>
  <td className="px-4 py-3">Usually one platform</td>
- <td className="px-4 py-3 text-red-700 font-medium">Clients may use different senders — need unified monitoring</td>
+ <td className="px-4 py-3 text-red-700 font-medium">Clients may use different senders - need unified monitoring</td>
  </tr>
  </tbody>
  </table>
@@ -262,7 +262,7 @@ export default function EmailValidationForAgenciesArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">1. Client Onboarding</h3>
  <p>
- When you bring on a new client, you set up their domains and mailboxes in your sending platform (Smartlead, Instantly, or both). Then you connect those accounts to Superkabe. The system syncs their campaigns, mailboxes, and domains automatically. You set per-client bounce thresholds — maybe 2% for a client with brand-new domains, 3% for one with established infrastructure.
+ When you bring on a new client, you set up their domains and mailboxes in your sending platform (Smartlead, Instantly, or both). Then you connect those accounts to Superkabe. The system syncs their campaigns, mailboxes, and domains automatically. You set per-client bounce thresholds - maybe 2% for a client with brand-new domains, 3% for one with established infrastructure.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">2. Lead Enrichment</h3>
@@ -285,7 +285,7 @@ export default function EmailValidationForAgenciesArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">5. Healing</h3>
  <p>
- When a mailbox gets paused, the healing pipeline kicks in automatically. Reduced volume, warm-only traffic, gradual ramp-up. Your team gets notified but does not need to manually manage the recovery process. The mailbox returns to production when it is healthy — not when someone remembers to check on it.
+ When a mailbox gets paused, the healing pipeline kicks in automatically. Reduced volume, warm-only traffic, gradual ramp-up. Your team gets notified but does not need to manually manage the recovery process. The mailbox returns to production when it is healthy - not when someone remembers to check on it.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">6. Client Reporting</h3>
@@ -306,7 +306,7 @@ export default function EmailValidationForAgenciesArticle() {
  When you pitch new clients, say this: &ldquo;We protect your sending infrastructure. Every lead is validated before it touches your domain. Every mailbox is monitored in real time. If something goes wrong, we catch it within 60 seconds and the system self-heals. Your domains are never at risk.&rdquo;
  </p>
  <p>
- That is a selling point. Clients who have been burned before — and many have, especially those who are leaving another agency — will pay more for this. Clients who have not been burned yet need to see the numbers:
+ That is a selling point. Clients who have been burned before - and many have, especially those who are leaving another agency - will pay more for this. Clients who have not been burned yet need to see the numbers:
  </p>
  <ul className="list-disc pl-6 space-y-2">
  <li>&ldquo;Your 5 sending domains represent $100,000+ in pipeline capacity per quarter.&rdquo;</li>
@@ -384,7 +384,7 @@ export default function EmailValidationForAgenciesArticle() {
  Here is a scenario we have seen play out at agencies without proper isolation:
  </p>
  <p>
- Client A&apos;s team uploads a bad lead list. Bounce rate spikes to 7% on Client A&apos;s domain. The agency panics and starts investigating. While they are focused on Client A, the same enrichment source had also provided leads for Client B and Client C — through the same Clay workflow, with the same validation gap. By the time they check, three clients have damaged infrastructure.
+ Client A&apos;s team uploads a bad lead list. Bounce rate spikes to 7% on Client A&apos;s domain. The agency panics and starts investigating. While they are focused on Client A, the same enrichment source had also provided leads for Client B and Client C - through the same Clay workflow, with the same validation gap. By the time they check, three clients have damaged infrastructure.
  </p>
  <p>
  Per-client isolation means:
@@ -445,7 +445,7 @@ export default function EmailValidationForAgenciesArticle() {
  You, with Superkabe, have specific answers: 60-second monitoring, automatic pause at your threshold, structured healing pipeline, and monthly impact reports proving it works. That is a concrete, measurable differentiator.
  </p>
  <p>
- Some agencies we work with have increased their retainer fees by $500-1,000/month per client by including infrastructure protection as a core service. Clients pay it because the alternative — damaged domains and lost pipeline — costs significantly more.
+ Some agencies we work with have increased their retainer fees by $500-1,000/month per client by including infrastructure protection as a core service. Clients pay it because the alternative - damaged domains and lost pipeline - costs significantly more.
  </p>
  </section>
 

@@ -2,9 +2,9 @@
  * Rate limiter for the cold-email-templates AI generator.
  *
  * Two layers, both with the same daily quota:
- *   1. Signed cookie counter — survives across IPs (mobile network switching)
+ *   1. Signed cookie counter - survives across IPs (mobile network switching)
  *      but resets if user clears cookies.
- *   2. In-memory IP map — catches users who clear cookies. Lost on serverless
+ *   2. In-memory IP map - catches users who clear cookies. Lost on serverless
  *      cold start, which is acceptable for V2 (worst case: a user gets a few
  *      extra free generations after a deploy).
  *
@@ -17,7 +17,7 @@
  *   Name:  cet_gen_quota
  *   Value: <count>:<resetTimestamp>:<hmac>
  *   Lifetime: until end of UTC day
- *   HttpOnly: true (server-only — prevents tampering from client JS)
+ *   HttpOnly: true (server-only - prevents tampering from client JS)
  */
 
 import crypto from 'crypto';
@@ -124,7 +124,7 @@ export function checkAndConsume(
     const ipCount = ipEntry && ipEntry.resetAt > now ? ipEntry.count : 0;
     const ipResetAt = ipEntry && ipEntry.resetAt > now ? ipEntry.resetAt : resetAt;
 
-    // Effective count is the higher of the two — closes the cookie-clear loophole
+    // Effective count is the higher of the two - closes the cookie-clear loophole
     const effectiveCount = Math.max(cookieCount, ipCount);
     const effectiveResetAt = Math.max(cookieResetAt, ipResetAt);
 
@@ -138,7 +138,7 @@ export function checkAndConsume(
         };
     }
 
-    // Allowed — increment both layers
+    // Allowed - increment both layers
     const newCount = effectiveCount + 1;
     const newCookieValue = encodeCookie(newCount, effectiveResetAt);
 

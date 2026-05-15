@@ -3,13 +3,13 @@
  *
  * Two responsibilities:
  *
- * 1. `useIsAuthenticated()` — React hook that reads the `token` cookie and
+ * 1. `useIsAuthenticated()` - React hook that reads the `token` cookie and
  *    tells UI components whether to render the signed-in or signed-out state.
  *    The token itself is httpOnly so we can't read it directly; instead we
  *    look for the non-httpOnly auth flag the backend also sets, OR fall back
  *    to the presence of the legacy `token` cookie (which on dev is non-httpOnly).
  *
- * 2. `setIntendedReturnTo()` / `consumeIntendedReturnTo()` — bridges a
+ * 2. `setIntendedReturnTo()` / `consumeIntendedReturnTo()` - bridges a
  *    redirect target across the signup → OAuth → onboarding → dashboard
  *    round-trip. Survives Google's OAuth bounce because it lives in the
  *    user's localStorage on our origin.
@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 
 const RETURN_TO_KEY = 'superkabe.intended_return_to';
-const RETURN_TO_TTL_MS = 15 * 60 * 1000; // 15 minutes — covers a slow OAuth round-trip
+const RETURN_TO_TTL_MS = 15 * 60 * 1000; // 15 minutes - covers a slow OAuth round-trip
 
 interface ReturnToPayload {
     path: string;
@@ -108,7 +108,7 @@ export function setIntendedReturnTo(path: string | null | undefined): void {
         const payload: ReturnToPayload = { path: valid, storedAt: Date.now() };
         window.localStorage.setItem(RETURN_TO_KEY, JSON.stringify(payload));
     } catch {
-        /* localStorage unavailable (private browsing) — silent */
+        /* localStorage unavailable (private browsing) - silent */
     }
 }
 

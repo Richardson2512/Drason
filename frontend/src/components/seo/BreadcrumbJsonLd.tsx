@@ -6,7 +6,7 @@ export interface Crumb {
 }
 
 /**
- * BreadcrumbList JSON-LD for AEO. Emits only the schema — the visible
+ * BreadcrumbList JSON-LD for AEO. Emits only the schema - the visible
  * breadcrumb is up to the consuming page.
  */
 export default function BreadcrumbJsonLd({ crumbs }: { crumbs: Crumb[] }) {

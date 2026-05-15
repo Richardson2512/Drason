@@ -492,7 +492,7 @@ function ReadingPane({
     return (
         <div style={{ flex: 1, background: TOK.bgReading, overflowY: 'auto' }}>
             <div style={{ padding: '20px 32px 24px 28px' }}>
-                {/* Top row: avatar + sender meta — date + Important pill aligned right */}
+                {/* Top row: avatar + sender meta - date + Important pill aligned right */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
                     <div
                         style={{
@@ -591,7 +591,7 @@ export default function MacbookAppleMailPreview({
     const deviceH = screenH + bezel * 2 + 28;
 
     // Inbox view = no message selected; opened view = email shown.
-    const folderName = view === 'opened' ? 'Important — kesuto…' : 'Inbox — kesutowan…';
+    const folderName = view === 'opened' ? 'Important - kesuto…' : 'Inbox - kesutowan…';
     const totals = view === 'opened' ? '275 messages, 32 unread' : '930 messages, 513 unread';
 
     return (

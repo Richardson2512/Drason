@@ -18,7 +18,7 @@ const HEALTH_DOT: Record<'healthy' | 'warning' | 'paused', string> = {
 };
 
 /**
- * Agency-mode sidebar panel — renders only when Agency Mode is on.
+ * Agency-mode sidebar panel - renders only when Agency Mode is on.
  * Stacks four pieces of UI:
  *   1. Agency brand row (letter avatar + agency name)
  *   2. Active-workspace brand row (letter avatar + workspace + client co.)
@@ -123,7 +123,7 @@ export default function WorkspaceSwitcher({ isCollapsed, onRequestExpand }: Prop
                 <button
                     onClick={() => {
                         if (isCollapsed) {
-                            // Sidebar is collapsed — first expand it so the dropdown
+                            // Sidebar is collapsed - first expand it so the dropdown
                             // has room to render, then queue the dropdown open for
                             // the next paint.
                             onRequestExpand?.();
@@ -134,7 +134,7 @@ export default function WorkspaceSwitcher({ isCollapsed, onRequestExpand }: Prop
                     }}
                     className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-left cursor-pointer"
                     style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
-                    title={isCollapsed ? `${clientDisplay} — click to switch` : undefined}
+                    title={isCollapsed ? `${clientDisplay} - click to switch` : undefined}
                 >
                     <span
                         className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 text-[10px] font-bold text-white"
@@ -273,7 +273,7 @@ function BrandRow({
     const bg = accent === 'brand-agency'
         ? 'linear-gradient(135deg, #6366F1, #8B5CF6)'
         : 'linear-gradient(135deg, #1F2937, #4B5563)';
-    // When collapsed, drop the emphasis dashed border — there's no text label
+    // When collapsed, drop the emphasis dashed border - there's no text label
     // for it to emphasize, and a dashed avatar circle reads as broken.
     const showEmphasisFrame = emphasis && !isCollapsed;
     return (

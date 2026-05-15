@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'HubSpot Integration | Superkabe Docs',
-    description: 'Connect HubSpot to Superkabe via OAuth — import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
+    description: 'Connect HubSpot to Superkabe via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
     alternates: { canonical: '/docs/integrations/hubspot' },
     openGraph: {
         title: 'HubSpot Integration | Superkabe Docs',
-        description: 'Connect HubSpot to Superkabe via OAuth — import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
+        description: 'Connect HubSpot to Superkabe via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
         url: '/docs/integrations/hubspot',
         siteName: 'Superkabe',
         type: 'article',
@@ -20,20 +20,20 @@ export default function HubSpotIntegrationDocs() {
                 HubSpot Integration
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Two-way sync between HubSpot and Superkabe — import contacts, push activity to the timeline, mirror the suppression list.
+                Two-way sync between HubSpot and Superkabe - import contacts, push activity to the timeline, mirror the suppression list.
             </p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What this integration does</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li><strong>Contact import.</strong> Pick any HubSpot list — Superkabe pulls every contact, applies your field mapping, and creates Superkabe leads.</li>
+                <li><strong>Contact import.</strong> Pick any HubSpot list - Superkabe pulls every contact, applies your field mapping, and creates Superkabe leads.</li>
                 <li><strong>Activity push.</strong> Every <code>email.sent</code>, <code>email.opened</code>, <code>email.clicked</code>, <code>email.replied</code>, and <code>email.bounced</code> event from Superkabe lands as a Note on the matching HubSpot contact&apos;s timeline.</li>
-                <li><strong>Suppression sync.</strong> HubSpot contacts with <code>hs_email_optout=true</code> are pulled into Superkabe&apos;s block list — no risk of mailing someone who already opted out at the CRM level.</li>
+                <li><strong>Suppression sync.</strong> HubSpot contacts with <code>hs_email_optout=true</code> are pulled into Superkabe&apos;s block list - no risk of mailing someone who already opted out at the CRM level.</li>
                 <li><strong>Idempotent.</strong> Activity pushes are deduped on <code>(connection, lead, event_type, timestamp)</code> so retries don&apos;t double-write.</li>
             </ul>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">One-time setup (admin)</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                You only need to do this once per Superkabe deployment. Superkabe&apos;s HubSpot Public App is created in your HubSpot Developer Account — every customer connects to that one app via OAuth.
+                You only need to do this once per Superkabe deployment. Superkabe&apos;s HubSpot Public App is created in your HubSpot Developer Account - every customer connects to that one app via OAuth.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">1. Create the HubSpot Public App</h3>
@@ -64,13 +64,13 @@ export default function HubSpotIntegrationDocs() {
 HUBSPOT_CLIENT_SECRET=…
 HUBSPOT_REDIRECT_URI=https://api.superkabe.com/api/integrations/hubspot/callback`}</pre>
             </div>
-            <p className="text-gray-600">Restart the backend. On boot you should see <code>[CRM_REGISTRY] registered provider hubspot</code> in the logs — that confirms the env vars were picked up.</p>
+            <p className="text-gray-600">Restart the backend. On boot you should see <code>[CRM_REGISTRY] registered provider hubspot</code> in the logs - that confirms the env vars were picked up.</p>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">User flow (per customer)</h2>
 
             <div className="bg-amber-50 border border-amber-200 p-4 mb-6 rounded-lg">
                 <p className="text-sm text-amber-900 m-0 leading-relaxed">
-                    <strong>What you&apos;ll see during consent:</strong> HubSpot displays a security warning on the consent screen for any third-party app that isn&apos;t Marketplace-verified, asking you to confirm you initiated the connection yourself. This is HubSpot&apos;s standard anti-phishing protection — it shows for every legitimate B2B integration on first connect to a new portal. Since you arrived at the screen by clicking <strong>Connect HubSpot</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen.
+                    <strong>What you&apos;ll see during consent:</strong> HubSpot displays a security warning on the consent screen for any third-party app that isn&apos;t Marketplace-verified, asking you to confirm you initiated the connection yourself. This is HubSpot&apos;s standard anti-phishing protection - it shows for every legitimate B2B integration on first connect to a new portal. Since you arrived at the screen by clicking <strong>Connect HubSpot</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen.
                 </p>
             </div>
 
@@ -117,7 +117,7 @@ via Superkabe · 2026-04-30T14:33:02.000Z`}</pre>
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Webhook signature verification</h3>
             <p className="text-gray-600 mb-4">Every inbound HubSpot webhook is verified against an HMAC-SHA256 signature using your app&apos;s client secret as the key (per HubSpot&apos;s v3 signature spec). Requests with missing, invalid, or replayed signatures (older than 5 minutes) are rejected with <code>401</code>. The verifier uses constant-time comparison to prevent timing attacks.</p>
 
-            <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">GDPR — right to erasure</h3>
+            <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">GDPR - right to erasure</h3>
             <p className="text-gray-600 mb-3">Superkabe subscribes to HubSpot&apos;s <code>contact.privacyDeletion</code> webhook. When a HubSpot user permanently deletes a contact for GDPR reasons, HubSpot fires that event to us, and within seconds we:</p>
             <ol className="list-decimal list-inside space-y-1 text-gray-600 mb-4 text-sm">
                 <li>Locate every Superkabe lead linked to that HubSpot contact</li>
@@ -142,8 +142,8 @@ via Superkabe · 2026-04-30T14:33:02.000Z`}</pre>
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Limitations</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
                 <li>v1 ships activities as Notes. Phase 4 graduates to a registered timeline-event template for richer rendering.</li>
-                <li>Custom Object support is on the roadmap — for now contacts only.</li>
-                <li>Two-way contact creation (Superkabe → HubSpot) is not yet enabled — the integration is read-from / push-activity-to.</li>
+                <li>Custom Object support is on the roadmap - for now contacts only.</li>
+                <li>Two-way contact creation (Superkabe → HubSpot) is not yet enabled - the integration is read-from / push-activity-to.</li>
             </ul>
 
             <div className="mt-12 bg-white border border-gray-200 p-6 shadow-lg shadow-gray-100">

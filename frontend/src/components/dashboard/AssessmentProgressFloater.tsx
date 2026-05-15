@@ -10,8 +10,8 @@
  *
  * States:
  *   - hidden:   no assessment in progress, no recent completion to surface
- *   - running:  assessment_running=true on the org row — spinner + label
- *   - complete: assessment just finished — green check, auto-dismiss after 8s
+ *   - running:  assessment_running=true on the org row - spinner + label
+ *   - complete: assessment just finished - green check, auto-dismiss after 8s
  *
  * Polling lives in DashboardShell; this component is presentational +
  * dismiss-only.

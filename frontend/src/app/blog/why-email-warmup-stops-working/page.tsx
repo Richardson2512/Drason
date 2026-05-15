@@ -83,33 +83,33 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Email warmup stops working because warmup creates artificial engagement signals — automated opens, replies, and inbox moves — that vanish the moment you switch to real cold outreach. ISPs notice the engagement drop and reclassify your domain. The solution is not more warmup — it is monitoring and protecting your infrastructure during live sending.
+                    Email warmup stops working because warmup creates artificial engagement signals - automated opens, replies, and inbox moves - that vanish the moment you switch to real cold outreach. ISPs notice the engagement drop and reclassify your domain. The solution is not more warmup - it is monitoring and protecting your infrastructure during live sending.
                 </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup engagement is artificial — ISPs see the difference when real cold emails replace warmup emails</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup engagement is artificial - ISPs see the difference when real cold emails replace warmup emails</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> The volume jump from warmup to live sending triggers spam filters if it is too steep</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup tools stop monitoring after warmup — nothing watches your live campaigns</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup tools stop monitoring after warmup - nothing watches your live campaigns</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> The solution is infrastructure protection during live sending, not longer warmup</li>
  </ul>
  </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-gray-600 leading-relaxed mb-6">
- You did everything right. You bought new domains, set up Google Workspace mailboxes, connected a warmup tool, waited 3 weeks, watched your inbox placement scores climb to 95%+, and then started your first Smartlead campaign. Within days, reply rates were near zero. Your warmup tool still shows great scores, but your actual cold emails are landing in spam. This is the warmup gap — and it catches almost every cold email team that scales past their first few domains.
+ You did everything right. You bought new domains, set up Google Workspace mailboxes, connected a warmup tool, waited 3 weeks, watched your inbox placement scores climb to 95%+, and then started your first Smartlead campaign. Within days, reply rates were near zero. Your warmup tool still shows great scores, but your actual cold emails are landing in spam. This is the warmup gap - and it catches almost every cold email team that scales past their first few domains.
  </p>
 
- <h2 id="artificial-engagement" className="text-2xl font-bold text-gray-900 mt-12 mb-4">1. Warmup engagement is artificial — live engagement is real</h2>
+ <h2 id="artificial-engagement" className="text-2xl font-bold text-gray-900 mt-12 mb-4">1. Warmup engagement is artificial - live engagement is real</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- Warmup tools work by exchanging emails between a network of accounts. When your mailbox sends a warmup email, the receiving account automatically opens it, replies to it, and moves it from spam to inbox if it lands there. This creates a perfect engagement profile — 90-100% open rates, high reply rates, zero spam reports.
+ Warmup tools work by exchanging emails between a network of accounts. When your mailbox sends a warmup email, the receiving account automatically opens it, replies to it, and moves it from spam to inbox if it lands there. This creates a perfect engagement profile - 90-100% open rates, high reply rates, zero spam reports.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  The moment you switch to cold outreach, your engagement profile changes dramatically. Real cold recipients open maybe 40-60% of emails (if your subject line is good), reply to 2-5%, and some will mark you as spam. ISPs like Gmail track these engagement metrics in real time. When they see a mailbox go from 95% opens to 45% opens overnight, with spam reports appearing for the first time, they reclassify your sending pattern.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is not a flaw in warmup tools — it is an inherent limitation. Warmup builds initial reputation. It does not maintain reputation once real sending begins. The reputation you built during warmup is a starting balance, not a permanent shield.
+ This is not a flaw in warmup tools - it is an inherent limitation. Warmup builds initial reputation. It does not maintain reputation once real sending begins. The reputation you built during warmup is a starting balance, not a permanent shield.
  </p>
 
  <h2 id="volume-jump" className="text-2xl font-bold text-gray-900 mt-12 mb-4">2. Volume jump from warmup to live is too steep</h2>
@@ -120,7 +120,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  <strong>The safe approach:</strong> Start campaigns at 5-10 emails per day alongside your ongoing warmup. Increase by 5 emails every 3-4 days. It takes 2-3 weeks to ramp to full volume, but your domain reputation survives the transition. If you see bounce rates or spam reports increase at any step, hold at that volume until metrics stabilize before increasing further.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is tedious, but the alternative — burning a domain and buying a replacement — costs more time and money than a slow ramp.
+ This is tedious, but the alternative - burning a domain and buying a replacement - costs more time and money than a slow ramp.
  </p>
 
  <h2 id="bounces-spam-reports" className="text-2xl font-bold text-gray-900 mt-12 mb-4">3. Cold recipients generate bounces and spam reports that warmup recipients never did</h2>
@@ -139,7 +139,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  This is the critical gap. Your warmup tool shows you inbox placement for warmup emails. It tells you 95% of warmup emails are landing in the inbox. But it says nothing about where your actual campaign emails are landing. You can have perfect warmup scores while 80% of your campaign emails go to spam.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- Warmup tools were never designed to be deliverability monitoring platforms. They build initial reputation and measure warmup performance. Once you start real sending, you need a different kind of tool — one that monitors bounce rates, ESP-level performance, and domain health across your live campaigns.
+ Warmup tools were never designed to be deliverability monitoring platforms. They build initial reputation and measure warmup performance. Once you start real sending, you need a different kind of tool - one that monitors bounce rates, ESP-level performance, and domain health across your live campaigns.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  This monitoring gap is why teams can operate for weeks thinking everything is fine (warmup scores look great!) while their actual campaigns are silently burning domain after domain.
@@ -147,7 +147,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
 
  <h2 id="domain-amplification" className="text-2xl font-bold text-gray-900 mt-12 mb-4">5. Multiple mailboxes on the same domain amplify problems</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- Most cold email teams run 3-5 mailboxes per domain to increase volume. During warmup, this is fine — all mailboxes build reputation independently. But during live sending, if one mailbox has a bad campaign (high bounces, spam reports), it damages the domain reputation that all mailboxes share.
+ Most cold email teams run 3-5 mailboxes per domain to increase volume. During warmup, this is fine - all mailboxes build reputation independently. But during live sending, if one mailbox has a bad campaign (high bounces, spam reports), it damages the domain reputation that all mailboxes share.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  One mailbox with a 5% bounce rate can drag down the deliverability of the other 4 mailboxes on the same domain. ISPs evaluate reputation at the domain level, not the mailbox level. Warmup tools do not track this cross-mailbox domain-level impact.
@@ -159,7 +159,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  <div className="bg-amber-50 border border-amber-200 p-6 my-12">
  <h2 className="font-bold text-amber-900 text-lg mb-3">The Warmup Gap</h2>
  <p className="text-amber-800 text-sm mb-3">
- Warmup builds reputation. But nothing protects it during live sending. The period between warmup completion and stable live campaign performance is the warmup gap — and it is where most cold email domains die.
+ Warmup builds reputation. But nothing protects it during live sending. The period between warmup completion and stable live campaign performance is the warmup gap - and it is where most cold email domains die.
  </p>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
  <div className="bg-white p-3 border border-amber-200">
@@ -179,16 +179,16 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
 
  <h2 id="what-you-need-after-warmup" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What you need after warmup</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- The answer is not more warmup or better warmup. The answer is infrastructure protection during live sending — tools that monitor, react, and recover in real time as your campaigns run.
+ The answer is not more warmup or better warmup. The answer is infrastructure protection during live sending - tools that monitor, react, and recover in real time as your campaigns run.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  <Link href="/product/esp-aware-routing" className="text-blue-600 hover:text-blue-800">Superkabe&apos;s ESP-aware routing</Link> tracks how each of your mailboxes performs across different email service providers. If a mailbox is hitting spam at Gmail but delivering fine to Outlook, Superkabe adjusts routing to protect the mailbox&apos;s reputation with Gmail while maintaining volume to Outlook. Warmup tools have no visibility into per-ESP performance.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- When a mailbox crosses bounce thresholds, Superkabe auto-pauses it before the damage spreads to the domain. Then the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800">5-phase healing pipeline</Link> takes over — gradually reducing volume, re-establishing engagement signals, and restoring the mailbox to active sending once metrics recover. This is automated warmup recovery, not just initial warmup.
+ When a mailbox crosses bounce thresholds, Superkabe auto-pauses it before the damage spreads to the domain. Then the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800">5-phase healing pipeline</Link> takes over - gradually reducing volume, re-establishing engagement signals, and restoring the mailbox to active sending once metrics recover. This is automated warmup recovery, not just initial warmup.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical difference: warmup tools build initial reputation. Infrastructure protection tools maintain it. You need both — warmup for the first 2-3 weeks, and monitoring/protection from that point forward.
+ The critical difference: warmup tools build initial reputation. Infrastructure protection tools maintain it. You need both - warmup for the first 2-3 weeks, and monitoring/protection from that point forward.
  </p>
 
  <h2 id="warmup-vs-protection" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Warmup tool vs infrastructure protection</h2>
@@ -203,7 +203,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  </thead>
  <tbody className="text-gray-600">
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Build initial reputation</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes</td><td className="py-2.5 px-3">No (use a warmup tool)</td></tr>
- <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Monitor live campaign deliverability</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes — real-time</td></tr>
+ <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Monitor live campaign deliverability</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes - real-time</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Auto-pause on bounce spike</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">DNS health monitoring</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">SPF/DKIM/DMARC</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Per-ESP performance tracking</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Gmail, Outlook, Yahoo</td></tr>
@@ -233,7 +233,7 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
 
  <BottomCtaStrip
                     headline="When warmup stops working, protection takes over"
-                    body="Warmup builds reputation. When sending begins, Superkabe defends it — auto-pause, ESP-aware routing, and 5-phase healing keep your mailboxes alive."
+                    body="Warmup builds reputation. When sending begins, Superkabe defends it - auto-pause, ESP-aware routing, and 5-phase healing keep your mailboxes alive."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

@@ -3,14 +3,14 @@
 /**
  * Five-tab navigation strip for the account-detail feed surfaces:
  *
- *   /accounts/[id]                       — All
- *   /accounts/[id]/posts                 — Posts (excludes thought-leadership)
- *   /accounts/[id]/articles              — Articles
- *   /accounts/[id]/reposts               — Reposts
- *   /accounts/[id]/thought-leadership    — Thought leadership (derived)
+ *   /accounts/[id]                       - All
+ *   /accounts/[id]/posts                 - Posts (excludes thought-leadership)
+ *   /accounts/[id]/articles              - Articles
+ *   /accounts/[id]/reposts               - Reposts
+ *   /accounts/[id]/thought-leadership    - Thought leadership (derived)
  *
  * Active tab is highlighted; clicking another tab swaps the route. The
- * URL is the source of truth for which kind is being viewed — no local
+ * URL is the source of truth for which kind is being viewed - no local
  * state in the parent, which means the back/forward buttons + sharable
  * links work without extra glue.
  */

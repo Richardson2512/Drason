@@ -45,7 +45,7 @@ function getConnectionResolution(error: string | null | undefined, platform?: st
     if (e.includes('timeout') || e.includes('timed out')) {
         return {
             cause: 'Connection timed out',
-            resolution: `The mail server is not responding. This may be a temporary outage — try reconnecting in ${name} later.`
+            resolution: `The mail server is not responding. This may be a temporary outage - try reconnecting in ${name} later.`
         };
     }
     if (e.includes('certificate') || e.includes('ssl') || e.includes('tls')) {
@@ -128,7 +128,7 @@ export default function MailboxesPage() {
         } catch (err: any) {
             console.error('Failed to fetch mailboxes:', err);
             setFetchError(err.message || 'Failed to load mailboxes');
-            // Don't wipe existing mailboxes on error — keep stale data visible
+            // Don't wipe existing mailboxes on error - keep stale data visible
         } finally {
             setLoading(false);
         }
@@ -209,7 +209,7 @@ export default function MailboxesPage() {
             <div className="premium-card w-[380px] flex flex-col p-4 h-full overflow-hidden rounded-2xl">
                 <h1 className="text-xl font-bold mb-3 shrink-0 text-gray-900">Mailboxes</h1>
 
-                {/* Stats bar — interactive. Clicking a status pill filters the
+                {/* Stats bar - interactive. Clicking a status pill filters the
                     list; "All" clears. Healing phases appear alongside status
                     with muted gray dots rather than their own colored pills. */}
                 {entityStats?.mailboxes && (
@@ -359,7 +359,7 @@ export default function MailboxesPage() {
                             <div className="text-xs text-gray-500">Mailbox Health & Usage</div>
                         </div>
 
-                        {/* Pause Reason Banner — shown when Superkabe's automation paused the mailbox */}
+                        {/* Pause Reason Banner - shown when Superkabe's automation paused the mailbox */}
                         {selectedMailbox.status === 'paused' && selectedMailbox.paused_reason && (
                             <div className="mb-3 rounded-2xl border border-yellow-300" style={{
                                 padding: '1.25rem 1.5rem',
@@ -381,7 +381,7 @@ export default function MailboxesPage() {
                             </div>
                         )}
 
-                        {/* Connection Diagnostic Card — shown when mailbox is disconnected */}
+                        {/* Connection Diagnostic Card - shown when mailbox is disconnected */}
                         {selectedMailbox.status === 'paused' && (selectedMailbox.smtp_status === false || selectedMailbox.imap_status === false) && (() => {
                             const { cause, resolution } = getConnectionResolution(selectedMailbox.connection_error, selectedMailbox.source_platform);
                             return (
@@ -743,7 +743,7 @@ export default function MailboxesPage() {
                 )}
             </div>
 
-            {/* Sort & Filter Modal — portaled to body. */}
+            {/* Sort & Filter Modal - portaled to body. */}
             {sortFilter.isOpen && typeof document !== 'undefined' && createPortal(
                 <div
                     className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
@@ -922,10 +922,10 @@ function MetricTile({ label, value, dot }: { label: string; value: number | null
 // ────────────────────────────────────────────────────────────────────
 //
 // Renders one of four states based on how the backend resolved the IP:
-//   • clean         — IP resolved + zero major/critical listings
-//   • listed        — IP resolved + at least one major or critical listing
-//   • shared_infra  — Gmail / Microsoft OAuth (no per-mailbox IP)
-//   • not_resolved  — SMTP host couldn't be resolved (config issue)
+//   • clean         - IP resolved + zero major/critical listings
+//   • listed        - IP resolved + at least one major or critical listing
+//   • shared_infra  - Gmail / Microsoft OAuth (no per-mailbox IP)
+//   • not_resolved  - SMTP host couldn't be resolved (config issue)
 //
 // "listed" surfaces a Fix CTA that opens the same Spamhaus delisting tool
 // FindingsSection links to. The other three states are informational.
@@ -971,7 +971,7 @@ function SendingIpHealth({ mailbox }: { mailbox: import('@/types/api').Mailbox }
                 <div>
                     <p className="text-xs text-gray-700 leading-relaxed">
                         Gmail and Microsoft 365 send through shared provider IPs. Per-mailbox blacklist checks
-                        aren&apos;t actionable — every customer of these providers shares the same IP pools, and you
+                        aren&apos;t actionable - every customer of these providers shares the same IP pools, and you
                         can&apos;t migrate off them. The domain-level DNS health on the Infrastructure page is the
                         right signal for OAuth mailboxes.
                     </p>
@@ -1003,7 +1003,7 @@ function SendingIpHealth({ mailbox }: { mailbox: import('@/types/api').Mailbox }
                         <div>
                             <div className="text-[10px] uppercase font-semibold text-gray-500 tracking-wider mb-0.5">Last checked</div>
                             <div className="text-gray-800">
-                                {mailbox.last_ip_blacklist_check ? new Date(mailbox.last_ip_blacklist_check).toLocaleString() : '—'}
+                                {mailbox.last_ip_blacklist_check ? new Date(mailbox.last_ip_blacklist_check).toLocaleString() : '-'}
                             </div>
                         </div>
                     </div>
@@ -1044,7 +1044,7 @@ function SendingIpHealth({ mailbox }: { mailbox: import('@/types/api').Mailbox }
                         <div className="mt-3 pt-3 border-t" style={{ borderColor: theme.border }}>
                             <p className="text-[11px] text-gray-700 leading-relaxed mb-2">
                                 {critical > 0
-                                    ? `Listed on ${critical} critical blacklist${critical === 1 ? '' : 's'}. Pause sends from this mailbox and request delisting before resuming — major receivers honor critical lists like Spamhaus directly.`
+                                    ? `Listed on ${critical} critical blacklist${critical === 1 ? '' : 's'}. Pause sends from this mailbox and request delisting before resuming - major receivers honor critical lists like Spamhaus directly.`
                                     : `Listed on ${major} major blacklist${major === 1 ? '' : 's'}. Likely affecting inbox placement; request delisting to recover.`}
                             </p>
                             <a

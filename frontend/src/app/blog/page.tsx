@@ -225,7 +225,7 @@ const articles = [
  {
  slug: 'email-validation-vs-verification',
  title: 'Email validation vs email verification: what is actually different',
- description: 'The technical distinction between validation (format + DNS) and verification (SMTP probe) — and when you need both plus infrastructure protection.',
+ description: 'The technical distinction between validation (format + DNS) and verification (SMTP probe) - and when you need both plus infrastructure protection.',
  readTime: '10 min read',
  tag: 'Educational',
  },
@@ -576,7 +576,7 @@ export default function BlogPage() {
  <MarketingBackdrop />
 
  <main className="pt-32 md:pt-40 pb-16">
- {/* Mailivery-style header — width-locked to match BlogArticleGrid's max-w-6xl */}
+ {/* Mailivery-style header - width-locked to match BlogArticleGrid's max-w-6xl */}
  <header className="max-w-6xl mx-auto px-6 mb-16">
  <div className="max-w-3xl">
  <div className="mb-8">

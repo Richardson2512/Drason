@@ -3,16 +3,16 @@
  *
  * Every component points to an official asset downloaded into /public/logos/.
  * Sources:
- *   - Simple Icons CDN (simpleicons.org) — gmail, google, airtable, hubspot
- *   - svgl.app — slack (multicolor variant)
- *   - vectorlogo.zone — microsoft (4-color square), salesforce
- *   - svgporn.com — webhooks
+ *   - Simple Icons CDN (simpleicons.org) - gmail, google, airtable, hubspot
+ *   - svgl.app - slack (multicolor variant)
+ *   - vectorlogo.zone - microsoft (4-color square), salesforce
+ *   - svgporn.com - webhooks
  *   - Brand websites (next/static, webflow assets, apple-touch-icon, favicon
- *     paths) — apollo, zoominfo, outreach, justcall, zapmail,
+ *     paths) - apollo, zoominfo, outreach, justcall, zapmail,
  *     scaledmail. Where a brand publishes only a wordmark, we use their
  *     square apple-touch-icon / favicon PNG so the chip slot stays uniform.
  *
- * Apollo's published SVG was monochrome — we apply their brand color
+ * Apollo's published SVG was monochrome - we apply their brand color
  * (#143959) via fill rewrite during fetch, leaving the geometry untouched.
  */
 
@@ -23,7 +23,7 @@ type Props = { size?: number };
 function LogoImg({ src, alt, size = 28 }: { src: string; alt: string; size?: number }) {
     // Below-the-fold integration logos. `loading="lazy"` + `decoding="async"`
     // tells React/Next 19 not to emit a `<link rel="preload" as="image">` for
-    // each — those preloads were stealing LCP bandwidth from the hero font
+    // each - those preloads were stealing LCP bandwidth from the hero font
     // and competing with the actual above-the-fold critical resources.
     // eslint-disable-next-line @next/next/no-img-element
     return (
@@ -55,7 +55,7 @@ export function MicrosoftLogo({ size = 28 }: Props) {
 }
 
 export function SmtpLogo({ size = 28 }: Props) {
-    // SMTP is a protocol, not a brand — neutral envelope-on-dark mark.
+    // SMTP is a protocol, not a brand - neutral envelope-on-dark mark.
     return (
         <svg width={size} height={size} viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-label="SMTP">
             <rect x="0" y="0" width="28" height="28" rx="6" fill="#111827" />
@@ -99,7 +99,7 @@ export function SalesforceLogo({ size = 28 }: Props) {
 }
 
 export function OutreachLogo({ size = 28 }: Props) {
-    // Outreach publishes only a wordmark — using their square apple-touch
+    // Outreach publishes only a wordmark - using their square apple-touch
     // icon so the chip slot stays uniform with the rest of the row.
     return <LogoImg src="/logos/outreach-icon.png" alt="Outreach" size={size} />;
 }

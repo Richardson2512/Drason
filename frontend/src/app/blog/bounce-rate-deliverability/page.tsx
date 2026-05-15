@@ -93,7 +93,7 @@ export default function BounceRateArticle() {
  "name": "How does lead quality affect email deliverability?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Low-quality leads — invalid addresses, catch-all domains, disposable emails, and role-based addresses — generate hard bounces and spam complaints. Each hard bounce directly damages sender reputation. A single batch of unverified leads can push a domain above the 5% bounce threshold within hours, triggering ISP penalties."
+ "text": "Low-quality leads - invalid addresses, catch-all domains, disposable emails, and role-based addresses - generate hard bounces and spam complaints. Each hard bounce directly damages sender reputation. A single batch of unverified leads can push a domain above the 5% bounce threshold within hours, triggering ISP penalties."
  }
  }
  ]
@@ -132,7 +132,7 @@ export default function BounceRateArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Bounce rate is the single most heavily weighted signal in ISP reputation models</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Hard bounces (permanent failures) damage reputation directly; soft bounces only matter if persistent</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Above 5%, ISPs begin throttling; above 10%, domains face blacklisting</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Cold outbound is especially vulnerable — one batch of bad leads can burn a domain in hours</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Cold outbound is especially vulnerable - one batch of bad leads can burn a domain in hours</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Proactive real-time monitoring is the only viable strategy to prevent compounding damage</li>
  </ul>
  </div>
@@ -177,7 +177,7 @@ export default function BounceRateArticle() {
 
  <h2 id="bounce-rate-thresholds" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Are the Bounce Rate Thresholds That Trigger ISP Action?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Internet Service Providers (ISPs) — Google, Microsoft, Yahoo — maintain internal sender reputation models for every domain that sends email through their systems. Bounce rate is a primary input to these models.
+ Internet Service Providers (ISPs) - Google, Microsoft, Yahoo - maintain internal sender reputation models for every domain that sends email through their systems. Bounce rate is a primary input to these models.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -219,7 +219,7 @@ export default function BounceRateArticle() {
  Cold outbound email campaigns are inherently higher-risk for bounce rate issues because the recipient list has not been validated through prior engagement. Unlike marketing emails sent to opted-in subscribers, cold outbound targets addresses that may be outdated, misspelled, or belong to deactivated accounts.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Modern outbound teams typically operate 3–10 domains with 3+ mailboxes per domain, sending 20–30 emails per mailbox per day. At this scale, a single batch of bad leads can push a domain&apos;s bounce rate above the 5% threshold within hours. Once the reputation is damaged, every mailbox on that domain is affected — not just the one that sent the bouncing emails.
+ Modern outbound teams typically operate 3–10 domains with 3+ mailboxes per domain, sending 20–30 emails per mailbox per day. At this scale, a single batch of bad leads can push a domain&apos;s bounce rate above the 5% threshold within hours. Once the reputation is damaged, every mailbox on that domain is affected - not just the one that sent the bouncing emails.
  </p>
 
  <h2 id="superkabe-prevents-bounce-damage" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Does Superkabe Prevent Bounce-Driven Damage?</h2>
@@ -247,7 +247,7 @@ export default function BounceRateArticle() {
 
  <BottomCtaStrip
                     headline="Key Takeaway"
-                    body="Bounce rate is not just a metric — it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Superkabe provides proactive, real-time protection that blocks damage before it compounds."
+                    body="Bounce rate is not just a metric - it is the primary signal that determines whether your outbound infrastructure survives or gets burned. Monitoring bounce rates reactively (after damage) is too late. Superkabe provides proactive, real-time protection that blocks damage before it compounds."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

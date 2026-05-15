@@ -17,7 +17,7 @@ export default function OverviewEmptyState({ stats }: { stats: any }) {
                 Welcome to Superkabe
             </h1>
             <p className="text-gray-500 text-base mb-12 max-w-xl leading-relaxed">
-                Cold email platform with native deliverability protection. Send campaigns, validate leads, and protect your infrastructure — all in one place.
+                Cold email platform with native deliverability protection. Send campaigns, validate leads, and protect your infrastructure - all in one place.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-left mb-10">
@@ -89,7 +89,7 @@ export default function OverviewEmptyState({ stats }: { stats: any }) {
                         </div>
                         <div>
                             <div className="text-xs font-semibold text-gray-900">Email Validation</div>
-                            <div className="text-[10px] text-gray-400">Upload a CSV and validate emails — no campaign needed</div>
+                            <div className="text-[10px] text-gray-400">Upload a CSV and validate emails - no campaign needed</div>
                         </div>
                     </div>
                     <ArrowRight size={12} className="text-gray-400 group-hover:translate-x-1 transition-transform" />

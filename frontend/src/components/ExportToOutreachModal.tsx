@@ -22,7 +22,7 @@ interface MailboxItem {
 export interface ExportToOutreachProps {
     /** CampaignLead.id values to push as prospects + add to sequence. */
     prospectIds: string[];
-    /** 'todays_list' | 'custom_list' | 'campaign' — for audit + UI. */
+    /** 'todays_list' | 'custom_list' | 'campaign' - for audit + UI. */
     sourceKind: string;
     /** Human-readable label shown in the recent-exports table. */
     sourceLabel?: string;
@@ -131,7 +131,7 @@ export default function ExportToOutreachModal(props: ExportToOutreachProps) {
             setSelectedSequenceId(seq.id);
             setCreateMode(false);
             setNewSequenceName('');
-            toast.success(`Created "${seq.name}" — add steps inside Outreach when ready`);
+            toast.success(`Created "${seq.name}" - add steps inside Outreach when ready`);
         } catch (err: any) {
             toast.error(err?.message || 'Failed to create sequence');
         } finally {
@@ -171,7 +171,7 @@ export default function ExportToOutreachModal(props: ExportToOutreachProps) {
                     }),
                 },
             );
-            toast.success(`Export queued — ${prospectIds.length} prospect${prospectIds.length === 1 ? '' : 's'}`);
+            toast.success(`Export queued - ${prospectIds.length} prospect${prospectIds.length === 1 ? '' : 's'}`);
             onEnqueued?.(r.export_job_id);
             onClose();
         } catch (err: any) {
@@ -339,7 +339,7 @@ export default function ExportToOutreachModal(props: ExportToOutreachProps) {
                                                 </button>
                                             </div>
                                             <p className="text-[10px] text-blue-800 leading-relaxed">
-                                                The sequence is created empty — add steps inside Outreach&apos;s sequence editor.
+                                                The sequence is created empty - add steps inside Outreach&apos;s sequence editor.
                                                 Prospects you export now will be queued and start sending once you publish at least one step.
                                             </p>
                                         </div>

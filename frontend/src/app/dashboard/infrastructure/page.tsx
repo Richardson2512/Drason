@@ -107,7 +107,7 @@ export default function InfrastructureHealthPage() {
         try {
             const data = await apiClient<InfraReport[]>(`/api/assessment/reports?days=${days}`);
             if (data && Array.isArray(data)) {
-                // Deduplicate by day — keep only the latest assessment per day
+                // Deduplicate by day - keep only the latest assessment per day
                 const byDay = new Map<string, number>();
                 data.reverse().forEach((r: { created_at: string; overall_score?: number }) => {
                     const dayKey = new Date(r.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
@@ -207,7 +207,7 @@ export default function InfrastructureHealthPage() {
 
     const startPolling = useCallback(() => {
         stopPolling();
-        // Stage progression — purely cosmetic now, since the backend doesn't
+        // Stage progression - purely cosmetic now, since the backend doesn't
         // expose granular phases. Keep the existing animation feel.
         setAssessmentStage('syncing');
         setTimeout(() => setAssessmentStage('assessing'), 2000);
@@ -236,7 +236,7 @@ export default function InfrastructureHealthPage() {
         } catch (err: unknown) {
             const e = err as { message?: string };
             const msg = e?.message || 'Unknown error';
-            // 409 from backend when a run is already in flight — pick up the
+            // 409 from backend when a run is already in flight - pick up the
             // existing run rather than telling the user it failed.
             if (msg.toLowerCase().includes('already running')) {
                 startPolling();
@@ -665,7 +665,7 @@ export default function InfrastructureHealthPage() {
                 </Link>
             )}
 
-            {/* DNS Health summary — sits ABOVE the Findings section so users see
+            {/* DNS Health summary - sits ABOVE the Findings section so users see
                 the four authentication signals (SPF / DKIM / DMARC / Blacklist)
                 at a glance before drilling into per-finding detail. */}
             <DnsHealthPanel />

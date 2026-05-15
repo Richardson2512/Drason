@@ -25,7 +25,7 @@ export default function ConfigurationPage() {
 
  <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Integration Setup</h2>
  <p className="text-gray-600 mb-6">
- Superkabe ingests enriched leads from Clay and sends through your own Gmail, Microsoft 365, or SMTP mailboxes — with the deliverability protection layer running on every send.
+ Superkabe ingests enriched leads from Clay and sends through your own Gmail, Microsoft 365, or SMTP mailboxes - with the deliverability protection layer running on every send.
  </p>
 
  <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Sending Platform API Keys</h3>
@@ -58,7 +58,7 @@ export default function ConfigurationPage() {
  <li>• <code className="px-2 py-1 bg-gray-100 text-gray-700">firstName</code></li>
  <li>• <code className="px-2 py-1 bg-gray-100 text-gray-700">lastName</code></li>
  <li>• <code className="px-2 py-1 bg-gray-100 text-gray-700">company</code></li>
- <li>• <code className="px-2 py-1 bg-gray-100 text-gray-700">campaignId</code> — Campaign ID to route to</li>
+ <li>• <code className="px-2 py-1 bg-gray-100 text-gray-700">campaignId</code> - Campaign ID to route to</li>
  </ul>
  </div>
 
@@ -246,10 +246,10 @@ export default function ConfigurationPage() {
  Recommended configuration workflow:
  </p>
  <ol className="space-y-2 text-gray-600 text-sm">
- <li><strong>1. Start in OBSERVE</strong> — Run for 1 week to establish baseline</li>
- <li><strong>2. Review metrics</strong> — Confirm thresholds align with your infra</li>
- <li><strong>3. Switch to SUGGEST</strong> — Review automated recommendations for 1 week</li>
- <li><strong>4. Enable ENFORCE</strong> — Full production protection</li>
+ <li><strong>1. Start in OBSERVE</strong> - Run for 1 week to establish baseline</li>
+ <li><strong>2. Review metrics</strong> - Confirm thresholds align with your infra</li>
+ <li><strong>3. Switch to SUGGEST</strong> - Review automated recommendations for 1 week</li>
+ <li><strong>4. Enable ENFORCE</strong> - Full production protection</li>
  </ol>
  </div>
  </div>

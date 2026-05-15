@@ -12,7 +12,7 @@
 
 interface FeaturedHeroProps {
     badge?: string;
-    /** Big poster headline — usually the same theme as the H1 but more punchy */
+    /** Big poster headline - usually the same theme as the H1 but more punchy */
     tagline: string;
     /** Optional secondary line shown below the tagline */
     sub?: string;

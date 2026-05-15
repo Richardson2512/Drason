@@ -43,7 +43,7 @@ function safeRandomUUID(): string {
 // TYPES
 // ============================================================================
 
-/** Channel step type vocabulary — mirrors backend stepTypeRegistry. */
+/** Channel step type vocabulary - mirrors backend stepTypeRegistry. */
 type WizardStepType =
     | 'email'
     | 'linkedin_view_profile'
@@ -63,7 +63,7 @@ interface SequenceStepData {
     delayDays: number;
     delayHours: number;
     subject: string;
-    /** Inbox preview text — see backend SequenceStep.preheader. Empty
+    /** Inbox preview text - see backend SequenceStep.preheader. Empty
      *  string = let the recipient's client derive the snippet from body. */
     preheader: string;
     bodyHtml: string;
@@ -76,7 +76,7 @@ interface SequenceStepData {
      */
     condition?: string | null;
     branchToStepNumber?: number | null;
-    /** Polymorphic per-step payload — note_template for CR, body_template
+    /** Polymorphic per-step payload - note_template for CR, body_template
      *  for DM/InMail, reaction_type for like-post, etc. Backend validates
      *  against stepTypeRegistry.config_schema before persisting. */
     stepConfig?: Record<string, unknown>;
@@ -107,45 +107,45 @@ const STEP_TYPE_META: Record<WizardStepType, {
         channel: 'email',
     },
     linkedin_view_profile: {
-        label: 'LinkedIn — View profile',
+        label: 'LinkedIn - View profile',
         shortLabel: 'View profile',
         icon: <Eye size={11} />, accent: '#F59E0B', accentBg: '#FFFBEB',
-        description: 'Visit the lead\'s profile — they get a "viewed your profile" notification.',
+        description: 'Visit the lead\'s profile - they get a "viewed your profile" notification.',
         channel: 'linkedin',
     },
     linkedin_follow: {
-        label: 'LinkedIn — Follow',
+        label: 'LinkedIn - Follow',
         shortLabel: 'Follow',
         icon: <UserPlus size={11} />, accent: '#06B6D4', accentBg: '#ECFEFF',
         description: 'Follow the lead. Must precede any connection request in the sequence.',
         channel: 'linkedin',
     },
     linkedin_like_post: {
-        label: 'LinkedIn — Like a recent post',
+        label: 'LinkedIn - Like a recent post',
         shortLabel: 'Like post',
         icon: <Heart size={11} />, accent: '#EC4899', accentBg: '#FDF2F8',
         description: 'React to a recent post (warm-up). Skips if no recent post found.',
         channel: 'linkedin',
     },
     linkedin_connection_request: {
-        label: 'LinkedIn — Connection request',
+        label: 'LinkedIn - Connection request',
         shortLabel: 'Connection',
         icon: <UserCheck size={11} />, accent: '#0A66C2', accentBg: '#EFF6FF',
         description: 'Send a connection request (optional note). Skipped if already 1st-degree.',
         channel: 'linkedin',
     },
     linkedin_message: {
-        label: 'LinkedIn — DM',
+        label: 'LinkedIn - DM',
         shortLabel: 'DM',
         icon: <MessageCircle size={11} />, accent: '#16A34A', accentBg: '#F0FDF4',
-        description: 'Direct message — requires 1st-degree connection. Schedule after a CR step.',
+        description: 'Direct message - requires 1st-degree connection. Schedule after a CR step.',
         channel: 'linkedin',
     },
     linkedin_inmail: {
-        label: 'LinkedIn — InMail',
+        label: 'LinkedIn - InMail',
         shortLabel: 'InMail',
         icon: <Send size={11} />, accent: '#8B5CF6', accentBg: '#F5F3FF',
-        description: 'InMail — requires a paid tier (Premium, Sales Navigator, or Recruiter). Credits consumed on closed profiles only. Classic accounts can\'t send InMail.',
+        description: 'InMail - requires a paid tier (Premium, Sales Navigator, or Recruiter). Credits consumed on closed profiles only. Classic accounts can\'t send InMail.',
         channel: 'linkedin',
     },
     find_linkedin_url: {
@@ -210,17 +210,17 @@ const TIMEZONES = [
     { value: 'Pacific/Midway', label: '(GMT-11:00) Midway Island, Samoa' },
     { value: 'Pacific/Honolulu', label: '(GMT-10:00) Hawaii' },
     { value: 'America/Anchorage', label: '(GMT-09:00) Alaska' },
-    { value: 'America/Los_Angeles', label: '(GMT-08:00) Pacific Time — PST' },
+    { value: 'America/Los_Angeles', label: '(GMT-08:00) Pacific Time - PST' },
     { value: 'America/Tijuana', label: '(GMT-08:00) Tijuana' },
-    { value: 'America/Denver', label: '(GMT-07:00) Mountain Time — MST' },
+    { value: 'America/Denver', label: '(GMT-07:00) Mountain Time - MST' },
     { value: 'America/Phoenix', label: '(GMT-07:00) Arizona (no DST)' },
-    { value: 'America/Chicago', label: '(GMT-06:00) Central Time — CST' },
+    { value: 'America/Chicago', label: '(GMT-06:00) Central Time - CST' },
     { value: 'America/Mexico_City', label: '(GMT-06:00) Mexico City' },
     { value: 'America/Regina', label: '(GMT-06:00) Saskatchewan' },
-    { value: 'America/New_York', label: '(GMT-05:00) Eastern Time — EST' },
+    { value: 'America/New_York', label: '(GMT-05:00) Eastern Time - EST' },
     { value: 'America/Bogota', label: '(GMT-05:00) Bogota, Lima' },
     { value: 'America/Indiana/Indianapolis', label: '(GMT-05:00) Indiana (East)' },
-    { value: 'America/Halifax', label: '(GMT-04:00) Atlantic Time — AST' },
+    { value: 'America/Halifax', label: '(GMT-04:00) Atlantic Time - AST' },
     { value: 'America/Caracas', label: '(GMT-04:00) Caracas' },
     { value: 'America/Santiago', label: '(GMT-04:00) Santiago' },
     { value: 'America/St_Johns', label: '(GMT-03:30) Newfoundland' },
@@ -229,52 +229,52 @@ const TIMEZONES = [
     { value: 'Atlantic/South_Georgia', label: '(GMT-02:00) Mid-Atlantic' },
     { value: 'Atlantic/Azores', label: '(GMT-01:00) Azores' },
     { value: 'Atlantic/Cape_Verde', label: '(GMT-01:00) Cape Verde' },
-    { value: 'UTC', label: '(GMT+00:00) UTC — Coordinated Universal Time' },
-    { value: 'Europe/London', label: '(GMT+00:00) London, Dublin — GMT' },
+    { value: 'UTC', label: '(GMT+00:00) UTC - Coordinated Universal Time' },
+    { value: 'Europe/London', label: '(GMT+00:00) London, Dublin - GMT' },
     { value: 'Africa/Casablanca', label: '(GMT+00:00) Casablanca' },
-    { value: 'Europe/Paris', label: '(GMT+01:00) Paris, Brussels — CET' },
+    { value: 'Europe/Paris', label: '(GMT+01:00) Paris, Brussels - CET' },
     { value: 'Europe/Berlin', label: '(GMT+01:00) Berlin, Amsterdam' },
     { value: 'Europe/Madrid', label: '(GMT+01:00) Madrid' },
     { value: 'Africa/Lagos', label: '(GMT+01:00) West Central Africa' },
-    { value: 'Europe/Helsinki', label: '(GMT+02:00) Helsinki, Kyiv — EET' },
+    { value: 'Europe/Helsinki', label: '(GMT+02:00) Helsinki, Kyiv - EET' },
     { value: 'Europe/Athens', label: '(GMT+02:00) Athens, Bucharest' },
     { value: 'Africa/Cairo', label: '(GMT+02:00) Cairo' },
-    { value: 'Africa/Johannesburg', label: '(GMT+02:00) Johannesburg — SAST' },
-    { value: 'Asia/Jerusalem', label: '(GMT+02:00) Jerusalem — IST' },
+    { value: 'Africa/Johannesburg', label: '(GMT+02:00) Johannesburg - SAST' },
+    { value: 'Asia/Jerusalem', label: '(GMT+02:00) Jerusalem - IST' },
     { value: 'Europe/Istanbul', label: '(GMT+03:00) Istanbul' },
-    { value: 'Europe/Moscow', label: '(GMT+03:00) Moscow — MSK' },
+    { value: 'Europe/Moscow', label: '(GMT+03:00) Moscow - MSK' },
     { value: 'Asia/Kuwait', label: '(GMT+03:00) Kuwait, Riyadh' },
-    { value: 'Africa/Nairobi', label: '(GMT+03:00) Nairobi — EAT' },
+    { value: 'Africa/Nairobi', label: '(GMT+03:00) Nairobi - EAT' },
     { value: 'Asia/Tehran', label: '(GMT+03:30) Tehran' },
-    { value: 'Asia/Dubai', label: '(GMT+04:00) Dubai, Abu Dhabi — GST' },
+    { value: 'Asia/Dubai', label: '(GMT+04:00) Dubai, Abu Dhabi - GST' },
     { value: 'Asia/Baku', label: '(GMT+04:00) Baku' },
     { value: 'Asia/Tbilisi', label: '(GMT+04:00) Tbilisi' },
     { value: 'Asia/Kabul', label: '(GMT+04:30) Kabul' },
-    { value: 'Asia/Karachi', label: '(GMT+05:00) Karachi — PKT' },
+    { value: 'Asia/Karachi', label: '(GMT+05:00) Karachi - PKT' },
     { value: 'Asia/Tashkent', label: '(GMT+05:00) Tashkent' },
-    { value: 'Asia/Kolkata', label: '(GMT+05:30) Mumbai, Delhi, Kolkata — IST' },
+    { value: 'Asia/Kolkata', label: '(GMT+05:30) Mumbai, Delhi, Kolkata - IST' },
     { value: 'Asia/Colombo', label: '(GMT+05:30) Sri Lanka' },
     { value: 'Asia/Kathmandu', label: '(GMT+05:45) Kathmandu' },
     { value: 'Asia/Almaty', label: '(GMT+06:00) Almaty' },
-    { value: 'Asia/Dhaka', label: '(GMT+06:00) Dhaka — BST' },
+    { value: 'Asia/Dhaka', label: '(GMT+06:00) Dhaka - BST' },
     { value: 'Asia/Yangon', label: '(GMT+06:30) Yangon' },
-    { value: 'Asia/Bangkok', label: '(GMT+07:00) Bangkok, Hanoi — ICT' },
-    { value: 'Asia/Jakarta', label: '(GMT+07:00) Jakarta — WIB' },
-    { value: 'Asia/Shanghai', label: '(GMT+08:00) Beijing, Shanghai — CST' },
-    { value: 'Asia/Hong_Kong', label: '(GMT+08:00) Hong Kong — HKT' },
-    { value: 'Asia/Singapore', label: '(GMT+08:00) Singapore — SGT' },
+    { value: 'Asia/Bangkok', label: '(GMT+07:00) Bangkok, Hanoi - ICT' },
+    { value: 'Asia/Jakarta', label: '(GMT+07:00) Jakarta - WIB' },
+    { value: 'Asia/Shanghai', label: '(GMT+08:00) Beijing, Shanghai - CST' },
+    { value: 'Asia/Hong_Kong', label: '(GMT+08:00) Hong Kong - HKT' },
+    { value: 'Asia/Singapore', label: '(GMT+08:00) Singapore - SGT' },
     { value: 'Asia/Taipei', label: '(GMT+08:00) Taipei' },
-    { value: 'Australia/Perth', label: '(GMT+08:00) Perth — AWST' },
-    { value: 'Asia/Seoul', label: '(GMT+09:00) Seoul — KST' },
-    { value: 'Asia/Tokyo', label: '(GMT+09:00) Tokyo — JST' },
-    { value: 'Australia/Adelaide', label: '(GMT+09:30) Adelaide — ACST' },
+    { value: 'Australia/Perth', label: '(GMT+08:00) Perth - AWST' },
+    { value: 'Asia/Seoul', label: '(GMT+09:00) Seoul - KST' },
+    { value: 'Asia/Tokyo', label: '(GMT+09:00) Tokyo - JST' },
+    { value: 'Australia/Adelaide', label: '(GMT+09:30) Adelaide - ACST' },
     { value: 'Australia/Darwin', label: '(GMT+09:30) Darwin' },
-    { value: 'Australia/Sydney', label: '(GMT+10:00) Sydney, Melbourne — AEST' },
+    { value: 'Australia/Sydney', label: '(GMT+10:00) Sydney, Melbourne - AEST' },
     { value: 'Australia/Brisbane', label: '(GMT+10:00) Brisbane' },
     { value: 'Pacific/Guam', label: '(GMT+10:00) Guam' },
     { value: 'Asia/Vladivostok', label: '(GMT+10:00) Vladivostok' },
     { value: 'Pacific/Noumea', label: '(GMT+11:00) New Caledonia' },
-    { value: 'Pacific/Auckland', label: '(GMT+12:00) Auckland, Wellington — NZST' },
+    { value: 'Pacific/Auckland', label: '(GMT+12:00) Auckland, Wellington - NZST' },
     { value: 'Pacific/Fiji', label: '(GMT+12:00) Fiji' },
     { value: 'Pacific/Tongatapu', label: '(GMT+13:00) Tonga' },
 ];
@@ -287,7 +287,7 @@ export default function NewCampaignPage() {
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
 
-    // Edit mode — populated from ?id=<campaignId> in the URL
+    // Edit mode - populated from ?id=<campaignId> in the URL
     const [editId, setEditId] = useState<string | null>(null);
     const [prefillLoading, setPrefillLoading] = useState(false);
     const [existingLeadCount, setExistingLeadCount] = useState(0);
@@ -295,7 +295,7 @@ export default function NewCampaignPage() {
     const isEditMode = !!editId;
     const isAlreadyLaunched = editStatus === 'active' || editStatus === 'paused';
 
-    // Existing leads (edit mode) — paginated list + remove-by-id tracking
+    // Existing leads (edit mode) - paginated list + remove-by-id tracking
     interface ExistingLead {
         id: string;
         email: string;
@@ -379,7 +379,7 @@ export default function NewCampaignPage() {
     const [availableLinkedInAccounts, setAvailableLinkedInAccounts] = useState<LinkedInSenderOption[]>([]);
     const [selectedLinkedInSenderIds, setSelectedLinkedInSenderIds] = useState<Set<string>>(new Set());
     const [linkedInAccountsLoading, setLinkedInAccountsLoading] = useState(false);
-    // Mailbox filters — health/provider/utilization. Empty Set on any axis
+    // Mailbox filters - health/provider/utilization. Empty Set on any axis
     // means "no constraint." Filters apply visually to the list and to
     // the "Select all" action so the operator can scope bulk picks too.
     const [filterHealth, setFilterHealth] = useState<Set<string>>(new Set());
@@ -400,10 +400,10 @@ export default function NewCampaignPage() {
             .then(res => setSavedTemplates(Array.isArray(res) ? res : (res?.templates || res?.data || [])))
             .catch(() => setSavedTemplates([]));
 
-        // Org-level tags — drives the TagPicker dropdown on Step 1.
+        // Org-level tags - drives the TagPicker dropdown on Step 1.
         fetchOrgTags();
 
-        // Enrichment providers — used to warn the operator when adding a
+        // Enrichment providers - used to warn the operator when adding a
         // find_linkedin_url step with zero providers configured.
         apiClient<{ count: number; providers: Array<{ id: string; code: string; order_index: number }> }>('/api/sequencer/enrichment-providers/status')
             .then(res => setEnrichmentProviders(res?.providers || []))
@@ -419,7 +419,7 @@ export default function NewCampaignPage() {
             .catch(() => setAvailableMailboxes([]))
             .finally(() => setMailboxesLoading(false));
 
-        // LinkedIn accounts — surfaced if the operator adds a linkedin_* step.
+        // LinkedIn accounts - surfaced if the operator adds a linkedin_* step.
         setLinkedInAccountsLoading(true);
         apiClient<any>('/api/linkedin/accounts')
             .then(res => {
@@ -444,7 +444,7 @@ export default function NewCampaignPage() {
                 if (s.default_end_time) setEndTime(s.default_end_time);
                 if (Array.isArray(s.default_active_days) && s.default_active_days.length) setActiveDays(s.default_active_days);
                 if (typeof s.default_daily_limit === 'number') setDailyLimit(s.default_daily_limit);
-                // delay_between_emails is now stored in minutes — mirror it into the
+                // delay_between_emails is now stored in minutes - mirror it into the
                 // per-campaign send_gap_minutes default so the Schedule step reflects
                 // the org's chosen pace.
                 if (typeof s.delay_between_emails === 'number' && s.delay_between_emails > 0) {
@@ -471,11 +471,11 @@ export default function NewCampaignPage() {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [templatePickerOpen]);
-    const [campaignTags, setCampaignTags] = useState(''); // legacy Smartlead-import string array — preserved on edit-mode roundtrip
+    const [campaignTags, setCampaignTags] = useState(''); // legacy Smartlead-import string array - preserved on edit-mode roundtrip
     // Org-level tag relation (TagLinks). selectedTagIds drives the picker; allTags is fetched once on mount.
     const [allTags, setAllTags] = useState<TagItem[]>([]);
     const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
-    // Enrichment provider waterfall — drives the find_linkedin_url
+    // Enrichment provider waterfall - drives the find_linkedin_url
     // warnings. Loaded once on mount; refreshed only if the operator
     // opens this wizard again after configuring a provider in another tab.
     const [enrichmentProviders, setEnrichmentProviders] = useState<Array<{ id: string; code: string; order_index: number }>>([]);
@@ -498,10 +498,10 @@ export default function NewCampaignPage() {
     const [newCustomFieldName, setNewCustomFieldName] = useState('');
     const [leadSourceTab, setLeadSourceTab] = useState<'csv' | 'database' | 'manual'>('csv');
 
-    // Cross-campaign deduplication toggle — when on, leads whose email already appears
+    // Cross-campaign deduplication toggle - when on, leads whose email already appears
     // in any OTHER campaign in the org are dropped server-side before insert.
     const [skipDuplicatesAcrossCampaigns, setSkipDuplicatesAcrossCampaigns] = useState(false);
-    // Unified suppression rules — see SuppressionPicker. The wizard ALSO
+    // Unified suppression rules - see SuppressionPicker. The wizard ALSO
     // keeps `skipDuplicatesAcrossCampaigns` as legacy state so old code
     // paths and saved drafts still work; on submit it folds into the
     // rules array if no all_campaigns rule is already present.
@@ -575,12 +575,12 @@ export default function NewCampaignPage() {
     };
     const [previewLead, setPreviewLead] = useState<Record<string, string>>(DEMO_LEAD);
 
-    // Health bucket derivation — same rules the mailbox card pill uses,
+    // Health bucket derivation - same rules the mailbox card pill uses,
     // surfaced as a single string so the filter chips can map cleanly:
-    //   'paused'      — explicit operator pause OR recovery_phase=paused
-    //   'in_recovery' — quarantine / restricted_send / warm_recovery
-    //   'warning'     — mailbox_status=warning (non-blocking issues)
-    //   'healthy'     — everything else
+    //   'paused'      - explicit operator pause OR recovery_phase=paused
+    //   'in_recovery' - quarantine / restricted_send / warm_recovery
+    //   'warning'     - mailbox_status=warning (non-blocking issues)
+    //   'healthy'     - everything else
     const mailboxHealth = (m: MailboxOption): 'paused' | 'in_recovery' | 'warning' | 'healthy' => {
         if (m.recovery_phase === 'paused' || m.mailbox_status === 'paused') return 'paused';
         if (m.recovery_phase === 'quarantine' || m.recovery_phase === 'restricted_send' || m.recovery_phase === 'warm_recovery') return 'in_recovery';
@@ -609,7 +609,7 @@ export default function NewCampaignPage() {
         filterUtilization.size > 0 ||
         mailboxSearch.trim().length > 0;
 
-    // Recipient preview — sender info derived from the first selected (or
+    // Recipient preview - sender info derived from the first selected (or
     // first available) mailbox. Falls back to placeholder if no mailboxes
     // are connected yet, since the user may open Sequence (step 2) before
     // Mailboxes (step 4).
@@ -643,12 +643,12 @@ export default function NewCampaignPage() {
     const [stopOnBounce, setStopOnBounce] = useState(true);
     const [trackOpens, setTrackOpens] = useState(true);
     const [trackClicks, setTrackClicks] = useState(true);
-    // Default ON — required for CAN-SPAM § 5(a)(4)(A) one-click unsubscribe and
+    // Default ON - required for CAN-SPAM § 5(a)(4)(A) one-click unsubscribe and
     // Gmail's bulk-sender requirements (Feb 2024). Customer can toggle off if
     // they're sending purely transactional/internal mail; we surface a clear
     // warning when they do.
     const [includeUnsubscribe, setIncludeUnsubscribe] = useState(true);
-    // EU compliance mode — when on, suppresses open-tracking pixel and adds
+    // EU compliance mode - when on, suppresses open-tracking pixel and adds
     // an explicit "no engagement tracking" line to the footer for ePrivacy
     // alignment. Default off; opt-in per campaign for EU-targeted sends.
     const [euComplianceMode, setEuComplianceMode] = useState(false);
@@ -664,7 +664,7 @@ export default function NewCampaignPage() {
             .then((c: any) => {
                 if (cancelled || !c) return;
                 setCampaignName(c.name || '');
-                // Legacy Smartlead-import string array — preserved here so a
+                // Legacy Smartlead-import string array - preserved here so a
                 // re-save doesn't drop pre-existing legacy tags. The wizard
                 // no longer exposes UI to edit them; new tagging happens via
                 // the org-level TagPicker below.
@@ -700,17 +700,17 @@ export default function NewCampaignPage() {
                     })));
                 }
 
-                // Mailboxes — accounts array is [{ account: {...} }, ...]
+                // Mailboxes - accounts array is [{ account: {...} }, ...]
                 if (Array.isArray(c.accounts)) {
                     setSelectedMailboxIds(new Set(c.accounts.map((a: any) => a.account?.id).filter(Boolean)));
                 }
 
-                // LinkedIn senders — for mixed-channel campaigns.
+                // LinkedIn senders - for mixed-channel campaigns.
                 if (Array.isArray(c.linkedin_senders)) {
                     setSelectedLinkedInSenderIds(new Set(c.linkedin_senders.map((s: any) => s.linkedin_account_id).filter(Boolean)));
                 }
 
-                // Suppression rules — separate endpoint so the campaign detail
+                // Suppression rules - separate endpoint so the campaign detail
                 // payload doesn't bloat for campaigns with many rules.
                 // apiClient unwraps {success, data} → returns the array directly.
                 apiClient<SuppressionRule[]>(`/api/sequencer/campaigns/${editId}/suppression`)
@@ -783,7 +783,7 @@ export default function NewCampaignPage() {
                 return mailboxOk && linkedinOk;
             }
             case 4: return activeDays.length > 0;       // Schedule step
-            case 5: return true;                         // Settings — all optional with defaults
+            case 5: return true;                         // Settings - all optional with defaults
             default: return true;
         }
     };
@@ -841,7 +841,7 @@ export default function NewCampaignPage() {
 
     const confirmMapping = () => {
         // Only the fields flagged `required: true` block confirmation. full_name and
-        // website are accepted as optional — full_name can be derived from first+last,
+        // website are accepted as optional - full_name can be derived from first+last,
         // and website is rarely present in cold-outreach CSVs.
         const missing = MANDATORY_FIELDS.filter(f => f.required && !columnMapping[f.key]);
         if (missing.length > 0) {
@@ -1033,7 +1033,7 @@ export default function NewCampaignPage() {
     const removeManualCustomField = (key: string) => {
         setManualCustomFieldDefs(prev => prev.filter(f => f.key !== key));
         setManualCustomValues(prev => { const next = { ...prev }; delete next[key]; return next; });
-        // Don't remove from main customFields — other leads may use it
+        // Don't remove from main customFields - other leads may use it
     };
 
     const addManualLead = () => {
@@ -1080,7 +1080,7 @@ export default function NewCampaignPage() {
                 case 'linkedin_message':
                     return { body_template: 'Hi {{first_name}}, thanks for connecting! Quick thought…' };
                 case 'linkedin_inmail':
-                    return { subject: '{{first_name}} — quick thought', body: 'Hi {{first_name}}, ...' };
+                    return { subject: '{{first_name}} - quick thought', body: 'Hi {{first_name}}, ...' };
                 case 'linkedin_like_post':
                     return { reaction_type: 'LIKE', post_selection_timespan_days: 30, skip_if_no_post: true };
                 default:
@@ -1097,7 +1097,7 @@ export default function NewCampaignPage() {
             preheader: '',
             bodyHtml: '',
             stepConfig: defaultConfig,
-            // DMs / InMails make sense only after a connection landed —
+            // DMs / InMails make sense only after a connection landed -
             // mirror the LinkedIn-only wizard default so operators don't
             // accidentally send a DM to a stranger.
             condition: (stepType === 'linkedin_message' || stepType === 'linkedin_inmail') ? 'if_connection' : null,
@@ -1210,7 +1210,7 @@ export default function NewCampaignPage() {
             return;
         }
         const match = availableReviewLeads.find(l => l.email === reviewLeadKey);
-        // Full replace (not merge) — empty fields on a real lead should render as empty,
+        // Full replace (not merge) - empty fields on a real lead should render as empty,
         // not inherit from whatever lead was previously selected.
         if (match) setPreviewLead(match);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1230,7 +1230,7 @@ export default function NewCampaignPage() {
     const [launchError, setLaunchError] = useState('');
 
     const buildPayload = () => {
-        // Provenance for the leads being submitted in this batch — drives the
+        // Provenance for the leads being submitted in this batch - drives the
         // "Lead sources" panel on the campaign detail page. The wizard tracks
         // which tab the user used (CSV / database / manual) so we map that to
         // the canonical source enum the backend persists.
@@ -1283,7 +1283,7 @@ export default function NewCampaignPage() {
             ...(leadSourceFile ? { leadSourceFile } : {}),
         };
         // On create, include leads for health-gate + validation.
-        // On edit, use addLeads (new) + removeLeadIds (deletions) — existing unselected
+        // On edit, use addLeads (new) + removeLeadIds (deletions) - existing unselected
         // leads are preserved server-side.
         if (!isEditMode) return { ...base, leads };
         const editPayload: any = { ...base };
@@ -1319,7 +1319,7 @@ export default function NewCampaignPage() {
                     body: JSON.stringify(buildPayload()),
                 });
                 await persistTags(editId);
-                // Only call /launch for drafts — active/paused campaigns stay in their current state
+                // Only call /launch for drafts - active/paused campaigns stay in their current state
                 if (!isAlreadyLaunched) {
                     await apiClient(`/api/sequencer/campaigns/${editId}/launch`, { method: 'POST' });
                 }
@@ -1384,7 +1384,7 @@ export default function NewCampaignPage() {
                 <button onClick={() => router.back()} className="text-xs text-gray-500 hover:text-gray-700 cursor-pointer">Cancel</button>
             </div>
 
-            {/* Step Indicator — all steps clickable. The "Mailboxes" stage
+            {/* Step Indicator - all steps clickable. The "Mailboxes" stage
                 label switches to "Senders" when the sequence has any
                 linkedin_* step, since the operator picks LinkedIn accounts
                 on that stage too. */}
@@ -1462,7 +1462,7 @@ export default function NewCampaignPage() {
                 {/* ==================== STEP 2: LEADS ==================== */}
                 {currentStep === 1 && (
                     <div className="flex flex-col gap-4">
-                        {/* Edit mode — existing leads list with search, pagination, and remove */}
+                        {/* Edit mode - existing leads list with search, pagination, and remove */}
                         {isEditMode && (
                             <div className="rounded-lg border border-[#D1CBC5] bg-white">
                                 <div className="px-3 py-2 flex items-center justify-between gap-2" style={{ borderBottom: '1px solid #E8E3DC' }}>
@@ -1516,8 +1516,8 @@ export default function NewCampaignPage() {
                                                                 />
                                                             </td>
                                                             <td className={`px-2 py-1.5 ${marked ? 'line-through text-red-600' : 'text-gray-900'} font-medium`}>{l.email}</td>
-                                                            <td className="px-2 py-1.5 text-gray-600">{[l.first_name, l.last_name].filter(Boolean).join(' ') || '—'}</td>
-                                                            <td className="px-2 py-1.5 text-gray-600">{l.company || '—'}</td>
+                                                            <td className="px-2 py-1.5 text-gray-600">{[l.first_name, l.last_name].filter(Boolean).join(' ') || '-'}</td>
+                                                            <td className="px-2 py-1.5 text-gray-600">{l.company || '-'}</td>
                                                             <td className="px-2 py-1.5 text-gray-500 capitalize">{l.status}</td>
                                                             <td className="px-2 py-1.5 text-gray-400 text-right">step {l.current_step}</td>
                                                         </tr>
@@ -1551,12 +1551,12 @@ export default function NewCampaignPage() {
                                     </div>
                                 )}
                                 <div className="px-3 py-2 text-[10px] text-gray-500 bg-gray-50" style={{ borderTop: '1px solid #E8E3DC' }}>
-                                    Tick leads to remove on save. Add more leads using the tabs below — new leads run through the health gate + validation.
+                                    Tick leads to remove on save. Add more leads using the tabs below - new leads run through the health gate + validation.
                                 </div>
                             </div>
                         )}
 
-                        {/* Suppression picker — replaces the legacy "skip duplicates"
+                        {/* Suppression picker - replaces the legacy "skip duplicates"
                             toggle. Three modes: no filter, all campaigns, or pick
                             specific campaigns (with an optional per-lead override).
                             Persists as CampaignSuppression rules on save. */}
@@ -1566,7 +1566,7 @@ export default function NewCampaignPage() {
                             onChange={setSuppressionRules}
                         />
 
-                        {/* Lead source tabs — always visible in both create and edit mode */}
+                        {/* Lead source tabs - always visible in both create and edit mode */}
                         {!mappingConfirmed && leads.length === 0 && (
                             <>
                                 <div className="flex gap-1 p-1 rounded-xl w-fit bg-slate-100">
@@ -1643,7 +1643,7 @@ export default function NewCampaignPage() {
                                         {dbLeads.length > 0 && (
                                             <>
                                                 <div className="flex items-center justify-between">
-                                                    <span className="text-[10px] text-gray-500">{dbLeads.length} leads found — {dbSelectedIds.size} selected</span>
+                                                    <span className="text-[10px] text-gray-500">{dbLeads.length} leads found - {dbSelectedIds.size} selected</span>
                                                     <div className="flex gap-2">
                                                         <button onClick={() => setDbSelectedIds(dbSelectedIds.size === dbLeads.length ? new Set() : new Set(dbLeads.map(l => l.id)))} className="text-[10px] text-blue-600 cursor-pointer font-medium bg-transparent border-none">
                                                             {dbSelectedIds.size === dbLeads.length ? 'Deselect all' : 'Select all'}
@@ -1672,8 +1672,8 @@ export default function NewCampaignPage() {
                                                                 <tr key={lead.id} className="hover:bg-[#F5F1EA] transition-colors cursor-pointer" style={{ borderBottom: '1px solid #E8E3DC' }} onClick={() => { const next = new Set(dbSelectedIds); next.has(lead.id) ? next.delete(lead.id) : next.add(lead.id); setDbSelectedIds(next); }}>
                                                                     <td className="px-3 py-1.5"><input type="checkbox" checked={dbSelectedIds.has(lead.id)} readOnly className="cursor-pointer" /></td>
                                                                     <td className="px-3 py-1.5 text-gray-900 font-medium">{lead.email}</td>
-                                                                    <td className="px-3 py-1.5 text-gray-600 capitalize">{lead.persona || '—'}</td>
-                                                                    <td className="px-3 py-1.5 text-gray-500">{lead.source || '—'}</td>
+                                                                    <td className="px-3 py-1.5 text-gray-600 capitalize">{lead.persona || '-'}</td>
+                                                                    <td className="px-3 py-1.5 text-gray-500">{lead.source || '-'}</td>
                                                                     <td className="px-3 py-1.5">
                                                                         {lead.validation_status ? (
                                                                             <span className="text-[9px] px-1.5 py-0.5 rounded-full font-medium" style={{
@@ -1832,7 +1832,7 @@ export default function NewCampaignPage() {
                                     <button onClick={resetLeads} className="text-xs text-red-500 hover:text-red-700 cursor-pointer">Remove file</button>
                                 </div>
 
-                                {/* Field mapping — required fields are highlighted red when unmapped,
+                                {/* Field mapping - required fields are highlighted red when unmapped,
                                      optional fields show a neutral border whether mapped or not. */}
                                 <div>
                                     <div className="text-[10px] font-semibold text-gray-500 uppercase mb-2">Field Mapping</div>
@@ -1865,10 +1865,10 @@ export default function NewCampaignPage() {
                                                             value={columnMapping[field.key] || ''}
                                                             onChange={(val) => updateMapping(field.key, val)}
                                                             options={[
-                                                                { value: '', label: field.required ? '— select column —' : '— skip —' },
+                                                                { value: '', label: field.required ? '- select column -' : '- skip -' },
                                                                 ...csvHeaders.map(h => ({ value: h, label: h })),
                                                             ]}
-                                                            placeholder={field.required ? '— select column —' : '— skip —'}
+                                                            placeholder={field.required ? '- select column -' : '- skip -'}
                                                         />
                                                     </div>
                                                 </div>
@@ -1895,8 +1895,8 @@ export default function NewCampaignPage() {
                                                         <CustomSelect
                                                             value={columnMapping[field.key] || ''}
                                                             onChange={(val) => updateMapping(field.key, val)}
-                                                            options={[{ value: '', label: '— select column —' }, ...csvHeaders.map(h => ({ value: h, label: h }))]}
-                                                            placeholder="— select column —"
+                                                            options={[{ value: '', label: '- select column -' }, ...csvHeaders.map(h => ({ value: h, label: h }))]}
+                                                            placeholder="- select column -"
                                                         />
                                                     </div>
                                                     <button onClick={() => removeCustomField(field.key)} className="text-gray-400 hover:text-red-500 cursor-pointer p-1">
@@ -1973,12 +1973,12 @@ export default function NewCampaignPage() {
                                     <button onClick={resetLeads} className="text-xs text-emerald-700 hover:text-red-600 cursor-pointer">Replace</button>
                                 </div>
 
-                                {/* Verify emails action bar — runs MillionVerifier on all unverified leads */}
+                                {/* Verify emails action bar - runs MillionVerifier on all unverified leads */}
                                 <div className="flex items-center justify-between gap-3 mb-3 p-2.5 rounded-lg flex-wrap" style={{ background: '#FAFAF8', border: '1px solid #E8E3DC' }}>
                                     <div className="flex items-center gap-3 flex-wrap text-[11px]">
                                         <span className="font-semibold text-gray-700">Email validation:</span>
                                         {verificationSummary.verified === 0 ? (
-                                            <span className="text-gray-500">No leads verified yet. Validation only runs when you click below — campaign creation won&apos;t consume credits.</span>
+                                            <span className="text-gray-500">No leads verified yet. Validation only runs when you click below - campaign creation won&apos;t consume credits.</span>
                                         ) : (
                                             <>
                                                 <span className="text-emerald-700 font-semibold">{verificationSummary.valid} valid</span>
@@ -2016,12 +2016,12 @@ export default function NewCampaignPage() {
                                 <div className="flex flex-wrap gap-1.5 mb-3">
                                     {[...MANDATORY_FIELDS, ...customFields.map(f => ({ key: f.key, label: f.label, required: false }))].map(f => (
                                         <span key={f.key} className="text-[9px] px-2 py-0.5 rounded-full font-medium" style={{ background: '#F5F1EA', color: '#6B7280' }}>
-                                            {`{{${f.key}}}`} → {columnMapping[f.key] || '—'}
+                                            {`{{${f.key}}}`} → {columnMapping[f.key] || '-'}
                                         </span>
                                     ))}
                                 </div>
 
-                                {/* Lead table — shows all leads with validation status pills + per-row remove */}
+                                {/* Lead table - shows all leads with validation status pills + per-row remove */}
                                 <div className="overflow-x-auto rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
                                     <table className="w-full text-left text-xs">
                                         <thead>
@@ -2040,9 +2040,9 @@ export default function NewCampaignPage() {
                                                 return (
                                                     <tr key={i} style={{ borderBottom: '1px solid #E8E3DC' }}>
                                                         <td className="px-3 py-1.5 text-gray-900">{lead.email}</td>
-                                                        <td className="px-3 py-1.5 text-gray-600">{lead.full_name || [lead.first_name, lead.last_name].filter(Boolean).join(' ') || '—'}</td>
-                                                        <td className="px-3 py-1.5 text-gray-600">{lead.company || '—'}</td>
-                                                        <td className="px-3 py-1.5 text-gray-600">{lead.website || '—'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-600">{lead.full_name || [lead.first_name, lead.last_name].filter(Boolean).join(' ') || '-'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-600">{lead.company || '-'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-600">{lead.website || '-'}</td>
                                                         <td className="px-3 py-1.5">
                                                             {v ? (
                                                                 <span className={`inline-block text-[9px] font-semibold px-1.5 py-0.5 rounded-full capitalize ${
@@ -2055,7 +2055,7 @@ export default function NewCampaignPage() {
                                                                     {v.status}{v.score ? ` ${v.score}` : ''}
                                                                 </span>
                                                             ) : (
-                                                                <span className="text-[9px] text-gray-400">—</span>
+                                                                <span className="text-[9px] text-gray-400">-</span>
                                                             )}
                                                         </td>
                                                         <td className="px-3 py-1.5 text-right">
@@ -2086,7 +2086,7 @@ export default function NewCampaignPage() {
                 {/* ==================== STEP 3: SEQUENCE ==================== */}
                 {currentStep === 2 && (
                     <div className="flex flex-col gap-4">
-                        {/* Saved-sequence loader — picks a Sequence from the
+                        {/* Saved-sequence loader - picks a Sequence from the
                             templates page and clones its steps into wizard state.
                             Replaces the current step list outright; we warn before
                             clobbering hand-authored work. */}
@@ -2095,7 +2095,7 @@ export default function NewCampaignPage() {
                             onLoad={(loaded) => setSequenceSteps(loaded)}
                         />
 
-                        {/* Step tabs — chip per step, accent by channel */}
+                        {/* Step tabs - chip per step, accent by channel */}
                         <div className="flex items-center gap-2 flex-wrap">
                             {sequenceSteps.map((step, i) => {
                                 const meta = STEP_TYPE_META[step.stepType];
@@ -2157,7 +2157,7 @@ export default function NewCampaignPage() {
                                                     <span className="text-[10px] text-gray-400">hours</span>
                                                 </div>
                                             )}
-                                            {/* Branching — only meaningful from step 2 onward (step 1 is the entry,
+                                            {/* Branching - only meaningful from step 2 onward (step 1 is the entry,
                                                 conditions reference signals only later steps can have produced). */}
                                             {idx > 0 && (
                                                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}>
@@ -2206,7 +2206,7 @@ export default function NewCampaignPage() {
                                             <button
                                                 onClick={() => { setPreviewVariantTab(0); setPreviewStepIndex(idx); }}
                                                 className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium text-gray-600 hover:bg-gray-100 cursor-pointer bg-transparent border-none"
-                                                title="Preview as recipient — Gmail · MacBook"
+                                                title="Preview as recipient - Gmail · MacBook"
                                             >
                                                 <Eye size={11} /> Preview as recipient
                                             </button>
@@ -2223,7 +2223,7 @@ export default function NewCampaignPage() {
                                         </div>
                                     </div>
 
-                                    {/* Channel-aware editor — email shows subject/preheader/body
+                                    {/* Channel-aware editor - email shows subject/preheader/body
                                         + A/B variants; LinkedIn touch points render LinkedInStepEditor;
                                         utility steps (find_linkedin_url) render a compact
                                         no-message card explaining what the step does + a
@@ -2487,7 +2487,7 @@ export default function NewCampaignPage() {
                             })()}
                         </div>
 
-                        {/* Filters + search — hidden until there's a non-trivial
+                        {/* Filters + search - hidden until there's a non-trivial
                             list. Each filter is its own multi-select dropdown
                             (consistent with the unibox quality filter pattern). */}
                         {!mailboxesLoading && availableMailboxes.length > 2 && (
@@ -2526,7 +2526,7 @@ export default function NewCampaignPage() {
                             <div className="text-center py-10 rounded-lg" style={{ border: '1px dashed #D1CBC5', background: '#FAFAF8' }}>
                                 <p className="text-sm font-semibold text-gray-900 mb-1">No mailboxes match these filters</p>
                                 <p className="text-[11px] text-gray-500 mb-3">
-                                    {availableMailboxes.length} mailbox{availableMailboxes.length === 1 ? '' : 'es'} hidden — clear filters to see them.
+                                    {availableMailboxes.length} mailbox{availableMailboxes.length === 1 ? '' : 'es'} hidden - clear filters to see them.
                                 </p>
                                 <button
                                     onClick={() => { setFilterHealth(new Set()); setFilterProvider(new Set()); setFilterUtilization(new Set()); }}
@@ -2646,7 +2646,7 @@ export default function NewCampaignPage() {
                         )}
                       </>)}
 
-                        {/* LinkedIn sender pool — only surfaced when the
+                        {/* LinkedIn sender pool - only surfaced when the
                             sequence contains a linkedin_* step. Mirrors the
                             picker used by the LinkedIn-only wizard. */}
                         {sequenceHasLinkedIn && (
@@ -2808,7 +2808,7 @@ export default function NewCampaignPage() {
                 {/* ==================== STEP 6: SETTINGS ==================== */}
                 {currentStep === 5 && (
                     <div className="flex flex-col gap-4">
-                        {/* ESP Routing Toggle — prominent placement */}
+                        {/* ESP Routing Toggle - prominent placement */}
                         <div className="p-4 rounded-xl" style={{ border: espRouting ? '2px solid #059669' : '1px solid #DC2626', background: espRouting ? '#ECFDF510' : '#FEF2F210' }}>
                             <div className="flex items-center justify-between">
                                 <div className="flex-1">
@@ -2817,7 +2817,7 @@ export default function NewCampaignPage() {
                                         {!espRouting && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">RECOMMENDED TO KEEP ON</span>}
                                     </div>
                                     <p className="text-[10px] text-gray-500 leading-relaxed m-0">
-                                        Automatically sends each email through the mailbox with the best delivery history for that recipient&apos;s email provider (Gmail, Outlook, etc.). Improves inbox placement rates by 10-20%. Mailboxes still receive equal send volume — routing only adjusts which leads go to which mailbox.
+                                        Automatically sends each email through the mailbox with the best delivery history for that recipient&apos;s email provider (Gmail, Outlook, etc.). Improves inbox placement rates by 10-20%. Mailboxes still receive equal send volume - routing only adjusts which leads go to which mailbox.
                                     </p>
                                 </div>
                                 <button
@@ -2857,7 +2857,7 @@ export default function NewCampaignPage() {
                             {[
                                 { label: 'Track opens', desc: 'Embed a tracking pixel to detect when emails are opened', value: trackOpens, onChange: setTrackOpens },
                                 { label: 'Track clicks', desc: 'Wrap links to detect when recipients click', value: trackClicks, onChange: setTrackClicks },
-                                { label: 'Include unsubscribe link', desc: 'Required by law (CAN-SPAM, CASL, GDPR). Adds one-click unsubscribe + List-Unsubscribe headers. Default ON — turn off only for purely transactional/internal mail.', value: includeUnsubscribe, onChange: setIncludeUnsubscribe },
+                                { label: 'Include unsubscribe link', desc: 'Required by law (CAN-SPAM, CASL, GDPR). Adds one-click unsubscribe + List-Unsubscribe headers. Default ON - turn off only for purely transactional/internal mail.', value: includeUnsubscribe, onChange: setIncludeUnsubscribe },
                                 { label: 'EU compliance mode (ePrivacy)', desc: 'Recommended for campaigns sent to EU recipients. Suppresses open-tracking pixel and adds an explicit no-tracking notice to the footer.', value: euComplianceMode, onChange: setEuComplianceMode },
                             ].map(item => (
                                 <div key={item.label} className="flex items-center justify-between p-3 rounded-lg" style={{ border: '1px solid #D1CBC5' }}>
@@ -2898,14 +2898,14 @@ export default function NewCampaignPage() {
                         {!allStepsComplete() && (
                             <div className="p-3 rounded-lg flex flex-col gap-1.5" style={{ background: '#FEF3C7', border: '1px solid #FDE68A' }}>
                                 <div className="text-xs font-semibold text-amber-800">Complete these steps before launching:</div>
-                                {!isStepComplete(0) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(0)}>Step 1 — Campaign name is required</div>}
-                                {!isStepComplete(1) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(1)}>Step 2 — Import at least one lead</div>}
-                                {!isStepComplete(2) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(2)}>Step 3 — Add subject line and email body to Step 1</div>}
-                                {!isStepComplete(3) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(3)}>Step 4 — Select at least one active sending day</div>}
+                                {!isStepComplete(0) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(0)}>Step 1 - Campaign name is required</div>}
+                                {!isStepComplete(1) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(1)}>Step 2 - Import at least one lead</div>}
+                                {!isStepComplete(2) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(2)}>Step 3 - Add subject line and email body to Step 1</div>}
+                                {!isStepComplete(3) && <div className="text-[10px] text-amber-700 cursor-pointer hover:underline" onClick={() => setCurrentStep(3)}>Step 4 - Select at least one active sending day</div>}
                             </div>
                         )}
 
-                        {/* LinkedIn coverage preflight — only shown when the sequence
+                        {/* LinkedIn coverage preflight - only shown when the sequence
                             has at least one linkedin_* touch point. Tells the operator
                             how many imported leads have a LinkedIn URL on file and
                             therefore can actually be acted on by those steps. Goes
@@ -2931,7 +2931,7 @@ export default function NewCampaignPage() {
                                     <div className="p-3 rounded-lg flex items-start gap-2 text-[11px]" style={{ border: '1px solid #D1CBC5', background: '#F0FDF4' }}>
                                         <Linkedin size={13} className="text-emerald-700 mt-0.5 shrink-0" />
                                         <div className="text-gray-700">
-                                            All <span className="font-semibold">{totalLeads.toLocaleString()}</span> leads have a LinkedIn URL on file — every LinkedIn step will fire.
+                                            All <span className="font-semibold">{totalLeads.toLocaleString()}</span> leads have a LinkedIn URL on file - every LinkedIn step will fire.
                                         </div>
                                     </div>
                                 );
@@ -2948,7 +2948,7 @@ export default function NewCampaignPage() {
                                         </div>
                                         {findCoversTouches ? (
                                             <p className="m-0 mt-0.5 text-gray-600 leading-snug">
-                                                A Find LinkedIn URL step runs first — the {missing.toLocaleString()} missing URL{missing === 1 ? '' : 's'} will be enriched before any LinkedIn touch point.{enrichmentProviders.length === 0 ? ' Connect an enrichment provider in Settings → Enrichment to make this work.' : ''}
+                                                A Find LinkedIn URL step runs first - the {missing.toLocaleString()} missing URL{missing === 1 ? '' : 's'} will be enriched before any LinkedIn touch point.{enrichmentProviders.length === 0 ? ' Connect an enrichment provider in Settings → Enrichment to make this work.' : ''}
                                             </p>
                                         ) : (
                                             <p className="m-0 mt-0.5 text-gray-600 leading-snug">
@@ -3030,11 +3030,11 @@ export default function NewCampaignPage() {
                                         <Eye size={13} /> Live Preview
                                     </div>
                                     <p className="text-[10px] text-gray-500 mt-0.5">
-                                        See the exact email a recipient will receive — variables substituted with real lead data.
+                                        See the exact email a recipient will receive - variables substituted with real lead data.
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3 flex-wrap">
-                                    {/* Email step dropdown — platform-themed */}
+                                    {/* Email step dropdown - platform-themed */}
                                     <div className="flex items-center gap-1.5">
                                         <span className="text-[10px] text-gray-500 font-semibold uppercase">Email</span>
                                         <div className="w-36">
@@ -3046,7 +3046,7 @@ export default function NewCampaignPage() {
                                             />
                                         </div>
                                     </div>
-                                    {/* Lead picker dropdown — platform-themed, searchable */}
+                                    {/* Lead picker dropdown - platform-themed, searchable */}
                                     <div className="flex items-center gap-1.5">
                                         <span className="text-[10px] text-gray-500 font-semibold uppercase">Lead</span>
                                         <div className="w-64">
@@ -3055,7 +3055,7 @@ export default function NewCampaignPage() {
                                                 onChange={setReviewLeadKey}
                                                 searchable={availableReviewLeads.length > 5}
                                                 options={[
-                                                    { value: '__demo__', label: 'Demo lead — Alex Morgan · Acme' },
+                                                    { value: '__demo__', label: 'Demo lead - Alex Morgan · Acme' },
                                                     ...availableReviewLeads.map(l => ({
                                                         value: l.email,
                                                         label: `${[l.first_name, l.last_name].filter(Boolean).join(' ') || l.email} · ${l.email}`,
@@ -3068,7 +3068,7 @@ export default function NewCampaignPage() {
                                 </div>
                             </div>
 
-                            {/* Variant tabs — only if the selected step has variants */}
+                            {/* Variant tabs - only if the selected step has variants */}
                             {sequenceSteps[reviewStepIdx] && sequenceSteps[reviewStepIdx].variants.length > 0 && (
                                 <div className="flex items-center gap-1.5 mb-3 flex-wrap">
                                     {[{ label: 'A', weight: Math.round(100 / (sequenceSteps[reviewStepIdx].variants.length + 1)) }]
@@ -3142,7 +3142,7 @@ export default function NewCampaignPage() {
                                 <p className="text-[10px] text-gray-500 mt-2">Import leads in the Leads step to preview with real data.</p>
                             )}
 
-                            {/* Recipient preview — across mainstream clients, with the lead's
+                            {/* Recipient preview - across mainstream clients, with the lead's
                                 actual data substituted. Helps catch truncation, AI-summary
                                 surprises and rendering issues before launch. */}
                             {(() => {
@@ -3204,10 +3204,10 @@ export default function NewCampaignPage() {
                 </button>
 
                 <div className="flex items-center gap-2">
-                    {/* Secondary action — only shown when it's semantically distinct from the primary:
+                    {/* Secondary action - only shown when it's semantically distinct from the primary:
                         - Create mode: "Save as Draft" (primary launches)
                         - Editing a draft: "Save Changes" (primary is "Save & Launch")
-                        Hidden when editing an already-launched campaign — primary is already "Save Changes". */}
+                        Hidden when editing an already-launched campaign - primary is already "Save Changes". */}
                     {currentStep === 6 && !(isEditMode && isAlreadyLaunched) && (
                         <button
                             onClick={handleSaveDraft}
@@ -3238,7 +3238,7 @@ export default function NewCampaignPage() {
                 </div>
             </div>
 
-            {/* Preview Modal — recipient preview on the user's chosen client + device.
+            {/* Preview Modal - recipient preview on the user's chosen client + device.
                 Variables are silently substituted with the demo lead so the user sees
                 what the recipient actually receives. */}
             {previewStepIndex !== null && sequenceSteps[previewStepIndex] && (() => {
@@ -3317,7 +3317,7 @@ export default function NewCampaignPage() {
 }
 
 /**
- * PreheaderInput — small reusable field for the preheader.
+ * PreheaderInput - small reusable field for the preheader.
  *
  * Renders with the same styling language as the subject input. Cap hint
  * at 100 chars is informational only (Gmail mobile shows ~50–90, Outlook
@@ -3352,7 +3352,7 @@ function PreheaderInput({
 }
 
 /**
- * LoadSavedSequence — picks a saved sequence and clones its steps into
+ * LoadSavedSequence - picks a saved sequence and clones its steps into
  * the wizard's `sequenceSteps` state. Confirms before replacing existing
  * non-empty step content so the user can't lose hand-authored work to a
  * misclick.
@@ -3401,7 +3401,7 @@ function LoadSavedSequence({
                 steps: Array<{ step_number: number; delay_days: number; delay_hours: number; subject: string; preheader: string; body_html: string }>;
             }>(`/api/sequencer/sequences/${id}`);
             // Convert backend step shape → wizard SequenceStepData shape.
-            // Saved sequences are email-only — they predate multi-channel.
+            // Saved sequences are email-only - they predate multi-channel.
             const loaded: SequenceStepData[] = (full.steps || []).map(s => ({
                 id: safeRandomUUID(),
                 stepNumber: s.step_number,
@@ -3432,7 +3432,7 @@ function LoadSavedSequence({
         <div className="rounded-lg flex items-center gap-2 px-3 py-2" style={{ background: '#F9FAFB', border: '1px dashed #D1CBC5' }}>
             <Sparkles size={12} className="text-indigo-600 shrink-0" />
             <div className="flex-1 text-[11px] text-gray-700">
-                <span className="font-semibold">Skip the blank page</span> — load steps from a saved sequence.
+                <span className="font-semibold">Skip the blank page</span> - load steps from a saved sequence.
             </div>
             <button
                 type="button"
@@ -3447,7 +3447,7 @@ function LoadSavedSequence({
                 title="Replace your current steps?"
                 icon="🔄"
                 message="Loading a saved sequence will overwrite the steps you've authored here."
-                consequences={['Your current subject lines, preheaders, and bodies will be replaced.', 'Variants and step-config (LinkedIn step types) will be cleared — saved sequences are email-only.']}
+                consequences={['Your current subject lines, preheaders, and bodies will be replaced.', 'Variants and step-config (LinkedIn step types) will be cleared - saved sequences are email-only.']}
                 confirmLabel="Replace steps"
                 variant="warning"
                 loading={pickingId !== null}
@@ -3525,11 +3525,11 @@ function LoadSavedSequence({
 
 
 /**
- * Mailbox filter bar — three dropdowns + a search input.
+ * Mailbox filter bar - three dropdowns + a search input.
  *
  * Uses the canonical `MultiSelectDropdown` component (same one the
  * contacts page uses for company / title / source / tag filters) so the
- * theme — borders, hover, checkbox, search behaviour — is identical
+ * theme - borders, hover, checkbox, search behaviour - is identical
  * across every filter surface in the app. Per the dashboard convention,
  * NEVER lay filter options out as a chip strip; always a dropdown.
  */
@@ -3561,7 +3561,7 @@ function MailboxFilterBar({
     bucketOf: (m: { mailbox_status: string; recovery_phase: string }) => 'paused' | 'in_recovery' | 'warning' | 'healthy';
     onClearAll: () => void;
 }) {
-    // Pre-count each option value so the dropdown rows can show "(N)" —
+    // Pre-count each option value so the dropdown rows can show "(N)" -
     // helps the operator anticipate the result set before committing.
     const counts = {
         health: { healthy: 0, warning: 0, in_recovery: 0, paused: 0 } as Record<string, number>,
@@ -3577,7 +3577,7 @@ function MailboxFilterBar({
     // Bridge Set<string> ↔ string[] for the canonical component.
     const toArr = (s: Set<string>) => Array.from(s);
     const fromArr = (a: string[]) => new Set(a);
-    // Small colored dot used as the per-option icon — matches the
+    // Small colored dot used as the per-option icon - matches the
     // "tag swatch" pattern in the contacts page tag dropdown without
     // introducing a new visual primitive.
     const Dot = ({ color }: { color: string }) => (
@@ -3592,7 +3592,7 @@ function MailboxFilterBar({
 
     return (
         <div className="flex items-center gap-2 flex-wrap">
-            {/* Search — mirrors the contacts-page search affordance. */}
+            {/* Search - mirrors the contacts-page search affordance. */}
             <div className="relative">
                 <input
                     type="text"
@@ -3663,7 +3663,7 @@ function MailboxFilterBar({
 }
 
 /**
- * AddStepDropdown — single "+ Add step" button that opens a channel-grouped
+ * AddStepDropdown - single "+ Add step" button that opens a channel-grouped
  * menu of step types. Replaces the legacy email-only "+ Add Step" button so
  * operators can mix LinkedIn touch points into an email sequence (and
  * vice-versa).
@@ -3744,7 +3744,7 @@ function StepPickerRow({ type, onPick }: { type: WizardStepType; onPick: (t: Wiz
 }
 
 /**
- * LinkedInStepEditor — channel-aware editor surfaced for any linkedin_*
+ * LinkedInStepEditor - channel-aware editor surfaced for any linkedin_*
  * step type. Mirrors the field shape used by the LinkedIn-only wizard so a
  * connection request shows a 300-char note, a DM shows a body template, an
  * InMail shows subject + body, and the no-message types (view / follow /
@@ -3764,7 +3764,7 @@ function LinkedInStepEditor({
     // `(x as Type) ?? default` expression. Turbopack 16.1.x miscompiles
     // that pattern inside JSX attribute values into a `_ref` temp variable
     // that loses its declaration during HMR, producing a runtime
-    // ReferenceError. Extracting into typed locals sidesteps the bug —
+    // ReferenceError. Extracting into typed locals sidesteps the bug -
     // see https://github.com/vercel/next.js/issues/* (filed downstream).
     const noteTemplate = typeof cfg.note_template === 'string' ? cfg.note_template : '';
     const bodyTemplate = typeof cfg.body_template === 'string' ? cfg.body_template : '';
@@ -3845,7 +3845,7 @@ function LinkedInStepEditor({
                             type="text"
                             value={inmailSubject}
                             onChange={e => setCfg({ subject: e.target.value })}
-                            placeholder="{{first_name}} — quick thought"
+                            placeholder="{{first_name}} - quick thought"
                             className="w-full px-2.5 py-1.5 text-xs rounded-md outline-none bg-white"
                             style={{ border: '1px solid #D1CBC5' }}
                         />
@@ -3908,7 +3908,7 @@ function LinkedInStepEditor({
 
             {(step.stepType === 'linkedin_view_profile' || step.stepType === 'linkedin_follow') && (
                 <div className="text-[11px] text-gray-600 italic">
-                    No message body for this step — the dispatcher executes the action and moves the lead to the next step.
+                    No message body for this step - the dispatcher executes the action and moves the lead to the next step.
                 </div>
             )}
         </div>

@@ -5,13 +5,13 @@ import { ExternalLink, Phone } from 'lucide-react';
 
 /**
  * Side panel showing adjacent tools the user can hand off to AFTER the
- * Superkabe email sequence completes — phone follow-ups, etc.
+ * Superkabe email sequence completes - phone follow-ups, etc.
  *
  * Architectural note: these are NOT sequence steps. LinkedIn outreach is a
  * first-class step type inside the sequence (see Super LinkedIn). JustCall
  * handles phone follow-ups in a separate channel.
  *
- * V1 reads org-level connection status — when an integration is connected,
+ * V1 reads org-level connection status - when an integration is connected,
  * the panel shows it as "available for handoff". When not connected, shows
  * a "Connect" CTA.
  */

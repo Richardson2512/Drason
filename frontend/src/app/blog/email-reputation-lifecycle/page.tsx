@@ -140,25 +140,25 @@ export default function EmailReputationArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Reputation moves through 4 lifecycle stages: building (weeks), maintaining (ongoing), damage (hours), recovery (weeks-months)</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Building takes 6 weeks; a single afternoon of bad leads can destroy it</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Domain reputation weighs more than IP reputation in modern ISP models</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Not all domains can be recovered — severe blacklisting may require domain replacement</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Not all domains can be recovered - severe blacklisting may require domain replacement</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Proactive protection is the only cost-effective strategy vs. reactive recovery</li>
  </ul>
  </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
- Email domain reputation is a dynamic score maintained by ISPs that determines whether emails from a domain reach the inbox, land in spam, or get rejected. Reputation moves through a lifecycle: it is built gradually through consistent, positive sending behavior, maintained through ongoing infrastructure discipline, damaged rapidly by spikes in bounces or complaints, and recovered — if possible — through careful remediation. Understanding this lifecycle is essential for any outbound team operating at scale.
+ Email domain reputation is a dynamic score maintained by ISPs that determines whether emails from a domain reach the inbox, land in spam, or get rejected. Reputation moves through a lifecycle: it is built gradually through consistent, positive sending behavior, maintained through ongoing infrastructure discipline, damaged rapidly by spikes in bounces or complaints, and recovered - if possible - through careful remediation. Understanding this lifecycle is essential for any outbound team operating at scale.
  </p>
 
  <h2 id="build-email-reputation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Do You Build Email Reputation in Weeks 1-8?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Every new domain starts with zero sending history. ISPs have no data to evaluate it, so the domain exists in a neutral state — neither trusted nor untrusted. During this phase, every email sent is scrutinized more heavily than it would be from an established domain.
+ Every new domain starts with zero sending history. ISPs have no data to evaluate it, so the domain exists in a neutral state - neither trusted nor untrusted. During this phase, every email sent is scrutinized more heavily than it would be from an established domain.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Building reputation requires generating consistent positive signals: successful deliveries without bounces, recipient engagement (opens and replies), and absence of spam complaints. The key word is consistent. ISPs reward predictable sending patterns and penalize erratic behavior.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is the domain warming phase. Volume starts low (5–10 emails per mailbox per day) and increases gradually over 4–8 weeks. Attempting to skip this phase — by sending full-volume cold outbound from a new domain — almost always results in immediate throttling or blacklisting.
+ This is the domain warming phase. Volume starts low (5–10 emails per mailbox per day) and increases gradually over 4–8 weeks. Attempting to skip this phase - by sending full-volume cold outbound from a new domain - almost always results in immediate throttling or blacklisting.
  </p>
 
  <h2 id="maintain-email-reputation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Do You Maintain Email Reputation Long-Term?</h2>
@@ -189,7 +189,7 @@ export default function EmailReputationArticle() {
 
  <h2 id="email-reputation-damage" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Quickly Can Email Reputation Be Damaged?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Reputation damage happens fast — significantly faster than reputation building. A domain that took 6 weeks to warm can be damaged in a single afternoon. The most common causes of rapid reputation damage:
+ Reputation damage happens fast - significantly faster than reputation building. A domain that took 6 weeks to warm can be damaged in a single afternoon. The most common causes of rapid reputation damage:
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -232,7 +232,7 @@ export default function EmailReputationArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The asymmetry between building and damaging reputation is the central challenge of outbound email operations. It takes 6 weeks to build what can be destroyed in 6 hours. This is why proactive monitoring is not optional — it is the only viable defense.
+ The asymmetry between building and damaging reputation is the central challenge of outbound email operations. It takes 6 weeks to build what can be destroyed in 6 hours. This is why proactive monitoring is not optional - it is the only viable defense.
  </p>
 
  <h2 id="email-reputation-recovery" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How Long Does Email Reputation Recovery Take?</h2>
@@ -259,7 +259,7 @@ export default function EmailReputationArticle() {
 
  <BottomCtaStrip
  headline="Key Takeaway"
- body="Email reputation is not a static score — it is a living metric that moves through distinct lifecycle phases. Building takes weeks, maintaining requires constant discipline, damage happens in hours, and recovery — if possible — takes weeks or months. The only sustainable strategy is proactive protection that prevents damage before it occurs."
+ body="Email reputation is not a static score - it is a living metric that moves through distinct lifecycle phases. Building takes weeks, maintaining requires constant discipline, damage happens in hours, and recovery - if possible - takes weeks or months. The only sustainable strategy is proactive protection that prevents damage before it occurs."
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />

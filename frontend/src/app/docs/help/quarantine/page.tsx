@@ -38,7 +38,7 @@ export default function QuarantinePage() {
  <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 p-8 mb-12">
  <p className="text-gray-700 mb-4 text-lg">
  Quarantine is <strong>Phase 2</strong> of the auto-healing pipeline. It sits between the initial cooldown pause and
- the restricted sending phase. Think of it as a health checkpoint &mdash; the system needs to confirm your infrastructure
+ the restricted sending phase. Think of it as a health checkpoint - the system needs to confirm your infrastructure
  is sound before it lets any mail flow again.
  </p>
  <div className="bg-white p-6 border border-amber-200">
@@ -105,10 +105,10 @@ export default function QuarantinePage() {
  Your mailbox will remain in quarantine indefinitely until the underlying issues are resolved. Common blockers:
  </p>
  <ul className="space-y-3 text-sm text-red-800">
- <li>&#x2022; <strong>Missing or broken SPF record</strong> &mdash; Your DNS provider may have overwritten it, or you exceeded the 10-lookup limit</li>
- <li>&#x2022; <strong>Missing or invalid DKIM record</strong> &mdash; The DKIM key wasn&rsquo;t published, or it doesn&rsquo;t match what your sending platform expects</li>
- <li>&#x2022; <strong>Domain is blacklisted</strong> &mdash; Your domain or IP appears on one or more major blacklists</li>
- <li>&#x2022; <strong>DNS propagation delay</strong> &mdash; You fixed the record but it hasn&rsquo;t propagated yet (can take up to 48 hours)</li>
+ <li>&#x2022; <strong>Missing or broken SPF record</strong> - Your DNS provider may have overwritten it, or you exceeded the 10-lookup limit</li>
+ <li>&#x2022; <strong>Missing or invalid DKIM record</strong> - The DKIM key wasn&rsquo;t published, or it doesn&rsquo;t match what your sending platform expects</li>
+ <li>&#x2022; <strong>Domain is blacklisted</strong> - Your domain or IP appears on one or more major blacklists</li>
+ <li>&#x2022; <strong>DNS propagation delay</strong> - You fixed the record but it hasn&rsquo;t propagated yet (can take up to 48 hours)</li>
  </ul>
  </div>
 
@@ -135,7 +135,7 @@ export default function QuarantinePage() {
  <ul className="text-sm text-gray-600 space-y-1">
  <li>&#x2022; Visit each blacklist&rsquo;s website and submit a delisting request</li>
  <li>&#x2022; Spamhaus and Barracuda typically delist within 24&ndash;48 hours after request</li>
- <li>&#x2022; SORBS may take longer &mdash; follow their specific process</li>
+ <li>&#x2022; SORBS may take longer - follow their specific process</li>
  </ul>
  </div>
  <div>

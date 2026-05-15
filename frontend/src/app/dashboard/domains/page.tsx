@@ -141,7 +141,7 @@ export default function DomainsPage() {
             <div className="premium-card flex flex-col p-4 h-full overflow-hidden rounded-2xl" style={{ width: '380px' }}>
                 <h1 className="text-xl font-bold mb-3 shrink-0 text-gray-900">Domains</h1>
 
-                {/* Stats bar — interactive. Clicking a pill filters the list;
+                {/* Stats bar - interactive. Clicking a pill filters the list;
                     "All" clears. Replaces the separate status dropdown. */}
                 {entityStats?.domains && (
                     <div className="mb-4">
@@ -267,7 +267,7 @@ export default function DomainsPage() {
                 )}
             </div>
 
-            {/* Sort & Filter Modal — portaled to body. */}
+            {/* Sort & Filter Modal - portaled to body. */}
             {sortFilter.isOpen && typeof document !== 'undefined' && createPortal(
                 <div
                     className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
@@ -670,7 +670,7 @@ function DomainDetailsView({
                 </table>
             </div>
 
-            {/* DNS Authentication — SPF / DKIM / DMARC / MX, populated by
+            {/* DNS Authentication - SPF / DKIM / DMARC / MX, populated by
                 infrastructureAssessmentService during the periodic sweep and
                 refreshed live by the healing pipeline. Sits directly above
                 Infrastructure Health Issues so the SPF/DKIM/DMARC/MX state
@@ -722,7 +722,7 @@ function dnsTone(state: DnsState): { fg: string; bg: string; border: string; lab
 //
 // `assessed` is the gate. When false, no per-field interpretation is done so
 // we never paint a domain as "Failing" before we've actually checked. This is
-// the key contract with the Findings panel — Findings only writes rows when
+// the key contract with the Findings panel - Findings only writes rows when
 // the sweep produced failing data, so DNS Authentication must not contradict
 // that empty state with red badges.
 
@@ -791,7 +791,7 @@ function DomainDnsCard({
             onRefreshed(res.domain);
             if (res.cached) {
                 setCooldownMsg(
-                    `DNS was just checked — try again in ${res.cooldown_seconds_remaining ?? 30}s for fresh data.`,
+                    `DNS was just checked - try again in ${res.cooldown_seconds_remaining ?? 30}s for fresh data.`,
                 );
             }
         } catch (err) {
@@ -850,7 +850,7 @@ function DomainDnsCard({
                     className="rounded-xl border px-3 py-2 mb-3 text-xs"
                     style={{ borderColor: '#E2E8F0', background: '#F8FAFC', color: '#475569' }}
                 >
-                    The DNS sweep hasn’t run for this domain yet, so SPF, DKIM, DMARC and MX are unknown — not failing.
+                    The DNS sweep hasn’t run for this domain yet, so SPF, DKIM, DMARC and MX are unknown - not failing.
                     The infrastructure-assessment worker checks each domain on its periodic schedule, and freshly-added
                     domains are picked up on the next run. This is also why <span className="font-semibold">Infrastructure Health Issues</span> is empty: findings are only written when an actual check produces a failure.
                 </div>
@@ -868,7 +868,7 @@ function DomainDnsCard({
                               ? 'SPF record found and valid.'
                               : selectedDomain.spf_valid === false
                                 ? 'No valid SPF record. Email providers may treat your sends as unauthenticated.'
-                                : 'SPF lookup did not return a definitive answer — likely a transient DNS error. Will retry on the next sweep.'
+                                : 'SPF lookup did not return a definitive answer - likely a transient DNS error. Will retry on the next sweep.'
                     }
                 />
                 <DnsRow
@@ -882,7 +882,7 @@ function DomainDnsCard({
                               ? 'DKIM signature record published on at least one common selector.'
                               : selectedDomain.dkim_valid === false
                                 ? 'No DKIM record found on common selectors (default, google, selector1, selector2).'
-                                : 'DKIM lookup did not return a definitive answer — will retry on the next sweep.'
+                                : 'DKIM lookup did not return a definitive answer - will retry on the next sweep.'
                     }
                 />
                 <DnsRow
@@ -894,8 +894,8 @@ function DomainDnsCard({
                             ? 'Awaiting first assessment.'
                             : selectedDomain.dmarc_policy
                               ? selectedDomain.dmarc_policy === 'none'
-                                  ? `Policy: p=none — monitoring only. Upgrade to quarantine or reject once SPF/DKIM are stable.`
-                                  : `Policy: p=${selectedDomain.dmarc_policy} — enforcing.`
+                                  ? `Policy: p=none - monitoring only. Upgrade to quarantine or reject once SPF/DKIM are stable.`
+                                  : `Policy: p=${selectedDomain.dmarc_policy} - enforcing.`
                               : 'No DMARC record found at _dmarc.<domain>.'
                     }
                 />
@@ -909,8 +909,8 @@ function DomainDnsCard({
                             : Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length > 0
                               ? `${selectedDomain.mx_records.length} record${selectedDomain.mx_records.length === 1 ? '' : 's'} configured.`
                               : selectedDomain.mx_valid === false || (Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length === 0)
-                                ? 'No MX records configured — this domain cannot receive replies, bounces, or unsubscribes.'
-                                : 'MX lookup did not return a definitive answer — will retry on the next sweep.'
+                                ? 'No MX records configured - this domain cannot receive replies, bounces, or unsubscribes.'
+                                : 'MX lookup did not return a definitive answer - will retry on the next sweep.'
                     }
                 >
                     {Array.isArray(selectedDomain.mx_records) && selectedDomain.mx_records.length > 0 && (

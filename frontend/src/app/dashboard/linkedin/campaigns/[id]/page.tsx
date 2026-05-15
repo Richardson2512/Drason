@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LinkedIn campaign detail page — feature parity with the email-side
+ * LinkedIn campaign detail page - feature parity with the email-side
  * `/sequencer/campaigns/[id]/page.tsx`. Renders:
  *
  *   - Header: name + status pill + Sequence-schema / Edit / Launch /
@@ -162,7 +162,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
 
     useEffect(() => { fetchDetail(); }, [fetchDetail]);
 
-    // Refetch on focus / visibility — catches status changes the operator
+    // Refetch on focus / visibility - catches status changes the operator
     // made in another tab (or that the dispatcher / supervisor wrote
     // server-side). See campaigns list page for the same pattern.
     useEffect(() => {
@@ -181,7 +181,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
         const isPausing = data.campaign.status !== 'paused';
         setActing(isPausing ? 'pause' : 'resume');
         try {
-            // Hit the LinkedIn-channel-scoped pause/resume routes — same
+            // Hit the LinkedIn-channel-scoped pause/resume routes - same
             // underlying Campaign row as the sequencer pair, but the URL
             // and validation stay under /api/linkedin/* so cross-controller
             // changes don't silently leak into the LinkedIn UX path.
@@ -264,12 +264,12 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
         const tzs = new Set(whs.map(w => w.tz || ''));
         const windows = new Set(whs.map(w => `${w.start ?? ''}-${w.end ?? ''}`));
         const dayKeys = new Set(whs.map(w => (w.days ?? []).slice().sort().join(',')));
-        const tz = tzs.size === 1 ? Array.from(tzs)[0] || '—' : 'varies';
-        const window = windows.size === 1 ? Array.from(windows)[0] || '—' : 'varies';
+        const tz = tzs.size === 1 ? Array.from(tzs)[0] || '-' : 'varies';
+        const window = windows.size === 1 ? Array.from(windows)[0] || '-' : 'varies';
         const days = (() => {
             if (dayKeys.size !== 1) return 'varies';
             const k = Array.from(dayKeys)[0];
-            if (!k) return '—';
+            if (!k) return '-';
             return k.split(',').map(n => DAY_LABEL[Number(n)] || '?').join(', ');
         })();
         const invitesPerDay  = data.senders.reduce((s, x) => s + (x.max_invites_per_day ?? 0), 0);
@@ -371,13 +371,13 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                         </div>
                     </div>
 
-                    {/* Stats row — enrollment + rate cards */}
+                    {/* Stats row - enrollment + rate cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                         <StatCard label="Total leads"  value={data.counts.total_leads} />
                         <StatCard label="In sequence"  value={data.counts.in_sequence} accent="#0A66C2" />
                         <StatCard label="Replied"      value={data.counts.replied}     accent="#8B5CF6" />
-                        <StatCard label="Accept rate"  value={data.counts.accept_rate != null ? `${Math.round(data.counts.accept_rate * 100)}%` : '—'} accent="#16A34A" />
-                        <StatCard label="Reply rate"   value={data.counts.reply_rate  != null ? `${Math.round(data.counts.reply_rate  * 100)}%` : '—'} accent="#8B5CF6" />
+                        <StatCard label="Accept rate"  value={data.counts.accept_rate != null ? `${Math.round(data.counts.accept_rate * 100)}%` : '-'} accent="#16A34A" />
+                        <StatCard label="Reply rate"   value={data.counts.reply_rate  != null ? `${Math.round(data.counts.reply_rate  * 100)}%` : '-'} accent="#8B5CF6" />
                         <StatCard label="Finished"     value={data.counts.finished} />
                     </div>
 
@@ -387,7 +387,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                             <h2 className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
                                 <Clock size={12} /> Schedule
                                 {schedule == null && (
-                                    <span className="text-[10px] font-normal text-gray-400">— no senders</span>
+                                    <span className="text-[10px] font-normal text-gray-400">- no senders</span>
                                 )}
                             </h2>
                             {schedule ? (
@@ -400,7 +400,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                                     <Row label="InMails / day"   value={`${schedule.inmailsPerDay} total`} />
                                 </>
                             ) : (
-                                <p className="text-xs text-gray-500 py-2">No senders attached — add LinkedIn accounts to set working hours and caps.</p>
+                                <p className="text-xs text-gray-500 py-2">No senders attached - add LinkedIn accounts to set working hours and caps.</p>
                             )}
                         </div>
                         <div className="premium-card p-3">
@@ -481,7 +481,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                         )}
                     </div>
 
-                    {/* Mixed-step corruption banner — Super LinkedIn campaigns
+                    {/* Mixed-step corruption banner - Super LinkedIn campaigns
                         are supposed to be linkedin_* only. If a non-linkedin
                         step landed (legacy data, direct DB write, bad import),
                         the dispatcher will silently skip it. Surface the
@@ -495,7 +495,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                                 <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-rose-700" />
                                 <div>
                                     <div className="font-bold">
-                                        {offending.length} step{offending.length === 1 ? '' : 's'} are not LinkedIn steps — the dispatcher will skip them.
+                                        {offending.length} step{offending.length === 1 ? '' : 's'} are not LinkedIn steps - the dispatcher will skip them.
                                     </div>
                                     <div className="text-rose-800 mt-0.5">
                                         Found:{' '}
@@ -552,7 +552,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                         )}
                     </div>
 
-                    {/* Pre-launch validation modal — surfaces the validator's
+                    {/* Pre-launch validation modal - surfaces the validator's
                         errors / warnings / info plus capacity + bucket
                         counts so the operator can fix issues BEFORE the
                         /launch call goes out. Confirm button is disabled
@@ -597,7 +597,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                                                     <div className="text-emerald-900">
                                                         Ready to launch.
                                                         {validationReport.warnings.length > 0 && (
-                                                            <> {validationReport.warnings.length} warning{validationReport.warnings.length === 1 ? '' : 's'} — review below.</>
+                                                            <> {validationReport.warnings.length} warning{validationReport.warnings.length === 1 ? '' : 's'} - review below.</>
                                                         )}
                                                     </div>
                                                 </div>
@@ -605,7 +605,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                                                 <div className="flex items-start gap-2 text-xs bg-rose-50 border border-rose-200 rounded-md px-3 py-2">
                                                     <AlertTriangle size={13} className="text-rose-700 mt-0.5 shrink-0" />
                                                     <div className="text-rose-900">
-                                                        Can&apos;t launch — fix {validationReport.errors.length} error{validationReport.errors.length === 1 ? '' : 's'} below.
+                                                        Can&apos;t launch - fix {validationReport.errors.length} error{validationReport.errors.length === 1 ? '' : 's'} below.
                                                     </div>
                                                 </div>
                                             )}
@@ -633,7 +633,7 @@ export default function LinkedInCampaignDetailPage({ params }: { params: Promise
                                             <div className={`p-2.5 rounded-md text-[0.7rem] border ${validationReport.capacity.sufficient ? 'bg-emerald-50/50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'}`}>
                                                 <span className="font-semibold">Capacity (week 1):</span>{' '}
                                                 {validationReport.capacity.invites_per_week_total.toLocaleString()} invites available · {validationReport.capacity.invites_needed.toLocaleString()} needed
-                                                {!validationReport.capacity.sufficient && ' — not enough sender capacity to clear week 1 in one cycle.'}
+                                                {!validationReport.capacity.sufficient && ' - not enough sender capacity to clear week 1 in one cycle.'}
                                             </div>
 
                                             {/* Issues */}

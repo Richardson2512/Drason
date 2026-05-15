@@ -122,7 +122,7 @@ export default function ContactPage() {
  We&apos;d Love to Hear From You
  </p>
  <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
- Whether you have a question about our platform, need technical support, or want to explore a partnership — our team is ready to help.
+ Whether you have a question about our platform, need technical support, or want to explore a partnership - our team is ready to help.
  </p>
  </div>
  </div>

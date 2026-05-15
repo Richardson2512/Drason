@@ -45,7 +45,7 @@ export default function SuperkabeVsWoodpeckerPage() {
             { "@type": "Question", "name": "Is Superkabe better than Woodpecker?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on modern AI sequencing, multi-mailbox sending at scale, and the protection layer (auto-pause, 5-phase healing, ESP-aware routing). Woodpecker wins on reply detection accuracy, if-campaign branching, and a longer track record of stability. For teams sending high-volume cold outreach, Superkabe is the better fit. For nurture-style flows with deep reply branching, Woodpecker remains credible." } },
             { "@type": "Question", "name": "Does Woodpecker have built-in deliverability protection?", "acceptedAnswer": { "@type": "Answer", "text": "Woodpecker ships a Bounce Shield that blocks invalid addresses on the way out, but does not auto-pause mailboxes when bounce rate crosses a threshold. There is no healing pipeline. Superkabe enforces auto-pause at 3% bounce rate after a 60-send minimum and runs a 5-phase healing pipeline." } },
             { "@type": "Question", "name": "How does Superkabe pricing compare to Woodpecker?", "acceptedAnswer": { "@type": "Answer", "text": "Woodpecker starts at ~$54/month for the Cold Email plan and scales with active leads. Superkabe Starter is $19/month, Pro is $49/month, Growth is $199/month with 300K sends and the full protection layer. Superkabe undercuts Woodpecker at the entry tier and bundles substantially more at the mid tiers." } },
-            { "@type": "Question", "name": "Does Superkabe replicate Woodpecker's if-campaign branching?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe ships native reply detection and step-conditional sequencing. The exact branching syntax differs, but the same outcomes are achievable — branch on positive reply, negative reply, no reply, bounce, or out-of-office. Woodpecker's branching UX is more mature; Superkabe's is faster to set up for standard flows." } },
+            { "@type": "Question", "name": "Does Superkabe replicate Woodpecker's if-campaign branching?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe ships native reply detection and step-conditional sequencing. The exact branching syntax differs, but the same outcomes are achievable - branch on positive reply, negative reply, no reply, bounce, or out-of-office. Woodpecker's branching UX is more mature; Superkabe's is faster to set up for standard flows." } },
             { "@type": "Question", "name": "Can I migrate from Woodpecker to Superkabe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Connect your Gmail / Microsoft 365 / SMTP mailboxes via OAuth or encrypted credentials. Re-create sequences in Superkabe's native sequencer. Import lead lists via CSV. Sending switches to Superkabe immediately; the protection layer (auto-pause, 5-phase healing, ESP-aware routing) runs against every send from day one." } },
             { "@type": "Question", "name": "Why does ESP-aware routing matter at scale?", "acceptedAnswer": { "@type": "Answer", "text": "At 30+ mailboxes, the variance between mailboxes within the same ESP class is the largest deliverability lever. One Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5%. Superkabe scores each mailbox by 30-day per-ESP performance and routes leads accordingly. Woodpecker treats all mailboxes within a provider as equivalent." } }
         ]
@@ -74,7 +74,7 @@ export default function SuperkabeVsWoodpeckerPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Woodpecker has been around longer than most cold email senders and built its reputation on reliability and reply detection. Superkabe takes a newer angle: AI sequencing plus a built-in deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing). Here is the head-to-head — where the established player wins, where the modern challenger wins, and how to choose.
+                    Woodpecker has been around longer than most cold email senders and built its reputation on reliability and reply detection. Superkabe takes a newer angle: AI sequencing plus a built-in deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing). Here is the head-to-head - where the established player wins, where the modern challenger wins, and how to choose.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -84,7 +84,7 @@ export default function SuperkabeVsWoodpeckerPage() {
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Woodpecker wins on reply detection accuracy and if-campaign branching maturity</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe wins on native AI sequence generation, auto-pause, 5-phase healing, and ESP-aware routing</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe Starter ($19/mo) undercuts Woodpecker&apos;s $54/mo entry tier substantially</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration is same-day — connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration is same-day - connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over</li>
                     </ul>
                 </div>
 
@@ -106,7 +106,7 @@ export default function SuperkabeVsWoodpeckerPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">1. Modern AI sequence generation</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Superkabe ships AI-generated step variants, subject-line A/B suggestions, and personalization at the lead level. Woodpecker has gradually added AI features but they are not the product&apos;s focus — sequence generation in Superkabe is faster and more aligned with how teams now write outbound copy.
+                            Superkabe ships AI-generated step variants, subject-line A/B suggestions, and personalization at the lead level. Woodpecker has gradually added AI features but they are not the product&apos;s focus - sequence generation in Superkabe is faster and more aligned with how teams now write outbound copy.
                         </p>
                     </div>
 
@@ -120,7 +120,7 @@ export default function SuperkabeVsWoodpeckerPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">3. 5-phase healing pipeline</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Pause → Quarantine → Restricted Send → Warm Recovery → Healthy. Each transition gated by clean-send count, DNS health, bounce/complaint thresholds. Woodpecker has no equivalent — recovery is fully manual.
+                            Pause → Quarantine → Restricted Send → Warm Recovery → Healthy. Each transition gated by clean-send count, DNS health, bounce/complaint thresholds. Woodpecker has no equivalent - recovery is fully manual.
                         </p>
                     </div>
 
@@ -143,7 +143,7 @@ export default function SuperkabeVsWoodpeckerPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">1. Reply detection accuracy</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Woodpecker built its reputation on reply classification — distinguishing positive replies from auto-responders, out-of-office, and bounce notifications. The accuracy is widely respected. Superkabe&apos;s reply detection is solid but Woodpecker&apos;s is the gold standard.
+                            Woodpecker built its reputation on reply classification - distinguishing positive replies from auto-responders, out-of-office, and bounce notifications. The accuracy is widely respected. Superkabe&apos;s reply detection is solid but Woodpecker&apos;s is the gold standard.
                         </p>
                     </div>
 
@@ -208,13 +208,13 @@ export default function SuperkabeVsWoodpeckerPage() {
 
                     <h2 id="migration" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Migration: Woodpecker → Superkabe</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create sequences in Superkabe&apos;s native sequencer, and Superkabe takes over sending — with the protection layer running on every send from day one. If-campaign branching translates to step-conditional logic in Superkabe.
+                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create sequences in Superkabe&apos;s native sequencer, and Superkabe takes over sending - with the protection layer running on every send from day one. If-campaign branching translates to step-conditional logic in Superkabe.
                     </p>
                 </div>
 
                 <BottomCtaStrip
                     headline="Replace Woodpecker with Superkabe"
-                    body="Modern AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at flat pricing from $19/mo."
+                    body="Modern AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - at flat pricing from $19/mo."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

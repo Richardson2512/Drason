@@ -57,7 +57,7 @@ const STATUS_BADGE: Record<LinkedInAccount['status'], { label: string; tint: str
     DELETED: { label: 'Removed', tint: 'bg-gray-100 text-gray-500', icon: <AlertTriangle size={11} /> },
 };
 
-// Same gradient palette as the mock — picked deterministically by name hash
+// Same gradient palette as the mock - picked deterministically by name hash
 // so an account keeps the same avatar tint across renders.
 const TINTS = [
     'from-blue-100 to-indigo-100',
@@ -143,7 +143,7 @@ export default function LinkedInAccountsPage() {
             }
         }
         if (url.searchParams.get('connect_failed') === '1') {
-            toast.error('Account connection failed — try again');
+            toast.error('Account connection failed - try again');
             url.searchParams.delete('connect_failed');
             window.history.replaceState({}, '', url.toString());
         }
@@ -155,7 +155,7 @@ export default function LinkedInAccountsPage() {
         }
         // Polar add-on checkout return handlers.
         if (url.searchParams.get('checkout') === 'success') {
-            toast.success('Payment confirmed — add-on slot is being provisioned');
+            toast.success('Payment confirmed - add-on slot is being provisioned');
             url.searchParams.delete('checkout');
             window.history.replaceState({}, '', url.toString());
             // Webhook may take a few seconds to bump the counter; refetch
@@ -164,7 +164,7 @@ export default function LinkedInAccountsPage() {
             setTimeout(() => fetchAccounts(), 4000);
         }
         if (url.searchParams.get('checkout') === 'canceled') {
-            toast('Checkout canceled — no charge was made', { icon: 'ℹ️' });
+            toast('Checkout canceled - no charge was made', { icon: 'ℹ️' });
             url.searchParams.delete('checkout');
             window.history.replaceState({}, '', url.toString());
         }
@@ -214,7 +214,7 @@ export default function LinkedInAccountsPage() {
             }
             // Stub mode: backend already incremented the counter.
             if (data?.limits) setLimits(data.limits);
-            toast.success(`${quantity} add-on slot${quantity > 1 ? 's' : ''} added — $${quantity * 15}/mo`);
+            toast.success(`${quantity} add-on slot${quantity > 1 ? 's' : ''} added - $${quantity * 15}/mo`);
             setShowAddonModal(false);
         } catch (err: any) {
             toast.error(err.message || 'Failed to purchase add-on');
@@ -307,7 +307,7 @@ export default function LinkedInAccountsPage() {
                     <button
                         onClick={handleConnect}
                         disabled={connecting || (limits != null && limits.available <= 0)}
-                        title={limits != null && limits.available <= 0 ? 'Buy an add-on slot first — your tier limit is reached.' : undefined}
+                        title={limits != null && limits.available <= 0 ? 'Buy an add-on slot first - your tier limit is reached.' : undefined}
                         className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {connecting ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
@@ -321,7 +321,7 @@ export default function LinkedInAccountsPage() {
                     <AlertTriangle size={13} className="text-amber-700 mt-0.5 shrink-0" />
                     <div className="text-[0.75rem] text-amber-900">
                         <span className="font-semibold">You&apos;ve hit your {limits.tier} tier limit ({limits.effective_limit} {limits.effective_limit === 1 ? 'account' : 'accounts'}).</span>{' '}
-                        Add more accounts for <span className="font-semibold">${limits.addon_unit_price_usd}/account/month</span> — or upgrade your plan for more included slots.
+                        Add more accounts for <span className="font-semibold">${limits.addon_unit_price_usd}/account/month</span> - or upgrade your plan for more included slots.
                     </div>
                 </div>
             )}
@@ -347,7 +347,7 @@ export default function LinkedInAccountsPage() {
                 message={pendingDisconnect ? `${pendingDisconnect.name} will stop receiving Unipile events immediately.` : ''}
                 consequences={pendingDisconnect ? [
                     ...(pendingDisconnect.inCampaigns > 0 ? [
-                        `${pendingDisconnect.inCampaigns} active campaign${pendingDisconnect.inCampaigns === 1 ? '' : 's'} use this sender — they'll stop sending until you attach a replacement or pause them.`,
+                        `${pendingDisconnect.inCampaigns} active campaign${pendingDisconnect.inCampaigns === 1 ? '' : 's'} use this sender - they'll stop sending until you attach a replacement or pause them.`,
                     ] : []),
                     'If this account was on a paid add-on slot, the slot is released so you stop being billed.',
                 ] : []}
@@ -473,7 +473,7 @@ export default function LinkedInAccountsPage() {
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 text-right">
-                                            {a.in_campaigns > 0 ? <span className="text-blue-700 font-semibold text-sm">{a.in_campaigns}</span> : <span className="text-gray-400">—</span>}
+                                            {a.in_campaigns > 0 ? <span className="text-blue-700 font-semibold text-sm">{a.in_campaigns}</span> : <span className="text-gray-400">-</span>}
                                         </td>
                                         <td className="px-2 py-3 text-right relative">
                                             <button onClick={() => setOpenMenu(openMenu === a.id ? null : a.id)}
@@ -503,14 +503,14 @@ export default function LinkedInAccountsPage() {
             )}
 
             <p className="text-[0.7rem] text-gray-500">
-                Tip: each connected account should run in at most 2 active campaigns at a time — LinkedIn&apos;s 40-action daily cap is shared across every campaign the account belongs to, so spreading thin slows all of them. New accounts should ramp at 20–25 CR/day.
+                Tip: each connected account should run in at most 2 active campaigns at a time - LinkedIn&apos;s 40-action daily cap is shared across every campaign the account belongs to, so spreading thin slows all of them. New accounts should ramp at 20–25 CR/day.
             </p>
         </div>
     );
 }
 
 // ────────────────────────────────────────────────────────────────────
-// AddonPurchaseModal — quantity stepper + price summary.
+// AddonPurchaseModal - quantity stepper + price summary.
 // Surfaced when the org hits its tier-default cap (or clicks the
 // dedicated "Buy add-on slot" button).
 // ────────────────────────────────────────────────────────────────────

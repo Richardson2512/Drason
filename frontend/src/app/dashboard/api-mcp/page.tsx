@@ -163,7 +163,7 @@ export default function ApiMcpPage() {
     useEffect(() => { fetchKeys(); }, []);
 
     // Pull the current org's slug so we can render the per-org MCP URL.
-    // Falls back to the bare /mcp URL if /me 404s for any reason — the
+    // Falls back to the bare /mcp URL if /me 404s for any reason - the
     // page stays usable rather than blocking on this lookup.
     //
     // apiClient auto-unwraps the `{ success, data: <body> }` envelope, so
@@ -273,7 +273,7 @@ export default function ApiMcpPage() {
                         <div className="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-5">
                             <div className="flex items-center gap-2 mb-2">
                                 <Shield size={16} className="text-emerald-600" />
-                                <span className="text-sm font-bold text-emerald-800">API Key Created — Save It Now</span>
+                                <span className="text-sm font-bold text-emerald-800">API Key Created - Save It Now</span>
                             </div>
                             <p className="text-xs text-emerald-700 mb-3">This key will not be shown again. Copy it and store it securely.</p>
                             <div className="flex items-center gap-2 bg-white rounded-lg border border-emerald-200 p-3">
@@ -291,7 +291,7 @@ export default function ApiMcpPage() {
                                 <CopyBtn text={newRawKey} />
                             </div>
                             <button onClick={() => { setNewRawKey(null); setShowCreate(false); setNewKeyName(''); }} className="mt-3 text-xs font-semibold text-emerald-700 bg-transparent border-none cursor-pointer underline">
-                                I&apos;ve saved it — dismiss
+                                I&apos;ve saved it - dismiss
                             </button>
                         </div>
                     )}
@@ -574,11 +574,11 @@ curl /api/v1/campaigns/:id/report`}</pre>
                             </div>
                         </div>
                         <p className="text-sm text-slate-600 leading-relaxed mb-0">
-                            MCP lets AI agents like Claude discover and use Superkabe&apos;s API automatically. Once connected, you can manage leads, run campaigns, validate emails, and send replies — all through natural language prompts.
+                            MCP lets AI agents like Claude discover and use Superkabe&apos;s API automatically. Once connected, you can manage leads, run campaigns, validate emails, and send replies - all through natural language prompts.
                         </p>
                     </div>
 
-                    {/* Remote MCP — Claude.ai browser */}
+                    {/* Remote MCP - Claude.ai browser */}
                     <div className="premium-card" style={{ borderLeft: '6px solid #10B981' }}>
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-9 h-9 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -594,7 +594,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                             </div>
                         </div>
                         <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                            In Claude.ai, go to <strong>Settings → Integrations → Add Integration</strong> and paste the URL below. Claude redirects you to a Superkabe consent screen — sign in (if you aren&apos;t already) and click Authorize. The 17 Superkabe tools become available in any conversation.
+                            In Claude.ai, go to <strong>Settings → Integrations → Add Integration</strong> and paste the URL below. Claude redirects you to a Superkabe consent screen - sign in (if you aren&apos;t already) and click Authorize. The 17 Superkabe tools become available in any conversation.
                         </p>
                         <div className="bg-gray-900 rounded-xl p-4 overflow-x-auto relative">
                             <div className="absolute top-2 right-2">
@@ -605,7 +605,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                         {orgSlug && (
                             <div className="mt-3 p-3 rounded-lg bg-indigo-50 border border-indigo-100">
                                 <p className="text-xs text-indigo-900 m-0 leading-relaxed">
-                                    <strong>Managing multiple orgs from one Claude.ai account?</strong> Each org has its own URL, so you can add them as separate connectors in Claude (e.g. &quot;Acme&quot;, &quot;Beta&quot;) and pick the right one per conversation. Switching connectors never requires re-authorizing — each holds its own grant.
+                                    <strong>Managing multiple orgs from one Claude.ai account?</strong> Each org has its own URL, so you can add them as separate connectors in Claude (e.g. &quot;Acme&quot;, &quot;Beta&quot;) and pick the right one per conversation. Switching connectors never requires re-authorizing - each holds its own grant.
                                 </p>
                             </div>
                         )}
@@ -627,7 +627,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                                 <div className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">2</div>
                                 <div>
                                     <div className="text-sm font-semibold text-gray-900">Add to your client config</div>
-                                    <p className="text-xs text-slate-500 m-0 mt-1">Same JSON works for Claude Desktop, Claude Code, Cursor, and Continue — only the config-file path differs. <a href="/docs/mcp-server#local-clients" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">See client paths →</a></p>
+                                    <p className="text-xs text-slate-500 m-0 mt-1">Same JSON works for Claude Desktop, Claude Code, Cursor, and Continue - only the config-file path differs. <a href="/docs/mcp-server#local-clients" target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">See client paths →</a></p>
                                     <div className="bg-gray-900 rounded-xl p-4 mt-2 overflow-x-auto relative">
                                         <div className="absolute top-2 right-2">
                                             <CopyBtn text={`{
@@ -692,7 +692,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                     {/* Available tools */}
                     <div className="premium-card">
                         <h3 className="text-base font-bold text-gray-900 mb-3">Tools Available to Claude</h3>
-                        <p className="text-xs text-slate-500 mb-4">When connected via MCP, Claude can use these 17 tools. Each tool is gated by the matching scope on your API key — grant only what the agent needs.</p>
+                        <p className="text-xs text-slate-500 mb-4">When connected via MCP, Claude can use these 17 tools. Each tool is gated by the matching scope on your API key - grant only what the agent needs.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {[
                                 { tool: 'get_account', desc: 'Check usage, limits, and plan info' },
@@ -726,7 +726,7 @@ curl /api/v1/campaigns/:id/report`}</pre>
                 target. Always-mounting with optional-chained props
                 (revokeTarget?.name / revokeTarget?.id) was the suspected
                 source of a `ReferenceError: _ref is not defined` thrown
-                during prod render — Next 16 + Turbopack emits destructured-
+                during prod render - Next 16 + Turbopack emits destructured-
                 param wrappers that can mis-handle nullable prop reads
                 routed through forwardRef children. Conditional mount sidesteps
                 the null path entirely. */}

@@ -157,7 +157,7 @@ export default function LoadBalancingPage() {
                 </div>
             </div>
 
-            {/* Health Warnings — show top 5, scrollable */}
+            {/* Health Warnings - show top 5, scrollable */}
             {report.health_warnings.length > 0 && (
                 <div className="p-4 bg-amber-100 border border-amber-300 rounded-lg mb-8">
                     <div className="text-sm font-semibold text-amber-800 mb-2">
@@ -171,7 +171,7 @@ export default function LoadBalancingPage() {
                 </div>
             )}
 
-            {/* Suggestions — show top 3 preview with link to full page */}
+            {/* Suggestions - show top 3 preview with link to full page */}
             {report.suggestions.length > 0 ? (
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
@@ -419,13 +419,13 @@ export default function LoadBalancingPage() {
                                                     {mb.effective_load.toFixed(2)}
                                                 </td>
                                                 <td className="p-4 text-center text-sm text-gray-500">
-                                                    {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '—'}
+                                                    {mb.total_sent > 0 ? mb.total_sent.toLocaleString() : '-'}
                                                 </td>
                                                 <td className="p-4 text-center text-sm" style={{ color: mb.bounce_rate >= 3 ? '#DC2626' : mb.bounce_rate >= 2 ? '#D97706' : '#6B7280' }}>
-                                                    {mb.total_sent > 0 ? `${mb.bounce_rate}%` : '—'}
+                                                    {mb.total_sent > 0 ? `${mb.bounce_rate}%` : '-'}
                                                 </td>
                                                 <td className="p-4 text-center text-sm" style={{ color: mb.engagement_rate < 2 ? '#DC2626' : mb.engagement_rate < 5 ? '#D97706' : '#6B7280' }}>
-                                                    {mb.total_sent > 0 ? `${mb.engagement_rate}%` : '—'}
+                                                    {mb.total_sent > 0 ? `${mb.engagement_rate}%` : '-'}
                                                 </td>
                                                 <td className="p-4 text-center">
                                                     <span

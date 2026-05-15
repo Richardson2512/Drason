@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Thought-leadership subpage — derived bucket. A post qualifies when
+ * Thought-leadership subpage - derived bucket. A post qualifies when
  * it's a plain post (not an article or repost), is ≥ 500 characters,
  * and earned ≥ 25 reactions. Heuristic lives on the backend
  * (isThoughtLeadership in linkedinAccountController) and can be tuned

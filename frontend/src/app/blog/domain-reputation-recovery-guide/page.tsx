@@ -77,7 +77,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  "name": "What causes domain reputation to drop suddenly?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "The three most common causes are: (1) a bad lead list with high invalid rates causing a bounce spike, (2) a spam complaint spike from poorly targeted or aggressive outreach, and (3) DNS misconfiguration — a broken SPF record, expired DKIM key, or permissive DMARC policy. A single bad campaign can push an entire domain from High to Low reputation in 24-48 hours."
+ "text": "The three most common causes are: (1) a bad lead list with high invalid rates causing a bounce spike, (2) a spam complaint spike from poorly targeted or aggressive outreach, and (3) DNS misconfiguration - a broken SPF record, expired DKIM key, or permissive DMARC policy. A single bad campaign can push an entire domain from High to Low reputation in 24-48 hours."
  }
  },
  {
@@ -161,7 +161,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Bad lead list (high bounce rate)</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- The most common cause by far. You import a batch of leads from Clay, Apollo, or ZoomInfo. The list has a higher-than-expected invalid rate — maybe 8%, maybe 12%. At volume, this translates to hundreds of hard bounces hitting your domains in a single day. ISPs interpret concentrated bouncing as evidence of list purchasing or scraping, and reputation drops fast. The telltale sign: reputation drops within 24-48 hours of launching a new campaign with a new lead list.
+ The most common cause by far. You import a batch of leads from Clay, Apollo, or ZoomInfo. The list has a higher-than-expected invalid rate - maybe 8%, maybe 12%. At volume, this translates to hundreds of hard bounces hitting your domains in a single day. ISPs interpret concentrated bouncing as evidence of list purchasing or scraping, and reputation drops fast. The telltale sign: reputation drops within 24-48 hours of launching a new campaign with a new lead list.
  </p>
  </div>
  </div>
@@ -173,7 +173,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Spam complaint spike</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Recipients marking your email as spam sends a direct signal to the ISP. Google&apos;s threshold is 0.3% — meaning if more than 3 out of every 1,000 Gmail recipients hit &quot;Report Spam,&quot; you trigger a warning. Above 0.5% and deliverability drops fast. Common triggers: poor targeting (emailing people with zero relevance), aggressive copy (too salesy, misleading subject lines), or sending to people who opted out of previous campaigns. The telltale sign: Google Postmaster shows elevated spam rate, but bounce rate is normal.
+ Recipients marking your email as spam sends a direct signal to the ISP. Google&apos;s threshold is 0.3% - meaning if more than 3 out of every 1,000 Gmail recipients hit &quot;Report Spam,&quot; you trigger a warning. Above 0.5% and deliverability drops fast. Common triggers: poor targeting (emailing people with zero relevance), aggressive copy (too salesy, misleading subject lines), or sending to people who opted out of previous campaigns. The telltale sign: Google Postmaster shows elevated spam rate, but bounce rate is normal.
  </p>
  </div>
  </div>
@@ -185,7 +185,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">DNS misconfiguration</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- A broken SPF record, an expired DKIM key, or a misconfigured DMARC policy. This can happen silently — a hosting migration changes your IP, and the SPF record no longer includes the right server. A domain registrar auto-renews but resets DNS records. Someone on your team edits DNS for a different reason and accidentally breaks the SPF record. The telltale sign: Google Postmaster shows authentication failure rates spiking, and your <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:text-blue-800 underline">SPF/DKIM/DMARC</Link> checks fail.
+ A broken SPF record, an expired DKIM key, or a misconfigured DMARC policy. This can happen silently - a hosting migration changes your IP, and the SPF record no longer includes the right server. A domain registrar auto-renews but resets DNS records. Someone on your team edits DNS for a different reason and accidentally breaks the SPF record. The telltale sign: Google Postmaster shows authentication failure rates spiking, and your <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:text-blue-800 underline">SPF/DKIM/DMARC</Link> checks fail.
  </p>
  </div>
  </div>
@@ -242,7 +242,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical distinction is between &quot;Severe&quot; and &quot;Critical.&quot; At the Severe level, recovery is almost always possible and worthwhile. At Critical — Bad reputation plus multiple blacklists plus 15%+ bounce rate — the math often favors starting fresh. A new domain costs $10-15 and warms in 3-4 weeks. Recovery from Critical can take 3 months with no guarantee.
+ The critical distinction is between &quot;Severe&quot; and &quot;Critical.&quot; At the Severe level, recovery is almost always possible and worthwhile. At Critical - Bad reputation plus multiple blacklists plus 15%+ bounce rate - the math often favors starting fresh. A new domain costs $10-15 and warms in 3-4 weeks. Recovery from Critical can take 3 months with no guarantee.
  </p>
 
  {/* Section 3 - Five Phase Recovery */}
@@ -298,7 +298,7 @@ export default function DomainReputationRecoveryGuideArticle() {
  <li><strong>Bad list:</strong> Remove all invalid addresses. Add email validation before any future sends. Quarantine unverified leads. See our <Link href="/blog/domain-burned-recovery-prevention" className="text-blue-600 hover:text-blue-800 underline">bad lead list recovery guide</Link> for the detailed process.</li>
  <li><strong>Spam complaints:</strong> Rewrite copy. Tighten targeting criteria. Ensure unsubscribe links work. Consider segmenting by engagement level.</li>
  <li><strong>DNS issues:</strong> Fix the broken records. Re-verify with MXToolbox. Test authentication with a manual send.</li>
- <li><strong>Blacklisted:</strong> Submit removal requests to each blacklist. Spamhaus, Spamcop, and Barracuda all have self-service removal. Fix the cause first — if you request removal while still triggering the behavior that got you listed, you get re-listed within days.</li>
+ <li><strong>Blacklisted:</strong> Submit removal requests to each blacklist. Spamhaus, Spamcop, and Barracuda all have self-service removal. Fix the cause first - if you request removal while still triggering the behavior that got you listed, you get re-listed within days.</li>
  </ul>
  </div>
  </div>
@@ -441,16 +441,16 @@ export default function DomainReputationRecoveryGuideArticle() {
  This is the cause worth examining in detail because it is the most common and the most preventable. Here is exactly how a bad list destroys a domain, with real numbers.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Say you export 5,000 leads from Clay for a new outbound campaign. The list targets VP-level contacts at SaaS companies. Looks clean on the surface. But 8% of the addresses are invalid — some people changed jobs, some companies shut down, some addresses were never correct in the first place. That is 400 bad addresses in your list.
+ Say you export 5,000 leads from Clay for a new outbound campaign. The list targets VP-level contacts at SaaS companies. Looks clean on the surface. But 8% of the addresses are invalid - some people changed jobs, some companies shut down, some addresses were never correct in the first place. That is 400 bad addresses in your list.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  You push those 5,000 leads into campaigns across 3 domains, each with 3 mailboxes. That is 9 mailboxes total, roughly 555 leads per mailbox. At 50 sends per day per mailbox, you are pushing through the entire list in about 11 days.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The invalid addresses are distributed randomly through the list. In the first day, each mailbox sends 50 emails. Statistically, about 4 of those 50 will bounce per mailbox. Across 9 mailboxes, that is 36 bounces on day one. Distributed across 3 domains, each domain absorbs about 12 bounces against 150 sends — an 8% bounce rate on day one.
+ The invalid addresses are distributed randomly through the list. In the first day, each mailbox sends 50 emails. Statistically, about 4 of those 50 will bounce per mailbox. Across 9 mailboxes, that is 36 bounces on day one. Distributed across 3 domains, each domain absorbs about 12 bounces against 150 sends - an 8% bounce rate on day one.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- By day 3, each domain has accumulated 36 bounces against 450 sends — still hovering near 8%. ISPs have noticed. Gmail has likely already downgraded your domain reputation from High to Medium or Low. By day 7, the accumulated damage pushes one or more domains to &quot;Bad&quot; at Gmail. By day 14, without intervention, at least one domain is blacklisted.
+ By day 3, each domain has accumulated 36 bounces against 450 sends - still hovering near 8%. ISPs have noticed. Gmail has likely already downgraded your domain reputation from High to Medium or Low. By day 7, the accumulated damage pushes one or more domains to &quot;Bad&quot; at Gmail. By day 14, without intervention, at least one domain is blacklisted.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  All of this is preventable with a single step: validating the list before sending. Run those 5,000 leads through email verification (MillionVerifier, ZeroBounce, or Superkabe&apos;s built-in validation). The 400 invalid addresses get flagged and quarantined. They never reach a mailbox. Your domains never see the bounces. Reputation stays intact.
@@ -474,10 +474,10 @@ export default function DomainReputationRecoveryGuideArticle() {
  Automated recovery solves both problems. A system that monitors continuously catches the damage early. A system that controls sending volume enforces the re-warming schedule without human discipline being the bottleneck.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe&apos;s 5-phase healing pipeline does exactly this. When a mailbox or domain crosses a threshold, it auto-pauses the affected entity. It diagnoses the cause by correlating bounce patterns across mailboxes and domains. It enforces a graduated re-warming schedule — increasing volume only when metrics confirm the domain is ready. And it does this across every mailbox and domain in your infrastructure simultaneously. See how it works in the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800 underline">auto-healing documentation</Link> and <Link href="/docs/help/quarantine" className="text-blue-600 hover:text-blue-800 underline">quarantine system</Link>.
+ Superkabe&apos;s 5-phase healing pipeline does exactly this. When a mailbox or domain crosses a threshold, it auto-pauses the affected entity. It diagnoses the cause by correlating bounce patterns across mailboxes and domains. It enforces a graduated re-warming schedule - increasing volume only when metrics confirm the domain is ready. And it does this across every mailbox and domain in your infrastructure simultaneously. See how it works in the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800 underline">auto-healing documentation</Link> and <Link href="/docs/help/quarantine" className="text-blue-600 hover:text-blue-800 underline">quarantine system</Link>.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The bottom line: recovery is a mechanical process. Diagnosis, fix, wait, re-warm. The hard part is not knowing what to do — it is doing it consistently across 10, 20, 50 domains while maintaining pipeline targets. That is an automation problem, not a knowledge problem.
+ The bottom line: recovery is a mechanical process. Diagnosis, fix, wait, re-warm. The hard part is not knowing what to do - it is doing it consistently across 10, 20, 50 domains while maintaining pipeline targets. That is an automation problem, not a knowledge problem.
  </p>
  </div>
 

@@ -134,6 +134,6 @@ describe('invalidateQueries', () => {
 
   it('should clear matching cache entries by prefix', () => {
     invalidateQueries('/api/campaigns');
-    // No error means success — actual cache behavior tested via useApiQuery
+    // No error means success - actual cache behavior tested via useApiQuery
   });
 });

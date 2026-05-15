@@ -8,7 +8,7 @@ import { Mail, Clock, GitBranch, MessageCircle, UserPlus, Send, Eye, UserCheck, 
  * Node type components for the Super LinkedIn sequence diagram.
  *
  * Parallels the email sequence diagram (components/sequencer/sequence-diagram/)
- * — same visual language, same handle conventions — but one node component
+ * - same visual language, same handle conventions - but one node component
  * per LinkedIn step type so the rendering can lean into the channel-specific
  * affordances (reaction type for like_post, note vs no-note for CR, etc.).
  *
@@ -21,7 +21,7 @@ import { Mail, Clock, GitBranch, MessageCircle, UserPlus, Send, Eye, UserCheck, 
 const NODE_WIDTH = 280;
 
 // ────────────────────────────────────────────────────────────────────
-// Shared shell — every step node renders inside this card with the
+// Shared shell - every step node renders inside this card with the
 // same handle positions and theme treatment.
 // ────────────────────────────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ function StepShell({ icon, label, stepNumber, tint, children, stats, sender, var
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className={`shrink-0 ${tint}`}>{icon}</span>
                     <span className="text-[10px] uppercase tracking-wider font-semibold text-[#6B5E4F]">
-                        Step {stepNumber} — {label}
+                        Step {stepNumber} - {label}
                     </span>
                 </div>
                 {variantCount && variantCount > 1 && (
@@ -203,7 +203,7 @@ export const ViewProfileNode = memo(({ data }: NodeProps) => {
             tint="text-[#0891B2]"
             sender={d.sender}
         >
-            <p className="text-[11px] text-[#6B5E4F]">Visit the lead&apos;s profile — they get a &ldquo;viewed your profile&rdquo; notification.</p>
+            <p className="text-[11px] text-[#6B5E4F]">Visit the lead&apos;s profile - they get a &ldquo;viewed your profile&rdquo; notification.</p>
         </StepShell>
     );
 });
@@ -288,7 +288,7 @@ export const FindEmailNode = memo(({ data }: NodeProps) => {
             <div className="px-3.5 py-2 border-b flex items-center gap-1.5" style={{ borderColor: '#F0EBE3' }}>
                 <Search size={12} className="text-[#0F766E] shrink-0" strokeWidth={2} />
                 <span className="text-[10px] uppercase tracking-wider font-semibold text-[#6B5E4F]">
-                    Step {d.stepNumber} — Find Email
+                    Step {d.stepNumber} - Find Email
                 </span>
             </div>
             <div className="px-3.5 py-2.5">
@@ -307,7 +307,7 @@ export const FindEmailNode = memo(({ data }: NodeProps) => {
                     ))}
                 </div>
             )}
-            {/* Two source handles — Found (right/green) and Not Found (left/red) */}
+            {/* Two source handles - Found (right/green) and Not Found (left/red) */}
             <Handle type="source" position={Position.Bottom} id="found"     style={{ left: '30%' }} className="!bg-[#1F6F3A] !w-2 !h-2 !border-0" />
             <Handle type="source" position={Position.Bottom} id="not_found" style={{ left: '70%' }} className="!bg-[#8B1F1F] !w-2 !h-2 !border-0" />
         </div>
@@ -399,11 +399,11 @@ export type ExitReason = 'replied' | 'accepted' | 'rejected' | 'completed' | 'sk
 export interface ExitNodeData { reason: ExitReason; label?: string; count?: number }
 
 const EXIT_META: Record<ExitReason, { label: string; icon: React.ReactNode; bg: string; fg: string; border: string }> = {
-    replied:   { label: 'Sequence ends — Replied',          icon: <Reply size={11} strokeWidth={2.25} />,        bg: '#E8F4EC', fg: '#1F6F3A', border: '#BDE2C6' },
+    replied:   { label: 'Sequence ends - Replied',          icon: <Reply size={11} strokeWidth={2.25} />,        bg: '#E8F4EC', fg: '#1F6F3A', border: '#BDE2C6' },
     accepted:  { label: 'Connection accepted',              icon: <CheckCircle2 size={11} strokeWidth={2.25} />, bg: '#E8F4EC', fg: '#1F6F3A', border: '#BDE2C6' },
     rejected:  { label: 'Connection rejected',              icon: <XCircle size={11} strokeWidth={2.25} />,      bg: '#FDEAEA', fg: '#8B1F1F', border: '#F4C2C2' },
     completed: { label: 'Sequence complete',                icon: <CheckCircle2 size={11} strokeWidth={2.25} />, bg: '#F0F6FF', fg: '#1F4C8F', border: '#C8DBF5' },
-    skipped:   { label: 'Skipped — precondition not met',   icon: <XCircle size={11} strokeWidth={2.25} />,      bg: '#FDF3E2', fg: '#8B5A1A', border: '#EFD8B0' },
+    skipped:   { label: 'Skipped - precondition not met',   icon: <XCircle size={11} strokeWidth={2.25} />,      bg: '#FDF3E2', fg: '#8B5A1A', border: '#EFD8B0' },
 };
 
 export const ExitNode = memo(({ data }: NodeProps) => {
@@ -426,7 +426,7 @@ export const ExitNode = memo(({ data }: NodeProps) => {
 ExitNode.displayName = 'ExitNode';
 
 // ────────────────────────────────────────────────────────────────────
-// Export map — keyed by step_type / utility name
+// Export map - keyed by step_type / utility name
 // ────────────────────────────────────────────────────────────────────
 
 export const linkedinNodeTypes = {

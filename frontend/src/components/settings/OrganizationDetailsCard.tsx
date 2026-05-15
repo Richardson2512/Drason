@@ -24,7 +24,7 @@ export default function OrganizationDetailsCard({ org }: { org: Organization | n
     const handleSaveAddress = async () => {
         const trimmed = mailingAddress.trim();
         if (trimmed.length < 10) {
-            toast.error('Postal address looks too short — include street, city, and country.');
+            toast.error('Postal address looks too short - include street, city, and country.');
             return;
         }
         if (!/,|\n/.test(trimmed)) {
@@ -81,7 +81,7 @@ export default function OrganizationDetailsCard({ org }: { org: Organization | n
                         </div>
                     </div>
 
-                    {/* Mailing address — REQUIRED for sending. CAN-SPAM § 5(a)(5)
+                    {/* Mailing address - REQUIRED for sending. CAN-SPAM § 5(a)(5)
                         mandates a valid postal address in every commercial email,
                         and the dispatcher refuses to send any campaign whose org
                         hasn't configured one. */}

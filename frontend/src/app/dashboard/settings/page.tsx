@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Settings — tabbed shell. Holds the original general-settings panel plus
+ * Settings - tabbed shell. Holds the original general-settings panel plus
  * the former /dashboard/configuration (Routing rules) as a Routing tab.
  *
  * The /dashboard/configuration route redirects here with ?tab=routing.

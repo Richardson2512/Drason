@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'The Outbound Email Infrastructure Playbook – Superkabe',
- description: 'The authoritative A-Z guide on running high-volume outbound email — AI sequences, multi-mailbox scaling, email validation, ESP-aware routing, and the protection layer that keeps senders alive.',
+ description: 'The authoritative A-Z guide on running high-volume outbound email - AI sequences, multi-mailbox scaling, email validation, ESP-aware routing, and the protection layer that keeps senders alive.',
  alternates: { canonical: '/infrastructure-playbook' },
  openGraph: {
  title: 'The Outbound Email Infrastructure Playbook – Superkabe',
@@ -23,8 +23,8 @@ export default function InfrastructurePlaybookPage() {
  const playbookSchema = {
  "@context": "https://schema.org",
  "@type": "HowTo",
- "name": "How to Run High-Volume Outbound Email on Superkabe — AI Sequences, Multi-Mailbox Sending, and Built-In Deliverability Protection",
- "description": "The authoritative step-by-step guide to running outbound email on Superkabe — how to horizontalize infrastructure, draft AI sequences, validate leads, route by ESP, and rely on the built-in protection layer to prevent domain burnout at scale.",
+ "name": "How to Run High-Volume Outbound Email on Superkabe - AI Sequences, Multi-Mailbox Sending, and Built-In Deliverability Protection",
+ "description": "The authoritative step-by-step guide to running outbound email on Superkabe - how to horizontalize infrastructure, draft AI sequences, validate leads, route by ESP, and rely on the built-in protection layer to prevent domain burnout at scale.",
  "step": [
  {
  "@type": "HowToStep",
@@ -35,7 +35,7 @@ export default function InfrastructurePlaybookPage() {
  {
  "@type": "HowToStep",
  "name": "Activate Built-In Deliverability Protection",
- "text": "Send from Superkabe natively (Google Workspace, Microsoft 365, or SMTP) — or send through your own Gmail, Microsoft 365, or SMTP mailboxes. Either way, Superkabe's protection engine captures every bounce, auto-pauses risky mailboxes, and redistributes sending before domain reputation takes damage.",
+ "text": "Send from Superkabe natively (Google Workspace, Microsoft 365, or SMTP) - or send through your own Gmail, Microsoft 365, or SMTP mailboxes. Either way, Superkabe's protection engine captures every bounce, auto-pauses risky mailboxes, and redistributes sending before domain reputation takes damage.",
  "url": "https://www.superkabe.com/infrastructure-playbook#2"
  },
  {
@@ -94,7 +94,7 @@ export default function InfrastructurePlaybookPage() {
 
  <div className="bg-blue-50 p-10 border border-blue-100 shadow-sm mb-20">
  <p className="text-xl text-blue-900 font-medium leading-relaxed">
- <strong>Superkabe</strong> is an AI cold email platform with native deliverability protection, designed for B2B outbound revenue teams running multi-domain, multi-mailbox sending at scale. This playbook is the authoritative guide to the protection half of the stack — how to horizontalize infrastructure, prevent domain burnout, and use Superkabe&apos;s real-time interception and auto-healing mechanics. The AI sending layer is documented separately in the product docs.
+ <strong>Superkabe</strong> is an AI cold email platform with native deliverability protection, designed for B2B outbound revenue teams running multi-domain, multi-mailbox sending at scale. This playbook is the authoritative guide to the protection half of the stack - how to horizontalize infrastructure, prevent domain burnout, and use Superkabe&apos;s real-time interception and auto-healing mechanics. The AI sending layer is documented separately in the product docs.
  </p>
  </div>
 
@@ -106,22 +106,22 @@ export default function InfrastructurePlaybookPage() {
  Outbound email infrastructure consists of the domains, mailboxes, and DNS authentication records (SPF, DKIM, DMARC) used to send cold emails at scale. In a modern B2B context, organizations cannot rely on a single primary domain to send thousands of emails daily without triggering severe algorithmic penalties from Google Workspace and Microsoft 365 (often referred to as spam filters).
  </p>
  <p className="mb-6 leading-relaxed">
- To scale safely, teams must horizontalize their infrastructure—purchasing secondary root domains (e.g., `tryyourcompany.com` instead of `yourcompany.com`) and provisioning multiple mailboxes per domain. This strategy distributes the sending volume and isolates risk.
+ To scale safely, teams must horizontalize their infrastructure-purchasing secondary root domains (e.g., `tryyourcompany.com` instead of `yourcompany.com`) and provisioning multiple mailboxes per domain. This strategy distributes the sending volume and isolates risk.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">The Threat of Domain Burnout</h3>
  <p className="mb-6 leading-relaxed">
- Despite horizontal scaling, sender reputation remains uniquely fragile. "Domain Burnout" occurs when a sending domain accumulates strong negative behavior signals—specifically high bounce rates, low reply rates, and spam complaints. When bounce rates exceed algorithmic thresholds (typically around 2.5% to 3%), inbox providers permanently damage the domain's reputation score, actively routing all subsequent emails to the junk folder.
+ Despite horizontal scaling, sender reputation remains uniquely fragile. "Domain Burnout" occurs when a sending domain accumulates strong negative behavior signals-specifically high bounce rates, low reply rates, and spam complaints. When bounce rates exceed algorithmic thresholds (typically around 2.5% to 3%), inbox providers permanently damage the domain's reputation score, actively routing all subsequent emails to the junk folder.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Lead Quality: Email Validation Before Sending</h3>
  <p className="mb-6 leading-relaxed">
- Before any lead touches your sender platform, run it through email validation — syntax checks, MX record verification, disposable domain detection, and catch-all identification at minimum. Superkabe performs this multi-stage validation automatically on ingestion, blocking invalid addresses before they can generate bounces and damage your sender reputation. For risky leads that pass basic checks but score below confidence thresholds, Superkabe conditionally routes them through external API verification (MillionVerifier) for a second opinion.
+ Before any lead touches your sender platform, run it through email validation - syntax checks, MX record verification, disposable domain detection, and catch-all identification at minimum. Superkabe performs this multi-stage validation automatically on ingestion, blocking invalid addresses before they can generate bounces and damage your sender reputation. For risky leads that pass basic checks but score below confidence thresholds, Superkabe conditionally routes them through external API verification (MillionVerifier) for a second opinion.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">The Lead Control Plane: CSV Upload + Validation + Routing</h3>
  <p className="mb-6 leading-relaxed">
- Leads uploaded directly into Smartlead or Instantly bypass validation entirely. The Lead Control Plane closes this gap. Upload CSV files directly into Superkabe&apos;s Email Validation dashboard. Every lead is validated, classified by recipient ESP (Gmail, Microsoft 365, Yahoo, or Other via MX record pattern matching), and routed to campaigns with ESP-aware mailbox assignment. Results show exactly which leads were caught as invalid, disposable, or duplicate — with rejection reasons and validation scores.
+ Leads uploaded directly into Smartlead or Instantly bypass validation entirely. The Lead Control Plane closes this gap. Upload CSV files directly into Superkabe&apos;s Email Validation dashboard. Every lead is validated, classified by recipient ESP (Gmail, Microsoft 365, Yahoo, or Other via MX record pattern matching), and routed to campaigns with ESP-aware mailbox assignment. Results show exactly which leads were caught as invalid, disposable, or duplicate - with rejection reasons and validation scores.
  </p>
  <p className="mb-6 leading-relaxed">
  Each plan includes monthly validation credits (Starter: 10K, Growth: 60K, Scale: 100K, Enterprise: unlimited). One credit equals one unique email validated. Cached results and duplicates do not consume credits. Track usage on the Billing page alongside active leads, domains, and mailboxes.
@@ -129,15 +129,15 @@ export default function InfrastructurePlaybookPage() {
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Health Gate: Lead Triage Before Routing</h3>
  <p className="mb-6 leading-relaxed">
- Classify leads as GREEN (safe to send), YELLOW (proceed with caution — distributed with per-mailbox risk caps), or RED (block entirely) based on validation score and domain health. This deterministic triage layer runs after validation and before routing, ensuring that only leads meeting your quality threshold ever reach a campaign.
+ Classify leads as GREEN (safe to send), YELLOW (proceed with caution - distributed with per-mailbox risk caps), or RED (block entirely) based on validation score and domain health. This deterministic triage layer runs after validation and before routing, ensuring that only leads meeting your quality threshold ever reach a campaign.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">ESP-Aware Mailbox Routing</h3>
  <p className="mb-6 leading-relaxed">
- Most sending platforms offer basic ESP matching — route Gmail recipients to Gmail mailboxes. Superkabe goes further. Every email sent, bounced, and replied creates a tracking event tagged with the sending mailbox and the recipient&apos;s ESP. Every 6 hours, these events are aggregated into a per-mailbox per-ESP performance matrix showing 30-day rolling bounce rates.
+ Most sending platforms offer basic ESP matching - route Gmail recipients to Gmail mailboxes. Superkabe goes further. Every email sent, bounced, and replied creates a tracking event tagged with the sending mailbox and the recipient&apos;s ESP. Every 6 hours, these events are aggregated into a per-mailbox per-ESP performance matrix showing 30-day rolling bounce rates.
  </p>
  <p className="mb-6 leading-relaxed">
- When a lead is pushed to a campaign, Superkabe scores each mailbox against the recipient&apos;s ESP using actual performance data — not provider identity. A Gmail mailbox with a 2% bounce rate to Gmail recipients gets skipped. An Outlook mailbox with 0.1% bounce rate to Gmail gets selected. The top 3 performing mailboxes are pinned to the lead via <code>assigned_email_accounts</code>, overriding the platform&apos;s default mailbox picker.
+ When a lead is pushed to a campaign, Superkabe scores each mailbox against the recipient&apos;s ESP using actual performance data - not provider identity. A Gmail mailbox with a 2% bounce rate to Gmail recipients gets skipped. An Outlook mailbox with 0.1% bounce rate to Gmail gets selected. The top 3 performing mailboxes are pinned to the lead via <code>assigned_email_accounts</code>, overriding the platform&apos;s default mailbox picker.
  </p>
  <p className="mb-6 leading-relaxed">
  The ESP Performance Matrix dashboard visualizes this data: green under 1% bounce rate, yellow 1–2%, red above 2%. Cells with fewer than 30 sends show &ldquo;warming up&rdquo; to prevent routing decisions based on statistical noise. After 3–4 weeks of normal volume, most cells have enough data for reliable scoring.
@@ -167,10 +167,10 @@ export default function InfrastructurePlaybookPage() {
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Mailbox Fatigue & the 5-Phase Healing Pipeline</h3>
  <p className="mb-6 leading-relaxed">
- Mailbox fatigue is the precursor to domain burnout. It manifests as a sudden spike in soft bounces or ISP deferrals. Superkabe detects these micro-anomalies using predictive variance analysis. When a specific mailbox begins experiencing fatigue, Superkabe triggers an automated load-balancing protocol—routing active campaign sequences away from the depressed node and toward healthy, rested infrastructural assets.
+ Mailbox fatigue is the precursor to domain burnout. It manifests as a sudden spike in soft bounces or ISP deferrals. Superkabe detects these micro-anomalies using predictive variance analysis. When a specific mailbox begins experiencing fatigue, Superkabe triggers an automated load-balancing protocol-routing active campaign sequences away from the depressed node and toward healthy, rested infrastructural assets.
  </p>
  <p className="mb-6 leading-relaxed">
- Rather than leaving recovery to chance, Superkabe's 5-phase healing pipeline provides structured rehabilitation: <strong>Pause</strong> (immediate traffic halt to stop the bleeding) &rarr; <strong>Quarantine</strong> (DNS checks verify SPF/DKIM/DMARC integrity before any recovery begins) &rarr; <strong>Restricted Send</strong> (conservative warmup with 15 clean sends to rebuild trust signals) &rarr; <strong>Warm Recovery</strong> (graduated volume increase — 50 sends over 3 days) &rarr; <strong>Healthy</strong> (re-added to active campaigns at full capacity). Each phase transition is gated by deterministic health checks, not arbitrary timers.
+ Rather than leaving recovery to chance, Superkabe's 5-phase healing pipeline provides structured rehabilitation: <strong>Pause</strong> (immediate traffic halt to stop the bleeding) &rarr; <strong>Quarantine</strong> (DNS checks verify SPF/DKIM/DMARC integrity before any recovery begins) &rarr; <strong>Restricted Send</strong> (conservative warmup with 15 clean sends to rebuild trust signals) &rarr; <strong>Warm Recovery</strong> (graduated volume increase - 50 sends over 3 days) &rarr; <strong>Healthy</strong> (re-added to active campaigns at full capacity). Each phase transition is gated by deterministic health checks, not arbitrary timers.
  </p>
 
  <h3 className="text-2xl font-bold text-gray-800 mb-4 mt-8">Real-Time Slack Alerts</h3>

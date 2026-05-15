@@ -78,15 +78,15 @@ function actionForOutcome(outcome: string | null, mode: string): string {
         case 'added_to_campaign':         return 'Enrolled in matched campaign';
         case 'added_to_cold_call_list':   return 'Added to cold-call list · enriched via waterfall';
         case 'suggested_for_review':      return 'Queued for review (mode = SUGGEST)';
-        case 'no_icp_match':               return 'No ICP match — logged only';
+        case 'no_icp_match':               return 'No ICP match - logged only';
         case 'observed':                   return 'Observed (logged only)';
         case 'profile_not_found':
-        case 'post_not_found':            return `Skipped — ${outcome.replace(/_/g, ' ')}`;
+        case 'post_not_found':            return `Skipped - ${outcome.replace(/_/g, ' ')}`;
         default:
             if (mode === 'OBSERVE') return 'Observed (logged only)';
             if (mode === 'SUGGEST') return 'Queued for review';
             if (mode === 'ENFORCE') return 'Routing in progress…';
-            return '—';
+            return '-';
     }
 }
 
@@ -118,7 +118,7 @@ function apiToRow(e: ApiSignalRow): SignalRow {
         headline: actor?.headline || actor?.position || '',
         reaction,
         post: postTitleFromRow(e.post),
-        // ICP name not surfaced by the feed today — keep null and only show
+        // ICP name not surfaced by the feed today - keep null and only show
         // a score chip when score is present.
         icp: score !== null ? 'ICP match' : null,
         score,
@@ -157,7 +157,7 @@ export default function LinkedInSignalsPage() {
                 method: 'POST',
                 body: JSON.stringify({ lookback_days: 7 }),
             });
-            toast.success(`${resp.data.reset_count} event${resp.data.reset_count === 1 ? '' : 's'} queued for re-evaluation — refresh in ~30s to see new matches.`);
+            toast.success(`${resp.data.reset_count} event${resp.data.reset_count === 1 ? '' : 's'} queued for re-evaluation - refresh in ~30s to see new matches.`);
         } catch (err: any) {
             toast.error(err?.message || 'Re-evaluate failed');
         } finally {
@@ -307,7 +307,7 @@ export default function LinkedInSignalsPage() {
                 </div>
             </div>
 
-            {/* Topics-watchlist entry card — links into the dedicated
+            {/* Topics-watchlist entry card - links into the dedicated
                 /signals/watchlists subpage where operators configure
                 keyword-driven monitoring. Kept compact on this main
                 Signals page so it doesn't dominate the engagement feed. */}
@@ -325,7 +325,7 @@ export default function LinkedInSignalsPage() {
                             <span className="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-amber-200/60 text-amber-900">New</span>
                         </div>
                         <div className="text-[0.7rem] text-amber-800">
-                            Monitor LinkedIn for posts about keywords you care about — ICP-filter the engagers, push into a campaign. No per-signal cost.
+                            Monitor LinkedIn for posts about keywords you care about - ICP-filter the engagers, push into a campaign. No per-signal cost.
                         </div>
                     </div>
                 </div>
@@ -356,13 +356,13 @@ export default function LinkedInSignalsPage() {
                         <span className="text-rose-800">
                             {camp > 0 && (<>{camp} reference{camp === 1 ? 's' : ''} a deleted campaign. </>)}
                             {icp > 0 && (<>{icp} reference{icp === 1 ? 's' : ''} a deleted ICP. </>)}
-                            ENFORCE actions for those rules will skip silently — fix in Settings → Monitoring rules.
+                            ENFORCE actions for those rules will skip silently - fix in Settings → Monitoring rules.
                         </span>
                     </div>
                 );
             })()}
 
-            {/* SUGGEST review queue — engagers the supervisor ICP-matched
+            {/* SUGGEST review queue - engagers the supervisor ICP-matched
                 under a SUGGEST-mode rule that need operator approval
                 before enrollment. Collapsed by default; expands inline
                 with per-row approve / dismiss buttons + optional

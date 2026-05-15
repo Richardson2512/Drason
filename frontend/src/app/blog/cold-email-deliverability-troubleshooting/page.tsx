@@ -10,7 +10,7 @@ export const metadata: Metadata = {
  description: 'Troubleshooting guide for cold email deliverability issues including bounce rate spikes, spam placement, blacklisting, DNS authentication failures,.',
  openGraph: {
  title: 'Cold email deliverability problems: how to diagnose and fix',
- description: 'Diagnose and fix the most common cold email infrastructure failures — from bounce rate spikes and spam placement to blacklisted domains and broken DNS authentication.',
+ description: 'Diagnose and fix the most common cold email infrastructure failures - from bounce rate spikes and spam placement to blacklisted domains and broken DNS authentication.',
  url: '/blog/cold-email-deliverability-troubleshooting',
  siteName: 'Superkabe',
  type: 'article',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  twitter: {
      card: 'summary_large_image',
      title: 'Cold email deliverability problems: how to diagnose and fix',
-     description: 'Diagnose and fix the most common cold email infrastructure failures — from bounce rate spikes and spam placement to blacklisted domains and broken DNS authentication.',
+     description: 'Diagnose and fix the most common cold email infrastructure failures - from bounce rate spikes and spam placement to blacklisted domains and broken DNS authentication.',
      images: ['/image/og-image.png'],
  },
  alternates: {
@@ -139,22 +139,22 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Most bounce rate spikes trace back to three causes: bad lead data, broken DNS, or provider suspension</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Spam placement after weeks of good delivery usually means reputation erosion from gradual volume increases</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Blacklist recovery timelines range from 1 week to permanent — severity determines whether to recover or abandon</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DNS authentication breaks silently — SPF lookup limits and DKIM key expiry cause failures without warning</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Platform differences (Smartlead vs Instantly) affect deliverability — monitor at the domain level, not the platform level</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Proactive monitoring catches problems before they cause irreversible damage — reactive testing is too late</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Blacklist recovery timelines range from 1 week to permanent - severity determines whether to recover or abandon</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DNS authentication breaks silently - SPF lookup limits and DKIM key expiry cause failures without warning</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Platform differences (Smartlead vs Instantly) affect deliverability - monitor at the domain level, not the platform level</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Proactive monitoring catches problems before they cause irreversible damage - reactive testing is too late</li>
  </ul>
  </div>
 
 <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
- Cold email infrastructure fails in predictable ways. The seven scenarios below cover the problems that outbound teams encounter most frequently — from sudden bounce rate spikes to gradual reputation erosion to platform-specific inconsistencies. Each section starts with the direct answer, followed by diagnosis steps and specific fixes.
+ Cold email infrastructure fails in predictable ways. The seven scenarios below cover the problems that outbound teams encounter most frequently - from sudden bounce rate spikes to gradual reputation erosion to platform-specific inconsistencies. Each section starts with the direct answer, followed by diagnosis steps and specific fixes.
  </p>
 
  {/* Section 1 */}
  <h2 id="bounce-rate-spike" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why did my bounce rate spike overnight?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- A sudden bounce rate spike almost always traces back to one of three causes: a bad lead batch with invalid or outdated email addresses, a DNS misconfiguration that broke your authentication records, or a provider-side suspension of your sending account. The fix depends on which cause you identify, but the first step is always the same — pause all sending from affected mailboxes immediately.
+ A sudden bounce rate spike almost always traces back to one of three causes: a bad lead batch with invalid or outdated email addresses, a DNS misconfiguration that broke your authentication records, or a provider-side suspension of your sending account. The fix depends on which cause you identify, but the first step is always the same - pause all sending from affected mailboxes immediately.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Each additional bounce sent after the spike begins compounds the damage to your domain reputation. ISPs weight recent bounce activity heavily, so every email that bounces while you&apos;re diagnosing the problem makes recovery take longer.
@@ -211,10 +211,10 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  {/* Section 3 */}
  <h2 id="mailbox-health-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How do I know which mailboxes are in trouble before campaigns fail?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Most outbound teams discover mailbox problems after campaigns have already failed — bounces have accumulated, domains are damaged, and leads are wasted. Reactive testing tools like GlockApps or Mail Tester tell you where an email landed after you send it, but they cannot warn you that a mailbox is trending toward failure before the damage occurs.
+ Most outbound teams discover mailbox problems after campaigns have already failed - bounces have accumulated, domains are damaged, and leads are wasted. Reactive testing tools like GlockApps or Mail Tester tell you where an email landed after you send it, but they cannot warn you that a mailbox is trending toward failure before the damage occurs.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Proactive monitoring is the only way to catch problems early. This means tracking bounce rates, complaint rates, and DNS health continuously across every mailbox and domain — not as a periodic manual check, but as an automated system that alerts when thresholds are approaching.
+ Proactive monitoring is the only way to catch problems early. This means tracking bounce rates, complaint rates, and DNS health continuously across every mailbox and domain - not as a periodic manual check, but as an automated system that alerts when thresholds are approaching.
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -253,13 +253,13 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  Superkabe assigns a health score to every mailbox based on bounce rate trends, sending volume patterns, and DNS authentication status. When a mailbox&apos;s health score drops below a configurable threshold, Superkabe auto-pauses the mailbox and redistributes traffic to healthy mailboxes on the same domain. This prevents a single failing mailbox from dragging down the entire domain&apos;s reputation.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The early warning system triggers at the first bounce threshold (typically 3 bounces), well before the mailbox reaches the ISP penalty zone. Operators receive alerts with specific diagnosis information — which campaign generated the bounces, what bounce codes were returned, and whether DNS records are valid.
+ The early warning system triggers at the first bounce threshold (typically 3 bounces), well before the mailbox reaches the ISP penalty zone. Operators receive alerts with specific diagnosis information - which campaign generated the bounces, what bounce codes were returned, and whether DNS records are valid.
  </p>
 
  {/* Section 4 */}
- <h2 id="blacklist-recovery" className="text-2xl font-bold text-gray-900 mt-12 mb-4">My domain got blacklisted — can I recover it?</h2>
+ <h2 id="blacklist-recovery" className="text-2xl font-bold text-gray-900 mt-12 mb-4">My domain got blacklisted - can I recover it?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Yes, most blacklisted domains can be recovered — but the timeline and success rate depend on the severity. A single blacklist entry from a recent incident can be resolved in 1-2 weeks. Multiple blacklist entries with sustained high bounce rates may take 4-8 weeks. Domains blacklisted on major ISP-level lists (Spamhaus, Barracuda) with spam trap hits face the longest recovery or may need to be abandoned entirely.
+ Yes, most blacklisted domains can be recovered - but the timeline and success rate depend on the severity. A single blacklist entry from a recent incident can be resolved in 1-2 weeks. Multiple blacklist entries with sustained high bounce rates may take 4-8 weeks. Domains blacklisted on major ISP-level lists (Spamhaus, Barracuda) with spam trap hits face the longest recovery or may need to be abandoned entirely.
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -315,7 +315,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  {/* Section 5 */}
  <h2 id="dns-authentication-broken" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How do I tell if my DNS authentication is broken?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- DNS authentication failures are one of the most common and most overlooked causes of deliverability problems. SPF, DKIM, and DMARC records can break silently — there is no notification when an SPF record exceeds the 10-lookup limit, when a DKIM signing key expires, or when a DMARC policy change takes effect. The first sign is usually a gradual drop in inbox placement that operators attribute to other causes.
+ DNS authentication failures are one of the most common and most overlooked causes of deliverability problems. SPF, DKIM, and DMARC records can break silently - there is no notification when an SPF record exceeds the 10-lookup limit, when a DKIM signing key expires, or when a DMARC policy change takes effect. The first sign is usually a gradual drop in inbox placement that operators attribute to other causes.
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -325,7 +325,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Check:</strong> Use <code className="bg-gray-100 px-1.5 py-0.5 text-xs">dig TXT yourdomain.com</code> or MxToolbox SPF checker to view your SPF record</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common break:</strong> Adding a new SaaS tool that requires an SPF include pushes you over the 10-lookup limit. SPF fails silently — no error, just failed authentication.</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common break:</strong> Adding a new SaaS tool that requires an SPF include pushes you over the 10-lookup limit. SPF fails silently - no error, just failed authentication.</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Fix:</strong> Consolidate includes using SPF flattening, or remove unused includes for services you no longer use.</li>
  </ul>
  </div>
@@ -337,7 +337,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Check:</strong> Send a test email and inspect headers for <code className="bg-gray-100 px-1.5 py-0.5 text-xs">dkim=pass</code> in the Authentication-Results header</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common break:</strong> DKIM key rotation missed — keys expire and the new key is not published in DNS. Also: DNS provider truncating the DKIM TXT record because it exceeds character limits.</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common break:</strong> DKIM key rotation missed - keys expire and the new key is not published in DNS. Also: DNS provider truncating the DKIM TXT record because it exceeds character limits.</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Fix:</strong> Regenerate DKIM keys in your email provider, publish the new public key in DNS, and verify with a test email.</li>
  </ul>
  </div>
@@ -349,7 +349,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Check:</strong> Look up your DMARC record with <code className="bg-gray-100 px-1.5 py-0.5 text-xs">dig TXT _dmarc.yourdomain.com</code></li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common problem:</strong> DMARC set to <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=none</code> — this means DMARC is in monitoring mode only and provides no enforcement. ISPs increasingly treat <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=none</code> as a negative signal.</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Common problem:</strong> DMARC set to <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=none</code> - this means DMARC is in monitoring mode only and provides no enforcement. ISPs increasingly treat <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=none</code> as a negative signal.</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>Fix:</strong> Upgrade to <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=quarantine</code> or <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=reject</code> after confirming SPF and DKIM are passing. Start with <code className="bg-gray-100 px-1.5 py-0.5 text-xs">p=quarantine; pct=10</code> and increase gradually.</li>
  </ul>
  </div>
@@ -361,7 +361,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  {/* Section 6 */}
  <h2 id="smartlead-vs-instantly" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why do my campaigns perform differently on Smartlead vs Instantly?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- The same domain and mailbox can produce different deliverability outcomes on different sending platforms. This is not a bug — it is a consequence of how each platform handles the sending infrastructure. Smartlead and Instantly use different IP pools for their warmup and sending operations, different algorithms for managing warmup sequences, and different patterns for spacing and timing emails.
+ The same domain and mailbox can produce different deliverability outcomes on different sending platforms. This is not a bug - it is a consequence of how each platform handles the sending infrastructure. Smartlead and Instantly use different IP pools for their warmup and sending operations, different algorithms for managing warmup sequences, and different patterns for spacing and timing emails.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  These platform-level differences mean that a domain performing well on Smartlead may show worse metrics on Instantly (or vice versa), even when the lead list, email content, and mailbox are identical. The platform&apos;s IP reputation, warmup quality, and sending cadence all contribute to the outcome.
@@ -379,7 +379,7 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  <tbody>
  <tr className="border-b border-gray-100">
  <td className="py-4 px-6 text-gray-900 text-sm font-medium">IP pool reputation</td>
- <td className="py-4 px-6 text-gray-600 text-sm">Shared IPs carry reputation from all senders — one bad actor affects everyone</td>
+ <td className="py-4 px-6 text-gray-600 text-sm">Shared IPs carry reputation from all senders - one bad actor affects everyone</td>
  <td className="py-4 px-6 text-red-600 text-sm font-semibold">Not visible</td>
  </tr>
  <tr className="border-b border-gray-100">
@@ -402,13 +402,13 @@ export default function ColdEmailDeliverabilityTroubleshootingArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The solution is to monitor deliverability at the domain and mailbox level — not the platform level. Platform analytics show you open rates and reply rates within their system, but they cannot tell you about your domain&apos;s reputation across ISPs. Superkabe aggregates data across all connected platforms and provides a unified view of domain health, so you can see the true state of your infrastructure regardless of which platform is sending.
+ The solution is to monitor deliverability at the domain and mailbox level - not the platform level. Platform analytics show you open rates and reply rates within their system, but they cannot tell you about your domain&apos;s reputation across ISPs. Superkabe aggregates data across all connected platforms and provides a unified view of domain health, so you can see the true state of your infrastructure regardless of which platform is sending.
  </p>
 
  {/* Section 7 */}
  <h2 id="abandon-vs-recover" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When should I abandon a domain vs try to recover it?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- The decision to abandon or recover a damaged domain comes down to a simple cost-benefit analysis. A new domain costs $10-15 and takes 4-6 weeks to warm. If recovery will take longer than that — or if the probability of successful recovery is low — abandoning is the rational choice. Continuing to send from a damaged domain wastes time, burns leads, and can damage your other domains through IP association.
+ The decision to abandon or recover a damaged domain comes down to a simple cost-benefit analysis. A new domain costs $10-15 and takes 4-6 weeks to warm. If recovery will take longer than that - or if the probability of successful recovery is low - abandoning is the rational choice. Continuing to send from a damaged domain wastes time, burns leads, and can damage your other domains through IP association.
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">

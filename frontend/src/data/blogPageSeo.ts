@@ -27,7 +27,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "Smartlead emails go to spam when mailbox reputation, content patterns, or volume ramps cross ISP thresholds that Smartlead itself doesn't enforce. Common causes: untuned warmup, uniform subject-line patterns, and sending without SPF/DKIM/DMARC alignment. Fix by adding a governance layer (bounce interception + auto-pause) around Smartlead.",
     },
     '/blog/why-cold-emails-go-to-spam': {
-        tldr: "Cold emails land in spam due to one of four causes: infrastructure issues (DNS auth, IP/domain reputation), content patterns (links, spam-trigger words, AI-obvious copy), behavioral signals (low reply rate, high complaint rate), or volume bursts. Most teams fix content but ignore infrastructure — which is the larger lever.",
+        tldr: "Cold emails land in spam due to one of four causes: infrastructure issues (DNS auth, IP/domain reputation), content patterns (links, spam-trigger words, AI-obvious copy), behavioral signals (low reply rate, high complaint rate), or volume bursts. Most teams fix content but ignore infrastructure - which is the larger lever.",
     },
     '/blog/catch-all-domains-cold-outreach': {
         tldr: "Catch-all domains accept every email at the MX level without confirming the user exists, making validation unreliable. Treating catch-all as valid risks bouncing invisibly; treating it as invalid drops real prospects. The fix is risk-capped routing: send to catch-all leads only from your strongest mailboxes, with volume limits.",
@@ -39,10 +39,10 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "Leading ZeroBounce alternatives for cold email: MillionVerifier (cheapest at scale, best catch-all handling), NeverBounce (solid for small lists), Bouncer (strong EU coverage), and Superkabe (validation + real-time bounce interception in one layer). Pick by volume, catch-all policy, and whether you need send-time protection.",
     },
     '/blog/zerobounce-alternatives-infrastructure-monitoring': {
-        tldr: "ZeroBounce validates addresses but does not monitor sending infrastructure. For full coverage, pair a validation provider (MillionVerifier, NeverBounce) with an infrastructure monitor (Superkabe, Google Postmaster) — or use Superkabe which runs both layers in one pipeline with real-time bounce interception.",
+        tldr: "ZeroBounce validates addresses but does not monitor sending infrastructure. For full coverage, pair a validation provider (MillionVerifier, NeverBounce) with an infrastructure monitor (Superkabe, Google Postmaster) - or use Superkabe which runs both layers in one pipeline with real-time bounce interception.",
     },
     '/blog/why-verified-emails-still-bounce': {
-        tldr: "Verified emails still bounce because validation is a point-in-time snapshot — mailboxes get deleted, disabled, or full between verification and send. The fix is to reduce the gap: validate at send time (not at list-build time) and monitor bounce patterns to detect stale validation data early.",
+        tldr: "Verified emails still bounce because validation is a point-in-time snapshot - mailboxes get deleted, disabled, or full between verification and send. The fix is to reduce the gap: validate at send time (not at list-build time) and monitor bounce patterns to detect stale validation data early.",
     },
     '/blog/why-email-warmup-stops-working': {
         tldr: "Warmup stops working when the warmup network burns itself (too many users sending identical warmup copy to each other), when warmup ends but sending volume jumps too fast, or when content patterns in real campaigns diverge from warmup patterns. Fix: varied warmup content, gradual post-warmup ramp, and align real-campaign patterns with warmup behavior.",
@@ -54,22 +54,22 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "A safe warmup methodology ramps volume over 4–6 weeks: start at 10–20 sends/day, double weekly, and maintain engagement signals (opens, replies) throughout. Graduate to production volume only after sustaining a sub-2% bounce rate and above 10% reply rate for seven consecutive days.",
     },
     '/blog/email-reputation-lifecycle': {
-        tldr: "Domain and IP reputation move through four lifecycle stages: build (warmup), operate (steady state), damage (threshold breach), and recover (algorithmic rehab). Recovery takes 30–45 days once breached — so prevention via real-time governance is cheaper than repair.",
+        tldr: "Domain and IP reputation move through four lifecycle stages: build (warmup), operate (steady state), damage (threshold breach), and recover (algorithmic rehab). Recovery takes 30–45 days once breached - so prevention via real-time governance is cheaper than repair.",
     },
     '/blog/how-spam-filters-work': {
         tldr: "Modern spam filters apply four layers: infrastructure check (SPF/DKIM/DMARC + IP/domain reputation), content classification (links, patterns, ML signals), engagement modeling (reply + open behavior per recipient), and complaint signals (spam marks). Failing any layer degrades placement; failing multiple lands in spam.",
     },
     '/blog/real-time-email-infrastructure-monitoring': {
-        tldr: "Real-time infrastructure monitoring — 60-second polling of mailbox health, bounce patterns, DNS auth, and DNSBL status — catches reputation damage before ISPs penalize the domain. Daily dashboard checks miss the 23-hour window where a bad lead list can burn a domain entirely.",
+        tldr: "Real-time infrastructure monitoring - 60-second polling of mailbox health, bounce patterns, DNS auth, and DNSBL status - catches reputation damage before ISPs penalize the domain. Daily dashboard checks miss the 23-hour window where a bad lead list can burn a domain entirely.",
     },
     '/blog/cold-email-deliverability-troubleshooting': {
-        tldr: "Diagnose cold email deliverability in this order: check DNS auth (SPF/DKIM/DMARC alignment), check domain + IP reputation (Google Postmaster, DNSBL), check mailbox-level metrics (bounce rate, deferral rate), then check content patterns. Fix the infrastructure layer first — it's the largest lever and the hardest to undo.",
+        tldr: "Diagnose cold email deliverability in this order: check DNS auth (SPF/DKIM/DMARC alignment), check domain + IP reputation (Google Postmaster, DNSBL), check mailbox-level metrics (bounce rate, deferral rate), then check content patterns. Fix the infrastructure layer first - it's the largest lever and the hardest to undo.",
         howTo: {
             name: "How to Troubleshoot Cold Email Deliverability",
             description: "A four-layer diagnostic for finding and fixing why cold emails are landing in spam.",
             steps: [
                 { name: "Verify DNS authentication", text: "Check that SPF, DKIM, and DMARC are configured and aligned for every sending domain. Use SPF/DKIM/DMARC lookup tools to confirm records resolve and alignment is clean." },
-                { name: "Check domain and IP reputation", text: "Review Google Postmaster, Microsoft SNDS, and DNSBL hit lists for every sending domain. Reputation damage is cumulative — catch it early." },
+                { name: "Check domain and IP reputation", text: "Review Google Postmaster, Microsoft SNDS, and DNSBL hit lists for every sending domain. Reputation damage is cumulative - catch it early." },
                 { name: "Inspect mailbox-level metrics", text: "Pull bounce rate, deferral rate, and reply rate per mailbox over the last 7 days. A single compromised mailbox can pull an entire domain's reputation down." },
                 { name: "Audit content patterns", text: "Check for template fingerprinting (uniform subject lines, identical openers, repeated CTAs). Pattern-based spam classification is often what pushes already-weak infrastructure over the edge." },
             ],
@@ -104,13 +104,13 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/catch-all-detection-zerobounce-vs-neverbounce': {
-        tldr: "ZeroBounce marks catch-all domains as 'unknown' and leaves the decision to you. NeverBounce returns them as 'accept_all' with a catch-all flag. For cold outreach, neither classification is directly usable — the practical answer is risk-capped routing: send to catch-all only from your strongest mailboxes, at low volume.",
+        tldr: "ZeroBounce marks catch-all domains as 'unknown' and leaves the decision to you. NeverBounce returns them as 'accept_all' with a catch-all flag. For cold outreach, neither classification is directly usable - the practical answer is risk-capped routing: send to catch-all only from your strongest mailboxes, at low volume.",
     },
     '/blog/cold-email-bounce-rate-thresholds': {
-        tldr: "ISPs enforce invisible bounce-rate thresholds around 2–3% — crossing them triggers retroactive reputation penalties persisting 30–45 days. Safe operating range is under 2%; aggressive senders target under 1%. Bounce rate is the single largest deliverability lever and the hardest damage to reverse.",
+        tldr: "ISPs enforce invisible bounce-rate thresholds around 2–3% - crossing them triggers retroactive reputation penalties persisting 30–45 days. Safe operating range is under 2%; aggressive senders target under 1%. Bounce rate is the single largest deliverability lever and the hardest damage to reverse.",
     },
     '/blog/cold-email-infrastructure-protection-for-agencies': {
-        tldr: "Agencies running cold email across 20+ client workspaces cannot monitor fleet health manually at that scale. Infrastructure protection — real-time bounce interception, autonomous mailbox pausing, per-workspace isolation — is the only scalable defense. The alternative is one burned domain cascading into a multi-client reputation incident.",
+        tldr: "Agencies running cold email across 20+ client workspaces cannot monitor fleet health manually at that scale. Infrastructure protection - real-time bounce interception, autonomous mailbox pausing, per-workspace isolation - is the only scalable defense. The alternative is one burned domain cascading into a multi-client reputation incident.",
     },
     '/blog/complete-email-warmup-guide': {
         tldr: "A complete warmup methodology ramps volume over 4–6 weeks: start at 10–20 sends/day, double weekly, maintain engagement signals (opens, replies) throughout. Graduate to production volume only after sustaining sub-2% bounce rate and above-10% reply rate for 7 consecutive days.",
@@ -131,21 +131,21 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "A burned domain takes 30–45 days to recover via careful low-volume rehab. Prevention costs a fraction of recovery: real-time bounce interception, pre-send validation, and autonomous mailbox pausing prevent the threshold breach that causes the burn in the first place.",
     },
     '/blog/domain-reputation-recovery-guide': {
-        tldr: "Recover a damaged domain through Superkabe's 5-phase healing pipeline: (1) Pause all sending to halt further damage. (2) Quarantine 24–48 hours after fixing root cause and confirming infrastructure score ≥25. (3) Restricted send — 15 clean sends to validate health. (4) Warm recovery — 50 sends over 3 days while sustaining <2% bounce rate. (5) Healthy — full capacity restored. Each transition is gated by deterministic health checks, not timers.",
+        tldr: "Recover a damaged domain through Superkabe's 5-phase healing pipeline: (1) Pause all sending to halt further damage. (2) Quarantine 24–48 hours after fixing root cause and confirming infrastructure score ≥25. (3) Restricted send - 15 clean sends to validate health. (4) Warm recovery - 50 sends over 3 days while sustaining <2% bounce rate. (5) Healthy - full capacity restored. Each transition is gated by deterministic health checks, not timers.",
         howTo: {
             name: "How to Recover a Damaged Sending Domain",
-            description: "A 5-phase recovery pipeline for domains that have crossed ISP reputation penalties — matches Superkabe's automated healing engine.",
+            description: "A 5-phase recovery pipeline for domains that have crossed ISP reputation penalties - matches Superkabe's automated healing engine.",
             steps: [
                 { name: "Pause sending", text: "Immediately pause all campaigns on the affected domain. Superkabe enforces this automatically when the bounce-rate threshold trips. Every additional bounce deepens the damage." },
                 { name: "Quarantine + fix root cause", text: "Hold the domain in quarantine while you identify and fix the underlying issue (DNS misconfiguration, unvalidated lead list, compromised mailbox, content pattern). Cooldown is 24h / 72h / 7d on 1st / 2nd / 3rd+ offence. Quarantine→next phase requires DNS pass + root cause resolved + infrastructure score ≥25." },
-                { name: "Restricted send", text: "Resume with a tight cap of 15 clean sends (1st offence) or 25 (repeat). The system only graduates the mailbox when those sends complete cleanly. No relapses tolerated at this stage — a single bounce kicks back to quarantine." },
+                { name: "Restricted send", text: "Resume with a tight cap of 15 clean sends (1st offence) or 25 (repeat). The system only graduates the mailbox when those sends complete cleanly. No relapses tolerated at this stage - a single bounce kicks back to quarantine." },
                 { name: "Warm recovery", text: "Ramp to 50 sends over a minimum of 3 days while holding bounce rate under 2%. Aggregate per-domain caps (30 sends/day) and per-org caps (100 sends/day across all recovering entities) limit volume. Resilience score tunes pace: ≤30 slow (2× sends, 1.5× time), ≥71 fast (0.75× both)." },
                 { name: "Healthy", text: "Full sending capacity restored. The mailbox sits at WARNING/HEALTHY going forward, with the same monitoring active." },
             ],
         },
     },
     '/blog/domain-reputation-vs-ip-reputation': {
-        tldr: "Domain reputation dominates IP reputation in modern ISP scoring — Gmail and Microsoft weight domain signals 3–5× more heavily than IP signals for B2B cold email. Focus primary optimization on domain reputation (DKIM alignment, per-domain bounce trends) rather than IP reputation unless sending from a dedicated IP.",
+        tldr: "Domain reputation dominates IP reputation in modern ISP scoring - Gmail and Microsoft weight domain signals 3–5× more heavily than IP signals for B2B cold email. Focus primary optimization on domain reputation (DKIM alignment, per-domain bounce trends) rather than IP reputation unless sending from a dedicated IP.",
     },
     '/blog/email-authentication-checker-tools': {
         tldr: "Leading email-authentication checker tools: MXToolbox (free, classic lookup), DMARCian (free DMARC parser), Superkabe's free SPF/DKIM/DMARC tools (fast, parse-focused), and Postmark's auth checker (developer-friendly). Pick by whether you need one-off lookups or continuous monitoring.",
@@ -154,16 +154,16 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "Cold email deliverability has four pillars: authentication (SPF/DKIM/DMARC), reputation (domain + IP history), content (patterns, links, engagement), and infrastructure (sending platform, mailbox fleet, validation). Weakness in any pillar caps delivery; all four must be strong for consistent inbox placement.",
     },
     '/blog/email-deliverability-tools-compared': {
-        tldr: "Deliverability tool categories: monitoring (Postmaster, SNDS), seed testing (GlockApps, Inboxally), warmup (Instantly warmup, Lemwarm), protection (Superkabe), and validation (MillionVerifier, NeverBounce). Each addresses a different deliverability sub-problem — most scaling teams need at least three categories.",
+        tldr: "Deliverability tool categories: monitoring (Postmaster, SNDS), seed testing (GlockApps, Inboxally), warmup (Instantly warmup, Lemwarm), protection (Superkabe), and validation (MillionVerifier, NeverBounce). Each addresses a different deliverability sub-problem - most scaling teams need at least three categories.",
     },
     '/blog/email-validation-for-agencies': {
-        tldr: "Agencies running cold email across many clients need centralized validation with per-client attribution: shared credit budget, per-workspace rejection analytics, and audit trails for client reporting. Standalone validation services don't provide this — integrated platforms like Superkabe do.",
+        tldr: "Agencies running cold email across many clients need centralized validation with per-client attribution: shared credit budget, per-workspace rejection analytics, and audit trails for client reporting. Standalone validation services don't provide this - integrated platforms like Superkabe do.",
     },
     '/blog/email-validation-pricing-guide': {
-        tldr: "Email validation pricing ranges from $0.0004 (MillionVerifier at 10M tier) to $0.007 (ZeroBounce at small tiers). For cold email at scale, per-credit cost matters less than catch-all policy and integration depth — Superkabe bundles validation with send-time protection at ~$0.002 effective per validated lead on Growth tier.",
+        tldr: "Email validation pricing ranges from $0.0004 (MillionVerifier at 10M tier) to $0.007 (ZeroBounce at small tiers). For cold email at scale, per-credit cost matters less than catch-all policy and integration depth - Superkabe bundles validation with send-time protection at ~$0.002 effective per validated lead on Growth tier.",
     },
     '/blog/email-validation-smartlead-instantly': {
-        tldr: "Smartlead and Instantly include basic syntax + MX validation but not catch-all probing or MillionVerifier-grade verification. Pre-sending bounce rate under 2% with Smartlead/Instantly alone is hard above 10K sends/day — external validation (MillionVerifier, Superkabe) fills the gap.",
+        tldr: "Smartlead and Instantly include basic syntax + MX validation but not catch-all probing or MillionVerifier-grade verification. Pre-sending bounce rate under 2% with Smartlead/Instantly alone is hard above 10K sends/day - external validation (MillionVerifier, Superkabe) fills the gap.",
     },
     '/blog/email-validation-vs-verification': {
         tldr: "Validation confirms an email address is syntactically valid and routable (MX exists, domain resolves). Verification confirms the specific mailbox accepts mail (SMTP-level probe). Cold email needs verification for risky leads; validation alone allows catch-all and greylisted domains to slip through.",
@@ -204,7 +204,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "Safe per-mailbox daily limits for cold email: brand-new mailbox 10–20/day, warmed 30 days 50–80/day, fully warmed 100–150/day for Google Workspace and Microsoft 365. Custom SMTP can go higher (200–300/day) but the ceiling is mailbox reputation, not provider policy.",
     },
     '/blog/how-to-check-domain-reputation-cold-email': {
-        tldr: "Check domain reputation across four sources: Google Postmaster (for Gmail-bound mail), Microsoft SNDS (for Outlook-bound mail), MXToolbox DNSBL scan (for blacklist presence), and your own bounce-rate trend (leading indicator). Triangulate across all four — any single source has blind spots.",
+        tldr: "Check domain reputation across four sources: Google Postmaster (for Gmail-bound mail), Microsoft SNDS (for Outlook-bound mail), MXToolbox DNSBL scan (for blacklist presence), and your own bounce-rate trend (leading indicator). Triangulate across all four - any single source has blind spots.",
         howTo: {
             name: "How to Check Your Domain's Reputation",
             description: "A four-source reputation check covering Google, Microsoft, DNSBL, and internal telemetry.",
@@ -260,13 +260,13 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/neverbounce-catch-all-detection': {
-        tldr: "NeverBounce marks catch-all domains as 'accept_all' with a catch-all flag, not as a validation failure. For cold outreach, treat 'accept_all' leads as a separate risk tier — send only from strong mailboxes, at low volume, and track bounce outcomes separately so the risk-cap can be tuned.",
+        tldr: "NeverBounce marks catch-all domains as 'accept_all' with a catch-all flag, not as a validation failure. For cold outreach, treat 'accept_all' leads as a separate risk tier - send only from strong mailboxes, at low volume, and track bounce outcomes separately so the risk-cap can be tuned.",
     },
     '/blog/protect-domain-reputation-scaling-cold-email': {
         tldr: "Protecting domain reputation while scaling cold email requires four things: per-mailbox isolation (one bad mailbox shouldn't degrade others on the same domain), real-time bounce interception (no daily batch reports), autonomous pausing (no manual dashboards), and pre-send validation (no bad lists reaching senders). Remove any one and scale breaks reputation.",
     },
     '/blog/protect-sender-reputation-scaling-outreach': {
-        tldr: "Scaling outreach without damaging sender reputation means moving from manual monitoring to autonomous governance. A skilled operator can monitor 10 mailboxes; nobody can monitor 200 in real time. At that scale, reputation defense must be algorithmic — deterministic thresholds that fire without human involvement.",
+        tldr: "Scaling outreach without damaging sender reputation means moving from manual monitoring to autonomous governance. A skilled operator can monitor 10 mailboxes; nobody can monitor 200 in real time. At that scale, reputation defense must be algorithmic - deterministic thresholds that fire without human involvement.",
     },
     '/blog/reduce-cold-email-bounce-rate': {
         tldr: "Reduce cold email bounce rate below 2% via four levers: pre-send validation (catch invalid addresses before they reach any sender), catch-all risk capping (≤2 catch-all leads per 60 sends per mailbox), real-time bounce interception (pause compromised mailboxes immediately), and quality lead sources (Apollo, Clay, ZoomInfo over scraped lists).",
@@ -275,7 +275,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
             description: "Four compounding levers that keep bounce rate under 2%.",
             steps: [
                 { name: "Validate every lead pre-send", text: "Run syntax + MX + disposable + catch-all + conditional MillionVerifier on every lead before it reaches a sender." },
-                { name: "Cap catch-all risk", text: "Treat catch-all leads as a separate tier — route only to strong mailboxes, at no more than 2 per 60 sends per mailbox." },
+                { name: "Cap catch-all risk", text: "Treat catch-all leads as a separate tier - route only to strong mailboxes, at no more than 2 per 60 sends per mailbox." },
                 { name: "Intercept bounces in real time", text: "Pause compromised mailboxes within milliseconds of threshold breach, not at daily batch intervals." },
                 { name: "Upgrade lead sources", text: "Quality-gated sources (Apollo, Clay, ZoomInfo, Ocean.io) have lower invalid rates than scraped or third-party lists. The upstream choice matters more than the validation layer downstream." },
             ],
@@ -285,13 +285,13 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "SPF authorizes which servers can send from your domain. DKIM signs outbound messages cryptographically so recipients can verify they weren't tampered with. DMARC aligns the two and tells recipients what to do if either fails (none / quarantine / reject). All three are required for modern B2B cold email deliverability.",
     },
     '/blog/superkabe-vs-email-verification-tools': {
-        tldr: "Email verification tools validate addresses at list-build time — a point-in-time snapshot. Superkabe validates at send time AND monitors bounce outcomes in real time, catching the staleness gap that pure verifiers miss. For cold email at scale, send-time verification + protection outperforms verification alone.",
+        tldr: "Email verification tools validate addresses at list-build time - a point-in-time snapshot. Superkabe validates at send time AND monitors bounce outcomes in real time, catching the staleness gap that pure verifiers miss. For cold email at scale, send-time verification + protection outperforms verification alone.",
     },
     '/blog/superkabe-vs-manual-monitoring': {
-        tldr: "Manual monitoring can keep up with 10 mailboxes; it breaks down at 50. Superkabe monitors every mailbox every 60 seconds and acts autonomously on threshold breaches — the same work that takes a human operator an hour takes Superkabe 500 milliseconds. The difference is what makes reputation-safe scale possible.",
+        tldr: "Manual monitoring can keep up with 10 mailboxes; it breaks down at 50. Superkabe monitors every mailbox every 60 seconds and acts autonomously on threshold breaches - the same work that takes a human operator an hour takes Superkabe 500 milliseconds. The difference is what makes reputation-safe scale possible.",
     },
     '/blog/superkabe-vs-warmup-tools': {
-        tldr: "Warmup tools simulate engagement during domain ramp-up — they generate opens and replies to establish initial reputation. Superkabe governs active production sending — real-time bounce interception, autonomous pausing, recovery pipelines. Different problems, different layers. Most scaling teams use both.",
+        tldr: "Warmup tools simulate engagement during domain ramp-up - they generate opens and replies to establish initial reputation. Superkabe governs active production sending - real-time bounce interception, autonomous pausing, recovery pipelines. Different problems, different layers. Most scaling teams use both.",
     },
     '/blog/top-bounce-rate-management-tools': {
         tldr: "Top bounce-rate management tools: Superkabe (real-time interception + autonomous pausing), Smartlead bounce rules (platform-native, limited), Instantly bounce handling (similar, platform-native), Mailreach (focused on warmup + bounce). Pick by whether you need governance or just reporting.",
@@ -333,7 +333,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/top-email-validation-tools-agencies': {
-        tldr: "Validation tools optimized for agencies need three features: shared credit budget across workspaces, per-client rejection analytics, and audit trails for client reporting. Superkabe, MillionVerifier (enterprise tier), and Bouncer are the three that ship all three — most other providers optimize for single-team use.",
+        tldr: "Validation tools optimized for agencies need three features: shared credit budget across workspaces, per-client rejection analytics, and audit trails for client reporting. Superkabe, MillionVerifier (enterprise tier), and Bouncer are the three that ship all three - most other providers optimize for single-team use.",
         itemList: {
             name: "Top Email Validation Tools for Agencies",
             items: [
@@ -358,7 +358,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/best-cold-email-tools-2026': {
-        tldr: "15 cold email tools ranked across five categories: sending platforms (Instantly, Smartlead, Saleshandy, Lemlist, Woodpecker, Hunter, EmailBison), protection (Superkabe), validation (MillionVerifier, NeverBounce), warmup (Lemwarm, Mailreach), intent-triggered (Unify), multichannel (Reply.io), and database-bundled (Apollo). Post-Gmail-enforcement the winning stack is sending + protection layer + validation — not a single platform.",
+        tldr: "15 cold email tools ranked across five categories: sending platforms (Instantly, Smartlead, Saleshandy, Lemlist, Woodpecker, Hunter, EmailBison), protection (Superkabe), validation (MillionVerifier, NeverBounce), warmup (Lemwarm, Mailreach), intent-triggered (Unify), multichannel (Reply.io), and database-bundled (Apollo). Post-Gmail-enforcement the winning stack is sending + protection layer + validation - not a single platform.",
         itemList: {
             name: "Best Cold Email Tools in 2026",
             description: "15 cold email tools ranked by deliverability, price, and use case across sending, protection, validation, warmup, and AI.",
@@ -387,18 +387,18 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
             name: "Cold Email Software Benchmark 2026",
             description: "12 platforms ranked by measured cost per reply across 6,000 sends.",
             items: [
-                { name: "Instantly — $1.94/reply" },
-                { name: "Smartlead — $1.88/reply" },
-                { name: "Smartlead + Superkabe — $1.52/reply" },
-                { name: "Saleshandy — $2.18/reply" },
-                { name: "Lemlist — $2.41/reply" },
-                { name: "Woodpecker — $2.67/reply" },
-                { name: "Apollo — $2.84/reply" },
-                { name: "Reply.io — $3.21/reply" },
-                { name: "Hunter Sequences — $2.52/reply" },
-                { name: "Mailshake — $2.89/reply" },
-                { name: "Quickmail — $2.76/reply" },
-                { name: "GMass — $3.18/reply" },
+                { name: "Instantly - $1.94/reply" },
+                { name: "Smartlead - $1.88/reply" },
+                { name: "Smartlead + Superkabe - $1.52/reply" },
+                { name: "Saleshandy - $2.18/reply" },
+                { name: "Lemlist - $2.41/reply" },
+                { name: "Woodpecker - $2.67/reply" },
+                { name: "Apollo - $2.84/reply" },
+                { name: "Reply.io - $3.21/reply" },
+                { name: "Hunter Sequences - $2.52/reply" },
+                { name: "Mailshake - $2.89/reply" },
+                { name: "Quickmail - $2.76/reply" },
+                { name: "GMass - $3.18/reply" },
             ],
         },
     },
@@ -439,7 +439,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/free-cold-email-tools': {
-        tldr: "7 genuinely free cold email tools — Mailmeteor (75 sends/day Gmail), Hunter Free (25 searches + 50 verifications), Apollo Free (250 email credits), GMass Free (50 sends/day, watermarked), YAMM (Google Sheets mail merge), Streak CRM Free (Gmail-native CRM + merge), Instantly 14-day trial. Each has a specific catch. Graduate past 500 sends/month or when you connect a second mailbox.",
+        tldr: "7 genuinely free cold email tools - Mailmeteor (75 sends/day Gmail), Hunter Free (25 searches + 50 verifications), Apollo Free (250 email credits), GMass Free (50 sends/day, watermarked), YAMM (Google Sheets mail merge), Streak CRM Free (Gmail-native CRM + merge), Instantly 14-day trial. Each has a specific catch. Graduate past 500 sends/month or when you connect a second mailbox.",
         itemList: {
             name: "Free Cold Email Tools 2026",
             description: "7 genuinely free cold email tools with documented caveats.",
@@ -455,7 +455,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/top-sender-reputation-tools': {
-        tldr: "Top sender-reputation tools: Superkabe (real-time monitoring + protection), Google Postmaster (free, Gmail-only), Microsoft SNDS (free, Outlook-only, enrollment required), Validity Everest (enterprise), and GlockApps (seed-testing emphasis). Reputation damage is expensive to reverse — early detection compounds in value.",
+        tldr: "Top sender-reputation tools: Superkabe (real-time monitoring + protection), Google Postmaster (free, Gmail-only), Microsoft SNDS (free, Outlook-only, enrollment required), Validity Everest (enterprise), and GlockApps (seed-testing emphasis). Reputation damage is expensive to reverse - early detection compounds in value.",
         itemList: {
             name: "Top Sender Reputation Tools",
             items: [
@@ -500,7 +500,7 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         },
     },
     '/blog/smartlead-alternatives': {
-        tldr: "7 ranked Smartlead alternatives for cold email teams in 2026: Superkabe (sender + protection), Instantly (closest feature-for-feature), EmailBison (high-volume), Lemlist (personalization), Woodpecker (reply branching), Saleshandy (bundled leads), Mailshake (multichannel). Smartlead is a strong sender but does not ship native auto-pause, healing, or per-mailbox ESP routing — that is what alternatives compete on.",
+        tldr: "7 ranked Smartlead alternatives for cold email teams in 2026: Superkabe (sender + protection), Instantly (closest feature-for-feature), EmailBison (high-volume), Lemlist (personalization), Woodpecker (reply branching), Saleshandy (bundled leads), Mailshake (multichannel). Smartlead is a strong sender but does not ship native auto-pause, healing, or per-mailbox ESP routing - that is what alternatives compete on.",
         itemList: {
             name: "Smartlead Alternatives 2026",
             items: [
@@ -593,9 +593,9 @@ export const blogPageSeo: Record<string, BlogPageSeo> = {
         tldr: "Superkabe vs Woodpecker head-to-head: Superkabe wins on modern AI sequencing, native auto-pause, 5-phase healing, ESP-aware routing, and lower entry pricing ($19/mo vs $54/mo). Woodpecker wins on reply detection accuracy, if-campaign branching maturity, and 10+ year operational track record.",
     },
     '/blog/superkabe-vs-reply-io': {
-        tldr: "Superkabe vs Reply.io head-to-head: Superkabe wins on flat-tier pricing (vs Reply.io's per-user model), the protection layer (auto-pause, 5-phase healing, ESP-aware routing), and large mailbox-fleet management. Reply.io wins on native multichannel — calls, LinkedIn, deep CRM integrations.",
+        tldr: "Superkabe vs Reply.io head-to-head: Superkabe wins on flat-tier pricing (vs Reply.io's per-user model), the protection layer (auto-pause, 5-phase healing, ESP-aware routing), and large mailbox-fleet management. Reply.io wins on native multichannel - calls, LinkedIn, deep CRM integrations.",
     },
     '/blog/superkabe-vs-luella': {
-        tldr: "Superkabe vs Luella head-to-head: Superkabe wins on the protection layer (auto-pause, 5-phase healing, ESP-aware routing) and per-workspace isolation for agencies. Luella wins on autonomous AI SDR persona — full reply-handling autonomy with persona-driven outreach. Different problems: Superkabe protects domains, Luella replaces the SDR.",
+        tldr: "Superkabe vs Luella head-to-head: Superkabe wins on the protection layer (auto-pause, 5-phase healing, ESP-aware routing) and per-workspace isolation for agencies. Luella wins on autonomous AI SDR persona - full reply-handling autonomy with persona-driven outreach. Different problems: Superkabe protects domains, Luella replaces the SDR.",
     },
 };

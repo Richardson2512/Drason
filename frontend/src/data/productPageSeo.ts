@@ -3,7 +3,7 @@ import type { FaqEntry, ProductComparisonTable } from './productPages';
 /**
  * Supplementary SEO/AEO/GEO enrichment for product pages, keyed by slug.
  *
- * The product renderer merges this in on top of `productPages.ts` —
+ * The product renderer merges this in on top of `productPages.ts` -
  * if `productPages[slug].tldr` / `.faq` / `.comparisonTable` are unset,
  * the renderer falls back to the entry here.
  *
@@ -20,7 +20,7 @@ export interface ProductPageSeo {
 
 export const productPageSeo: Record<string, ProductPageSeo> = {
     "automated-bounce-management": {
-        tldr: "Superkabe intercepts every SMTP 5xx hard bounce via webhook from your sending engine (Smartlead, Instantly, EmailBison, or native) and evaluates the originating domain's bounce rate in real time. The moment the rate approaches the 2% safety threshold, Superkabe issues an API command to pause the compromised mailbox — before ISPs apply reputation penalties.",
+        tldr: "Superkabe intercepts every SMTP 5xx hard bounce via webhook from your sending engine (Smartlead, Instantly, EmailBison, or native) and evaluates the originating domain's bounce rate in real time. The moment the rate approaches the 2% safety threshold, Superkabe issues an API command to pause the compromised mailbox - before ISPs apply reputation penalties.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -38,7 +38,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "automated-domain-healing": {
-        tldr: "Superkabe detects early domain fatigue — soft bounces, deferral increases, delivery drops — before any threshold is crossed, then autonomously pauses the domain, redistributes queued volume to healthy senders, and reintegrates the domain only after predictive recovery signals confirm safety. Zero manual intervention across hundreds of domains.",
+        tldr: "Superkabe detects early domain fatigue - soft bounces, deferral increases, delivery drops - before any threshold is crossed, then autonomously pauses the domain, redistributes queued volume to healthy senders, and reintegrates the domain only after predictive recovery signals confirm safety. Zero manual intervention across hundreds of domains.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -51,17 +51,17 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
             },
             {
                 q: "How is 'healed' actually determined?",
-                a: "Predictive variance analysis against 30-day baselines — bounce rate, deferral rate, and delivery success ratio must all remain within healthy bands for the full warm-recovery window before graduation to healthy.",
+                a: "Predictive variance analysis against 30-day baselines - bounce rate, deferral rate, and delivery success ratio must all remain within healthy bands for the full warm-recovery window before graduation to healthy.",
             },
         ],
     },
     "b2b-sender-reputation-management": {
-        tldr: "Superkabe manages B2B sender reputation at the infrastructure level — intercepting hard bounces, spam complaints, and velocity anomalies in real time, then pausing compromised mailboxes before ISPs apply reputation penalties. Consolidates reputation telemetry across Smartlead, Instantly, and EmailBison into one governance engine.",
+        tldr: "Superkabe manages B2B sender reputation at the infrastructure level - intercepting hard bounces, spam complaints, and velocity anomalies in real time, then pausing compromised mailboxes before ISPs apply reputation penalties. Consolidates reputation telemetry across Smartlead, Instantly, and EmailBison into one governance engine.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "How long does recovery take once reputation is damaged?",
-                a: "30–45 days of careful low-volume sending, during which the domain generates effectively zero revenue. Prevention via real-time governance is cheaper than repair — the core reason Superkabe operates at the interception layer rather than the reporting layer.",
+                a: "30–45 days of careful low-volume sending, during which the domain generates effectively zero revenue. Prevention via real-time governance is cheaper than repair - the core reason Superkabe operates at the interception layer rather than the reporting layer.",
             },
             {
                 q: "Does this protect IP reputation or only domain reputation?",
@@ -70,7 +70,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "bounce-rate-protection-system": {
-        tldr: "Superkabe computes each domain's bounce rate continuously in real time (not daily batches). The moment the rate approaches the configured safety threshold (default 2%), direct REST API commands pause the compromised mailbox — millisecond latency between bounce event and protective action.",
+        tldr: "Superkabe computes each domain's bounce rate continuously in real time (not daily batches). The moment the rate approaches the configured safety threshold (default 2%), direct REST API commands pause the compromised mailbox - millisecond latency between bounce event and protective action.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -84,7 +84,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "case-study-bounce-reduction": {
-        tldr: "An outbound agency using Superkabe reduced bounce rate from 6.8% to 0.1% across 120 mailboxes in 30 days. Method: real-time bounce interception + autonomous mailbox pausing + pre-send validation of every lead. No change to their Smartlead setup — Superkabe wrapped around it.",
+        tldr: "An outbound agency using Superkabe reduced bounce rate from 6.8% to 0.1% across 120 mailboxes in 30 days. Method: real-time bounce interception + autonomous mailbox pausing + pre-send validation of every lead. No change to their Smartlead setup - Superkabe wrapped around it.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -107,7 +107,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
             },
             {
                 q: "What does 'recovered' mean in this case study?",
-                a: "All 40 domains returned to the healthy state with sub-2% bounce rate and above-threshold delivery rate for 7 consecutive days. Warm recovery phase was the longest gate — a deliberate slow ramp that prevents reopening the original damage.",
+                a: "All 40 domains returned to the healthy state with sub-2% bounce rate and above-threshold delivery rate for 7 consecutive days. Warm recovery phase was the longest gate - a deliberate slow ramp that prevents reopening the original damage.",
             },
         ],
     },
@@ -126,21 +126,21 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "cold-email-infrastructure-protection": {
-        tldr: "Superkabe provides autonomous infrastructure protection for high-volume cold email — per-mailbox bounce governance, per-domain reputation monitoring, and cross-fleet damage containment. Scale-critical operators who need deterministic safety guarantees, not probabilistic dashboards.",
+        tldr: "Superkabe provides autonomous infrastructure protection for high-volume cold email - per-mailbox bounce governance, per-domain reputation monitoring, and cross-fleet damage containment. Scale-critical operators who need deterministic safety guarantees, not probabilistic dashboards.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "What's the difference between 'protection' and 'monitoring'?",
-                a: "Monitoring tells you a domain burned yesterday. Protection prevents the burn from happening. Superkabe does both, but the prevention is the load-bearing feature — monitoring without intervention is just watching damage accrue.",
+                a: "Monitoring tells you a domain burned yesterday. Protection prevents the burn from happening. Superkabe does both, but the prevention is the load-bearing feature - monitoring without intervention is just watching damage accrue.",
             },
             {
                 q: "Does this work if my sending volume is under 5K/day?",
-                a: "Yes, but the marginal value is smaller. Protection matters most when fleet size makes manual monitoring impossible. Under 5K/day, a skilled operator can sometimes keep up manually — though they shouldn't have to.",
+                a: "Yes, but the marginal value is smaller. Protection matters most when fleet size makes manual monitoring impossible. Under 5K/day, a skilled operator can sometimes keep up manually - though they shouldn't have to.",
             },
         ],
     },
     "domain-burnout-prevention-tool": {
-        tldr: "Superkabe prevents domain burnout by intercepting the exact negative signals — hard bounces, spam complaints, elevated deferral rates — that cause ISPs to apply reputation penalties. Acts on these signals in real time rather than reporting them after the damage is done.",
+        tldr: "Superkabe prevents domain burnout by intercepting the exact negative signals - hard bounces, spam complaints, elevated deferral rates - that cause ISPs to apply reputation penalties. Acts on these signals in real time rather than reporting them after the damage is done.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -154,12 +154,12 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "email-deliverability-protection": {
-        tldr: "Email Deliverability Protection is Superkabe's active middleware layer — it sits between your lead source and your sending engine (or replaces both in native mode), validating, scoring, routing, and monitoring every send against mathematical safety rules that cannot be manually overridden.",
+        tldr: "Email Deliverability Protection is Superkabe's active middleware layer - it sits between your lead source and your sending engine (or replaces both in native mode), validating, scoring, routing, and monitoring every send against mathematical safety rules that cannot be manually overridden.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "Is Deliverability Protection the same as a spam filter?",
-                a: "No. Spam filters make inbox-placement decisions on the recipient side. Deliverability Protection operates on the sender side — ensuring the sender's infrastructure and behavior remain within ISP safety limits so inbox filters don't have to downrank it.",
+                a: "No. Spam filters make inbox-placement decisions on the recipient side. Deliverability Protection operates on the sender side - ensuring the sender's infrastructure and behavior remain within ISP safety limits so inbox filters don't have to downrank it.",
             },
             {
                 q: "Does it work alongside warmup tools?",
@@ -168,7 +168,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "email-infrastructure-health-check": {
-        tldr: "Superkabe performs continuous, automated email infrastructure health checks — SPF/DKIM/DMARC validation, DNSBL scanning (410 lists), bounce rate trend analysis, reputation drift detection — across your entire sending fleet. Anomalies trigger autonomous action, not just dashboard alerts.",
+        tldr: "Superkabe performs continuous, automated email infrastructure health checks - SPF/DKIM/DMARC validation, DNSBL scanning (410 lists), bounce rate trend analysis, reputation drift detection - across your entire sending fleet. Anomalies trigger autonomous action, not just dashboard alerts.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -177,17 +177,17 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
             },
             {
                 q: "What happens when a DNSBL hit is detected?",
-                a: "Critical hits (Spamhaus, Barracuda) trigger automatic domain pause and an alert. Major hits surface in the domain health view. Minor hits are logged without automatic action — they're informational signal.",
+                a: "Critical hits (Spamhaus, Barracuda) trigger automatic domain pause and an alert. Major hits surface in the domain health view. Minor hits are logged without automatic action - they're informational signal.",
             },
         ],
     },
     "email-infrastructure-protection": {
-        tldr: "Superkabe is the baseline protection system for outbound email infrastructure — ingress validation, real-time monitoring, autonomous pausing, and multi-phase recovery. Works with any supported sending platform (Smartlead, Instantly, EmailBison) or as the native sending engine itself.",
+        tldr: "Superkabe is the baseline protection system for outbound email infrastructure - ingress validation, real-time monitoring, autonomous pausing, and multi-phase recovery. Works with any supported sending platform (Smartlead, Instantly, EmailBison) or as the native sending engine itself.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "What's the minimum infrastructure size to benefit?",
-                a: "Two or more mailboxes on any single domain, or five or more mailboxes across domains. Below that, manual monitoring can keep up — though the labor cost still favors automation.",
+                a: "Two or more mailboxes on any single domain, or five or more mailboxes across domains. Below that, manual monitoring can keep up - though the labor cost still favors automation.",
             },
             {
                 q: "Does protection require changing our sending stack?",
@@ -196,12 +196,12 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "email-validation-infrastructure-protection": {
-        tldr: "Superkabe validates every lead pre-send: syntax, MX, disposable, catch-all, and conditional MillionVerifier API probing. Invalid leads are blocked at the ingestion layer — they never reach a sender. Cuts bounce rate by an order of magnitude versus unvalidated outbound.",
+        tldr: "Superkabe validates every lead pre-send: syntax, MX, disposable, catch-all, and conditional MillionVerifier API probing. Invalid leads are blocked at the ingestion layer - they never reach a sender. Cuts bounce rate by an order of magnitude versus unvalidated outbound.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "Why not rely on the enrichment provider's validation?",
-                a: "Most enrichment providers (Apollo, Clay, Ocean.io) don't validate for deliverability — they verify identity. The address may be a real person who left the company, has a full mailbox, or whose domain changed. Superkabe's validation layer catches deliverability-grade issues that identity-grade validation misses.",
+                a: "Most enrichment providers (Apollo, Clay, Ocean.io) don't validate for deliverability - they verify identity. The address may be a real person who left the company, has a full mailbox, or whose domain changed. Superkabe's validation layer catches deliverability-grade issues that identity-grade validation misses.",
             },
             {
                 q: "How does catch-all detection work?",
@@ -214,16 +214,16 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "esp-aware-routing": {
-        tldr: "Superkabe scores every mailbox by 30-day per-ESP performance — bounce rate to Gmail, bounce rate to Microsoft, bounce rate to Yahoo, bounce rate to Other — and pins the top 3 mailboxes for each lead based on recipient ESP. An Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate.",
+        tldr: "Superkabe scores every mailbox by 30-day per-ESP performance - bounce rate to Gmail, bounce rate to Microsoft, bounce rate to Yahoo, bounce rate to Other - and pins the top 3 mailboxes for each lead based on recipient ESP. An Outlook mailbox with 0.1% Gmail bounce rate outscores a Gmail mailbox with 2% Gmail bounce rate.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "Why performance-based and not naive ESP-to-ESP matching?",
-                a: "Because ESP alignment is a proxy, not a cause. What actually matters is the historical performance of the mailbox against the recipient's ESP — and that varies by mailbox, not by provider class. Performance-based scoring captures the signal directly.",
+                a: "Because ESP alignment is a proxy, not a cause. What actually matters is the historical performance of the mailbox against the recipient's ESP - and that varies by mailbox, not by provider class. Performance-based scoring captures the signal directly.",
             },
             {
                 q: "How many sends before ESP scoring activates?",
-                a: "30 sends per (mailbox, ESP) cell. Below that, the sample is too small to score reliably — those cells are handled by the warming-up fallback distribution.",
+                a: "30 sends per (mailbox, ESP) cell. Below that, the sample is too small to score reliably - those cells are handled by the warming-up fallback distribution.",
             },
         ],
     },
@@ -256,7 +256,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "lead-control-plane": {
-        tldr: "The Lead Control Plane is Superkabe's ingestion layer: upload CSV, receive Clay webhooks, or push via API. Every lead is validated (syntax, MX, disposable, catch-all, optional MillionVerifier), classified by recipient ESP, scored by the health gate, and routed to the correct campaign with pinned top-3 mailboxes — all before any send.",
+        tldr: "The Lead Control Plane is Superkabe's ingestion layer: upload CSV, receive Clay webhooks, or push via API. Every lead is validated (syntax, MX, disposable, catch-all, optional MillionVerifier), classified by recipient ESP, scored by the health gate, and routed to the correct campaign with pinned top-3 mailboxes - all before any send.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -270,12 +270,12 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "multi-platform-outbound-protection": {
-        tldr: "Superkabe consolidates sending telemetry from Smartlead, Instantly, and EmailBison into a single autonomous governance engine. Instead of three independent dashboards and three independent safety policies, you get one — enforcing consistent bounce thresholds, rotation rules, and healing protocols across every platform.",
+        tldr: "Superkabe consolidates sending telemetry from Smartlead, Instantly, and EmailBison into a single autonomous governance engine. Instead of three independent dashboards and three independent safety policies, you get one - enforcing consistent bounce thresholds, rotation rules, and healing protocols across every platform.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "Can Superkabe pause a campaign on one platform based on signals from another?",
-                a: "Yes. If a domain degrades via Smartlead sends, Superkabe will also pause the same domain's mailboxes on Instantly or EmailBison — because the reputation damage is on the domain, not on the platform.",
+                a: "Yes. If a domain degrades via Smartlead sends, Superkabe will also pause the same domain's mailboxes on Instantly or EmailBison - because the reputation damage is on the domain, not on the platform.",
             },
             {
                 q: "Does the unified view include native Superkabe sends?",
@@ -284,7 +284,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "outbound-domain-protection": {
-        tldr: "Superkabe protects outbound sender domains through real-time bounce interception + DNS health monitoring + DNSBL scanning + autonomous recovery. When a domain shows early degradation signals, every mailbox on that domain is paused together — reputation damage is at the domain level, so protection must be too.",
+        tldr: "Superkabe protects outbound sender domains through real-time bounce interception + DNS health monitoring + DNSBL scanning + autonomous recovery. When a domain shows early degradation signals, every mailbox on that domain is paused together - reputation damage is at the domain level, so protection must be too.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -293,17 +293,17 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
             },
             {
                 q: "How does this interact with mailbox-level protection?",
-                a: "Mailbox-level protection triggers first on localized issues (one sender behaving badly). Domain-level protection activates when multiple mailboxes on the same domain drift together — the signal that reputation damage is systemic.",
+                a: "Mailbox-level protection triggers first on localized issues (one sender behaving badly). Domain-level protection activates when multiple mailboxes on the same domain drift together - the signal that reputation damage is systemic.",
             },
         ],
     },
     "outbound-email-infrastructure-monitoring": {
-        tldr: "Superkabe provides real-time outbound email infrastructure monitoring — 60-second polling of mailbox health, bounce patterns, DNS auth, and DNSBL status — that autonomously acts on critical findings. Goes beyond passive dashboards: every tracked signal is wired to an intervention path.",
+        tldr: "Superkabe provides real-time outbound email infrastructure monitoring - 60-second polling of mailbox health, bounce patterns, DNS auth, and DNSBL status - that autonomously acts on critical findings. Goes beyond passive dashboards: every tracked signal is wired to an intervention path.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "What separates monitoring from alerting?",
-                a: "Monitoring tracks continuously. Alerting fires notifications. Superkabe does both, but the load-bearing feature is the autonomous action that follows the signal — not the notification itself.",
+                a: "Monitoring tracks continuously. Alerting fires notifications. Superkabe does both, but the load-bearing feature is the autonomous action that follows the signal - not the notification itself.",
             },
             {
                 q: "Can monitoring cadence be reduced to save cost?",
@@ -326,12 +326,12 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "sender-reputation-protection-tool": {
-        tldr: "Superkabe is a sender-reputation protection tool that actively enforces reputation safety rather than passively reporting reputation damage. Real-time bounce interception, autonomous mailbox pausing, and 5-phase recovery — every signal that damages reputation is intercepted before the damage is recorded by ISPs.",
+        tldr: "Superkabe is a sender-reputation protection tool that actively enforces reputation safety rather than passively reporting reputation damage. Real-time bounce interception, autonomous mailbox pausing, and 5-phase recovery - every signal that damages reputation is intercepted before the damage is recorded by ISPs.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "How is this different from reputation monitoring tools?",
-                a: "Monitoring tools report reputation after damage is done. Protection tools prevent the damage. Same signal, opposite workflows — Superkabe is primarily a protection tool with monitoring as a supporting surface.",
+                a: "Monitoring tools report reputation after damage is done. Protection tools prevent the damage. Same signal, opposite workflows - Superkabe is primarily a protection tool with monitoring as a supporting surface.",
             },
         ],
     },
@@ -341,7 +341,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         faq: [
             {
                 q: "Does Superkabe modify my Smartlead sequences?",
-                a: "No. Sequences, campaigns, and templates remain owned by Smartlead. Superkabe influences mailbox selection per lead and controls mailbox pause state — never sequence content.",
+                a: "No. Sequences, campaigns, and templates remain owned by Smartlead. Superkabe influences mailbox selection per lead and controls mailbox pause state - never sequence content.",
             },
             {
                 q: "Does Superkabe work with Smartlead's sub-workspaces?",
@@ -360,7 +360,7 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "what-is-email-deliverability-protection": {
-        tldr: "Active email deliverability protection is a middleware category that sits between lead sources and sending engines, intercepting the signals that damage sender reputation (hard bounces, spam complaints, deferral spikes) in real time. Distinct from monitoring (passive reporting) and warmup (volume ramping) — active protection is the only layer that acts before damage is recorded.",
+        tldr: "Active email deliverability protection is a middleware category that sits between lead sources and sending engines, intercepting the signals that damage sender reputation (hard bounces, spam complaints, deferral spikes) in real time. Distinct from monitoring (passive reporting) and warmup (volume ramping) - active protection is the only layer that acts before damage is recorded.",
         dateModified: "2026-04-24",
         faq: [
             {
@@ -374,12 +374,12 @@ export const productPageSeo: Record<string, ProductPageSeo> = {
         ],
     },
     "multi-platform-email-validation": {
-        tldr: "Superkabe validates leads across Smartlead, Instantly, and EmailBison with one unified layer — syntax, MX, disposable, catch-all, and optional MillionVerifier probing — before the lead reaches any sending platform. One validation budget, one source of truth, one API to verify.",
+        tldr: "Superkabe validates leads across Smartlead, Instantly, and EmailBison with one unified layer - syntax, MX, disposable, catch-all, and optional MillionVerifier probing - before the lead reaches any sending platform. One validation budget, one source of truth, one API to verify.",
         dateModified: "2026-04-24",
         faq: [
             {
                 q: "Can I validate without routing to a platform?",
-                a: "Yes. Standalone validation mode lets you upload a CSV, validate every lead, and export a clean list — no routing, no send, just verification. Counts against your monthly validation credits.",
+                a: "Yes. Standalone validation mode lets you upload a CSV, validate every lead, and export a clean list - no routing, no send, just verification. Counts against your monthly validation credits.",
             },
             {
                 q: "How are validation credits billed across platforms?",

@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * Slack notifications panel — surfaces every event_type the platform can fire
+ * Slack notifications panel - surfaces every event_type the platform can fire
  * into Slack, lets the operator toggle each one, and optionally re-route a
  * given event to a different channel than the integration default.
  *
  * Renders inside SlackIntegrationCard only when the workspace is connected.
  * Has two tabs:
- *   - Settings — checkbox + channel override per event, grouped by area.
- *   - History  — recent feed of what was sent or suppressed.
+ *   - Settings - checkbox + channel override per event, grouped by area.
+ *   - History  - recent feed of what was sent or suppressed.
  */
 
 import { useEffect, useState, useCallback } from 'react';

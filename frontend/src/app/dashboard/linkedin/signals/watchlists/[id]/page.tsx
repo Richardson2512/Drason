@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Watchlist detail — header + stats + matches table.
+ * Watchlist detail - header + stats + matches table.
  *
  * Manual review surface: every match landed by the scanner appears here
  * with the engager's profile and the post context. Operators can push a
@@ -119,12 +119,12 @@ export default function WatchlistDetailPage({ params }: { params: Promise<{ id: 
                 `/api/linkedin/watchlists/${id}/run-now`,
                 { method: 'POST' },
             );
-            toast.success(resp?.message || 'Scan queued — refresh in a few minutes to see new matches.');
+            toast.success(resp?.message || 'Scan queued - refresh in a few minutes to see new matches.');
             await fetchAll();
 
             // Snapshot the current last_run_at so the auto-poll loop
             // below can detect when the worker actually ran (last_run_at
-            // moves forward). Polls every 15s for up to 6 minutes —
+            // moves forward). Polls every 15s for up to 6 minutes -
             // covers the runner's 5-min tick plus a little headroom.
             const startedLastRunAt = data?.last_run_at ?? null;
             const deadline = Date.now() + 6 * 60 * 1000;
@@ -140,11 +140,11 @@ export default function WatchlistDetailPage({ params }: { params: Promise<{ id: 
                     const newLastRunAt = fresh?.data?.last_run_at ?? null;
                     if (newLastRunAt && newLastRunAt !== startedLastRunAt) {
                         clearInterval(pollInterval);
-                        toast.success('Scan complete — refreshing matches.');
+                        toast.success('Scan complete - refreshing matches.');
                         void fetchAll();
                     }
                 } catch {
-                    // ignore transient failures — the next tick retries
+                    // ignore transient failures - the next tick retries
                 }
             }, 15_000);
         } catch (err: any) {
@@ -156,7 +156,7 @@ export default function WatchlistDetailPage({ params }: { params: Promise<{ id: 
 
     const pushMatch = async (matchId: string) => {
         if (!data?.target_campaign_id && data?.routing_mode !== 'auto_push') {
-            // No default campaign — could prompt for campaign id, but for v1 require it on the watchlist.
+            // No default campaign - could prompt for campaign id, but for v1 require it on the watchlist.
             toast.error('No target campaign on this watchlist. Set one in settings or use auto-push.');
             return;
         }

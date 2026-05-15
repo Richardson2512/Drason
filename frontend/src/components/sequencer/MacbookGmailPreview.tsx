@@ -5,10 +5,10 @@
  *
  * Pixel-tuned replica of Gmail web on a MacBook Air 13". Two modes:
  *
- *   - 'inbox'  — your email shown as the most-recent row inside a realistic
+ *   - 'inbox'  - your email shown as the most-recent row inside a realistic
  *                Gmail inbox (with neighbor demo rows for visual context).
  *                This is what the recipient sees at the moment of decision.
- *   - 'opened' — your email opened, full Gmail reading-pane chrome with
+ *   - 'opened' - your email opened, full Gmail reading-pane chrome with
  *                action toolbar, External pill, "Summarize this email" bar,
  *                sender row, and Reply/Forward footer.
  *
@@ -16,7 +16,7 @@
  * (April 2026). The inner UI is rendered at a fixed virtual width of
  * 1280px and CSS-transform-scaled to whatever the host container provides.
  *
- * This component intentionally does NOT call the API — it takes raw
+ * This component intentionally does NOT call the API - it takes raw
  * subject/bodyHtml/sender props plus an optional pre-truncated inbox
  * preview line and AI summary. The host (RecipientPreviewPanel) drives
  * data fetching.
@@ -73,7 +73,7 @@ interface Props {
     inboxPreview?: string;
     /** Predicted Gemini "Summarize this email" output, if available. */
     aiSummary?: string;
-    /** 'inbox' or 'opened' — controlled by parent toolbar. */
+    /** 'inbox' or 'opened' - controlled by parent toolbar. */
     view: 'inbox' | 'opened';
 }
 
@@ -132,7 +132,7 @@ function timeNow(): string {
     return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
 }
 
-// Realistic neighbor inbox rows — picked to mirror the calibration screenshot.
+// Realistic neighbor inbox rows - picked to mirror the calibration screenshot.
 // These render BELOW the user's email so the user sees the truncation and
 // visual weight of their subject line in real inbox context.
 const NEIGHBOR_ROWS: { sender: string; subject: string; preview: string; time: string }[] = [
@@ -147,7 +147,7 @@ const NEIGHBOR_ROWS: { sender: string; subject: string; preview: string; time: s
 
 // ─── Gmail logo ──────────────────────────────────────────────────────────────
 //
-// The multicolored M envelope. Approximated via inline SVG — no external asset.
+// The multicolored M envelope. Approximated via inline SVG - no external asset.
 
 function GmailLogo({ size = 24 }: { size?: number }) {
     return (
@@ -647,7 +647,7 @@ export default function MacbookGmailPreview({
 
     return (
         <div ref={wrapRef} style={{ width: '100%' }}>
-            {/* Scaled device — height collapses to scaled value so we don't leave a gap. */}
+            {/* Scaled device - height collapses to scaled value so we don't leave a gap. */}
             <div style={{ height: deviceH * scale, position: 'relative' }}>
                 <div
                     style={{

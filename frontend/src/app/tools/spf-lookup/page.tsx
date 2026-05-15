@@ -135,7 +135,7 @@ export default function SpfLookupPage() {
  SPF (Sender Policy Framework) is a DNS-based email authentication protocol defined in RFC 7208. It allows domain owners to publish a list of mail servers that are authorized to send email on their behalf.
  </p>
  <p>
- When a receiving mail server gets an email claiming to be from your domain, it looks up the SPF record in your DNS. If the sending server&apos;s IP address matches one of the authorized mechanisms in the record, the SPF check passes. If not, the result depends on the &quot;all&quot; mechanism at the end of the record &mdash; typically softfail (~all) or hard fail (-all).
+ When a receiving mail server gets an email claiming to be from your domain, it looks up the SPF record in your DNS. If the sending server&apos;s IP address matches one of the authorized mechanisms in the record, the SPF check passes. If not, the result depends on the &quot;all&quot; mechanism at the end of the record - typically softfail (~all) or hard fail (-all).
  </p>
  <p>
  SPF is one of three email authentication protocols (alongside DKIM and DMARC) that are now required by Google and Yahoo for all bulk email senders. Without a valid SPF record, your emails are significantly more likely to land in spam or be rejected outright.

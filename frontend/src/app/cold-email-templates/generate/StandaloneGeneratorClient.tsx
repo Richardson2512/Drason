@@ -153,10 +153,10 @@ export default function StandaloneGeneratorClient({
                                 value={framework}
                                 onChange={setFramework}
                                 options={[
-                                    { value: '', label: 'Auto — let AI choose' },
+                                    { value: '', label: 'Auto - let AI choose' },
                                     ...frameworkOptions.map((o) => ({ value: o.value, label: o.label })),
                                 ]}
-                                placeholder="Auto — let AI choose"
+                                placeholder="Auto - let AI choose"
                             />
                         </div>
                     </div>
@@ -194,7 +194,7 @@ export default function StandaloneGeneratorClient({
                         />
                     </div>
 
-                    {/* Tone — chip selector */}
+                    {/* Tone - chip selector */}
                     <div>
                         <label className="text-xs font-medium text-[#4A3F30] mb-1.5 block">Tone</label>
                         <div className="flex flex-wrap gap-2">
@@ -325,7 +325,7 @@ export default function StandaloneGeneratorClient({
                     <p className="text-xs text-[#6B5E4F] mt-4 pt-4 border-t border-[#F0EBE3]">
                         {meta.remaining > 0
                             ? `${meta.remaining} of ${meta.limit} free generations remaining today`
-                            : `Daily limit reached — resets ${formatResetTime(meta.resetAt)}`}
+                            : `Daily limit reached - resets ${formatResetTime(meta.resetAt)}`}
                     </p>
                 )}
             </div>

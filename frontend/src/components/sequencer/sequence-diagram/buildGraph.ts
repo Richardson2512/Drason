@@ -27,7 +27,7 @@ import { NODE_WIDTH_PX } from './nodes';
 export interface SequenceStepInput {
     id: string;
     step_number: number;
-    /** Channel/executor selector — 'email' or any linkedin_* type. */
+    /** Channel/executor selector - 'email' or any linkedin_* type. */
     step_type?: string | null;
     /** Polymorphic per-step payload (note_template, body_template, reaction_type…). */
     step_config?: Record<string, unknown> | null;
@@ -186,7 +186,7 @@ export function buildSequenceGraph(
             attachTargetId = `email-${step.step_number}`;
         }
 
-        // ─── Action node — email vs linkedin_* ─────────────────────────
+        // ─── Action node - email vs linkedin_* ─────────────────────────
         const stepType = step.step_type || 'email';
         const isLinkedIn = isLinkedInStep(stepType);
         const emailId = `step-${step.step_number}`;

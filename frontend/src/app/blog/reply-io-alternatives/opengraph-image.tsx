@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Best Reply.io Alternatives for Cold Email in 2026 — Superkabe';
+export const alt = 'Best Reply.io Alternatives for Cold Email in 2026 - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -15,7 +15,7 @@ export default async function Image() {
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', alignSelf: 'flex-start', padding: '6px 14px', background: '#1C4532', color: '#F7F2EB', fontSize: 18, fontWeight: 600, marginBottom: 24, letterSpacing: '0.02em' }}>ALTERNATIVES · 2026</div>
                     <div style={{ fontSize: 72, fontWeight: 800, color: '#111827', lineHeight: 1.05, letterSpacing: '-0.03em', marginBottom: 20 }}>Best Reply.io alternatives</div>
-                    <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>7 ranked tools — Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy — compared on pricing, deliverability, and infrastructure protection.</div>
+                    <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>7 ranked tools - Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy - compared on pricing, deliverability, and infrastructure protection.</div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 20, color: '#6B7280' }}>
                     <span>Blog · Alternatives</span>

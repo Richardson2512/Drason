@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 // ────────────────────────────────────────────────────────────────────────────
-// Types — wire the previous mock-driven UI to the real backend shape.
+// Types - wire the previous mock-driven UI to the real backend shape.
 // Backend `health` ∈ {warming, maintenance, paused, error} maps to UI
 // `status` ∈ {warming, complete, paused, cooling} (where cooling = error
 // state, since the surface visually communicates "needs attention").
@@ -95,7 +95,7 @@ function healthToStatus(h: Health): Status {
     return h;
 }
 
-// Provider logos — same inline SVGs as the Sequencer accounts page so they're
+// Provider logos - same inline SVGs as the Sequencer accounts page so they're
 // visually consistent across the dashboard.
 const GoogleIcon = ({ size = 16 }: { size?: number }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -136,7 +136,7 @@ function ProviderAvatar({ provider, size = 28 }: { provider: Provider; size?: nu
     );
 }
 
-// Relative-time formatter for "last update" — keeps the UX feel of the
+// Relative-time formatter for "last update" - keeps the UX feel of the
 // previous mock without bringing in date-fns.
 function relativeTime(iso: string): string {
     const ms = Date.now() - new Date(iso).getTime();
@@ -184,7 +184,7 @@ export default function WarmupPage() {
     const [loading, setLoading] = useState(true);
     const [busyConsent, setBusyConsent] = useState(false);
 
-    // Filters / sort / view (UI state — same shape as before)
+    // Filters / sort / view (UI state - same shape as before)
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState<Status | 'all'>('all');
     const [providerFilter, setProviderFilter] = useState<Provider | 'all'>('all');
@@ -198,7 +198,7 @@ export default function WarmupPage() {
 
     // Per-mailbox config modal
     const [editingId, setEditingId] = useState<string | null>(null);
-    // Org-wide pool config modal — single-click bulk update for every mailbox
+    // Org-wide pool config modal - single-click bulk update for every mailbox
     const [showPoolConfig, setShowPoolConfig] = useState(false);
 
     const refresh = useCallback(async () => {
@@ -246,7 +246,7 @@ export default function WarmupPage() {
         }
     };
 
-    // Bulk actions — call toggle in parallel.
+    // Bulk actions - call toggle in parallel.
     const bulkSetEnabled = async (ids: string[], enabled: boolean) => {
         await Promise.all(
             ids.map(id => apiClient(`/api/sequencer/warmup/memberships/${id}/toggle`, {
@@ -331,7 +331,7 @@ export default function WarmupPage() {
         setSortKey('last_update');
     };
 
-    // Pre-compute filter labels — extracted out of JSX template literals
+    // Pre-compute filter labels - extracted out of JSX template literals
     // to dodge a Turbopack/SWC bug where `?.x ?? y` inside template strings
     // emits a reference to an undefined `_ref`.
     const statusOption = STATUS_FILTER_OPTIONS.find(o => o.key === statusFilter);
@@ -360,7 +360,7 @@ export default function WarmupPage() {
                         <h1 className="text-xl font-bold text-gray-900 tracking-tight">Warmup</h1>
                     </div>
                     <p className="text-xs text-gray-500 max-w-2xl">
-                        Each mailbox sends and receives synthetic templated emails inside our cross-tenant warmup network — recipients open, reply, and rescue from spam to build sender reputation gradually.
+                        Each mailbox sends and receives synthetic templated emails inside our cross-tenant warmup network - recipients open, reply, and rescue from spam to build sender reputation gradually.
                     </p>
                 </div>
                 <div className="flex gap-1.5">
@@ -398,7 +398,7 @@ export default function WarmupPage() {
                     <div className="flex-1 min-w-0">
                         <h2 className="text-xs font-bold text-amber-900 m-0 mb-0.5">Join the cross-tenant warmup pool</h2>
                         <p className="text-[11px] text-amber-900/80 m-0 mb-2 leading-relaxed">
-                            Mailboxes are auto-enrolled but won&apos;t send or receive warmup traffic until you opt in. By joining, your mailboxes exchange synthetic templated emails with other Superkabe customers&apos; mailboxes — content is templated and synthetic, never customer data. You can leave anytime.
+                            Mailboxes are auto-enrolled but won&apos;t send or receive warmup traffic until you opt in. By joining, your mailboxes exchange synthetic templated emails with other Superkabe customers&apos; mailboxes - content is templated and synthetic, never customer data. You can leave anytime.
                         </p>
                         <button
                             onClick={() => setConsent(true)}
@@ -430,7 +430,7 @@ export default function WarmupPage() {
                 />
                 <StatCard
                     label="Inbox placement"
-                    value={inboxes.length === 0 ? '—' : `${(avgInboxRate * 100).toFixed(1)}%`}
+                    value={inboxes.length === 0 ? '-' : `${(avgInboxRate * 100).toFixed(1)}%`}
                     icon={<Inbox size={14} />}
                     sub={inboxes.length === 0 ? 'no signal yet' : avgInboxRate >= 0.9 ? 'within target' : 'below target'}
                     subTone={inboxes.length === 0 ? 'gray' : avgInboxRate >= 0.9 ? 'green' : 'amber'}
@@ -606,10 +606,10 @@ export default function WarmupPage() {
                             </div>
                             <ol className="space-y-2.5 text-[11px] text-gray-600 leading-relaxed">
                                 <Step n={1}>
-                                    <strong className="text-gray-900">Connect a mailbox.</strong> Provider OAuth or SMTP creds — we auto-enroll on connection.
+                                    <strong className="text-gray-900">Connect a mailbox.</strong> Provider OAuth or SMTP creds - we auto-enroll on connection.
                                 </Step>
                                 <Step n={2}>
-                                    <strong className="text-gray-900">Join the cross-tenant pool.</strong> Your mailboxes exchange synthetic templated emails with other Superkabe customers&apos; mailboxes — opens, replies, spam-rescues.
+                                    <strong className="text-gray-900">Join the cross-tenant pool.</strong> Your mailboxes exchange synthetic templated emails with other Superkabe customers&apos; mailboxes - opens, replies, spam-rescues.
                                 </Step>
                                 <Step n={3}>
                                     <strong className="text-gray-900">Ramp daily volume.</strong> Default 5 → 50 emails/day over 21 days. Spam-folder drops slow the ramp.
@@ -777,8 +777,8 @@ function ListView({ mailboxes, selectedIds, allSelected, someSelected, onToggleS
 
                         {isExpanded && (
                             <div className="px-4 pb-3 pt-1 bg-gray-50/40 grid grid-cols-2 md:grid-cols-6 gap-3 border-t border-gray-100">
-                                <MiniStat label="Inbox" value={m.inbox_rate == null ? '—' : `${(m.inbox_rate * 100).toFixed(1)}%`} accent={m.inbox_rate == null ? undefined : m.inbox_rate >= 0.9 ? 'green' : 'amber'} />
-                                <MiniStat label="Spam (30d)" value={m.spam_rate_30d == null ? '—' : `${(m.spam_rate_30d * 100).toFixed(1)}%`} accent={m.spam_rate_30d == null ? undefined : m.spam_rate_30d < 0.05 ? 'green' : 'red'} />
+                                <MiniStat label="Inbox" value={m.inbox_rate == null ? '-' : `${(m.inbox_rate * 100).toFixed(1)}%`} accent={m.inbox_rate == null ? undefined : m.inbox_rate >= 0.9 ? 'green' : 'amber'} />
+                                <MiniStat label="Spam (30d)" value={m.spam_rate_30d == null ? '-' : `${(m.spam_rate_30d * 100).toFixed(1)}%`} accent={m.spam_rate_30d == null ? undefined : m.spam_rate_30d < 0.05 ? 'green' : 'red'} />
                                 <MiniStat label="Sent today" value={String(m.sent_today)} />
                                 <MiniStat label="Received today" value={String(m.received_today)} />
                                 <MiniStat label="Recovered (life)" value={String(m.total_recovered_from_spam)} accent="green" />
@@ -875,7 +875,7 @@ function GridView({ mailboxes, selectedIds, onToggleSelect, onToggleEnabled, onC
                             <div>
                                 <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Inbox</div>
                                 <div className={`text-lg font-bold ${m.inbox_rate == null ? 'text-gray-400' : m.inbox_rate >= 0.9 ? 'text-emerald-700' : 'text-amber-700'}`}>
-                                    {m.inbox_rate == null ? '—' : `${(m.inbox_rate * 100).toFixed(0)}%`}
+                                    {m.inbox_rate == null ? '-' : `${(m.inbox_rate * 100).toFixed(0)}%`}
                                 </div>
                             </div>
                         </div>
@@ -1193,7 +1193,7 @@ function ConfigModal({ membership, maxTargetDaily, onClose, onSaved }: {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Pool config modal — bulk-apply ramp config to every mailbox in the org.
+// Pool config modal - bulk-apply ramp config to every mailbox in the org.
 // Backed by PATCH /api/sequencer/warmup/pool-config which is a single
 // atomic SQL UPDATE on the server. ramp_step / current_daily / counters
 // are NOT reset; existing progress is preserved.
@@ -1258,17 +1258,17 @@ function PoolConfigModal({ mailboxCount, maxTargetDaily, onClose, onSaved }: {
                     <h2 className="text-base font-bold text-gray-900">Pool config</h2>
                 </div>
                 <p className="text-xs text-gray-500 mb-5">
-                    Bulk-apply ramp settings to <strong>all {mailboxCount} mailbox{mailboxCount === 1 ? '' : 'es'}</strong> in this workspace. Per-mailbox progress (days completed, current daily volume, lifetime counters) is preserved — only the ramp curve changes.
+                    Bulk-apply ramp settings to <strong>all {mailboxCount} mailbox{mailboxCount === 1 ? '' : 'es'}</strong> in this workspace. Per-mailbox progress (days completed, current daily volume, lifetime counters) is preserved - only the ramp curve changes.
                 </p>
 
                 <div className="space-y-4">
                     <NumberField label="Start volume (emails/day)" value={start} onChange={setStart} min={1} max={maxTargetDaily} hint="Default 5" />
                     <NumberField label="Target volume (emails/day)" value={target} onChange={setTarget} min={1} max={maxTargetDaily} hint={`Default 50, max ${maxTargetDaily}`} />
                     <NumberField label="Ramp duration (days)" value={days} onChange={setDays} min={1} max={90} hint="Default 21" />
-                    <NumberField label="Maintenance volume (after ramp)" value={maintenance} onChange={setMaintenance} min={5} max={20} hint="Default 10 — continues indefinitely" />
+                    <NumberField label="Maintenance volume (after ramp)" value={maintenance} onChange={setMaintenance} min={5} max={20} hint="Default 10 - continues indefinitely" />
                 </div>
 
-                {/* Two-step confirmation — bulk operations should not be one
+                {/* Two-step confirmation - bulk operations should not be one
                     click. Click "Apply" once to reveal the confirm button so
                     the operator gets a final visual diff of what they're
                     about to do. */}
@@ -1291,7 +1291,7 @@ function PoolConfigModal({ mailboxCount, maxTargetDaily, onClose, onSaved }: {
                                 className="ml-auto px-4 py-1.5 text-[11px] font-bold rounded-md bg-orange-600 hover:bg-orange-700 text-white disabled:opacity-50 flex items-center gap-1.5"
                             >
                                 {saving && <Loader2 size={11} className="animate-spin" />}
-                                Confirm — apply to all
+                                Confirm - apply to all
                             </button>
                         </div>
                     </div>

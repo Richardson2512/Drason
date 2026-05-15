@@ -16,7 +16,7 @@ export default function Footer() {
  <span className="text-xl font-bold text-gray-900">Superkabe</span>
  </div>
  <p className="text-gray-500 text-base leading-relaxed mb-6">
- The AI-powered cold email platform with native deliverability protection. Run your cold email outreach and keep your senders healthy — from one product.
+ The AI-powered cold email platform with native deliverability protection. Run your cold email outreach and keep your senders healthy - from one product.
  </p>
  <p className="text-gray-400 text-xs">
  ♡ Made with love by the Superkabe team
@@ -51,7 +51,7 @@ export default function Footer() {
  </nav>
  </div>
 
- {/* Compare — Superkabe vs the rest of the cold-email category. */}
+ {/* Compare - Superkabe vs the rest of the cold-email category. */}
  <div className="flex flex-col gap-4">
  <h4 className="font-bold text-gray-900 mb-2 text-base">Compare</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">

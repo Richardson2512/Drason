@@ -45,7 +45,7 @@ export default function ClayIntegrationPage() {
  <div className="border-2 border-gray-300 p-4 flex items-center gap-3 bg-gray-50">
  <Image src="/clay.png" alt="Clay" width={24} height={24} className="flex-shrink-0" />
  <div>
- <p className="font-bold text-gray-900 text-sm">Clay — Lead Enrichment</p>
+ <p className="font-bold text-gray-900 text-sm">Clay - Lead Enrichment</p>
  <p className="text-gray-500 text-xs">Enriched lead data sent via HTTP webhook to Superkabe</p>
  </div>
  </div>
@@ -57,7 +57,7 @@ export default function ClayIntegrationPage() {
  <div className="border-2 border-blue-400 p-4 flex items-center gap-3 bg-blue-50">
  <Image src="/image/logo-v2.png" alt="Superkabe" width={24} height={24} className="flex-shrink-0" />
  <div>
- <p className="font-bold text-gray-900 text-sm">Superkabe Webhook — Ingestion</p>
+ <p className="font-bold text-gray-900 text-sm">Superkabe Webhook - Ingestion</p>
  <p className="text-gray-500 text-xs">Lead received, parsed, and deduplicated against existing records</p>
  </div>
  </div>
@@ -81,7 +81,7 @@ export default function ClayIntegrationPage() {
  <div className="border-2 border-blue-400 p-4 flex items-center gap-3 bg-blue-50">
  <Image src="/image/logo-v2.png" alt="Superkabe" width={24} height={24} className="flex-shrink-0" />
  <div>
- <p className="font-bold text-gray-900 text-sm">Health Gate — Classification</p>
+ <p className="font-bold text-gray-900 text-sm">Health Gate - Classification</p>
  <p className="text-gray-500 text-xs">Lead scored and classified as GREEN, YELLOW, or RED</p>
  </div>
  </div>
@@ -92,11 +92,11 @@ export default function ClayIntegrationPage() {
  {/* Branch: RED blocked */}
  <div className="flex gap-4">
  <div className="flex-1 border-2 border-red-400 p-4 bg-red-50">
- <p className="font-bold text-red-700 text-sm">RED — Blocked</p>
+ <p className="font-bold text-red-700 text-sm">RED - Blocked</p>
  <p className="text-gray-500 text-xs">Invalid, disposable, or high-risk emails stopped here. Never reaches a sender platform.</p>
  </div>
  <div className="flex-1 border-2 border-green-400 p-4 bg-green-50">
- <p className="font-bold text-green-700 text-sm">GREEN / YELLOW — Proceed</p>
+ <p className="font-bold text-green-700 text-sm">GREEN / YELLOW - Proceed</p>
  <p className="text-gray-500 text-xs">Validated leads continue to the routing engine.</p>
  </div>
  </div>
@@ -130,7 +130,7 @@ export default function ClayIntegrationPage() {
 
  {/* Step 7: Native Send */}
  <div className="border-2 border-blue-400 p-4 flex items-center justify-center gap-2 bg-blue-50">
- <p className="font-bold text-blue-700 text-sm">Send via your connected Superkabe mailbox (Google / Microsoft / SMTP) — passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation checks before leaving</p>
+ <p className="font-bold text-blue-700 text-sm">Send via your connected Superkabe mailbox (Google / Microsoft / SMTP) - passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation checks before leaving</p>
  </div>
  <div className="flex justify-center py-1">
  <div className="w-0.5 h-6 bg-green-300"></div>
@@ -138,7 +138,7 @@ export default function ClayIntegrationPage() {
 
  {/* Step 8: Active */}
  <div className="border-2 border-green-400 p-4 flex items-center justify-center gap-2 bg-green-50">
- <p className="font-bold text-green-700 text-sm">Lead marked ACTIVE — in campaign and ready to send</p>
+ <p className="font-bold text-green-700 text-sm">Lead marked ACTIVE - in campaign and ready to send</p>
  </div>
  </div>
 
@@ -159,7 +159,7 @@ export default function ClayIntegrationPage() {
  </li>
  <li className="flex items-start gap-3">
  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">3</span>
- <span>At least one sending mailbox connected to Superkabe — Google Workspace, Microsoft 365, or SMTP (Dashboard → Sequencer → Accounts)</span>
+ <span>At least one sending mailbox connected to Superkabe - Google Workspace, Microsoft 365, or SMTP (Dashboard → Sequencer → Accounts)</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold">4</span>
@@ -173,7 +173,7 @@ export default function ClayIntegrationPage() {
  </div>
 
  {/* ==================== Section 4: Connect Your Mailboxes ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 1 — Connect Your Mailboxes</h2>
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 1 - Connect Your Mailboxes</h2>
  <p className="text-gray-600 mb-6">
  Superkabe sends from your own infrastructure. Connect at least one mailbox before creating a campaign.
  </p>
@@ -183,12 +183,12 @@ export default function ClayIntegrationPage() {
  <li><strong>1.</strong> Open <strong>Dashboard → Sequencer → Accounts</strong></li>
  <li><strong>2.</strong> Click <strong>Connect</strong> and pick a provider:
  <ul className="ml-5 mt-1 space-y-1">
- <li>– <strong>Google Workspace</strong> — OAuth flow, no credentials stored</li>
- <li>– <strong>Microsoft 365</strong> — OAuth flow, no credentials stored</li>
- <li>– <strong>SMTP</strong> — paste host, port, username, password (encrypted at rest)</li>
+ <li>– <strong>Google Workspace</strong> - OAuth flow, no credentials stored</li>
+ <li>– <strong>Microsoft 365</strong> - OAuth flow, no credentials stored</li>
+ <li>– <strong>SMTP</strong> - paste host, port, username, password (encrypted at rest)</li>
  </ul>
  </li>
- <li><strong>3.</strong> Repeat for as many mailboxes as you want — there&apos;s no per-tier mailbox limit</li>
+ <li><strong>3.</strong> Repeat for as many mailboxes as you want - there&apos;s no per-tier mailbox limit</li>
  </ol>
  <div className="mt-3">
  <Link href="/docs/getting-started" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
@@ -198,19 +198,19 @@ export default function ClayIntegrationPage() {
  </div>
 
  {/* ==================== Section 5: Create Campaigns ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 2 — Create a Campaign in Superkabe</h2>
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 2 - Create a Campaign in Superkabe</h2>
 
  <div className="bg-gray-50 border border-gray-200 p-6 mb-12">
  <ol className="space-y-2 text-gray-600 text-sm">
  <li><strong>1.</strong> Open <strong>Dashboard → Campaigns → New campaign</strong></li>
  <li><strong>2.</strong> Configure the sequence (steps + variants), schedule windows, and stop rules</li>
  <li><strong>3.</strong> Attach the mailboxes you connected in Step 1</li>
- <li><strong>4.</strong> Save the campaign — it will appear in the routing-rule target dropdown for Step 3</li>
+ <li><strong>4.</strong> Save the campaign - it will appear in the routing-rule target dropdown for Step 3</li>
  </ol>
  </div>
 
  {/* ==================== Section 6: Routing Rules ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 3 — Set Up Routing Rules</h2>
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 3 - Set Up Routing Rules</h2>
  <p className="text-gray-600 mb-4">
  Routing rules tell Superkabe which campaign to assign each lead to. Rules are matched by persona and minimum lead score,
  and checked in priority order (lowest number first).
@@ -223,10 +223,10 @@ export default function ClayIntegrationPage() {
  <li>
  <strong>3.</strong> Fill in the rule fields:
  <ul className="mt-2 ml-4 space-y-1">
- <li>- <strong>Persona</strong> — exact match against the lead&apos;s persona field, or <code className="px-2 py-1 bg-white text-purple-600 text-xs">*</code> for a catch-all rule</li>
- <li>- <strong>Min Score</strong> — minimum lead_score required (0-100)</li>
- <li>- <strong>Priority</strong> — lower number = checked first</li>
- <li>- <strong>Target Campaign</strong> — dropdown grouped by platform (Smartlead / Instantly / EmailBison)</li>
+ <li>- <strong>Persona</strong> - exact match against the lead&apos;s persona field, or <code className="px-2 py-1 bg-white text-purple-600 text-xs">*</code> for a catch-all rule</li>
+ <li>- <strong>Min Score</strong> - minimum lead_score required (0-100)</li>
+ <li>- <strong>Priority</strong> - lower number = checked first</li>
+ <li>- <strong>Target Campaign</strong> - dropdown grouped by platform (Smartlead / Instantly / EmailBison)</li>
  </ul>
  </li>
  <li><strong>4.</strong> Save the rule and repeat for each ICP segment</li>
@@ -282,7 +282,7 @@ export default function ClayIntegrationPage() {
  </div>
 
  {/* ==================== Section 7: Configure Clay Webhook ==================== */}
- <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 4 — Configure Clay Webhook</h2>
+ <h2 className="text-3xl font-bold mb-4 mt-16 text-gray-900">Step 4 - Configure Clay Webhook</h2>
  <p className="text-gray-600 mb-6">
  This is where you connect Clay to Superkabe so enriched leads flow in automatically.
  </p>
@@ -324,7 +324,7 @@ export default function ClayIntegrationPage() {
 X-Organization-ID: YOUR_ORG_ID
 X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  <p className="text-xs text-gray-500 mt-2 leading-relaxed">
- Copy the webhook secret from <a href="/dashboard/integrations/clay" className="text-blue-600 hover:underline">Dashboard → Integrations → Clay</a>. It&apos;s a per-org token (rotated on demand) that Superkabe verifies against the request — same security model as a bearer token. <em>Advanced:</em> if you can compute HMAC-SHA256 in a separate Clay column, send <code className="bg-gray-100 px-1 py-0.5 rounded">X-Clay-Signature: &lt;hex&gt;</code> instead. Either header works.
+ Copy the webhook secret from <a href="/dashboard/integrations/clay" className="text-blue-600 hover:underline">Dashboard → Integrations → Clay</a>. It&apos;s a per-org token (rotated on demand) that Superkabe verifies against the request - same security model as a bearer token. <em>Advanced:</em> if you can compute HMAC-SHA256 in a separate Clay column, send <code className="bg-gray-100 px-1 py-0.5 rounded">X-Clay-Signature: &lt;hex&gt;</code> instead. Either header works.
  </p>
  </div>
  </div>
@@ -342,7 +342,7 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  "Lead_Score": {{Lead Score}}
 }`}</pre>
  <p className="text-xs text-gray-500 mt-2">
- The pattern: JSON keys use underscores (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>), Clay column references inside <code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{ ... }}'}</code> use the literal column name with spaces (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{Work Email}}'}</code>). Clay&apos;s editor recommends this convention. The Superkabe Clay endpoint matches keys case-insensitively and accepts both underscored and spaced variants, so <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">work email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">email</code>, and <code className="px-1 py-0.5 bg-gray-100 text-[11px]">e-mail</code> all map to the same field. See the field reference below for the full list of accepted variants. String values stay quoted; <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Lead_Score</code> stays unquoted. Don&apos;t wrap the whole body in outer quotes or escape the inner quotes — Clay expects raw JSON. You do not need to specify a campaign ID; routing is handled automatically by your routing rules.
+ The pattern: JSON keys use underscores (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>), Clay column references inside <code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{ ... }}'}</code> use the literal column name with spaces (<code className="px-1 py-0.5 bg-gray-100 text-[11px]">{'{{Work Email}}'}</code>). Clay&apos;s editor recommends this convention. The Superkabe Clay endpoint matches keys case-insensitively and accepts both underscored and spaced variants, so <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Work_Email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">work email</code>, <code className="px-1 py-0.5 bg-gray-100 text-[11px]">email</code>, and <code className="px-1 py-0.5 bg-gray-100 text-[11px]">e-mail</code> all map to the same field. See the field reference below for the full list of accepted variants. String values stay quoted; <code className="px-1 py-0.5 bg-gray-100 text-[11px]">Lead_Score</code> stays unquoted. Don&apos;t wrap the whole body in outer quotes or escape the inner quotes - Clay expects raw JSON. You do not need to specify a campaign ID; routing is handled automatically by your routing rules.
  </p>
  </div>
  </li>
@@ -443,14 +443,14 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  <div className="space-y-2 text-sm text-gray-600">
  <p><strong>Internal checks (all plans):</strong></p>
  <ul className="ml-4 space-y-1">
- <li>- <strong>Syntax validation</strong> — rejects malformed addresses (missing @, invalid characters)</li>
- <li>- <strong>MX record lookup</strong> — confirms the recipient domain has mail servers</li>
- <li>- <strong>Disposable domain detection</strong> — blocks throwaway email providers (mailinator.com, guerrillamail.com, etc.)</li>
- <li>- <strong>Catch-all domain detection</strong> — flags domains that accept all addresses (higher bounce risk)</li>
+ <li>- <strong>Syntax validation</strong> - rejects malformed addresses (missing @, invalid characters)</li>
+ <li>- <strong>MX record lookup</strong> - confirms the recipient domain has mail servers</li>
+ <li>- <strong>Disposable domain detection</strong> - blocks throwaway email providers (mailinator.com, guerrillamail.com, etc.)</li>
+ <li>- <strong>Catch-all domain detection</strong> - flags domains that accept all addresses (higher bounce risk)</li>
  </ul>
  <p className="mt-3"><strong>API verification (Growth/Scale plans):</strong></p>
  <ul className="ml-4 space-y-1">
- <li>- <strong>MillionVerifier</strong> — verifies risky emails against a real-time verification API for definitive deliverability status</li>
+ <li>- <strong>MillionVerifier</strong> - verifies risky emails against a real-time verification API for definitive deliverability status</li>
  </ul>
  <p className="mt-3"><strong>Result:</strong> A validation score from 0-100 is assigned to the lead.</p>
  <p className="mt-2"><strong>Where to see it:</strong> Leads page → click any lead → Email Validation card</p>
@@ -509,7 +509,7 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  <li>- Rules are checked in <strong>priority order</strong> (priority 1 before priority 2, etc.)</li>
  <li>- The first rule where the lead&apos;s <strong>persona matches</strong> AND <strong>lead_score &gt;= min_score</strong> wins</li>
  <li>- The lead is assigned to that rule&apos;s target campaign</li>
- <li>- If <strong>no rule matches</strong>, the lead stays <code className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold">HELD</code> — check your Configuration page to add a matching rule</li>
+ <li>- If <strong>no rule matches</strong>, the lead stays <code className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold">HELD</code> - check your Configuration page to add a matching rule</li>
  </ul>
  <p className="mt-3"><strong>Where to see it:</strong> Leads page → lead detail → Execution Context shows the assigned campaign</p>
  </div>
@@ -524,13 +524,13 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  Every send passes through:
  </p>
  <ul className="space-y-1 text-sm text-gray-600 ml-4">
- <li>– <strong>Execution gate</strong> — verifies mailbox is healthy + below daily/warmup cap</li>
- <li>– <strong>SMTP transcript capture</strong> — records the SMTP exchange for diagnostics</li>
- <li>– <strong>DSN parsing</strong> — async bounces routed back to the bounce monitor</li>
- <li>– <strong>State machine</strong> — pauses the mailbox immediately on bounce-rate breach</li>
+ <li>– <strong>Execution gate</strong> - verifies mailbox is healthy + below daily/warmup cap</li>
+ <li>– <strong>SMTP transcript capture</strong> - records the SMTP exchange for diagnostics</li>
+ <li>– <strong>DSN parsing</strong> - async bounces routed back to the bounce monitor</li>
+ <li>– <strong>State machine</strong> - pauses the mailbox immediately on bounce-rate breach</li>
  </ul>
  <div className="mt-4 space-y-2 text-sm">
- <p className="text-green-700 font-medium">Once enrolled: lead is marked <code className="px-2 py-0.5 bg-green-100 text-green-800 text-xs font-bold">ACTIVE</code> — it is in the campaign queue.</p>
+ <p className="text-green-700 font-medium">Once enrolled: lead is marked <code className="px-2 py-0.5 bg-green-100 text-green-800 text-xs font-bold">ACTIVE</code> - it is in the campaign queue.</p>
  <p className="text-amber-700 font-medium">If enrollment fails: the lead stays <code className="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-bold">HELD</code> for automatic retry.</p>
  </div>
  <p className="text-gray-500 text-sm mt-3">
@@ -545,10 +545,10 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  </p>
  <div className="bg-white border border-gray-200 p-6 mb-12 shadow-sm">
  <ul className="space-y-3 text-gray-600 text-sm">
- <li>- <strong>Bounce rate tracking</strong> — monitored per mailbox and per domain in real time</li>
- <li>- <strong>Auto-pause</strong> — mailboxes are automatically paused if bounce thresholds are breached</li>
- <li>- <strong>5-phase healing pipeline</strong> — paused mailboxes enter an automated recovery process to restore them safely</li>
- <li>- <strong>Campaign health</strong> — campaigns are paused only when ALL their mailboxes are paused or removed</li>
+ <li>- <strong>Bounce rate tracking</strong> - monitored per mailbox and per domain in real time</li>
+ <li>- <strong>Auto-pause</strong> - mailboxes are automatically paused if bounce thresholds are breached</li>
+ <li>- <strong>5-phase healing pipeline</strong> - paused mailboxes enter an automated recovery process to restore them safely</li>
+ <li>- <strong>Campaign health</strong> - campaigns are paused only when ALL their mailboxes are paused or removed</li>
  </ul>
  <div className="mt-4 flex flex-wrap gap-3">
  <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
@@ -578,12 +578,12 @@ X-Clay-Secret: YOUR_WEBHOOK_SECRET`}</pre>
  <tr>
  <td className="px-5 py-4"><code className="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold">BLOCKED</code></td>
  <td className="px-5 py-4 text-gray-600">Failed validation or health gate</td>
- <td className="px-5 py-4 text-gray-600">Check lead detail for the reason. No action needed — this is protection working correctly.</td>
+ <td className="px-5 py-4 text-gray-600">Check lead detail for the reason. No action needed - this is protection working correctly.</td>
  </tr>
  <tr>
  <td className="px-5 py-4"><code className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-bold">HELD</code></td>
  <td className="px-5 py-4 text-gray-600">Passed validation but not yet in a campaign</td>
- <td className="px-5 py-4 text-gray-600">Check routing rules — no rule may match this lead&apos;s persona or score. Or a platform push failed and will retry.</td>
+ <td className="px-5 py-4 text-gray-600">Check routing rules - no rule may match this lead&apos;s persona or score. Or a platform push failed and will retry.</td>
  </tr>
  <tr>
  <td className="px-5 py-4"><code className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold">ACTIVE</code></td>

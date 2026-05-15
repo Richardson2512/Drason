@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Posts subpage — plain LinkedIn posts authored by this account,
+ * Posts subpage - plain LinkedIn posts authored by this account,
  * excluding articles, reposts, and thought-leadership pieces (those
  * each live on their own tab).
  */

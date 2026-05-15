@@ -214,7 +214,7 @@ export default function SequencerAnalyticsPage() {
                     <p className="text-sm font-semibold text-gray-900 mb-1">A/B Variant analysis</p>
                     <p className="text-xs text-gray-500 max-w-md mx-auto">
                         Per-variant open / click / reply / bounce performance with weight-adjusted significance testing.
-                        Coming soon — the data is already being captured on every send.
+                        Coming soon - the data is already being captured on every send.
                     </p>
                 </div>
             )}
@@ -304,7 +304,7 @@ export default function SequencerAnalyticsPage() {
                 )}
             </div>
 
-            {/* Mailbox Performance Table — per-mailbox aggregates over the
+            {/* Mailbox Performance Table - per-mailbox aggregates over the
                 current time range. Mirrors the Campaign Performance card's
                 shape so users can scan both with the same mental model. */}
             <div className="premium-card">
@@ -334,7 +334,7 @@ export default function SequencerAnalyticsPage() {
                                     </tr>
                                 ) : (
                                     mailboxesPageSlice.map(m => {
-                                        // Surface the most actionable status — recovery phase trumps
+                                        // Surface the most actionable status - recovery phase trumps
                                         // raw status (a 'healthy' mailbox in 'quarantine' phase is
                                         // not actually healthy from a sending standpoint).
                                         const tone =
@@ -403,7 +403,7 @@ export default function SequencerAnalyticsPage() {
                 )}
             </div>
 
-            {/* Capacity ahead — forward-looking, source: ConnectedAccount.daily_send_limit. */}
+            {/* Capacity ahead - forward-looking, source: ConnectedAccount.daily_send_limit. */}
             <SendVolumeForecast />
 
             <div className="premium-card">
@@ -419,7 +419,7 @@ export default function SequencerAnalyticsPage() {
 }
 
 /**
- * Pager — compact in-card pagination footer for the performance tables.
+ * Pager - compact in-card pagination footer for the performance tables.
  *
  * Shows "X–Y of N" with prev/next chevrons. Both tables on this page
  * use this same shape so the analytics surface reads consistently.

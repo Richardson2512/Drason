@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LinkedIn campaign sequence schema page — per-campaign visual diagram.
+ * LinkedIn campaign sequence schema page - per-campaign visual diagram.
  *
  * Replaces the standalone `/dashboard/linkedin/campaigns/sequence-preview`
  * URL: that page rendered a static mock flow at the top-level. This page
@@ -78,7 +78,7 @@ export default function LinkedInCampaignSequenceSchemaPage({ params }: { params:
                 if (s.subject) step_config.subject = s.subject;
                 if (s.body)    step_config.body = s.body;
                 break;
-            // view_profile / follow / like_post / email don't need extra config —
+            // view_profile / follow / like_post / email don't need extra config -
             // like_post defaults to LIKE / 30-day timespan in the renderer.
         }
         return {
@@ -137,7 +137,7 @@ export default function LinkedInCampaignSequenceSchemaPage({ params }: { params:
                     <GitBranch className="w-7 h-7 text-gray-300 mb-2" />
                     <p className="text-sm font-semibold text-gray-900 mb-1">No steps yet</p>
                     <p className="text-xs text-gray-500 max-w-md">
-                        This campaign has no sequence steps configured. Build the sequence in the campaign editor first — the schema will render here automatically.
+                        This campaign has no sequence steps configured. Build the sequence in the campaign editor first - the schema will render here automatically.
                     </p>
                 </div>
             ) : data ? (

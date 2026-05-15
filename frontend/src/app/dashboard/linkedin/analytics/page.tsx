@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * Super LinkedIn analytics — 6-tab dashboard.
+ * Super LinkedIn analytics - 6-tab dashboard.
  *
  * Tabs:
- *   Live              — KPIs, daily sent, campaign performance
- *   Acceptance funnel — 4-stage waterfall: Invites → Accepted → DMs → Replies
- *   Signals & ICP     — signal-to-lead funnel, event-type breakdown, auto-tag mix
- *   Reply quality     — 9-class DM reply classification with samples
- *   Senders           — capacity heatmap, account status, type benchmarks,
+ *   Live              - KPIs, daily sent, campaign performance
+ *   Acceptance funnel - 4-stage waterfall: Invites → Accepted → DMs → Replies
+ *   Signals & ICP     - signal-to-lead funnel, event-type breakdown, auto-tag mix
+ *   Reply quality     - 9-class DM reply classification with samples
+ *   Senders           - capacity heatmap, account status, type benchmarks,
  *                       working-hours compliance, comparison panel
- *   Step-level        — per-step send/skip/fail/branch, failure taxonomy,
+ *   Step-level        - per-step send/skip/fail/branch, failure taxonomy,
  *                       agent telemetry
  *
  * All tabs share one filter bar at the top: date range (custom + presets),
@@ -724,7 +724,7 @@ function ReplyQualityTab({ filters }: { filters: Filters }) {
             </PanelShell>
 
             {drillClass && rq.data.samples[drillClass] && (
-                <PanelShell title={`Examples — ${REPLY_CLASS_META.find(m => m.key === drillClass)?.label ?? drillClass}`}>
+                <PanelShell title={`Examples - ${REPLY_CLASS_META.find(m => m.key === drillClass)?.label ?? drillClass}`}>
                     {rq.data.samples[drillClass].length === 0 ? <CenteredEmpty text="No samples available" /> : (
                         <div className="flex flex-col gap-2">
                             {rq.data.samples[drillClass].map(s => (
@@ -954,8 +954,8 @@ function AccountStatusBlock({ data }: { data: AccountStatusPayload }) {
                                 <div className="text-[10px] text-gray-500">{a.account_type.replace(/_/g, ' ')}</div>
                             </td>
                             <td className="px-2 py-1.5 text-center"><StatusPill value={a.status} /></td>
-                            <td className="px-2 py-1.5 text-[11px] text-gray-600 max-w-[300px] truncate">{a.status_detail ?? '—'}</td>
-                            <td className="px-2 py-1.5 text-right text-[11px] text-gray-500">{a.last_status_at ? new Date(a.last_status_at).toLocaleString() : '—'}</td>
+                            <td className="px-2 py-1.5 text-[11px] text-gray-600 max-w-[300px] truncate">{a.status_detail ?? '-'}</td>
+                            <td className="px-2 py-1.5 text-right text-[11px] text-gray-500">{a.last_status_at ? new Date(a.last_status_at).toLocaleString() : '-'}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -989,7 +989,7 @@ function AffinityHeatmap({ data }: { data: AffinityPayload }) {
                                 const bg = sent === 0 ? '#F9FAFB' : `rgba(10, 102, 194, ${0.15 + intensity * 0.6})`;
                                 return (
                                     <td key={s.id} className="px-2 py-1 text-center rounded-md" style={{ background: bg }}>
-                                        {sent === 0 ? <span className="text-[10px] text-gray-400">—</span> : (
+                                        {sent === 0 ? <span className="text-[10px] text-gray-400">-</span> : (
                                             <>
                                                 <div className="text-[10px] tabular-nums font-semibold text-gray-900">{sent}</div>
                                                 <div className="text-[9px] tabular-nums text-gray-600">{pct(cell?.accept_rate ?? 0, 0)}</div>

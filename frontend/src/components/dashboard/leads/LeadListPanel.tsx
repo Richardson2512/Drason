@@ -57,7 +57,7 @@ export default function LeadListPanel({
             <div className="mb-4 shrink-0">
                 <h1 className="text-xl font-bold text-gray-900 mb-3">Leads</h1>
 
-                {/* Stats bar — also acts as the status filter. Clicking a pill
+                {/* Stats bar - also acts as the status filter. Clicking a pill
                     filters the list; clicking "All" clears the filter. */}
                 {entityStats && (
                     <div className="mb-4">

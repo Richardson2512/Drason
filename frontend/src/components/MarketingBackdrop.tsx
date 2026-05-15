@@ -5,7 +5,7 @@
  * z-index: -1, so the grid sits BEHIND the wrapper's content. Combined
  * with `isolation: isolate` on any element with `bg-[#F7F2EB]` (set in
  * globals.css), this stays contained inside each marketing wrapper's
- * stacking context — content is always painted on top of the grid.
+ * stacking context - content is always painted on top of the grid.
  */
 export default function MarketingBackdrop() {
     return (

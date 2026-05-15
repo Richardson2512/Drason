@@ -9,7 +9,7 @@
  * (creates one row per category) and locally as a cookie so the banner
  * doesn't reappear on subsequent visits.
  *
- * Strict-necessary cookies (auth session, CSRF) are always allowed — the
+ * Strict-necessary cookies (auth session, CSRF) are always allowed - the
  * banner does not gate them; analytics + functional cookies are gated.
  *
  * The banner is shown to ALL visitors regardless of jurisdiction (safer
@@ -39,7 +39,7 @@ function readLocalConsent(): ConsentRecord | null {
 function writeLocalConsent(record: ConsentRecord): void {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
-    } catch { /* private mode etc — server record is canonical */ }
+    } catch { /* private mode etc - server record is canonical */ }
 }
 
 export default function CookieBanner() {
@@ -77,7 +77,7 @@ export default function CookieBanner() {
             decidedAt: new Date().toISOString(),
         });
 
-        // Google Consent Mode v2 update — notifies gtag.js to either start
+        // Google Consent Mode v2 update - notifies gtag.js to either start
         // writing _ga/_ga_* cookies (if granted) or stay in cookieless mode
         // (if denied). The default state set in layout.tsx is "denied" for
         // every category, so this is the gate that actually opens tracking.

@@ -7,7 +7,7 @@ import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import ConfirmActionModal from '@/components/modals/ConfirmActionModal';
 import type { SubscriptionData, Invoice, TierInfo } from '@/types/api';
 
-// Fallback used if the API fetch fails — keeps the page renderable.
+// Fallback used if the API fetch fails - keeps the page renderable.
 // Only two metered counters today: monthly sends + validation credits.
 // Domains, mailboxes, and leads are unlimited at every tier.
 const FALLBACK_TIER_INFO: Record<string, TierInfo> = {
@@ -91,7 +91,7 @@ function BillingContent() {
             const result = await apiClient<{ invoices: Invoice[] }>('/api/billing/invoices');
             setInvoices(result?.invoices || []);
         } catch {
-            // Invoices endpoint may not exist yet — graceful fallback
+            // Invoices endpoint may not exist yet - graceful fallback
             setInvoices([]);
         } finally {
             setInvoicesLoading(false);
@@ -115,7 +115,7 @@ function BillingContent() {
     // Plan changes (upgrade/downgrade) now go through the same Polar
     // checkout flow as initial purchases. The backend's /api/billing/
     // change-plan endpoint creates a checkout session and returns its URL
-    // — the customer pays the new tier's price, the webhook fires, the
+    // - the customer pays the new tier's price, the webhook fires, the
     // org's tier flips, and the previous subscription is canceled
     // automatically. Same flow for coupon and non-coupon customers.
     const handleChangePlan = async (tier: string) => {
@@ -143,7 +143,7 @@ function BillingContent() {
     };
 
     const [showCancelModal, setShowCancelModal] = useState(false);
-    // Required GDPR/DPDP consent — null until the user picks one. The
+    // Required GDPR/DPDP consent - null until the user picks one. The
     // confirm button stays disabled while this is null, so cancellation
     // can never go through without an affirmative data-retention choice.
     const [dataRetentionChoice, setDataRetentionChoice] = useState<'keep' | 'delete' | null>(null);
@@ -415,7 +415,7 @@ function BillingContent() {
                         </div>
                     </div>
 
-                    {/* Plan Options — upgrade and downgrade */}
+                    {/* Plan Options - upgrade and downgrade */}
                     {data?.subscription.status !== 'canceled' && (
                         <div className="premium-card">
                             <h3 className="text-lg font-bold mb-5 text-slate-800">
@@ -504,7 +504,7 @@ function BillingContent() {
                                 <div className="text-xl font-extrabold text-gray-900">
                                     {data?.subscription.nextBillingDate
                                         ? new Date(data.subscription.nextBillingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                                        : '—'}
+                                        : '-'}
                                 </div>
                                 <div className="text-sm mt-1 text-slate-500">
                                     {data?.subscription.status === 'trialing' ? 'After trial ends' : 'Recurring'}
@@ -517,7 +517,7 @@ function BillingContent() {
                                         ? new Date(data.subscription.subscriptionStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                         : data?.subscription.trialStartedAt
                                             ? new Date(data.subscription.trialStartedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                                            : '—'}
+                                            : '-'}
                                 </div>
                                 <div className="text-sm mt-1 text-slate-500">
                                     {data?.subscription.subscriptionStartedAt ? 'Subscription start' : 'Trial start'}
@@ -578,7 +578,7 @@ function BillingContent() {
                                                                 PDF
                                                             </a>
                                                         ) : (
-                                                            <span className="text-sm text-[#94A3B8]">—</span>
+                                                            <span className="text-sm text-[#94A3B8]">-</span>
                                                         )}
                                                     </td>
                                                 </tr>
@@ -624,7 +624,7 @@ function BillingContent() {
                     )}
                 </div>
             )}
-            {/* Cancel subscription — custom modal because we need to force
+            {/* Cancel subscription - custom modal because we need to force
                 an affirmative GDPR/DPDP choice on what happens to the
                 user's data after the paid period ends. The reusable
                 ConfirmActionModal can't render the radio picker, and
@@ -654,11 +654,11 @@ function BillingContent() {
                             What should we do with your data?
                         </div>
                         <div className="text-[11px] text-slate-400 mb-3">
-                            Required — we cannot retain your data without your explicit consent.
+                            Required - we cannot retain your data without your explicit consent.
                         </div>
 
                         <div className="flex flex-col gap-2.5">
-                            {/* Keep — explicit consent to retain */}
+                            {/* Keep - explicit consent to retain */}
                             <label
                                 className="flex gap-3 p-4 rounded-xl border cursor-pointer transition-all"
                                 style={{
@@ -683,7 +683,7 @@ function BillingContent() {
                                 </div>
                             </label>
 
-                            {/* Delete — schedule erasure */}
+                            {/* Delete - schedule erasure */}
                             <label
                                 className="flex gap-3 p-4 rounded-xl border cursor-pointer transition-all"
                                 style={{

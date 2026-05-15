@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Claude (MCP Server) | Superkabe Docs',
-    description: 'Connect Claude — claude.ai browser, Claude Desktop, Claude Code, Cursor — to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
+    description: 'Connect Claude - claude.ai browser, Claude Desktop, Claude Code, Cursor - to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
     alternates: { canonical: '/docs/mcp-server' },
     openGraph: {
         title: 'Claude (MCP Server) | Superkabe Docs',
-        description: 'Connect Claude — claude.ai browser, Claude Desktop, Claude Code, Cursor — to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
+        description: 'Connect Claude - claude.ai browser, Claude Desktop, Claude Code, Cursor - to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
         url: '/docs/mcp-server',
         siteName: 'Superkabe',
         type: 'article',
@@ -42,7 +42,7 @@ export default function McpServerDocsPage() {
                 Claude (MCP Server)
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Connect any Claude surface to Superkabe via the Model Context Protocol — run leads, campaigns, validation, and replies through natural language prompts
+                Connect any Claude surface to Superkabe via the Model Context Protocol - run leads, campaigns, validation, and replies through natural language prompts
             </p>
 
             <div className="bg-blue-50 border border-blue-200 p-6 mb-8">
@@ -56,7 +56,7 @@ export default function McpServerDocsPage() {
 
             <h2 id="overview" className="text-3xl font-bold mb-4 mt-12 text-gray-900">Overview</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Superkabe exposes 17 tools over the Model Context Protocol — Anthropic&apos;s open standard for letting AI agents discover and call backend APIs. Once Claude is connected, you can prompt naturally:
+                Superkabe exposes 17 tools over the Model Context Protocol - Anthropic&apos;s open standard for letting AI agents discover and call backend APIs. Once Claude is connected, you can prompt naturally:
             </p>
             <div className="bg-gray-50 border border-gray-200 p-4 my-4">
                 <p className="text-sm italic text-gray-700 m-0">&quot;Import these 200 leads, validate their emails, create a 3-step sequence targeting SaaS founders, and launch it through my Outlook mailboxes.&quot;</p>
@@ -67,7 +67,7 @@ export default function McpServerDocsPage() {
 
             <h2 id="claude-ai" className="text-3xl font-bold mb-4 mt-12 text-gray-900">1. Claude.ai (browser)</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Claude.ai connects to remote MCP servers over HTTPS using <strong>OAuth 2.0 with Dynamic Client Registration (RFC 7591) and PKCE (RFC 7636)</strong>. Superkabe runs an OAuth authorization server alongside the MCP endpoint at <code>api.superkabe.com</code>, so the entire connection is handled in-browser through a consent flow — no API key copy/paste, no install.
+                Claude.ai connects to remote MCP servers over HTTPS using <strong>OAuth 2.0 with Dynamic Client Registration (RFC 7591) and PKCE (RFC 7636)</strong>. Superkabe runs an OAuth authorization server alongside the MCP endpoint at <code>api.superkabe.com</code>, so the entire connection is handled in-browser through a consent flow - no API key copy/paste, no install.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Add the integration</h3>
@@ -77,11 +77,11 @@ export default function McpServerDocsPage() {
             </ol>
             <Code lang="bash">{`https://api.superkabe.com/mcp/<your-org-slug>`}</Code>
             <p className="text-sm text-gray-500 mt-3 mb-3">
-                The <code>&lt;your-org-slug&gt;</code> is unique per organization. The dashboard fills in the right value for you — copy directly from there. (The legacy <code>https://api.superkabe.com/mcp</code> URL still works for single-org accounts, but the per-org URL is recommended for everyone.)
+                The <code>&lt;your-org-slug&gt;</code> is unique per organization. The dashboard fills in the right value for you - copy directly from there. (The legacy <code>https://api.superkabe.com/mcp</code> URL still works for single-org accounts, but the per-org URL is recommended for everyone.)
             </p>
             <ol className="space-y-3 text-gray-600 list-decimal list-inside mt-4 mb-6" start={3}>
                 <li>Claude.ai opens a popup to Superkabe&apos;s consent screen showing the org name.</li>
-                <li>Sign in to your Superkabe account if you aren&apos;t already. <strong>Important:</strong> sign in with an account that belongs to the org named on the consent screen — if you sign into a different org, Superkabe will block the consent and ask you to sign in correctly.</li>
+                <li>Sign in to your Superkabe account if you aren&apos;t already. <strong>Important:</strong> sign in with an account that belongs to the org named on the consent screen - if you sign into a different org, Superkabe will block the consent and ask you to sign in correctly.</li>
                 <li>Review the requested scopes and click <strong>Authorize</strong>. The 17 Superkabe tools become available in any Claude conversation, and the resulting OAuth grant is bound to that one org only.</li>
             </ol>
 
@@ -89,10 +89,10 @@ export default function McpServerDocsPage() {
                 <h3 className="font-bold text-indigo-900 text-base mb-2">Working with multiple orgs from one Claude.ai account?</h3>
                 <p className="text-sm text-indigo-900 mb-2">Agencies and consultants often manage several Superkabe orgs from the same Claude.ai account. The per-org URL is what makes that clean:</p>
                 <ul className="list-disc list-inside text-sm text-indigo-900 space-y-1 mb-2">
-                    <li>Add a separate connector to Claude for each org — <code>https://api.superkabe.com/mcp/acme</code>, <code>https://api.superkabe.com/mcp/beta</code>, etc.</li>
+                    <li>Add a separate connector to Claude for each org - <code>https://api.superkabe.com/mcp/acme</code>, <code>https://api.superkabe.com/mcp/beta</code>, etc.</li>
                     <li>Name them in Claude (&quot;Acme&quot;, &quot;Beta&quot;) so you can pick the right one per conversation.</li>
                     <li>Each connector holds its own OAuth grant tied to that one org. Tokens never cross-talk.</li>
-                    <li>Switching which org Claude is acting on is a Claude-side connector switch — no Superkabe re-authorization required.</li>
+                    <li>Switching which org Claude is acting on is a Claude-side connector switch - no Superkabe re-authorization required.</li>
                 </ul>
                 <p className="text-sm text-indigo-900 m-0">You sign each org&apos;s connector by signing into <em>that</em> Superkabe account once and approving the consent screen. Once authorized, Claude refreshes the token silently for 90 days.</p>
             </div>
@@ -110,19 +110,19 @@ export default function McpServerDocsPage() {
                 <li>Superkabe returns <code>401</code> with <code>WWW-Authenticate: Bearer resource_metadata=&quot;…/.well-known/oauth-protected-resource/mcp/&lt;slug&gt;&quot;</code>.</li>
                 <li>Claude.ai fetches that metadata and discovers our authorization server.</li>
                 <li>Claude.ai fetches <code>/.well-known/oauth-authorization-server</code> for the auth endpoints.</li>
-                <li>Claude.ai POSTs to <code>/register</code> (Dynamic Client Registration) — no manual app registration required.</li>
+                <li>Claude.ai POSTs to <code>/register</code> (Dynamic Client Registration) - no manual app registration required.</li>
                 <li>Claude.ai redirects you to <code>/authorize</code> with <code>resource=https://api.superkabe.com/mcp/&lt;slug&gt;</code>; we bounce to <code>/oauth/consent</code> on superkabe.com showing the org name.</li>
                 <li>You log in (with an account belonging to the named org) and click Authorize. Superkabe returns an authorization code to claude.ai with the grant pinned to that one org.</li>
                 <li>Claude.ai exchanges the code for an access token at <code>/token</code> (with PKCE verifier).</li>
-                <li>From here on, every <code>/mcp/&lt;slug&gt;</code> call carries <code>Authorization: Bearer oat_…</code>. The backend enforces that the slug in the URL matches the org the token was issued for — present an Acme token at <code>/mcp/beta</code> and you get <code>403</code>.</li>
+                <li>From here on, every <code>/mcp/&lt;slug&gt;</code> call carries <code>Authorization: Bearer oat_…</code>. The backend enforces that the slug in the URL matches the org the token was issued for - present an Acme token at <code>/mcp/beta</code> and you get <code>403</code>.</li>
             </ol>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Access tokens expire after 1 hour. Refresh tokens are valid for 90 days. Claude.ai refreshes silently — you only see the consent screen the first time you connect.
+                Access tokens expire after 1 hour. Refresh tokens are valid for 90 days. Claude.ai refreshes silently - you only see the consent screen the first time you connect.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Verify the connection</h3>
             <p className="text-gray-600 leading-relaxed mb-3">
-                Once authorized, the dashboard <a href="/dashboard/integrations" className="text-blue-600 hover:underline">Integrations</a> page shows the Claude card as <Pill tone="green">Connected</Pill>. The same status comes from <code>GET /api/oauth/connections</code> — see <a href="#api-reference" className="text-blue-600 hover:underline">§ 5</a>.
+                Once authorized, the dashboard <a href="/dashboard/integrations" className="text-blue-600 hover:underline">Integrations</a> page shows the Claude card as <Pill tone="green">Connected</Pill>. The same status comes from <code>GET /api/oauth/connections</code> - see <a href="#api-reference" className="text-blue-600 hover:underline">§ 5</a>.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Disconnect</h3>
@@ -132,7 +132,7 @@ export default function McpServerDocsPage() {
 
             <h2 id="local-clients" className="text-3xl font-bold mb-4 mt-12 text-gray-900">2. Local clients (Desktop, Code, Cursor)</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Claude Desktop, Claude Code (CLI), Cursor, and Continue spawn the MCP server as a <strong>local stdio process</strong> on your machine. Authentication is a Superkabe API key in the <code>env</code> block of your client config — same key you&apos;d use for the REST API.
+                Claude Desktop, Claude Code (CLI), Cursor, and Continue spawn the MCP server as a <strong>local stdio process</strong> on your machine. Authentication is a Superkabe API key in the <code>env</code> block of your client config - same key you&apos;d use for the REST API.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Generate an API key</h3>
@@ -140,11 +140,11 @@ export default function McpServerDocsPage() {
                 <li>Open <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">Dashboard → API &amp; MCP</a>.</li>
                 <li>Click <strong>Create new key</strong>. Give it a name (e.g. &quot;Claude Desktop on laptop&quot;).</li>
                 <li>Tick the scopes you want Claude to have. Read-only set: <code>account:read leads:read campaigns:read mailboxes:read domains:read replies:read validation:read reports:read</code>.</li>
-                <li>Copy the key (<code>sk_live_…</code>). It&apos;s shown once — store it somewhere secure.</li>
+                <li>Copy the key (<code>sk_live_…</code>). It&apos;s shown once - store it somewhere secure.</li>
             </ol>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">Configure your client</h3>
-            <p className="text-gray-600 leading-relaxed mb-3">Same JSON shape across every client — only the file path differs:</p>
+            <p className="text-gray-600 leading-relaxed mb-3">Same JSON shape across every client - only the file path differs:</p>
             <Code>{`{
   "mcpServers": {
     "superkabe": {
@@ -231,12 +231,12 @@ export default function McpServerDocsPage() {
 
             <h2 id="security" className="text-3xl font-bold mb-4 mt-12 text-gray-900">4. Security model</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li><strong>Per-grant org scoping.</strong> Every OAuth access token and API key is tied to one organization. Cross-tenant access is structurally impossible — there&apos;s no &quot;super-key&quot; that crosses orgs.</li>
+                <li><strong>Per-grant org scoping.</strong> Every OAuth access token and API key is tied to one organization. Cross-tenant access is structurally impossible - there&apos;s no &quot;super-key&quot; that crosses orgs.</li>
                 <li><strong>Hashed at rest.</strong> Both <code>sk_live_…</code> API keys and <code>oat_…</code> OAuth tokens are stored only as SHA-256 hashes. The plaintext value is shown to the user once at creation and never again.</li>
                 <li><strong>Scope-gated tools.</strong> The MCP server attempts every tool, but the backend rejects calls whose scope isn&apos;t on the bearer token. Read-only keys can&apos;t create campaigns even if Claude tries.</li>
                 <li><strong>Short-lived OAuth tokens.</strong> Access tokens expire after 1 hour; refresh tokens after 90 days. Revocation via <code>POST /revoke</code> or the dashboard is immediate.</li>
-                <li><strong>PKCE-only OAuth.</strong> All OAuth clients are public clients with PKCE — no client secrets shipped to claude.ai or any other browser-resident integration.</li>
-                <li><strong>Stateless transport.</strong> The HTTP MCP endpoint (<code>/mcp</code>) holds no per-session state — every request is independently authenticated, no session hijack surface.</li>
+                <li><strong>PKCE-only OAuth.</strong> All OAuth clients are public clients with PKCE - no client secrets shipped to claude.ai or any other browser-resident integration.</li>
+                <li><strong>Stateless transport.</strong> The HTTP MCP endpoint (<code>/mcp</code>) holds no per-session state - every request is independently authenticated, no session hijack surface.</li>
                 <li><strong>Stdio opens no ports.</strong> Local clients spawn the npm package as a subprocess that talks over stdin/stdout. Compromise requires local process access.</li>
             </ul>
 
@@ -252,15 +252,15 @@ GET https://api.superkabe.com/.well-known/oauth-protected-resource/mcp/<your-org
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">OAuth endpoints</h3>
             <ul className="list-disc list-inside space-y-1 text-gray-600 mb-4 text-sm">
-                <li><code>POST /register</code> — Dynamic Client Registration (RFC 7591). Returns <code>client_id</code>; no secret (PKCE).</li>
-                <li><code>GET /authorize</code> — kicks off the consent flow. Redirects to <code>/oauth/consent</code> on superkabe.com.</li>
-                <li><code>POST /token</code> — exchanges authorization code for access + refresh tokens. Also handles refresh-token grant.</li>
-                <li><code>POST /revoke</code> — revokes a single token (access or refresh).</li>
+                <li><code>POST /register</code> - Dynamic Client Registration (RFC 7591). Returns <code>client_id</code>; no secret (PKCE).</li>
+                <li><code>GET /authorize</code> - kicks off the consent flow. Redirects to <code>/oauth/consent</code> on superkabe.com.</li>
+                <li><code>POST /token</code> - exchanges authorization code for access + refresh tokens. Also handles refresh-token grant.</li>
+                <li><code>POST /revoke</code> - revokes a single token (access or refresh).</li>
             </ul>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">List active connections</h3>
             <Code lang="bash">{`GET https://api.superkabe.com/api/oauth/connections
-Authorization: Bearer sk_live_…  # or any auth — JWT cookie also works`}</Code>
+Authorization: Bearer sk_live_…  # or any auth - JWT cookie also works`}</Code>
             <p className="text-gray-600 leading-relaxed mb-3">Response:</p>
             <Code lang="response">{`[
   {
@@ -284,7 +284,7 @@ Content-Type: application/json
 
 { "client_id": "mcp_client_a4cce2cca6baf67e084ef681" }`}</Code>
             <p className="text-gray-600 leading-relaxed mb-3">
-                Marks every access &amp; refresh token for that <code>(org, client)</code> pair as revoked. Effective immediately — claude.ai will get 401 on next call. Omit <code>client_id</code> to revoke <em>all</em> OAuth grants for the org at once.
+                Marks every access &amp; refresh token for that <code>(org, client)</code> pair as revoked. Effective immediately - claude.ai will get 401 on next call. Omit <code>client_id</code> to revoke <em>all</em> OAuth grants for the org at once.
             </p>
 
             <h2 id="troubleshooting" className="text-3xl font-bold mb-4 mt-12 text-gray-900">6. Troubleshooting</h2>
@@ -300,7 +300,7 @@ Content-Type: application/json
                     <tbody className="text-xs">
                         <tr><td className="py-1.5 pr-4">claude.ai &quot;Couldn&apos;t reach the MCP server&quot;</td><td className="py-1.5 pr-4">Free Claude.ai plan or transient handshake failure</td><td className="py-1.5">Verify you&apos;re on Pro/Team/Enterprise; remove and re-add the integration.</td></tr>
                         <tr><td className="py-1.5 pr-4">Consent screen says &quot;You&apos;re signed in to a different organization&quot;</td><td className="py-1.5 pr-4">Active Superkabe session is for a different org than the connector URL targets</td><td className="py-1.5">Sign out of Superkabe, sign in with an account for the org named on the consent screen, then re-open the connection from Claude.ai.</td></tr>
-                        <tr><td className="py-1.5 pr-4">Claude tools return <code>403</code> &quot;different organization&quot;</td><td className="py-1.5 pr-4">Token issued for a different org than the URL slug — usually a stale connector pointed at the wrong slug</td><td className="py-1.5">Remove the connector in Claude, re-add using the URL from <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">your dashboard</a>, re-authorize.</td></tr>
+                        <tr><td className="py-1.5 pr-4">Claude tools return <code>403</code> &quot;different organization&quot;</td><td className="py-1.5 pr-4">Token issued for a different org than the URL slug - usually a stale connector pointed at the wrong slug</td><td className="py-1.5">Remove the connector in Claude, re-add using the URL from <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">your dashboard</a>, re-authorize.</td></tr>
                         <tr><td className="py-1.5 pr-4">Tools icon never appears (Desktop / Cursor)</td><td className="py-1.5 pr-4">Bad JSON or wrong config path</td><td className="py-1.5"><code>jq . &lt;config&gt;</code> to validate; quit &amp; relaunch the client.</td></tr>
                         <tr><td className="py-1.5 pr-4">Stdio: <code>FATAL: SUPERKABE_API_KEY required</code></td><td className="py-1.5 pr-4">Env not passed to subprocess</td><td className="py-1.5">Put key under <code>env</code>, not <code>args</code>.</td></tr>
                         <tr><td className="py-1.5 pr-4">All tool calls return 401</td><td className="py-1.5 pr-4">Key revoked / wrong env</td><td className="py-1.5">Reissue key; check <code>SUPERKABE_API_URL</code>.</td></tr>

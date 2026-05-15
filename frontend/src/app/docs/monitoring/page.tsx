@@ -78,7 +78,7 @@ export default function MonitoringPage() {
  <h3 className="text-xl font-bold text-orange-700">Why minimum volume matters</h3>
  </div>
  <p className="text-gray-600 mb-4">
- A mailbox that sent <strong>4 emails</strong> and received <strong>1 bounce</strong> has a <strong>25% bounce rate</strong> — but
+ A mailbox that sent <strong>4 emails</strong> and received <strong>1 bounce</strong> has a <strong>25% bounce rate</strong> - but
  this is not statistically meaningful. One bounce at low volume does not indicate a deliverability problem.
  Pausing mailboxes based on tiny sample sizes would constantly churn accounts during early warmup.
  </p>

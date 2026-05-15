@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import CustomSelect from '@/components/ui/CustomSelect';
 
 const FAILURE_POLICY_OPTIONS = [
- { value: '-all', label: 'Hard Fail (-all) — Recommended' },
+ { value: '-all', label: 'Hard Fail (-all) - Recommended' },
  { value: '~all', label: 'Soft Fail (~all)' },
  { value: '?all', label: 'Neutral (?all)' },
 ];

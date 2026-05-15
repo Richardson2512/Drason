@@ -2,7 +2,7 @@
  * Bottom-of-article dark CTA strip.
  *
  * Mirrors Mailivery's "Don't Land In Spam. Get Started Today For Free."
- * style — full-width dark band with headline + dual CTAs, sits between
+ * style - full-width dark band with headline + dual CTAs, sits between
  * article body and the global Footer.
  */
 

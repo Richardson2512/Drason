@@ -9,8 +9,8 @@ export default function TermsPage() {
     const termsSchema = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Terms & Conditions — Superkabe",
-        "description": "Terms of service for Superkabe — AI cold email platform with built-in deliverability protection. Acceptable use, customer compliance, payments, IP, liability.",
+        "name": "Terms & Conditions - Superkabe",
+        "description": "Terms of service for Superkabe - AI cold email platform with built-in deliverability protection. Acceptable use, customer compliance, payments, IP, liability.",
         "url": "https://www.superkabe.com/terms",
         "publisher": {
             "@type": "Organization",
@@ -84,7 +84,7 @@ export default function TermsPage() {
                                     <li>Use the Service to harass, threaten, or harm any individual or group;</li>
                                     <li>Reverse engineer, attempt to derive source code, or circumvent security or rate-limiting features of the Service;</li>
                                     <li>Resell or repackage the Service without our written consent;</li>
-                                    <li>Use the Service to transmit Protected Health Information (&quot;PHI&quot;) — see Section 5.4.</li>
+                                    <li>Use the Service to transmit Protected Health Information (&quot;PHI&quot;) - see Section 5.4.</li>
                                 </ul>
                                 <p className="text-gray-600 leading-relaxed">
                                     We may suspend or terminate accounts that violate this Acceptable Use Policy, with or without notice depending on severity.
@@ -95,7 +95,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Customer Compliance Obligations</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    Superkabe is the tooling. <strong>You — the sender — are responsible for the legality of your outbound communications.</strong> By using the Service, you represent and warrant that you will comply with the laws applicable to your sending, including but not limited to:
+                                    Superkabe is the tooling. <strong>You - the sender - are responsible for the legality of your outbound communications.</strong> By using the Service, you represent and warrant that you will comply with the laws applicable to your sending, including but not limited to:
                                 </p>
 
                                 <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">5.1 CAN-SPAM Act (United States)</h3>
@@ -125,7 +125,7 @@ export default function TermsPage() {
                                     <li>You are the Data Controller / Data Fiduciary for the recipient data you upload; we are your Processor. Our Data Processing Addendum is available on request from <a href="mailto:legal@superkabe.com" className="text-blue-600 hover:text-blue-800">legal@superkabe.com</a>.</li>
                                 </ul>
 
-                                <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">5.4 HIPAA (United States — Healthcare)</h3>
+                                <h3 className="text-xl font-bold text-gray-900 mt-6 mb-2">5.4 HIPAA (United States - Healthcare)</h3>
                                 <p className="text-gray-600 leading-relaxed mb-4">
                                     Superkabe is <strong>not</strong> a HIPAA Business Associate, does not sign Business Associate Agreements, and is not designed to process Protected Health Information. <strong>You must not transmit PHI through Superkabe.</strong> If your use case requires HIPAA-compliant outbound, Superkabe is not the appropriate tool. Customer accepts full liability for any violation of HIPAA caused by transmitting PHI through Superkabe in breach of these Terms.
                                 </p>
@@ -171,7 +171,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Third-Party Services</h2>
                                 <p className="text-gray-600 leading-relaxed">
-                                    The Service interoperates with third-party platforms — including Google Workspace, Microsoft 365, Clay, Slack, and Polar — through OAuth, webhooks, or APIs. The availability, behavior, and terms of those third parties are outside our control. We are not responsible for the acts or omissions of third-party providers, and your use of those services is governed by their own terms.
+                                    The Service interoperates with third-party platforms - including Google Workspace, Microsoft 365, Clay, Slack, and Polar - through OAuth, webhooks, or APIs. The availability, behavior, and terms of those third parties are outside our control. We are not responsible for the acts or omissions of third-party providers, and your use of those services is governed by their own terms.
                                 </p>
                             </section>
 
@@ -249,7 +249,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">18. Contact Us</h2>
                                 <div className="mt-4 p-4 bg-gray-50 border border-gray-100">
-                                    <p className="text-gray-700 font-medium">Superkabe — Legal</p>
+                                    <p className="text-gray-700 font-medium">Superkabe - Legal</p>
                                     <p className="text-gray-500">General: <a href="mailto:legal@superkabe.com" className="text-blue-600 hover:text-blue-800">legal@superkabe.com</a></p>
                                     <p className="text-gray-500">Privacy: <a href="mailto:privacy@superkabe.com" className="text-blue-600 hover:text-blue-800">privacy@superkabe.com</a></p>
                                     <p className="text-gray-500">Security: <a href="mailto:security@superkabe.com" className="text-blue-600 hover:text-blue-800">security@superkabe.com</a></p>

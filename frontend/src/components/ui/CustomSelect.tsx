@@ -53,7 +53,7 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
         };
     }, [isOpen]);
 
-    // Close on outside click — checks BOTH the trigger wrapper and the
+    // Close on outside click - checks BOTH the trigger wrapper and the
     // portal-rendered dropdown so clicking inside the open menu doesn't
     // count as "outside" and dismiss it before the option-click fires.
     useEffect(() => {
@@ -82,7 +82,7 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
                 <ChevronDown size={12} className="text-gray-400 shrink-0" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.15s ease' }} />
             </button>
 
-            {/* Dropdown — rendered via portal so no ancestor's overflow or
+            {/* Dropdown - rendered via portal so no ancestor's overflow or
                 stacking context can clip it. Positioned with fixed coords
                 computed from the trigger's bounding rect. */}
             {isOpen && coords && typeof document !== 'undefined' && createPortal(

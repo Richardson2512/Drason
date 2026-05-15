@@ -23,14 +23,14 @@ export default function PricingPage() {
  }, []);
  // ─── Pricing JSON-LD ────────────────────────────────────────────────
  // Two scripts (rendered separately below):
- // 1. SoftwareApplication w/ AggregateOffer — gives Google's pricing rich
+ // 1. SoftwareApplication w/ AggregateOffer - gives Google's pricing rich
  // results enough to render price ranges. Each plan is a typed Offer
  // with a UnitPriceSpecification that pins billingDuration/Increment.
- // 2. WebPage that references the SoftwareApplication as mainEntity —
+ // 2. WebPage that references the SoftwareApplication as mainEntity -
  // gives the page itself proper context (name, description, breadcrumbs
  // already injected by BreadcrumbJsonLd elsewhere).
  // The Trial is included as Offer with price "0" so it shows up in price
- // listings. Enterprise is a sibling Offer without a `price` field —
+ // listings. Enterprise is a sibling Offer without a `price` field -
  // schema-valid for "custom pricing" tiers.
 
  const SOFTWARE_ID = 'https://www.superkabe.com/#software';
@@ -70,7 +70,7 @@ export default function PricingPage() {
  "@type": "Offer",
  "@id": "https://www.superkabe.com/pricing#trial",
  "name": "Trial",
- "description": "14-day free trial. Full platform access — no credit card required.",
+ "description": "14-day free trial. Full platform access - no credit card required.",
  "price": "0",
  "priceCurrency": "USD",
  "priceValidUntil": "2026-12-31",
@@ -176,7 +176,7 @@ export default function PricingPage() {
  "@type": "Offer",
  "@id": "https://www.superkabe.com/pricing#enterprise",
  "name": "Enterprise",
- "description": "Custom pricing — unlimited domains and mailboxes, super-admin console, dedicated support team, and a guaranteed deliverability SLA.",
+ "description": "Custom pricing - unlimited domains and mailboxes, super-admin console, dedicated support team, and a guaranteed deliverability SLA.",
  "priceCurrency": "USD",
  "priceValidUntil": "2026-12-31",
  "availability": "https://schema.org/InStock",
@@ -191,7 +191,7 @@ export default function PricingPage() {
  "@id": "https://www.superkabe.com/pricing",
  "name": "Superkabe Pricing",
  "url": "https://www.superkabe.com/pricing",
- "description": "Transparent pricing for Superkabe — the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, and the full healing pipeline in every plan. From $19/month, with a 14-day free trial.",
+ "description": "Transparent pricing for Superkabe - the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, and the full healing pipeline in every plan. From $19/month, with a 14-day free trial.",
  "isPartOf": { "@id": "https://www.superkabe.com/#website" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntity": { "@id": SOFTWARE_ID },
@@ -208,7 +208,7 @@ export default function PricingPage() {
  ]
  };
 
- // FAQPage — visible answers below also use this exact copy so the
+ // FAQPage - visible answers below also use this exact copy so the
  // structured-content / visible-content dedup requirement is satisfied.
  const faqSchema = {
  "@context": "https://schema.org",
@@ -227,7 +227,7 @@ export default function PricingPage() {
  "name": "Does every plan include the deliverability protection layer?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Auto-pause at 3% bounce rate, the 5-phase healing pipeline, ESP-aware routing, DNSBL monitoring, and the correlation engine are unmetered features included in every plan from Starter up. Tier pricing only meters monthly send volume and email validation credits — protection is not a paywalled add-on."
+ "text": "Yes. Auto-pause at 3% bounce rate, the 5-phase healing pipeline, ESP-aware routing, DNSBL monitoring, and the correlation engine are unmetered features included in every plan from Starter up. Tier pricing only meters monthly send volume and email validation credits - protection is not a paywalled add-on."
  }
  },
  {
@@ -281,7 +281,7 @@ export default function PricingPage() {
  Simple pricing for teams of all sizes
  </h1>
  <p className="text-sm md:text-base text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
- Superkabe is the AI cold email platform for modern outbound teams — AI sequences, multi-mailbox sending, email validation, and full deliverability protection in one plan. Pick the tier that matches your scale.
+ Superkabe is the AI cold email platform for modern outbound teams - AI sequences, multi-mailbox sending, email validation, and full deliverability protection in one plan. Pick the tier that matches your scale.
  </p>
  <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-4">
  <Link href={isLoggedIn ? "/dashboard" : "/signup"} className="px-7 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors shadow-sm">
@@ -330,7 +330,7 @@ export default function PricingPage() {
  </div>
  </div>
 
- {/* Pricing Tiers — popl grid-line style, 3 public tiers */}
+ {/* Pricing Tiers - popl grid-line style, 3 public tiers */}
  <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10">
  <div className="text-center mb-10">
  <h2 className="h2-rule mb-3">How much does Superkabe cost?</h2>
@@ -466,7 +466,7 @@ export default function PricingPage() {
  {/* Right: Benefits list + CTA */}
  <div className="bg-white p-10 md:p-14">
  <h4 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">Book a demo</h4>
- <p className="text-sm text-gray-500 mb-8">30-minute call with our team to scope your AI cold email platform rollout — sending, validation, and protection.</p>
+ <p className="text-sm text-gray-500 mb-8">30-minute call with our team to scope your AI cold email platform rollout - sending, validation, and protection.</p>
 
  <ul className="space-y-3 mb-8">
  {[
@@ -544,7 +544,7 @@ export default function PricingPage() {
  </div>
  </div>
 
- {/* What's included — 2-col grid */}
+ {/* What's included - 2-col grid */}
  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 mb-8">
  {[
  'Isolated AWS SES dedicated IP',
@@ -594,7 +594,7 @@ export default function PricingPage() {
  </h2>
  </div>
 
- {/* ROW 1: Active Leads — visual left, content right */}
+ {/* ROW 1: Active Leads - visual left, content right */}
  <div style={{ borderTop: `1px solid #D1CBC5`, borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
  <div
@@ -618,13 +618,13 @@ export default function PricingPage() {
  We charge for <strong className="text-gray-900">monthly send volume</strong> and <strong className="text-gray-900">email validation credits</strong>. Domains, mailboxes, leads, sequences, and protection coverage are <strong className="text-gray-900">unlimited at every tier</strong>.
  </p>
  <p className="text-sm text-gray-600 leading-relaxed">
- Protection isn&apos;t a feature we throttle by plan size — every connected mailbox gets the full state-machine, DNSBL, Postmaster, and ESP-aware healing pipeline. Scale up your infra without scaling up your bill.
+ Protection isn&apos;t a feature we throttle by plan size - every connected mailbox gets the full state-machine, DNSBL, Postmaster, and ESP-aware healing pipeline. Scale up your infra without scaling up your bill.
  </p>
  </div>
  </div>
  </div>
 
- {/* ROW 2: No per-email pricing — content left, big stat right */}
+ {/* ROW 2: No per-email pricing - content left, big stat right */}
  <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
  <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}>
@@ -633,10 +633,10 @@ export default function PricingPage() {
  Why we don&apos;t charge per email sent
  </h3>
  <p className="text-sm text-gray-600 leading-relaxed mb-4">
- You pay for <strong className="text-gray-900">monthly send volume</strong>, not throughput. Every plan includes unlimited sends within your monthly cap — so scaling a healthy campaign never multiplies the bill.
+ You pay for <strong className="text-gray-900">monthly send volume</strong>, not throughput. Every plan includes unlimited sends within your monthly cap - so scaling a healthy campaign never multiplies the bill.
  </p>
  <p className="text-sm text-gray-600 leading-relaxed">
- Per-email pricing penalizes scale. Our tiers match the shape of a healthy cold email program — AI sequences, unlimited multi-mailbox sending, and full protection coverage included at every tier.
+ Per-email pricing penalizes scale. Our tiers match the shape of a healthy cold email program - AI sequences, unlimited multi-mailbox sending, and full protection coverage included at every tier.
  </p>
  </div>
  <div
@@ -655,7 +655,7 @@ export default function PricingPage() {
  </div>
  </div>
 
- {/* ROW 3: 2026 Outbound Context — stats grid left, content right */}
+ {/* ROW 3: 2026 Outbound Context - stats grid left, content right */}
  <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
  <div
@@ -692,13 +692,13 @@ export default function PricingPage() {
  Modern outbound teams don&apos;t blast from a single domain. They run 3–10 sending domains, 3 mailboxes each, 20–30 emails per mailbox per day, with ICP-based routing.
  </p>
  <p className="text-sm text-gray-600 leading-relaxed">
- Superkabe tiers are built around this operational reality — not around email volume.
+ Superkabe tiers are built around this operational reality - not around email volume.
  </p>
  </div>
  </div>
  </div>
 
- {/* ROW 4: ROI Framing — content left, red stat panel right */}
+ {/* ROW 4: ROI Framing - content left, red stat panel right */}
  <div style={{ borderLeft: `1px solid #D1CBC5`, borderRight: `1px solid #D1CBC5`, borderBottom: `1px solid #D1CBC5` }}>
  <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
  <div className="flex flex-col justify-center p-10 md:p-14" style={{ borderRight: `1px solid #D1CBC5` }}>
@@ -707,7 +707,7 @@ export default function PricingPage() {
  Superkabe costs less than a single mistake
  </h3>
  <p className="text-sm text-gray-600 leading-relaxed mb-5">
- One burned domain doesn&apos;t just cost a domain — it costs weeks of pipeline. Here&apos;s the math.
+ One burned domain doesn&apos;t just cost a domain - it costs weeks of pipeline. Here&apos;s the math.
  </p>
  <Link href={isLoggedIn ? '/dashboard' : '/signup'} className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full text-sm font-semibold hover:bg-black transition-colors w-fit">
  Start protecting for free
@@ -733,7 +733,7 @@ export default function PricingPage() {
  </div>
  </div>
 
- {/* FAQ — visible content matches the FAQPage JSON-LD above so the
+ {/* FAQ - visible content matches the FAQPage JSON-LD above so the
      structured-data requirement (FAQPage answers must appear on the
      page) is met. Question phrasing also doubles as AEO-targeted H3s
      for "how much does Superkabe cost" / "do all plans include
@@ -793,7 +793,7 @@ interface PricingCardProps {
  isLoggedIn: boolean;
  router: any;
  /**
- * Optional — turns the sends line in Sequencer features into a dropdown.
+ * Optional - turns the sends line in Sequencer features into a dropdown.
  * Price + credits on the card update live based on the selected option.
  * Used on the Pro tier to smooth the jump between Pro (60k) and Growth (300k).
  */
@@ -807,7 +807,7 @@ function formatCredits(n: number): string {
 function PricingCard({ tier, tierKey, description, price, period, sequencerFeatures, protectionFeatures, bestFor, ctaText = "Get started", featured = false, isLoggedIn, router, sendsDropdown }: PricingCardProps) {
  const [showContactModal, setShowContactModal] = useState(false);
 
- // Sends dropdown state — only used when sendsDropdown prop is provided.
+ // Sends dropdown state - only used when sendsDropdown prop is provided.
  const [selectedSendsIdx, setSelectedSendsIdx] = useState(0);
  const [sendsMenuOpen, setSendsMenuOpen] = useState(false);
  const selectedOption = sendsDropdown?.[selectedSendsIdx];
@@ -858,7 +858,7 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  </div>
  )}
 
- {/* FIXED-HEIGHT TOP SECTION — ensures CTA aligns across all tiers */}
+ {/* FIXED-HEIGHT TOP SECTION - ensures CTA aligns across all tiers */}
  <div className="mb-6">
  <h3 className={`text-2xl font-bold mb-2 tracking-tight ${featured ? 'text-white' : 'text-gray-900'}`}>{tier}</h3>
  <p className={`text-sm leading-relaxed h-[66px] overflow-hidden ${featured ? 'text-gray-300' : 'text-gray-500'}`}>{description}</p>
@@ -883,7 +883,7 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  {/* ── SEQUENCER ── */}
  <div className="mb-6">
  <div className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${featured ? 'text-gray-400' : 'text-gray-500'}`}>
- Sequencer <span className={`font-normal normal-case tracking-normal ${featured ? 'text-gray-500' : 'text-gray-400'}`}>— Sending, no infra limits</span>
+ Sequencer <span className={`font-normal normal-case tracking-normal ${featured ? 'text-gray-500' : 'text-gray-400'}`}>- Sending, no infra limits</span>
  </div>
  <ul className="space-y-2.5">
  {sequencerFeatures.map((feature, idx) => {
@@ -990,7 +990,7 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  {/* ── PROTECTION ── */}
  <div className="mb-6 flex-1">
  <div className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${featured ? 'text-gray-400' : 'text-gray-500'}`}>
- Protection <span className={`font-normal normal-case tracking-normal ${featured ? 'text-gray-500' : 'text-gray-400'}`}>— Monitoring, tier limits apply</span>
+ Protection <span className={`font-normal normal-case tracking-normal ${featured ? 'text-gray-500' : 'text-gray-400'}`}>- Monitoring, tier limits apply</span>
  </div>
  <ul className="space-y-2.5">
  {protectionFeatures.map((feature, idx) => (

@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * ReplyActionsCard — sequencer settings panel for per-class auto-actions.
+ * ReplyActionsCard - sequencer settings panel for per-class auto-actions.
  *
  * Reads + writes /api/sequencer/reply-actions. Lazy-seeds the default
  * ruleset server-side, so the first GET always returns something usable.
  *
  * UI: matrix of reply classes × actions, each cell a toggleable switch.
  * Operator picks which combinations are active. Suppress on hard_no is
- * the most impactful default — they should rarely turn it off but can.
+ * the most impactful default - they should rarely turn it off but can.
  */
 
 import { useEffect, useState } from 'react';
@@ -106,7 +106,7 @@ export default function ReplyActionsCard() {
             </div>
             <p className="text-[10px] text-gray-500 mb-4">
                 For each reply class, choose what happens automatically. AI re-classifies ambiguous replies before these fire.
-                <span className="block mt-0.5">OOO autoresponders are handled separately — the dispatcher pauses sends until the lead returns.</span>
+                <span className="block mt-0.5">OOO autoresponders are handled separately - the dispatcher pauses sends until the lead returns.</span>
             </p>
 
             {loading ? (

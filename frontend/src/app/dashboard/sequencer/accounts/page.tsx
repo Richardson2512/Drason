@@ -11,7 +11,7 @@ import ResellerImportModal from '@/components/sequencer/ResellerImportModal';
 import MailboxSettingsModal from '@/components/sequencer/MailboxSettingsModal';
 import { useDashboard } from '@/contexts/DashboardContext';
 
-// Stable source codes — keep in sync with backend ConnectedAccount.source.
+// Stable source codes - keep in sync with backend ConnectedAccount.source.
 // Adding a new reseller? Update both this list AND the SOURCE_META map below.
 type AccountSource = 'oauth' | 'manual' | 'csv' | 'zapmail' | 'premium_inboxes' | 'mission_inbox' | 'scaled_mail' | null;
 
@@ -116,11 +116,11 @@ export default function ConnectedAccountsPage() {
     // is for single-mailbox connections only; we deliberately don't duplicate
     // bulk options here.
 
-    // Search + provider filter + bulk selection — mirrors the Contacts page pattern
+    // Search + provider filter + bulk selection - mirrors the Contacts page pattern
     const [searchQuery, setSearchQuery] = useState('');
     const [providerFilter, setProviderFilter] = useState<'all' | 'google' | 'microsoft' | 'smtp'>('all');
     const [sourceFilter, setSourceFilter] = useState<'all' | Exclude<AccountSource, null> | 'unknown'>('all');
-    // Connection-state filter — 'active' vs 'inactive' (error/expired). The
+    // Connection-state filter - 'active' vs 'inactive' (error/expired). The
     // underlying account row uses connection_status with three values; the
     // filter collapses error+expired into one user-facing "not active" bucket.
     const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
@@ -129,7 +129,7 @@ export default function ConnectedAccountsPage() {
     const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [debouncedSearch, setDebouncedSearch] = useState('');
 
-    // Debounced search — avoid re-filtering on every keystroke
+    // Debounced search - avoid re-filtering on every keystroke
     useEffect(() => {
         if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
         searchTimerRef.current = setTimeout(() => setDebouncedSearch(searchQuery.trim().toLowerCase()), 250);
@@ -159,13 +159,13 @@ export default function ConnectedAccountsPage() {
         return true;
     });
 
-    // Show only the sources actually present in the org's mailboxes — keeps
+    // Show only the sources actually present in the org's mailboxes - keeps
     // the dropdown short for new orgs that haven't used every reseller.
     //
     // Note: written with an explicit ternary instead of `a.source ?? 'unknown'`
     // because Turbopack 16.x miscompiles the nullish-coalescing form here
     // ("ReferenceError: _a_source is not defined"). Same class of bug we
-    // hit earlier on cold-call-list — see feedback_turbopack_cache memory.
+    // hit earlier on cold-call-list - see feedback_turbopack_cache memory.
     const availableSources = useMemo(() => {
         const set = new Set<string>();
         for (const a of accounts) {
@@ -257,7 +257,7 @@ export default function ConnectedAccountsPage() {
     // rewrite in next.config.ts ('/api/:path*' → backend) handles the
     // proxy. Using an absolute URL with NEXT_PUBLIC_API_URL takes the
     // browser straight to the backend domain, where the JWT cookie
-    // (set on the frontend origin via the rewrite) doesn't exist —
+    // (set on the frontend origin via the rewrite) doesn't exist -
     // backend's extractOrgContext sees no auth and 401s before it can
     // even build the Google/Microsoft redirect.
     const connectGoogle = () => {
@@ -361,7 +361,7 @@ export default function ConnectedAccountsPage() {
                 </div>
             </div>
 
-            {/* Filter bar — search, provider filter, select-all, bulk delete */}
+            {/* Filter bar - search, provider filter, select-all, bulk delete */}
             {accounts.length > 0 && (
                 <div className="flex items-center gap-3 flex-wrap">
                     <label className="flex items-center gap-1.5 pl-1 cursor-pointer" title={allFilteredSelected ? 'Deselect all' : 'Select all visible'}>
@@ -507,7 +507,7 @@ export default function ConnectedAccountsPage() {
                                                 <span
                                                     className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
                                                     style={{ background: '#F3F4F6', color: '#9CA3AF' }}
-                                                    title="Legacy mailbox — added before source tracking"
+                                                    title="Legacy mailbox - added before source tracking"
                                                 >
                                                     Legacy
                                                 </span>
@@ -547,8 +547,8 @@ export default function ConnectedAccountsPage() {
                 </div>
             )}
 
-            {/* Reseller Import Modal — Zapmail / Premium Inboxes / etc.
-                One-click bulk import via reseller API. SMTP/IMAP only — no
+            {/* Reseller Import Modal - Zapmail / Premium Inboxes / etc.
+                One-click bulk import via reseller API. SMTP/IMAP only - no
                 Google OAuth scopes required. */}
             {showResellerModal && (
                 <ResellerImportModal
@@ -557,7 +557,7 @@ export default function ConnectedAccountsPage() {
                 />
             )}
 
-            {/* CSV Bulk Import Modal — paste/upload a CSV with credentials. */}
+            {/* CSV Bulk Import Modal - paste/upload a CSV with credentials. */}
             {showBulkModal && (
                 <BulkMailboxImportModal
                     onClose={() => setShowBulkModal(false)}
@@ -573,7 +573,7 @@ export default function ConnectedAccountsPage() {
                 />
             )}
 
-            {/* Add Account Modal — portaled to body so the backdrop covers
+            {/* Add Account Modal - portaled to body so the backdrop covers
                  the sidebar and the modal isn't bounded to the content column. */}
             {showAddModal && typeof document !== 'undefined' && createPortal(
                 <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4" style={{ background: 'rgba(15, 15, 15, 0.55)', backdropFilter: 'blur(2px)' }} onClick={e => { if (e.target === e.currentTarget) { setShowAddModal(false); setAddType(null); } }}>
@@ -597,7 +597,7 @@ export default function ConnectedAccountsPage() {
 
                                     {/* Single connection options. For bulk import use the
                                         "Import mailboxes" or "CSV import" buttons in the
-                                        page header — those flows live in dedicated modals. */}
+                                        page header - those flows live in dedicated modals. */}
                                     {(['google', 'microsoft', 'smtp'] as const).map(p => {
                                         const meta = PROVIDER_META[p];
                                         return (
@@ -646,7 +646,7 @@ export default function ConnectedAccountsPage() {
                                             <input type="password" value={smtpForm.password} onChange={e => setSmtpForm(f => ({ ...f, password: e.target.value }))} placeholder="App password" className="w-full px-3 py-1.5 text-xs rounded-lg outline-none border border-[#D1CBC5]" />
                                         </div>
                                     </div>
-                                    <div className="text-[10px] font-semibold text-gray-400 uppercase mt-1">IMAP (Incoming — for reply detection)</div>
+                                    <div className="text-[10px] font-semibold text-gray-400 uppercase mt-1">IMAP (Incoming - for reply detection)</div>
                                     <div className="grid grid-cols-3 gap-3">
                                         <div className="col-span-2">
                                             <label className="block text-[10px] font-semibold text-gray-500 uppercase mb-1">IMAP Host</label>
@@ -672,7 +672,7 @@ export default function ConnectedAccountsPage() {
                 document.body,
             )}
 
-            {/* Bulk disconnect confirmation — also portaled to body. */}
+            {/* Bulk disconnect confirmation - also portaled to body. */}
             {showBulkDeleteConfirm && typeof document !== 'undefined' && createPortal(
                 <div
                     className="fixed inset-0 flex items-center justify-center z-[9999] p-4"

@@ -40,7 +40,7 @@ export default function LoadBalancingPage() {
  <h2 className="text-3xl font-bold mb-6 text-gray-900">What Is Mailbox Load Balancing?</h2>
  <p className="text-gray-600 mb-6">
  When you run multiple campaigns, each campaign uses one or more mailboxes to send emails.
- If too many campaigns share the same mailbox, that mailbox becomes overloaded &mdash; increasing its bounce risk and hurting sender reputation.
+ If too many campaigns share the same mailbox, that mailbox becomes overloaded - increasing its bounce risk and hurting sender reputation.
  Conversely, underutilized mailboxes represent wasted capacity.
  </p>
  <p className="text-gray-600 mb-8">
@@ -141,7 +141,7 @@ export default function LoadBalancingPage() {
  <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">LOW</span>
  <h3 className="font-bold text-gray-900">Move Mailbox</h3>
  </div>
- <p className="text-sm text-gray-600">A mailbox would perform better in a different campaign. This suggestion is informational &mdash; review and adjust manually in your sending platform.</p>
+ <p className="text-sm text-gray-600">A mailbox would perform better in a different campaign. This suggestion is informational - review and adjust manually in your sending platform.</p>
  </div>
  </div>
  </div>

@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * Topics watchlists list — entry point under /dashboard/linkedin/signals.
+ * Topics watchlists list - entry point under /dashboard/linkedin/signals.
  *
  * Lemlist-style signal monitoring: each watchlist watches LinkedIn for
  * posts matching configured keywords, hydrates engagers, ICP-filters,
  * and routes into a LinkedIn campaign (auto or manual review).
  *
- * Zero incremental vendor cost — uses our existing flat Unipile plan.
+ * Zero incremental vendor cost - uses our existing flat Unipile plan.
  * Per-watchlist daily-budget + min-reactions threshold keep us inside
  * LinkedIn's 100/day per-account action ceiling.
  */
@@ -113,7 +113,7 @@ export default function LinkedInWatchlistsPage() {
                             <Radar size={18} strokeWidth={1.75} className="text-[#0A66C2]" /> Topics watchlists
                         </h1>
                         <p className="text-xs text-gray-500 mt-0.5">
-                            Watch LinkedIn for posts matching keywords you care about, ICP-filter the engagers, and route into a LinkedIn campaign. Uses your existing Unipile plan — no per-signal charges.
+                            Watch LinkedIn for posts matching keywords you care about, ICP-filter the engagers, and route into a LinkedIn campaign. Uses your existing Unipile plan - no per-signal charges.
                         </p>
                     </div>
                     <Link
@@ -125,7 +125,7 @@ export default function LinkedInWatchlistsPage() {
                 </div>
             </div>
 
-            {/* Rate-limit banner — always visible so operators understand the constraints */}
+            {/* Rate-limit banner - always visible so operators understand the constraints */}
             <div
                 className="rounded-lg p-3 flex items-start gap-3"
                 style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}

@@ -113,7 +113,7 @@ export default function SpfDkimDmarcArticle() {
  "name": "How does infrastructure health impact sender reputation?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "DNS authentication (SPF, DKIM, DMARC) is a primary input to ISP reputation scoring models. Domains with consistent authentication passes receive reputation benefits. Domains with authentication failures — even intermittent ones — accumulate negative reputation signals that compound over time, degrading inbox placement rates."
+ "text": "DNS authentication (SPF, DKIM, DMARC) is a primary input to ISP reputation scoring models. Domains with consistent authentication passes receive reputation benefits. Domains with authentication failures - even intermittent ones - accumulate negative reputation signals that compound over time, degrading inbox placement rates."
  }
  }
  ]
@@ -138,7 +138,7 @@ export default function SpfDkimDmarcArticle() {
                 <FeaturedHero
                     badge="TECHNICAL · 2026"
                     eyebrow="10 min read"
-                    tagline="SPF, DKIM, DMARC — clearly"
+                    tagline="SPF, DKIM, DMARC - clearly"
                     sub="Authentication · Alignment · Policy · Reporting"
                 />
 
@@ -151,7 +151,7 @@ export default function SpfDkimDmarcArticle() {
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> SPF authorizes sending IPs, DKIM proves email authenticity, DMARC enforces failure policy</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> All three must be configured on every sending domain — no exceptions since Feb 2024</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> All three must be configured on every sending domain - no exceptions since Feb 2024</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> SPF has a 10-lookup limit; exceeding it silently fails authentication</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Use -all (hard fail) for SPF and p=quarantine or p=reject for DMARC</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe continuously monitors all three protocols for misconfigurations</li>
@@ -235,7 +235,7 @@ export default function SpfDkimDmarcArticle() {
  </p>
 
  <BottomCtaStrip
-                    headline="Authenticate every domain — automatically"
+                    headline="Authenticate every domain - automatically"
                     body="Superkabe verifies SPF, DKIM, and DMARC for every sending domain in real time and pauses any mailbox whose authentication breaks before reputation damage compounds."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}

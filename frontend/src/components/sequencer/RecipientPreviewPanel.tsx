@@ -313,7 +313,7 @@ export default function RecipientPreviewPanel({
                     <Mail size={28} className="mx-auto mb-3 text-neutral-400" />
                     <h3 className="text-sm font-semibold text-neutral-700">
                         {CLIENT_OPTIONS.find((c) => c.id === client)?.label} ·{' '}
-                        {DEVICE_OPTIONS.find((d) => d.id === device)?.label} — coming soon
+                        {DEVICE_OPTIONS.find((d) => d.id === device)?.label} - coming soon
                     </h3>
                     <p className="text-[12px] text-neutral-500 mt-1.5 max-w-md mx-auto">
                         We're rolling out devices and clients one at a time so each one is pixel-tuned.

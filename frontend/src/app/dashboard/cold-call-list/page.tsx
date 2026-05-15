@@ -4,9 +4,9 @@
  * Cold Call List page.
  *
  * Two sections:
- *   1. Today's Call List — auto-generated daily, top 100 prospects, CSV download.
+ *   1. Today's Call List - auto-generated daily, top 100 prospects, CSV download.
  *      Read from a server-side snapshot (cron at 06:00 workspace-local).
- *   2. Custom List — user-defined rules, run-on-demand. CSV download persists
+ *   2. Custom List - user-defined rules, run-on-demand. CSV download persists
  *      a snapshot for the user's exclude_recent_days dedup.
  *
  * Page header pattern matches the rest of the app post-normalization
@@ -122,7 +122,7 @@ export default function ColdCallListPage() {
     const [customGeneratedAt, setCustomGeneratedAt] = useState<string | null>(null);
     const [customDownloadLoading, setCustomDownloadLoading] = useState(false);
 
-    // Export modal state — shared between Today's List and Custom List for
+    // Export modal state - shared between Today's List and Custom List for
     // both Outreach and JustCall. Only one of {outreach,justcall}Export is
     // non-null at a time since the buttons live in the same row.
     const [outreachExport, setOutreachExport] = useState<{
@@ -172,7 +172,7 @@ export default function ColdCallListPage() {
             const r = await apiClient<{ success: boolean; campaigns: CampaignOption[] }>('/api/cold-call-list/active-campaigns');
             setCampaigns(r.campaigns);
         } catch {
-            // Non-fatal — campaign filter UI will degrade to "all campaigns".
+            // Non-fatal - campaign filter UI will degrade to "all campaigns".
             setCampaigns([]);
         }
     }, []);
@@ -271,7 +271,7 @@ export default function ColdCallListPage() {
             a.click();
             a.remove();
             URL.revokeObjectURL(url);
-            toast.success('Downloaded — snapshot saved for dedup');
+            toast.success('Downloaded - snapshot saved for dedup');
         } catch (err) {
             toast.error((err as Error).message || 'Failed to download CSV');
         } finally {
@@ -499,7 +499,7 @@ function SystemListSection({
                     <EmptyState
                         kind="info"
                         title="Today’s list is empty"
-                        message="Your campaigns are still warming up — high-intent signals (3+ opens or 1 click) haven’t accumulated yet. Check back tomorrow."
+                        message="Your campaigns are still warming up - high-intent signals (3+ opens or 1 click) haven’t accumulated yet. Check back tomorrow."
                     />
                 ) : (
                     <>
@@ -598,7 +598,7 @@ function CustomListSection({
                 </div>
             </div>
 
-            {/* Rules panel — overflow-visible so the campaigns MultiSelectDropdown
+            {/* Rules panel - overflow-visible so the campaigns MultiSelectDropdown
                 isn't clipped when its panel expands below the field. */}
             <div className="mt-4 rounded-lg border border-[#D1CBC5]">
                 <button
@@ -728,7 +728,7 @@ function RulesPanel({
     const maxListSize = settings.max_list_size ?? 200;
     const titleFilter = settings.title_filter ?? '';
 
-    // campaign_filter is JSONB on the backend — coerce to array to survive
+    // campaign_filter is JSONB on the backend - coerce to array to survive
     // any stale {} or non-array shape that might be returned.
     const selectedCampaigns: string[] = Array.isArray(settings.campaign_filter) ? settings.campaign_filter : [];
     const allCampaignsSelected = selectedCampaigns.length === 0;
@@ -877,8 +877,8 @@ function ProspectTable({ prospects }: { prospects: Prospect[] }) {
                                 <div className="font-semibold text-gray-900">{p.full_name || p.email}</div>
                                 <div className="text-[10px] text-gray-500">{p.email}</div>
                             </td>
-                            <td className="px-3 py-2 text-gray-700">{p.company || '—'}</td>
-                            <td className="px-3 py-2 text-gray-700">{p.title || '—'}</td>
+                            <td className="px-3 py-2 text-gray-700">{p.company || '-'}</td>
+                            <td className="px-3 py-2 text-gray-700">{p.title || '-'}</td>
                             <td className="px-3 py-2 text-right">
                                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-neutral-100 font-bold text-gray-900 tabular-nums">
                                     {p.score}
@@ -924,7 +924,7 @@ function ProspectTable({ prospects }: { prospects: Prospect[] }) {
 
 function relativeTime(openIso: string | null, clickIso: string | null): string {
     const ts = [openIso, clickIso].filter(Boolean).map((s) => new Date(s as string).getTime()).sort((a, b) => b - a)[0];
-    if (!ts) return '—';
+    if (!ts) return '-';
     const diffMs = Date.now() - ts;
     const m = Math.round(diffMs / 60_000);
     if (m < 1) return 'just now';

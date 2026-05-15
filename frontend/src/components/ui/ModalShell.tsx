@@ -19,7 +19,7 @@
  *   4. Page scroll is locked while open so the underlying dashboard
  *      can't be scrolled by accident.
  *   5. Consistent `rounded-2xl` corner radius, off-stone border, and
- *      shadow — matches the rest of the premium-card vocabulary.
+ *      shadow - matches the rest of the premium-card vocabulary.
  *
  * The shell is *layout-only*. Consumers supply their own header /
  * body / footer markup as children, exactly the way they did before.
@@ -29,7 +29,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalShellProps {
-    /** Controls visibility — `false` returns null (no portal). */
+    /** Controls visibility - `false` returns null (no portal). */
     open: boolean;
     /** Fired when the backdrop is clicked or ESC is pressed. */
     onClose?: () => void;

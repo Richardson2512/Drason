@@ -14,7 +14,7 @@
  * route swaps).
  *
  * Falls back to component-local fetch if for some reason the context is
- * missing — see AccountHeader.tsx.
+ * missing - see AccountHeader.tsx.
  */
 
 import { use, useEffect, useState, createContext } from 'react';

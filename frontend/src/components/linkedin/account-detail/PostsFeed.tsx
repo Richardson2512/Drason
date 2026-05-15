@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * Posts feed — fetches /api/linkedin/accounts/:id/posts?type=<kind> with
+ * Posts feed - fetches /api/linkedin/accounts/:id/posts?type=<kind> with
  * cursor pagination, surfaces an empty state when no rows match, and
  * renders each post in a LinkedIn-flavoured PostCard. Three visual
  * variants land in the card (post / article / repost); thought-
  * leadership posts get a Lightbulb accent on top of the plain-post
  * style.
  *
- * Used by all five account-detail subpages — the only thing that
+ * Used by all five account-detail subpages - the only thing that
  * changes is the `kind` prop on PostsFeed, which becomes the `type=`
  * query param.
  *
@@ -53,7 +53,7 @@ type SortMode = 'recent' | 'reactions' | 'comments';
 const EMPTY_COPY: Record<FeedKind, { title: string; body: string }> = {
     all: {
         title: 'No posts yet',
-        body: 'This account hasn\'t published anything yet — or Unipile hasn\'t indexed it. Engagement-signal monitoring will activate the moment the first post lands.',
+        body: 'This account hasn\'t published anything yet - or Unipile hasn\'t indexed it. Engagement-signal monitoring will activate the moment the first post lands.',
     },
     post: {
         title: 'No standalone posts',
@@ -92,7 +92,7 @@ export default function PostsFeed({
     const [search, setSearch] = useState('');
 
     // Author identity for the post-card header. The account endpoint is
-    // also called by AccountHeader on the page above — small payload,
+    // also called by AccountHeader on the page above - small payload,
     // and the alternative (lifting state) adds more glue than it saves.
     useEffect(() => {
         let cancelled = false;
@@ -122,7 +122,7 @@ export default function PostsFeed({
             setUpstreamError(data.upstream_error ?? null);
             setError(null);
         } catch (err: any) {
-            // Surface the error honestly — no demo fallback. Operator
+            // Surface the error honestly - no demo fallback. Operator
             // sees an empty state with a retry button when the live
             // endpoint can't be reached.
             if (reset) {
@@ -161,7 +161,7 @@ export default function PostsFeed({
                         currently in memory. Once the operator has paged
                         past the first batch (cursor != null + posts >
                         25), client-side sorting would produce wrong
-                        rankings — the highest-reaction post might live
+                        rankings - the highest-reaction post might live
                         on a page we haven't fetched yet. Disable the
                         non-recency options in that state. The "recent"
                         sort always matches server order so it stays on.
@@ -174,7 +174,7 @@ export default function PostsFeed({
                                 onChange={e => setSortMode(e.target.value as SortMode)}
                                 className="text-[11px] px-2 py-1 rounded-md outline-none bg-white cursor-pointer"
                                 style={{ border: '1px solid #D1CBC5' }}
-                                title={paginated ? 'Reaction / comment sort is disabled across multiple pages — reset to a single page (clear cursor) to use it.' : undefined}
+                                title={paginated ? 'Reaction / comment sort is disabled across multiple pages - reset to a single page (clear cursor) to use it.' : undefined}
                             >
                                 <option value="recent">Most recent</option>
                                 <option value="reactions" disabled={paginated && sortMode !== 'reactions'}>
@@ -254,13 +254,13 @@ export default function PostsFeed({
 /**
  * Variant-aware post card. Visual treatments:
  *
- *   thought-leadership — amber Lightbulb ribbon on top of the plain-post
+ *   thought-leadership - amber Lightbulb ribbon on top of the plain-post
  *                        style, signalling "this earned signal".
- *   article            — purple "Published an article" ribbon + serif
+ *   article            - purple "Published an article" ribbon + serif
  *                        hero title block on a violet background.
- *   repost             — green "Reposted this" ribbon + indented quoted
+ *   repost             - green "Reposted this" ribbon + indented quoted
  *                        frame for the borrowed body.
- *   post               — clean LinkedIn card with no ribbon.
+ *   post               - clean LinkedIn card with no ribbon.
  *
  * Entire card is clickable into the engagement drill-down at
  * /accounts/[id]/posts/[postId]. The "Open on LinkedIn" icon stops
