@@ -158,7 +158,7 @@ export default function Navbar() {
 
                             {toolsOpen && (
                                 <div
-                                    className="absolute top-full right-0 xl:right-auto xl:left-0 mt-7 w-[720px] max-w-[calc(100vw-48px)]"
+                                    className="absolute top-full left-1/2 -translate-x-1/2 mt-7 w-[720px] max-w-[calc(100vw-48px)]"
                                     style={{
                                         background: '#FFFFFF',
                                         border: '1px solid #D1CBC5',
