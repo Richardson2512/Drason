@@ -1,11 +1,33 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import MarketingBackdrop from '@/components/MarketingBackdrop';
 import { appUrl } from '@/lib/urls';
+
+const PAGE_TITLE = 'Customer Testimonials | Superkabe';
+const PAGE_DESCRIPTION =
+    'Operators choose Superkabe for AI-personalized cold email, native deliverability protection, and the 5-phase domain healing pipeline. See what founders, growth leads, and RevOps teams say.';
+const CANONICAL_URL = 'https://superkabe.com/testimonials';
+
+export const metadata: Metadata = {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    alternates: { canonical: CANONICAL_URL },
+    openGraph: {
+        title: PAGE_TITLE,
+        description: PAGE_DESCRIPTION,
+        url: CANONICAL_URL,
+        siteName: 'Superkabe',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: PAGE_TITLE,
+        description: PAGE_DESCRIPTION,
+    },
+};
 
 interface Testimonial {
     quote: string;
@@ -131,6 +153,12 @@ const ACCENT_METRIC: Record<Testimonial['accent'], string> = {
     green: 'text-[#0F6A30] bg-[#E6F6EA] border-[#BFE6CB]',
 };
 
+function formatDate(iso: string): string {
+    // Render in UTC so SSR and client agree (no hydration mismatch).
+    const d = new Date(`${iso}T00:00:00Z`);
+    return d.toLocaleString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+
 function QuoteMark({ accent }: { accent: Testimonial['accent'] }) {
     const colors: Record<Testimonial['accent'], string> = {
         orange: '#E68B1F',
@@ -181,29 +209,51 @@ function Card({ t }: { t: Testimonial }) {
                 &ldquo;{t.quote}&rdquo;
             </blockquote>
 
-            <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <footer className="flex items-center gap-3 pt-4 border-t border-gray-100">
                 <div className="w-10 h-10 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden shrink-0">
                     <Image
                         src={t.logo}
-                        alt={`${t.company} logo`}
+                        alt={`${t.company} company logo`}
                         width={28}
                         height={28}
                         className="max-w-[80%] max-h-[80%] w-auto h-auto object-contain"
                     />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-gray-900 truncate">{t.author}</div>
                     <div className="text-xs text-gray-500 truncate">
                         {t.role} · {t.company}
                     </div>
                 </div>
-            </div>
+                <time
+                    dateTime={t.date}
+                    className="text-[10px] text-gray-400 font-medium tracking-wide uppercase shrink-0"
+                >
+                    {formatDate(t.date)}
+                </time>
+            </footer>
         </article>
     );
 }
 
 export default function TestimonialsPage() {
     const productId = 'https://superkabe.com/#software';
+
+    // Reviews carry the testimonial text + author/date only — no reviewRating.
+    // These are endorsements, not numeric ratings, and fabricating a uniform
+    // 5-star score for every quote violates Google's review-spam policy.
+    const reviews = TESTIMONIALS.map((t) => ({
+        '@type': 'Review',
+        author: {
+            '@type': 'Person',
+            name: t.author,
+            jobTitle: t.role,
+            worksFor: { '@type': 'Organization', name: t.company },
+        },
+        datePublished: t.date,
+        reviewBody: t.quote,
+    }));
+
     const product = {
         '@type': 'SoftwareApplication',
         '@id': productId,
@@ -214,26 +264,8 @@ export default function TestimonialsPage() {
         description:
             'AI-powered cold email platform with native deliverability protection, multi-mailbox sending, and 5-phase domain healing.',
         brand: { '@type': 'Brand', name: 'Superkabe' },
+        review: reviews,
     };
-
-    const reviews = TESTIMONIALS.map((t) => ({
-        '@type': 'Review',
-        reviewRating: {
-            '@type': 'Rating',
-            ratingValue: '5',
-            bestRating: '5',
-            worstRating: '1',
-        },
-        author: {
-            '@type': 'Person',
-            name: t.author,
-            jobTitle: t.role,
-            worksFor: { '@type': 'Organization', name: t.company },
-        },
-        datePublished: t.date,
-        reviewBody: t.quote,
-        itemReviewed: { '@id': productId },
-    }));
 
     const schema = {
         '@context': 'https://schema.org',
@@ -241,13 +273,11 @@ export default function TestimonialsPage() {
             product,
             {
                 '@type': 'CollectionPage',
-                '@id': 'https://superkabe.com/testimonials#page',
-                url: 'https://superkabe.com/testimonials',
-                name: 'Customer Testimonials | Superkabe',
-                description:
-                    'See how outbound teams use Superkabe to send AI-personalized cold email at scale, protect deliverability, and heal burned domains automatically.',
+                '@id': `${CANONICAL_URL}#page`,
+                url: CANONICAL_URL,
+                name: PAGE_TITLE,
+                description: PAGE_DESCRIPTION,
                 mainEntity: { '@id': productId },
-                hasPart: reviews,
             },
         ],
     };
