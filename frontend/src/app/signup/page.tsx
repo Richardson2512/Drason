@@ -3,15 +3,14 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
-import { apiClient, startTokenRefresh } from '@/lib/api';
-import { setIntendedReturnTo, consumeIntendedReturnTo, safePath } from '@/lib/auth-client';
+import { apiClient } from '@/lib/api';
+import { setIntendedReturnTo, safePath } from '@/lib/auth-client';
 import { marketingUrl } from '@/lib/urls';
 import { isFreeEmailDomain } from '@/lib/freeEmailDomains';
 
 function SignupContent() {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -23,6 +22,11 @@ function SignupContent() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    // Set after a successful signup. A password signup is NOT logged in here -
+    // it must click the emailed verification link (which both verifies the
+    // address and establishes the session). We show a check-your-inbox screen
+    // instead of redirecting to the dashboard.
+    const [pendingEmail, setPendingEmail] = useState<string | null>(null);
     // Pinned at the moment the page loaded so the value submitted with the
     // form matches exactly what the user saw and clicked. Backend rejects on
     // version drift between page-render and submit.
@@ -135,7 +139,7 @@ function SignupContent() {
         setLoading(true);
 
         try {
-            await apiClient<{ token?: string }>('/api/auth/register', {
+            const res = await apiClient<{ verification_required?: boolean; email?: string; message?: string }>('/api/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
@@ -151,22 +155,58 @@ function SignupContent() {
                 }),
             });
 
-            // Server sets httpOnly cookie automatically via Set-Cookie header.
-            // Start periodic token refresh to keep session alive.
-            startTokenRefresh();
-
-            // Redirect: prefer the intended return-to (set from ?from= when the
-            // user landed here from a CTA on /cold-email-templates etc.). Falls
-            // back to /dashboard. User gets 14-day trial regardless of where
-            // they're sent.
-            const returnTo = consumeIntendedReturnTo();
-            router.push(returnTo || '/dashboard');
+            // No session is issued at signup anymore. The account is created
+            // but unverified; the verification email's link both verifies the
+            // address AND logs the user in (then routes to the dashboard).
+            // Show the check-your-inbox screen instead of redirecting.
+            setPendingEmail(res.email || email);
         } catch (err: any) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
+
+    if (pendingEmail) {
+        return (
+            <div className="min-h-screen w-full flex items-center justify-center p-4 bg-[#F7F2EB] font-sans">
+                <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-8 text-center">
+                    <a href={marketingUrl('/')} className="flex items-center gap-2 mb-6 w-fit mx-auto no-underline">
+                        <Image src="/image/logo-v2.png" alt="Superkabe - back to home" width={26} height={26} />
+                        <span className="font-bold text-base text-[#171923]">Superkabe</span>
+                    </a>
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#1C4532]/10 flex items-center justify-center">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1C4532" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <path d="m22 7-10 6L2 7" />
+                        </svg>
+                    </div>
+                    <h1 className="text-xl font-bold text-[#171923] mb-2">Check your inbox</h1>
+                    <p className="text-[#4A5568] text-sm leading-relaxed">
+                        We sent a verification link to{' '}
+                        <span className="font-semibold text-[#171923] break-all">{pendingEmail}</span>.
+                        Click it to activate your account - you&apos;ll be signed in automatically. The link expires in 24 hours.
+                    </p>
+                    <p className="text-[#718096] text-xs mt-4 leading-relaxed">
+                        Didn&apos;t get it? Check spam, or{' '}
+                        <button
+                            type="button"
+                            onClick={() => { setPendingEmail(null); setError(''); }}
+                            className="text-[#1C4532] font-semibold underline hover:text-green-800"
+                        >
+                            try signing up again
+                        </button>{' '}
+                        to re-send the link.
+                    </p>
+                    <div className="mt-6 pt-4 border-t border-[#E2E8F0]">
+                        <Link href="/login" className="text-[#1C4532] font-semibold underline hover:text-green-800 text-xs">
+                            Back to sign in
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen w-full flex overflow-hidden font-sans">

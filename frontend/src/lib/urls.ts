@@ -53,6 +53,7 @@ export const APP_ROUTE_PREFIXES = [
     '/signup',
     '/forgot-password',
     '/reset-password',
+    '/verify-email',
     '/onboarding',
     '/admin',
     '/assessment',

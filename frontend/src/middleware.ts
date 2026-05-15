@@ -43,6 +43,7 @@ const APP_ROUTE_PREFIXES = [
     '/signup',
     '/forgot-password',
     '/reset-password',
+    '/verify-email',
     '/onboarding',
     '/admin',
     '/assessment',
@@ -123,6 +124,15 @@ export function middleware(request: NextRequest) {
         pathname === '/' ||
         pathname === '/login' ||
         pathname === '/signup' ||
+        // Pre-auth token-link pages: the recipient is logged OUT by
+        // definition (clicking a link from an email). Without these in the
+        // public list, step 6 below bounces them to '/' and the flow dies.
+        // /forgot-password + /reset-password were already missing - that
+        // was a latent break in password reset for logged-out users, fixed
+        // here alongside the new /verify-email.
+        pathname === '/forgot-password' ||
+        pathname === '/reset-password' ||
+        pathname === '/verify-email' ||
         pathname === '/onboarding' ||
         pathname === '/oauth/consent' ||
         pathname === '/pricing' ||
