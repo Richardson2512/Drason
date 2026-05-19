@@ -88,8 +88,12 @@ interface CampaignOption {
     name: string;
 }
 
+// Mirrors backend DEFAULT_CUSTOM_RULES (coldCallListService.ts) - the
+// single source of truth a fresh workspace actually gets from
+// loadOrCreateSettings. Was 3 here while the backend seeds 2, so "is this
+// customized?" auto-expand and "Reset to defaults" were both wrong.
 const DEFAULT_SETTINGS: Omit<Settings, 'id' | 'organization_id'> = {
-    min_opens: 3,
+    min_opens: 2,
     time_window_days: 7,
     require_click: false,
     require_no_reply: true,
@@ -740,7 +744,7 @@ function RulesPanel({
                     <input
                         type="number"
                         min={0}
-                        max={50}
+                        max={100}
                         value={minOpens}
                         onChange={(e) => onChange({ min_opens: parseInt(e.target.value || '0', 10) || 0 })}
                         className="w-24 rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
