@@ -374,6 +374,32 @@ function ValidationPageContent() {
         setRouting(false);
     };
 
+    // ========== PUSH TO CONTACTS (no campaign) ==========
+
+    const handlePushToContacts = async () => {
+        if (!selectedBatch || selectedIds.size === 0) return;
+        try {
+            const res = await apiClient<{ added: number; skipped: number; errors: string[] }>(
+                `/api/validation/batches/${selectedBatch.id}/push-to-contacts`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ leadIds: Array.from(selectedIds) }),
+                },
+            );
+            if (res.added > 0) {
+                toast.success(`Added ${res.added} contact${res.added === 1 ? '' : 's'}${res.skipped > 0 ? ` (${res.skipped} skipped)` : ''}`);
+            } else if (res.skipped > 0) {
+                toast(`${res.skipped} skipped (invalid / already pushed)`, { icon: 'ℹ️' });
+            } else {
+                toast.error('Nothing to push - no eligible contacts selected.');
+            }
+            fetchBatchLeads(selectedBatch.id, batchMeta.page);
+            fetchBatches();
+        } catch (err: any) {
+            toast.error(err.message || 'Push to Contacts failed');
+        }
+    };
+
     // ========== EXPORT ==========
 
     const handleExport = async (filter?: string[]) => {
@@ -847,6 +873,17 @@ function ValidationPageContent() {
                                 >
                                     <Send size={11} />
                                     Route {selectedIds.size} to Campaign
+                                </button>
+                            )}
+                            {selectedIds.size > 0 && (
+                                <button
+                                    onClick={handlePushToContacts}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-gray-50"
+                                    style={{ borderColor: '#D1CBC5' }}
+                                    title="Add the selected validated contacts to your Contacts page (no campaign). Invalid contacts are auto-excluded."
+                                >
+                                    <Send size={11} />
+                                    Push {selectedIds.size} to Contacts
                                 </button>
                             )}
                             <button
