@@ -81,6 +81,8 @@ interface Settings {
     title_filter: string | null;
     campaign_filter: string[] | null;
     max_list_size: number;
+    phone_enrichment_enabled: boolean;
+    phone_enrichment_daily_cap: number;
 }
 
 interface CampaignOption {
@@ -101,6 +103,8 @@ const DEFAULT_SETTINGS: Omit<Settings, 'id' | 'organization_id'> = {
     title_filter: null,
     campaign_filter: null,
     max_list_size: 200,
+    phone_enrichment_enabled: false,
+    phone_enrichment_daily_cap: 50,
 };
 
 const TIME_WINDOW_OPTIONS = [
@@ -164,7 +168,8 @@ export default function ColdCallListPage() {
                 r.settings.exclude_recent_days !== DEFAULT_SETTINGS.exclude_recent_days ||
                 r.settings.title_filter ||
                 (r.settings.campaign_filter && r.settings.campaign_filter.length > 0) ||
-                r.settings.max_list_size !== DEFAULT_SETTINGS.max_list_size;
+                r.settings.max_list_size !== DEFAULT_SETTINGS.max_list_size ||
+                r.settings.phone_enrichment_enabled !== DEFAULT_SETTINGS.phone_enrichment_enabled;
             if (hasCustomization) setRulesOpen(true);
         } catch (err) {
             toast.error((err as Error).message || 'Failed to load custom rules');
@@ -210,6 +215,8 @@ export default function ColdCallListPage() {
                         title_filter: merged.title_filter,
                         campaign_filter: merged.campaign_filter,
                         max_list_size: merged.max_list_size,
+                        phone_enrichment_enabled: merged.phone_enrichment_enabled,
+                        phone_enrichment_daily_cap: merged.phone_enrichment_daily_cap,
                     }),
                 });
                 setSettings(r.settings);
@@ -731,6 +738,8 @@ function RulesPanel({
     const excludeRecentDays = settings.exclude_recent_days ?? 7;
     const maxListSize = settings.max_list_size ?? 200;
     const titleFilter = settings.title_filter ?? '';
+    const phoneEnrichmentEnabled = settings.phone_enrichment_enabled ?? false;
+    const phoneEnrichmentDailyCap = settings.phone_enrichment_daily_cap ?? 50;
 
     // campaign_filter is JSONB on the backend - coerce to array to survive
     // any stale {} or non-array shape that might be returned.
@@ -831,6 +840,46 @@ function RulesPanel({
                         />
                     )}
                 </Field>
+            </div>
+
+            {/* Phone enrichment - visually separated because it spends the
+                workspace's own enrichment-provider credits, unlike the
+                list rules above. */}
+            <div className="mt-4 rounded-lg border border-[#D1CBC5] bg-white px-4 py-3">
+                <label className="flex items-start gap-2 cursor-pointer select-none">
+                    <input
+                        type="checkbox"
+                        checked={phoneEnrichmentEnabled}
+                        onChange={(e) => onChange({ phone_enrichment_enabled: e.target.checked })}
+                        className="mt-0.5 rounded border-[#D1CBC5]"
+                    />
+                    <span>
+                        <span className="block text-[11px] font-semibold text-gray-700">
+                            Auto-fill missing phone numbers
+                        </span>
+                        <span className="block text-[10px] text-gray-500 mt-0.5 max-w-xl">
+                            When a prospect on a generated list has no phone number, look it
+                            up with your connected enrichment provider so it shows on the
+                            list ready to dial. Off by default - each lookup uses your own
+                            Apollo / Clay / etc. credits. Only runs if you have an
+                            enrichment provider connected.
+                        </span>
+                    </span>
+                </label>
+                {phoneEnrichmentEnabled && (
+                    <div className="mt-3 pl-6 flex items-center gap-2">
+                        <label className="text-[11px] text-gray-600">Max lookups per day</label>
+                        <input
+                            type="number"
+                            min={0}
+                            max={500}
+                            value={phoneEnrichmentDailyCap}
+                            onChange={(e) => onChange({ phone_enrichment_daily_cap: parseInt(e.target.value || '0', 10) || 0 })}
+                            className="w-24 rounded-md border border-[#D1CBC5] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                        />
+                        <span className="text-[10px] text-gray-400">caps daily spend (0-500)</span>
+                    </div>
+                )}
             </div>
 
             <div className="mt-4 flex items-center justify-between">
