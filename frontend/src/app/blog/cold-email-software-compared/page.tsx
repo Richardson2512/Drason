@@ -150,7 +150,7 @@ export default function ColdEmailSoftwareComparedArticle() {
  </div>
  </div>
  <a href={platform.url} target="_blank" rel="nofollow noopener noreferrer" className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 hover:bg-blue-50 transition-colors whitespace-nowrap">
- Visit site &rarr;
+ Visit {platform.name} &rarr;
  </a>
  </div>
  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-xs">

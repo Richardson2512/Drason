@@ -57,6 +57,9 @@ export default function Footer() {
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/blog/superkabe-vs-instantly" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Instantly</Link>
  <Link href="/blog/superkabe-vs-smartlead" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Smartlead</Link>
+ <Link href="/blog/superkabe-vs-lemlist" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Lemlist</Link>
+ <Link href="/blog/superkabe-vs-heyreach" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs HeyReach</Link>
+ <Link href="/blog/superkabe-vs-sender" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Sender.ai</Link>
  <Link href="/blog/superkabe-vs-emailbison" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs EmailBison</Link>
  <Link href="/blog/superkabe-vs-reply-io" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Reply.io</Link>
  <Link href="/blog/superkabe-vs-woodpecker" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Woodpecker</Link>
@@ -90,7 +93,7 @@ export default function Footer() {
  <a
  href="https://www.g2.com/contributor/superkabe-reviews-e69828c5-b59e-4f0e-9e18-244e0697eafe"
  target="_blank"
- rel="noopener noreferrer"
+ rel="nofollow noopener noreferrer"
  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 mt-3 bg-[#FF492C] text-white rounded-full text-xs font-semibold hover:bg-[#e03d24] transition-colors shadow-sm whitespace-nowrap w-fit"
  >
  <span className="text-sm">⭐</span><span>Review on G2</span>
@@ -106,13 +109,18 @@ export default function Footer() {
  © {new Date().getFullYear()} Superkabe. All rights reserved.
  </div>
 
- {/* Entity Links Array (Crawler Pathing) */}
+ {/* Entity Links Array (Crawler Pathing)
+ rel="nofollow" prevents sitewide link-equity bleed - these profile
+ pages render in the footer of every page (~215x in the prod crawl)
+ and several of them either noindex or 301 their canonical, so each
+ followed link is a leak. Crawlers still see the entity association
+ for E-A-T purposes; they just don't pass PageRank. */}
  <div className="flex flex-wrap items-center justify-center gap-6">
- <a href="https://www.linkedin.com/company/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">LinkedIn</a>
- <a href="https://github.com/Superkabereal/Superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">GitHub</a>
- <a href="https://www.crunchbase.com/organization/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Crunchbase</a>
- <a href="https://producthunt.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Product Hunt</a>
- <a href="https://g2.com/products/superkabe" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">G2</a>
+ <a href="https://www.linkedin.com/company/superkabe" target="_blank" rel="nofollow noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">LinkedIn</a>
+ <a href="https://github.com/Superkabereal/Superkabe" target="_blank" rel="nofollow noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">GitHub</a>
+ <a href="https://www.crunchbase.com/organization/superkabe" target="_blank" rel="nofollow noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Crunchbase</a>
+ <a href="https://producthunt.com/products/superkabe" target="_blank" rel="nofollow noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">Product Hunt</a>
+ <a href="https://g2.com/products/superkabe" target="_blank" rel="nofollow noopener noreferrer" className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-medium">G2</a>
  </div>
  </div>
  </div>

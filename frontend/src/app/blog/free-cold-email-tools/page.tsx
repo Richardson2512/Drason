@@ -127,7 +127,7 @@ export default function FreeColdEmailToolsArticle() {
  </div>
  </div>
  <a href={tool.url} target="_blank" rel="nofollow noopener noreferrer" className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 hover:bg-blue-50 transition-colors whitespace-nowrap">
- Visit site &rarr;
+ Visit {tool.name} &rarr;
  </a>
  </div>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 text-xs">

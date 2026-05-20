@@ -1048,5 +1048,389 @@ export const productPages: Record<string, ProductPageData> = {
                 a: "They drive action. The same telemetry stream that populates the dashboard powers routing decisions, automatic pauses, and healing transitions. When you see a bounce rate rising on the chart, Superkabe has already acted on it.",
             },
         ]
+    },
+    "multi-platform-outbound-protection": {
+        slug: "multi-platform-outbound-protection",
+        title: "Multi-Platform Outbound Protection",
+        description: "Run Smartlead, Instantly, EmailBison, and Superkabe's native sequencer side-by-side under a single deliverability governance layer - auto-pause, healing, and ESP-aware routing across every connected platform.",
+        intro: "unifies deliverability governance across every sending platform an outbound team uses. Most agencies and revenue teams run a mix - Smartlead for one client, Instantly for another, EmailBison or the native Superkabe sequencer for a third. Multi-platform outbound protection means the same auto-pause rules, the same 5-phase healing pipeline, and the same ESP-aware per-mailbox routing apply uniformly to every send, regardless of which platform originated the campaign.",
+        tldr: "Multi-platform outbound protection consolidates Smartlead, Instantly, EmailBison, and the native sequencer under one governance layer: shared bounce-rate enforcement, shared healing pipeline, shared ESP-aware routing, shared blacklist and DNS monitoring. One pane of glass, every platform protected.",
+        sections: [
+            {
+                heading: "Why Multi-Platform Outbound Teams Need a Single Protection Layer",
+                paragraphs: [
+                    "Agencies and revenue teams almost never standardize on one sending platform. Different clients have different infrastructure tenancies, different platform credits, different operational quirks. By the time the team is past five clients, the stack typically looks like: Smartlead for the largest accounts (lowest per-lead cost at scale), Instantly for accounts that need bundled warmup, EmailBison for accounts that demand its specific routing model, and the Superkabe native sequencer for accounts onboarded directly. Each platform has its own bounce dashboard, its own pause logic (or lack of it), and its own way of reporting failures.",
+                    "The operational problem is that the team has to monitor four dashboards, remember four different threshold definitions, and manually pause mailboxes in four different UIs when something goes wrong. The deliverability problem is harder: a domain burning on Smartlead is often the exact same domain serving campaigns on Instantly - they share mailboxes, they share IPs, they share reputation. Per-platform monitoring cannot see the cross-platform picture.",
+                    "Multi-platform outbound protection solves this by lifting the governance layer above the platforms. Superkabe ingests delivery events from every connected platform via webhook, normalizes them into one event stream, applies the same enforcement rules everywhere, and pushes pause commands back to whichever platform owns the affected mailbox."
+                ]
+            },
+            {
+                heading: "What Is Unified Under the Protection Layer?",
+                paragraphs: [
+                    "Auto-pause runs against every connected mailbox on every connected platform. The 3% bounce-rate threshold (with a 60-send minimum and 5-bounce safety net) is applied identically whether the mailbox is sending through Smartlead, Instantly, EmailBison, or the native sequencer. When the threshold is crossed, Superkabe issues the platform-appropriate API call to pause the mailbox - the team does not need to know which UI to log into.",
+                    "The 5-phase healing pipeline (Pause to Quarantine to Restricted Send to Warm Recovery to Healthy) operates on the mailbox identity, not on the platform identity. A mailbox that burns on Smartlead heals through the same protocol whether its next assignment is back on Smartlead, on Instantly, or on the native sequencer. The Resilience Score that paces the healing curve travels with the mailbox across platforms.",
+                    "ESP-aware per-mailbox routing scores mailboxes on 30-day bounce rate against each recipient ESP (Gmail, Microsoft, Yahoo) and routes leads using a 60% capacity / 40% performance blend - regardless of which sending platform the campaign happens to live on. This routing decision is made at the protection layer, then handed down to the platform to execute."
+                ]
+            },
+            {
+                heading: "How Multi-Platform Telemetry Is Normalized",
+                paragraphs: [
+                    "Every platform speaks a slightly different webhook dialect. Smartlead emits one event shape, Instantly another, EmailBison a third. The protection layer's normalization adapters translate each dialect into Superkabe's canonical event schema: send, open, click, reply, bounce (hard/soft/transient), complaint, deferral. From the rule engine's perspective, every mailbox looks identical regardless of upstream origin.",
+                    "This is what makes governance possible. If the rule engine had to maintain four parallel implementations - 'bounce rate for Smartlead' vs 'bounce rate for Instantly' - bugs would slip through and thresholds would drift. One canonical schema, one rule engine, one governance surface."
+                ]
+            },
+            {
+                heading: "What Operational Wins Does This Unlock?",
+                paragraphs: [
+                    "Agency operators get one console showing every mailbox across every client across every platform, with the same health colors meaning the same things. Onboarding a new operator takes a day, not a week of cross-platform tribal knowledge transfer.",
+                    "Migrations get cheaper. Moving a client from Smartlead to Instantly stops requiring a fresh reputation history - the mailbox carries its scoring with it, the healing state carries with it, and the operator does not have to rebuild trust from zero.",
+                    "Reporting gets cleaner. Client-facing deliverability reports stop being a manual stitch of four screenshots. One Superkabe view, one PDF, one truth."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "Does multi-platform protection require API access to every sending platform?",
+                a: "Yes. Smartlead, Instantly, and EmailBison each require an API key from the platform; the native sequencer is connected by default. Once the key is added, Superkabe ingests webhook events and can issue pause/resume commands. No code changes are needed on the platform side."
+            },
+            {
+                q: "What happens if one platform is temporarily unreachable?",
+                a: "Pause commands queue and retry with exponential backoff (1m, 5m, 15m, 1h, 4h, 12h). Telemetry continues to ingest from the other connected platforms. When the affected platform comes back, queued commands flush in order."
+            },
+            {
+                q: "Can a single mailbox live on more than one platform?",
+                a: "Yes. The protection layer tracks mailboxes by canonical email address. A mailbox connected to both Smartlead and Instantly has its bounce rate aggregated across both surfaces - a 1% bounce on each becomes a 2% bounce in governance, which is the right unit because the domain reputation is shared."
+            },
+            {
+                q: "Which platforms are supported today?",
+                a: "Smartlead, Instantly, EmailBison, and the native Superkabe sequencer. Additional adapters are added on request - if you need a platform that is not yet supported, contact us with your platform plus expected mailbox count and we will scope the adapter."
+            }
+        ],
+        relatedBlog: [
+            { slug: "cold-email-tools-for-agencies", title: "Cold Email Tools for Agencies", description: "How agency stacks differ from in-house outbound and what governance gaps appear at scale" },
+            { slug: "cold-email-infrastructure-protection-for-agencies", title: "Cold Email Infrastructure Protection for Agencies", description: "What protection means when you run 50+ client domains across 4 sending platforms" }
+        ]
+    },
+    "multi-platform-email-validation": {
+        slug: "multi-platform-email-validation",
+        title: "Multi-Platform Email Validation",
+        description: "Email validation that runs once and protects every connected sending platform - hybrid syntax/MX/disposable/catch-all checks plus conditional MillionVerifier probing, with the same gate enforced before sends on Smartlead, Instantly, EmailBison, and the native sequencer.",
+        intro: "validates every lead once and uses that verdict to govern sends across every connected sending platform. Most teams pay for validation twice: once when enrichment hands off to Smartlead, again when it hands off to Instantly, again when it hands off to EmailBison. Multi-platform validation moves the gate up one layer - validate at the protection plane, then enforce the verdict at every downstream platform.",
+        tldr: "One validation pass, every platform enforced. Syntax + MX + disposable + catch-all is run inline; MillionVerifier API probes the risky 10-15%. The verdict (GREEN/YELLOW/RED) becomes the pre-send gate for Smartlead, Instantly, EmailBison, and the native sequencer alike.",
+        sections: [
+            {
+                heading: "Why Per-Platform Validation Is Expensive and Inconsistent",
+                paragraphs: [
+                    "Each major sending platform offers some level of validation - usually shallow syntax + MX, sometimes a thin third-party integration. The two problems are cost (you pay for the same lead's verification each time it crosses a platform boundary) and consistency (Smartlead's threshold for 'catch-all' is not Instantly's, and EmailBison handles disposables differently from both). The result: the same lead can be GREEN on one platform and RED on another, with no audit trail explaining why.",
+                    "For agencies that move a single client's lead list across multiple platforms - because a campaign runs on Smartlead while warmup runs through Instantly, say - this inconsistency directly damages deliverability. Leads that should have been screened out slip through whichever platform has the laxest checks, and the resulting bounces poison shared mailbox reputation."
+                ]
+            },
+            {
+                heading: "How Multi-Platform Validation Works",
+                paragraphs: [
+                    "When a lead enters Superkabe - whether by CSV upload, Clay webhook, Apollo import, or a CRM sync from HubSpot/Salesforce - the validation gate runs immediately. The internal pass handles the cheap deterministic checks: syntax compliance against RFC 5322, MX record presence and SOA validity, disposable-domain blocklist (Mailinator, Guerrilla Mail, and several hundred others), and catch-all heuristics that probe domain MTA behavior.",
+                    "Leads that come out of the internal pass marked 'risky' (typically the 10-15% that look catch-all or borderline) get probed against MillionVerifier - a single paid API call per lead, billed against the workspace's validation credits. The combined verdict is one of three states: GREEN (safe to send), YELLOW (send with caution; the recipient ESP may treat it as marginal), or RED (block - sending will damage reputation).",
+                    "The verdict is then applied as a pre-send gate at every connected platform. When Smartlead or Instantly requests the next batch of leads to send, the protection layer filters out RED leads server-side. The platform never sees them. YELLOW leads are routed to mailboxes with stronger reputation; GREEN leads route normally."
+                ]
+            },
+            {
+                heading: "Why a Single Verdict Beats Per-Platform Recheck",
+                paragraphs: [
+                    "The first practical win is cost. You pay for validation once per lead per pass, not once per platform. For an agency moving leads through three platforms, that is a 3x reduction in validation spend with no reduction in coverage.",
+                    "The second is consistency. The 'is this catch-all' decision is made by one set of rules, audited in one place, and applied identically across platforms. If a campaign launches with a 60% catch-all rate on the validation report, the same number of leads are blocked regardless of which platform that campaign happens to live on.",
+                    "The third is debuggability. When a lead bounces, the validation history is a single row in one database - including the timestamp, the verdict, the upstream provider's response, and any subsequent re-validation attempts. Per-platform validation makes this trail impossible to reconstruct."
+                ]
+            },
+            {
+                heading: "What About Validation Credits and Cost Modeling?",
+                paragraphs: [
+                    "Validation credits are workspace-scoped and consumed only when the MillionVerifier probe runs (the internal pass is free). Typical campaigns spend credits on 10-15% of incoming leads - the borderline catch-all and risky cases. A 10K-lead campaign typically consumes 1K-1.5K credits, well inside the credit budget bundled with the Growth and Scale plans.",
+                    "Teams that want predictable cost can set a credit ceiling per workspace; once hit, the MillionVerifier probe is skipped and the lead is marked YELLOW by default (held to stronger-reputation mailboxes). Teams that want maximum throughput can purchase credit top-ups; the gate fails open in either configuration, which means validation never blocks a send because of a billing edge case."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "How does this differ from buying ZeroBounce or NeverBounce separately?",
+                a: "Standalone validators are one-shot tools. You pay per lead, you get a CSV back, and you import it back into your sending platform. Multi-platform validation runs continuously, the verdict is enforced at the protection layer, and there is no CSV round-trip. New leads validate inline as they enter the system."
+            },
+            {
+                q: "Does the gate block exact matches differently from catch-all matches?",
+                a: "Yes. Exact-match GREEN leads route to any healthy mailbox. Catch-all leads (where the MTA accepts everything but does not confirm the specific user exists) are downgraded to YELLOW and routed only to mailboxes with 30-day bounce rate under 2% on the target ESP. This dramatically softens the damage when a catch-all turns out to be invalid."
+            },
+            {
+                q: "Can validation be re-run on existing leads?",
+                a: "Yes. Re-validation is available per campaign or per lead segment from the dashboard. Useful when a lead list has been sitting for months and the underlying mailboxes may have changed status."
+            },
+            {
+                q: "What is the SLA for the validation pass?",
+                a: "Internal validation is sub-second per lead at typical throughput. MillionVerifier probing adds 1-3 seconds per risky lead. For a 10K-lead bulk import the full validation pass typically completes in 2-4 minutes end-to-end."
+            }
+        ],
+        relatedBlog: [
+            { slug: "email-validation-smartlead-instantly", title: "Email Validation: Smartlead vs Instantly", description: "How per-platform validation breaks down and what an upstream gate fixes" },
+            { slug: "email-validation-for-agencies", title: "Email Validation for Agencies", description: "Validation cost math and consistency requirements at agency scale" },
+            { slug: "how-many-cold-emails-per-day", title: "How Many Cold Emails Per Day", description: "Volume thresholds and how validation gating impacts daily caps" }
+        ]
+    },
+    "smartlead-deliverability-protection": {
+        slug: "smartlead-deliverability-protection",
+        title: "Smartlead Deliverability Protection",
+        description: "Native Smartlead protection layer - bounce-rate auto-pause, 5-phase healing, ESP-aware routing, and 400+ DNSBL monitoring layered directly on top of Smartlead campaigns without rebuilding sequences.",
+        intro: "ships a deliverability protection layer purpose-built for Smartlead. Smartlead is a strong sending engine with deep mailbox-rotation logic, but it does not enforce bounce-rate auto-pause, run a structured healing pipeline, or score mailboxes by per-ESP performance. Smartlead deliverability protection adds those exact missing pieces - without you rebuilding any sequences or re-importing any leads.",
+        tldr: "Connect Smartlead via API key. Superkabe ingests every send/bounce/reply event, enforces 3% bounce-rate auto-pause across every Smartlead mailbox, runs the 5-phase healing pipeline on paused mailboxes, and routes leads by per-ESP performance. Smartlead keeps doing what it does well; the protection layer fills the governance gap.",
+        sections: [
+            {
+                heading: "What Smartlead Does Well and Where It Stops",
+                paragraphs: [
+                    "Smartlead is one of the cleanest sending engines on the market. Mailbox rotation is mature, the API is well-documented, the unified inbox handles multi-mailbox reply triage without drama, and the multi-tenant model fits agency operations. Where Smartlead stops is the layer above sending - the protection layer that enforces bounce-rate thresholds, executes healing when a mailbox fails, and routes leads by per-recipient-ESP performance instead of generic capacity.",
+                    "Smartlead reports bounce rate in its analytics dashboards, but it does not pause a mailbox when bounce rate crosses a threshold. That decision is left to the operator. At 100+ Smartlead mailboxes, the lag between the dashboard showing 4% bounce and the operator clicking pause is exactly the window in which the domain burns."
+                ]
+            },
+            {
+                heading: "How the Protection Layer Plugs Into Smartlead",
+                paragraphs: [
+                    "Connection is one API key. The Smartlead workspace key gets pasted into Superkabe's Integrations page, and the protection layer begins ingesting webhook events within minutes. No sequence changes, no mailbox reconfiguration, no DNS work - Smartlead continues to own the sending and the rotation; Superkabe owns the governance.",
+                    "Auto-pause kicks in once a mailbox has cleared the 60-send minimum. If the rolling bounce rate over the most recent 100 sends crosses 3% (or the absolute 5-bounce safety net trips at lower volume), Superkabe issues a Smartlead API call to pause the affected mailbox. The pause shows up in the Smartlead UI just as if a human had clicked it; the audit trail in Superkabe records the threshold value, the bounce snapshot, and the timestamp.",
+                    "The 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) runs against the paused mailbox. Each phase has gates - clean send counts, DNS health checks, time-in-phase floors, and a Resilience Score (0-100) that tunes the curve to the mailbox's history. The healing protocol resumes the mailbox in Smartlead automatically once the gates clear; no operator action required."
+                ]
+            },
+            {
+                heading: "What This Looks Like in the Smartlead UI",
+                paragraphs: [
+                    "From inside Smartlead the team sees the same mailboxes they already manage. The difference is that mailboxes occasionally pause without anyone clicking pause - and resume without anyone clicking resume. The Superkabe dashboard records exactly which mailbox was paused at which moment by which rule, with the underlying bounce data linked. Smartlead UI changes only minimally; the operational savings are in not having to babysit the bounce dashboard.",
+                    "For agencies running multi-client Smartlead operations, the protection layer scales the operator-to-mailbox ratio dramatically. One operator running 50 mailboxes by manual pause monitoring becomes one operator running 500 mailboxes under automated governance with the same incident rate."
+                ]
+            },
+            {
+                heading: "What About ESP-Aware Routing on Top of Smartlead?",
+                paragraphs: [
+                    "Smartlead's built-in lead routing balances by mailbox capacity. The protection layer adds a per-ESP dimension - it scores each mailbox by 30-day bounce rate against Gmail, Microsoft, and Yahoo separately, and routes leads using a 60% capacity / 40% performance blend. The blend means leads to Gmail go preferentially to mailboxes that have a strong Gmail-to-Gmail history, and the same for Microsoft. At scale this is the largest single deliverability lever beyond auto-pause itself."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "Do I need to rebuild my Smartlead sequences in Superkabe?",
+                a: "No. Sequences continue to live in Smartlead. The protection layer sits on top - it does not own the sequence, the sequence editor, or the send schedule. Smartlead remains the sending engine; Superkabe is the governance layer."
+            },
+            {
+                q: "What happens if Superkabe loses its connection to Smartlead temporarily?",
+                a: "Smartlead continues sending normally. When the connection comes back, Superkabe re-ingests the missed delivery events from the Smartlead API (the platform provides a full event-history endpoint) and applies the rules retroactively. If a bounce-rate threshold was breached during the outage, the resulting pause executes on reconnect."
+            },
+            {
+                q: "Can I tune the auto-pause threshold per workspace or per campaign?",
+                a: "Yes. The default is 3% bounce rate / 60-send minimum / 2% warning / 5-bounce safety net, but every parameter is configurable per workspace. Conservative clients can run tighter (say 2% pause / 1.5% warning); aggressive senders can run looser. The governance happens regardless of which value is set."
+            },
+            {
+                q: "Does this work with Smartlead's master-inbox feature?",
+                a: "Yes. Master-inbox replies are ingested the same as any other reply event. They feed engagement scoring and per-mailbox performance metrics. Auto-pause and healing operate on the underlying sending mailboxes, not the master inbox."
+            }
+        ],
+        relatedBlog: [
+            { slug: "why-smartlead-emails-going-to-spam", title: "Why Smartlead Emails Going to Spam", description: "Diagnosis path for Smartlead campaigns landing in spam and how protection layers fix it" },
+            { slug: "email-deliverability-tools-compared", title: "Email Deliverability Tools Compared", description: "Where Smartlead, Instantly, and Superkabe sit in the deliverability stack" },
+            { slug: "smartlead-alternatives", title: "Smartlead Alternatives", description: "When to keep Smartlead with protection vs replace it entirely" }
+        ]
+    },
+    "instantly-infrastructure-protection": {
+        slug: "instantly-infrastructure-protection",
+        title: "Instantly Infrastructure Protection",
+        description: "Native Instantly protection layer - bounce-rate auto-pause, 5-phase healing pipeline, ESP-aware routing, and DNSBL monitoring layered on top of Instantly campaigns without re-importing leads.",
+        intro: "ships a deliverability protection layer for Instantly that closes the gaps in Instantly's native governance. Instantly is excellent at sending and at bundled warmup; it is not built to enforce bounce-rate auto-pause, to run a structured healing pipeline, or to score mailboxes by per-recipient-ESP performance. Instantly infrastructure protection layers those exact functions on top of an existing Instantly workspace - no lead reimport, no sequence rebuild.",
+        tldr: "Connect Instantly via API key. Superkabe ingests every Instantly send/bounce/reply event, enforces 3% bounce-rate auto-pause across every Instantly mailbox, runs the 5-phase healing protocol on paused mailboxes, and routes leads by per-ESP performance. Instantly stays the sender; Superkabe is the protection layer.",
+        sections: [
+            {
+                heading: "Where Instantly Is Strong and Where It Stops",
+                paragraphs: [
+                    "Instantly is one of the best-bundled senders on the market - warmup network, B2B lead database, AI features, polished unified inbox, mature multi-mailbox UX. Where Instantly stops is the protection layer above sending. Bounce rate appears in dashboards but is not enforced via threshold-based auto-pause. Paused mailboxes resume via manual operator action, not via a structured healing protocol. Lead routing is provider-level (all Gmail mailboxes are treated as one class), not per-mailbox-per-ESP.",
+                    "These gaps are not Instantly's fault - they are explicit product choices that keep the sender simple. The cost is that at scale, a domain can burn between dashboard refreshes, and the team only finds out from a delayed bounce report. Infrastructure protection layers automated governance on top so the gaps stop mattering."
+                ]
+            },
+            {
+                heading: "How the Protection Layer Connects to Instantly",
+                paragraphs: [
+                    "One API key. Paste the Instantly workspace key into Superkabe's Integrations page; webhook ingestion starts within minutes. The protection layer does not touch the Instantly sequence editor, the warmup network, or the lead database - those continue to work exactly as they did. Superkabe sits above the sending layer, listening to events and pushing governance decisions back through the Instantly API.",
+                    "Auto-pause runs against every Instantly mailbox once the 60-send minimum is met. If the rolling bounce rate exceeds 3% (or the 5-bounce absolute safety net trips at low volume), Superkabe calls the Instantly API to pause the affected mailbox. From the operator's perspective inside Instantly, the mailbox simply moves from Active to Paused; the protection-layer audit trail explains exactly why.",
+                    "The 5-phase healing pipeline takes paused mailboxes through deterministic recovery: Pause → Quarantine → Restricted Send → Warm Recovery → Healthy. Each transition has explicit gates (clean send counts, DNS health checks, time-in-phase floors). A Resilience Score (0-100) adapts the pace to the mailbox's history. Healed mailboxes resume in Instantly automatically; no operator action required."
+                ]
+            },
+            {
+                heading: "What Protection Adds That Instantly Doesn't",
+                paragraphs: [
+                    "Native auto-pause - Instantly reports bounce rate; protection enforces it. The difference at 200+ mailboxes is the difference between burning two domains a month and burning zero. Auto-pause is the single largest deliverability lever, and Instantly leaves it at the operator.",
+                    "Structured healing - Instantly's resume model is manual. The protection layer's 5-phase pipeline graduates mailboxes through verified recovery checkpoints, so a resumed mailbox actually IS healthy, not just 'old enough that the operator forgot it was paused.'",
+                    "ESP-aware routing - Instantly treats all Gmail mailboxes equivalently. The protection layer scores each mailbox separately by 30-day bounce rate against Gmail, Microsoft, and Yahoo, and routes leads using a 60% capacity / 40% performance blend. This routes Gmail-bound leads preferentially to mailboxes that have a strong Gmail history, which compounds inbox placement over time.",
+                    "DNSBL monitoring - Instantly does not run continuous blacklist surveillance. The protection layer checks every sending domain against 400+ DNSBLs every 6-24 hours and surfaces listings the moment they appear."
+                ]
+            },
+            {
+                heading: "What Stays Inside Instantly and What Moves to Superkabe?",
+                paragraphs: [
+                    "Sequences, mailbox rotation, warmup, and the unified inbox stay in Instantly. The team continues to compose sequences, manage warmup, and triage replies inside Instantly's UI - none of that workflow changes.",
+                    "Governance moves up. The auto-pause threshold lives in the Superkabe protection layer. The healing protocol lives in Superkabe. The ESP routing scores live in Superkabe. The DNSBL surveillance lives in Superkabe. The Slack alerts that fire when a mailbox pauses live in Superkabe. The team that watched Instantly dashboards now watches one Superkabe console - everything that matters operationally is there."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "Do I need to switch off Instantly to use the protection layer?",
+                a: "No. The protection layer sits on top of Instantly. Instantly continues to send; Superkabe enforces governance. Most teams add Superkabe without changing a single line of their Instantly setup."
+            },
+            {
+                q: "Is the protection layer compatible with Instantly's bundled warmup?",
+                a: "Yes. Warmup continues to run as Instantly handles it. Warmup sends are not counted against the bounce-rate auto-pause window (the protection layer recognizes warmup traffic and excludes it from threshold calculations)."
+            },
+            {
+                q: "What about Instantly's B2B lead database?",
+                a: "Leads sourced from Instantly's database flow through the same protection gate as leads sourced anywhere else. Validation runs on import; the verdict drives routing. Nothing in the database integration breaks."
+            },
+            {
+                q: "How does this compare to using Superkabe's native sequencer?",
+                a: "The native sequencer is the right answer for teams that want one platform end-to-end. Protection on top of Instantly is the right answer for teams already invested in Instantly's warmup network and lead database who want governance without a migration. The protection layer is identical in both cases."
+            }
+        ],
+        relatedBlog: [
+            { slug: "superkabe-vs-instantly", title: "Superkabe vs Instantly", description: "When to add protection on top vs replace Instantly entirely" },
+            { slug: "instantly-alternatives", title: "Instantly Alternatives", description: "Ranked alternatives for teams reconsidering Instantly" },
+            { slug: "email-deliverability-tools-compared", title: "Email Deliverability Tools Compared", description: "Where Instantly sits relative to dedicated protection platforms" }
+        ]
+    },
+    "super-linkedin": {
+        slug: "super-linkedin",
+        title: "Super LinkedIn: 24/7 AI Outreach Agent",
+        description: "AI-driven LinkedIn outreach with a 4-agent supervisor stack (signal, ICP, enrichment, icebreaker), HeyReach-parity sending, Unipile connections, and full cross-channel halt with the Sequencer.",
+        intro: "ships Super LinkedIn - a 24/7 LinkedIn outreach module that pairs HeyReach-class sending with a supervisor-led agent stack. A signal agent watches your ideal-customer-profile in real time, an enrichment agent fills in firmographics via Clay-as-waterfall, an ICP agent classifies fit, and an icebreaker agent writes the opener. All four are coordinated by a supervisor and run continuously. Leads live at the workspace level, so a reply on LinkedIn halts the matching Sequencer email thread instantly, and vice versa.",
+        tldr: "Super LinkedIn = HeyReach-parity outreach + 4-agent supervisor stack + cross-channel halt with the Sequencer. Connect LinkedIn via Unipile, configure the supervisor's ICP, and the agents work the funnel continuously - 24/7 signal monitoring, enrichment, classification, and icebreaker writing. Replies on either channel halt the other automatically.",
+        sections: [
+            {
+                heading: "What Is Super LinkedIn?",
+                paragraphs: [
+                    "Super LinkedIn is the LinkedIn side of Superkabe's multi-channel outreach. It connects to a LinkedIn account via Unipile (so the connection survives password changes, MFA, and most LinkedIn defensive friction), provides HeyReach-parity sending volumes and pacing safety, and layers a 24/7 agent stack on top that decides who to message, what to research first, and what to say.",
+                    "The product brief was simple: take everything HeyReach does well - the safe daily caps, the network-warmup integration, the connection-then-message cadence - and add the AI layer that operators currently bolt on with Clay, an ICP doc, and a manual icebreaker spreadsheet. Super LinkedIn ships the bolt-on as a first-class part of the platform."
+                ]
+            },
+            {
+                heading: "The 4-Agent Supervisor Stack",
+                paragraphs: [
+                    "Supervisor agent - reads the workspace's ICP definition, allocates daily LinkedIn capacity across active campaigns, and coordinates the other three agents. The supervisor is the only agent the operator configures directly; everything else flows from its decisions.",
+                    "Signal agent - runs continuously, watching LinkedIn for ICP-matching activity: job changes, funding announcements, new posts that signal pain, hiring signals that match the playbook. Surfaces qualified candidates to the supervisor as they appear, not in batched daily lists.",
+                    "Enrichment agent - takes a candidate and runs the Clay-as-waterfall enrichment cascade: company firmographics, tech stack, recent funding, decision-maker mapping. Returns either an enriched record or a 'phone-only' verdict (in which case the candidate is dropped from Super LinkedIn and surfaced to the cold-call queue) or an 'email-only' verdict (handed to the Sequencer as a source signal).",
+                    "ICP / Icebreaker agent - classifies the enriched record against the ICP definition (good/average/poor fit) and, for good-fit records, writes a short, specific icebreaker drawn from the enriched context. The icebreaker is reviewed by the supervisor's quality gate before send."
+                ]
+            },
+            {
+                heading: "Cross-Channel Halt with the Sequencer",
+                paragraphs: [
+                    "Leads are workspace-level entities, not channel-level. A single lead can have a LinkedIn touch in progress and an email touch in progress simultaneously, but a reply on either channel halts the other immediately. The halting logic is operator-configurable - 'halt on any reply' is the default; 'halt only on positive replies' is a Pro option that uses the icebreaker agent to classify the reply intent.",
+                    "This solves the most common outbound multi-touch mistake: prospect replies on LinkedIn, sales has a great conversation, and meanwhile a scheduled email still goes out two days later. The cross-channel halt removes that failure mode entirely. The dashboard's lead timeline shows every touch from every channel in one chronological view, with reply intent labeled."
+                ]
+            },
+            {
+                heading: "Unipile Connection and Account Safety",
+                paragraphs: [
+                    "Super LinkedIn connects via Unipile (the same auth fabric that lets Hyperreach, lemlist, and Apollo handle LinkedIn at scale). The Unipile connection is more resilient than direct LinkedIn API access - it survives password rotations, handles MFA challenges, and weathers most of the defensive friction LinkedIn applies to bulk-outreach tooling. The trade-off is a third-party hop, but the operational reliability gain is substantial.",
+                    "Sending volume defaults are HeyReach-class: 30 connection requests/day for new accounts ramping up to 100/day after 30 days of clean signal, 50 InMails/day for premium accounts, 200 messages/day to existing 1st-degree connections. The supervisor enforces these caps automatically and surfaces a warning before any campaign would breach them."
+                ]
+            },
+            {
+                heading: "Who This Is For",
+                paragraphs: [
+                    "Outbound teams that already run multi-channel campaigns (email + LinkedIn) and want one place to define the playbook, one place to halt across channels, and one place to see the lead history. Operators tired of stitching Clay enrichment, an ICP doc, an icebreaker spreadsheet, and HeyReach sending into a coherent workflow by hand. Agencies running outreach for multiple clients where each client has their own LinkedIn account, their own ICP, and their own playbook - Super LinkedIn is workspace-scoped so the multi-tenant model fits agency operations directly."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "How does Super LinkedIn compare to HeyReach?",
+                a: "HeyReach is excellent at the sending layer - safe pacing, the warmup integration, the connection-then-message cadence. Super LinkedIn matches that sending layer (same defaults, same safety) and adds the AI layer above: signal monitoring, enrichment via Clay-as-waterfall, ICP classification, icebreaker writing - and the cross-channel halt with email. HeyReach stops at sending; Super LinkedIn extends to the funnel."
+            },
+            {
+                q: "Does Super LinkedIn require a LinkedIn Sales Navigator subscription?",
+                a: "Sales Navigator is recommended (the signal agent gets much higher-quality data from Sales Navigator search filters) but not required. Basic LinkedIn works; the signal agent simply has less to work with and the daily candidate count drops."
+            },
+            {
+                q: "What does 'workspace-level leads' mean operationally?",
+                a: "A lead is a single record with channel touches attached. Adding a LinkedIn touch and an email touch creates one lead with two channels. Replies, halts, and the engagement timeline all operate at the lead level, not at the per-channel level. Operators see the full conversation in one view regardless of channel."
+            },
+            {
+                q: "How is the supervisor agent configured?",
+                a: "ICP definition (the natural-language description of who you sell to), daily capacity caps, halting policy (any-reply vs positive-reply), and quality gates for the icebreaker. The supervisor is configured once per campaign; the signal/enrichment/ICP/icebreaker agents inherit the configuration."
+            },
+            {
+                q: "Can the agents be turned off and run as plain HeyReach-style outreach?",
+                a: "Yes. Each agent can be disabled independently. Disable the signal agent and you bring your own lead list; disable the icebreaker agent and you write the opener yourself; disable the enrichment agent and you trust the input data. Super LinkedIn degrades gracefully to a HeyReach-class sender if all four are disabled."
+            }
+        ],
+        relatedBlog: [
+            { slug: "cold-email-ai-tools", title: "Cold Email AI Tools", description: "How AI fits across the outbound stack - LinkedIn included" },
+            { slug: "cold-email-software-compared", title: "Cold Email Software Compared", description: "Where LinkedIn outreach fits in the multi-channel stack" }
+        ]
+    },
+    "dedicated-ip": {
+        slug: "dedicated-ip",
+        title: "Dedicated IP Add-On",
+        description: "An isolated AWS SES IP per workspace - automatic 4-8 week warm-up, full reputation control, $39/month per IP. For teams that need IP-level deliverability isolation on top of the protection layer.",
+        intro: "offers Dedicated IP as a per-workspace add-on. One AWS SES IP, allocated exclusively to your workspace, automatically warmed across 4-8 weeks. The protection layer continues to run unchanged - auto-pause, healing, ESP-aware routing - but the underlying IP reputation is now yours alone. No noisy neighbors, no cross-tenant contamination, full visibility into the IP's bounce and complaint history.",
+        tldr: "Dedicated IP = $39/month per workspace. AWS SES allocation, automatic warm-up curve (50-100 sends/day ramping up), full reputation isolation. The custom-SMTP send path routes through your dedicated IP; the protection layer governance is unchanged.",
+        sections: [
+            {
+                heading: "Why Dedicated IP Matters",
+                paragraphs: [
+                    "On a shared sending pool, your domain reputation is shaped by your behavior but the IP reputation is shared with every other workspace using the same outbound IPs. For most teams this is fine - shared pools are aggressively monitored, bad senders are isolated, the IP reputation stays clean. For teams at scale or in regulated industries, the shared-pool model is unacceptable: any incident on a co-tenant can splash onto your sending without warning, and you have no way to remediate other than wait.",
+                    "A dedicated IP solves the splash problem. The IP reputation is shaped only by your sends. If you run clean, the IP runs clean. If you make a mistake, the consequences are contained to your own infrastructure. The trade-off is that you take on the reputation work directly: a fresh dedicated IP starts with zero history and must be warmed."
+                ]
+            },
+            {
+                heading: "How Allocation and Warm-Up Work",
+                paragraphs: [
+                    "Allocation runs on AWS Simple Email Service. SES allocates a dedicated IP from its pool, the IP is bound to your workspace's SES configuration set, and the custom-SMTP send path is routed through it. From the operator's perspective the change is invisible - the same sequences send, the same mailboxes work, the same protection layer governs. The IP itself is opaque to the operator (you do not see the address; that is intentional - opaque IPs cannot be leaked by accident).",
+                    "Warm-up is automatic. The default curve is 50-100 sends/day during the first week, ramping to 1,000+/day by week 4 and full capacity by week 8. The throttle is enforced at Superkabe's send queue, so campaigns cannot accidentally overshoot the warm-up cap. The curve adapts in real time to bounce signals: if early sends are bouncing harder than expected, the ramp slows; if they are clean, the ramp accelerates within safe bounds."
+                ]
+            },
+            {
+                heading: "What Protection Looks Like With a Dedicated IP",
+                paragraphs: [
+                    "Auto-pause runs on the dedicated IP exactly as it runs on shared pool sends. The 3% bounce-rate threshold, the 60-send minimum, the 5-bounce safety net - all enforced. The difference is that pause decisions are easier to interpret: a bounce-rate spike on a dedicated IP almost always traces back to a specific bad list, not to a noisy co-tenant.",
+                    "The 5-phase healing pipeline also runs. A paused mailbox on a dedicated IP heals through the same protocol. The IP itself does not pause (you continue to own the IP regardless of which mailboxes are paused); the mailboxes pause individually and resume through the standard healing curve.",
+                    "DNSBL monitoring becomes especially valuable. With a dedicated IP, a blacklist listing on your IP is your problem to fix - and the protection layer surfaces the listing within 6-24 hours of it appearing across 400+ DNSBL feeds. Mitigation steps are surfaced in the dashboard."
+                ]
+            },
+            {
+                heading: "Who Should Add a Dedicated IP?",
+                paragraphs: [
+                    "Teams sending more than ~50K emails/month from one workspace - at this volume the dedicated IP's reputation curve recovers faster than a shared pool can isolate you from co-tenant noise, and the operational savings on incident response start to pay back the $39/month.",
+                    "Regulated-industry senders (healthcare, financial services, legal) where audit-grade reputation isolation is a compliance requirement.",
+                    "Agencies running outreach for clients who explicitly request IP-level isolation - each client workspace can have its own dedicated IP, and the IP cost is billed back per workspace.",
+                    "Anyone who has been burned by a co-tenant incident on a shared pool and wants to never have it happen again."
+                ]
+            }
+        ],
+        faq: [
+            {
+                q: "How long does dedicated IP allocation take?",
+                a: "Allocation is typically same-day. AWS SES provisions the IP within a few hours of purchase; Superkabe's send-path routing flips automatically once SES confirms the binding. Warm-up begins immediately with the throttle enforced at the send queue."
+            },
+            {
+                q: "What is the 4-8 week warm-up window for?",
+                a: "Fresh IPs have no sending history, so receiving mailbox providers throttle them aggressively. The 4-8 week curve gradually builds the IP's reputation by sending small, clean volumes and ramping up only when those sends land. Skipping the warm-up curve is the single fastest way to burn a new IP."
+            },
+            {
+                q: "Can I get more than one dedicated IP?",
+                a: "Yes. Multi-IP allocation is available - useful for teams running geo-distributed sending, regulated workloads that require isolation between tenants, or simply wanting to A/B test sending strategies on parallel IPs. Each IP is $39/month; the protection layer governs all of them under one workspace view."
+            },
+            {
+                q: "What happens if I cancel the dedicated IP add-on?",
+                a: "The dedicated IP is released back to the SES pool. The send path automatically reverts to the shared pool on the next campaign send. The mailbox reputation continues to live on the domain - it is not tied to the IP - so cancellation does not damage your sending."
+            },
+            {
+                q: "Does a dedicated IP improve deliverability automatically?",
+                a: "Not by itself. A dedicated IP gives you reputation control and isolation; whether the resulting reputation is good depends on what you send. The protection layer plus a clean lead funnel plus the warm-up curve plus continuous monitoring is what produces good deliverability. The IP is one input among many."
+            }
+        ],
+        relatedBlog: [
+            { slug: "dedicated-ip-cold-email", title: "Dedicated IP for Cold Email", description: "When dedicated IPs pay back and when they do not" },
+            { slug: "domain-reputation-vs-ip-reputation", title: "Domain Reputation vs IP Reputation", description: "Which reputation lever matters most for cold email" }
+        ]
     }
 };

@@ -125,7 +125,7 @@ export default function TopEmailWarmupToolsArticle() {
  <p className="text-sm text-gray-500 m-0">Best for: {tool.bestFor} &middot; {tool.price}</p>
  </div>
  <a href={tool.url} target="_blank" rel="nofollow noopener noreferrer" className="shrink-0 text-xs font-semibold text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 hover:bg-blue-50 transition-colors whitespace-nowrap">
- Visit site &rarr;
+ Visit {tool.name} &rarr;
  </a>
  </div>
  <p className="text-gray-600 text-sm leading-relaxed m-0">{tool.description}</p>

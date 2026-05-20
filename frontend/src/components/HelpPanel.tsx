@@ -166,6 +166,32 @@ const helpArticles: HelpArticle[] = [
         description: 'Superkabe analyzes mailbox distribution and generates specific What/Why/How recommendations to rebalance load and improve deliverability.',
         tags: ['optimization', 'suggestions', 'recommendations', 'rebalance', 'load balancing', 'effective load', 'overloaded', 'underutilized', 'add mailbox', 'remove mailbox']
     },
+    // ── Super LinkedIn ──
+    {
+        title: 'Super LinkedIn Setup',
+        href: '/docs/integrations/super-linkedin',
+        description: 'Connect LinkedIn via Unipile, configure the supervisor agent ICP, daily capacity caps, halting policy, and the 4-agent supervisor stack (signal, ICP, enrichment, icebreaker).',
+        tags: ['super linkedin', 'linkedin', 'unipile', 'connect', 'setup', 'agent', 'supervisor', 'icp', 'icebreaker', 'enrichment', 'signal', 'heyreach']
+    },
+    {
+        title: 'Cross-Channel Halt',
+        href: '/docs/help/cross-channel-halt',
+        description: 'Why a reply on LinkedIn automatically halts the matching email touch (and vice versa). Workspace-level lead identity makes this automatic - configure any-reply vs positive-reply-only policy.',
+        tags: ['cross-channel', 'halt', 'linkedin', 'email', 'reply', 'lead', 'workspace', 'multi-channel', 'sequencer', 'super linkedin']
+    },
+    {
+        title: 'Super LinkedIn Sending Caps',
+        href: '/docs/integrations/super-linkedin',
+        description: 'Daily capacity caps for connections, 1st-degree messages, InMails, and profile views. HeyReach-class defaults that ramp from day 0 through day 30.',
+        tags: ['linkedin', 'caps', 'limits', 'daily', 'connections', 'inmail', 'messages', 'safety', 'rate limit', 'volume']
+    },
+    // ── Dedicated IP ──
+    {
+        title: 'Dedicated IP Add-On',
+        href: '/docs/help/dedicated-ip',
+        description: '$39/mo per workspace for an isolated AWS SES IP. Automatic 4-8 week warm-up curve, full reputation control, no co-tenant contamination.',
+        tags: ['dedicated ip', 'ip', 'aws', 'ses', 'reputation', 'warm-up', 'isolation', 'add-on', 'billing', 'noisy neighbor']
+    },
     // ── Core Documentation ──
     {
         title: 'Getting Started',
@@ -269,6 +295,8 @@ const contextualHelp: Record<string, string[]> = {
     '/dashboard/load-balancing': ['load-balancing', 'campaign-paused', 'monitoring'],
     '/dashboard/audit-logs': ['audit-logs', '24-7-monitoring'],
     '/dashboard/analytics': ['analytics', 'monitoring'],
+    '/dashboard/super-linkedin': ['integrations/super-linkedin', 'cross-channel-halt', 'auto-healing'],
+    '/dashboard/dedicated-ip': ['dedicated-ip', 'billing', 'infrastructure-score-explained'],
 };
 
 interface HelpPanelProps {
