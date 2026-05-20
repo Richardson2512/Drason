@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TechArticleSchema } from '@/components/seo/AeoGeoSchema';
+import { ItemListJsonLd } from '@/components/seo/ExtraSchema';
+
+const PAGE_URL = 'https://www.superkabe.com/docs/integrations/super-linkedin';
+const SUPER_LINKEDIN_ID = 'https://www.superkabe.com/#feature-super-linkedin';
 
 export const metadata: Metadata = {
     title: 'Super LinkedIn Integration | Superkabe Docs',
@@ -17,6 +22,25 @@ export const metadata: Metadata = {
 export default function SuperLinkedInIntegrationDocs() {
     return (
         <div className="prose prose-lg max-w-none">
+            <TechArticleSchema
+                headline="Super LinkedIn integration setup"
+                description="Connect LinkedIn via Unipile, configure the supervisor agent ICP, daily capacity caps, halting policy, and the 4-agent supervisor stack."
+                url={PAGE_URL}
+                datePublished="2026-05-20"
+                dateModified="2026-05-21"
+                proficiencyLevel="Beginner"
+                mentions={[SUPER_LINKEDIN_ID]}
+            />
+            <ItemListJsonLd data={{
+                name: 'Super LinkedIn connection setup',
+                description: 'Four-step procedure for connecting LinkedIn to Super LinkedIn via Unipile and configuring the supervisor agent stack.',
+                items: [
+                    { name: 'Open the Super LinkedIn module' },
+                    { name: 'Authenticate via Unipile' },
+                    { name: 'Configure the supervisor agent' },
+                    { name: 'Enable agents (optional)' },
+                ],
+            }} />
             <h1 className="text-5xl font-semibold mb-6 pb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Super LinkedIn Integration
             </h1>

@@ -20,6 +20,20 @@ export interface ProductComparisonTable {
     rows: string[][];
 }
 
+/**
+ * Pricing / Offer descriptor for AEO/GEO Offer schema emission.
+ * For features bundled into a workspace tier, leave `price` unset and
+ * use `includedIn` to signal the tier(s) that include the feature.
+ * For paid add-ons (dedicated IP, validation top-ups), set `price` and
+ * `priceCurrency` to emit a proper schema.org Offer node.
+ */
+export interface ProductOffer {
+    price?: string;
+    priceCurrency?: string;
+    billingIncrement?: 'monthly' | 'annual' | 'one-time';
+    includedIn?: string;
+}
+
 export interface ProductPageData {
     slug: string;
     title: string;
@@ -27,7 +41,7 @@ export interface ProductPageData {
     intro: string;
     sections: ContentSection[];
     relatedBlog?: RelatedBlogLink[];
-    /** Visible TL;DR summary rendered at the top. 40–80 words ideal. */
+    /** Visible TL;DR summary rendered at the top. 40-80 words ideal. */
     tldr?: string;
     /** FAQPage JSON-LD is emitted automatically when present. */
     faq?: FaqEntry[];
@@ -37,6 +51,20 @@ export interface ProductPageData {
     dateModified?: string;
     /** ISO date for JSON-LD datePublished. Falls back to 2025-11-01 if unset. */
     datePublished?: string;
+    /**
+     * schema.org SoftwareApplication.applicationSubCategory - feeds the
+     * feature-level SoftwareApplication JSON-LD node emitted by the
+     * /product/[slug] template. Example values: 'EmailMarketingSoftware',
+     * 'LeadGenerationSoftware', 'EmailDeliverabilitySoftware'.
+     * Defaults to 'BusinessApplication' if unset.
+     */
+    applicationSubCategory?: string;
+    /**
+     * Pricing data. Used to emit schema.org Offer for AEO/GEO. Pages
+     * without explicit pricing fall back to inheriting the tiered
+     * SaaS Offer from the parent Superkabe SoftwareApplication.
+     */
+    offer?: ProductOffer;
 }
 
 export const productPages: Record<string, ProductPageData> = {
@@ -1300,6 +1328,8 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "super-linkedin",
         title: "Super LinkedIn: 24/7 AI Outreach Agent",
         description: "AI-driven LinkedIn outreach with a 4-agent supervisor stack (signal, ICP, enrichment, icebreaker), HeyReach-parity sending, Unipile connections, and full cross-channel halt with the Sequencer.",
+        applicationSubCategory: "LeadGenerationSoftware",
+        offer: { includedIn: "Every Superkabe tier (Starter and above)" },
         intro: "ships Super LinkedIn - a 24/7 LinkedIn outreach module that pairs HeyReach-class sending with a supervisor-led agent stack. A signal agent watches your ideal-customer-profile in real time, an enrichment agent fills in firmographics via Clay-as-waterfall, an ICP agent classifies fit, and an icebreaker agent writes the opener. All four are coordinated by a supervisor and run continuously. Leads live at the workspace level, so a reply on LinkedIn halts the matching Sequencer email thread instantly, and vice versa.",
         tldr: "Super LinkedIn = HeyReach-parity outreach + 4-agent supervisor stack + cross-channel halt with the Sequencer. Connect LinkedIn via Unipile, configure the supervisor's ICP, and the agents work the funnel continuously - 24/7 signal monitoring, enrichment, classification, and icebreaker writing. Replies on either channel halt the other automatically.",
         sections: [
@@ -1371,6 +1401,8 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "dedicated-ip",
         title: "Dedicated IP Add-On",
         description: "An isolated AWS SES IP per workspace - automatic 4-8 week warm-up, full reputation control, $39/month per IP. For teams that need IP-level deliverability isolation on top of the protection layer.",
+        applicationSubCategory: "EmailDeliverabilitySoftware",
+        offer: { price: "39.00", priceCurrency: "USD", billingIncrement: "monthly" },
         intro: "offers Dedicated IP as a per-workspace add-on. One AWS SES IP, allocated exclusively to your workspace, automatically warmed across 4-8 weeks. The protection layer continues to run unchanged - auto-pause, healing, ESP-aware routing - but the underlying IP reputation is now yours alone. No noisy neighbors, no cross-tenant contamination, full visibility into the IP's bounce and complaint history.",
         tldr: "Dedicated IP = $39/month per workspace. AWS SES allocation, automatic warm-up curve (50-100 sends/day ramping up), full reputation isolation. The custom-SMTP send path routes through your dedicated IP; the protection layer governance is unchanged.",
         sections: [

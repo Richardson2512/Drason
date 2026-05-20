@@ -99,6 +99,71 @@ export function QuickAnswer({ question, answer }: { question: string; answer: st
 }
 
 /**
+ * TechArticle JSON-LD for /docs/* and /docs/help/* pages.
+ *
+ * Why TechArticle vs Article: AEO engines (Perplexity, ChatGPT,
+ * Google AI Overviews) treat TechArticle as a stronger signal that
+ * the content is reference-grade technical documentation, not
+ * editorial blog content. Citation behavior in cited-answers favors
+ * TechArticle for "how-do-I" and "what-is-X" queries.
+ *
+ * Pair with FaqJsonLd for the Q&A-style help articles and with
+ * ItemListJsonLd for the procedural ones. Do NOT pair with HowTo -
+ * Google deprecated HowTo rich results in September 2023.
+ */
+export function TechArticleSchema({
+    headline,
+    description,
+    url,
+    datePublished,
+    dateModified,
+    proficiencyLevel = 'Beginner',
+    author,
+    mentions,
+}: {
+    headline: string;
+    description: string;
+    url: string;
+    datePublished: string;
+    dateModified: string;
+    proficiencyLevel?: 'Beginner' | 'Intermediate' | 'Expert';
+    author?: AuthorIdentity;
+    /** SoftwareApplication @ids this article references - for entity linking. */
+    mentions?: string[];
+}) {
+    const jsonLd: Record<string, unknown> = {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline,
+        description,
+        url,
+        datePublished,
+        dateModified,
+        inLanguage: 'en-US',
+        proficiencyLevel,
+        publisher: { '@id': 'https://www.superkabe.com/#organization' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: ['.aeo-tldr', '.aeo-quick-answer'],
+        },
+    };
+    if (author) {
+        jsonLd.author = {
+            '@type': 'Person',
+            name: author.name,
+            jobTitle: author.jobTitle,
+            url: author.url || 'https://www.superkabe.com',
+            sameAs: author.sameAs || [],
+        };
+    }
+    if (mentions && mentions.length > 0) {
+        jsonLd.mentions = mentions.map((id) => ({ '@id': id }));
+    }
+    return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />;
+}
+
+/**
  * Build the enriched BlogPosting JSON-LD that includes speakable,
  * inLanguage, wordCount, and author linkage. Returns a plain object
  * to drop into a `<script type="application/ld+json">`.

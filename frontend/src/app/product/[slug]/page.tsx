@@ -78,31 +78,95 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
     const dateModified = data.dateModified || seo.dateModified || DEFAULT_MODIFIED;
     const pageUrl = `${SITE_URL}/product/${slug}`;
 
+    /**
+     * Feature-level SoftwareApplication schema graph.
+     *
+     * AEO/GEO engines (Perplexity, ChatGPT, Google AI Overviews) treat
+     * SoftwareApplication as an authoritative product-entity definition.
+     * Emitting one node per feature with `isPartOf` linking to the
+     * parent Superkabe SoftwareApplication lets LLMs:
+     *   1. Recognize the feature as a named entity (not just a blog topic)
+     *   2. Follow the isPartOf edge to the parent product graph
+     *   3. Surface the price (when offer.price is set) in cited answers
+     *
+     * `@graph` lets us emit multiple coordinated nodes that reference
+     * each other via `@id` - the canonical schema.org pattern for
+     * product-feature hierarchies.
+     */
+    const featureAppId = `${SITE_URL}/#feature-${slug}`;
+    const parentAppId = `${SITE_URL}/#software-application`;
+
+    const offerNode = data.offer
+        ? (data.offer.price
+            ? {
+                "@type": "Offer",
+                price: data.offer.price,
+                priceCurrency: data.offer.priceCurrency || 'USD',
+                priceSpecification: {
+                    "@type": "UnitPriceSpecification",
+                    price: data.offer.price,
+                    priceCurrency: data.offer.priceCurrency || 'USD',
+                    billingIncrement: 1,
+                    unitText: data.offer.billingIncrement === 'annual' ? 'YEAR'
+                        : data.offer.billingIncrement === 'one-time' ? null
+                        : 'MONTH',
+                },
+                availability: 'https://schema.org/InStock',
+                url: pageUrl,
+            }
+            : {
+                "@type": "Offer",
+                description: data.offer.includedIn || 'Included with every Superkabe subscription tier',
+                availability: 'https://schema.org/InStock',
+                url: pageUrl,
+            })
+        : undefined;
+
     const jsonLd = {
         "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": data.title,
-        "description": data.description,
-        "url": pageUrl,
-        "publisher": {
-            "@type": "Organization",
-            "name": "Superkabe",
-            "url": SITE_URL,
-            "logo": {
-                "@type": "ImageObject",
-                "url": `${SITE_URL}/image/logo-v2.png`
-            }
-        },
-        "mainEntity": {
-            "@type": "SoftwareApplication",
-            "name": "Superkabe",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "url": SITE_URL,
-            "featureList": data.title
-        },
-        "datePublished": datePublished,
-        "dateModified": dateModified,
+        "@graph": [
+            {
+                "@type": "WebPage",
+                "@id": pageUrl,
+                name: data.title,
+                description: data.description,
+                url: pageUrl,
+                inLanguage: 'en-US',
+                isPartOf: { "@id": `${SITE_URL}/#website` },
+                primaryImageOfPage: {
+                    "@type": "ImageObject",
+                    url: `${SITE_URL}/image/og-image.png`,
+                    width: 1200,
+                    height: 630,
+                },
+                datePublished,
+                dateModified,
+                mainEntity: { "@id": featureAppId },
+                publisher: { "@id": `${SITE_URL}/#organization` },
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": featureAppId,
+                name: data.title,
+                description: data.description,
+                url: pageUrl,
+                applicationCategory: 'BusinessApplication',
+                applicationSubCategory: data.applicationSubCategory || 'BusinessApplication',
+                operatingSystem: 'Web',
+                isPartOf: { "@id": parentAppId },
+                provider: { "@id": `${SITE_URL}/#organization` },
+                ...(offerNode ? { offers: offerNode } : {}),
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": parentAppId,
+                name: 'Superkabe',
+                url: SITE_URL,
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Web',
+                provider: { "@id": `${SITE_URL}/#organization` },
+            },
+        ],
     };
 
     // Auto-generate TL;DR from first section paragraph if neither explicit

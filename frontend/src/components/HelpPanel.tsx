@@ -174,16 +174,34 @@ const helpArticles: HelpArticle[] = [
         tags: ['super linkedin', 'linkedin', 'unipile', 'connect', 'setup', 'agent', 'supervisor', 'icp', 'icebreaker', 'enrichment', 'signal', 'heyreach']
     },
     {
+        title: 'The 4-Agent Supervisor Stack',
+        href: '/docs/help/super-linkedin-agent-stack',
+        description: 'What each of the 4 agents (signal, ICP, enrichment, icebreaker) does, how to disable individually, and how the supervisor allocates capacity across campaigns.',
+        tags: ['agent', 'supervisor', 'signal agent', 'enrichment', 'icp', 'icebreaker', 'super linkedin', 'ai', 'automation', 'disable', 'capacity']
+    },
+    {
+        title: 'Super LinkedIn Sending Caps',
+        href: '/docs/help/super-linkedin-sending-caps',
+        description: 'Daily caps for LinkedIn connections, 1st-degree messages, InMails, and profile views. The 0-30 day ramp, the 30+ day caps, and what triggers escalation.',
+        tags: ['linkedin', 'caps', 'limits', 'daily', 'connections', 'inmail', 'messages', 'safety', 'rate limit', 'volume', 'ramp', 'escalation']
+    },
+    {
+        title: 'Configure ICP for Super LinkedIn',
+        href: '/docs/help/super-linkedin-icp-config',
+        description: 'How to write an ICP definition the signal and ICP agents can use. Industry, function, geography, signal triggers, and calibration against existing customers.',
+        tags: ['icp', 'ideal customer profile', 'super linkedin', 'targeting', 'signal triggers', 'persona', 'company filter', 'configuration']
+    },
+    {
+        title: 'Why Is My LinkedIn Account Paused?',
+        href: '/docs/help/why-is-my-linkedin-account-paused',
+        description: 'Five reasons Super LinkedIn pauses a connected LinkedIn account - cap breaches, captcha challenges, login-disconnected, defensive friction, operator pause. How to resume safely.',
+        tags: ['paused', 'super linkedin', 'linkedin', 'captcha', 'disconnected', 'unipile', 'resume', 'restriction', 'login', 'frozen', 'blocked']
+    },
+    {
         title: 'Cross-Channel Halt',
         href: '/docs/help/cross-channel-halt',
         description: 'Why a reply on LinkedIn automatically halts the matching email touch (and vice versa). Workspace-level lead identity makes this automatic - configure any-reply vs positive-reply-only policy.',
         tags: ['cross-channel', 'halt', 'linkedin', 'email', 'reply', 'lead', 'workspace', 'multi-channel', 'sequencer', 'super linkedin']
-    },
-    {
-        title: 'Super LinkedIn Sending Caps',
-        href: '/docs/integrations/super-linkedin',
-        description: 'Daily capacity caps for connections, 1st-degree messages, InMails, and profile views. HeyReach-class defaults that ramp from day 0 through day 30.',
-        tags: ['linkedin', 'caps', 'limits', 'daily', 'connections', 'inmail', 'messages', 'safety', 'rate limit', 'volume']
     },
     // ── Dedicated IP ──
     {
@@ -191,6 +209,18 @@ const helpArticles: HelpArticle[] = [
         href: '/docs/help/dedicated-ip',
         description: '$39/mo per workspace for an isolated AWS SES IP. Automatic 4-8 week warm-up curve, full reputation control, no co-tenant contamination.',
         tags: ['dedicated ip', 'ip', 'aws', 'ses', 'reputation', 'warm-up', 'isolation', 'add-on', 'billing', 'noisy neighbor']
+    },
+    {
+        title: 'Dedicated IP Warm-Up Curve',
+        href: '/docs/help/dedicated-ip-warmup-curve',
+        description: 'Week-by-week warm-up schedule for a fresh dedicated IP. Daily volume ramp from 50/day to full capacity, what to send during each phase, and adaptive throttling.',
+        tags: ['dedicated ip', 'warm-up', 'warmup', 'ramp', 'volume', 'aws ses', 'schedule', 'throttling', 'bounce rate']
+    },
+    {
+        title: 'When Do I Need a Dedicated IP?',
+        href: '/docs/help/when-do-i-need-a-dedicated-ip',
+        description: 'Decision framework: 4 signals that say yes (volume, regulated industry, agency contract, prior burn). When shared pool is still the right answer.',
+        tags: ['dedicated ip', 'decision', 'when', 'should i', 'volume', 'regulated', 'agency', 'shared pool', 'comparison']
     },
     // ── Core Documentation ──
     {
@@ -295,8 +325,8 @@ const contextualHelp: Record<string, string[]> = {
     '/dashboard/load-balancing': ['load-balancing', 'campaign-paused', 'monitoring'],
     '/dashboard/audit-logs': ['audit-logs', '24-7-monitoring'],
     '/dashboard/analytics': ['analytics', 'monitoring'],
-    '/dashboard/super-linkedin': ['integrations/super-linkedin', 'cross-channel-halt', 'auto-healing'],
-    '/dashboard/dedicated-ip': ['dedicated-ip', 'billing', 'infrastructure-score-explained'],
+    '/dashboard/super-linkedin': ['integrations/super-linkedin', 'super-linkedin-agent-stack', 'super-linkedin-sending-caps', 'super-linkedin-icp-config', 'why-is-my-linkedin-account-paused', 'cross-channel-halt'],
+    '/dashboard/dedicated-ip': ['dedicated-ip', 'dedicated-ip-warmup-curve', 'when-do-i-need-a-dedicated-ip', 'billing'],
 };
 
 interface HelpPanelProps {
