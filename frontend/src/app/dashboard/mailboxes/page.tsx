@@ -1048,7 +1048,7 @@ function SendingIpHealth({ mailbox }: { mailbox: import('@/types/api').Mailbox }
                                     : `Listed on ${major} major blacklist${major === 1 ? '' : 's'}. Likely affecting inbox placement; request delisting to recover.`}
                             </p>
                             <a
-                                href="https://www.spamhaus.org/lookup/"
+                                href="https://check.spamhaus.org/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-colors"

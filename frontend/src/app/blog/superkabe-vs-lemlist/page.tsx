@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Lemlist: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Lemlist comparison covering pricing, multi-channel outreach, personalization, bundled warmup (Lemwarm), deliverability protection, and multi-mailbox economics. Where Lemlist still wins and where Superkabe pulls ahead.',
+    description: 'Superkabe vs Lemlist: pricing, multi-channel, personalization, Lemwarm, deliverability protection, and multi-mailbox economics. Where each tool wins.',
     openGraph: {
         title: 'Superkabe vs Lemlist: Head-to-Head Comparison (2026)',
         description: 'Lemlist owns image and video personalization plus Lemwarm. Superkabe ships the protection layer and a 4-agent LinkedIn stack. Side-by-side comparison.',

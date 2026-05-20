@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Smartlead Alternatives for Cold Email in 2026',
-    description: 'Ranked Smartlead alternatives for cold email teams. Compares Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Mailshake, and Saleshandy on pricing, deliverability, and infrastructure protection.',
+    description: 'Ranked Smartlead alternatives. Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Mailshake, Saleshandy on pricing, deliverability, and protection.',
     openGraph: {
         title: 'Best Smartlead Alternatives for Cold Email in 2026',
         description: 'Smartlead is solid, but seven alternatives compete on price, native deliverability protection, AI sequencing, and agency-scale features. Here is how they actually compare.',
@@ -29,7 +29,7 @@ export default function SmartleadAlternativesPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Best Smartlead Alternatives for Cold Email in 2026",
-        "description": "Ranked Smartlead alternatives for cold email teams. Compares Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Mailshake, and Saleshandy on pricing, deliverability, and infrastructure protection.",
+        "description": "Ranked Smartlead alternatives. Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Mailshake, Saleshandy on pricing, deliverability, and protection.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
         "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },

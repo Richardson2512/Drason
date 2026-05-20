@@ -4,12 +4,12 @@ import Link from 'next/link';
 export const metadata: Metadata = {
     title: 'Migrate from Instantly | Superkabe Docs',
     description:
-        'One-time import of campaigns, sequences, leads, block list, and mailbox metadata from Instantly v2 into Superkabe. API key auto-discards after 24 hours. Mailboxes must be reconnected.',
+        'One-time import of campaigns, sequences, leads, block list, and mailbox metadata from Instantly v2. API key auto-discards in 24h; reconnect mailboxes.',
     alternates: { canonical: '/docs/migration/from-instantly' },
     openGraph: {
         title: 'Migrate from Instantly | Superkabe Docs',
         description:
-            'One-time import of campaigns, sequences, leads, block list, and mailbox metadata from Instantly v2 into Superkabe. API key auto-discards after 24 hours. Mailboxes must be reconnected.',
+            'One-time import of campaigns, sequences, leads, block list, and mailbox metadata from Instantly v2. API key auto-discards in 24h; reconnect mailboxes.',
         url: '/docs/migration/from-instantly',
         siteName: 'Superkabe',
         type: 'article',

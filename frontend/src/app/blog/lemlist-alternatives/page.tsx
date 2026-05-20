@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Lemlist Alternatives for Cold Email Teams (2026)',
-    description: 'Ranked Lemlist alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, EmailBison, Woodpecker, Saleshandy, and Mailshake on pricing, AI personalization, and deliverability protection.',
+    description: 'Ranked Lemlist alternatives. Superkabe, Smartlead, Instantly, EmailBison, Woodpecker, Saleshandy, Mailshake on pricing, AI personalization, deliverability.',
     openGraph: {
         title: 'Best Lemlist Alternatives for Cold Email Teams (2026)',
         description: 'Lemlist nails personalization but per-user pricing breaks at scale. Here are 7 ranked Lemlist alternatives that compete on AI sequencing, deliverability, and economics.',

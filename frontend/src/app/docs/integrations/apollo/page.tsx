@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Apollo.io Integration | Superkabe Docs',
-    description: 'Connect Apollo.io to Superkabe - paste any Apollo people-search, saved-search, or saved-list URL and Superkabe replays the search via the official Apollo API to import contacts as leads.',
+    description: 'Connect Apollo.io - paste any Apollo people-search, saved-search, or saved-list URL; Superkabe replays via the Apollo API to import contacts as leads.',
     alternates: { canonical: '/docs/integrations/apollo' },
     openGraph: {
         title: 'Apollo.io Integration | Superkabe Docs',
-        description: 'Connect Apollo.io to Superkabe - paste any Apollo people-search, saved-search, or saved-list URL and Superkabe replays the search via the official Apollo API to import contacts as leads.',
+        description: 'Connect Apollo.io - paste any Apollo people-search, saved-search, or saved-list URL; Superkabe replays via the Apollo API to import contacts as leads.',
         url: '/docs/integrations/apollo',
         siteName: 'Superkabe',
         type: 'article',

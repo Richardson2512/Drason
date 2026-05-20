@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'HubSpot Integration | Superkabe Docs',
-    description: 'Connect HubSpot to Superkabe via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
+    description: 'Connect HubSpot via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the timeline, sync the suppression list.',
     alternates: { canonical: '/docs/integrations/hubspot' },
     openGraph: {
         title: 'HubSpot Integration | Superkabe Docs',
-        description: 'Connect HubSpot to Superkabe via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the contact timeline, and sync the suppression list automatically.',
+        description: 'Connect HubSpot via OAuth - import contacts from any list, push every send/open/click/reply/bounce to the timeline, sync the suppression list.',
         url: '/docs/integrations/hubspot',
         siteName: 'Superkabe',
         type: 'article',

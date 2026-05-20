@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Outreach Integration | Superkabe Docs',
-    description: 'Connect Outreach.io via OAuth and export your Superkabe cold call list directly into an Outreach sequence - pick from existing sequences or create a new one inline.',
+    description: 'Connect Outreach.io via OAuth and export Superkabe cold call lists into an Outreach sequence - pick existing or create one inline.',
     alternates: { canonical: '/docs/integrations/outreach' },
     openGraph: {
         title: 'Outreach Integration | Superkabe Docs',
-        description: 'Connect Outreach.io via OAuth and export your Superkabe cold call list directly into an Outreach sequence - pick from existing sequences or create a new one inline.',
+        description: 'Connect Outreach.io via OAuth and export Superkabe cold call lists into an Outreach sequence - pick existing or create one inline.',
         url: '/docs/integrations/outreach',
         siteName: 'Superkabe',
         type: 'article',

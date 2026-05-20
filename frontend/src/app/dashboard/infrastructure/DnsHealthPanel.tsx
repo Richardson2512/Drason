@@ -228,7 +228,7 @@ function computeChecks(domains: Domain[]): DnsCheck[] {
             issueExplanation: blacklisted.length > 0
                 ? `${blacklisted.length} ${blacklisted.length === 1 ? 'domain is currently listed' : 'domains are currently listed'} on a critical or major blacklist. Pause sends from these domains and request delisting before resuming.`
                 : '',
-            fixHref: 'https://www.spamhaus.org/lookup/',
+            fixHref: 'https://check.spamhaus.org/',
             fixLabel: 'Opens Spamhaus delisting tool',
             affectedDomains: blacklisted.map(d => d.domain),
         },

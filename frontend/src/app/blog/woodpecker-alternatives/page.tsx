@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Woodpecker Alternatives for Cold Email (2026)',
-    description: 'Ranked Woodpecker alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Saleshandy, and Mailshake on pricing, AI sequencing, and deliverability protection.',
+    description: 'Ranked Woodpecker alternatives. Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Saleshandy, Mailshake on pricing, AI sequencing, and deliverability.',
     openGraph: {
         title: 'Best Woodpecker Alternatives for Cold Email (2026)',
         description: 'Woodpecker is reliable but slow on innovation and offers no auto-pause. Here are 7 ranked Woodpecker alternatives with modern protection layers and AI sequencing.',

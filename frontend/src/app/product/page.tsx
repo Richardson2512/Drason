@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'Product Hub - The AI Cold Email Platform | Superkabe',
- description: 'Everything inside Superkabe - the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing all from one product.',
+ description: 'Everything inside Superkabe - the AI cold email platform with native protection. AI sequences, multi-mailbox sending, validation, ESP routing, healing.',
  alternates: { canonical: '/product' },
  openGraph: {
  title: 'Product Hub - The AI Cold Email Platform | Superkabe',

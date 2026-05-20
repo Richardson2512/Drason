@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Smartlead: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Smartlead comparison covering pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and migration. The differences that matter at scale.',
+    description: 'Superkabe vs Smartlead: pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and migration. Differences at scale.',
     openGraph: {
         title: 'Superkabe vs Smartlead: Head-to-Head Comparison (2026)',
         description: 'Smartlead handles sending well. Superkabe ships the protection layer Smartlead skips: auto-pause, 5-phase healing, ESP-aware routing. Side-by-side comparison.',

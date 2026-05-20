@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Luella Alternatives for AI Cold Email in 2026',
-    description: 'Ranked Luella alternatives for AI-driven cold email. Compares Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, and Reply.io on AI sequencing, deliverability protection, and pricing.',
+    description: 'Ranked Luella alternatives for AI-driven cold email. Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, Reply.io on AI and deliverability.',
     openGraph: {
         title: 'Best Luella Alternatives for AI Cold Email in 2026',
         description: 'Luella ships an AI SDR but lacks the deliverability protection layer that prevents domain burnout. Here are 7 ranked alternatives.',

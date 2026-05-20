@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Super LinkedIn Integration | Superkabe Docs',
-    description: 'Connect LinkedIn to Superkabe via Unipile - HeyReach-class sending plus the 4-agent supervisor stack (signal, ICP, enrichment, icebreaker) plus cross-channel halt with the Sequencer.',
+    description: 'Connect LinkedIn via Unipile - HeyReach-class sending, the 4-agent supervisor stack (signal, ICP, enrichment, icebreaker), cross-channel halt.',
     alternates: { canonical: '/docs/integrations/super-linkedin' },
     openGraph: {
         title: 'Super LinkedIn Integration | Superkabe Docs',

@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'ESP-Aware Routing | Superkabe Docs',
-    description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient - 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
+    description: 'How Superkabe routes sends to the mailbox most likely to inbox each recipient. 60% capacity, 40% per-ESP performance for Gmail, Outlook, Mimecast.',
     alternates: { canonical: '/docs/esp-aware-routing' },
     openGraph: {
         title: 'ESP-Aware Routing | Superkabe Docs',
-        description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient - 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
+        description: 'How Superkabe routes sends to the mailbox most likely to inbox each recipient. 60% capacity, 40% per-ESP performance for Gmail, Outlook, Mimecast.',
         url: '/docs/esp-aware-routing',
         siteName: 'Superkabe',
         type: 'article',

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Smartlead Integration | Superkabe Docs',
-    description: 'Layer Superkabe protection on top of Smartlead - one API key, no sequence rebuild. Auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, all enforced against Smartlead mailboxes.',
+    description: 'Layer Superkabe protection on Smartlead - one API key, no rebuild. Auto-pause at 3% bounce, 5-phase healing, ESP-aware routing on Smartlead mailboxes.',
     alternates: { canonical: '/docs/integrations/smartlead' },
     openGraph: {
         title: 'Smartlead Integration | Superkabe Docs',

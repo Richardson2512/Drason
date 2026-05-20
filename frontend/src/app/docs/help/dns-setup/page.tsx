@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'DNS Setup Guide (SPF, DKIM, DMARC, MX) | Superkabe Help',
     description:
-        'Step-by-step guide to setting up SPF, DKIM, DMARC and MX records for your sending domains so they pass the authentication checks Superkabe runs during infrastructure assessment.',
+        'Step-by-step guide to SPF, DKIM, DMARC, and MX setup for sending domains so they pass the authentication checks during infrastructure assessment.',
     alternates: { canonical: '/docs/help/dns-setup' },
     openGraph: {
         title: 'DNS Setup Guide (SPF, DKIM, DMARC, MX) | Superkabe Help',

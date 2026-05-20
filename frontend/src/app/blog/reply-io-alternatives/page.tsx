@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Reply.io Alternatives for Cold Email in 2026',
-    description: 'Ranked Reply.io alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, and Saleshandy on pricing, deliverability protection, and AI sequencing.',
+    description: 'Ranked Reply.io alternatives. Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy on pricing, deliverability, and AI sequencing.',
     openGraph: {
         title: 'Best Reply.io Alternatives for Cold Email in 2026',
         description: 'Reply.io is a multichannel sales engagement platform but per-user pricing and gaps in deliverability protection push teams to look elsewhere. Here are 7 ranked alternatives.',

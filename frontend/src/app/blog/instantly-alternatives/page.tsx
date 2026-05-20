@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best Instantly Alternatives for Cold Email Teams (2026)',
-    description: 'Ranked Instantly.ai alternatives for cold email. Compares Superkabe, Smartlead, EmailBison, Lemlist, Woodpecker, Saleshandy, and Mailshake on pricing, deliverability protection, and AI sequencing.',
+    description: 'Ranked Instantly.ai alternatives. Superkabe, Smartlead, EmailBison, Lemlist, Woodpecker, Saleshandy, Mailshake on pricing and deliverability protection.',
     openGraph: {
         title: 'Best Instantly Alternatives for Cold Email Teams (2026)',
         description: 'Instantly is feature-rich but per-active-lead pricing and lack of native auto-pause push teams to look elsewhere. Here are 7 ranked Instantly alternatives.',

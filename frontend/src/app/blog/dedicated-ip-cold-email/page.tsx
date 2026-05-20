@@ -5,11 +5,11 @@ import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
-    title: 'Dedicated IP vs Shared IP for Cold Email - When You Actually Need One',
+    title: 'Dedicated IP vs Shared IP for Cold Email',
     description:
-        'A practical decision framework for dedicated vs shared IPs in cold email. Volume thresholds, warm-up reality, the OAuth caveat nobody mentions, and what Superkabe charges.',
+        'A practical decision framework for dedicated vs shared IPs in cold email. Volume thresholds, warm-up reality, the OAuth caveat, and what it costs.',
     openGraph: {
-        title: 'Dedicated IP vs Shared IP for Cold Email - When You Actually Need One',
+        title: 'Dedicated IP vs Shared IP for Cold Email',
         description:
             'Most teams under 50K sends/month do not need a dedicated IP. Here is when one is worth $39/month, what warm-up actually looks like, and the OAuth caveat that disqualifies most setups.',
         url: '/blog/dedicated-ip-cold-email',
@@ -24,8 +24,8 @@ export default function DedicatedIpBlogPage() {
     const blogPostingSchema = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": "Dedicated IP vs Shared IP for Cold Email - When You Actually Need One",
-        "description": "A practical decision framework for dedicated vs shared IPs in cold email. Volume thresholds, warm-up reality, the OAuth caveat nobody mentions, and what Superkabe charges.",
+        "headline": "Dedicated IP vs Shared IP for Cold Email",
+        "description": "A practical decision framework for dedicated vs shared IPs in cold email. Volume thresholds, warm-up reality, the OAuth caveat, and what it costs.",
         "datePublished": "2026-05-07",
         "dateModified": "2026-05-07",
         "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },

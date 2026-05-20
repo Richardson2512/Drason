@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Sequencer Overview | Superkabe Docs',
-    description: 'How Superkabe\'s native sequencer works end-to-end - campaigns, sequence steps, A/B variants, mailbox pool dispatch, ESP routing, reply tracking, and the handoff to the protection layer.',
+    description: 'How Superkabe\'s native sequencer works end-to-end - campaigns, steps, A/B variants, mailbox dispatch, ESP routing, reply tracking, protection handoff.',
     alternates: { canonical: '/docs/sequencer-overview' },
     openGraph: {
         title: 'Sequencer Overview | Superkabe Docs',

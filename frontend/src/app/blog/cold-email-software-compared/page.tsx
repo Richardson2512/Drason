@@ -6,10 +6,10 @@ import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
- title: 'Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends',
- description: '12 cold email software platforms tested head-to-head across 6,000 sends - bounce rate, inbox placement, reply rate, and cost per reply compared with real data from a 2026 benchmark.',
+ title: 'Cold Email Software Compared: 12 Platforms Tested',
+ description: '12 cold email platforms tested head-to-head across 6,000 sends. Bounce rate, inbox placement, reply rate, and cost per reply with 2026 benchmark data.',
  openGraph: {
- title: 'Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends',
+ title: 'Cold Email Software Compared: 12 Platforms Tested',
  description: 'Head-to-head data on 12 cold email platforms - bounce rate, inbox placement, cost per reply. 2026 benchmark.',
  url: '/blog/cold-email-software-compared',
  siteName: 'Superkabe',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  },
  twitter: {
      card: 'summary_large_image',
-     title: 'Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends',
+     title: 'Cold Email Software Compared: 12 Platforms Tested',
      description: 'Head-to-head data on 12 cold email platforms - bounce rate, inbox placement, cost per reply. 2026 benchmark.',
      images: ['/image/og-image.png'],
  },
@@ -35,7 +35,7 @@ export default function ColdEmailSoftwareComparedArticle() {
 
  const blogPostingSchema = buildEnhancedBlogPosting({
  slug: "cold-email-software-compared",
- headline: "Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends",
+ headline: "Cold Email Software Compared: 12 Platforms Tested",
  description: "12 cold email software platforms tested head-to-head across 6,000 sends with real 2026 benchmark data.",
  author,
  datePublished: "2026-04-24",
@@ -96,7 +96,7 @@ export default function ColdEmailSoftwareComparedArticle() {
  <article>
  <BlogHeader
                         tag="Comparison"
-                        title="Cold Email Software Compared: 12 Platforms Tested Across 6,000 Sends"
+                        title="Cold Email Software Compared: 12 Platforms Tested"
                         dateModified="2026-04-25"
                         authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"

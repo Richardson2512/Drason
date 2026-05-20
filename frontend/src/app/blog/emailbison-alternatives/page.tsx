@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Best EmailBison Alternatives for Cold Email (2026)',
-    description: 'Ranked EmailBison alternatives for cold email teams. Compares Superkabe, Smartlead, Instantly, Lemlist, Saleshandy, Woodpecker, and Mailshake on pricing, features, and deliverability protection.',
+    description: 'Ranked EmailBison alternatives. Superkabe, Smartlead, Instantly, Lemlist, Saleshandy, Woodpecker, Mailshake compared on pricing and deliverability.',
     openGraph: {
         title: 'Best EmailBison Alternatives for Cold Email (2026)',
         description: 'EmailBison wins on raw send volume but lacks ESP routing, healing, and a polished UI. Here are 7 ranked EmailBison alternatives for teams that need more.',

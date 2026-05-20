@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Salesforce Integration | Superkabe Docs',
-    description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth - import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
+    description: 'Connect Salesforce (production or sandbox) via OAuth - import via SOQL or list view, write activities to Task, sync HasOptedOutOfEmail.',
     alternates: { canonical: '/docs/integrations/salesforce' },
     openGraph: {
         title: 'Salesforce Integration | Superkabe Docs',
-        description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth - import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
+        description: 'Connect Salesforce (production or sandbox) via OAuth - import via SOQL or list view, write activities to Task, sync HasOptedOutOfEmail.',
         url: '/docs/integrations/salesforce',
         siteName: 'Superkabe',
         type: 'article',

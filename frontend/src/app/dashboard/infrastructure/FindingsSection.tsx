@@ -31,14 +31,14 @@ function getHelpLink(title: string | null | undefined): { url: string; label: st
 
     // Blacklist findings
     if (t.startsWith('blacklisted'))
-        return { url: 'https://www.spamhaus.org/lookup/', label: 'Spamhaus: Check & request delisting' };
+        return { url: 'https://check.spamhaus.org/', label: 'Spamhaus: Check & request delisting' };
     if (t.startsWith('minor blacklist listing'))
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Check blacklist status' };
     if (t.startsWith('blacklist check unreachable'))
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: Blacklist checker' };
     // Mailbox sending-IP blacklist findings (emitted by mailboxIpBlacklistWorker)
     if (t.startsWith('ip blacklisted (critical)'))
-        return { url: 'https://www.spamhaus.org/lookup/', label: 'Spamhaus: Lookup & delisting' };
+        return { url: 'https://check.spamhaus.org/', label: 'Spamhaus: Lookup & delisting' };
     if (t.startsWith('ip blacklisted (major)'))
         return { url: 'https://mxtoolbox.com/blacklists.aspx', label: 'MxToolbox: IP blacklist checker' };
 

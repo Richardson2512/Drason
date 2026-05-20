@@ -6,10 +6,10 @@ import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
- title: 'Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)',
- description: '7 genuinely free cold email tools in 2026 - no "14-day trial" nonsense. Every tool rated on what it does for free, where the paywall lands, and the specific catch you should know before committing.',
+ title: 'Free Cold Email Tools: 7 Genuinely Free Options',
+ description: '7 genuinely free cold email tools in 2026. What each does for free, where the paywall lands, and the specific catch to know before committing.',
  openGraph: {
- title: 'Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)',
+ title: 'Free Cold Email Tools: 7 Genuinely Free Options',
  description: '7 actually-free cold email tools rated honestly - with the specific catch in each, not marketing claims.',
  url: '/blog/free-cold-email-tools',
  siteName: 'Superkabe',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  },
  twitter: {
      card: 'summary_large_image',
-     title: 'Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)',
+     title: 'Free Cold Email Tools: 7 Genuinely Free Options',
      description: '7 actually-free cold email tools rated honestly - with the specific catch in each, not marketing claims.',
      images: ['/image/og-image.png'],
  },
@@ -35,7 +35,7 @@ export default function FreeColdEmailToolsArticle() {
 
  const blogPostingSchema = buildEnhancedBlogPosting({
  slug: "free-cold-email-tools",
- headline: "Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)",
+ headline: "Free Cold Email Tools: 7 Genuinely Free Options",
  description: "7 genuinely free cold email tools in 2026, rated on what is free, where the paywall lands, and the specific catch in each.",
  author,
  datePublished: "2026-04-24",
@@ -76,7 +76,7 @@ export default function FreeColdEmailToolsArticle() {
  <article>
  <BlogHeader
  tag="Free Tools"
- title="Free Cold Email Tools: 7 Genuinely Free Options (With the Catch in Each)"
+ title="Free Cold Email Tools: 7 Genuinely Free Options"
  dateModified="2026-04-25"
  authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"

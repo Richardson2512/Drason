@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Integrations | Superkabe Docs',
-    description: 'Every integration Superkabe supports - CRMs, sending platforms, LinkedIn (Super LinkedIn via Unipile), warmup, validation, alerting, and billing. One page index with links to each setup guide.',
+    description: 'Every Superkabe integration - CRMs, sending platforms, LinkedIn via Unipile, warmup, validation, alerting, billing. Index with links to each setup guide.',
     alternates: { canonical: '/docs/integrations' },
     openGraph: {
         title: 'Integrations | Superkabe Docs',

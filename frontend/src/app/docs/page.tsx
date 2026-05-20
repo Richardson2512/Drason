@@ -4,7 +4,7 @@ import { Shield, Activity, GitBranch, TrendingUp, Settings, Zap, Plug, Database,
 
 export const metadata: Metadata = {
     title: 'Documentation | Superkabe',
-    description: 'Technical documentation for Superkabe - the AI cold email platform with native deliverability protection. Guides for AI sequences, multi-mailbox sending, email validation, protection settings, and integrations.',
+    description: 'Superkabe technical documentation - AI sequences, multi-mailbox sending, email validation, protection settings, ESP-aware routing, and integrations.',
     alternates: {
         canonical: '/docs',
     },

@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'The Outbound Email Infrastructure Playbook – Superkabe',
- description: 'The authoritative A-Z guide on running high-volume outbound email - AI sequences, multi-mailbox scaling, email validation, ESP-aware routing, and the protection layer that keeps senders alive.',
+ description: 'The A-Z guide on running high-volume outbound email - AI sequences, multi-mailbox scaling, validation, ESP-aware routing, and the protection layer.',
  alternates: { canonical: '/infrastructure-playbook' },
  openGraph: {
  title: 'The Outbound Email Infrastructure Playbook – Superkabe',

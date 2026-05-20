@@ -6,7 +6,7 @@ import MarketingBackdrop from '@/components/MarketingBackdrop';
 
 export const metadata: Metadata = {
     title: 'Guides | Superkabe',
-    description: 'Long-form, evergreen guides on cold-email deliverability, email validation, and the modern outbound infrastructure stack. Authority-grade reference material for outbound operators.',
+    description: 'Long-form guides on cold-email deliverability, email validation, and the modern outbound infrastructure stack. Authority reference for operators.',
     alternates: { canonical: '/guides' },
     openGraph: {
         title: 'Guides | Superkabe',

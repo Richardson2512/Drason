@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Reply.io: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Reply.io comparison covering pricing, AI sequencing, multichannel outreach, deliverability protection, ESP-aware routing, and healing pipeline.',
+    description: 'Superkabe vs Reply.io: pricing, AI sequencing, multichannel outreach, deliverability protection, ESP-aware routing, and healing pipeline.',
     openGraph: {
         title: 'Superkabe vs Reply.io: Head-to-Head Comparison (2026)',
         description: 'Reply.io is multichannel-first; Superkabe is cold-email-first with native deliverability protection. Head-to-head comparison.',
@@ -29,7 +29,7 @@ export default function SuperkabeVsReplyIoPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Superkabe vs Reply.io: Head-to-Head Comparison (2026)",
-        "description": "Detailed Superkabe vs Reply.io comparison covering pricing, AI sequencing, multichannel outreach, deliverability protection, ESP-aware routing, and healing pipeline.",
+        "description": "Superkabe vs Reply.io: pricing, AI sequencing, multichannel outreach, deliverability protection, ESP-aware routing, and healing pipeline.",
         "datePublished": "2026-05-07",
         "dateModified": "2026-05-07",
         "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },

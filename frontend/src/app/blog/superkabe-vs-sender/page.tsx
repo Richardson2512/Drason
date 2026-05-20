@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Sender.ai: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Sender.ai comparison covering use case fit (B2B cold outreach vs broadcast/newsletter marketing), pricing models, deliverability protection, multi-channel outreach, and where each platform actually belongs in your stack.',
+    description: 'Superkabe vs Sender.ai: B2B cold outreach vs broadcast/newsletter ESP. Use case fit, pricing, deliverability protection, multi-channel - where each fits.',
     openGraph: {
         title: 'Superkabe vs Sender.ai: Head-to-Head Comparison (2026)',
         description: 'Sender.ai is a broadcast/newsletter ESP. Superkabe is a B2B cold outreach platform with native protection and Super LinkedIn. Different jobs - here is when each one fits.',

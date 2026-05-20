@@ -65,7 +65,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  };
 
  const blacklists = [
- { name: 'Spamhaus SBL/DBL', severity: 'Critical', delistUrl: 'https://www.spamhaus.org/lookup/', autoRemoval: 'Manual request required', notes: 'Most impactful blacklist. Gmail, Outlook, Yahoo all check it. Request removal via lookup tool after fixing cause.' },
+ { name: 'Spamhaus SBL/DBL', severity: 'Critical', delistUrl: 'https://check.spamhaus.org/', autoRemoval: 'Manual request required', notes: 'Most impactful blacklist. Gmail, Outlook, Yahoo all check it. Request removal via lookup tool after fixing cause.' },
  { name: 'Barracuda (BRBL)', severity: 'Critical', delistUrl: 'https://www.barracudacentral.org/rbl/removal-request', autoRemoval: '12-24 hours after request', notes: 'Widely used by corporate email servers. Self-service removal form available.' },
  { name: 'SORBS', severity: 'High', delistUrl: 'https://www.sorbs.net/cgi-bin/support', autoRemoval: 'Up to 7 days', notes: 'Multiple sub-lists (spam, HTTP, SOCKS). Each has separate removal process.' },
  { name: 'Spamcop', severity: 'High', delistUrl: 'https://www.spamcop.net/bl.shtml', autoRemoval: '24-48 hours automatic', notes: 'Auto-expires if no new reports. No manual removal needed - just stop the behavior.' },

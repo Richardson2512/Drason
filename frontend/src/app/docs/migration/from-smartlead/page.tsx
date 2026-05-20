@@ -4,12 +4,12 @@ import Link from 'next/link';
 export const metadata: Metadata = {
     title: 'Migrate from Smartlead | Superkabe Docs',
     description:
-        'One-time import of campaigns, sequences, leads, and mailbox metadata from Smartlead into Superkabe. API key auto-discards after 24 hours. Mailboxes reconnect afterward.',
+        'One-time import of campaigns, sequences, leads, and mailbox metadata from Smartlead. API key auto-discards after 24 hours; reconnect mailboxes.',
     alternates: { canonical: '/docs/migration/from-smartlead' },
     openGraph: {
         title: 'Migrate from Smartlead | Superkabe Docs',
         description:
-            'One-time import of campaigns, sequences, leads, and mailbox metadata from Smartlead into Superkabe. API key auto-discards after 24 hours. Mailboxes reconnect afterward.',
+            'One-time import of campaigns, sequences, leads, and mailbox metadata from Smartlead. API key auto-discards after 24 hours; reconnect mailboxes.',
         url: '/docs/migration/from-smartlead',
         siteName: 'Superkabe',
         type: 'article',

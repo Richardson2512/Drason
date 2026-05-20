@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)',
-    description: 'The cheapest cold email tools of 2026 ranked by real cost at scale, including Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, and Mailshake.',
+    description: 'The cheapest cold email tools of 2026 ranked by real cost at scale: Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, Mailshake.',
     openGraph: {
         title: 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)',
         description: '"Cheap" depends on volume model. We rank the cheapest cold email tools of 2026 by total cost of ownership at three volume tiers - solo, growing team, agency.',
@@ -23,7 +23,7 @@ export default function CheapestColdEmailToolsPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value)",
-        "description": "The cheapest cold email tools of 2026 ranked by real cost at scale, including Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, and Mailshake.",
+        "description": "The cheapest cold email tools of 2026 ranked by real cost at scale: Superkabe, Saleshandy, Instantly, EmailBison, Smartlead, Woodpecker, Mailshake.",
         "datePublished": "2026-04-25",
         "dateModified": "2026-04-25",
         "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },

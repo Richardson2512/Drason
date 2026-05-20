@@ -17,9 +17,9 @@ const SITE = 'https://www.superkabe.com';
 const PATH = '/cold-email-templates';
 
 export const metadata: Metadata = {
-    title: 'Cold Email Templates That Actually Get Replies - Free + AI-Customizable | Superkabe',
+    title: 'Cold Email Templates - Free + AI-Customizable | Superkabe',
     description:
-        'Free library of high-converting cold email templates. AI-customizable in seconds. Compliance built in for Gmail/Yahoo 2024 sender requirements. Industry-specific, role-specific, framework-tagged.',
+        'Free library of high-converting cold email templates, AI-customizable in seconds. Gmail/Yahoo 2024-compliant. Industry, role, and framework tagged.',
     alternates: { canonical: PATH },
     openGraph: {
         title: 'Cold Email Templates That Actually Get Replies',

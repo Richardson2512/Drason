@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs EmailBison: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs EmailBison comparison covering pricing, AI sequencing, deliverability protection, ESP-aware routing, and healing pipeline. The differences that matter at high volume.',
+    description: 'Superkabe vs EmailBison: pricing, AI sequencing, deliverability protection, ESP-aware routing, and the healing pipeline. The differences at high volume.',
     openGraph: {
         title: 'Superkabe vs EmailBison: Head-to-Head Comparison (2026)',
         description: 'EmailBison wins on per-send price at extreme volume. Superkabe wins on protection. Head-to-head on pricing, sending, and infrastructure protection.',

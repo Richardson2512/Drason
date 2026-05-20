@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Multi-Platform Sync | Superkabe Docs',
-    description: 'How Superkabe ingests delivery events from Smartlead, Instantly, EmailBison, and the native sequencer simultaneously and applies one governance layer across all of them.',
+    description: 'How Superkabe ingests delivery events from Smartlead, Instantly, EmailBison, and the native sequencer, and applies one governance layer across all.',
     alternates: { canonical: '/docs/multi-platform-sync' },
     openGraph: {
         title: 'Multi-Platform Sync | Superkabe Docs',

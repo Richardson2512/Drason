@@ -20,7 +20,7 @@ const PATH = '/cold-email-templates/generate';
 export const metadata: Metadata = {
     title: 'Generate a Cold Email with AI - Free | Superkabe',
     description:
-        'Free AI cold email generator. Tell us your business, your value prop, who you\'re targeting, and the goal - get a high-reply-rate cold email in seconds. No signup required for the first 3 generations.',
+        'Free AI cold email generator. Provide your business, value prop, target, and goal - get a high-reply-rate email in seconds. No signup for first 3 runs.',
     alternates: { canonical: PATH },
     openGraph: {
         title: 'Generate a Cold Email with AI - Free',

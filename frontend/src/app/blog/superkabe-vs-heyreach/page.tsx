@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs HeyReach: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs HeyReach comparison covering LinkedIn outreach depth, multi-channel coverage, the 4-agent supervisor stack, cross-channel halt, pricing, and where each tool actually fits in a modern outbound stack.',
+    description: 'Superkabe vs HeyReach: LinkedIn outreach depth, multi-channel, the 4-agent supervisor stack, cross-channel halt, and pricing. Where each tool fits.',
     openGraph: {
         title: 'Superkabe vs HeyReach: Head-to-Head Comparison (2026)',
         description: 'HeyReach is LinkedIn-only. Super LinkedIn matches HeyReach sending and adds a 4-agent stack + email cross-channel halt. Side-by-side.',

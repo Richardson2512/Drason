@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Instantly Integration | Superkabe Docs',
-    description: 'Layer Superkabe protection on top of Instantly - one API key, no sequence rebuild. Auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, all enforced against Instantly mailboxes.',
+    description: 'Layer Superkabe protection on Instantly - one API key, no rebuild. Auto-pause at 3% bounce, 5-phase healing, ESP-aware routing on Instantly mailboxes.',
     alternates: { canonical: '/docs/integrations/instantly' },
     openGraph: {
         title: 'Instantly Integration | Superkabe Docs',

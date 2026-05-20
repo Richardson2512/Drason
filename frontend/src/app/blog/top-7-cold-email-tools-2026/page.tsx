@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Top 7 Cold Email Tools of 2026 (Ranked & Compared)',
-    description: 'The 7 best cold email tools of 2026 ranked across deliverability, pricing, AI sequencing, and infrastructure protection. Superkabe, Smartlead, Instantly, EmailBison, Lemlist, Saleshandy, Woodpecker compared in depth.',
+    description: '7 best cold email tools of 2026 ranked on deliverability, price, AI sequencing, and protection: Superkabe, Smartlead, Instantly, EmailBison, Lemlist, more.',
     openGraph: {
         title: 'Top 7 Cold Email Tools of 2026 (Ranked & Compared)',
         description: 'A ranked review of the 7 cold email tools that actually compete in 2026, with full feature, pricing, and protection comparisons.',

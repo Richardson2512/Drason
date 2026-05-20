@@ -6,10 +6,10 @@ import FeaturedHero from '@/components/blog/FeaturedHero';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
- title: 'Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day',
- description: '10 cold email tools ranked for agency use - white-label, multi-client workspaces, per-client governance, and fleet-wide protection. Only platforms that handle 100K+ daily sends without burning client domains.',
+ title: 'Cold Email Tools for Agencies: 10 Platforms Compared',
+ description: '10 cold email tools ranked for agency use: white-label, multi-client workspaces, per-client governance, and fleet-wide protection at 100K+ daily sends.',
  openGraph: {
- title: 'Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day',
+ title: 'Cold Email Tools for Agencies: 10 Platforms Compared',
  description: '10 agency-grade cold email platforms that handle 100K+ sends/day without burning client domains. 2026 comparison.',
  url: '/blog/cold-email-tools-for-agencies',
  siteName: 'Superkabe',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  },
  twitter: {
      card: 'summary_large_image',
-     title: 'Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day',
+     title: 'Cold Email Tools for Agencies: 10 Platforms Compared',
      description: '10 agency-grade cold email platforms that handle 100K+ sends/day without burning client domains. 2026 comparison.',
      images: ['/image/og-image.png'],
  },
@@ -35,7 +35,7 @@ export default function ColdEmailToolsForAgenciesArticle() {
 
  const blogPostingSchema = buildEnhancedBlogPosting({
  slug: "cold-email-tools-for-agencies",
- headline: "Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day",
+ headline: "Cold Email Tools for Agencies: 10 Platforms Compared",
  description: "10 cold email platforms ranked for agency-scale outbound: white-label, multi-client workspaces, fleet-wide protection.",
  author,
  datePublished: "2026-04-24",
@@ -60,7 +60,7 @@ export default function ColdEmailToolsForAgenciesArticle() {
  { rank: 1, name: 'Smartlead', url: 'https://www.smartlead.ai', bestFor: 'White-label dashboards + sub-accounts + per-client API keys', price: 'From $94/mo (agency tiers)', description: 'Smartlead is the agency default. White-label domains, client-facing reporting under your branding, sub-account structure for per-client isolation, and assigned_email_accounts for per-lead mailbox pinning. The Lead Finder add-on bundles data without forcing a separate subscription. Weakness: the governance layer is still campaign-bound - pair with Superkabe for fleet-wide auto-pause and 5-phase healing across all client workspaces.' },
  { rank: 2, name: 'Superkabe', url: 'https://www.superkabe.com', bestFor: 'Fleet-wide governance across Smartlead, Instantly, and EmailBison workspaces', price: 'From $99/mo (Growth) / $299/mo (Scale)', description: 'Superkabe is the protection layer purpose-built for agency scale. Per-workspace isolation means one client\'s bounce spike pauses only that client\'s mailboxes; nothing cascades across your fleet. The 5-phase healing pipeline runs autonomously across every connected mailbox. Plug into Smartlead, Instantly, or EmailBison simultaneously from one dashboard. ESP-aware routing applies per-client, so mailbox scoring stays accurate even when one client\'s sending patterns are different from another\'s.' },
  { rank: 3, name: 'Instantly', url: 'https://instantly.ai', bestFor: 'Agencies prioritizing pure volume across many client mailboxes', price: 'From $77/mo (Hypergrowth)', description: 'Instantly\'s Hypergrowth plan at $77/mo unlocks unlimited mailbox connections - a natural fit for agencies running high-volume campaigns for many clients. The warmup network and analytics dashboard are strong. Weakness: workspace isolation is less granular than Smartlead\'s sub-account model, and the white-label story is thinner. Better for volume-first agencies than client-facing-brand-conscious ones.' },
- { rank: 4, name: 'EmailBison', url: 'https://www.emailbison.com', bestFor: 'Agencies selling multi-channel (email + LinkedIn + phone) campaigns', price: 'From $99/mo (agency)', description: 'EmailBison combines multi-channel outreach with agency tooling - workspace separation, client reporting, and shared warmup. A good fit for agencies whose differentiator is integrated channels. Weakness: governance features trail Smartlead; pair with Superkabe for fleet-wide protection across EmailBison workspaces.' },
+ { rank: 4, name: 'EmailBison', url: 'https://emailbison.com', bestFor: 'Agencies selling multi-channel (email + LinkedIn + phone) campaigns', price: 'From $99/mo (agency)', description: 'EmailBison combines multi-channel outreach with agency tooling - workspace separation, client reporting, and shared warmup. A good fit for agencies whose differentiator is integrated channels. Weakness: governance features trail Smartlead; pair with Superkabe for fleet-wide protection across EmailBison workspaces.' },
  { rank: 5, name: 'Saleshandy', url: 'https://www.saleshandy.com', bestFor: 'Budget-conscious agencies under 20 clients', price: 'From $99/mo (agency)', description: 'Saleshandy at $99/mo for agency features is the cheapest credible option for small agencies. Bundled B2B database helps smaller clients without separate data contracts. Weakness: analytics and deliverability tooling are thinner than Smartlead; breaks down past ~20 clients or ~200 mailboxes due to workspace-management friction.' },
  { rank: 6, name: 'Reply.io', url: 'https://reply.io', bestFor: 'Agencies that need multichannel SDR workflows with CRM integration', price: 'From $89/user/mo', description: 'Reply.io suits agencies with embedded SDR teams delivering outbound-as-a-service with integrated CRM, LinkedIn, and phone touches. Per-user pricing makes it expensive past 5 reps; if your model is rep-heavy it can be worth it. If your model is mailbox-volume-heavy, Smartlead or Instantly beat it on per-mailbox economics.' },
  { rank: 7, name: 'Quickmail', url: 'https://quickmail.com', bestFor: 'Legacy agencies with existing Quickmail workflows', price: 'From $89/mo (agency)', description: 'Quickmail pioneered mailbox rotation and remains a reliable choice for agencies with long-standing setups. Feature velocity has slowed versus Smartlead and Instantly - if you are starting fresh in 2026, those are better picks; if you are established, migration cost often exceeds the upgrade benefit.' },
@@ -79,7 +79,7 @@ export default function ColdEmailToolsForAgenciesArticle() {
  <article>
  <BlogHeader
                         tag="Agencies"
-                        title="Cold Email Tools for Agencies: 10 Platforms That Survive Past 100K Sends/Day"
+                        title="Cold Email Tools for Agencies: 10 Platforms Compared"
                         dateModified="2026-04-25"
                         authorName="Robert Smith"
                         authorRole="Deliverability Specialist · Superkabe"

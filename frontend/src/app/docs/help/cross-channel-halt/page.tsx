@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'Cross-Channel Halt | Superkabe Help',
-    description: 'Why a reply on LinkedIn halts the matching email touch (and vice versa). Workspace-level lead identity, configurable halting policy, and how to read the cross-channel timeline.',
+    description: 'Why a reply on LinkedIn halts the matching email touch (and vice versa). Lead identity, halting policy, and the cross-channel timeline.',
     alternates: { canonical: '/docs/help/cross-channel-halt' },
     openGraph: {
         title: 'Cross-Channel Halt | Superkabe Help',

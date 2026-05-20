@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Instantly: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Instantly comparison covering pricing, AI sequencing, bundled warmup, deliverability protection, ESP-aware routing, and healing pipeline. The differences that matter at scale.',
+    description: 'Superkabe vs Instantly: pricing, AI sequencing, bundled warmup, deliverability protection, ESP-aware routing, and healing pipeline. Differences at scale.',
     openGraph: {
         title: 'Superkabe vs Instantly: Head-to-Head Comparison (2026)',
         description: 'Instantly bundles warmup and a B2B database; Superkabe ships the protection layer. Head-to-head on pricing, sending, and infrastructure protection.',

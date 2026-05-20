@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Email Validation | Superkabe Docs',
-    description: 'How Superkabe validates every lead before sending - syntax, MX, disposable, catch-all, plus MillionVerifier for risky leads. Status meanings, tier limits, credit rules.',
+    description: 'How Superkabe validates leads before sending: syntax, MX, disposable, catch-all, plus MillionVerifier for risky leads. Status, tier limits, credits.',
     alternates: { canonical: '/docs/email-validation' },
     openGraph: {
         title: 'Email Validation | Superkabe Docs',
-        description: 'How Superkabe validates every lead before sending - syntax, MX, disposable, catch-all, plus MillionVerifier for risky leads. Status meanings, tier limits, credit rules.',
+        description: 'How Superkabe validates leads before sending: syntax, MX, disposable, catch-all, plus MillionVerifier for risky leads. Status, tier limits, credits.',
         url: '/docs/email-validation',
         siteName: 'Superkabe',
         type: 'article',

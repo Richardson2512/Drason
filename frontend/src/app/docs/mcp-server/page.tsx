@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Claude (MCP Server) | Superkabe Docs',
-    description: 'Connect Claude - claude.ai browser, Claude Desktop, Claude Code, Cursor - to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
+    description: 'Connect Claude (claude.ai, Desktop, Code, Cursor) to Superkabe via MCP. OAuth 2.0 for browser, stdio for local. 17 tools, security model, reference.',
     alternates: { canonical: '/docs/mcp-server' },
     openGraph: {
         title: 'Claude (MCP Server) | Superkabe Docs',
-        description: 'Connect Claude - claude.ai browser, Claude Desktop, Claude Code, Cursor - to Superkabe via the MCP protocol. OAuth 2.0 for browser, stdio for local clients. 17 tools, full security model, complete reference.',
+        description: 'Connect Claude (claude.ai, Desktop, Code, Cursor) to Superkabe via MCP. OAuth 2.0 for browser, stdio for local. 17 tools, security model, reference.',
         url: '/docs/mcp-server',
         siteName: 'Superkabe',
         type: 'article',

@@ -6,7 +6,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
     title: 'Superkabe vs Woodpecker: Head-to-Head Comparison (2026)',
-    description: 'Detailed Superkabe vs Woodpecker comparison covering pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and reply detection.',
+    description: 'Superkabe vs Woodpecker: pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and reply detection.',
     openGraph: {
         title: 'Superkabe vs Woodpecker: Head-to-Head Comparison (2026)',
         description: 'Woodpecker is established with strong reply detection. Superkabe ships modern AI sequencing + protection. Head-to-head comparison.',
@@ -29,7 +29,7 @@ export default function SuperkabeVsWoodpeckerPage() {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Superkabe vs Woodpecker: Head-to-Head Comparison (2026)",
-        "description": "Detailed Superkabe vs Woodpecker comparison covering pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and reply detection.",
+        "description": "Superkabe vs Woodpecker: pricing, AI sequencing, deliverability protection, ESP-aware routing, healing pipeline, and reply detection.",
         "datePublished": "2026-05-07",
         "dateModified": "2026-05-07",
         "image": { "@type": "ImageObject", "url": "https://www.superkabe.com/image/og-image.png", "width": 1200, "height": 630 },

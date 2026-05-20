@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
+ description: 'Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection.',
  alternates: { canonical: '/docs/help/billing' },
  openGraph: {
  title: 'How Does Billing & Subscriptions Work? | Superkabe Help',
- description: 'Learn about Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection coverage.',
+ description: 'Superkabe subscription plans - two-meter pricing on monthly sends + validation credits, with unlimited domains, mailboxes, leads, and protection.',
  url: '/docs/help/billing',
  siteName: 'Superkabe',
  type: 'article',
