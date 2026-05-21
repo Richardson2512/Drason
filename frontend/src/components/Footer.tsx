@@ -16,7 +16,7 @@ export default function Footer() {
  <span className="text-xl font-bold text-gray-900">Superkabe</span>
  </div>
  <p className="text-gray-500 text-base leading-relaxed mb-6">
- The AI-powered cold email platform with native deliverability protection. Run your cold email outreach and keep your senders healthy - from one product.
+ The AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Run your cold email outreach and keep your senders healthy - from one product.
  </p>
  <p className="text-gray-400 text-xs">
  ♡ Made with love by the Superkabe team

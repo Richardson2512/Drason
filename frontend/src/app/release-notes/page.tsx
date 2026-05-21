@@ -7,11 +7,11 @@ import { releaseNotes } from '@/data/releaseNotes';
 
 export const metadata: Metadata = {
  title: 'Release Notes | Superkabe',
- description: 'See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
+ description: 'Release notes and changelog for Superkabe - AI cold email with built-in deliverability and LinkedIn signal-based automated outreach.',
  alternates: { canonical: '/release-notes' },
  openGraph: {
  title: 'Release Notes | Superkabe',
- description: 'See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
+ description: 'Release notes and changelog for Superkabe - AI cold email with built-in deliverability and LinkedIn signal-based automated outreach.',
  url: '/release-notes',
  siteName: 'Superkabe',
  type: 'website',
@@ -23,7 +23,7 @@ export default function ReleaseNotesPage() {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Release Notes | Superkabe",
- "description": "See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.",
+ "description": "Release notes and changelog for Superkabe - AI cold email with built-in deliverability and LinkedIn signal-based automated outreach.",
  "url": "https://www.superkabe.com/release-notes",
  "publisher": {
  "@type": "Organization",

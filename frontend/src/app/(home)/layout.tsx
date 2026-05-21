@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
- title: 'Superkabe – The AI Cold Email Platform Built for Deliverability',
+ title: 'Superkabe – AI Cold Email + LinkedIn Outreach Platform',
  description: 'Send, personalize, and scale outbound with an AI cold email platform that includes native deliverability protection - auto-pause, ESP routing, email validation, and auto-healing built in.',
  alternates: { canonical: '/' },
  openGraph: {
- title: 'Superkabe – The AI Cold Email Platform Built for Deliverability',
+ title: 'Superkabe – AI Cold Email + LinkedIn Outreach Platform',
  description: 'Send, personalize, and scale outbound with an AI cold email platform that includes native deliverability protection - auto-pause, ESP routing, email validation, and auto-healing built in.',
  url: '/',
  siteName: 'Superkabe',

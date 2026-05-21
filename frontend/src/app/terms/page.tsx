@@ -10,7 +10,7 @@ export default function TermsPage() {
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Terms & Conditions - Superkabe",
-        "description": "Terms of service for Superkabe - AI cold email platform with built-in deliverability protection. Acceptable use, customer compliance, payments, IP, liability.",
+        "description": "Terms of service for Superkabe - AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Acceptable use, customer compliance, payments, IP, liability.",
         "url": "https://www.superkabe.com/terms",
         "publisher": {
             "@type": "Organization",
@@ -46,7 +46,7 @@ export default function TermsPage() {
                             <section className="mb-8">
                                 <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Description of Service</h2>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    Superkabe is an AI cold email platform with built-in deliverability protection. The Service includes:
+                                    Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. The Service includes:
                                 </p>
                                 <ul className="list-disc pl-6 text-gray-600 space-y-2">
                                     <li>AI-assisted sequence generation, A/B variants, and reply classification</li>

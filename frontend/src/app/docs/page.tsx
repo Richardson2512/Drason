@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Documentation | Superkabe',
-        description: 'Technical documentation for the AI cold email platform with native deliverability protection.',
+        description: 'Technical documentation for the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach.',
         url: '/docs',
         siteName: 'Superkabe',
         type: 'website',
@@ -24,14 +24,14 @@ export default function DocsPage() {
                 Superkabe Documentation
             </h1>
             <p className="text-xl text-gray-500 mb-12 leading-relaxed max-w-2xl">
-                Technical guides for the AI cold email platform with native deliverability protection.
+                Technical guides for the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach.
             </p>
 
             {/* Overview Card */}
             <div className="bg-white p-8 border border-gray-100 shadow-xl shadow-gray-200/50 mb-16">
                 <h2 className="text-2xl font-bold mb-4 text-gray-900">What is Superkabe?</h2>
                 <p className="text-gray-600 mb-4">
-                    Superkabe is an AI-powered cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes (Gmail, Microsoft 365, or SMTP), validate every email, route leads by ESP - and let the protection layer auto-pause, reroute, and heal senders in real time.
+                    Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Draft AI sequences, send across unlimited mailboxes (Gmail, Microsoft 365, or SMTP), validate every email, route leads by ESP - and let the protection layer auto-pause, reroute, and heal senders in real time.
                 </p>
                 <p className="text-gray-600 mb-6">
                     Every lead that enters Superkabe passes through a multi-stage pipeline before reaching your sender:

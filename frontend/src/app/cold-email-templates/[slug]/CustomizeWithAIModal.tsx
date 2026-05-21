@@ -172,7 +172,7 @@ export default function CustomizeWithAIModal({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <Field
                             label="What does your company do? *"
-                            placeholder="e.g., AI cold email platform with built-in deliverability protection"
+                            placeholder="e.g., AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach"
                             value={yourCompany}
                             onChange={setYourCompany}
                             required

@@ -18,7 +18,7 @@ export async function generateImageMetadata({ params }: { params: { slug: string
 export default async function Image({ params }: { params: { slug: string } }) {
  const data = productPages[params.slug];
  const title = data?.title ?? 'Superkabe';
- const description = data?.description ?? 'AI cold email platform with native deliverability protection';
+ const description = data?.description ?? 'AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach';
 
  return new ImageResponse(
  (

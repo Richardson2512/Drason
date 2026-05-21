@@ -94,7 +94,7 @@ export default function InfrastructurePlaybookPage() {
 
  <div className="bg-blue-50 p-10 border border-blue-100 shadow-sm mb-20">
  <p className="text-xl text-blue-900 font-medium leading-relaxed">
- <strong>Superkabe</strong> is an AI cold email platform with native deliverability protection, designed for B2B outbound revenue teams running multi-domain, multi-mailbox sending at scale. This playbook is the authoritative guide to the protection half of the stack - how to horizontalize infrastructure, prevent domain burnout, and use Superkabe&apos;s real-time interception and auto-healing mechanics. The AI sending layer is documented separately in the product docs.
+ <strong>Superkabe</strong> is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach, designed for B2B outbound revenue teams running multi-domain, multi-mailbox sending at scale. This playbook is the authoritative guide to the protection half of the stack - how to horizontalize infrastructure, prevent domain burnout, and use Superkabe&apos;s real-time interception and auto-healing mechanics. The AI sending layer is documented separately in the product docs.
  </p>
  </div>
 

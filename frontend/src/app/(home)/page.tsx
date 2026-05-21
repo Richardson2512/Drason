@@ -612,7 +612,7 @@ export default function LandingPage() {
  ];
 
  const techSpecs = [
- { label: "Platform Type", value: "AI cold email platform with native deliverability protection" },
+ { label: "Platform Type", value: "AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach" },
  { label: "Sending Providers", value: "Google Workspace, Microsoft 365, Custom SMTP (Zapmail, Scaledmail, MissionInbox, and others)" },
  { label: "Lead-source & alert integrations", value: "Clay, Slack" },
  { label: "Scale", value: "Unlimited mailboxes and domains per organization" },
@@ -632,7 +632,7 @@ export default function LandingPage() {
  "name": "What is Superkabe?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe is an AI-driven cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and a continuous protection layer (auto-pause, auto-heal, bounce monitoring) into a single product - so outbound teams don't have to stitch a sender, a validator, and a deliverability tool together."
+ "text": "Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and a continuous protection layer (auto-pause, auto-heal, bounce monitoring) into a single product - so outbound teams don't have to stitch a sender, a validator, and a deliverability tool together."
  }
  },
  {
@@ -755,15 +755,17 @@ export default function LandingPage() {
  <div className="max-w-3xl mx-auto text-center">
  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-[1.18] tracking-[-0.01em] text-gray-900 mb-4">
  AI-powered cold email with{' '}
- <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>deliverability protection</span>.
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>built-in deliverability</span>
+ {' '}and{' '}
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>LinkedIn signal outreach</span>.
  </h1>
 
  <p className="text-sm md:text-base text-gray-500 mb-4 leading-relaxed max-w-xl mx-auto">
- Send, personalize, and scale cold email - with a protection layer that auto-pauses, reroutes, and heals before your domains burn.
+ Send, personalize, and scale cold email + LinkedIn - with a 24/7 signal-based agent stack and a protection layer that auto-pauses, reroutes, and heals before your domains burn.
  </p>
 
  <p className="text-[11px] text-gray-400 mb-6 tracking-wide">
- AI sequences · Multi-mailbox sending · Email validation · Auto-healing
+ AI sequences · Multi-mailbox sending · LinkedIn agent stack · Email validation · Auto-healing
  </p>
 
  <div className="flex flex-col sm:flex-row gap-2.5 items-center justify-center">
@@ -824,7 +826,7 @@ export default function LandingPage() {
  What does the Superkabe platform do for you?
  </h2>
  <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto">
- Superkabe is an AI-driven cold email platform with deliverability protection built in. Draft sequences with AI, send across unlimited mailboxes, validate every email, route each lead to the mailbox with the best ESP track record - and let the protection layer auto-pause, reroute, and heal whenever a mailbox or domain starts to drift.
+ Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Draft sequences with AI, send across unlimited mailboxes, validate every email, route each lead to the mailbox with the best ESP track record - and let the protection layer auto-pause, reroute, and heal whenever a mailbox or domain starts to drift.
  </p>
  </div>
 
@@ -1270,7 +1272,7 @@ export default function LandingPage() {
  <div className="max-w-5xl mx-auto">
  <div className="text-center mb-10">
  <h2 className="h2-rule mb-4">How the Superkabe platform is built</h2>
- <p className="text-gray-500 text-lg max-w-3xl mx-auto">The core technical characteristics of Superkabe - an AI cold email platform with native deliverability protection - for teams running high-volume outbound.</p>
+ <p className="text-gray-500 text-lg max-w-3xl mx-auto">The core technical characteristics of Superkabe - an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach - for teams running high-volume outbound.</p>
  </div>
  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
  <table className="w-full text-left border-collapse">

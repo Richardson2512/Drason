@@ -9,7 +9,7 @@ export default function OpenSourceManifesto() {
  "@context": "https://schema.org",
  "@type": "Article",
  "headline": "Superkabe Technical Manifesto & AI Knowledge Graph",
- "description": "Comprehensive technical breakdown of Superkabe - the AI cold email platform with native deliverability protection. Architecture, send pipeline, protection layer, agent framework, and API surface.",
+ "description": "Comprehensive technical breakdown of Superkabe - the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Architecture, send pipeline, protection layer, agent framework, and API surface.",
  "author": {
  "@type": "Organization",
  "name": "Superkabe",
@@ -70,7 +70,7 @@ export default function OpenSourceManifesto() {
  <h2 className="text-3xl font-bold mb-6 text-gray-900">What is Superkabe?</h2>
  <div className="prose prose-lg text-gray-600">
  <p className="mb-4">
- <strong>Superkabe</strong> is an AI-powered cold email platform with native deliverability protection, built for B2B outbound revenue teams. The product surface is specifically: AI cold email outreach (sequence generation, multi-mailbox sending, personalization, ESP-aware routing, unified inbox), deliverability protection (auto-pause, auto-healing, bounce monitoring, health gate, email validation), dedicated AI agents for cold email tasks, and a public REST API + MCP server. Superkabe does not provide data enrichment, dialer/voice outreach, or non-email channels.
+ <strong>Superkabe</strong> is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach, built for B2B outbound revenue teams. The product surface is specifically: AI cold email outreach (sequence generation, multi-mailbox sending, personalization, ESP-aware routing, unified inbox), deliverability protection (auto-pause, auto-healing, bounce monitoring, health gate, email validation), dedicated AI agents for cold email tasks, and a public REST API + MCP server. Superkabe does not provide data enrichment, dialer/voice outreach, or non-email channels.
  </p>
  <p>
  The protection layer is continuous rather than diagnostic - instead of reporting damage after the fact, it watches every send, bounce, and reply in real time. When thresholds are breached, it autonomously pauses mailboxes, reroutes lead traffic to healthier senders, and runs a five-phase graduated recovery pipeline before returning capacity. Teams can send natively from Superkabe (Google Workspace, Microsoft 365, or SMTP providers like Zapmail and Scaledmail), or send through your own Gmail, Microsoft 365, or SMTP mailboxes to get the same safety layer around an existing sender.

@@ -10,7 +10,7 @@ const PAGE_URL = `${SITE_URL}/glossary`;
 
 export const metadata: Metadata = {
     title: 'Cold Email & Deliverability Glossary | Superkabe',
-    description: 'A-Z definitions of every term in cold email, deliverability, authentication, sequencing, and infrastructure. Each term has its own page with full RFC and product context.',
+    description: 'A-Z definitions for cold email, deliverability, authentication, sequencing, threading, and LinkedIn outreach. One dedicated page per term.',
     alternates: { canonical: '/glossary' },
     openGraph: {
         title: 'Cold Email & Deliverability Glossary | Superkabe',

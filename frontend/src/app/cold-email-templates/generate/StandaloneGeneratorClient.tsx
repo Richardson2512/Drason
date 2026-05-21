@@ -163,7 +163,7 @@ export default function StandaloneGeneratorClient({
 
                     <Field
                         label="What does your company do? *"
-                        placeholder="e.g., AI cold email platform with built-in deliverability protection"
+                        placeholder="e.g., AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach"
                         value={yourCompany}
                         onChange={setYourCompany}
                         disabled={generating}

@@ -25,7 +25,7 @@ export default function GettingStartedPage() {
 
  <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What is Superkabe?</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- Superkabe is an AI-powered cold email platform with native deliverability protection. Draft sequences with AI, send across unlimited mailboxes (Google Workspace, Microsoft 365, or any SMTP provider), validate every lead, and let the protection layer auto-pause, reroute, and heal your senders in real time. You can also run Superkabe in Protection Mode - connecting your Gmail, Microsoft 365, or SMTP mailboxes to send natively with the same safety layer.
+ Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Draft sequences with AI, send across unlimited mailboxes (Google Workspace, Microsoft 365, or any SMTP provider), validate every lead, and let the protection layer auto-pause, reroute, and heal your senders in real time. You can also run Superkabe in Protection Mode - connecting your Gmail, Microsoft 365, or SMTP mailboxes to send natively with the same safety layer.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  Every lead that enters Superkabe flows through the same pipeline: email validation (syntax, MX, disposable, catch-all, plus MillionVerifier API on risky leads), the GREEN/YELLOW/RED health gate, ESP-aware mailbox routing, and continuous post-send monitoring with a 5-phase auto-healing recovery pipeline for any mailbox that degrades.

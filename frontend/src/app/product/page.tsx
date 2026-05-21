@@ -91,7 +91,7 @@ export default function ProductIndexPage() {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Superkabe Product Hub - AI Cold Email Platform with Deliverability Protection",
- "description": "Everything inside Superkabe - the AI cold email platform with native deliverability protection. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing from one product.",
+ "description": "Everything inside Superkabe - the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing from one product.",
  "url": "https://www.superkabe.com/product",
  "publisher": {
  "@type": "Organization",
@@ -138,7 +138,7 @@ export default function ProductIndexPage() {
  The AI cold email platform - every layer, one product
  </h1>
  <p className="text-lg md:text-xl text-gray-600 max-w-3xl leading-relaxed">
- Superkabe is an AI cold email platform with native deliverability protection. Explore the full product - AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and the healing layer that keeps senders alive.
+ Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Explore the full product - AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and the healing layer that keeps senders alive.
  </p>
  <hr className="mt-10 border-0 border-t border-gray-900" />
  </div>

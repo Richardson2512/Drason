@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Superkabe - AI cold email platform with native deliverability protection';
+export const alt = 'Superkabe - AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

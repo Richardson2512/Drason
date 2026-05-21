@@ -262,7 +262,7 @@ export default function TestimonialsPage() {
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         description:
-            'AI-powered cold email platform with native deliverability protection, multi-mailbox sending, and 5-phase domain healing.',
+            'AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach, multi-mailbox sending, and 5-phase domain healing.',
         brand: { '@type': 'Brand', name: 'Superkabe' },
         review: reviews,
     };

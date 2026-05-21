@@ -24,9 +24,9 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.superkabe.com'),
-  title: 'Superkabe – The AI Cold Email Platform Built for Deliverability',
+  title: 'Superkabe – AI Cold Email + LinkedIn Outreach Platform',
   description:
-    'Superkabe is an AI cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes, validate every email, and let the protection layer auto-pause, reroute, and heal senders in real time.',
+    'Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Draft AI sequences, send across unlimited mailboxes, validate every email, and let the protection layer auto-pause, reroute, and heal senders in real time.',
   alternates: {
     canonical: '/',
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     apple: '/image/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Superkabe – The AI Cold Email Platform Built for Deliverability',
+    title: 'Superkabe – AI Cold Email + LinkedIn Outreach Platform',
     description: 'AI sequences, multi-mailbox sending, email validation, and a full deliverability protection stack - one platform for cold email outreach and protection.',
     url: 'https://www.superkabe.com',
     siteName: 'Superkabe',
@@ -83,7 +83,7 @@ export default function RootLayout({
       width: 512,
       height: 512,
     },
-    description: 'Superkabe is an AI cold email platform with native deliverability protection. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders - all from a single product.',
+    description: 'Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders - all from a single product.',
     foundingDate: '2026-01-20',
     founder: {
       '@type': 'Person',
@@ -116,7 +116,7 @@ export default function RootLayout({
     operatingSystem: 'Web',
     url: 'https://www.superkabe.com',
     description:
-      'Superkabe is an AI cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and an auto-healing protection layer into a single product for outbound revenue teams.',
+      'Superkabe is an AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and an auto-healing protection layer into a single product for outbound revenue teams.',
     datePublished: '2025-01-01',
     dateModified: '2026-04-23',
     featureList: [

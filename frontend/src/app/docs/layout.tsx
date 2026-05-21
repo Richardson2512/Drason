@@ -106,7 +106,7 @@ docSections.forEach(section => {
  section.items.forEach(item => {
  docMeta[item.href] = {
  title: item.title,
- description: `${item.title} - documentation for Superkabe, the AI cold email platform with native deliverability protection.`,
+ description: `${item.title} - documentation for Superkabe, the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach.`,
  };
  });
 });

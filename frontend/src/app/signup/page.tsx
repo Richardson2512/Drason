@@ -452,7 +452,7 @@ function SignupContent() {
                     <div className="mt-12 text-center max-w-md">
                         <h3 className="text-white text-3xl font-bold mb-4">Send Cold Email. Land in the Inbox.</h3>
                         <p className="text-white/60 text-sm leading-relaxed">
-                            The AI cold email platform with native deliverability protection. Draft AI sequences, send across unlimited mailboxes, and let Superkabe auto-heal your senders in the background.
+                            The AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. Draft AI sequences, send across unlimited mailboxes, and let Superkabe auto-heal your senders in the background.
                         </p>
 
                         <div className="flex justify-center gap-2 mt-8">
