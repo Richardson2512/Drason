@@ -6,7 +6,11 @@ import Navbar from '@/components/Navbar';
 import MarketingBackdrop from '@/components/MarketingBackdrop';
 import { glossaryTerms, GLOSSARY_CATEGORIES } from '@/data/glossaryTerms';
 import { productPages } from '@/data/productPages';
-import { FaqJsonLd } from '@/components/seo/FaqSection';
+import FaqSection, { FaqJsonLd } from '@/components/seo/FaqSection';
+import TldrBlock from '@/components/seo/TldrBlock';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd';
+import BlogHeader from '@/components/blog/BlogHeader';
+import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 const SITE_URL = 'https://www.superkabe.com';
 const TERMSET_ID = `${SITE_URL}/glossary/#termset`;
@@ -119,30 +123,36 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
         },
     };
 
-    const breadcrumbSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        '@id': `${pageUrl}#breadcrumb`,
-        itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-            { '@type': 'ListItem', position: 2, name: 'Glossary', item: `${SITE_URL}/glossary` },
-            { '@type': 'ListItem', position: 3, name: term.name, item: pageUrl },
-        ],
-    };
+    // Breadcrumb structure shared by both the BreadcrumbJsonLd schema
+    // emitter AND the visible breadcrumb above the H1 - one source of
+    // truth so they cannot drift.
+    const crumbs = [
+        { name: 'Home', url: SITE_URL },
+        { name: 'Glossary', url: `${SITE_URL}/glossary` },
+        { name: term.name, url: pageUrl },
+    ];
+
+    // Featured product for the bottom CTA - first related product when
+    // present. Glossary terms that are pure concepts (e.g. SMTP code,
+    // RFC headers) have no related product, in which case the CTA is
+    // omitted entirely rather than shown with a generic link.
+    const featuredProduct = relatedProductsResolved[0];
 
     return (
         <div className="relative bg-[#F7F2EB] text-gray-900 font-sans min-h-screen">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <BreadcrumbJsonLd crumbs={crumbs} />
             {term.faq && term.faq.length > 0 && <FaqJsonLd items={term.faq} />}
 
             <Navbar />
             <MarketingBackdrop />
 
             <div className="max-w-4xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-24">
-                {/* Breadcrumb */}
-                <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+                {/* Visible breadcrumb - paired with BreadcrumbJsonLd above.
+                    Same trail as the schema; the schema is the machine-
+                    readable copy and this nav is the human-readable one. */}
+                <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8" aria-label="Breadcrumb">
                     <Link href="/glossary" className="hover:text-blue-700 hover:underline">Glossary</Link>
                     <span className="text-gray-400">/</span>
                     {categoryMeta && (
@@ -154,66 +164,55 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
                     <span className="text-gray-900">{term.name}</span>
                 </nav>
 
-                {/* H1 + expansion */}
-                <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-3 leading-[1.05] tracking-tight">
-                    {term.name}
-                </h1>
-                {term.expansion && (
-                    <p className="text-xl text-gray-500 mb-8 font-medium">{term.expansion}</p>
-                )}
+                <article>
+                    {/* BlogHeader for visual consistency with /product, /blog,
+                        and /guides pages. The tag uses the category name so
+                        readers see where the term sits in the vocabulary;
+                        the author byline is the platform author (same
+                        convention every other page on the site uses). */}
+                    <BlogHeader
+                        tag={categoryMeta ? `Glossary - ${categoryMeta.label}` : 'Glossary'}
+                        title={term.name + (term.expansion ? ` (${term.expansion})` : '')}
+                        dateModified={term.dateModified || '2026-05-21'}
+                        authorName="Robert Smith"
+                        authorRole="Deliverability Specialist - Superkabe"
+                    />
 
-                {/* Quick definition - speakable surface + the "direct answer"
-                    in the first 50 words AI engines extract for citation.
-                    The data-aeo and aria-label attributes give answer engines
-                    explicit hints about which block to lift as the canonical
-                    short definition. The class name also matches the speakable
-                    cssSelector on the WebPage schema below. */}
-                <div
-                    className="aeo-quick-definition aeo-tldr not-prose mb-10 p-6 bg-blue-50/70 border-l-4 border-blue-500"
-                    data-aeo="direct-answer"
-                    aria-label={`Definition of ${term.name}`}
-                >
-                    <div className="text-blue-700 font-semibold text-[11px] uppercase tracking-widest mb-2">
-                        Direct answer
+                    {/* TL;DR / speakable surface. The aeo-tldr class is what
+                        WebPage.speakable.cssSelector targets, so this block
+                        is the canonical short definition AI engines lift
+                        for citation. Wrapping with strong term-name + colon
+                        keeps the first 50 words self-contained ("X is Y"). */}
+                    <TldrBlock text={`${term.name}${term.expansion ? ` (${term.expansion})` : ''}: ${term.shortDefinition}`} />
+
+                    {/* Long-form definition. Paragraph entries become <p>
+                        nodes inside prose styling - matches the product /
+                        blog / guide article surfaces. */}
+                    <div className="prose prose-lg max-w-none mb-10">
+                        {term.longDefinition.map((para, i) => (
+                            <p key={i} className="text-gray-700 leading-relaxed">{para}</p>
+                        ))}
                     </div>
-                    <p className="text-lg text-gray-800 leading-relaxed m-0">
-                        <strong className="text-gray-900">{term.name}{term.expansion ? ` (${term.expansion})` : ''}:</strong>{' '}
-                        {term.shortDefinition}
-                    </p>
-                </div>
 
-                {/* Long-form definition */}
-                <div className="prose prose-lg max-w-none mb-10">
-                    {term.longDefinition.map((para, i) => (
-                        <p key={i} className="text-gray-700 leading-relaxed">{para}</p>
-                    ))}
-                </div>
-
-                {/* Why it matters - product-context callout */}
-                {term.whyItMatters && (
-                    <div className="bg-white border-2 border-emerald-200 p-6 mb-10 shadow-sm">
-                        <h2 className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-3 mt-0">Why it matters in Superkabe</h2>
-                        <p className="text-gray-700 leading-relaxed m-0">{term.whyItMatters}</p>
-                    </div>
-                )}
-
-                {/* FAQ - visible accordion paired with FaqJsonLd above */}
-                {term.faq && term.faq.length > 0 && (
-                    <section className="mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-6">Frequently asked questions</h2>
-                        <div className="space-y-4">
-                            {term.faq.map((item, i) => (
-                                <details key={i} className="group bg-white border border-gray-200 p-6 open:shadow-md transition-shadow">
-                                    <summary className="cursor-pointer list-none flex items-start justify-between gap-4">
-                                        <h3 className="text-lg font-bold text-gray-900 pr-4 m-0">{item.q}</h3>
-                                        <span className="text-gray-400 group-open:rotate-45 transition-transform text-2xl leading-none select-none">+</span>
-                                    </summary>
-                                    <p className="mt-4 text-gray-700 leading-relaxed text-[16px] m-0">{item.a}</p>
-                                </details>
-                            ))}
+                    {/* Why it matters - product-context callout. Kept as a
+                        distinct visual surface (not folded into TldrBlock)
+                        because it is semantically different from the
+                        definition: the definition is universal; "why it
+                        matters in Superkabe" is product-specific framing
+                        for E-E-A-T + the mentions[] entity graph. */}
+                    {term.whyItMatters && (
+                        <div className="bg-white border-2 border-emerald-200 p-6 mb-10 shadow-sm">
+                            <h2 className="text-sm font-bold text-emerald-700 uppercase tracking-widest mb-3 mt-0">Why it matters in Superkabe</h2>
+                            <p className="text-gray-700 leading-relaxed m-0">{term.whyItMatters}</p>
                         </div>
-                    </section>
-                )}
+                    )}
+
+                    {/* FAQ - FaqSection is the shared component used by
+                        product + blog pages. Paired with FaqJsonLd above so
+                        the same Q&As are both visible and machine-readable. */}
+                    {term.faq && term.faq.length > 0 && (
+                        <FaqSection items={term.faq} />
+                    )}
 
                 {/* See also - related terms + products + blog */}
                 {(relatedTermsResolved.length > 0 || relatedProductsResolved.length > 0 || (term.relatedBlog && term.relatedBlog.length > 0)) && (
@@ -289,8 +288,24 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ s
                     </div>
                 )}
 
-                {/* Back to glossary */}
-                <div className="border-t border-gray-200 pt-8">
+                    {/* Bottom CTA - shared component, only rendered when
+                        the term has at least one related product. Pure-
+                        concept terms (e.g. RFC headers, SMTP codes) skip
+                        this section rather than show a generic CTA - a
+                        weak CTA is worse than no CTA for conversion. */}
+                    {featuredProduct && (
+                        <BottomCtaStrip
+                            headline={`See how ${featuredProduct.data.title} works`}
+                            body={featuredProduct.data.description}
+                            primaryCta={{ label: 'Read product details', href: `/product/${featuredProduct.slug}` }}
+                            secondaryCta={{ label: 'Start free trial', href: '/signup' }}
+                        />
+                    )}
+                </article>
+
+                {/* Back to glossary - kept outside <article> as utility nav
+                    rather than article content. */}
+                <div className="border-t border-gray-200 pt-8 mt-12">
                     <Link
                         href="/glossary"
                         className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold"
