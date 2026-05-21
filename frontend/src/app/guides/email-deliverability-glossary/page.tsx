@@ -18,6 +18,12 @@ export const metadata: Metadata = {
  },
 };
 
+// Cross-link: the per-term glossary at /glossary is the structured
+// (DefinedTerm-per-page) sibling of this long-form guide. Both index
+// the same vocabulary; this guide is for sequential reading, /glossary
+// is for AI-engine extraction + targeted "what is X" queries.
+const PER_TERM_GLOSSARY_URL = '/glossary';
+
 export default function EmailDeliverabilityGlossary() {
  const articleSchema = {
  "@context": "https://schema.org",

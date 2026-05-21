@@ -34,6 +34,7 @@ export default function Footer() {
  <Link href="/product" className="hover:text-blue-600 transition-colors whitespace-nowrap">Product Hub</Link>
  <Link href="/pricing" className="hover:text-blue-600 transition-colors whitespace-nowrap">Pricing</Link>
  <Link href="/docs" className="hover:text-blue-600 transition-colors whitespace-nowrap">Documentation</Link>
+ <Link href="/glossary" className="hover:text-blue-600 transition-colors whitespace-nowrap">Glossary</Link>
  </nav>
  </div>
 
