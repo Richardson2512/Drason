@@ -8,12 +8,12 @@ import type { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
- title: 'Product Hub - The AI Cold Email Platform | Superkabe',
- description: 'Everything inside Superkabe - the AI cold email platform with native protection. AI sequences, multi-mailbox sending, validation, ESP routing, healing.',
+ title: 'Product Hub - AI Cold Email + LinkedIn Outreach | Superkabe',
+ description: 'Everything inside Superkabe - AI cold email + LinkedIn signal outreach with built-in deliverability. AI sequences, multi-mailbox, validation, healing.',
  alternates: { canonical: '/product' },
  openGraph: {
- title: 'Product Hub - The AI Cold Email Platform | Superkabe',
- description: 'AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing - all in one platform.',
+ title: 'Product Hub - AI Cold Email + LinkedIn Outreach | Superkabe',
+ description: 'AI sequences, multi-mailbox sending, LinkedIn agent stack, validation, ESP-aware routing, and auto-healing - all in one platform.',
  url: '/product',
  siteName: 'Superkabe',
  type: 'website',
@@ -90,7 +90,7 @@ export default function ProductIndexPage() {
  const jsonLd = {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
- "name": "Superkabe Product Hub - AI Cold Email Platform with Deliverability Protection",
+ "name": "Superkabe Product Hub - AI Cold Email + LinkedIn Outreach with Built-In Deliverability",
  "description": "Everything inside Superkabe - the AI-powered cold email platform with built-in deliverability and LinkedIn signal-based automated outreach. AI sequences, multi-mailbox sending, email validation, ESP-aware routing, and auto-healing from one product.",
  "url": "https://www.superkabe.com/product",
  "publisher": {

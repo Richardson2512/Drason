@@ -85,7 +85,7 @@ export default function GuidesIndexPage() {
                     href="/"
                     className="inline-flex items-center gap-1.5 mb-6 text-[11px] font-semibold tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
                 >
-                    <span>Superkabe - the AI cold email platform</span>
+                    <span>Superkabe - AI cold email + LinkedIn outreach platform</span>
                 </Link>
 
                 <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-[1.05] tracking-tight">

@@ -206,7 +206,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                                 href="/product"
                                 className="inline-flex items-center gap-1.5 mb-6 text-[11px] font-semibold tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
                             >
-                                <span>Part of Superkabe - the AI cold email platform</span>
+                                <span>Part of Superkabe - AI cold email + LinkedIn outreach platform</span>
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </Link>
 
@@ -222,7 +222,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                                 badge="PRODUCT · 2026"
                                 eyebrow="Deep dive"
                                 tagline={deriveTagline(data.title)}
-                                sub="Superkabe - the AI cold email platform"
+                                sub="Superkabe - AI cold email + LinkedIn outreach platform"
                             />
 
                             {tldrText && <TldrBlock text={tldrText} />}
