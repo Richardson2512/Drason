@@ -100,8 +100,16 @@ export default function Footer() {
  </div>
  </div>
 
+ {/* Featured-on badges */}
+ <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+ <a href="https://nicklaunches.com/products/superkabe/?utm_source=superkabe.com&utm_medium=badge&utm_campaign=featured" target="_blank" rel="noopener">
+ {/* eslint-disable-next-line @next/next/no-img-element */}
+ <img src="https://nicklaunches.com/badges/featured.svg" alt="Superkabe on Nick Launches" width="244" height="56" />
+ </a>
+ </div>
+
  {/* Bottom Copyright & Entity Anchors */}
- <div className="mt-14 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+ <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
  <div className="text-xs text-gray-400">
  © {new Date().getFullYear()} Superkabe. All rights reserved.
  </div>
