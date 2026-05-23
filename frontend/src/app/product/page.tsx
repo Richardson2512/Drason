@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import MarketingBackdrop from '@/components/MarketingBackdrop';
 import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
+import { productPages } from '@/data/productPages';
 import type { Metadata } from 'next';
 
 
@@ -38,6 +39,12 @@ export default function ProductIndexPage() {
  ]
  },
  {
+ title: 'LinkedIn & Multi-Channel Outreach',
+ links: [
+ { title: 'Super LinkedIn: 24/7 AI Outreach Agent', href: '/product/super-linkedin', desc: 'Signal-based LinkedIn outreach with a 4-agent supervisor stack (signal, ICP, enrichment, icebreaker), HeyReach-parity sending, and cross-channel halt with the email Sequencer.' },
+ ]
+ },
+ {
  title: 'Core Platform & Infrastructure',
  links: [
  { title: 'Email Deliverability Protection', href: '/product/email-deliverability-protection', desc: 'Complete overview of our deliverability protection engine.' },
@@ -47,6 +54,16 @@ export default function ProductIndexPage() {
  { title: 'Cold Email Infrastructure Protection', href: '/product/cold-email-infrastructure-protection', desc: 'Designed for high-volume cold email scaling.' },
  { title: 'Outbound Email Infrastructure Monitoring', href: '/product/outbound-email-infrastructure-monitoring', desc: 'Real-time SMTP block and bounce detection.' },
  { title: 'Email Infrastructure Protection', href: '/product/email-infrastructure-protection', desc: 'The baseline protection system for your agency.' },
+ { title: 'Dedicated IP Add-On', href: '/product/dedicated-ip', desc: 'An isolated AWS SES IP per workspace with automatic 4-8 week warm-up and full reputation control - $39/month per IP.' },
+ ]
+ },
+ {
+ title: 'Multi-Platform Governance',
+ links: [
+ { title: 'Multi-Platform Outbound Protection', href: '/product/multi-platform-outbound-protection', desc: 'Run Smartlead, Instantly, EmailBison, and the native sequencer under one auto-pause, healing, and ESP-aware routing layer.' },
+ { title: 'Multi-Platform Email Validation', href: '/product/multi-platform-email-validation', desc: 'Validate once, enforce the verdict across every connected sending platform - no per-platform recheck or double billing.' },
+ { title: 'Smartlead Deliverability Protection', href: '/product/smartlead-deliverability-protection', desc: 'Bounce-rate auto-pause, 5-phase healing, and ESP-aware routing layered on top of Smartlead - no sequence rebuild.' },
+ { title: 'Instantly Infrastructure Protection', href: '/product/instantly-infrastructure-protection', desc: 'Auto-pause, healing, ESP-aware routing, and DNSBL monitoring layered on top of Instantly - no lead reimport.' },
  ]
  },
  {
@@ -86,6 +103,26 @@ export default function ProductIndexPage() {
  ]
  }
  ];
+
+ // Orphan guard - the hub categories are hand-curated (custom descriptions,
+ // playbook links that are not product slugs), so a new entry in
+ // productPages.ts does not appear here automatically. This was the exact
+ // root cause of Super LinkedIn, Dedicated IP, and the multi-platform pages
+ // shipping with full content + schema but no link from the hub. Fail loudly
+ // at build time if any product slug is not surfaced, so it can never recur.
+ const linkedSlugs = new Set(
+ categories.flatMap((c) => c.links)
+ .map((l) => l.href.match(/^\/product\/([^/?#]+)/)?.[1])
+ .filter((s): s is string => Boolean(s))
+ );
+ const orphanedSlugs = Object.keys(productPages).filter((slug) => !linkedSlugs.has(slug));
+ if (orphanedSlugs.length > 0) {
+ const msg = `[product hub] ${orphanedSlugs.length} product page(s) are not linked from /product: ${orphanedSlugs.join(', ')}. Add them to a category in src/app/product/page.tsx.`;
+ if (process.env.NODE_ENV === 'production') {
+ throw new Error(msg);
+ }
+ console.warn(msg);
+ }
 
  const jsonLd = {
  "@context": "https://schema.org",

@@ -9,6 +9,18 @@ export interface RelatedBlogLink {
     description: string;
 }
 
+/**
+ * Product-to-product internal link. Renders a "More from the platform"
+ * cross-link grid on the /product/[slug] template and feeds the
+ * SoftwareApplication `isRelatedTo` edges for AEO/GEO entity graphing.
+ * `slug` must reference another key in `productPages`.
+ */
+export interface RelatedProductLink {
+    slug: string;
+    title: string;
+    description: string;
+}
+
 export interface FaqEntry {
     q: string;
     a: string;
@@ -41,6 +53,8 @@ export interface ProductPageData {
     intro: string;
     sections: ContentSection[];
     relatedBlog?: RelatedBlogLink[];
+    /** Product-to-product internal links shown as a cross-link grid. */
+    relatedProducts?: RelatedProductLink[];
     /** Visible TL;DR summary rendered at the top. 40-80 words ideal. */
     tldr?: string;
     /** FAQPage JSON-LD is emitted automatically when present. */
@@ -727,7 +741,8 @@ export const productPages: Record<string, ProductPageData> = {
                 paragraphs: [
                     "When leads are uploaded directly into Smartlead or Instantly, Superkabe never sees them. No validation runs. No ESP classification happens. No performance-based mailbox selection occurs. The lead hits whatever mailbox the platform picks at random.",
                     "If that lead has a disposable email, it bounces. If the recipient is on Gmail but the assigned mailbox has a 3% bounce rate to Gmail, the send damages the mailbox further. None of this is visible until after the damage is done.",
-                    "The Lead Control Plane closes this gap. Every lead - whether from Clay, CSV, or eventually HubSpot and Salesforce - enters through one pipeline. Validation, ESP classification, and routing happen before the lead touches any sending platform."
+                    "The Lead Control Plane closes this gap. Every lead - whether from Clay, CSV, or eventually HubSpot and Salesforce - enters through one pipeline. Validation, ESP classification, and routing happen before the lead touches any sending platform.",
+                    "Leads are also workspace-level entities, not channel-level ones. The same validated record feeds both the email Sequencer and Super LinkedIn, so one lead can carry an email touch and a LinkedIn touch at the same time. A reply on either channel halts the other automatically, which removes the most common multi-touch mistake: emailing a prospect who already replied on LinkedIn."
                 ]
             },
             {
@@ -747,6 +762,11 @@ export const productPages: Record<string, ProductPageData> = {
                     "Every upload is preserved as a batch. Return to any past batch to review results, route unrouted leads, or export clean lists. Upload history shows date, source, file name, counts, and routing status."
                 ]
             }
+        ],
+        relatedProducts: [
+            { slug: "super-linkedin", title: "Super LinkedIn: 24/7 AI Outreach Agent", description: "Leads are workspace-level entities - a single record can carry an email touch and a LinkedIn touch, with a reply on either channel halting the other." },
+            { slug: "esp-aware-routing", title: "ESP-Aware Mailbox Routing", description: "How validated leads get pinned to the best-performing mailbox for each recipient's email provider." },
+            { slug: "email-validation-infrastructure-protection", title: "Email Validation Infrastructure", description: "The hybrid validation layer that every lead passes through before it reaches a sender." },
         ],
         relatedBlog: [
             { slug: "best-email-validation-tools-cold-outreach", title: "Best Email Validation Tools for Cold Outreach", description: "Ranked comparison of validation tools for cold email teams" },
@@ -783,6 +803,11 @@ export const productPages: Record<string, ProductPageData> = {
                     "For EmailBison, which lacks native ESP matching, Superkabe is the only layer providing any form of ESP-aware routing. The assigned_email_accounts parameter is Smartlead-specific today, but the scoring data is available for all connected platforms."
                 ]
             }
+        ],
+        relatedProducts: [
+            { slug: "lead-control-plane", title: "Lead Control Plane", description: "Where leads enter, get validated, and get classified by ESP before routing scores are applied." },
+            { slug: "super-linkedin", title: "Super LinkedIn: 24/7 AI Outreach Agent", description: "Email-only leads from the LinkedIn enrichment agent are handed to the Sequencer and routed by per-ESP performance here." },
+            { slug: "multi-platform-outbound-protection", title: "Multi-Platform Outbound Protection", description: "ESP-aware routing decisions are made at the protection layer and applied across Smartlead, Instantly, EmailBison, and the native sequencer." },
         ],
         relatedBlog: [
             { slug: "domain-reputation-vs-ip-reputation", title: "Domain Reputation vs IP Reputation", description: "What matters more for cold email deliverability in 2026" },
@@ -828,6 +853,11 @@ export const productPages: Record<string, ProductPageData> = {
                     "Sequences generated inside Superkabe send through the same protection layer that governs every other campaign on the platform - bounce interception, mailbox health gates, and autonomous pausing all apply. You get the writing speed of AI without the deliverability penalty that usually comes with it."
                 ]
             }
+        ],
+        relatedProducts: [
+            { slug: "super-linkedin", title: "Super LinkedIn: 24/7 AI Outreach Agent", description: "Pair the email sequence with signal-based LinkedIn outreach on the same workspace-level lead, with a reply on either channel halting the other." },
+            { slug: "esp-aware-sending-health-gate", title: "ESP-Aware Routing + Health Gate", description: "Every sequence send passes the GREEN/YELLOW/RED health gate and ESP matching before it leaves." },
+            { slug: "unlimited-multi-mailbox-sending", title: "Unlimited Multi-Mailbox Sending", description: "Spread the sequence across Google Workspace, Microsoft 365, and SMTP mailboxes with no per-seat limits." },
         ],
         relatedBlog: [
             { slug: "why-cold-emails-go-to-spam", title: "Why Cold Emails Go to Spam", description: "The content and infrastructure patterns that trigger spam classification" },
@@ -1081,6 +1111,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "multi-platform-outbound-protection",
         title: "Multi-Platform Outbound Protection",
         description: "Run Smartlead, Instantly, EmailBison, and Superkabe's native sequencer side-by-side under a single deliverability governance layer - auto-pause, healing, and ESP-aware routing across every connected platform.",
+        applicationSubCategory: "EmailDeliverabilitySoftware",
         intro: "unifies deliverability governance across every sending platform an outbound team uses. Most agencies and revenue teams run a mix - Smartlead for one client, Instantly for another, EmailBison or the native Superkabe sequencer for a third. Multi-platform outbound protection means the same auto-pause rules, the same 5-phase healing pipeline, and the same ESP-aware per-mailbox routing apply uniformly to every send, regardless of which platform originated the campaign.",
         tldr: "Multi-platform outbound protection consolidates Smartlead, Instantly, EmailBison, and the native sequencer under one governance layer: shared bounce-rate enforcement, shared healing pipeline, shared ESP-aware routing, shared blacklist and DNS monitoring. One pane of glass, every platform protected.",
         sections: [
@@ -1134,6 +1165,11 @@ export const productPages: Record<string, ProductPageData> = {
                 a: "Smartlead, Instantly, EmailBison, and the native Superkabe sequencer. Additional adapters are added on request - if you need a platform that is not yet supported, contact us with your platform plus expected mailbox count and we will scope the adapter."
             }
         ],
+        relatedProducts: [
+            { slug: "smartlead-deliverability-protection", title: "Smartlead Deliverability Protection", description: "The Smartlead-specific protection layer - one of the platforms unified here." },
+            { slug: "instantly-infrastructure-protection", title: "Instantly Infrastructure Protection", description: "The Instantly-specific protection layer - another platform under the same governance." },
+            { slug: "multi-platform-email-validation", title: "Multi-Platform Email Validation", description: "Validate once and enforce the verdict across every connected sending platform." },
+        ],
         relatedBlog: [
             { slug: "cold-email-tools-for-agencies", title: "Cold Email Tools for Agencies", description: "How agency stacks differ from in-house outbound and what governance gaps appear at scale" },
             { slug: "cold-email-infrastructure-protection-for-agencies", title: "Cold Email Infrastructure Protection for Agencies", description: "What protection means when you run 50+ client domains across 4 sending platforms" }
@@ -1143,6 +1179,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "multi-platform-email-validation",
         title: "Multi-Platform Email Validation",
         description: "Email validation that runs once and protects every connected sending platform - hybrid syntax/MX/disposable/catch-all checks plus conditional MillionVerifier probing, with the same gate enforced before sends on Smartlead, Instantly, EmailBison, and the native sequencer.",
+        applicationSubCategory: "EmailDeliverabilitySoftware",
         intro: "validates every lead once and uses that verdict to govern sends across every connected sending platform. Most teams pay for validation twice: once when enrichment hands off to Smartlead, again when it hands off to Instantly, again when it hands off to EmailBison. Multi-platform validation moves the gate up one layer - validate at the protection plane, then enforce the verdict at every downstream platform.",
         tldr: "One validation pass, every platform enforced. Syntax + MX + disposable + catch-all is run inline; MillionVerifier API probes the risky 10-15%. The verdict (GREEN/YELLOW/RED) becomes the pre-send gate for Smartlead, Instantly, EmailBison, and the native sequencer alike.",
         sections: [
@@ -1195,6 +1232,11 @@ export const productPages: Record<string, ProductPageData> = {
                 a: "Internal validation is sub-second per lead at typical throughput. MillionVerifier probing adds 1-3 seconds per risky lead. For a 10K-lead bulk import the full validation pass typically completes in 2-4 minutes end-to-end."
             }
         ],
+        relatedProducts: [
+            { slug: "multi-platform-outbound-protection", title: "Multi-Platform Outbound Protection", description: "The sending-side governance layer that pairs with this validation gate across every platform." },
+            { slug: "lead-control-plane", title: "Lead Control Plane", description: "Where leads enter the validation gate before being routed to any platform." },
+            { slug: "email-validation-infrastructure-protection", title: "Email Validation Infrastructure", description: "The hybrid validation engine - syntax, MX, disposable, catch-all, plus MillionVerifier - that produces the verdict." },
+        ],
         relatedBlog: [
             { slug: "email-validation-smartlead-instantly", title: "Email Validation: Smartlead vs Instantly", description: "How per-platform validation breaks down and what an upstream gate fixes" },
             { slug: "email-validation-for-agencies", title: "Email Validation for Agencies", description: "Validation cost math and consistency requirements at agency scale" },
@@ -1205,6 +1247,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "smartlead-deliverability-protection",
         title: "Smartlead Deliverability Protection",
         description: "Native Smartlead protection layer - bounce-rate auto-pause, 5-phase healing, ESP-aware routing, and 400+ DNSBL monitoring layered directly on top of Smartlead campaigns without rebuilding sequences.",
+        applicationSubCategory: "EmailDeliverabilitySoftware",
         intro: "ships a deliverability protection layer purpose-built for Smartlead. Smartlead is a strong sending engine with deep mailbox-rotation logic, but it does not enforce bounce-rate auto-pause, run a structured healing pipeline, or score mailboxes by per-ESP performance. Smartlead deliverability protection adds those exact missing pieces - without you rebuilding any sequences or re-importing any leads.",
         tldr: "Connect Smartlead via API key. Superkabe ingests every send/bounce/reply event, enforces 3% bounce-rate auto-pause across every Smartlead mailbox, runs the 5-phase healing pipeline on paused mailboxes, and routes leads by per-ESP performance. Smartlead keeps doing what it does well; the protection layer fills the governance gap.",
         sections: [
@@ -1255,6 +1298,11 @@ export const productPages: Record<string, ProductPageData> = {
                 a: "Yes. Master-inbox replies are ingested the same as any other reply event. They feed engagement scoring and per-mailbox performance metrics. Auto-pause and healing operate on the underlying sending mailboxes, not the master inbox."
             }
         ],
+        relatedProducts: [
+            { slug: "instantly-infrastructure-protection", title: "Instantly Infrastructure Protection", description: "The same protection layer applied to Instantly campaigns." },
+            { slug: "multi-platform-outbound-protection", title: "Multi-Platform Outbound Protection", description: "Run Smartlead alongside Instantly, EmailBison, and the native sequencer under one governance layer." },
+            { slug: "esp-aware-routing", title: "ESP-Aware Mailbox Routing", description: "The per-ESP performance scoring this layer adds on top of Smartlead's capacity-based routing." },
+        ],
         relatedBlog: [
             { slug: "why-smartlead-emails-going-to-spam", title: "Why Smartlead Emails Going to Spam", description: "Diagnosis path for Smartlead campaigns landing in spam and how protection layers fix it" },
             { slug: "email-deliverability-tools-compared", title: "Email Deliverability Tools Compared", description: "Where Smartlead, Instantly, and Superkabe sit in the deliverability stack" },
@@ -1265,6 +1313,7 @@ export const productPages: Record<string, ProductPageData> = {
         slug: "instantly-infrastructure-protection",
         title: "Instantly Infrastructure Protection",
         description: "Native Instantly protection layer - bounce-rate auto-pause, 5-phase healing pipeline, ESP-aware routing, and DNSBL monitoring layered on top of Instantly campaigns without re-importing leads.",
+        applicationSubCategory: "EmailDeliverabilitySoftware",
         intro: "ships a deliverability protection layer for Instantly that closes the gaps in Instantly's native governance. Instantly is excellent at sending and at bundled warmup; it is not built to enforce bounce-rate auto-pause, to run a structured healing pipeline, or to score mailboxes by per-recipient-ESP performance. Instantly infrastructure protection layers those exact functions on top of an existing Instantly workspace - no lead reimport, no sequence rebuild.",
         tldr: "Connect Instantly via API key. Superkabe ingests every Instantly send/bounce/reply event, enforces 3% bounce-rate auto-pause across every Instantly mailbox, runs the 5-phase healing protocol on paused mailboxes, and routes leads by per-ESP performance. Instantly stays the sender; Superkabe is the protection layer.",
         sections: [
@@ -1317,6 +1366,11 @@ export const productPages: Record<string, ProductPageData> = {
                 q: "How does this compare to using Superkabe's native sequencer?",
                 a: "The native sequencer is the right answer for teams that want one platform end-to-end. Protection on top of Instantly is the right answer for teams already invested in Instantly's warmup network and lead database who want governance without a migration. The protection layer is identical in both cases."
             }
+        ],
+        relatedProducts: [
+            { slug: "smartlead-deliverability-protection", title: "Smartlead Deliverability Protection", description: "The same protection layer applied to Smartlead campaigns." },
+            { slug: "multi-platform-outbound-protection", title: "Multi-Platform Outbound Protection", description: "Run Instantly alongside Smartlead, EmailBison, and the native sequencer under one governance layer." },
+            { slug: "esp-aware-routing", title: "ESP-Aware Mailbox Routing", description: "The per-ESP performance scoring this layer adds on top of Instantly's provider-level routing." },
         ],
         relatedBlog: [
             { slug: "superkabe-vs-instantly", title: "Superkabe vs Instantly", description: "When to add protection on top vs replace Instantly entirely" },
@@ -1392,6 +1446,11 @@ export const productPages: Record<string, ProductPageData> = {
                 a: "Yes. Each agent can be disabled independently. Disable the signal agent and you bring your own lead list; disable the icebreaker agent and you write the opener yourself; disable the enrichment agent and you trust the input data. Super LinkedIn degrades gracefully to a HeyReach-class sender if all four are disabled."
             }
         ],
+        relatedProducts: [
+            { slug: "lead-control-plane", title: "Lead Control Plane", description: "Leads are workspace-level - the same record carries the LinkedIn touch and the email touch, and the cross-channel halt operates here." },
+            { slug: "ai-cold-email-sequences", title: "AI Cold Email Sequences", description: "The email side of the multi-channel cadence a reply on LinkedIn halts, and vice versa." },
+            { slug: "esp-aware-routing", title: "ESP-Aware Mailbox Routing", description: "When the enrichment agent returns an email-only verdict, the lead is handed to the Sequencer and routed by per-ESP performance." },
+        ],
         relatedBlog: [
             { slug: "cold-email-ai-tools", title: "Cold Email AI Tools", description: "How AI fits across the outbound stack - LinkedIn included" },
             { slug: "cold-email-software-compared", title: "Cold Email Software Compared", description: "Where LinkedIn outreach fits in the multi-channel stack" }
@@ -1459,6 +1518,11 @@ export const productPages: Record<string, ProductPageData> = {
                 q: "Does a dedicated IP improve deliverability automatically?",
                 a: "Not by itself. A dedicated IP gives you reputation control and isolation; whether the resulting reputation is good depends on what you send. The protection layer plus a clean lead funnel plus the warm-up curve plus continuous monitoring is what produces good deliverability. The IP is one input among many."
             }
+        ],
+        relatedProducts: [
+            { slug: "email-deliverability-protection", title: "Email Deliverability Protection", description: "The protection engine - auto-pause, healing, ESP-aware routing - that governs your dedicated IP exactly as it governs shared-pool sends." },
+            { slug: "outbound-domain-protection", title: "Outbound Domain Protection", description: "Domain-level reputation protection that runs in parallel with IP-level isolation." },
+            { slug: "sender-reputation-monitoring", title: "Sender Reputation Monitoring", description: "Live reputation scoring and 400+ DNSBL surveillance - especially valuable on a dedicated IP you own outright." },
         ],
         relatedBlog: [
             { slug: "dedicated-ip-cold-email", title: "Dedicated IP for Cold Email", description: "When dedicated IPs pay back and when they do not" },

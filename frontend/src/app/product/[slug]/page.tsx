@@ -155,6 +155,9 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                 operatingSystem: 'Web',
                 isPartOf: { "@id": parentAppId },
                 provider: { "@id": `${SITE_URL}/#organization` },
+                ...(data.relatedProducts && data.relatedProducts.length > 0
+                    ? { isRelatedTo: data.relatedProducts.map((rp) => ({ "@id": `${SITE_URL}/#feature-${rp.slug}` })) }
+                    : {}),
                 ...(offerNode ? { offers: offerNode } : {}),
             },
             {
@@ -249,6 +252,20 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                             {comparisonTable && <ComparisonTable data={comparisonTable} />}
 
                             {faq && faq.length > 0 && <FaqSection items={faq} />}
+
+                            {data.relatedProducts && data.relatedProducts.length > 0 && (
+                                <div className="mt-16">
+                                    <h3 className="text-2xl font-bold text-gray-900 mb-6">More from the platform</h3>
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        {data.relatedProducts.map((product, i) => (
+                                            <Link key={i} href={`/product/${product.slug}`} className="bg-white p-6 border border-[#D1CBC5] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all group">
+                                                <h4 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-gray-700 transition-colors">{product.title}</h4>
+                                                <p className="text-gray-500 text-xs">{product.description}</p>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {data.relatedBlog && data.relatedBlog.length > 0 && (
                                 <div className="mt-16">
