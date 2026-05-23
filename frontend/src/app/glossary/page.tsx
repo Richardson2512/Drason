@@ -87,7 +87,7 @@ export default function GlossaryIndexPage() {
             <div className="max-w-6xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-24">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-1.5 mb-6 text-[11px] font-semibold tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
+                    className="inline-flex items-center gap-1.5 mb-6 font-mono text-[11px] font-semibold tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
                 >
                     <span>Superkabe - AI cold email + LinkedIn outreach platform</span>
                 </Link>

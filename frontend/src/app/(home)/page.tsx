@@ -755,9 +755,9 @@ export default function LandingPage() {
  <div className="max-w-3xl mx-auto text-center">
  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-[1.18] tracking-[-0.01em] text-gray-900 mb-4">
  AI-powered cold email with{' '}
- <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>built-in deliverability</span>
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-cormorant), Georgia, 'Times New Roman', serif" }}>built-in deliverability</span>
  {' '}and{' '}
- <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>LinkedIn signal outreach</span>.
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-cormorant), Georgia, 'Times New Roman', serif" }}>LinkedIn signal outreach</span>.
  </h1>
 
  <p className="text-sm md:text-base text-gray-500 mb-4 leading-relaxed max-w-xl mx-auto">

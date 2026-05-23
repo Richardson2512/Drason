@@ -223,7 +223,7 @@ export default function CustomersMarquee() {
                 <span className="sk-eyebrow">Customers · 2026</span>
                 <h2>
                     Operators ship their outbound on{' '}
-                    <em style={{ fontFamily: 'var(--font-fraunces), Georgia, serif', color: '#E68B1F' }}>Superkabe</em>.
+                    <em style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', color: '#E68B1F' }}>Superkabe</em>.
                 </h2>
             </div>
 
