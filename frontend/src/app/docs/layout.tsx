@@ -27,8 +27,14 @@ const docSections = [
  { title: 'Slack', href: '/docs/slack-integration', icon: Settings },
  { title: 'Clay', href: '/docs/clay-integration', icon: Activity },
  { title: 'Webhooks', href: '/docs/webhooks', icon: Code },
+ { title: 'Super LinkedIn', href: '/docs/integrations/super-linkedin', icon: Zap },
  { title: 'HubSpot CRM', href: '/docs/integrations/hubspot', icon: Database },
  { title: 'Salesforce CRM', href: '/docs/integrations/salesforce', icon: Database },
+ { title: 'Apollo', href: '/docs/integrations/apollo', icon: Database },
+ { title: 'Instantly', href: '/docs/integrations/instantly', icon: Database },
+ { title: 'Smartlead', href: '/docs/integrations/smartlead', icon: Database },
+ { title: 'Outreach', href: '/docs/integrations/outreach', icon: Database },
+ { title: 'Polar Billing', href: '/docs/integrations/polar', icon: Database },
  { title: 'Migrate from Smartlead', href: '/docs/migration/from-smartlead', icon: Database },
  { title: 'Migrate from Instantly', href: '/docs/migration/from-instantly', icon: Database },
  ]
@@ -46,6 +52,8 @@ const docSections = [
  { title: 'Monitoring System', href: '/docs/monitoring', icon: Activity },
  { title: 'Warmup & Recovery', href: '/docs/warmup-recovery', icon: Activity },
  { title: 'Dedicated IP', href: '/docs/dedicated-ip', icon: Shield },
+ { title: 'Multi-Platform Sync', href: '/docs/multi-platform-sync', icon: GitBranch },
+ { title: 'Data Sync Coverage', href: '/docs/data-sync-coverage', icon: Database },
  ]
  },
  {
@@ -74,7 +82,14 @@ const docSections = [
  {
  title: 'Help Center',
  items: [
+ { title: 'Super LinkedIn: Agent Stack', href: '/docs/help/super-linkedin-agent-stack', icon: Zap },
+ { title: 'Super LinkedIn: ICP Config', href: '/docs/help/super-linkedin-icp-config', icon: Zap },
+ { title: 'Super LinkedIn: Sending Caps', href: '/docs/help/super-linkedin-sending-caps', icon: Zap },
+ { title: 'Cross-Channel Halt', href: '/docs/help/cross-channel-halt', icon: GitBranch },
+ { title: 'LinkedIn Account Paused', href: '/docs/help/why-is-my-linkedin-account-paused', icon: AlertTriangle },
  { title: 'Dedicated IP Setup', href: '/docs/help/dedicated-ip', icon: HelpCircle },
+ { title: 'Dedicated IP Warm-Up Curve', href: '/docs/help/dedicated-ip-warmup-curve', icon: HelpCircle },
+ { title: 'When Do I Need a Dedicated IP?', href: '/docs/help/when-do-i-need-a-dedicated-ip', icon: HelpCircle },
  { title: 'Email Validation', href: '/docs/help/email-validation', icon: HelpCircle },
  { title: 'CSV Lead Upload', href: '/docs/help/csv-upload', icon: HelpCircle },
  { title: 'ESP-Aware Routing', href: '/docs/help/esp-routing', icon: HelpCircle },
@@ -111,10 +126,28 @@ docSections.forEach(section => {
  });
 });
 
+// Routes that emit their own richer TechArticle JSON-LD via the
+// AeoGeoSchema TechArticleSchema component (with entity mentions[],
+// SpeakableSpecification, and proficiencyLevel). For these the layout
+// emits ONLY the BreadcrumbList - emitting the generic TechArticle here
+// too would produce a duplicate, conflicting article node on the page.
+const SELF_SCHEMA_ROUTES = new Set([
+ '/docs/integrations/super-linkedin',
+ '/docs/help/super-linkedin-agent-stack',
+ '/docs/help/super-linkedin-icp-config',
+ '/docs/help/super-linkedin-sending-caps',
+ '/docs/help/cross-channel-halt',
+ '/docs/help/why-is-my-linkedin-account-paused',
+ '/docs/help/dedicated-ip-warmup-curve',
+ '/docs/help/when-do-i-need-a-dedicated-ip',
+]);
+
 function DocJsonLd() {
  const pathname = usePathname();
  const page = docMeta[pathname];
  if (!page) return null;
+
+ const selfEmitsArticle = SELF_SCHEMA_ROUTES.has(pathname);
 
  // Find which section this page belongs to
  const section = docSections.find(s => s.items.some(i => i.href === pathname));
@@ -180,10 +213,12 @@ function DocJsonLd() {
 
  return (
  <>
+ {!selfEmitsArticle && (
  <script
  type="application/ld+json"
  dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
  />
+ )}
  <script
  type="application/ld+json"
  dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}

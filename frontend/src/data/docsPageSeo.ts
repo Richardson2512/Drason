@@ -355,4 +355,21 @@ export const docsPageSeo: Record<string, DocsPageSeo> = {
             { q: "Is SSO available on Starter?", a: "Google Workspace SSO is available on all plans. Okta and Microsoft Entra SSO are on Scale and Enterprise." },
         ],
     },
+    '/docs/dedicated-ip': {
+        tldr: "A dedicated IP is an isolated AWS SES address allocated to a single workspace, automatically warmed over 4-8 weeks, at $39/month per IP. Your IP reputation is shaped only by your own sends - no shared-pool co-tenant risk. The protection layer (auto-pause, healing, ESP-aware routing) governs dedicated-IP sends exactly as it governs shared-pool sends.",
+        faq: [
+            { q: "How is a dedicated IP different from shared sending?", a: "On a shared pool, IP reputation is shaped by every workspace using the same outbound IPs - a co-tenant incident can splash onto your sending. A dedicated IP is shaped only by your own behavior, so the consequences of any incident are contained to your own infrastructure." },
+            { q: "Why does a dedicated IP need a 4-8 week warm-up?", a: "A fresh IP has no sending history, so receiving providers throttle it aggressively. The warm-up curve starts at 50-100 sends/day, ramps to 1,000+/day by week 4, and reaches full capacity by week 8. The throttle is enforced at Superkabe's send queue so campaigns cannot overshoot it." },
+            { q: "Does the protection layer still run on a dedicated IP?", a: "Yes, unchanged. Auto-pause at 3% bounce rate (60-send minimum, 5-bounce safety net), the 5-phase healing pipeline, ESP-aware routing, and 400+ DNSBL monitoring all apply. The IP itself never pauses - individual mailboxes pause and heal as normal." },
+            { q: "How much does a dedicated IP cost?", a: "$39/month per IP, per workspace. Multiple IPs are available for geo-distributed sending or tenant isolation. Cancelling releases the IP back to the SES pool and reverts the send path to the shared pool automatically." },
+        ],
+    },
+    '/docs/help/dedicated-ip': {
+        tldr: "Add a dedicated IP from Dashboard - Settings - Dedicated IP. Allocation through AWS SES is typically same-day; Superkabe routes the custom-SMTP send path through the new IP automatically once SES confirms the binding. Warm-up begins immediately at 50-100 sends/day with the throttle enforced at the send queue.",
+        faq: [
+            { q: "How long does dedicated IP allocation take?", a: "Typically same-day. AWS SES provisions the IP within a few hours of purchase, and Superkabe's send-path routing flips automatically once SES confirms the binding. Warm-up starts immediately." },
+            { q: "Do I need to change my mailboxes or sequences?", a: "No. The change is invisible to the operator - the same sequences send, the same mailboxes work, the same protection layer governs. Only the underlying send path changes." },
+            { q: "What happens if I cancel?", a: "The IP is released back to the SES pool and the send path reverts to the shared pool on the next send. Mailbox reputation lives on the domain, not the IP, so cancellation does not damage your sending." },
+        ],
+    },
 };

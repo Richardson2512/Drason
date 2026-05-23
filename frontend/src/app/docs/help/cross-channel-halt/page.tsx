@@ -1,5 +1,21 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TechArticleSchema, QuickAnswer } from '@/components/seo/AeoGeoSchema';
+import { FaqJsonLd } from '@/components/seo/FaqSection';
+
+const PAGE_URL = 'https://www.superkabe.com/docs/help/cross-channel-halt';
+const SUPER_LINKEDIN_ID = 'https://www.superkabe.com/#feature-super-linkedin';
+
+const faqItems = [
+    { q: 'How does Superkabe match a reply to the right lead?',
+      a: 'By canonical lead identity - the email address, the LinkedIn profile URL, or both. Leads are workspace-level entities, so a single record carries every channel touch. Threading does not affect identity: a reply to an old email thread still matches the lead by address and triggers the halt.' },
+    { q: 'What are the halting policy options?',
+      a: 'Three: "Any reply" (default - any reply on any channel halts the others, safest), "Positive replies only" (only interested/ask-for-info/schedule-call replies halt, so value-add follow-ups continue after a polite decline), and "Manual review" (every reply is flagged for operator approval before halting). The policy is set per workspace.' },
+    { q: 'What happens if a reply matches more than one lead?',
+      a: 'All matched leads are halted simultaneously. This covers the case where two campaigns target the same prospect - a single reply stops queued touches across every matching lead, not just one.' },
+    { q: 'Can a halt be undone?',
+      a: 'Yes. A halted lead can be manually resumed from its timeline if the operator decides the reply was unrelated. Resume restores the original touch schedule on every channel that was paused.' },
+];
 
 export const metadata: Metadata = {
     title: 'Cross-Channel Halt | Superkabe Help',
@@ -17,10 +33,26 @@ export const metadata: Metadata = {
 export default function CrossChannelHaltHelp() {
     return (
         <div className="prose prose-lg max-w-none">
+            <TechArticleSchema
+                headline="Cross-channel halt"
+                description="Why a reply on LinkedIn halts the matching email touch (and vice versa). Lead identity, halting policy, and the cross-channel timeline."
+                url={PAGE_URL}
+                datePublished="2026-05-21"
+                dateModified="2026-05-21"
+                proficiencyLevel="Intermediate"
+                mentions={[SUPER_LINKEDIN_ID]}
+            />
+            <FaqJsonLd items={faqItems} />
+
             <h1 className="text-5xl font-semibold mb-6 text-gray-900">Cross-channel halt</h1>
             <p className="text-xl text-gray-500 mb-12">
                 A single reply stops outreach on both channels. Here is how it works and how to configure it.
             </p>
+
+            <QuickAnswer
+                question="What is cross-channel halt?"
+                answer="When a prospect replies on one channel, Superkabe automatically pauses queued outreach on every other channel for that lead. Leads are workspace-level entities, so the same record carries both the LinkedIn touch and the email touch. A reply on either channel halts the other by canonical lead identity, which makes the classic multi-touch mistake - emailing someone who already replied on LinkedIn - impossible by construction."
+            />
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What it is</h2>
             <p className="text-gray-700 leading-relaxed mb-6">
@@ -74,6 +106,16 @@ export default function CrossChannelHaltHelp() {
                 <li><strong>Multiple matching leads.</strong> If a reply matches more than one lead in the workspace (e.g. two campaigns to the same prospect), all matched leads are halted simultaneously.</li>
                 <li><strong>Halt-then-resume.</strong> A halted lead can be manually resumed from the timeline if the operator decides the reply was unrelated. Resume restores the original touch schedule.</li>
             </ul>
+
+            <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Frequently asked questions</h2>
+            <div className="space-y-4 mb-12">
+                {faqItems.map((item, i) => (
+                    <div key={i} className="bg-white border border-gray-100 p-6 shadow-sm">
+                        <h3 className="font-bold text-gray-900 mb-2">{item.q}</h3>
+                        <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                    </div>
+                ))}
+            </div>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Related</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
