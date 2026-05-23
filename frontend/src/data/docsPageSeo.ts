@@ -348,6 +348,31 @@ export const docsPageSeo: Record<string, DocsPageSeo> = {
             { q: "What happens if I exceed my validation credit budget?", a: "Overage credits bill at per-credit rate. You can cap the overage (hard stop at plan limit) in Billing Settings." },
         ],
     },
+    '/docs/personalization': {
+        tldr: "Personalize sequence steps per lead with merge tags ({{first_name}}), fallback values ({{first_name | fallback: \"there\"}}), and conditional blocks ({{#if title '==' \"founder\"}}...{{/if}}). Operators: == != > < >= <= plus gte/lte. Syntax is Smartlead-compatible, so templates paste in unchanged. Malformed templates are rejected at save time, never at send.",
+        faq: [
+            {
+                q: "How do I add a fallback for a missing field?",
+                a: "Use {{field | fallback: \"default\"}} - for example {{first_name | fallback: \"there\"}} renders the first name when present and \"there\" when it is empty, so you never send \"Hey ,\". Quotes are optional.",
+            },
+            {
+                q: "What comparison operators are supported in conditionals?",
+                a: "==, !=, >, <, >=, <= and the word forms gte and lte. == and != compare text case-insensitively; >, <, >=, <= compare numerically when both sides are numbers and alphabetically otherwise. The operator can be quoted (Smartlead style) or bare.",
+            },
+            {
+                q: "Can conditional blocks be nested?",
+                a: "Yes. {{#if}} blocks nest to any depth and {{else}} is optional. Rendering also runs before spintax, so a chosen branch can contain a {a|b|c} spintax block.",
+            },
+            {
+                q: "Is the syntax compatible with Smartlead?",
+                a: "Yes. The {{#if field '==' \"value\"}} conditional and operator syntax matches Smartlead's, so templates copied from a Smartlead campaign render identically in Superkabe.",
+            },
+            {
+                q: "What happens if I write a malformed template?",
+                a: "Superkabe validates personalization syntax when you save a sequence or campaign. An unclosed {{#if}}, a stray {{else}}, or an unparseable condition is rejected with a message naming the step and field, so a broken template can never reach a live send.",
+            },
+        ],
+    },
     '/docs/help/account-management': {
         tldr: "Account management covers workspace members, roles (Admin, Operator, Viewer), API keys, SSO (Google Workspace, Okta, Microsoft Entra), and workspace-level policy (default bounce thresholds, retention, alert routing).",
         faq: [

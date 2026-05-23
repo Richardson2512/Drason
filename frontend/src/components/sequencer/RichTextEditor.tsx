@@ -330,6 +330,32 @@ export default function RichTextEditor({ content, onChange, placeholder, persona
                     {`{a|b|c}`} Spintax
                 </button>
 
+                {/* Fallback - graceful default when a lead field is empty.
+                    Renders the field value, or the default text when missing,
+                    so you never send "Hey ,". */}
+                <button
+                    type="button"
+                    onClick={() => editor?.chain().focus().insertContent('{{first_name | fallback: "there"}}').run()}
+                    className="text-[10px] px-2 py-1 rounded-md cursor-pointer flex items-center gap-1 transition-colors hover:bg-[#E8E3DC]"
+                    style={{ border: '1px solid #D1CBC5', color: '#6B7280' }}
+                    title='Insert a fallback - {{field | fallback: "default"}} uses the default when the lead field is empty'
+                >
+                    {`{ | }`} Fallback
+                </button>
+
+                {/* Conditional block - if/else on a field. Supports comparison
+                    operators (== != > < gte lte), e.g.
+                    {{#if title '==' "founder"}}...{{/if}}. Nestable. */}
+                <button
+                    type="button"
+                    onClick={() => editor?.chain().focus().insertContent('{{#if first_name}}Hey {{first_name}},{{else}}Hey there,{{/if}}').run()}
+                    className="text-[10px] px-2 py-1 rounded-md cursor-pointer flex items-center gap-1 transition-colors hover:bg-[#E8E3DC]"
+                    style={{ border: '1px solid #D1CBC5', color: '#6B7280' }}
+                    title="Insert a conditional - {{#if field}}...{{else}}...{{/if}} renders different copy based on the lead's data"
+                >
+                    {`{{#if}}`} Condition
+                </button>
+
                 {/* Personalization token dropdown */}
                 {personalizationTokens.length > 0 && (
                     <>
