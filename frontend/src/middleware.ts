@@ -132,6 +132,12 @@ export function middleware(request: NextRequest) {
         // here alongside the new /verify-email.
         pathname === '/forgot-password' ||
         pathname === '/reset-password' ||
+        // Workspace-invite magic link: the invitee is logged OUT (they click
+        // the link from an email), validate a token, set a password, then land
+        // on /login. Without this, step 6 bounces them to '/' and the entire
+        // invite onboarding flow dies - same latent break that reset-password
+        // and verify-email had before they were added here.
+        pathname === '/set-password' ||
         pathname === '/verify-email' ||
         pathname === '/onboarding' ||
         pathname === '/oauth/consent' ||
@@ -148,6 +154,7 @@ export function middleware(request: NextRequest) {
         pathname.startsWith('/release-notes') ||
         pathname.startsWith('/guides') ||
         pathname.startsWith('/tools') ||
+        pathname.startsWith('/glossary') ||
         pathname.startsWith('/cold-email-templates');
 
     // Decode role from JWT (without verification - backend handles real auth)
