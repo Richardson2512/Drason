@@ -56,7 +56,8 @@ export default function PricingPage() {
  "5-phase healing pipeline",
  "ESP-aware mailbox routing",
  "DNSBL + Postmaster + ESP monitoring",
- "Protection Mode for Smartlead / Instantly / EmailBison"
+ "Protection Mode for Smartlead / Instantly / EmailBison",
+			"Super LinkedIn signal-based outreach - 1 to 3 LinkedIn accounts by tier, extra accounts $15/mo"
  ],
  "offers": {
  "@type": "AggregateOffer",
@@ -232,7 +233,15 @@ export default function PricingPage() {
  },
  {
  "@type": "Question",
- "name": "Why does Superkabe charge a flat monthly fee instead of per email?",
+ "name": "Is Super LinkedIn included in the pricing?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Super LinkedIn signal-based outreach is included from the Pro tier up. Starter does not include LinkedIn outreach. Pro includes 1 LinkedIn account (2 on the 200K+ send volume tiers), Growth includes 2, and Scale includes 3 by default. Every paid tier can add more LinkedIn accounts for $15/month each."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "Why does Superkabe charge a flat monthly fee instead of per email?",
  "acceptedAnswer": {
  "@type": "Answer",
  "text": "Per-email pricing penalizes outbound teams for healthy volume and creates a perverse incentive to skip validation to save credits. A flat monthly fee with included send + validation credits aligns the platform with the customer's deliverability outcome, not the volume that put it at risk."
@@ -343,6 +352,7 @@ export default function PricingPage() {
  tier="Starter"
  tierKey="starter"
  description="For solopreneurs testing cold outreach at low volume."
+					excludedFeatures={["Super LinkedIn outreach (Pro and up)"]}
  price="$19"
  period="/ month"
  sequencerFeatures={[
@@ -371,6 +381,7 @@ export default function PricingPage() {
  "Unlimited domains, mailboxes, leads",
  "60,000 email sends/month",
  "10,000 email validation credits + API",
+					"1 Super LinkedIn account + extras at $15/mo",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
@@ -381,12 +392,12 @@ export default function PricingPage() {
  bestFor="Teams sending 5k–10k leads/month across domains"
  ctaText="Start free trial"
  sendsDropdown={[
- { sends: 60000, credits: 10000, price: 49 },
- { sends: 80000, credits: 15000, price: 59 },
- { sends: 100000, credits: 20000, price: 79 },
- { sends: 150000, credits: 30000, price: 109 },
- { sends: 200000, credits: 40000, price: 139 },
- { sends: 250000, credits: 50000, price: 169 },
+ { sends: 60000, credits: 10000, price: 49, linkedin: 1 },
+ { sends: 80000, credits: 15000, price: 59, linkedin: 1 },
+ { sends: 100000, credits: 20000, price: 79, linkedin: 1 },
+ { sends: 150000, credits: 30000, price: 109, linkedin: 1 },
+ { sends: 200000, credits: 40000, price: 139, linkedin: 2 },
+ { sends: 250000, credits: 50000, price: 169, linkedin: 2 },
  ]}
  isLoggedIn={isLoggedIn}
  router={router}
@@ -402,6 +413,7 @@ export default function PricingPage() {
  "Unlimited domains, mailboxes, leads",
  "300,000 email sends/month",
  "60,000 email validation credits + API",
+					"2 Super LinkedIn accounts + extras at $15/mo",
  ]}
  protectionFeatures={[
  "Unlimited protection coverage",
@@ -425,6 +437,7 @@ export default function PricingPage() {
  "Unlimited domains, mailboxes, leads",
  "600,000 email sends/month",
  "100,000 email validation credits + API",
+					"3 Super LinkedIn accounts + extras at $15/mo",
  "Optional Agency mode",
  "Unlimited workspaces",
  ]}
@@ -471,6 +484,7 @@ export default function PricingPage() {
  <ul className="space-y-3 mb-8">
  {[
  'Unlimited sends, validation credits, and protection coverage',
+							'Unlimited Super LinkedIn accounts',
  'Optional Agency mode',
  'Unlimited workspaces',
  'Super admin console with multi-workspace controls',
@@ -777,6 +791,7 @@ interface SendsOption {
  sends: number; // e.g. 60000
  credits: number; // e.g. 10000
  price: number; // dollars, integer
+ linkedin: number; // included Super LinkedIn accounts at this volume
 }
 
 interface PricingCardProps {
@@ -798,13 +813,19 @@ interface PricingCardProps {
  * Used on the Pro tier to smooth the jump between Pro (60k) and Growth (300k).
  */
  sendsDropdown?: SendsOption[];
+	/**
+	 * Optional - features explicitly NOT included in this tier, rendered with a
+	 * muted dash under the Sequencer list. Used on Starter to show that Super
+	 * LinkedIn outreach starts at the Pro tier.
+	 */
+	excludedFeatures?: string[];
 }
 
 function formatCredits(n: number): string {
  return n.toLocaleString();
 }
 
-function PricingCard({ tier, tierKey, description, price, period, sequencerFeatures, protectionFeatures, bestFor, ctaText = "Get started", featured = false, isLoggedIn, router, sendsDropdown }: PricingCardProps) {
+function PricingCard({ tier, tierKey, description, price, period, sequencerFeatures, protectionFeatures, bestFor, ctaText = "Get started", featured = false, isLoggedIn, router, sendsDropdown, excludedFeatures }: PricingCardProps) {
  const [showContactModal, setShowContactModal] = useState(false);
 
  // Sends dropdown state - only used when sendsDropdown prop is provided.
@@ -892,6 +913,7 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  // replaced by live values driven by the dropdown selection.
  const isSendsLine = !!sendsDropdown && /email sends\/month/i.test(feature);
  const isCreditsLine = !!sendsDropdown && /email validation credits/i.test(feature);
+							const isLinkedinLine = !!sendsDropdown && /super linkedin account/i.test(feature);
 
  return (
  <li key={idx} className={`flex items-start gap-3 text-sm ${featured ? 'text-gray-200' : 'text-gray-700'}`}>
@@ -978,6 +1000,10 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  <span className="leading-relaxed">
  {formatCredits(selectedOption.credits)} email validation credits + API
  </span>
+ ) : isLinkedinLine && selectedOption ? (
+ <span className="leading-relaxed">
+ {selectedOption.linkedin} Super LinkedIn account{selectedOption.linkedin > 1 ? 's' : ''} + extras at $15/mo
+ </span>
  ) : (
  <span className="leading-relaxed">{feature}</span>
  )}
@@ -988,6 +1014,22 @@ function PricingCard({ tier, tierKey, description, price, period, sequencerFeatu
  </div>
 
  {/* ── PROTECTION ── */}
+ {excludedFeatures && excludedFeatures.length > 0 && (
+ <div className="mb-6">
+ <ul className="space-y-2.5">
+ {excludedFeatures.map((feature, idx) => (
+ <li key={`ex-${idx}`} className={`flex items-start gap-3 text-sm ${featured ? 'text-gray-500' : 'text-gray-400'}`}>
+ <span className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 bg-gray-200">
+ <svg className="w-2.5 h-2.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+ <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+ </svg>
+ </span>
+ <span className="leading-relaxed line-through decoration-gray-300">{feature}</span>
+ </li>
+ ))}
+ </ul>
+ </div>
+ )}
  <div className="mb-6 flex-1">
  <div className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${featured ? 'text-gray-400' : 'text-gray-500'}`}>
  Protection <span className={`font-normal normal-case tracking-normal ${featured ? 'text-gray-500' : 'text-gray-400'}`}>- Monitoring, tier limits apply</span>
