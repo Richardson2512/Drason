@@ -290,10 +290,13 @@ export default function CustomersMarquee() {
                     display: inline-flex;
                     align-items: center;
                     gap: 10px;
-                    font-size: 12px;
+                    /* Velvet Ledger metadata face - JetBrains Mono for the
+                       tracked-out uppercase eyebrow label. */
+                    font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+                    font-size: 11px;
                     line-height: 1;
-                    letter-spacing: 0.08em;
-                    font-weight: 600;
+                    letter-spacing: 0.14em;
+                    font-weight: 500;
                     text-transform: uppercase;
                 }
                 .sk-eyebrow::before,

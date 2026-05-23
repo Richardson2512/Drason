@@ -28,7 +28,7 @@ export default function Footer() {
 
  {/* Platform */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Platform</h4>
+ <h4 className="font-mono font-semibold text-gray-900 mb-2 text-xs uppercase tracking-widest">Platform</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/" className="hover:text-blue-600 transition-colors whitespace-nowrap">Home</Link>
  <Link href="/product" className="hover:text-blue-600 transition-colors whitespace-nowrap">Product Hub</Link>
@@ -40,7 +40,7 @@ export default function Footer() {
 
  {/* Free Tools */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Free Tools</h4>
+ <h4 className="font-mono font-semibold text-gray-900 mb-2 text-xs uppercase tracking-widest">Free Tools</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/cold-email-templates" className="hover:text-blue-600 transition-colors whitespace-nowrap">Cold Email Templates</Link>
  <Link href="/tools/spf-lookup" className="hover:text-blue-600 transition-colors whitespace-nowrap">SPF Lookup</Link>
@@ -54,7 +54,7 @@ export default function Footer() {
 
  {/* Compare - Superkabe vs the rest of the cold-email category. */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Compare</h4>
+ <h4 className="font-mono font-semibold text-gray-900 mb-2 text-xs uppercase tracking-widest">Compare</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/blog/superkabe-vs-instantly" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Instantly</Link>
  <Link href="/blog/superkabe-vs-smartlead" className="hover:text-blue-600 transition-colors whitespace-nowrap">vs Smartlead</Link>
@@ -73,7 +73,7 @@ export default function Footer() {
 
  {/* Case Studies */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Case Studies</h4>
+ <h4 className="font-mono font-semibold text-gray-900 mb-2 text-xs uppercase tracking-widest">Case Studies</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/product/case-study-bounce-reduction" className="hover:text-blue-600 transition-colors whitespace-nowrap">Bounce Reduction</Link>
  <Link href="/product/case-study-domain-recovery" className="hover:text-blue-600 transition-colors whitespace-nowrap">Domain Recovery</Link>
@@ -83,7 +83,7 @@ export default function Footer() {
 
  {/* Company */}
  <div className="flex flex-col gap-4">
- <h4 className="font-bold text-gray-900 mb-2 text-base">Company</h4>
+ <h4 className="font-mono font-semibold text-gray-900 mb-2 text-xs uppercase tracking-widest">Company</h4>
  <nav className="flex flex-col gap-3 text-sm font-medium text-gray-500">
  <Link href="/contact" className="hover:text-blue-600 transition-colors whitespace-nowrap">Contact Us</Link>
  <Link href="/testimonials" className="hover:text-blue-600 transition-colors whitespace-nowrap">Testimonials</Link>

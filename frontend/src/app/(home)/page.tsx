@@ -90,8 +90,8 @@ function MarqueeCard({ item }: { item: MarqueeItem }) {
                 <Logo size={28} />
             </div>
             <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-gray-900 truncate">{item.name}</div>
-                <div className="text-[11px] text-gray-500 truncate">{item.category}</div>
+                <div className="font-display text-sm font-semibold text-gray-900 truncate tracking-[-0.01em]">{item.name}</div>
+                <div className="font-mono text-[10px] lowercase text-gray-500 truncate tracking-wide">{item.category}</div>
             </div>
             <span
                 className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
@@ -135,16 +135,16 @@ function MarqueeColumn({
 const col1: MarqueeItem[] = [
     { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
     { Logo: GmailLogoSvg, name: 'Gmail', category: 'Mailbox provider', status: 'live' },
-    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'live' },
     { Logo: HubSpotLogo, name: 'HubSpot', category: 'CRM sync', status: 'live' },
     { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'live' },
-    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'live' },
 ];
 const col2: MarqueeItem[] = [
     { Logo: MicrosoftLogo, name: 'Microsoft 365', category: 'Mailbox provider', status: 'live' },
     { Logo: SlackLogo, name: 'Slack', category: 'Alerts', status: 'live' },
     { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
-    { Logo: OutreachLogo, name: 'Outreach', category: 'Sales engagement', status: 'soon' },
+    { Logo: OutreachLogo, name: 'Outreach', category: 'Sales engagement', status: 'live' },
     { Logo: ScaledmailLogo, name: 'Scaledmail', category: 'Mailbox import', status: 'soon' },
 ];
 const col3: MarqueeItem[] = [
@@ -157,9 +157,9 @@ const col3: MarqueeItem[] = [
 ];
 const col4: MarqueeItem[] = [
     { Logo: GoogleWorkspaceLogo, name: 'Google Workspace', category: 'Mailbox provider', status: 'live' },
-    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'soon' },
+    { Logo: ApolloLogo, name: 'Apollo', category: 'Lead enrichment', status: 'live' },
     { Logo: ZapmailLogo, name: 'Zapmail', category: 'Mailbox import', status: 'live' },
-    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'soon' },
+    { Logo: JustcallLogo, name: 'Justcall', category: 'Dialer sync', status: 'live' },
     { Logo: ZoomInfoLogo, name: 'ZoomInfo', category: 'Lead enrichment', status: 'soon' },
     { Logo: SlackLogo, name: 'Slack', category: 'Alerts', status: 'live' },
 ];

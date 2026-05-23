@@ -120,8 +120,10 @@ export default function Navbar() {
                         <span className="font-bold text-lg md:text-xl tracking-tight text-white">Superkabe</span>
                     </Link>
 
-                    {/* Desktop Nav */}
-                    <nav className="hidden md:flex gap-7 text-[13px] font-medium items-center">
+                    {/* Desktop Nav - Velvet Ledger nav-is-mono treatment.
+                        JetBrains Mono runs wider than the prior sans, so the
+                        size drops to 12px and tracking opens slightly. */}
+                    <nav className="hidden md:flex gap-7 font-mono text-[12px] font-medium tracking-wide items-center">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
