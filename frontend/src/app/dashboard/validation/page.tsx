@@ -955,7 +955,7 @@ function ValidationPageContent() {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score ?? '—'}</td>
+                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score != null ? lead.validation_score : '—'}</td>
                                         <td className="py-1.5">
                                             {lead.esp_bucket && (
                                                 <span className="text-[10px] font-semibold" style={{ color: ESP_COLORS[lead.esp_bucket] || '#6B7280' }}>
