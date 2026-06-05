@@ -191,6 +191,7 @@ export default function MultiSelectDropdown({
             {isOpen && menuRect && typeof document !== 'undefined' && createPortal(
                 <div
                     ref={menuRef}
+                    data-portal-dropdown="true"
                     className="bg-white overflow-hidden flex flex-col"
                     style={{
                         position: 'fixed',
