@@ -88,6 +88,7 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
             {isOpen && coords && typeof document !== 'undefined' && createPortal(
                 <div
                     ref={dropdownRef}
+                    data-portal-dropdown="true"
                     className="bg-white overflow-hidden"
                     style={{
                         position: 'fixed',

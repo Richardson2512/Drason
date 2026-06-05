@@ -117,7 +117,14 @@ function ContactsPageContent() {
     useEffect(() => {
         if (!showFilterMenu) return;
         const handler = (e: MouseEvent) => {
-            if (filterMenuRef.current && !filterMenuRef.current.contains(e.target as Node)) {
+            const target = e.target as Element | null;
+            // The enum filters inside this popover (CustomSelect) render their
+            // options in a portal on document.body — outside filterMenuRef. Without
+            // this guard, clicking an option counts as an "outside" click and closes
+            // the whole popover before the selection registers, so the filters felt
+            // dead. Treat any click inside a portaled dropdown as inside the popover.
+            if (target?.closest('[data-portal-dropdown]')) return;
+            if (filterMenuRef.current && !filterMenuRef.current.contains(target as Node)) {
                 setShowFilterMenu(false);
             }
         };
