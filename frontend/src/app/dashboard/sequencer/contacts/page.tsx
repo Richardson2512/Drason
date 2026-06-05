@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon } from 'lucide-react';
+import { Search, Upload, Download, Users, Trash2, ChevronLeft, ChevronRight, Loader2, Plus, X, ShieldCheck, Send, ChevronDown, Filter, Columns3, Tag as TagIcon, RefreshCw } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import CustomSelect from '@/components/ui/CustomSelect';
 import MultiSelectDropdown from '@/components/ui/MultiSelectDropdown';
@@ -591,6 +591,15 @@ function ContactsPageContent() {
                     <p className="text-xs text-gray-500 mt-0.5">{meta.total.toLocaleString()} contacts</p>
                 </div>
                 <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => fetchContacts(meta.page)}
+                        disabled={loading}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer border border-[#D1CBC5] hover:bg-gray-50 disabled:opacity-50"
+                        title="Refresh — reload contacts with the latest validation results"
+                    >
+                        <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Refresh
+                    </button>
                     <button
                         type="button"
                         onClick={() => setShowTagManager(true)}
