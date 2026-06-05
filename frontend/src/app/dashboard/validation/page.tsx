@@ -104,6 +104,11 @@ function ValidationPageContent() {
     const [csvData, setCsvData] = useState<any[]>([]);
     const [columnMapping, setColumnMapping] = useState<ColumnMapping>({ email: '' });
     const [fileName, setFileName] = useState('');
+    // Hold the actual File object so confirm works regardless of how it was
+    // chosen. Drag-and-drop never populates the hidden <input>, so re-reading
+    // fileInputRef.current.files[0] on confirm came back empty and the handler
+    // silently bailed (button appeared dead). Storing it here fixes both paths.
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [targetCampaignId, setTargetCampaignId] = useState('');
     const [processingBatchId, setProcessingBatchId] = useState('');
     const [processingProgress, setProcessingProgress] = useState({ current: 0, total: 0, validCount: 0, invalidCount: 0, riskyCount: 0 });
@@ -250,6 +255,7 @@ function ValidationPageContent() {
 
     const handleFileSelect = (file: File) => {
         setFileName(file.name);
+        setSelectedFile(file);
         Papa.parse(file, {
             header: true,
             skipEmptyLines: true,
@@ -270,10 +276,10 @@ function ValidationPageContent() {
         if (!columnMapping.email) { toast.error('Email column mapping is required'); return; }
         setUploading(true);
 
-        // Parse full CSV
-        const fileInput = fileInputRef.current;
-        const file = fileInput?.files?.[0];
-        if (!file) { setUploading(false); return; }
+        // Parse full CSV. Use the stored File (set on select/drop) and fall
+        // back to the input — drag-and-drop never populates the input element.
+        const file = selectedFile || fileInputRef.current?.files?.[0];
+        if (!file) { toast.error('No file selected. Please choose a CSV again.'); setUploading(false); return; }
 
         Papa.parse(file, {
             header: true,
@@ -349,6 +355,7 @@ function ValidationPageContent() {
         setCsvData([]);
         setColumnMapping({ email: '' });
         setFileName('');
+        setSelectedFile(null);
         setTargetCampaignId('');
         setProcessingBatchId('');
         setUploading(false);
@@ -948,7 +955,7 @@ function ValidationPageContent() {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score ?? '—'}</td>
+                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score != null ? lead.validation_score : '—'}</td>
                                         <td className="py-1.5">
                                             {lead.esp_bucket && (
                                                 <span className="text-[10px] font-semibold" style={{ color: ESP_COLORS[lead.esp_bucket] || '#6B7280' }}>
