@@ -35,9 +35,9 @@ interface OrgSummary {
 interface PlatformStats {
     totalValidations: number;
     totalMvApiCalls: number;
-    smartleadConnections: number;
-    instantlyConnections: number;
-    emailbisonConnections: number;
+    gmailConnections: number;
+    microsoftConnections: number;
+    smtpConnections: number;
     apiCalls?: {
         totalCalls: number;
         totalLast24h: number;
@@ -45,6 +45,10 @@ interface PlatformStats {
         byPlatform: Record<string, number>;
         byPlatformLast24h: Record<string, number>;
     };
+    // Today's product surface (LinkedIn is staging-only — omitted on prod)
+    sequencer?: { campaigns: number; emailsSent: number; emailsSent24h: number; replies: number };
+    superSender?: { dedicatedIps: number };
+    agency?: { accounts: number; workspaceMemberships: number };
 }
 
 interface ImpactReport {
@@ -335,39 +339,41 @@ export default function AdminConsole() {
                             ))}
                         </div>
 
-                        {/* Row 4: Platform Connections + Validation + API */}
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <img src="/smartlead.webp" alt="" className="w-4 h-4 rounded" />
-                                    <span className="text-[0.6rem] text-gray-500">Smartlead</span>
+                        {/* Row 4: Mailbox connections (native providers) + Validation */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
+                            {[
+                                { label: 'Gmail Mailboxes', val: platformStats?.gmailConnections || 0, color: '#ef4444' },
+                                { label: 'Microsoft Mailboxes', val: platformStats?.microsoftConnections || 0, color: '#3b82f6' },
+                                { label: 'SMTP Mailboxes', val: platformStats?.smtpConnections || 0, color: '#94a3b8' },
+                                { label: 'Emails Validated', val: platformStats?.totalValidations || 0, color: '#10b981' },
+                                { label: 'MV API Calls', val: platformStats?.totalMvApiCalls || 0, color: '#f59e0b' },
+                            ].map(s => (
+                                <div key={s.label} className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                    <div className="text-xl font-bold" style={{ color: s.color }}>{s.val.toLocaleString()}</div>
+                                    <div className="text-[0.6rem] text-gray-500 mt-0.5">{s.label}</div>
                                 </div>
-                                <div className="text-xl font-bold text-blue-400">{platformStats?.smartleadConnections || 0}</div>
-                                <div className="text-[0.55rem] text-gray-600">connections</div>
-                            </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <img src="/instantly.png" alt="" className="w-4 h-4 rounded" />
-                                    <span className="text-[0.6rem] text-gray-500">Instantly</span>
-                                </div>
-                                <div className="text-xl font-bold text-purple-400">{platformStats?.instantlyConnections || 0}</div>
-                                <div className="text-[0.55rem] text-gray-600">connections</div>
-                            </div>
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-3">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <img src="/emailbison.png" alt="" className="w-4 h-4 rounded" />
-                                    <span className="text-[0.6rem] text-gray-500">EmailBison</span>
-                                </div>
-                                <div className="text-xl font-bold text-teal-400">{platformStats?.emailbisonConnections || 0}</div>
-                                <div className="text-[0.55rem] text-gray-600">connections</div>
-                            </div>
-                            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
-                                <div className="text-xl font-bold text-emerald-400">{(platformStats?.totalValidations || 0).toLocaleString()}</div>
-                                <div className="text-[0.6rem] text-gray-500 mt-0.5">Emails Validated</div>
-                            </div>
-                            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
-                                <div className="text-xl font-bold text-amber-400">{(platformStats?.totalMvApiCalls || 0).toLocaleString()}</div>
-                                <div className="text-[0.6rem] text-gray-500 mt-0.5">MV API Calls</div>
+                            ))}
+                        </div>
+
+                        {/* Row 4b: Sending & Agency — today's product surface
+                            (native sequencer, Super Sender, Agency) */}
+                        <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 mb-6">
+                            <div className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-wide mb-3">Sending &amp; Agency</div>
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+                                {[
+                                    { label: 'Sequencer Campaigns', val: platformStats?.sequencer?.campaigns || 0, color: '#22c55e' },
+                                    { label: 'Emails Sent', val: platformStats?.sequencer?.emailsSent || 0, color: '#3b82f6' },
+                                    { label: 'Sent · 24h', val: platformStats?.sequencer?.emailsSent24h || 0, color: '#06b6d4' },
+                                    { label: 'Replies', val: platformStats?.sequencer?.replies || 0, color: '#10b981' },
+                                    { label: 'Dedicated IPs', val: platformStats?.superSender?.dedicatedIps || 0, color: '#f59e0b' },
+                                    { label: 'Agency Accounts', val: platformStats?.agency?.accounts || 0, color: '#ec4899' },
+                                    { label: 'Workspace Members', val: platformStats?.agency?.workspaceMemberships || 0, color: '#a855f7' },
+                                ].map(s => (
+                                    <div key={s.label} className="bg-white/5 border border-white/10 rounded-xl p-3">
+                                        <div className="text-xl font-bold" style={{ color: s.color }}>{s.val.toLocaleString()}</div>
+                                        <div className="text-[0.6rem] text-gray-500 mt-0.5">{s.label}</div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
