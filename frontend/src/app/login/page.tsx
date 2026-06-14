@@ -133,6 +133,14 @@ function LoginContent() {
                 }
             }
         } catch (err: any) {
+            // Unverified email/password account: send them to the verify-email
+            // page (pre-filled) where they can request a fresh link, rather
+            // than dead-ending on the login error.
+            if (err?.code === 'email_not_verified') {
+                const addr = err?.body?.email || email;
+                router.push(`/verify-email?email=${encodeURIComponent(addr)}`);
+                return;
+            }
             setError(err.message);
         } finally {
             setLoading(false);

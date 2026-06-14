@@ -115,7 +115,13 @@ export async function apiClient<T>(
         if (!response.ok) {
             // Handle standardized error format { success: false, error: ... }
             const errorMessage = data?.error || data?.message || `Request failed with status ${response.status}`;
-            throw new Error(errorMessage);
+            const err = new Error(errorMessage) as Error & { code?: string; status?: number; body?: any };
+            // Preserve the structured fields so callers can branch on machine-
+            // readable codes (e.g. 'email_not_verified') rather than the message.
+            err.code = data?.code;
+            err.status = response.status;
+            err.body = data;
+            throw err;
         }
 
             // Return data.data when the standardized envelope is present, even

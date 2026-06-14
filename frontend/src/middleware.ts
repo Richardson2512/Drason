@@ -43,7 +43,8 @@ const APP_ROUTE_PREFIXES = [
     '/signup',
     '/forgot-password',
     '/reset-password',
-    '/onboarding',
+    '/set-password',
+    '/verify-email',
     '/admin',
     '/assessment',
     '/data-rights',
@@ -123,7 +124,13 @@ export function middleware(request: NextRequest) {
         pathname === '/' ||
         pathname === '/login' ||
         pathname === '/signup' ||
-        pathname === '/onboarding' ||
+        // Pre-auth email-link landing pages: the visitor is logged OUT by
+        // definition (they clicked a link in an email). Without these in the
+        // public list, step 6 below bounces them to '/' and the flow dies.
+        pathname === '/verify-email' ||
+        pathname === '/forgot-password' ||
+        pathname === '/reset-password' ||
+        pathname === '/set-password' ||
         pathname === '/oauth/consent' ||
         pathname === '/pricing' ||
         pathname.startsWith('/blog') ||

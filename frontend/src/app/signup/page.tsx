@@ -22,6 +22,12 @@ function SignupContent() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    // After a successful signup we no longer log the user in - they must verify
+    // their email first. This holds the address we sent the link to so we can
+    // render the "check your email" state (and drive the resend button).
+    const [verificationSentTo, setVerificationSentTo] = useState<string | null>(null);
+    const [resendMsg, setResendMsg] = useState('');
+    const [resending, setResending] = useState(false);
     // Pinned at the moment the page loaded so the value submitted with the
     // form matches exactly what the user saw and clicked. Backend rejects on
     // version drift between page-render and submit.
@@ -126,7 +132,7 @@ function SignupContent() {
         setLoading(true);
 
         try {
-            await apiClient<{ token?: string }>('/api/auth/register', {
+            const result = await apiClient<{ requiresVerification?: boolean; token?: string }>('/api/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({
                     name,
@@ -142,20 +148,40 @@ function SignupContent() {
                 }),
             });
 
-            // Server sets httpOnly cookie automatically via Set-Cookie header.
-            // Start periodic token refresh to keep session alive.
-            startTokenRefresh();
+            // New flow: signup no longer logs the user in. The account is
+            // created unverified and a verification email is sent; show the
+            // "check your email" state. (The `requiresVerification` flag is
+            // always true from the current backend; the redirect fallback is
+            // kept defensively in case that ever changes.)
+            if (result?.requiresVerification || !result?.token) {
+                setVerificationSentTo(email);
+                return;
+            }
 
-            // Redirect: prefer the intended return-to (set from ?from= when the
-            // user landed here from a CTA on /cold-email-templates etc.). Falls
-            // back to /dashboard. User gets 14-day trial regardless of where
-            // they're sent.
+            startTokenRefresh();
             const returnTo = consumeIntendedReturnTo();
             router.push(returnTo || '/dashboard');
         } catch (err: any) {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleResend = async () => {
+        if (!verificationSentTo) return;
+        setResending(true);
+        setResendMsg('');
+        try {
+            await apiClient('/api/auth/resend-verification', {
+                method: 'POST',
+                body: JSON.stringify({ email: verificationSentTo }),
+            });
+            setResendMsg('Sent. Check your inbox (and spam folder).');
+        } catch {
+            setResendMsg('Could not resend right now. Please try again shortly.');
+        } finally {
+            setResending(false);
         }
     };
 
@@ -171,6 +197,39 @@ function SignupContent() {
                     <div className="auth-blob auth-blob-orange"></div>
                 </div>
 
+                {/* ── Post-signup: verify-your-email state ── */}
+                {verificationSentTo ? (
+                    <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-6 md:p-8 text-center">
+                        <a href={marketingUrl('/')} className="flex items-center gap-2 mb-6 w-fit mx-auto no-underline">
+                            <Image src="/image/logo-v2.png" alt="Superkabe - back to home" width={26} height={26} />
+                            <span className="font-bold text-base text-[#171923]">Superkabe</span>
+                        </a>
+                        <div className="mx-auto mb-5 w-14 h-14 rounded-2xl bg-[#1C4532]/10 flex items-center justify-center">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1C4532" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                        </div>
+                        <h1 className="text-xl font-bold text-[#171923] mb-2">Verify your email</h1>
+                        <p className="text-[#4A5568] text-sm leading-relaxed mb-1">
+                            We sent a verification link to
+                        </p>
+                        <p className="text-[#171923] text-sm font-semibold mb-4 break-all">{verificationSentTo}</p>
+                        <p className="text-[#718096] text-xs leading-relaxed mb-6">
+                            Click the link in that email to activate your account and open your dashboard. The link expires in 24 hours. Check your spam folder if you do not see it within a minute.
+                        </p>
+                        {resendMsg && <div className="text-xs text-[#1C4532] mb-3">{resendMsg}</div>}
+                        <button
+                            type="button"
+                            onClick={handleResend}
+                            disabled={resending}
+                            className="w-full bg-[#1C4532] text-white font-bold py-3 rounded-xl shadow-lg shadow-[#1C4532]/20 hover:-translate-y-0.5 transition-all text-sm disabled:opacity-60"
+                        >
+                            {resending ? 'Resending...' : 'Resend verification email'}
+                        </button>
+                        <div className="mt-5 text-xs text-[#718096]">
+                            Already verified? <Link href="/login" className="text-[#1C4532] font-semibold underline hover:text-green-800">Sign in</Link>
+                        </div>
+                    </div>
+                ) : (
+                <>
                 {/* Content Container - compact card */}
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-5 md:p-6">
                     {/* Logo → marketing home (see login/page.tsx note) */}
@@ -305,6 +364,8 @@ function SignupContent() {
                         <Link href="/login" className="text-[#1C4532] font-semibold underline hover:text-green-800 text-xs">Sign in</Link>
                     </div>
                 </div>
+                </>
+                )}
             </div>
 
             {/* RIGHT SIDE - CAROUSEL (Duplicated from Login) */}
