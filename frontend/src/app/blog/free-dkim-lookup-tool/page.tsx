@@ -98,7 +98,7 @@ export default function FreeDkimLookupToolArticle() {
  "name": "How do I check DKIM for emails sent through Google Workspace?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "For Google Workspace, the default DKIM selector is 'google'. Use the DKIM lookup tool with your domain and the selector 'google' to check if your DKIM key is published. If you generated a custom DKIM key in the Google Admin Console, you may have chosen a different selector prefix — check your admin settings to confirm."
+ "text": "For Google Workspace, the default DKIM selector is 'google'. Use the DKIM lookup tool with your domain and the selector 'google' to check if your DKIM key is published. If you generated a custom DKIM key in the Google Admin Console, you may have chosen a different selector prefix - check your admin settings to confirm."
  }
  },
  {
@@ -122,7 +122,7 @@ export default function FreeDkimLookupToolArticle() {
  <article>
  <BlogHeader
  tag="Free Tools"
- title="Free DKIM Record Lookup Tool — Verify Your Email Signatures Are Valid"
+ title="Free DKIM Record Lookup Tool - Verify Your Email Signatures Are Valid"
  dateModified="2026-04-25"
  authorName="Robert Smith"
  authorRole="Deliverability Specialist · Superkabe"
@@ -145,7 +145,7 @@ export default function FreeDkimLookupToolArticle() {
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DKIM adds a cryptographic signature to every outgoing email, proving authenticity</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> You need both a domain name and a selector to look up a DKIM record</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Use 2048-bit RSA keys &mdash; 1024-bit keys are considered weak</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Use 2048-bit RSA keys - 1024-bit keys are considered weak</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Each email provider uses its own selector (Google: &quot;google&quot;, Microsoft: &quot;selector1&quot;)</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Missing DKIM keys weaken your entire authentication stack, even if SPF passes</li>
  </ul>
@@ -162,7 +162,7 @@ export default function FreeDkimLookupToolArticle() {
  DKIM uses public-key cryptography to authenticate email messages. When you send an email, your mail server signs specific headers and the message body using a private key. This generates a unique cryptographic signature that is added to the email as a <code className="bg-gray-100 px-1.5 py-0.5 text-sm">DKIM-Signature</code> header.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The receiving server then looks up your DKIM public key in DNS &mdash; at a location determined by the selector and domain in the signature header &mdash; and uses that key to verify the signature. If the signature validates, the receiving server knows two things: the email was authorized by the domain owner, and the message content was not modified after signing.
+ The receiving server then looks up your DKIM public key in DNS - at a location determined by the selector and domain in the signature header - and uses that key to verify the signature. If the signature validates, the receiving server knows two things: the email was authorized by the domain owner, and the message content was not modified after signing.
  </p>
 
  <div className="bg-gray-900 text-green-400 p-6 mb-8 font-mono text-sm overflow-x-auto">
@@ -210,10 +210,10 @@ export default function FreeDkimLookupToolArticle() {
  </p>
 
  <ol className="space-y-4 text-gray-600 mb-8 list-decimal pl-5">
- <li><strong>Enter your domain</strong> &mdash; Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>).</li>
- <li><strong>Enter your DKIM selector</strong> &mdash; Type the selector used by your email provider (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">google</code> for Google Workspace).</li>
- <li><strong>Run the lookup</strong> &mdash; The tool queries the TXT record at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">selector._domainkey.yourdomain.com</code>.</li>
- <li><strong>Review the results</strong> &mdash; The tool displays the full DKIM record, key type, key length, and any issues detected.</li>
+ <li><strong>Enter your domain</strong> - Type the domain you want to check (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">yourdomain.com</code>).</li>
+ <li><strong>Enter your DKIM selector</strong> - Type the selector used by your email provider (e.g., <code className="bg-gray-100 px-1.5 py-0.5 text-sm">google</code> for Google Workspace).</li>
+ <li><strong>Run the lookup</strong> - The tool queries the TXT record at <code className="bg-gray-100 px-1.5 py-0.5 text-sm">selector._domainkey.yourdomain.com</code>.</li>
+ <li><strong>Review the results</strong> - The tool displays the full DKIM record, key type, key length, and any issues detected.</li>
  </ol>
 
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -369,7 +369,7 @@ export default function FreeDkimLookupToolArticle() {
  </div>
  <div className="border border-gray-100 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How do I check DKIM for emails sent through Google Workspace?</h3>
- <p className="text-gray-600 text-sm">For Google Workspace, the default DKIM selector is &quot;google&quot;. Use the <Link href="/tools/dkim-lookup" className="text-blue-600 hover:underline">DKIM lookup tool</Link> with your domain and the selector &quot;google&quot; to check if your DKIM key is published. If you generated a custom key in the Google Admin Console, you may have chosen a different prefix &mdash; check your admin settings to confirm.</p>
+ <p className="text-gray-600 text-sm">For Google Workspace, the default DKIM selector is &quot;google&quot;. Use the <Link href="/tools/dkim-lookup" className="text-blue-600 hover:underline">DKIM lookup tool</Link> with your domain and the selector &quot;google&quot; to check if your DKIM key is published. If you generated a custom key in the Google Admin Console, you may have chosen a different prefix - check your admin settings to confirm.</p>
  </div>
  <div className="border border-gray-100 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How often should I rotate my DKIM keys?</h3>

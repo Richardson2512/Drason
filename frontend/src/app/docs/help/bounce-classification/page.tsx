@@ -43,10 +43,10 @@ export default function BounceClassificationPage() {
  Permanent delivery failures. The email can never be delivered to this address. These are the bounces that damage your reputation.
  </p>
  <ul className="space-y-2 text-sm text-gray-600">
- <li>&#x2022; <strong>5xx SMTP codes</strong> &mdash; Recipient address doesn't exist</li>
- <li>&#x2022; <strong>Invalid domain</strong> &mdash; The domain has no MX records</li>
- <li>&#x2022; <strong>Mailbox disabled</strong> &mdash; Account has been deactivated</li>
- <li>&#x2022; <strong>Rejected by policy</strong> &mdash; Permanent block by receiving server</li>
+ <li>&#x2022; <strong>5xx SMTP codes</strong> - Recipient address doesn't exist</li>
+ <li>&#x2022; <strong>Invalid domain</strong> - The domain has no MX records</li>
+ <li>&#x2022; <strong>Mailbox disabled</strong> - Account has been deactivated</li>
+ <li>&#x2022; <strong>Rejected by policy</strong> - Permanent block by receiving server</li>
  </ul>
  <div className="mt-4 bg-red-100 p-3">
  <p className="text-xs text-red-800 font-medium">These count toward your bounce rate and trigger automatic protections.</p>
@@ -60,10 +60,10 @@ export default function BounceClassificationPage() {
  Temporary delivery failures. The email might be deliverable if retried later. These do not count toward your bounce rate.
  </p>
  <ul className="space-y-2 text-sm text-gray-600">
- <li>&#x2022; <strong>Mailbox full</strong> &mdash; Recipient's inbox is over quota</li>
- <li>&#x2022; <strong>Server temporarily unavailable</strong> &mdash; Transient connectivity issue</li>
- <li>&#x2022; <strong>Rate limiting</strong> &mdash; Sending too fast to this server</li>
- <li>&#x2022; <strong>Message too large</strong> &mdash; Attachment size exceeded</li>
+ <li>&#x2022; <strong>Mailbox full</strong> - Recipient's inbox is over quota</li>
+ <li>&#x2022; <strong>Server temporarily unavailable</strong> - Transient connectivity issue</li>
+ <li>&#x2022; <strong>Rate limiting</strong> - Sending too fast to this server</li>
+ <li>&#x2022; <strong>Message too large</strong> - Attachment size exceeded</li>
  </ul>
  <div className="mt-4 bg-amber-100 p-3">
  <p className="text-xs text-amber-800 font-medium">Logged but do not trigger automatic protections. Your sending platform may retry these.</p>
@@ -83,15 +83,15 @@ export default function BounceClassificationPage() {
  <div className="space-y-3">
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-bold">Below 2%</span>
- <span className="text-gray-600 text-sm">Healthy &mdash; No action needed</span>
+ <span className="text-gray-600 text-sm">Healthy - No action needed</span>
  </div>
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-bold">2% &ndash; 3%</span>
- <span className="text-gray-600 text-sm">Warning &mdash; Monitor closely, clean your list</span>
+ <span className="text-gray-600 text-sm">Warning - Monitor closely, clean your list</span>
  </div>
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-bold">Above 3%</span>
- <span className="text-gray-600 text-sm">Critical &mdash; Mailbox auto-paused (after minimum 60 sends)</span>
+ <span className="text-gray-600 text-sm">Critical - Mailbox auto-paused (after minimum 60 sends)</span>
  </div>
  </div>
  </div>
@@ -161,15 +161,15 @@ export default function BounceClassificationPage() {
  <div className="space-y-2">
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-bold">70-100</span>
- <span className="text-gray-600 text-sm">Strong &mdash; Mailbox has a clean track record</span>
+ <span className="text-gray-600 text-sm">Strong - Mailbox has a clean track record</span>
  </div>
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-bold">30-69</span>
- <span className="text-gray-600 text-sm">Moderate &mdash; Some recovery history, monitor closely</span>
+ <span className="text-gray-600 text-sm">Moderate - Some recovery history, monitor closely</span>
  </div>
  <div className="flex items-center gap-3">
  <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-bold">0-29</span>
- <span className="text-gray-600 text-sm">Weak &mdash; Frequent relapses, consider replacing this mailbox</span>
+ <span className="text-gray-600 text-sm">Weak - Frequent relapses, consider replacing this mailbox</span>
  </div>
  </div>
  </div>

@@ -106,7 +106,7 @@ docSections.forEach(section => {
  section.items.forEach(item => {
  docMeta[item.href] = {
  title: item.title,
- description: `${item.title} — documentation for Superkabe, the AI cold email platform with native deliverability protection.`,
+ description: `${item.title} - documentation for Superkabe, the AI cold email platform with native deliverability protection.`,
  };
  });
 });
@@ -147,7 +147,7 @@ function DocJsonLd() {
  articleSection: isHelpPage ? 'Help Center' : sectionTitle,
  };
 
- // Section URL — first item in the section is conventionally the
+ // Section URL - first item in the section is conventionally the
  // section landing/intro page, so we use its href as the position-2
  // breadcrumb URL. Without `item` Google's BreadcrumbList parser
  // rejects the markup entirely (Sept 2024 spec change).

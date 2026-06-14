@@ -53,7 +53,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-16">
                 <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10 lg:gap-16">
-                    {/* Sticky left TOC — hidden on mobile */}
+                    {/* Sticky left TOC - hidden on mobile */}
                     <aside className="hidden lg:block">
                         <MaileveryToc />
                     </aside>

@@ -179,7 +179,7 @@ server.registerTool(
     "validate_leads",
     {
         title: "Validate Lead Emails",
-        description: "Trigger email validation on a set of leads. Provide either lead IDs or email addresses. Validation runs asynchronously — use list_leads to check results after a few seconds.",
+        description: "Trigger email validation on a set of leads. Provide either lead IDs or email addresses. Validation runs asynchronously - use list_leads to check results after a few seconds.",
         inputSchema: z.object({
             lead_ids: z.array(z.string()).optional().describe("Array of lead IDs to validate"),
             emails: z.array(z.string()).optional().describe("Array of email addresses to validate (must already exist in Superkabe)"),
@@ -205,7 +205,7 @@ server.registerTool(
     "get_validation_results",
     {
         title: "Get Validation Analytics",
-        description: "Get email validation analytics — total validated count and breakdown by status (valid, risky, invalid, unknown).",
+        description: "Get email validation analytics - total validated count and breakdown by status (valid, risky, invalid, unknown).",
     },
     async () => {
         try {
@@ -305,7 +305,7 @@ server.registerTool(
     "update_campaign",
     {
         title: "Update Campaign",
-        description: "Update a campaign's name, schedule, or daily limit. Campaign must be paused or in draft — cannot update while active.",
+        description: "Update a campaign's name, schedule, or daily limit. Campaign must be paused or in draft - cannot update while active.",
         inputSchema: z.object({
             campaign_id: z.string().describe("The campaign ID"),
             name: z.string().optional().describe("New campaign name"),

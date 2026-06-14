@@ -1,7 +1,7 @@
 {
   "name": "@superkabe/mcp-server",
   "version": "1.0.0",
-  "description": "Superkabe MCP server — connect Claude to your cold email platform",
+  "description": "Superkabe MCP server - connect Claude to your cold email platform",
   "type": "module",
   "bin": {
     "superkabe-mcp": "./dist/index.js"

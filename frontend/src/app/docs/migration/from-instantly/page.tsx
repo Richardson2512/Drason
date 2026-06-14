@@ -34,7 +34,7 @@ export default function MigrateFromInstantlyDocsPage() {
                 custom fields, your full block list (email + domain entries), and mailbox metadata (from-address and from-name).
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
-                It does <strong>not</strong> pull mailbox authentication credentials — Instantly&apos;s v2 API treats OAuth tokens
+                It does <strong>not</strong> pull mailbox authentication credentials - Instantly&apos;s v2 API treats OAuth tokens
                 and SMTP/IMAP passwords as write-only, so they cannot leave the source platform. After the import completes you
                 will reconnect each mailbox in Superkabe before any sending begins.
             </p>
@@ -42,9 +42,9 @@ export default function MigrateFromInstantlyDocsPage() {
             <div className="bg-blue-50 border border-blue-200 p-6 mb-8">
                 <h3 className="font-bold text-blue-900 text-lg mb-3">Quick facts</h3>
                 <ul className="space-y-2 text-sm text-blue-800">
-                    <li>▸ <strong>Free</strong> for all Superkabe tiers — no validation credits consumed during import</li>
-                    <li>▸ <strong>Idempotent</strong> — re-run with the same key (within 24 hours) to resume after a failure</li>
-                    <li>▸ <strong>Safe by default</strong> — every imported campaign lands in DRAFT / paused state</li>
+                    <li>▸ <strong>Free</strong> for all Superkabe tiers - no validation credits consumed during import</li>
+                    <li>▸ <strong>Idempotent</strong> - re-run with the same key (within 24 hours) to resume after a failure</li>
+                    <li>▸ <strong>Safe by default</strong> - every imported campaign lands in DRAFT / paused state</li>
                     <li>▸ <strong>Wizard URL:</strong> <code className="px-2 py-0.5 bg-white text-blue-700 text-xs">/dashboard/migration/from-instantly</code></li>
                 </ul>
             </div>
@@ -55,23 +55,23 @@ export default function MigrateFromInstantlyDocsPage() {
                 <div className="bg-green-50 border-2 border-green-300 p-6">
                     <h3 className="font-bold text-green-800 text-lg mb-3">Imported</h3>
                     <ul className="space-y-2 text-sm text-gray-700">
-                        <li>– <strong>Campaigns</strong> — name, status, schedule windows, daily limits</li>
-                        <li>– <strong>Sequence steps</strong> — subject line, HTML body, plain-text body, delay days/hours</li>
-                        <li>– <strong>A/B variants</strong> — every variant per step with its weight (no historical stats — variants restart fresh)</li>
-                        <li>– <strong>Leads</strong> — email address plus custom fields, mapped to Superkabe&apos;s lead schema</li>
-                        <li>– <strong>Block list</strong> — both exact-email and domain-level suppression entries</li>
-                        <li>– <strong>Mailbox metadata</strong> — from-address and from-name only</li>
+                        <li>– <strong>Campaigns</strong> - name, status, schedule windows, daily limits</li>
+                        <li>– <strong>Sequence steps</strong> - subject line, HTML body, plain-text body, delay days/hours</li>
+                        <li>– <strong>A/B variants</strong> - every variant per step with its weight (no historical stats - variants restart fresh)</li>
+                        <li>– <strong>Leads</strong> - email address plus custom fields, mapped to Superkabe&apos;s lead schema</li>
+                        <li>– <strong>Block list</strong> - both exact-email and domain-level suppression entries</li>
+                        <li>– <strong>Mailbox metadata</strong> - from-address and from-name only</li>
                     </ul>
                 </div>
                 <div className="bg-red-50 border-2 border-red-300 p-6">
                     <h3 className="font-bold text-red-800 text-lg mb-3">Not Imported</h3>
                     <ul className="space-y-2 text-sm text-gray-700">
-                        <li>– <strong>Mailbox OAuth tokens / SMTP credentials</strong> — security boundary (you reconnect in Superkabe)</li>
+                        <li>– <strong>Mailbox OAuth tokens / SMTP credentials</strong> - security boundary (you reconnect in Superkabe)</li>
                         <li>– <strong>Send history &amp; engagement events</strong> from before migration</li>
-                        <li>– <strong>Instantly v1 (legacy) data</strong> — only v2 is supported</li>
-                        <li>– <strong>Inbox replies</strong> — Superkabe&apos;s inbox starts fresh</li>
+                        <li>– <strong>Instantly v1 (legacy) data</strong> - only v2 is supported</li>
+                        <li>– <strong>Inbox replies</strong> - Superkabe&apos;s inbox starts fresh</li>
                         <li>– <strong>Custom analytics dashboards</strong></li>
-                        <li>– <strong>Workspace-level settings</strong> — contact support if you need these transferred</li>
+                        <li>– <strong>Workspace-level settings</strong> - contact support if you need these transferred</li>
                     </ul>
                 </div>
             </div>
@@ -111,7 +111,7 @@ export default function MigrateFromInstantlyDocsPage() {
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">1. Generate an Instantly v2 API key</h3>
             <p className="text-gray-600 mb-3">
-                In Instantly: <strong>Settings → API → Generate Key</strong>. Copy the key immediately — Instantly only shows
+                In Instantly: <strong>Settings → API → Generate Key</strong>. Copy the key immediately - Instantly only shows
                 it once. You must be on Instantly v2; legacy v1 workspaces are not supported (see Edge Cases below).
             </p>
 
@@ -121,9 +121,9 @@ export default function MigrateFromInstantlyDocsPage() {
                 endpoint to confirm the key works and surfaces your workspace name back to you. Common failure modes:
             </p>
             <ul className="list-disc list-inside space-y-1 text-gray-600 mb-4 text-sm">
-                <li><strong>401 / 403</strong> — key is invalid or revoked</li>
-                <li><strong>402</strong> — your Instantly workspace plan is inactive</li>
-                <li><strong>503</strong> — Instantly is temporarily unreachable; retry shortly</li>
+                <li><strong>401 / 403</strong> - key is invalid or revoked</li>
+                <li><strong>402</strong> - your Instantly workspace plan is inactive</li>
+                <li><strong>503</strong> - Instantly is temporarily unreachable; retry shortly</li>
             </ul>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">3. Preview what will be imported</h3>
@@ -135,8 +135,8 @@ export default function MigrateFromInstantlyDocsPage() {
                 <code className="text-blue-600 text-sm">campaigns · leads · block list entries · mailboxes</code>
             </div>
             <p className="text-gray-600 mb-3">
-                Lead counts are broken into five buckets — <em>never contacted</em>, <em>stale contact</em>, <em>recent contact</em>,
-                <em> opted out</em>, <em>completed</em> — so you can see exactly what will land in Superkabe before you commit.
+                Lead counts are broken into five buckets - <em>never contacted</em>, <em>stale contact</em>, <em>recent contact</em>,
+                <em> opted out</em>, <em>completed</em> - so you can see exactly what will land in Superkabe before you commit.
             </p>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">4. Start the import</h3>
@@ -148,7 +148,7 @@ export default function MigrateFromInstantlyDocsPage() {
                 <code className="text-green-600 text-sm">campaigns → leads → block list → mailboxes</code>
             </div>
             <p className="text-gray-600 mb-3">
-                You can leave the page — progress is persisted server-side. Re-open the wizard at any time to see the current
+                You can leave the page - progress is persisted server-side. Re-open the wizard at any time to see the current
                 phase, percentage complete, and per-entity counts.
             </p>
 
@@ -162,7 +162,7 @@ export default function MigrateFromInstantlyDocsPage() {
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">6. Review imported campaigns</h3>
             <p className="text-gray-600 mb-3">
                 Every imported campaign lands in <strong>DRAFT / paused</strong> state regardless of its source state in
-                Instantly. This is intentional — it guarantees no double-sending during cutover. Open <code className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs">/dashboard/campaigns</code>,
+                Instantly. This is intentional - it guarantees no double-sending during cutover. Open <code className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs">/dashboard/campaigns</code>,
                 review the sequences and schedules, attach your reconnected mailboxes, and launch when you&apos;re ready.
             </p>
 
@@ -183,11 +183,11 @@ export default function MigrateFromInstantlyDocsPage() {
                         </tr>
                         <tr>
                             <td className="px-5 py-4 text-gray-700 font-medium">Instantly v1 (legacy) workspaces</td>
-                            <td className="px-5 py-4 text-gray-600">Not supported. You must be on Instantly v2 — the v1 API surface is incompatible.</td>
+                            <td className="px-5 py-4 text-gray-600">Not supported. You must be on Instantly v2 - the v1 API surface is incompatible.</td>
                         </tr>
                         <tr>
                             <td className="px-5 py-4 text-gray-700 font-medium">Open / click event history</td>
-                            <td className="px-5 py-4 text-gray-600">Open timestamps are imported as engagement signals where available. Per-event click history is not currently mapped — Instantly does not expose it via REST.</td>
+                            <td className="px-5 py-4 text-gray-600">Open timestamps are imported as engagement signals where available. Per-event click history is not currently mapped - Instantly does not expose it via REST.</td>
                         </tr>
                         <tr>
                             <td className="px-5 py-4 text-gray-700 font-medium">Subsequence / branching triggers</td>
@@ -199,7 +199,7 @@ export default function MigrateFromInstantlyDocsPage() {
                         </tr>
                         <tr>
                             <td className="px-5 py-4 text-gray-700 font-medium">Bounced / unsubscribed leads</td>
-                            <td className="px-5 py-4 text-gray-600">Skipped on import — they remain in your block list rather than being re-enrolled.</td>
+                            <td className="px-5 py-4 text-gray-600">Skipped on import - they remain in your block list rather than being re-enrolled.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -223,19 +223,19 @@ export default function MigrateFromInstantlyDocsPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Resuming a Failed Migration</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
                 The import is fully idempotent. Every imported entity carries an <code className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs">import_external_id</code> from
-                Instantly, and re-runs upsert on that ID — already-imported records are skipped, and only the missing tail is
+                Instantly, and re-runs upsert on that ID - already-imported records are skipped, and only the missing tail is
                 pulled.
             </p>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
                 <li>Within the 24-hour key TTL, click <strong>Restart Import</strong> in the wizard to resume from where it stopped.</li>
-                <li>After 24 hours, generate a fresh Instantly API key and start over — the import will skip everything that already came across.</li>
+                <li>After 24 hours, generate a fresh Instantly API key and start over - the import will skip everything that already came across.</li>
                 <li>If the source-side throttles (HTTP 429), the job pauses with status <code className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs">paused_source</code> and resumes automatically once the cooldown expires.</li>
             </ul>
 
             {/* Block list */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Block List Handling</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Your Instantly block list — both <strong>exact-email</strong> entries and <strong>domain-level</strong> entries —
+                Your Instantly block list - both <strong>exact-email</strong> entries and <strong>domain-level</strong> entries -
                 is imported into Superkabe&apos;s suppression list. From that moment on, any future lead whose address or domain
                 matches an entry is blocked at validation time before it can enter a campaign.
             </p>
@@ -247,7 +247,7 @@ export default function MigrateFromInstantlyDocsPage() {
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Cost</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
                 The migration tool is <strong>free for every Superkabe tier</strong>. No validation credits are consumed during
-                the import — the leads enter Superkabe in their existing state and are only re-validated when they next move
+                the import - the leads enter Superkabe in their existing state and are only re-validated when they next move
                 through the pipeline (typically when you launch a campaign).
             </p>
 
@@ -256,19 +256,19 @@ export default function MigrateFromInstantlyDocsPage() {
             <p className="text-gray-600 leading-relaxed mb-4">
                 Mailbox auth (OAuth tokens for Gmail / Microsoft 365, SMTP &amp; IMAP credentials) is encrypted with
                 provider-specific keys that are scoped to the platform that issued them. Those keys cannot be transferred between
-                platforms — Instantly&apos;s v2 API treats them as write-only and never returns them.
+                platforms - Instantly&apos;s v2 API treats them as write-only and never returns them.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
                 That&apos;s why every imported mailbox lands in a <strong>disconnected</strong> state. To re-grant access, open <code className="px-2 py-0.5 bg-gray-100 text-gray-800 text-xs">/dashboard/sequencer/accounts</code>,
                 find the mailbox, and click <strong>Reconnect</strong>. You&apos;ll go through the standard OAuth consent flow
-                (Gmail / Microsoft 365) or paste fresh SMTP credentials — no different from connecting a brand-new mailbox.
+                (Gmail / Microsoft 365) or paste fresh SMTP credentials - no different from connecting a brand-new mailbox.
             </p>
 
             <div className="bg-amber-50 border border-amber-200 p-6 mt-8">
                 <h3 className="text-xl font-bold text-amber-700 mb-2">Pro Tip</h3>
                 <p className="text-gray-700">
                     Reconnect your mailboxes <em>before</em> launching any imported campaign. Superkabe will not start sending
-                    until at least one connected, healthy mailbox is attached to the campaign — but having every mailbox ready
+                    until at least one connected, healthy mailbox is attached to the campaign - but having every mailbox ready
                     avoids partial-send scenarios mid-cutover.
                 </p>
             </div>
@@ -289,7 +289,7 @@ export default function MigrateFromInstantlyDocsPage() {
                     </li>
                     <li>
                         <Link href="/docs/getting-started" className="text-blue-600 hover:text-blue-700 font-medium">
-                            → Getting Started — set up sending and routing after the import
+                            → Getting Started - set up sending and routing after the import
                         </Link>
                     </li>
                 </ul>

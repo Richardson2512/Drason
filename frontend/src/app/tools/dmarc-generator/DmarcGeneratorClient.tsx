@@ -11,18 +11,18 @@ type ReportInterval = '86400' | '3600';
 type FoOption = '0' | '1' | 'd' | 's';
 
 const POLICY_OPTIONS = [
- { value: 'none', label: 'None — Monitor only (recommended for new domains)' },
- { value: 'quarantine', label: 'Quarantine — Send to spam folder' },
- { value: 'reject', label: 'Reject — Block entirely' },
+ { value: 'none', label: 'None - Monitor only (recommended for new domains)' },
+ { value: 'quarantine', label: 'Quarantine - Send to spam folder' },
+ { value: 'reject', label: 'Reject - Block entirely' },
 ];
 const SUBDOMAIN_POLICY_OPTIONS = [
  { value: 'same', label: 'Same as domain policy' },
- { value: 'none', label: 'None — Monitor only' },
- { value: 'quarantine', label: 'Quarantine — Send to spam folder' },
- { value: 'reject', label: 'Reject — Block entirely' },
+ { value: 'none', label: 'None - Monitor only' },
+ { value: 'quarantine', label: 'Quarantine - Send to spam folder' },
+ { value: 'reject', label: 'Reject - Block entirely' },
 ];
 const REPORT_INTERVAL_OPTIONS = [
- { value: '86400', label: 'Every 24 hours (daily — default)' },
+ { value: '86400', label: 'Every 24 hours (daily - default)' },
  { value: '3600', label: 'Every 1 hour' },
 ];
 

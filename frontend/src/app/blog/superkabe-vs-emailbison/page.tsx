@@ -42,12 +42,12 @@ export default function SuperkabeVsEmailbisonPage() {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            { "@type": "Question", "name": "Is Superkabe better than EmailBison?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on infrastructure protection (auto-pause, 5-phase healing, ESP-aware routing, validation, DNSBL monitoring) and on agency-scale per-workspace tooling. EmailBison wins on raw per-send economics at extreme volume — for a single-tenant team sending several million emails monthly with their own external monitoring, EmailBison can be cheaper. For most teams, the protection layer Superkabe ships natively is worth the price difference." } },
+            { "@type": "Question", "name": "Is Superkabe better than EmailBison?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on infrastructure protection (auto-pause, 5-phase healing, ESP-aware routing, validation, DNSBL monitoring) and on agency-scale per-workspace tooling. EmailBison wins on raw per-send economics at extreme volume - for a single-tenant team sending several million emails monthly with their own external monitoring, EmailBison can be cheaper. For most teams, the protection layer Superkabe ships natively is worth the price difference." } },
             { "@type": "Question", "name": "Does EmailBison have built-in deliverability protection?", "acceptedAnswer": { "@type": "Answer", "text": "No. EmailBison is a sender-only platform. There is no auto-pause on bounce-rate threshold, no healing pipeline, no ESP-aware routing, and no built-in validation. Teams running EmailBison typically pair it with external monitoring tools and standalone validation services." } },
-            { "@type": "Question", "name": "How does Superkabe pricing compare to EmailBison?", "acceptedAnswer": { "@type": "Answer", "text": "EmailBison uses volume-based pricing tiers. At very high volumes (1M+ sends/mo) per-send cost is competitive. Superkabe uses flat per-tier pricing — Starter $19/mo, Pro $49/mo, Growth $199/mo (300K sends), Scale $349/mo (600K sends). For most teams sending under 600K/mo, Superkabe Scale plus the bundled protection layer is cheaper than EmailBison plus external monitoring + validation." } },
+            { "@type": "Question", "name": "How does Superkabe pricing compare to EmailBison?", "acceptedAnswer": { "@type": "Answer", "text": "EmailBison uses volume-based pricing tiers. At very high volumes (1M+ sends/mo) per-send cost is competitive. Superkabe uses flat per-tier pricing - Starter $19/mo, Pro $49/mo, Growth $199/mo (300K sends), Scale $349/mo (600K sends). For most teams sending under 600K/mo, Superkabe Scale plus the bundled protection layer is cheaper than EmailBison plus external monitoring + validation." } },
             { "@type": "Question", "name": "Is EmailBison good for agencies?", "acceptedAnswer": { "@type": "Answer", "text": "EmailBison's per-workspace tooling is less mature than Smartlead, Instantly, or Superkabe. Agencies running 20+ client workspaces typically find better isolation, per-client analytics, and recovery automation in those alternatives. EmailBison fits better for single-tenant teams running their own high-volume outbound." } },
             { "@type": "Question", "name": "Can I migrate from EmailBison to Superkabe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Connect your Gmail / Microsoft 365 / SMTP mailboxes via OAuth or encrypted credentials. Re-create sequences in Superkabe's native sequencer. Import lead history via CSV. Sending switches to Superkabe immediately; the protection layer (auto-pause, 5-phase healing, ESP-aware routing) runs against every send from day one." } },
-            { "@type": "Question", "name": "Why does ESP-aware routing matter at high volume?", "acceptedAnswer": { "@type": "Answer", "text": "At high mailbox counts the variance between mailboxes within the same ESP class is large. One Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5%. Per-mailbox ESP performance routing isolates this — Superkabe routes each lead to the strongest-performing mailbox for its recipient ESP. EmailBison treats all mailboxes within a provider as equivalent." } }
+            { "@type": "Question", "name": "Why does ESP-aware routing matter at high volume?", "acceptedAnswer": { "@type": "Answer", "text": "At high mailbox counts the variance between mailboxes within the same ESP class is large. One Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5%. Per-mailbox ESP performance routing isolates this - Superkabe routes each lead to the strongest-performing mailbox for its recipient ESP. EmailBison treats all mailboxes within a provider as equivalent." } }
         ]
     };
 
@@ -74,7 +74,7 @@ export default function SuperkabeVsEmailbisonPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    EmailBison targets the high-volume single-tenant slot — fast sending, volume-based pricing, sparser feature surface. Superkabe takes the opposite angle: sender plus the full deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing, validation, DNSBL monitoring) built in. Here is the head-to-head.
+                    EmailBison targets the high-volume single-tenant slot - fast sending, volume-based pricing, sparser feature surface. Superkabe takes the opposite angle: sender plus the full deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing, validation, DNSBL monitoring) built in. Here is the head-to-head.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -93,7 +93,7 @@ export default function SuperkabeVsEmailbisonPage() {
                     <div className="grid md:grid-cols-2 gap-4 mb-8">
                         <div className="bg-blue-50 border border-blue-200 p-6">
                             <h3 className="font-bold text-blue-900 mb-2">Superkabe</h3>
-                            <p className="text-gray-700 text-sm leading-relaxed">AI cold email sender + native deliverability protection. Sends through your Gmail / Microsoft 365 / SMTP mailboxes. Auto-pause at 3% bounce rate, 5-phase healing, ESP-aware per-mailbox routing, hybrid validation, 400+ DNSBL monitoring — all built in. Flat per-tier pricing.</p>
+                            <p className="text-gray-700 text-sm leading-relaxed">AI cold email sender + native deliverability protection. Sends through your Gmail / Microsoft 365 / SMTP mailboxes. Auto-pause at 3% bounce rate, 5-phase healing, ESP-aware per-mailbox routing, hybrid validation, 400+ DNSBL monitoring - all built in. Flat per-tier pricing.</p>
                         </div>
                         <div className="bg-white border border-gray-200 p-6 shadow-sm">
                             <h3 className="font-bold text-gray-900 mb-2">EmailBison</h3>
@@ -106,7 +106,7 @@ export default function SuperkabeVsEmailbisonPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">1. Native protection layer</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Superkabe ships auto-pause at 3% bounce rate (60-send minimum, 5-bounce safety net), a 5-phase healing pipeline, ESP-aware per-mailbox routing, hybrid validation (syntax / MX / disposable / catch-all + conditional MillionVerifier probe), and 400+ DNSBL monitoring — all native. EmailBison ships none of these. Teams running EmailBison typically need an external monitoring platform plus a standalone validation service to cover the same surface, which adds $50-200/mo on top of EmailBison&apos;s send fees.
+                            Superkabe ships auto-pause at 3% bounce rate (60-send minimum, 5-bounce safety net), a 5-phase healing pipeline, ESP-aware per-mailbox routing, hybrid validation (syntax / MX / disposable / catch-all + conditional MillionVerifier probe), and 400+ DNSBL monitoring - all native. EmailBison ships none of these. Teams running EmailBison typically need an external monitoring platform plus a standalone validation service to cover the same surface, which adds $50-200/mo on top of EmailBison&apos;s send fees.
                         </p>
                     </div>
 
@@ -143,7 +143,7 @@ export default function SuperkabeVsEmailbisonPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">2. Lighter UI for single-purpose teams</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            EmailBison&apos;s sparser feature surface is sometimes a benefit — single-purpose teams can ignore the chrome. Superkabe ships more features (validation, DNSBL monitoring, healing dashboard, ESP routing analytics) which is more value but also more surface to learn.
+                            EmailBison&apos;s sparser feature surface is sometimes a benefit - single-purpose teams can ignore the chrome. Superkabe ships more features (validation, DNSBL monitoring, healing dashboard, ESP routing analytics) which is more value but also more surface to learn.
                         </p>
                     </div>
 
@@ -193,13 +193,13 @@ export default function SuperkabeVsEmailbisonPage() {
 
                     <h2 id="migration" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Migration: EmailBison → Superkabe</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create sequences in Superkabe&apos;s native sequencer, and Superkabe takes over sending — with the protection layer running on every send from day one.
+                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create sequences in Superkabe&apos;s native sequencer, and Superkabe takes over sending - with the protection layer running on every send from day one.
                     </p>
                 </div>
 
                 <BottomCtaStrip
                     headline="Replace EmailBison with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, validation, 400+ DNSBL monitoring) — at flat pricing instead of stitching multiple tools."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, validation, 400+ DNSBL monitoring) - at flat pricing instead of stitching multiple tools."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -212,7 +212,7 @@ export default function SuperkabeVsEmailbisonPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Does EmailBison have built-in protection?</h3>
-                        <p className="text-gray-600 text-sm">No. EmailBison is sender-only — no auto-pause, no healing, no ESP-aware routing, no built-in validation. Teams using EmailBison typically pair it with external monitoring + validation tools.</p>
+                        <p className="text-gray-600 text-sm">No. EmailBison is sender-only - no auto-pause, no healing, no ESP-aware routing, no built-in validation. Teams using EmailBison typically pair it with external monitoring + validation tools.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">When does EmailBison&apos;s pricing actually win?</h3>

@@ -58,7 +58,7 @@ function getHelpLink(title: string | null | undefined): { url: string; label: st
     if (t.startsWith('early bounce signal'))
         return { url: 'https://support.google.com/a/answer/81126', label: 'Google: Email sender guidelines' };
 
-    // Campaign health findings — link to Superkabe docs
+    // Campaign health findings - link to Superkabe docs
     if (t.startsWith('no mailboxes'))
         return { url: '/docs/getting-started', label: 'Connect a mailbox' };
     if (t.startsWith('all mailboxes paused'))

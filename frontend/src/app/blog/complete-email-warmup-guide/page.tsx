@@ -207,7 +207,7 @@ export default function CompleteEmailWarmupGuide() {
 
 
  {/* Section 2 */}
- <h2 id="domain-vs-mailbox-warmup" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Domain warmup vs mailbox warmup — what is the difference</h2>
+ <h2 id="domain-vs-mailbox-warmup" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Domain warmup vs mailbox warmup - what is the difference</h2>
 
  <p className="text-gray-600 leading-relaxed mb-6">
  People use &quot;email warmup&quot; as a catch-all term, but there are two distinct processes happening. Understanding the difference matters because failing at either one can wreck your deliverability even if the other is perfect.
@@ -250,8 +250,8 @@ export default function CompleteEmailWarmupGuide() {
  </tr>
  <tr>
  <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Failure mode</td>
- <td className="py-4 px-6 text-red-600 text-sm">Domain blacklisted — all mailboxes affected</td>
- <td className="py-4 px-6 text-yellow-600 text-sm">Individual mailbox flagged — other mailboxes unaffected</td>
+ <td className="py-4 px-6 text-red-600 text-sm">Domain blacklisted - all mailboxes affected</td>
+ <td className="py-4 px-6 text-yellow-600 text-sm">Individual mailbox flagged - other mailboxes unaffected</td>
  </tr>
  </tbody>
  </table>

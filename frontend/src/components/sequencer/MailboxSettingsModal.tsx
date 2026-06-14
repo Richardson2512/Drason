@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api';
 import toast from 'react-hot-toast';
 
 /**
- * Per-mailbox settings — currently scoped to the custom tracking domain
+ * Per-mailbox settings - currently scoped to the custom tracking domain
  * configuration. Designed as a slot-in panel: when more per-mailbox
  * settings are added later (signature, daily limit override per-mailbox,
  * IMAP polling cadence) they live here as additional sections.
@@ -62,7 +62,7 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
     const refresh = async () => {
         try {
             const res = await apiClient<MailboxSettings>(`/api/sequencer/accounts?id=${accountId}`);
-            // The accounts endpoint returns a list — find ours.
+            // The accounts endpoint returns a list - find ours.
             const list = (Array.isArray(res) ? res : (res as unknown as { data?: MailboxSettings[] })?.data) as MailboxSettings[] | MailboxSettings | undefined;
             const arr: MailboxSettings[] = Array.isArray(list) ? list : list ? [list as MailboxSettings] : [];
             const found = arr.find(a => a.id === accountId) || null;
@@ -86,7 +86,7 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                 method: 'POST',
                 body: JSON.stringify({ domain }),
             });
-            toast.success(domain ? 'Tracking domain saved — verify DNS to activate' : 'Tracking domain cleared');
+            toast.success(domain ? 'Tracking domain saved - verify DNS to activate' : 'Tracking domain cleared');
             setReport(null);
             await refresh();
         } catch (err: unknown) {
@@ -245,7 +245,7 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                                     )}
                                 </div>
                                 <p className="text-xs text-gray-500 leading-relaxed">
-                                    By default, click and open tracking links route through <code className="text-[11px] bg-gray-100 px-1 py-0.5 rounded">superkabe.com</code>. Set a custom hostname (e.g. <code className="text-[11px] bg-gray-100 px-1 py-0.5 rounded">links.yourdomain.com</code>) so tracking URLs look like they originate from your own infrastructure — better deliverability, white-label appearance.
+                                    By default, click and open tracking links route through <code className="text-[11px] bg-gray-100 px-1 py-0.5 rounded">superkabe.com</code>. Set a custom hostname (e.g. <code className="text-[11px] bg-gray-100 px-1 py-0.5 rounded">links.yourdomain.com</code>) so tracking URLs look like they originate from your own infrastructure - better deliverability, white-label appearance.
                                 </p>
 
                                 {/* Hostname input */}
@@ -275,7 +275,7 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                                         </button>
                                     </div>
 
-                                    {/* Pre-flight DNS check — validate the typed hostname before saving.
+                                    {/* Pre-flight DNS check - validate the typed hostname before saving.
                                         Helps the user catch misconfigured CNAMEs without committing. */}
                                     <div className="mt-2 flex items-center gap-2">
                                         <button
@@ -290,21 +290,21 @@ export default function MailboxSettingsModal({ accountId, onClose }: { accountId
                                             {prechecking ? 'Checking DNS…' : 'Check DNS first'}
                                         </button>
                                         <span className="text-[10px] text-gray-400">
-                                            Optional — validate before save
+                                            Optional - validate before save
                                         </span>
                                     </div>
 
-                                    {/* Pre-flight result — success */}
+                                    {/* Pre-flight result - success */}
                                     {precheckReport && precheckReport.ok && (
                                         <div className="mt-2 rounded-lg p-2.5 bg-emerald-50 border border-emerald-200 flex items-start gap-2">
                                             <CheckCircle2 size={13} className="text-emerald-600 mt-0.5 shrink-0" />
                                             <div className="text-[11px] text-emerald-900 leading-relaxed">
-                                                <span className="font-semibold">DNS configured correctly.</span> Safe to save — verification will pass instantly.
+                                                <span className="font-semibold">DNS configured correctly.</span> Safe to save - verification will pass instantly.
                                             </div>
                                         </div>
                                     )}
 
-                                    {/* Pre-flight result — failure */}
+                                    {/* Pre-flight result - failure */}
                                     {precheckReport && !precheckReport.ok && (
                                         <div className="mt-2 rounded-lg p-2.5 bg-red-50 border border-red-200 flex flex-col gap-1">
                                             <div className="flex items-center gap-2">

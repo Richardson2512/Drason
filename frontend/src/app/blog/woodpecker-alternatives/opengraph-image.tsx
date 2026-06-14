@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Best Woodpecker Alternatives for Cold Email in 2026 — Superkabe';
+export const alt = 'Best Woodpecker Alternatives for Cold Email in 2026 - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default async function Image() {
                         Best Woodpecker alternatives
                     </div>
                     <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
-                        7 ranked tools with modern AI sequencing, automated auto-pause, and ESP-aware routing — features Woodpecker hasn&apos;t kept pace with.
+                        7 ranked tools with modern AI sequencing, automated auto-pause, and ESP-aware routing - features Woodpecker hasn&apos;t kept pace with.
                     </div>
                 </div>
 

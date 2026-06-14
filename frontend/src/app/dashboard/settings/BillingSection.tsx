@@ -4,7 +4,7 @@ import { apiClient } from '@/lib/api';
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
 import type { SubscriptionData, TierInfo } from '@/types/api';
 
-// Two-meter pricing — only sends + validation credits are tracked.
+// Two-meter pricing - only sends + validation credits are tracked.
 const TIER_INFO: Record<string, TierInfo> = {
     trial:      { name: 'Free Trial', price: '$0',     limits: { sends: 60000,    validationCredits: 10000 },    color: '#6B7280' },
     starter:    { name: 'Starter',    price: '$19',    limits: { sends: 20000,    validationCredits: 3000 },     color: '#3b82f6' },
@@ -169,7 +169,7 @@ export default function BillingSection() {
                 )}
             </div>
 
-            {/* Usage Metrics — only sends + validation credits are metered */}
+            {/* Usage Metrics - only sends + validation credits are metered */}
             <h3 className="text-lg font-bold mb-4 text-slate-800">Resource Usage (last 30 days)</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                 {[

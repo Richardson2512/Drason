@@ -158,7 +158,7 @@ export default function PredictiveRisksPage() {
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Predictive Risk Monitoring</h1>
                     <p className="text-sm text-gray-500 mt-1">
-                        Proactive campaign stall detection — catch issues before they happen
+                        Proactive campaign stall detection - catch issues before they happen
                     </p>
                 </div>
                 <button

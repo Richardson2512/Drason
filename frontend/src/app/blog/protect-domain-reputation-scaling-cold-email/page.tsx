@@ -69,7 +69,7 @@ export default function ProtectDomainReputationScalingArticle() {
  "name": "What bounce rate destroys domain reputation?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "ISPs start paying attention at 2% bounce rate. At 3-5%, deliverability degradation begins with inbox placement dropping measurably. At 5-8%, you are in the danger zone where blacklisting becomes likely. At 8%+, domain damage is almost certain. Gmail is the strictest — a sustained 3% bounce rate is enough to drop reputation from High to Medium. These thresholds are per-domain, not per-campaign."
+ "text": "ISPs start paying attention at 2% bounce rate. At 3-5%, deliverability degradation begins with inbox placement dropping measurably. At 5-8%, you are in the danger zone where blacklisting becomes likely. At 8%+, domain damage is almost certain. Gmail is the strictest - a sustained 3% bounce rate is enough to drop reputation from High to Medium. These thresholds are per-domain, not per-campaign."
  }
  },
  {
@@ -138,7 +138,7 @@ export default function ProtectDomainReputationScalingArticle() {
  />
 
  <p className="text-lg text-gray-700 leading-relaxed mb-12">
- Every cold email operation hits the same wall. 10 mailboxes works fine — you eyeball the metrics, catch problems manually, and nothing breaks. At 50, cracks appear. At 100+ without automated protection, you are running a domain graveyard. Here is how to scale without burning your infrastructure.
+ Every cold email operation hits the same wall. 10 mailboxes works fine - you eyeball the metrics, catch problems manually, and nothing breaks. At 50, cracks appear. At 100+ without automated protection, you are running a domain graveyard. Here is how to scale without burning your infrastructure.
  </p>
 
  {/* Key Takeaways */}
@@ -154,7 +154,7 @@ export default function ProtectDomainReputationScalingArticle() {
 
  <div className="prose prose-lg max-w-none">
  <p className="text-lg text-gray-600 leading-relaxed mb-8">
- Scaling cold email is straightforward in theory. Buy more domains. Set up more mailboxes. Push more leads into campaigns. The infrastructure is cheap — $10-15 per domain, $5-10 per mailbox per month. The hard part is not setting it up. It is keeping it alive. Because at scale, every small problem compounds into a big one, and the feedback loops that protected you at 10 mailboxes disappear entirely at 50.
+ Scaling cold email is straightforward in theory. Buy more domains. Set up more mailboxes. Push more leads into campaigns. The infrastructure is cheap - $10-15 per domain, $5-10 per mailbox per month. The hard part is not setting it up. It is keeping it alive. Because at scale, every small problem compounds into a big one, and the feedback loops that protected you at 10 mailboxes disappear entirely at 50.
  </p>
 
  {/* Section 1 - The Scaling Trap */}
@@ -223,13 +223,13 @@ export default function ProtectDomainReputationScalingArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The takeaway: 2% is the universal safety threshold. Below 2% at every ISP, you are in the clear. Above 2%, you are in warning territory at the strictest ISPs. Your internal auto-pause threshold should be set well below the danger zone — we recommend pausing at 3% to catch problems before they reach 5%. For a deeper analysis of these thresholds, see our <Link href="/blog/cold-email-bounce-rate-thresholds" className="text-blue-600 hover:text-blue-800 underline">cold email bounce rate thresholds guide</Link>.
+ The takeaway: 2% is the universal safety threshold. Below 2% at every ISP, you are in the clear. Above 2%, you are in warning territory at the strictest ISPs. Your internal auto-pause threshold should be set well below the danger zone - we recommend pausing at 3% to catch problems before they reach 5%. For a deeper analysis of these thresholds, see our <Link href="/blog/cold-email-bounce-rate-thresholds" className="text-blue-600 hover:text-blue-800 underline">cold email bounce rate thresholds guide</Link>.
  </p>
 
  {/* Section 3 - Safe Sending Volumes */}
  <h2 id="safe-volumes" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Safe sending volumes</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Volume limits depend primarily on mailbox age. A freshly created mailbox has no sending history — ISPs apply much tighter scrutiny to new senders. A mailbox that has been sending consistently for 3 months with clean metrics gets more leeway.
+ Volume limits depend primarily on mailbox age. A freshly created mailbox has no sending history - ISPs apply much tighter scrutiny to new senders. A mailbox that has been sending consistently for 3 months with clean metrics gets more leeway.
  </p>
 
  <div className="overflow-x-auto mb-8">
@@ -270,13 +270,13 @@ export default function ProtectDomainReputationScalingArticle() {
  Per domain, the math is straightforward. 3 mailboxes at 30-50 emails each gives you 90-150 emails per domain per day. That is the sweet spot. Pushing a single domain above 250 emails per day brings increased ISP attention regardless of mailbox age. Above 500 per day on a single domain, you are almost certainly triggering rate limiting at Gmail.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The temptation at scale is to squeeze more volume from existing infrastructure rather than adding new domains and mailboxes. Pushing 5 mailboxes to 75 sends each on a single domain (375 per day) feels more efficient than buying 2 new domains. But that efficiency is an illusion — the increased ISP scrutiny reduces inbox placement, which reduces reply rates, which reduces pipeline generation. You send more and get less.
+ The temptation at scale is to squeeze more volume from existing infrastructure rather than adding new domains and mailboxes. Pushing 5 mailboxes to 75 sends each on a single domain (375 per day) feels more efficient than buying 2 new domains. But that efficiency is an illusion - the increased ISP scrutiny reduces inbox placement, which reduces reply rates, which reduces pipeline generation. You send more and get less.
  </p>
 
  {/* Section 4 - Separate Domain Strategy */}
  <h2 id="separate-domains" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The separate domain strategy</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is non-negotiable: never send cold outreach from your primary business domain. Your primary domain (yourcompany.com) carries your brand reputation, your customer communications, your transactional emails, and your inbound marketing. If cold outreach damages that domain, everything breaks — customer emails go to spam, password reset emails do not arrive, your support system fails.
+ This is non-negotiable: never send cold outreach from your primary business domain. Your primary domain (yourcompany.com) carries your brand reputation, your customer communications, your transactional emails, and your inbound marketing. If cold outreach damages that domain, everything breaks - customer emails go to spam, password reset emails do not arrive, your support system fails.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Instead, use separate domains dedicated to outreach. The naming conventions that work:
@@ -291,7 +291,7 @@ export default function ProtectDomainReputationScalingArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Each outreach domain gets 3 mailboxes. For most operations, that means names like: alex@trycompany.com, sarah@trycompany.com, mike@trycompany.com. Use real first names — prospects notice patterns like sales1@, outreach@, or team@. The goal is to look like a real person sending from a real company, because that is what you are.
+ Each outreach domain gets 3 mailboxes. For most operations, that means names like: alex@trycompany.com, sarah@trycompany.com, mike@trycompany.com. Use real first names - prospects notice patterns like sales1@, outreach@, or team@. The goal is to look like a real person sending from a real company, because that is what you are.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  How many domains do you need? Simple formula: divide your target daily volume by 120 (assuming 3 mailboxes at 40 sends each). If you want to send 1,200 emails per day, you need 10 domains. If you want 3,000 per day, you need 25 domains. Each domain costs $10-15 per year. At the scale where domain count matters, the cost is trivially small compared to the pipeline at risk.
@@ -322,7 +322,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">DNS authentication</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- SPF, DKIM, and DMARC properly configured on every sending domain. Checked regularly — not just at setup. DNS records can break silently when hosting changes, domains renew, or someone makes an unrelated edit. Monthly automated verification catches drift before it impacts deliverability.
+ SPF, DKIM, and DMARC properly configured on every sending domain. Checked regularly - not just at setup. DNS records can break silently when hosting changes, domains renew, or someone makes an unrelated edit. Monthly automated verification catches drift before it impacts deliverability.
  </p>
  </div>
  </div>
@@ -342,7 +342,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">Volume limits per mailbox and domain</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Hard caps on sending volume that cannot be overridden by campaign configuration. 50 per mailbox per day maximum. 250 per domain per day maximum. These are not guidelines — they are enforced limits. The temptation to &quot;push volume just this once&quot; is what causes most scaling failures. Limits remove the temptation.
+ Hard caps on sending volume that cannot be overridden by campaign configuration. 50 per mailbox per day maximum. 250 per domain per day maximum. These are not guidelines - they are enforced limits. The temptation to &quot;push volume just this once&quot; is what causes most scaling failures. Limits remove the temptation.
  </p>
  </div>
  </div>
@@ -352,7 +352,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">Real-time monitoring</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Bounce events, complaint signals, and sending patterns tracked every 60 seconds across every mailbox and domain. Not daily. Not when you remember to check. Continuously. When bounce rate crosses a threshold, you know within a minute. This is the detection layer that makes everything else possible — auto-pause cannot work without real-time data.
+ Bounce events, complaint signals, and sending patterns tracked every 60 seconds across every mailbox and domain. Not daily. Not when you remember to check. Continuously. When bounce rate crosses a threshold, you know within a minute. This is the detection layer that makes everything else possible - auto-pause cannot work without real-time data.
  </p>
  </div>
  </div>
@@ -372,7 +372,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">Automated healing</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Pausing stops the bleeding. Healing fixes the wound. Automated healing takes a damaged mailbox or domain through graduated recovery — low-volume sending, metric verification, gradual increase, full restoration. Without automated healing, paused mailboxes sit indefinitely, reducing your effective infrastructure. With it, mailboxes return to production after recovery, maintaining your sending capacity.
+ Pausing stops the bleeding. Healing fixes the wound. Automated healing takes a damaged mailbox or domain through graduated recovery - low-volume sending, metric verification, gradual increase, full restoration. Without automated healing, paused mailboxes sit indefinitely, reducing your effective infrastructure. With it, mailboxes return to production after recovery, maintaining your sending capacity.
  </p>
  </div>
  </div>
@@ -415,7 +415,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Day 7: Domain damage compounds</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Two of the three domains are now at &quot;Bad&quot; reputation in Google Postmaster. One is on a Spamhaus warning list. Inbox placement at Gmail is below 10% for those domains. All mailboxes on those domains are effectively useless for reaching Gmail recipients. The third domain is at &quot;Low&quot; and declining. The team finally checks Postmaster and discovers the damage — but they are seeing data from 5 days ago.
+ Two of the three domains are now at &quot;Bad&quot; reputation in Google Postmaster. One is on a Spamhaus warning list. Inbox placement at Gmail is below 10% for those domains. All mailboxes on those domains are effectively useless for reaching Gmail recipients. The third domain is at &quot;Low&quot; and declining. The team finally checks Postmaster and discovers the damage - but they are seeing data from 5 days ago.
  </p>
  </div>
  </div>
@@ -441,7 +441,7 @@ export default function ProtectDomainReputationScalingArticle() {
  {/* Section 7 - Preventing Cascade */}
  <h2 id="preventing-cascade" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Preventing cascade failure with Superkabe</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Cascade failure is the real danger at scale. It is not a single mailbox bouncing — that is manageable. It is one mailbox degrading a domain, that domain degrading all its mailboxes, and those mailboxes pulling down campaigns that include mailboxes on other domains. One weak link cascades outward until the entire infrastructure is compromised.
+ Cascade failure is the real danger at scale. It is not a single mailbox bouncing - that is manageable. It is one mailbox degrading a domain, that domain degrading all its mailboxes, and those mailboxes pulling down campaigns that include mailboxes on other domains. One weak link cascades outward until the entire infrastructure is compromised.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Superkabe prevents cascade at three levels. First, <strong>60-second detection</strong>: bounce events and complaint signals are tracked continuously over a rolling 100-send window. A mailbox crossing 2% bounce rate enters the warning state; pause kicks in at 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. The problematic mailbox is isolated before the domain absorbs enough damage to degrade.
@@ -450,7 +450,7 @@ export default function ProtectDomainReputationScalingArticle() {
  Second, <strong>cross-entity correlation</strong>: if multiple mailboxes on the same domain show elevated bounces simultaneously, the system identifies the domain as the common factor and can pause all mailboxes on that domain preventatively. If the same lead list is causing bounces across multiple domains, the system catches the list-level issue rather than treating each domain as an independent problem.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Third, <strong>automated healing</strong>: paused mailboxes do not sit indefinitely. The healing pipeline moves them through graduated recovery — reduced volume, metric verification, gradual increase. Mailboxes return to production as quickly as ISP reputation allows. Your effective sending capacity recovers without manual intervention. See the details in our <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring documentation</Link>.
+ Third, <strong>automated healing</strong>: paused mailboxes do not sit indefinitely. The healing pipeline moves them through graduated recovery - reduced volume, metric verification, gradual increase. Mailboxes return to production as quickly as ISP reputation allows. Your effective sending capacity recovers without manual intervention. See the details in our <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring documentation</Link>.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The difference between protected and unprotected scaling is not subtle. It is the difference between a mailbox pause (resume in hours or days) and a domain burn (recover in weeks or months). At 50+ mailboxes, the question is not whether something will go wrong. It is whether your system catches it in 60 seconds or 7 days.

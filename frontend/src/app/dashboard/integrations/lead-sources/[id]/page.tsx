@@ -64,7 +64,7 @@ const STATE_STYLE: Record<string, { bg: string; fg: string }> = {
 };
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
     });
@@ -204,7 +204,7 @@ export default function LeadSourceDetailPage() {
                     <div>
                         <h1 className="text-xl font-bold text-gray-900 mb-0.5">{providerName}</h1>
                         <p className="text-xs text-slate-500">
-                            {conn.external_account_name ?? '—'} · connected {formatDate(conn.connected_at)}
+                            {conn.external_account_name ?? '-'} · connected {formatDate(conn.connected_at)}
                         </p>
                     </div>
                     {conn.last_error && (
@@ -221,7 +221,7 @@ export default function LeadSourceDetailPage() {
                 <div className="bg-white border border-[#E2E8F0] rounded-xl p-5 mb-6">
                     <div className="text-sm font-bold text-gray-900 mb-1">Import from Apollo URL</div>
                     <p className="text-xs text-slate-500 mb-4">
-                        Paste a URL from <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">app.apollo.io</code> — a people-search,
+                        Paste a URL from <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">app.apollo.io</code> - a people-search,
                         saved-search, or saved-list page. Superkabe replays the search via the official Apollo API.
                     </p>
 
@@ -254,7 +254,7 @@ export default function LeadSourceDetailPage() {
                         <div className="border border-emerald-100 bg-emerald-50/40 rounded-lg p-3 mb-4">
                             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-800 mb-1.5">
                                 <CheckCircle2 size={12} />
-                                URL parsed — kind: {preview.kind}
+                                URL parsed - kind: {preview.kind}
                                 {preview.estimated_count != null && (
                                     <span className="ml-auto text-emerald-900">
                                         ~{preview.estimated_count.toLocaleString()} contacts
@@ -291,7 +291,7 @@ export default function LeadSourceDetailPage() {
                                     value={targetCampaignId}
                                     onChange={setTargetCampaignId}
                                     options={[
-                                        { value: '', label: '— none —' },
+                                        { value: '', label: '- none -' },
                                         ...campaigns.map(c => ({ value: c.id, label: c.name })),
                                     ]}
                                 />
@@ -377,7 +377,7 @@ export default function LeadSourceDetailPage() {
                                     return (
                                         <tr key={j.id} className="border-b border-slate-50">
                                             <td className="py-2 pr-3 text-slate-700">{formatDate(j.started_at ?? j.created_at)}</td>
-                                            <td className="py-2 pr-3 text-slate-700">{j.source_kind ?? '—'}</td>
+                                            <td className="py-2 pr-3 text-slate-700">{j.source_kind ?? '-'}</td>
                                             <td className="py-2 pr-3">
                                                 <span
                                                     className="px-2 py-0.5 rounded-full text-[10px] font-semibold"
@@ -394,7 +394,7 @@ export default function LeadSourceDetailPage() {
                                             </td>
                                             <td className="py-2 pr-3 text-emerald-700">{j.total_created.toLocaleString()}</td>
                                             <td className="py-2 pr-3 text-slate-700">{j.total_updated.toLocaleString()}</td>
-                                            <td className="py-2 pr-3 text-red-700">{j.total_failed > 0 ? j.total_failed.toLocaleString() : '—'}</td>
+                                            <td className="py-2 pr-3 text-red-700">{j.total_failed > 0 ? j.total_failed.toLocaleString() : '-'}</td>
                                             <td className="py-2 pr-3 text-slate-700">{j.credits_consumed.toLocaleString()}</td>
                                         </tr>
                                     );

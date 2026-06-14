@@ -25,11 +25,11 @@ interface PreviewData {
     mailboxes:    { total: number; byProvider: Record<string, number> };
     leads: {
         total: number;
-        neverContacted: number;     // last_sent_time = null — always imported
+        neverContacted: number;     // last_sent_time = null - always imported
         staleContact: number;       // last contact older than threshold
         recentContact: number;      // last contact within threshold (default skip even in aggressive)
         completed: number;          // sequence finished without reply
-        optedOut: number;           // PAUSED / STOPPED — never imported
+        optedOut: number;           // PAUSED / STOPPED - never imported
     };
     sequenceSteps: number;
     recentContactThresholdDays: number;
@@ -58,7 +58,7 @@ interface KeyStatus {
 const POLL_INTERVAL_MS = 2500;
 
 const formatMinutesRemaining = (mins: number | null): string => {
-    if (mins == null) return '—';
+    if (mins == null) return '-';
     if (mins < 60) return `${mins}m`;
     const h = Math.floor(mins / 60);
     const m = mins % 60;
@@ -138,7 +138,7 @@ export default function ImportFromSmartleadPage() {
                 if (r?.job?.status === 'complete') {
                     setStep('handoff');
                 } else if (r?.job?.status === 'failed' || r?.job?.status === 'cancelled') {
-                    // Stop polling — error renders in step 3.
+                    // Stop polling - error renders in step 3.
                     if (pollRef.current) clearInterval(pollRef.current);
                 }
             } catch {
@@ -176,7 +176,7 @@ export default function ImportFromSmartleadPage() {
                 },
             );
             if (!stored?.success) throw new Error('store-key returned unsuccessful');
-            toast.success('API key stored — fetching preview…');
+            toast.success('API key stored - fetching preview…');
             setApiKey('');
             // Refresh key status, then move to preview.
             const ks = await apiClient<KeyStatus & { success: boolean }>('/api/migration/from-smartlead/key-status');
@@ -287,7 +287,7 @@ export default function ImportFromSmartleadPage() {
             {keyStatus?.connected && (
                 <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-3">
                     <div className="text-sm text-amber-900">
-                        <span className="font-semibold">Key on file</span> — auto-discards in{' '}
+                        <span className="font-semibold">Key on file</span> - auto-discards in{' '}
                         <span className="font-mono">{formatMinutesRemaining(keyStatus.minutesRemaining)}</span>
                     </div>
                     <button
@@ -370,7 +370,7 @@ function Stepper({ currentStep }: { currentStep: Step }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 1 — paste API key
+// Step 1 - paste API key
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepKey(props: {
@@ -400,7 +400,7 @@ function StepKey(props: {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm font-mono focus:outline-none focus:border-gray-700 mb-4"
             />
 
-            {/* Required authorization acknowledgment — recorded as a Consent
+            {/* Required authorization acknowledgment - recorded as a Consent
                 row so we have explicit, audit-grade evidence the customer
                 authorized us to act on their behalf with this key. */}
             <label className="flex items-start gap-2 p-4 bg-amber-50 border border-amber-200 rounded-xl cursor-pointer mb-4">
@@ -430,7 +430,7 @@ function StepKey(props: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 2 — preview
+// Step 2 - preview
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepPreview(props: {
@@ -463,7 +463,7 @@ function StepPreview(props: {
     const L = preview.leads;
     const threshold = preview.recentContactThresholdDays;
 
-    // What gets imported under the current selections — single source of truth.
+    // What gets imported under the current selections - single source of truth.
     const importing = (() => {
         if (mode === 'conservative') return L.neverContacted;
         const base = L.neverContacted + L.staleContact + L.completed;
@@ -485,7 +485,7 @@ function StepPreview(props: {
                 <Stat label="Leads (total)" value={L.total} />
             </div>
 
-            {/* Lead-bucket breakdown — informational, not interactive */}
+            {/* Lead-bucket breakdown - informational, not interactive */}
             <div className="border border-gray-200 rounded-xl overflow-hidden">
                 <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-600 uppercase tracking-wide">
                     Lead breakdown
@@ -493,21 +493,21 @@ function StepPreview(props: {
                 <ul className="divide-y divide-gray-100 text-sm">
                     <BucketRow
                         label="Never contacted"
-                        sublabel="No email has gone out yet — always safe to import"
+                        sublabel="No email has gone out yet - always safe to import"
                         value={L.neverContacted}
                         tag="always imports"
                         tagColor="emerald"
                     />
                     <BucketRow
                         label={`Last contacted more than ${threshold} days ago`}
-                        sublabel="Recipients unlikely to remember — safe to restart fresh from step 1"
+                        sublabel="Recipients unlikely to remember - safe to restart fresh from step 1"
                         value={L.staleContact}
                         tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
                         tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
                     />
                     <BucketRow
                         label={`Last contacted in the last ${threshold} days`}
-                        sublabel="Recipients likely to remember — duplicate first-touch may hurt reply rate"
+                        sublabel="Recipients likely to remember - duplicate first-touch may hurt reply rate"
                         value={L.recentContact}
                         tag={
                             mode === 'aggressive' && includeRecentContacts
@@ -518,14 +518,14 @@ function StepPreview(props: {
                     />
                     <BucketRow
                         label="Sequence completed"
-                        sublabel="Worked the lead, no reply — restart counts as a fresh outreach"
+                        sublabel="Worked the lead, no reply - restart counts as a fresh outreach"
                         value={L.completed}
                         tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
                         tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
                     />
                     <BucketRow
                         label="Paused or stopped"
-                        sublabel="You explicitly halted these — never imported"
+                        sublabel="You explicitly halted these - never imported"
                         value={L.optedOut}
                         tag="never imports"
                         tagColor="rose"
@@ -533,19 +533,19 @@ function StepPreview(props: {
                 </ul>
             </div>
 
-            {/* Mode picker — the core decision */}
+            {/* Mode picker - the core decision */}
             <div className="space-y-3">
                 <h3 className="text-sm font-bold text-gray-900">How should we handle in-flight leads?</h3>
                 <ModeRadio
                     selected={mode === 'aggressive'}
                     onSelect={() => setMode('aggressive')}
-                    title="Aggressive — import everything, restart from step 1"
+                    title="Aggressive - import everything, restart from step 1"
                     body={
                         <>
                             Best when you want to <strong>fully decommission Smartlead</strong> and
                             stop paying for two platforms. We import never-contacted, stale, and completed
                             leads (recent contacts default to <strong>skipped</strong>). Every imported
-                            lead starts at step 1 in Superkabe — recipients who already received emails
+                            lead starts at step 1 in Superkabe - recipients who already received emails
                             in Smartlead may receive step 1 again, possibly from a different mailbox.
                             Threading on existing sequences is broken.
                         </>
@@ -555,12 +555,12 @@ function StepPreview(props: {
                 <ModeRadio
                     selected={mode === 'conservative'}
                     onSelect={() => setMode('conservative')}
-                    title="Conservative — only never-contacted leads"
+                    title="Conservative - only never-contacted leads"
                     body={
                         <>
                             Best when you want <strong>existing sequences to finish on Smartlead</strong>{' '}
                             and start fresh on Superkabe with new leads. Mid-sequence leads stay in Smartlead
-                            until they finish naturally — recipients keep receiving follow-ups from the
+                            until they finish naturally - recipients keep receiving follow-ups from the
                             original sender in the original thread. You'll keep Smartlead live for 1-3 months
                             until those sequences drain.
                         </>
@@ -568,7 +568,7 @@ function StepPreview(props: {
                 />
             </div>
 
-            {/* Recent-contact toggle — only relevant in aggressive mode */}
+            {/* Recent-contact toggle - only relevant in aggressive mode */}
             {mode === 'aggressive' && L.recentContact > 0 && (
                 <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-xl cursor-pointer hover:bg-amber-100/50">
                     <input
@@ -583,7 +583,7 @@ function StepPreview(props: {
                         </div>
                         <div className="text-xs text-amber-800 mt-1">
                             They'll restart at step 1 in Superkabe. Recipients are likely to remember
-                            the prior outreach — leave this off if you have any high-touch / named accounts
+                            the prior outreach - leave this off if you have any high-touch / named accounts
                             in this bucket.
                         </div>
                     </div>
@@ -598,8 +598,8 @@ function StepPreview(props: {
                 <div className="text-3xl font-bold">{importing.toLocaleString()} leads</div>
                 <div className="text-xs opacity-75 mt-1">
                     {mode === 'aggressive'
-                        ? `Aggressive mode${includeRecentContacts ? ' + recent contacts' : ''} — imported leads start at step 1.`
-                        : 'Conservative mode — only never-contacted leads.'}
+                        ? `Aggressive mode${includeRecentContacts ? ' + recent contacts' : ''} - imported leads start at step 1.`
+                        : 'Conservative mode - only never-contacted leads.'}
                 </div>
             </div>
 
@@ -741,7 +741,7 @@ function Bucket({ label, data }: { label: string; data: Record<string, number> }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 3 — importing (poll loop)
+// Step 3 - importing (poll loop)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const STAT_LABELS: Record<string, string> = {
@@ -756,7 +756,7 @@ const STAT_LABELS: Record<string, string> = {
     variantsImported: 'A/B variants imported',
     leadsImported: 'Leads imported',
     leadsSkippedRecentContact: 'Leads skipped (recent contact)',
-    leadsSkippedInFlight: 'Leads skipped (mid-sequence — conservative)',
+    leadsSkippedInFlight: 'Leads skipped (mid-sequence - conservative)',
     leadsSkippedOptedOut: 'Leads skipped (paused/stopped)',
     leadsSkippedInvalidEmail: 'Leads skipped (invalid email)',
 };
@@ -815,7 +815,7 @@ function StepImporting({ job }: { job: ImportJob | null }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 4 — mailbox handoff
+// Step 4 - mailbox handoff
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepHandoff({ job }: { job: ImportJob | null }) {
@@ -830,7 +830,7 @@ function StepHandoff({ job }: { job: ImportJob | null }) {
                 <h2 className="text-lg font-bold text-gray-900 mb-1">Connect your mailboxes</h2>
                 <p className="text-sm text-gray-500">
                     Import is complete. To start sending from Superkabe, connect each of these mailboxes
-                    natively — we can't import OAuth tokens or SMTP passwords from Smartlead. Any mailbox
+                    natively - we can't import OAuth tokens or SMTP passwords from Smartlead. Any mailbox
                     you don't reconnect will sit idle; campaigns won't send through it.
                 </p>
             </div>

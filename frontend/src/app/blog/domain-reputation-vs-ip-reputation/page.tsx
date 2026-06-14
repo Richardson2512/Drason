@@ -77,7 +77,7 @@ export default function DomainReputationVsIpReputationArticle() {
  "name": "Can I control my IP reputation on shared sending platforms?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Only partially. Smartlead, Instantly, and similar platforms use shared IP pools. Your reputation on those IPs is influenced by every other sender on the same pool. You can mitigate this by choosing platforms with good sender policies, but you cannot fully control shared IP reputation. This is exactly why domain reputation matters more — it is the one you fully own."
+ "text": "Only partially. Smartlead, Instantly, and similar platforms use shared IP pools. Your reputation on those IPs is influenced by every other sender on the same pool. You can mitigate this by choosing platforms with good sender policies, but you cannot fully control shared IP reputation. This is exactly why domain reputation matters more - it is the one you fully own."
  }
  },
  {
@@ -138,7 +138,7 @@ export default function DomainReputationVsIpReputationArticle() {
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Domain reputation is the primary deliverability signal in 2026. IP reputation still matters but is secondary</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Cold email teams use shared IPs on Smartlead/Instantly — you cannot fully control IP reputation</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Cold email teams use shared IPs on Smartlead/Instantly - you cannot fully control IP reputation</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> DKIM signs your domain. DMARC enforces your domain. Switching platforms changes your IP but not your domain</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> &quot;Good&quot; domain reputation = 90%+ inbox. &quot;Bad&quot; = under 10%. The gap is enormous</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Domain reputation is what you own. IP reputation is what your platform shares. Protect the thing you control</li>
@@ -148,10 +148,10 @@ export default function DomainReputationVsIpReputationArticle() {
 <div className="prose prose-lg max-w-none">
  <h2 id="the-shift" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The shift from IP to domain reputation</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Before 2020, IP reputation was king. Spam filters weighted the sending IP address heavily in their filtering decisions. Senders invested in dedicated IPs, carefully warmed them over weeks, and guarded their IP reputation like it was the crown jewels. Sender Score — an IP-based metric — was the gold standard metric everyone referenced.
+ Before 2020, IP reputation was king. Spam filters weighted the sending IP address heavily in their filtering decisions. Senders invested in dedicated IPs, carefully warmed them over weeks, and guarded their IP reputation like it was the crown jewels. Sender Score - an IP-based metric - was the gold standard metric everyone referenced.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- That made sense in a world where most email senders controlled their own mail servers and IP addresses. But the industry shifted. Cloud-based sending platforms exploded. By 2022, the majority of cold email was sent through platforms like Smartlead, Instantly, Woodpecker, and Lemlist — all using shared IP pools. Suddenly, your IP reputation was partially determined by what thousands of other senders on the same pool were doing.
+ That made sense in a world where most email senders controlled their own mail servers and IP addresses. But the industry shifted. Cloud-based sending platforms exploded. By 2022, the majority of cold email was sent through platforms like Smartlead, Instantly, Woodpecker, and Lemlist - all using shared IP pools. Suddenly, your IP reputation was partially determined by what thousands of other senders on the same pool were doing.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Gmail recognized this reality. Between 2020 and 2024, Google incrementally shifted its filtering algorithms to weight domain-based signals more heavily than IP-based signals. The logic was straightforward: domain reputation is a more reliable indicator of sender intent because domains are persistent identifiers that senders control directly, while IPs are shared infrastructure that can change.
@@ -160,7 +160,7 @@ export default function DomainReputationVsIpReputationArticle() {
  Then came February 2024. Google and Yahoo jointly mandated DMARC authentication for bulk senders. This was the inflection point. DMARC is a domain-level protocol. It ties email authentication directly to the sending domain. The mandate effectively declared: your domain identity is what we are evaluating. Your domain is your reputation.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Microsoft followed with similar policies for Outlook. By mid-2025, every major ISP was weighting domain reputation as the primary deliverability signal. IP reputation did not become irrelevant — sending from a known-spam IP still hurts — but domain reputation became the dominant factor. For a deeper look at how this authentication stack works, read our <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:underline">SPF, DKIM, and DMARC setup guide</Link>.
+ Microsoft followed with similar policies for Outlook. By mid-2025, every major ISP was weighting domain reputation as the primary deliverability signal. IP reputation did not become irrelevant - sending from a known-spam IP still hurts - but domain reputation became the dominant factor. For a deeper look at how this authentication stack works, read our <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:underline">SPF, DKIM, and DMARC setup guide</Link>.
  </p>
 
  <h2 id="comparison-table" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Domain vs IP reputation: factor-by-factor comparison</h2>
@@ -234,28 +234,28 @@ export default function DomainReputationVsIpReputationArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">1. Shared IPs are the default</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Smartlead, Instantly, EmailBison — every major cold email platform uses shared IP pools. You do not get a dedicated IP. You cannot get a dedicated IP on most plans. Your IP reputation is co-owned with hundreds or thousands of other senders. Some of them are careful. Some are not. You have no control over what they do. This makes IP reputation fundamentally unreliable as a metric for cold email senders. Your domain reputation, on the other hand, is exclusively yours.
+ Smartlead, Instantly, EmailBison - every major cold email platform uses shared IP pools. You do not get a dedicated IP. You cannot get a dedicated IP on most plans. Your IP reputation is co-owned with hundreds or thousands of other senders. Some of them are careful. Some are not. You have no control over what they do. This makes IP reputation fundamentally unreliable as a metric for cold email senders. Your domain reputation, on the other hand, is exclusively yours.
  </p>
  </div>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">2. DKIM signs your domain</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- When you send through Smartlead, the DKIM signature on every email ties that email to your domain. Not to Smartlead&apos;s domain. Not to the IP address. To <em>your</em> domain. Every bounce, every spam complaint, every positive engagement — all attributed to your domain via that DKIM signature. This is by design. DKIM was created to provide domain-level accountability, and ISPs use it exactly that way.
+ When you send through Smartlead, the DKIM signature on every email ties that email to your domain. Not to Smartlead&apos;s domain. Not to the IP address. To <em>your</em> domain. Every bounce, every spam complaint, every positive engagement - all attributed to your domain via that DKIM signature. This is by design. DKIM was created to provide domain-level accountability, and ISPs use it exactly that way.
  </p>
  </div>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">3. DMARC enforcement is domain-based</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Your DMARC policy is published on your domain. It tells receiving servers what to do with emails that fail authentication checks for your domain. This is not optional since February 2024 — bulk senders must have DMARC. The enforcement mechanism is entirely domain-centric. ISPs evaluate whether emails claiming to be from your domain actually are from your domain, and your reputation is built on that evaluation.
+ Your DMARC policy is published on your domain. It tells receiving servers what to do with emails that fail authentication checks for your domain. This is not optional since February 2024 - bulk senders must have DMARC. The enforcement mechanism is entirely domain-centric. ISPs evaluate whether emails claiming to be from your domain actually are from your domain, and your reputation is built on that evaluation.
  </p>
  </div>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-4">4. Switching platforms changes IP, not domain</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Here is the scenario that makes this concrete. You have been sending cold email on Smartlead for 6 months. Your domain has accumulated bounces and some spam complaints. You decide to switch to Instantly hoping for a &quot;fresh start.&quot; Your IP changes — new platform, new IP pool. But your domain reputation follows you. Gmail still remembers every bounce and complaint from the last 6 months. The switch buys you nothing because the reputation signal that matters most is attached to the thing that did not change.
+ Here is the scenario that makes this concrete. You have been sending cold email on Smartlead for 6 months. Your domain has accumulated bounces and some spam complaints. You decide to switch to Instantly hoping for a &quot;fresh start.&quot; Your IP changes - new platform, new IP pool. But your domain reputation follows you. Gmail still remembers every bounce and complaint from the last 6 months. The switch buys you nothing because the reputation signal that matters most is attached to the thing that did not change.
  </p>
  </div>
 
@@ -265,7 +265,7 @@ export default function DomainReputationVsIpReputationArticle() {
 
  <h2 id="dmarc-impact" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How DMARC changed everything</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- DMARC — Domain-based Message Authentication, Reporting, and Conformance — is the protocol that formally linked email authentication to domain reputation. Before DMARC, SPF and DKIM operated somewhat independently. DMARC unified them under a domain-level policy that tells receiving servers: &quot;Here is what to do with emails from my domain that fail authentication.&quot;
+ DMARC - Domain-based Message Authentication, Reporting, and Conformance - is the protocol that formally linked email authentication to domain reputation. Before DMARC, SPF and DKIM operated somewhat independently. DMARC unified them under a domain-level policy that tells receiving servers: &quot;Here is what to do with emails from my domain that fail authentication.&quot;
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  There are three DMARC policy levels, and each has different implications for your domain reputation:
@@ -306,10 +306,10 @@ export default function DomainReputationVsIpReputationArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- For cold email teams, the recommended path is: start with <code className="text-sm bg-gray-100 px-1 ">p=none</code> to collect reports and verify your authentication is working. Once you confirm all legitimate email passes SPF and DKIM alignment, move to <code className="text-sm bg-gray-100 px-1 ">p=quarantine</code>. Most cold email teams should stay at quarantine. Moving to <code className="text-sm bg-gray-100 px-1 ">p=reject</code> is the strongest signal but also means any misconfigured sending source gets its emails blocked — no second chances.
+ For cold email teams, the recommended path is: start with <code className="text-sm bg-gray-100 px-1 ">p=none</code> to collect reports and verify your authentication is working. Once you confirm all legitimate email passes SPF and DKIM alignment, move to <code className="text-sm bg-gray-100 px-1 ">p=quarantine</code>. Most cold email teams should stay at quarantine. Moving to <code className="text-sm bg-gray-100 px-1 ">p=reject</code> is the strongest signal but also means any misconfigured sending source gets its emails blocked - no second chances.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The key insight: DMARC made domain reputation explicitly programmable. You are telling ISPs how seriously to take your domain&apos;s authentication, and they factor that signal into their reputation assessment. A domain with <code className="text-sm bg-gray-100 px-1 ">p=quarantine</code> and passing DKIM sends a fundamentally different signal than a domain with no DMARC at all. The first says &quot;I take responsibility for email sent from my domain.&quot; The second says nothing — and silence is interpreted as indifference.
+ The key insight: DMARC made domain reputation explicitly programmable. You are telling ISPs how seriously to take your domain&apos;s authentication, and they factor that signal into their reputation assessment. A domain with <code className="text-sm bg-gray-100 px-1 ">p=quarantine</code> and passing DKIM sends a fundamentally different signal than a domain with no DMARC at all. The first says &quot;I take responsibility for email sent from my domain.&quot; The second says nothing - and silence is interpreted as indifference.
  </p>
 
  <h2 id="deliverability-data" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Real data: domain reputation and deliverability</h2>
@@ -367,32 +367,32 @@ export default function DomainReputationVsIpReputationArticle() {
  <div className="bg-green-50/30 border border-green-100 p-6">
  <h3 className="font-bold text-green-800 mb-3">Domain reputation: YOU control this</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Bounce rate — by validating leads before sending</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> DNS authentication — SPF, DKIM, DMARC setup</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Sending volume — warm-up pacing and daily limits</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Complaint rate — targeting, copy quality, unsubscribe compliance</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Domain age and history — choosing and maintaining clean domains</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Monitoring and response — auto-pause on threshold breaches</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Bounce rate - by validating leads before sending</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> DNS authentication - SPF, DKIM, DMARC setup</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Sending volume - warm-up pacing and daily limits</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Complaint rate - targeting, copy quality, unsubscribe compliance</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Domain age and history - choosing and maintaining clean domains</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#10003;</span> Monitoring and response - auto-pause on threshold breaches</li>
  </ul>
  </div>
  <div className="bg-red-50/30 border border-red-100 p-6">
  <h3 className="font-bold text-red-800 mb-3">IP reputation: PARTIALLY controlled</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Shared pool behavior — depends on platform and other senders</li>
- <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Platform selection — better platforms have cleaner pools</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> Other senders on your IP — zero control</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> IP rotation policies — decided by the platform</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> IP warm-up — handled by platform, not by you</li>
- <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Dedicated IP — available on some platforms at higher tiers</li>
+ <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Shared pool behavior - depends on platform and other senders</li>
+ <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Platform selection - better platforms have cleaner pools</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> Other senders on your IP - zero control</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> IP rotation policies - decided by the platform</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#10007;</span> IP warm-up - handled by platform, not by you</li>
+ <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">~</span> Dedicated IP - available on some platforms at higher tiers</li>
  </ul>
  </div>
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The contrast is stark. Domain reputation has six levers you pull directly. IP reputation has maybe two — platform selection and potentially a dedicated IP upgrade — and even those are indirect. If you can only focus on protecting one type of reputation, focus on domain. It is the one that is both more impactful and more within your control.
+ The contrast is stark. Domain reputation has six levers you pull directly. IP reputation has maybe two - platform selection and potentially a dedicated IP upgrade - and even those are indirect. If you can only focus on protecting one type of reputation, focus on domain. It is the one that is both more impactful and more within your control.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This does not mean IP reputation is irrelevant. A terrible IP will hurt you regardless of domain reputation. But most cold email platforms maintain reasonably clean IP pools because it is in their business interest to do so. A terrible domain reputation, on the other hand, is entirely self-inflicted — and entirely preventable. For teams looking to scale without burning domains, our guide on <Link href="/blog/protect-domain-reputation-scaling-cold-email" className="text-blue-600 hover:underline">protecting domain reputation while scaling outreach</Link> covers the operational specifics.
+ This does not mean IP reputation is irrelevant. A terrible IP will hurt you regardless of domain reputation. But most cold email platforms maintain reasonably clean IP pools because it is in their business interest to do so. A terrible domain reputation, on the other hand, is entirely self-inflicted - and entirely preventable. For teams looking to scale without burning domains, our guide on <Link href="/blog/protect-domain-reputation-scaling-cold-email" className="text-blue-600 hover:underline">protecting domain reputation while scaling outreach</Link> covers the operational specifics.
  </p>
 
  <h2 id="monitoring-domain" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Monitoring domain reputation with Superkabe</h2>
@@ -408,8 +408,8 @@ export default function DomainReputationVsIpReputationArticle() {
  <ul className="space-y-3 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Per-domain bounce tracking:</strong> Bounce rates calculated per domain, not blended across your account. If one domain is accumulating bounces while others are clean, you see it immediately. Most sending platforms only show account-wide bounce rates which mask domain-specific problems.</span></li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>DNS compliance monitoring:</strong> Continuous checking of SPF, DKIM, and DMARC records for every sending domain. If a record changes, expires, or misconfigures, you are alerted before it impacts deliverability. DNS changes are a common cause of sudden reputation drops that teams struggle to diagnose.</span></li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Domain-level escalation:</strong> When a mailbox on a domain breaches thresholds, the system evaluates whether the problem is mailbox-specific or domain-wide. If multiple mailboxes on the same domain are degrading simultaneously, the escalation targets the domain — not just individual mailboxes. This prevents the whack-a-mole pattern where you pause one mailbox while others on the same domain continue accumulating damage.</span></li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Correlation engine:</strong> Cross-campaign pattern detection identifies when a domain&apos;s reputation is degrading across multiple campaigns simultaneously. If your domain is being used in 5 campaigns and 3 of them show rising bounce rates, the correlation engine flags the domain as the common factor — not the individual campaigns.</span></li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Domain-level escalation:</strong> When a mailbox on a domain breaches thresholds, the system evaluates whether the problem is mailbox-specific or domain-wide. If multiple mailboxes on the same domain are degrading simultaneously, the escalation targets the domain - not just individual mailboxes. This prevents the whack-a-mole pattern where you pause one mailbox while others on the same domain continue accumulating damage.</span></li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Correlation engine:</strong> Cross-campaign pattern detection identifies when a domain&apos;s reputation is degrading across multiple campaigns simultaneously. If your domain is being used in 5 campaigns and 3 of them show rising bounce rates, the correlation engine flags the domain as the common factor - not the individual campaigns.</span></li>
  </ul>
  </div>
 
@@ -425,7 +425,7 @@ export default function DomainReputationVsIpReputationArticle() {
  Domain reputation vs IP reputation is not a close call in 2026. Domain reputation is the primary deliverability signal. It is the signal ISPs weight most heavily. It is the signal attached to your permanent identifier. It is the signal you can actually control. And it is the signal that determines whether 90% of your emails reach the inbox or 30%.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- IP reputation still matters — do not ignore it. Choose reputable sending platforms with clean IP pools. But do not confuse secondary signals with primary ones. Your domain is your identity. Your domain reputation is your deliverability. Protect it accordingly.
+ IP reputation still matters - do not ignore it. Choose reputable sending platforms with clean IP pools. But do not confuse secondary signals with primary ones. Your domain is your identity. Your domain reputation is your deliverability. Protect it accordingly.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The teams that understand this distinction invest in domain-level monitoring, domain-level validation, and domain-level response automation. The teams that do not spend their time switching platforms, rotating IPs, and wondering why nothing improves. The domain follows you everywhere. Make sure it arrives with a good reputation.

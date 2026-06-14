@@ -19,7 +19,7 @@ function getTypeDescription(type: string) {
         case 'move_mailbox':
             return 'Redistribute this mailbox from an overloaded campaign to one that needs more senders. This balances the sending load and reduces the risk of reputation damage from over-concentration.';
         case 'add_mailbox':
-            return 'Add an underutilized healthy mailbox to a campaign that has too few senders. This improves redundancy — if one mailbox gets paused, the campaign continues sending through others.';
+            return 'Add an underutilized healthy mailbox to a campaign that has too few senders. This improves redundancy - if one mailbox gets paused, the campaign continues sending through others.';
         case 'remove_mailbox':
             return 'Remove an unhealthy mailbox from active campaigns to prevent deliverability damage. Unhealthy mailboxes with high bounce rates or connection failures can drag down the reputation of every campaign they touch.';
         default:
@@ -30,7 +30,7 @@ function getTypeDescription(type: string) {
 function getWhyExplanation(suggestion: LoadBalancingSuggestion) {
     switch (suggestion.type) {
         case 'move_mailbox':
-            return `This mailbox is carrying a disproportionate share of sending load. When a single mailbox handles too many campaigns — especially campaigns with few other mailboxes — it becomes a single point of failure. If this mailbox gets paused due to bounces or reputation issues, all connected campaigns lose a sender simultaneously.`;
+            return `This mailbox is carrying a disproportionate share of sending load. When a single mailbox handles too many campaigns - especially campaigns with few other mailboxes - it becomes a single point of failure. If this mailbox gets paused due to bounces or reputation issues, all connected campaigns lose a sender simultaneously.`;
         case 'add_mailbox':
             return `Campaign "${suggestion.to_campaign_name}" currently has very few mailboxes. If even one mailbox gets paused due to health issues, the remaining mailboxes must absorb all the sending volume, increasing their individual bounce risk. Adding more mailboxes distributes the load and provides fault tolerance.`;
         case 'remove_mailbox':
@@ -46,7 +46,7 @@ function getHowExplanation(suggestion: LoadBalancingSuggestion) {
             return [
                 'Identify an underutilized mailbox on the same domain with good health metrics',
                 `Add the replacement mailbox to campaign "${suggestion.from_campaign_name}"`,
-                'The overloaded mailbox remains in the campaign — this adds capacity rather than removing it',
+                'The overloaded mailbox remains in the campaign - this adds capacity rather than removing it',
                 'Monitor bounce rates and engagement for both mailboxes over the next 24-48 hours',
             ];
         case 'add_mailbox':
@@ -168,7 +168,7 @@ function SuggestionsContent() {
                                 key={idx}
                                 className={`bg-white border rounded-xl transition-all duration-200 ${isExpanded ? 'border-blue-300 shadow-lg' : 'border-gray-200'}`}
                             >
-                                {/* Collapsed header — always visible */}
+                                {/* Collapsed header - always visible */}
                                 <div
                                     className="p-5 cursor-pointer flex items-start justify-between"
                                     onClick={() => setExpandedIdx(isExpanded ? null : idx)}
@@ -218,7 +218,7 @@ function SuggestionsContent() {
                                     </div>
                                 </div>
 
-                                {/* Expanded detail — What, Why, How */}
+                                {/* Expanded detail - What, Why, How */}
                                 {isExpanded && (
                                     <div className="px-5 pb-5 border-t border-gray-100">
                                         {/* What */}
@@ -278,7 +278,7 @@ function SuggestionsContent() {
                                                 </ol>
                                                 {suggestion.type === 'move_mailbox' && (
                                                     <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
-                                                        This is a manual action — review the suggestion and use the platform UI or the add/remove mailbox actions to rebalance.
+                                                        This is a manual action - review the suggestion and use the platform UI or the add/remove mailbox actions to rebalance.
                                                     </div>
                                                 )}
                                             </div>

@@ -1,17 +1,17 @@
 'use client';
 
 /**
- * SuppressionPicker — unified control for "don't include these leads."
+ * SuppressionPicker - unified control for "don't include these leads."
  *
  * Three modes, mutually exclusive:
- *   - 'none'           — no suppression. Default for new campaigns.
- *   - 'all_campaigns'  — drop leads whose email appears in any other
+ *   - 'none'           - no suppression. Default for new campaigns.
+ *   - 'all_campaigns'  - drop leads whose email appears in any other
  *                        campaign in this org (legacy boolean equivalent).
- *   - 'campaigns'      — drop leads from a user-picked subset of campaigns;
+ *   - 'campaigns'      - drop leads from a user-picked subset of campaigns;
  *                        optionally add individual emails via the
  *                        "specific leads" sub-picker.
  *
- * The component is intentionally stateless about persistence — it emits
+ * The component is intentionally stateless about persistence - it emits
  * the canonical `SuppressionRule[]` shape the backend stores. Hosts use
  * this both in the new-campaign wizard and the edit add-leads flow.
  */
@@ -62,7 +62,7 @@ function inferMode(rules: SuppressionRule[]): SuppressionMode {
 
 export default function SuppressionPicker({ currentCampaignId, rules, onChange }: Props) {
     // Mode is local UI state. Once the user picks a mode, we never re-derive
-    // it from rules — clicking "Pick campaigns" with no rules yet is a valid
+    // it from rules - clicking "Pick campaigns" with no rules yet is a valid
     // intermediate state (user is about to tick their first campaign), and
     // auto-syncing from inferMode(rules) would bounce them back to 'none'.
     //
@@ -94,11 +94,11 @@ export default function SuppressionPicker({ currentCampaignId, rules, onChange }
     const [leadModalOpen, setLeadModalOpen] = useState(false);
 
     // Fetch the campaign list when we're in (or just entered) 'campaigns'
-    // mode. Only fires once — campaigns are stable enough that one load per
+    // mode. Only fires once - campaigns are stable enough that one load per
     // picker mount is fine; if the user adds a campaign elsewhere mid-edit
     // we'd miss it, but that's a rare enough flow to not warrant polling.
     //
-    // apiClient auto-unwraps {success, data} envelopes — so the response is
+    // apiClient auto-unwraps {success, data} envelopes - so the response is
     // already the array, not the wrapper. Don't read .data off it.
     useEffect(() => {
         if (mode !== 'campaigns') return;
@@ -283,7 +283,7 @@ export default function SuppressionPicker({ currentCampaignId, rules, onChange }
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Modal — paginated lead picker scoped to the chosen source campaigns
+// Modal - paginated lead picker scoped to the chosen source campaigns
 // ────────────────────────────────────────────────────────────────────
 
 function LeadPickerModal({

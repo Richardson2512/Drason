@@ -53,7 +53,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  "name": "Is there a tool that automatically pauses cold email campaigns before deliverability tanks?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Superkabe monitors bounce rates in real-time over a rolling 100-send window. A 2% bounce rate fires the warning state; the pause threshold is 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes — all preventing domain burnout before ISPs flag your domains."
+ "text": "Yes. Superkabe monitors bounce rates in real-time over a rolling 100-send window. A 2% bounce rate fires the warning state; the pause threshold is 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes - all preventing domain burnout before ISPs flag your domains."
  }
  },
  {
@@ -130,9 +130,9 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Agencies burn through domains 3-5x faster than single-brand senders due to volume, client diversity, and multi-platform complexity</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Manual monitoring breaks down beyond 30 domains — automated protection is the only scalable approach</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Manual monitoring breaks down beyond 30 domains - automated protection is the only scalable approach</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe pauses mailboxes at 3% bounce rate (after 60 sends) with a 2% warning level and a 5-bounce absolute safety net; domain pause kicks in at 30% unhealthy mailboxes (warning) / 50% (pause)</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> A 50-client agency typically needs 150-250 domains and 450-1,000 mailboxes — all requiring continuous monitoring</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> A 50-client agency typically needs 150-250 domains and 450-1,000 mailboxes - all requiring continuous monitoring</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Cross-platform monitoring across Smartlead, Instantly, and EmailBison eliminates blind spots that cause domain loss</li>
  </ul>
  </div>
@@ -148,7 +148,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  Agencies burn domains 3-5x faster than single-brand senders because they combine high volume, inconsistent lead quality across clients, and multi-platform complexity into a single infrastructure. A domain that would last 6-12 months for a single company often lasts only 4-8 weeks in an agency environment without protection.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The root causes are structural. Each new client brings a different ICP, different lead sources, and different tolerance for data quality. An agency running 30 clients might ingest leads from Clay, Apollo, ZoomInfo, and manual scraping simultaneously. When one client&apos;s lead list contains 8% invalid addresses, the resulting bounces damage domains shared across the agency&apos;s infrastructure — not just that client&apos;s campaigns.
+ The root causes are structural. Each new client brings a different ICP, different lead sources, and different tolerance for data quality. An agency running 30 clients might ingest leads from Clay, Apollo, ZoomInfo, and manual scraping simultaneously. When one client&apos;s lead list contains 8% invalid addresses, the resulting bounces damage domains shared across the agency&apos;s infrastructure - not just that client&apos;s campaigns.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The compounding problem is what makes agencies especially vulnerable. A single bad batch pushes a domain above the 5% bounce threshold. ISPs downgrade the domain&apos;s reputation. Every mailbox on that domain starts landing in spam. The agency replaces the domain, but the new domain inherits none of the warm-up history. Meanwhile, the client&apos;s campaigns stall for 2-3 weeks during warm-up. At 50 clients, this cycle repeats weekly.
@@ -157,18 +157,18 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Top 5 reasons agencies lose domains</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Unverified lead lists</strong> — Client-supplied leads bypass verification, generating 5-15% hard bounce rates</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>No per-domain monitoring</strong> — Aggregate dashboards hide domain-level spikes until damage is done</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Over-sending during warm-up</strong> — Pressure to deliver results pushes volume beyond what new domains can handle</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Cross-platform blind spots</strong> — Domains used across Smartlead and Instantly accumulate bounces that neither platform surfaces holistically</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Delayed reaction times</strong> — Manual checking happens once daily at best; bounce damage compounds within hours</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Unverified lead lists</strong> - Client-supplied leads bypass verification, generating 5-15% hard bounce rates</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>No per-domain monitoring</strong> - Aggregate dashboards hide domain-level spikes until damage is done</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Over-sending during warm-up</strong> - Pressure to deliver results pushes volume beyond what new domains can handle</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Cross-platform blind spots</strong> - Domains used across Smartlead and Instantly accumulate bounces that neither platform surfaces holistically</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">●</span> <strong>Delayed reaction times</strong> - Manual checking happens once daily at best; bounce damage compounds within hours</li>
  </ul>
  </div>
 
  {/* Section 2 */}
  <h2 id="what-automated-protection-does" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What does automated infrastructure protection actually do?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Automated infrastructure protection continuously monitors every domain, mailbox, and DNS record in your sending infrastructure and takes protective action — pausing, gating, or alerting — before deliverability thresholds are breached. It replaces the manual process of checking dashboards, pulling reports, and reacting to problems after they have already caused damage.
+ Automated infrastructure protection continuously monitors every domain, mailbox, and DNS record in your sending infrastructure and takes protective action - pausing, gating, or alerting - before deliverability thresholds are breached. It replaces the manual process of checking dashboards, pulling reports, and reacting to problems after they have already caused damage.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The core difference between manual monitoring and automated protection is timing. Manual monitoring is reactive: you discover a domain has a 12% bounce rate during your morning check, but the damage occurred at 2 AM. Automated protection is proactive: it detects the bounce rate climbing past 3% and pauses the affected mailbox within minutes, before the domain reputation is degraded.
@@ -249,14 +249,14 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  When a mailbox is paused, Superkabe doesn&apos;t just stop sending. It initiates an automated healing process that monitors the domain&apos;s recovery trajectory. The healing service tracks bounce rate decay over rolling windows, validates DNS records remain correctly configured, and verifies that the underlying cause (bad leads, configuration issues) has been addressed before allowing the mailbox to resume.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
- This prevents the common agency failure mode of immediately re-enabling a paused mailbox — which causes the same bounces to recur, compounding damage instead of allowing recovery.
+ This prevents the common agency failure mode of immediately re-enabling a paused mailbox - which causes the same bounces to recur, compounding damage instead of allowing recovery.
  </p>
  </div>
 
  {/* Section 4 */}
  <h2 id="domains-mailboxes-sizing" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How many domains and mailboxes does a 50-client agency need?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- A 50-client agency typically needs 150-250 domains and 450-1,000 mailboxes. The standard rule is 3-5 domains per client with 3-4 mailboxes per domain. Each mailbox sends 20-30 emails per day to stay within safe sending limits. This infrastructure generates 9,000-30,000 emails daily — every one of which needs monitoring.
+ A 50-client agency typically needs 150-250 domains and 450-1,000 mailboxes. The standard rule is 3-5 domains per client with 3-4 mailboxes per domain. Each mailbox sends 20-30 emails per day to stay within safe sending limits. This infrastructure generates 9,000-30,000 emails daily - every one of which needs monitoring.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The sizing depends on several factors: client ICP breadth (broader targeting requires more domains to distribute risk), sending volume per client, and the agency&apos;s tolerance for domain replacement costs. Agencies that skimp on domain count end up concentrating too much volume on too few domains, which accelerates burnout.
@@ -309,7 +309,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  Yes. Superkabe integrates natively with Smartlead, Instantly, and EmailBison, providing a single unified dashboard for all sending infrastructure regardless of which platform each campaign runs on. This eliminates the most dangerous blind spot agencies face: domains accumulating bounce damage across multiple platforms that no single platform dashboard reveals.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Most agencies use multiple sending platforms — often Smartlead for high-volume campaigns and Instantly for specific client workflows. A domain might be used in Smartlead for Client A and Instantly for Client B. If Client B&apos;s campaign generates bounces in Instantly, the Smartlead dashboard shows no issues for that domain. But ISPs don&apos;t care which platform sent the email — they track reputation per domain. The damage from Instantly affects Smartlead deliverability, and the agency doesn&apos;t see it until both clients&apos; campaigns are landing in spam.
+ Most agencies use multiple sending platforms - often Smartlead for high-volume campaigns and Instantly for specific client workflows. A domain might be used in Smartlead for Client A and Instantly for Client B. If Client B&apos;s campaign generates bounces in Instantly, the Smartlead dashboard shows no issues for that domain. But ISPs don&apos;t care which platform sent the email - they track reputation per domain. The damage from Instantly affects Smartlead deliverability, and the agency doesn&apos;t see it until both clients&apos; campaigns are landing in spam.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Superkabe solves this by aggregating bounce data, campaign metrics, and DNS health across all connected platforms into a single domain-level view. When a domain&apos;s combined bounce rate across all platforms approaches the warning threshold, Superkabe alerts and can auto-pause the affected mailboxes on every platform simultaneously.
@@ -318,10 +318,10 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Supported platform integrations</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Smartlead</strong> — Campaign sync, bounce rate monitoring, auto-pause, mailbox health tracking</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Instantly</strong> — Campaign sync, domain-level bounce aggregation, automated campaign controls</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Reply.io</strong> — On the roadmap (target Q2 2026); not yet a connected platform</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>EmailBison</strong> — Full infrastructure sync, bounce tracking, automated protection rules</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Smartlead</strong> - Campaign sync, bounce rate monitoring, auto-pause, mailbox health tracking</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Instantly</strong> - Campaign sync, domain-level bounce aggregation, automated campaign controls</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>Reply.io</strong> - On the roadmap (target Q2 2026); not yet a connected platform</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">●</span> <strong>EmailBison</strong> - Full infrastructure sync, bounce tracking, automated protection rules</li>
  </ul>
  </div>
 
@@ -382,7 +382,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
 
  <BottomCtaStrip
                     headline="Stop losing domains to preventable bounce damage"
-                    body="Superkabe gives agencies automated, real-time infrastructure protection across every domain, mailbox, and sending platform. No more morning dashboard checks revealing overnight domain burns. No more clients leaving because reply rates collapsed. Protect your infrastructure before damage compounds — not after."
+                    body="Superkabe gives agencies automated, real-time infrastructure protection across every domain, mailbox, and sending platform. No more morning dashboard checks revealing overnight domain burns. No more clients leaving because reply rates collapsed. Protect your infrastructure before damage compounds - not after."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -391,7 +391,7 @@ export default function ColdEmailInfrastructureProtectionArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe monitors every domain and mailbox across your connected sending platforms in real-time. It auto-pauses mailboxes at bounce thresholds, gates domains before ISPs flag them, and provides a single dashboard for infrastructure health across Smartlead, Instantly, and EmailBison — so agencies can scale sending without scaling risk.
+ Superkabe monitors every domain and mailbox across your connected sending platforms in real-time. It auto-pauses mailboxes at bounce thresholds, gates domains before ISPs flag them, and provides a single dashboard for infrastructure health across Smartlead, Instantly, and EmailBison - so agencies can scale sending without scaling risk.
  </p>
  </div>
  </article>

@@ -59,7 +59,7 @@ const helpArticles: HelpArticle[] = [
     {
         title: 'Audit Logs Guide',
         href: '/docs/help/audit-logs',
-        description: 'Track every system action with full audit trail — pauses, resumes, rotations, bounces, and all automated decisions',
+        description: 'Track every system action with full audit trail - pauses, resumes, rotations, bounces, and all automated decisions',
         tags: ['audit', 'logs', 'history', 'tracking', 'timeline', 'activity', 'events', 'actions']
     },
     {
@@ -132,7 +132,7 @@ const helpArticles: HelpArticle[] = [
     {
         title: 'Campaign Health & Stalled Campaigns',
         href: '/docs/help/campaign-paused',
-        description: 'A campaign is stalled when it has active leads but no healthy mailboxes to send through. Campaigns never pause on bounce rate alone — only when all mailboxes are paused or removed.',
+        description: 'A campaign is stalled when it has active leads but no healthy mailboxes to send through. Campaigns never pause on bounce rate alone - only when all mailboxes are paused or removed.',
         tags: ['campaign', 'health', 'stalled', 'stuck', 'no mailboxes', 'sending stopped', 'not sending']
     },
     // ── New Help Articles ──
@@ -200,7 +200,7 @@ const helpArticles: HelpArticle[] = [
     {
         title: 'State Machine',
         href: '/docs/state-machine',
-        description: 'Entity lifecycle states and transition rules — how mailboxes, domains, and leads move between healthy, warning, paused, and recovery states',
+        description: 'Entity lifecycle states and transition rules - how mailboxes, domains, and leads move between healthy, warning, paused, and recovery states',
         tags: ['state', 'machine', 'lifecycle', 'transitions', 'flow', 'diagram', 'status change']
     },
     {
@@ -212,13 +212,13 @@ const helpArticles: HelpArticle[] = [
     {
         title: 'Platform Rules',
         href: '/docs/platform-rules',
-        description: 'Sending rules, rate limits, and ESP-specific constraints Superkabe applies — plus how connected import sources (Smartlead, Instantly, EmailBison) are handled',
+        description: 'Sending rules, rate limits, and ESP-specific constraints Superkabe applies - plus how connected import sources (Smartlead, Instantly, EmailBison) are handled',
         tags: ['rules', 'platform', 'rate limits', 'sending', 'limits', 'api', 'constraints', 'daily limit']
     },
     {
         title: 'Infrastructure Assessment',
         href: '/docs/infrastructure-assessment',
-        description: 'How initial infrastructure health assessment works at onboarding — DNS checks, bounce rate analysis, and connection validation',
+        description: 'How initial infrastructure health assessment works at onboarding - DNS checks, bounce rate analysis, and connection validation',
         tags: ['infrastructure', 'assessment', 'onboarding', 'dns', 'initial', 'first sync', 'evaluation']
     },
     // ── Integration Guides ──
@@ -479,7 +479,7 @@ export function HelpPanel({ isOpen, onClose }: HelpPanelProps) {
                         ) : (
                             <div className="space-y-2">
                                 {filteredArticles.map((article, i) => (
-                                    // Compound key — multiple articles legitimately share the same
+                                    // Compound key - multiple articles legitimately share the same
                                     // href (e.g. Lead Scoring + Risk Scoring both point to
                                     // /docs/risk-scoring since there's no dedicated lead-scoring doc yet).
                                     <ArticleCard key={`${article.href}-${article.title}-${i}`} article={article} onClose={onClose} />

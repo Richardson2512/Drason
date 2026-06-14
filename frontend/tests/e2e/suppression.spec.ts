@@ -1,5 +1,5 @@
 /**
- * Campaign suppression — E2E coverage.
+ * Campaign suppression - E2E coverage.
  *
  * Verifies the three suppression modes (none / all_campaigns / campaign-scoped),
  * the lead-picker endpoint contract, persistence + hydration, and the
@@ -25,7 +25,7 @@ async function createCampaign(page: Page, payload: Record<string, unknown>): Pro
     return json.data.id;
 }
 
-test.describe('suppression — API contract', () => {
+test.describe('suppression - API contract', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('lead-picker requires campaign_ids', async ({ page }) => {
@@ -127,7 +127,7 @@ test.describe('suppression — API contract', () => {
     });
 });
 
-test.describe('suppression — filter behavior at lead insert', () => {
+test.describe('suppression - filter behavior at lead insert', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('lead with email in suppression list is dropped at create', async ({ page }) => {
@@ -145,7 +145,7 @@ test.describe('suppression — filter behavior at lead insert', () => {
             suppressionRules: [{ kind: 'email', suppressed_email: blockedEmail }],
         });
 
-        // Read back leads — only the allowed one should be present.
+        // Read back leads - only the allowed one should be present.
         const res = await page.request.get(`/api/sequencer/campaigns/${campaignId}/leads?page=1&limit=50`);
         expect(res.status()).toBe(200);
         const json = await res.json();
@@ -167,7 +167,7 @@ test.describe('suppression — filter behavior at lead insert', () => {
             suppressionRules: [{ kind: 'email', suppressed_email: blocked }],
         });
 
-        // PATCH addLeads with both — only the non-suppressed should land.
+        // PATCH addLeads with both - only the non-suppressed should land.
         await page.request.patch(`/api/sequencer/campaigns/${campaignId}`, {
             data: {
                 addLeads: [

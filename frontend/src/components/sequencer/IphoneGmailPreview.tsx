@@ -408,7 +408,7 @@ function GmailMobileInbox({
                     pillFg={TOK.pillPromosFg}
                 />
 
-                {/* User's email — pinned at the top of the individual rows */}
+                {/* User's email - pinned at the top of the individual rows */}
                 <EmailRow
                     sender={sender || 'Sender'}
                     subject={subject}
@@ -663,7 +663,7 @@ export default function IphoneGmailPreview({
         if (!el) return;
         const ro = new ResizeObserver(() => {
             const w = el.clientWidth;
-            // Phone is narrow — only scale DOWN if the container is smaller
+            // Phone is narrow - only scale DOWN if the container is smaller
             // than the device width plus a little padding for the bezel.
             const target = VIRTUAL_W + 32;
             setScale(Math.min(1, w / target));

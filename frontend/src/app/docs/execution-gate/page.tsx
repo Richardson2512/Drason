@@ -51,11 +51,11 @@ export default function ExecutionGatePage() {
  <div className="bg-white border border-gray-200 p-6 mb-8 shadow-sm">
  <h3 className="text-lg font-semibold mb-4 text-gray-900">Gate Checks (in order)</h3>
  <ol className="space-y-3 text-gray-600">
- <li><strong>1. Campaign exists</strong> — Is the target campaign configured?</li>
- <li><strong>2. Campaign active</strong> — Is the campaign currently running?</li>
- <li><strong>3. Mailbox available</strong> — Are there healthy mailboxes?</li>
- <li><strong>4. Domain healthy</strong> — Is the domain in good standing?</li>
- <li><strong>5. Risk acceptable</strong> — Is the hard risk score below threshold?</li>
+ <li><strong>1. Campaign exists</strong> - Is the target campaign configured?</li>
+ <li><strong>2. Campaign active</strong> - Is the campaign currently running?</li>
+ <li><strong>3. Mailbox available</strong> - Are there healthy mailboxes?</li>
+ <li><strong>4. Domain healthy</strong> - Is the domain in good standing?</li>
+ <li><strong>5. Risk acceptable</strong> - Is the hard risk score below threshold?</li>
  </ol>
  </div>
 

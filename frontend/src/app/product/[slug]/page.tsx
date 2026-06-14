@@ -129,7 +129,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 pt-32 md:pt-40 pb-16">
                 <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-10 lg:gap-16">
-                    {/* Sticky left TOC — auto-extracts from <article> headings */}
+                    {/* Sticky left TOC - auto-extracts from <article> headings */}
                     <aside className="hidden lg:block">
                         <MaileveryToc />
                     </aside>
@@ -137,12 +137,12 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                     {/* Main article column */}
                     <main className="min-w-0 max-w-3xl">
                         <article>
-                            {/* Breadcrumb badge — situates this deep-dive page within the platform */}
+                            {/* Breadcrumb badge - situates this deep-dive page within the platform */}
                             <Link
                                 href="/product"
                                 className="inline-flex items-center gap-1.5 mb-6 text-[11px] font-semibold tracking-widest uppercase text-gray-500 hover:text-gray-900 transition-colors"
                             >
-                                <span>Part of Superkabe — the AI cold email platform</span>
+                                <span>Part of Superkabe - the AI cold email platform</span>
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             </Link>
 
@@ -158,7 +158,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
                                 badge="PRODUCT · 2026"
                                 eyebrow="Deep dive"
                                 tagline={deriveTagline(data.title)}
-                                sub="Superkabe — the AI cold email platform"
+                                sub="Superkabe - the AI cold email platform"
                             />
 
                             {tldrText && <TldrBlock text={tldrText} />}
@@ -203,7 +203,7 @@ export default async function DynamicProductPage({ params }: { params: Promise<{
 
                         <BottomCtaStrip
                             headline={`Ready to implement ${data.title}?`}
-                            body="Run your cold email outreach on Superkabe — AI sequences, multi-mailbox sending, and the full protection layer, all in one platform."
+                            body="Run your cold email outreach on Superkabe - AI sequences, multi-mailbox sending, and the full protection layer, all in one platform."
                             primaryCta={{ label: 'Start free trial', href: '/signup' }}
                             secondaryCta={{ label: 'See pricing', href: '/pricing' }}
                         />

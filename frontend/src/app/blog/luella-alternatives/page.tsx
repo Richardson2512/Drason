@@ -60,7 +60,7 @@ export default function LuellaAlternativesPage() {
         "@type": "FAQPage",
         "mainEntity": [
             { "@type": "Question", "name": "What is the best Luella alternative in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe is the strongest Luella alternative for teams who want AI-driven sequencing AND infrastructure protection. It ships native AI sequence generation, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and built-in auto-pause at 3% bounce rate after 60 sends, plus a 5-phase healing pipeline. Luella focuses on AI SDR persona and reply handling but does not ship native deliverability protection." } },
-            { "@type": "Question", "name": "Is Luella worth it for small SDR teams?", "acceptedAnswer": { "@type": "Answer", "text": "Luella's AI SDR concept is differentiated — autonomous reply handling, persona modeling, and goal-driven conversation. For small teams that want an AI to handle inbound replies end-to-end, the value is real. The trade-off is the lack of a deliverability protection layer; Luella senders still need an external monitoring stack to prevent domain burnout." } },
+            { "@type": "Question", "name": "Is Luella worth it for small SDR teams?", "acceptedAnswer": { "@type": "Answer", "text": "Luella's AI SDR concept is differentiated - autonomous reply handling, persona modeling, and goal-driven conversation. For small teams that want an AI to handle inbound replies end-to-end, the value is real. The trade-off is the lack of a deliverability protection layer; Luella senders still need an external monitoring stack to prevent domain burnout." } },
             { "@type": "Question", "name": "Does Luella include built-in bounce protection?", "acceptedAnswer": { "@type": "Answer", "text": "No. Luella reports bounce activity but does not auto-pause mailboxes when bounce rate crosses a threshold. There is no healing pipeline. For threshold-based auto-pause and 5-phase mailbox recovery, Superkabe is the only platform on this list that ships protection natively." } },
             { "@type": "Question", "name": "Can Luella scale to agency-level outbound?", "acceptedAnswer": { "@type": "Answer", "text": "Luella is built for SDR-team workflows rather than agency-scale per-client workspace management. Agencies running 50+ mailboxes per client typically need the per-workspace isolation, ESP-aware routing, and automated recovery that Smartlead, Instantly, or Superkabe provide." } },
             { "@type": "Question", "name": "How do I migrate from Luella to Superkabe?", "acceptedAnswer": { "@type": "Answer", "text": "Connect your Gmail, Microsoft 365, or SMTP mailboxes via OAuth or encrypted credentials. Re-build sequences in Superkabe's AI sequencer (or paste from Luella). Import contact lists via CSV. Sending switches to Superkabe immediately; the protection layer (auto-pause, 5-phase healing, ESP-aware routing) runs against every send from day one." } }
@@ -91,30 +91,30 @@ export default function LuellaAlternativesPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Luella took a swing at the "AI SDR" category — autonomous reply handling, goal-driven conversation, persona modeling. The execution is genuinely interesting. The gap is what every "AI SDR" tool shares: no deliverability protection layer. The AI can write smart replies all day, but if the sending domain burns, none of those replies land. Here are seven ranked Luella alternatives — most of which solve the AI side credibly while taking deliverability protection more seriously.
+                    Luella took a swing at the "AI SDR" category - autonomous reply handling, goal-driven conversation, persona modeling. The execution is genuinely interesting. The gap is what every "AI SDR" tool shares: no deliverability protection layer. The AI can write smart replies all day, but if the sending domain burns, none of those replies land. Here are seven ranked Luella alternatives - most of which solve the AI side credibly while taking deliverability protection more seriously.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Luella's AI SDR concept is differentiated; the deliverability layer is the gap</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe ships AI sequencing AND native auto-pause + 5-phase healing — the only one on this list that does both</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe ships AI sequencing AND native auto-pause + 5-phase healing - the only one on this list that does both</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead and Instantly are the most mature general-purpose alternatives</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reply.io is the closest direct multichannel alternative if AI replies are the priority</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is same-day — connect Gmail / Microsoft 365 / SMTP, sequencing swaps over</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is same-day - connect Gmail / Microsoft 365 / SMTP, sequencing swaps over</li>
                     </ul>
                 </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="why-look" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why teams leave Luella</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Luella sits in the "AI SDR" category — tools that pitch full autonomy on top of cold email. The pitch is compelling: stop hiring SDRs, let an AI handle replies, conversations, scheduling. In practice, three gaps push teams to look elsewhere.
+                        Luella sits in the "AI SDR" category - tools that pitch full autonomy on top of cold email. The pitch is compelling: stop hiring SDRs, let an AI handle replies, conversations, scheduling. In practice, three gaps push teams to look elsewhere.
                     </p>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-3">The three reasons teams leave</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No deliverability protection layer.</strong> AI reply handling is meaningless if the sending domain burns. Luella does not ship threshold-based auto-pause or a healing pipeline — domains fail silently while the AI keeps generating replies that nobody receives</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No deliverability protection layer.</strong> AI reply handling is meaningless if the sending domain burns. Luella does not ship threshold-based auto-pause or a healing pipeline - domains fail silently while the AI keeps generating replies that nobody receives</span></li>
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Limited mailbox-fleet tooling.</strong> Built around small-team workflows. Agencies running 50-200+ mailboxes per client find better per-workspace isolation in Smartlead, Instantly, or Superkabe</span></li>
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>AI quality is competitive but not unique.</strong> Every general-purpose sender now ships AI sequence generation. Luella's differentiator (autonomous reply handling) is replicable; the question is whether AI replies are worth giving up the protection layer most alternatives are starting to ship</span></li>
                         </ul>
@@ -123,9 +123,9 @@ export default function LuellaAlternativesPage() {
                     <h2 id="alternatives" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 Luella alternatives ranked</h2>
 
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — AI sequencing + protection layer in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - AI sequencing + protection layer in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe ships native AI sequence generation through your own Gmail, Microsoft 365, or SMTP mailboxes — and pairs it with the only built-in protection layer on this list. Pre-send validation (syntax / MX / disposable / catch-all / conditional MillionVerifier probe). Real-time bounce monitoring on a rolling 100-send window. Auto-pause at 3% bounce rate after a 60-send minimum. 5-phase healing pipeline that recovers paused mailboxes automatically. ESP-aware routing scores each mailbox by per-ESP performance.
+                            Superkabe ships native AI sequence generation through your own Gmail, Microsoft 365, or SMTP mailboxes - and pairs it with the only built-in protection layer on this list. Pre-send validation (syntax / MX / disposable / catch-all / conditional MillionVerifier probe). Real-time bounce monitoring on a rolling 100-send window. Auto-pause at 3% bounce rate after a 60-send minimum. 5-phase healing pipeline that recovers paused mailboxes automatically. ESP-aware routing scores each mailbox by per-ESP performance.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             For teams choosing between "AI replies but no protection" (Luella) and "protection but no AI" (legacy senders), Superkabe is the option that does both natively.
@@ -133,7 +133,7 @@ export default function LuellaAlternativesPage() {
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> AI-first teams running 10+ domains who can&apos;t afford to burn them</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> No autonomous AI SDR persona — sequences are AI-assisted, not fully autonomous reply handling</li>
+                            <li><strong>Limitation:</strong> No autonomous AI SDR persona - sequences are AI-assisted, not fully autonomous reply handling</li>
                         </ul>
                         <p className="text-sm mt-3">
                             <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link>
@@ -141,7 +141,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — mature sender with AI features</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - mature sender with AI features</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> ships AI sequence generation, mailbox rotation, A/B variants, and unlimited mailboxes at flat-tier pricing. Mature webhook ecosystem. Per-active-lead pricing scales with volume. No automated auto-pause.
                         </p>
@@ -153,7 +153,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — bundled warmup + AI</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - bundled warmup + AI</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> bundles a strong warmup network, B2B lead database, and AI features. Per-active-lead pricing scales sharply at the upper tiers. No auto-pause.
                         </p>
@@ -165,7 +165,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. Reply.io — multichannel with AI replies</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. Reply.io - multichannel with AI replies</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://reply.io" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Reply.io</a> is the closest direct alternative if autonomous reply handling is the priority. Native dialer, LinkedIn touches, and AI reply features. Per-user pricing.
                         </p>
@@ -177,7 +177,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist — personalization-first AI</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist - personalization-first AI</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features and AI-generated icebreakers. Lemwarm warmup network is widely respected. Per-user pricing.
                         </p>
@@ -189,7 +189,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. EmailBison — high-volume sender</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. EmailBison - high-volume sender</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets high-volume single-tenant teams with volume-based pricing. Sparser feature surface, no bundled warmup or AI features, but reliable at the upper tiers.
                         </p>
@@ -201,7 +201,7 @@ export default function LuellaAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Woodpecker — established sender, conservative AI</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Woodpecker - established sender, conservative AI</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> built its reputation on reliability and reply detection. AI features are present but not differentiated. No auto-pause.
                         </p>
@@ -297,7 +297,7 @@ export default function LuellaAlternativesPage() {
                     <h2 id="when-to-stay" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When to stay with Luella</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Autonomous reply handling is core — you specifically don&apos;t want a human SDR in the loop</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Autonomous reply handling is core - you specifically don&apos;t want a human SDR in the loop</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have an external monitoring stack covering deliverability protection</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Volume is moderate and per-domain risk is acceptable</li>
                         </ul>
@@ -315,7 +315,7 @@ export default function LuellaAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Replace Luella with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — without giving up AI sequencing quality."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - without giving up AI sequencing quality."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -324,7 +324,7 @@ export default function LuellaAlternativesPage() {
                 <div className="space-y-4 mb-12">
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">What is the best Luella alternative in 2026?</h3>
-                        <p className="text-gray-600 text-sm">Superkabe — native AI sequencing plus the only built-in protection layer (auto-pause at 3% bounce after 60 sends, 5-phase healing pipeline). Reply.io is closest if autonomous reply handling is the priority.</p>
+                        <p className="text-gray-600 text-sm">Superkabe - native AI sequencing plus the only built-in protection layer (auto-pause at 3% bounce after 60 sends, 5-phase healing pipeline). Reply.io is closest if autonomous reply handling is the priority.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Does Luella ship deliverability protection?</h3>
@@ -332,7 +332,7 @@ export default function LuellaAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Can I run Luella alongside Superkabe?</h3>
-                        <p className="text-gray-600 text-sm">In theory, but it duplicates the sender layer. Most teams pick one — Superkabe for protection-first AI sequencing, or Luella if autonomous reply handling is non-negotiable.</p>
+                        <p className="text-gray-600 text-sm">In theory, but it duplicates the sender layer. Most teams pick one - Superkabe for protection-first AI sequencing, or Luella if autonomous reply handling is non-negotiable.</p>
                     </div>
                 </div>
             </article>

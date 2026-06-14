@@ -4,7 +4,7 @@
 
 Native sending and the deliverability protection layer are one product, not two. Every send passes through SMTP transcript capture, RFC 3464 DSN parsing for asynchronous bounces, ARF feedback-loop ingestion (Yahoo, AOL, Microsoft, Comcast), Google Postmaster Tools and Microsoft SNDS reputation lookups, and the auto-pause + 5-phase healing state machine. There is no separate dashboard, no third-party deliverability add-on, no platform middleware to maintain.
 
-> **Guiding Principle**: Superkabe prevents irreversible outbound damage through conservative, explainable, rule-based control — wired directly into the sending pipeline so every send is observed and gated, not retrofitted from a dashboard.
+> **Guiding Principle**: Superkabe prevents irreversible outbound damage through conservative, explainable, rule-based control - wired directly into the sending pipeline so every send is observed and gated, not retrofitted from a dashboard.
 >
 > *Note: "Drason" is the original repository name. The product is "Superkabe".*
 
@@ -30,7 +30,7 @@ Native sending and the deliverability protection layer are one product, not two.
 ### What Superkabe Does
 
 **Native sending:**
-1. **Connects your mailboxes** — Gmail, Microsoft 365, or SMTP (OAuth where supported, encrypted credentials otherwise)
+1. **Connects your mailboxes** - Gmail, Microsoft 365, or SMTP (OAuth where supported, encrypted credentials otherwise)
 2. **Runs multi-step email sequences** with A/B variants, per-campaign schedule, daily limits, and send-time spreading
 3. **Routes each lead to the best mailbox** by 30-day per-ESP bounce/reply performance
 4. **Tracks opens, clicks, and replies** with HMAC-signed tracking URLs and IMAP reply polling
@@ -49,7 +49,7 @@ Native sending and the deliverability protection layer are one product, not two.
 ### What Superkabe Does NOT Do (By Design)
 
 - Detect spam filter placement (no seed-list testing)
-- Switch channels automatically (email only — no LinkedIn, no SMS)
+- Switch channels automatically (email only - no LinkedIn, no SMS)
 - Replace CRM or sales engagement platforms (no deal pipeline, no call tracking)
 - Sit in the middle of someone else's sender. Superkabe sends natively from your own mailboxes; the protection layer is part of every send.
 

@@ -1,5 +1,5 @@
 /**
- * Super Sender — E2E coverage for the dedicated-IP feature.
+ * Super Sender - E2E coverage for the dedicated-IP feature.
  *
  * What this verifies (without exercising real Polar/SES):
  *   - GET /api/super-sender returns the expected envelope for an authed user
@@ -11,7 +11,7 @@
  * What this does NOT cover (out of scope without external creds):
  *   - Real Polar checkout redirect
  *   - Real SES provisioning state transitions (the worker would advance them
- *     in stub mode but it's a 5-minute tick — we test the API surface instead)
+ *     in stub mode but it's a 5-minute tick - we test the API surface instead)
  */
 
 import { test, expect, type Page } from '@playwright/test';
@@ -29,7 +29,7 @@ async function login(page: Page) {
     expect(res.status(), `login should succeed`).toBe(200);
 }
 
-test.describe('super sender — pre-purchase', () => {
+test.describe('super sender - pre-purchase', () => {
     test.beforeEach(async ({ page }) => {
         await login(page);
     });
@@ -50,7 +50,7 @@ test.describe('super sender — pre-purchase', () => {
         const res = await page.goto('/dashboard/sequencer/super-sender');
         expect(res?.status()).toBeLessThan(400);
         const body = await page.locator('body').innerText();
-        // Either pre-purchase marketing or post-purchase cards — both
+        // Either pre-purchase marketing or post-purchase cards - both
         // surfaces should mention "Super Sender" prominently.
         expect(body).toContain('Super Sender');
     });
@@ -75,7 +75,7 @@ test.describe('super sender — pre-purchase', () => {
         const res = await page.request.post('/api/super-sender/bogus-id/assign', {
             data: {},
         });
-        // 400 (missing workspace_id) or 404 (id not found) — either is the
+        // 400 (missing workspace_id) or 404 (id not found) - either is the
         // contract: assignment must reject before a real attempt.
         expect([400, 404].includes(res.status())).toBe(true);
     });
@@ -104,7 +104,7 @@ test.describe('super sender — pre-purchase', () => {
     });
 });
 
-test.describe('super sender — SES SNS notifications', () => {
+test.describe('super sender - SES SNS notifications', () => {
     // The SNS endpoint is unauthenticated by design (AWS posts to it).
     // Verify the handler accepts the three SNS message types.
 
@@ -113,7 +113,7 @@ test.describe('super sender — SES SNS notifications', () => {
             data: {
                 Type: 'SubscriptionConfirmation',
                 TopicArn: 'arn:aws:sns:us-east-1:000000000000:test',
-                // SubscribeURL omitted — handler will skip the GET fetch.
+                // SubscribeURL omitted - handler will skip the GET fetch.
             },
         });
         expect(res.status()).toBe(200);
@@ -150,7 +150,7 @@ test.describe('super sender — SES SNS notifications', () => {
         expect(res.status()).toBe(200);
     });
 
-    test('malformed Message JSON returns 200 (defensive — never 5xx on SNS)', async ({ request }) => {
+    test('malformed Message JSON returns 200 (defensive - never 5xx on SNS)', async ({ request }) => {
         const res = await request.post('/api/super-sender/ses-notification', {
             data: { Type: 'Notification', Message: 'not-json' },
         });
@@ -158,7 +158,7 @@ test.describe('super sender — SES SNS notifications', () => {
     });
 });
 
-test.describe('super sender — dashboard surfaces', () => {
+test.describe('super sender - dashboard surfaces', () => {
     test.beforeEach(async ({ page }) => {
         await login(page);
     });

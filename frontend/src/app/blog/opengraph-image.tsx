@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Superkabe Blog — Cold email deliverability, reputation, and infrastructure';
+export const alt = 'Superkabe Blog - Cold email deliverability, reputation, and infrastructure';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -29,7 +29,7 @@ export default async function Image() {
  Deliverability, deconstructed.
  </div>
  <div style={{ fontSize: 28, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
- Cold email infrastructure, reputation, and validation — from the engineers behind Superkabe.
+ Cold email infrastructure, reputation, and validation - from the engineers behind Superkabe.
  </div>
  </div>
 

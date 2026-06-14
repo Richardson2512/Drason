@@ -1,5 +1,5 @@
 /**
- * Mailbox performance analytics — E2E coverage for the new endpoint.
+ * Mailbox performance analytics - E2E coverage for the new endpoint.
  *
  * Per-mailbox aggregates over the requested time range. Mirrors the
  * shape + behaviour of `/analytics/campaigns` so the FE consumer pattern
@@ -18,7 +18,7 @@ async function login(page: Page) {
     expect(res.status()).toBe(200);
 }
 
-test.describe('analytics — mailbox performance', () => {
+test.describe('analytics - mailbox performance', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('GET /analytics/mailboxes returns array shape', async ({ page }) => {

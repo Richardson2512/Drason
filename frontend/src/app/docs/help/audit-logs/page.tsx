@@ -27,7 +27,7 @@ export default function AuditLogsPage() {
  <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-12 ">
  <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
  <p className="text-blue-800 mb-4">
- Superkabe records every significant system action &mdash; mailbox pauses, lead state transitions, domain health changes, and campaign modifications &mdash; into an <strong>immutable audit log</strong>.
+ Superkabe records every significant system action - mailbox pauses, lead state transitions, domain health changes, and campaign modifications - into an <strong>immutable audit log</strong>.
  You can filter by entity type to investigate exactly what happened and when.
  </p>
  <p className="text-blue-700 text-sm">
@@ -38,7 +38,7 @@ export default function AuditLogsPage() {
  {/* What Gets Logged */}
  <h2 className="text-3xl font-bold mb-6 text-gray-900">What Events Does Superkabe Log?</h2>
  <p className="text-gray-600 mb-6">
- Every automated and manual action that changes the state of your infrastructure is recorded. Audit logs are immutable &mdash; once written, they cannot be modified or deleted.
+ Every automated and manual action that changes the state of your infrastructure is recorded. Audit logs are immutable - once written, they cannot be modified or deleted.
  </p>
 
  <div className="space-y-4 mb-12">

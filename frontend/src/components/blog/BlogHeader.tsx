@@ -41,7 +41,7 @@ export default function BlogHeader({ tag, title, dateModified, authorName, autho
                 </span>
             </div>
 
-            {/* Huge H1 — Mailivery uses an oversized weight to dominate the viewport */}
+            {/* Huge H1 - Mailivery uses an oversized weight to dominate the viewport */}
             <h1
                 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-8"
                 style={{ letterSpacing: '-0.02em' }}

@@ -86,7 +86,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
  "name": "How accurate is NeverBounce for catch-all detection?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "NeverBounce is reliable at detecting whether a domain is catch-all. The SMTP probe technique it uses — sending a test to a fake address and checking if the server accepts it — works well for this purpose. The limitation is not detection accuracy. It is that detecting catch-all status does not tell you whether the specific person you want to email actually has a mailbox there."
+ "text": "NeverBounce is reliable at detecting whether a domain is catch-all. The SMTP probe technique it uses - sending a test to a fake address and checking if the server accepts it - works well for this purpose. The limitation is not detection accuracy. It is that detecting catch-all status does not tell you whether the specific person you want to email actually has a mailbox there."
  }
  },
  {
@@ -233,7 +233,7 @@ export default function NeverBounceCatchAllDetectionArticle() {
  <div>
  <h4 className="font-semibold text-gray-800 text-sm mb-1">Layer 1: NeverBounce (pre-send filter)</h4>
  <p className="text-gray-600 text-sm leading-relaxed">
- Run your list through NeverBounce first. Remove all &quot;invalid&quot; and &quot;disposable&quot; results. These are definite bad addresses that should never reach a sender. NeverBounce catches these reliably. Keep the &quot;valid&quot; results. And keep the &quot;accept_all&quot; results too &mdash; those are the leads you are about to protect rather than discard.
+ Run your list through NeverBounce first. Remove all &quot;invalid&quot; and &quot;disposable&quot; results. These are definite bad addresses that should never reach a sender. NeverBounce catches these reliably. Keep the &quot;valid&quot; results. And keep the &quot;accept_all&quot; results too - those are the leads you are about to protect rather than discard.
  </p>
  </div>
  <div>

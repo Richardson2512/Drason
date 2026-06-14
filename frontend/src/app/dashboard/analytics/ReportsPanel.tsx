@@ -41,11 +41,11 @@ const REPORT_TYPES: ReportTypeOption[] = [
     { key: 'audit_logs', label: 'Audit Log Report', icon: '\u{1F4DC}', description: 'Complete action history and system events' },
     { key: 'load_balancing', label: 'Load Balancing Report', icon: '⚖️', description: 'Mailbox load distribution across campaigns' },
     { key: 'sequences', label: 'Sequences Report', icon: '\u{1F4DD}', description: 'Saved multi-step sequences with AI provenance' },
-    { key: 'super_sender', label: 'Super Sender Report', icon: '⚡', description: 'Dedicated IPs — state, warmup day, daily cap, 24h bounce/complaint stats' },
+    { key: 'super_sender', label: 'Super Sender Report', icon: '⚡', description: 'Dedicated IPs - state, warmup day, daily cap, 24h bounce/complaint stats' },
     { key: 'reply_quality', label: 'Reply Quality Report', icon: '\u{1F4AC}', description: 'Classified inbound replies (positive / hard_no / OOO / etc.) with AI re-classification trail' },
     { key: 'suppression', label: 'Suppression Report', icon: '\u{1F6AB}', description: 'Org-wide reply suppressions + per-campaign suppression rules' },
     { key: 'warmup', label: 'Warmup Pool Report', icon: '\u{1F525}', description: 'Mailboxes in the cross-tenant warmup pool, ramp progress, spam recovery' },
-    { key: 'full', label: 'Full Report', icon: '\u{1F4CB}', description: 'Everything — all data across all sections' },
+    { key: 'full', label: 'Full Report', icon: '\u{1F4CB}', description: 'Everything - all data across all sections' },
 ];
 
 const STATUS_OPTIONS: Record<string, string[]> = {
@@ -67,7 +67,7 @@ const STATUS_OPTIONS: Record<string, string[]> = {
 const STORAGE_KEY = 'superkabe_recent_reports';
 const PREVIEW_ROW_LIMIT = 50;
 
-// Minimal RFC 4180-ish CSV parser — handles quoted fields and "" escapes,
+// Minimal RFC 4180-ish CSV parser - handles quoted fields and "" escapes,
 // which is enough for the backend's csv-stringify output.
 function parseCsvRows(text: string, maxRows: number): { header: string[]; rows: string[][]; totalDataRows: number } {
     const rawLines = text.split(/\r?\n/);
@@ -76,7 +76,7 @@ function parseCsvRows(text: string, maxRows: number): { header: string[]; rows: 
         const t = l.trim();
         if (!t) continue;
         // Skip section dividers from the "full" report. We preview the first
-        // section only — the divider marks the start of the next section.
+        // section only - the divider marks the start of the next section.
         if (t.startsWith('---') && dataLines.length > 0) break;
         if (t.startsWith('---')) continue;
         dataLines.push(l);
@@ -315,7 +315,7 @@ export default function ReportsPage() {
                 </button>
             </div>
 
-            {/* Index view — original grid of report cards. As soon as a report is
+            {/* Index view - original grid of report cards. As soon as a report is
                 picked, this swaps for the split layout (left rail + right panel). */}
             {!selectedReport ? (
                 <div className="premium-card">
@@ -545,7 +545,7 @@ export default function ReportsPage() {
             </div>
             )}
 
-            {/* Preview modal — portalled to body so it's never clipped by the
+            {/* Preview modal - portalled to body so it's never clipped by the
                 dashboard's overflow:hidden shells. Renders the first N rows of
                 exactly what the CSV download would contain, parsed client-side
                 so there's no backend change. */}
@@ -566,7 +566,7 @@ export default function ReportsPage() {
                             <div className="min-w-0">
                                 <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                                     <span className="text-base leading-none">{selectedReport?.icon}</span>
-                                    {selectedReport?.label} — Preview
+                                    {selectedReport?.label} - Preview
                                 </h3>
                                 <p className="text-[11px] text-gray-500 mt-0.5">
                                     {previewing
@@ -575,7 +575,7 @@ export default function ReportsPage() {
                                             ? `Showing first ${preview.rows.length} of ${preview.totalDataRows} row${preview.totalDataRows === 1 ? '' : 's'}`
                                             : ''}
                                     {selectedType === 'full' && preview && (
-                                        <span className="ml-1 text-amber-700">· Full report has multiple sections — only the first is shown</span>
+                                        <span className="ml-1 text-amber-700">· Full report has multiple sections - only the first is shown</span>
                                     )}
                                 </p>
                             </div>
@@ -653,7 +653,7 @@ export default function ReportsPage() {
                 document.body,
             )}
 
-            {/* Recent reports modal — accessible from the page header so users
+            {/* Recent reports modal - accessible from the page header so users
                 can pull up history without first picking a report type. */}
             {recentOpen && typeof document !== 'undefined' && createPortal(
                 <div

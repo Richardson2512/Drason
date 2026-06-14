@@ -116,16 +116,16 @@ export default function SmartleadAlternativesPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem — and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked breakdown of the seven Smartlead alternatives that actually compete in 2026.
+                    Smartlead is one of the most reliable cold email senders on the market. But sending well is only half the deliverability problem - and several alternatives have moved further on the other half: protecting the infrastructure your campaigns run on. This is a ranked breakdown of the seven Smartlead alternatives that actually compete in 2026.
                 </p>
 
                 {/* Key Takeaways */}
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead remains a strong sender, but it does not ship native infrastructure protection — bounce monitoring and auto-pause are still manual</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead remains a strong sender, but it does not ship native infrastructure protection - bounce monitoring and auto-pause are still manual</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only alternative that runs native AI sequences AND a built-in 5-phase healing pipeline with auto-pause at 3% bounce rate</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly is the closest feature-for-feature competitor but charges per active lead — costly past 50K leads</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly is the closest feature-for-feature competitor but charges per active lead - costly past 50K leads</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> EmailBison undercuts Smartlead on price for high-volume single-tenant teams; Lemlist wins on personalization features</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Woodpecker, Saleshandy, and Mailshake are credible second-tier alternatives with narrower feature sets</li>
                     </ul>
@@ -145,8 +145,8 @@ export default function SmartleadAlternativesPage() {
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No native deliverability protection.</strong> Smartlead reports bounces and exposes a "category" field, but it does not auto-pause mailboxes that cross a bounce-rate threshold. Domains burn before anyone notices</span></li>
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No structured healing.</strong> When a mailbox does get paused, you bring it back manually. There is no quarantine → restricted-send → warm-recovery → healthy pipeline that the platform enforces</span></li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing at scale.</strong> Smartlead&apos;s pricing scales with active leads (12K, 30K, 60K, etc.) — agencies running 100,000+ active leads pay accordingly. Per-send pricing models can be cheaper at high volumes</span></li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>ESP routing is platform-level, not per-mailbox.</strong> Smartlead&apos;s ESP matching treats all Gmail mailboxes as equal. Teams running 200+ mailboxes know that one Gmail mailbox can have 0.1% bounce rate to Gmail recipients while another runs 2% — same provider, different reality</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing at scale.</strong> Smartlead&apos;s pricing scales with active leads (12K, 30K, 60K, etc.) - agencies running 100,000+ active leads pay accordingly. Per-send pricing models can be cheaper at high volumes</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>ESP routing is platform-level, not per-mailbox.</strong> Smartlead&apos;s ESP matching treats all Gmail mailboxes as equal. Teams running 200+ mailboxes know that one Gmail mailbox can have 0.1% bounce rate to Gmail recipients while another runs 2% - same provider, different reality</span></li>
                         </ul>
                     </div>
 
@@ -156,25 +156,25 @@ export default function SmartleadAlternativesPage() {
 
                     <h2 id="alternatives" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 Smartlead alternatives ranked</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Ranked by how completely each tool solves the cold-email problem — sending, validation, infrastructure protection, healing — not just by feature surface area.
+                        Ranked by how completely each tool solves the cold-email problem - sending, validation, infrastructure protection, healing - not just by feature surface area.
                     </p>
 
                     {/* 1. Superkabe */}
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — sender + protection layer in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - sender + protection layer in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe is the only platform on this list that does both halves of the cold-email problem natively. The sequencer side runs multi-step AI campaigns through your own Google Workspace, Microsoft 365, or custom SMTP mailboxes — scheduling, A/B variants, tracking, unified inbox, the whole stack. The protection side validates every lead pre-send (syntax / MX / disposable / catch-all / conditional MillionVerifier probe), monitors every mailbox in real time, auto-pauses at a 3% bounce rate after a 60-send minimum (with a 5-bounce safety net), and runs a 5-phase healing pipeline to recover paused mailboxes automatically.
+                            Superkabe is the only platform on this list that does both halves of the cold-email problem natively. The sequencer side runs multi-step AI campaigns through your own Google Workspace, Microsoft 365, or custom SMTP mailboxes - scheduling, A/B variants, tracking, unified inbox, the whole stack. The protection side validates every lead pre-send (syntax / MX / disposable / catch-all / conditional MillionVerifier probe), monitors every mailbox in real time, auto-pauses at a 3% bounce rate after a 60-send minimum (with a 5-bounce safety net), and runs a 5-phase healing pipeline to recover paused mailboxes automatically.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             What no other platform on this list does: ESP-aware routing that scores each mailbox by its 30-day bounce rate to a specific recipient ESP (Gmail vs Microsoft vs Yahoo) and blends a 60% capacity / 40% performance scoring model when picking which mailbox sends each lead. A 400+ DNSBL monitoring layer, correlation checks before pause, and the 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) all run automatically.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Sending happens through your own mailboxes — Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. There is no extra platform to maintain alongside Superkabe; the deliverability protection layer is part of every send, not a separate tool bolted on.
+                            Sending happens through your own mailboxes - Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. There is no extra platform to maintain alongside Superkabe; the deliverability protection layer is part of every send, not a separate tool bolted on.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Outbound teams running 10+ domains who care about not burning them</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> Native sequencer launched in 2026 — Smartlead has a longer track record at very high single-org volume</li>
+                            <li><strong>Limitation:</strong> Native sequencer launched in 2026 - Smartlead has a longer track record at very high single-org volume</li>
                         </ul>
                         <p className="text-sm mt-3">
                             <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link>
@@ -183,12 +183,12 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 2. Instantly */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Instantly — closest feature-for-feature competitor</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Instantly - closest feature-for-feature competitor</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> is Smartlead&apos;s most direct competitor. It ships unlimited mailboxes, a built-in warmup network, B2B lead database, and an inbox manager. The unified inbox is genuinely good. AI personalization is bundled. The platform feels more polished than Smartlead in places.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Where it pulls back: pricing scales sharply on active leads (Hyperscale tier hits $358/mo for 100K active leads). Deliverability monitoring is dashboard-based — there is no automated auto-pause at a configurable bounce-rate threshold. ESP routing is provider-level, not per-mailbox-performance.
+                            Where it pulls back: pricing scales sharply on active leads (Hyperscale tier hits $358/mo for 100K active leads). Deliverability monitoring is dashboard-based - there is no automated auto-pause at a configurable bounce-rate threshold. ESP routing is provider-level, not per-mailbox-performance.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Mid-size teams who want a single-vendor stack with bundled warmup</li>
@@ -199,12 +199,12 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 3. EmailBison */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. EmailBison — high-volume sender, single-tenant</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. EmailBison - high-volume sender, single-tenant</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets high-volume single-tenant teams. The pricing is volume-based and undercuts Smartlead at the upper tiers. There is no warmup network bundled (you bring your own), no built-in lead database, and the UI is sparser. What you get is fast, cheap sending with reliable webhook coverage.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            EmailBison does not ship native deliverability protection or a healing pipeline. ESP routing is basic. For agencies juggling many client workspaces, EmailBison gets harder to manage — Smartlead, Instantly, and Superkabe all do per-workspace isolation better.
+                            EmailBison does not ship native deliverability protection or a healing pipeline. ESP routing is basic. For agencies juggling many client workspaces, EmailBison gets harder to manage - Smartlead, Instantly, and Superkabe all do per-workspace isolation better.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Single-tenant teams with high send volume and a tight per-send budget</li>
@@ -215,9 +215,9 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 4. Lemlist */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist — personalization-first, multichannel</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist - personalization-first, multichannel</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features. Custom variables in images, dynamic landing pages, video personalization, AI-generated icebreakers — Lemlist invented or popularized most of these patterns and the execution is still ahead of competitors. The Lemwarm warmup network is widely respected.
+                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features. Custom variables in images, dynamic landing pages, video personalization, AI-generated icebreakers - Lemlist invented or popularized most of these patterns and the execution is still ahead of competitors. The Lemwarm warmup network is widely respected.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             Where it falls short for cold-at-scale: per-user pricing makes it expensive past 5 reps, deliverability monitoring is light, and large mailbox-fleet management is not the product&apos;s focus. Lemlist is best for SDR teams pushing personalization quality, not agencies running 1,500 mailboxes across clients.
@@ -231,7 +231,7 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 5. Woodpecker */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Woodpecker — established, conservative, strong reply detection</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Woodpecker - established, conservative, strong reply detection</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> has been around longer than most of the names on this list and built its reputation on reliability and reply detection. The "if-campaign" branching is genuinely useful for nurture-style outbound. Bounce shield blocks invalid addresses on the way out.
                         </p>
@@ -247,7 +247,7 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 6. Saleshandy */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Saleshandy — budget-friendly with built-in lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Saleshandy - budget-friendly with built-in lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a B2B lead database (700M+ contacts) with a sequencer at a price point that beats most premium tools. Email tracking, sequence templates, and A/B testing are all there. For teams that need both leads and a sender, the bundled model is attractive.
                         </p>
@@ -263,7 +263,7 @@ export default function SmartleadAlternativesPage() {
 
                     {/* 7. Mailshake */}
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake — simple, sales-team friendly</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake - simple, sales-team friendly</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> targets sales teams that want a simple sequencer with calling and LinkedIn touches alongside email. The UI is among the most approachable on this list, which matters if you onboard non-technical reps. Native dialer and calendar booking are genuinely integrated.
                         </p>
@@ -371,7 +371,7 @@ export default function SmartleadAlternativesPage() {
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        The pattern: every alternative on this list has a specific niche where it wins. None of them ship the protection layer. Superkabe is the only one that does — that&apos;s the whole positioning.
+                        The pattern: every alternative on this list has a specific niche where it wins. None of them ship the protection layer. Superkabe is the only one that does - that&apos;s the whole positioning.
                     </p>
 
                     <h2 id="when-to-stay" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When to stay with Smartlead</h2>
@@ -396,12 +396,12 @@ export default function SmartleadAlternativesPage() {
                             <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You&apos;ve burned a domain that you should have caught.</strong> If a bounce rate spike or DNS failure took out a domain because no automation paused it, the pattern will repeat. Auto-pause + healing is the structural fix</span></li>
                             <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You manage 30+ mailboxes per workspace.</strong> Per-mailbox ESP performance routing only matters at scale, but at scale it dramatically changes deliverability</span></li>
                             <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing is exceeding your budget.</strong> At 100K active leads Smartlead is a meaningful spend; per-send pricing models can be 2-4× cheaper</span></li>
-                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want native AI sequencing without bolting on third-party tools.</strong> Superkabe&apos;s AI sequencer ships with the platform — you don&apos;t pay extra for OpenAI passes or third-party copy generators</span></li>
+                            <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> <span><strong>You want native AI sequencing without bolting on third-party tools.</strong> Superkabe&apos;s AI sequencer ships with the platform - you don&apos;t pay extra for OpenAI passes or third-party copy generators</span></li>
                         </ul>
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Replacing Smartlead with Superkabe is mostly a same-day move once your mailboxes are reconnected. You bring your Gmail / Microsoft 365 / SMTP accounts, import your existing sequences, and Superkabe takes over sending — with the deliverability protection layer (auto-pause at 3% bounce rate, 5-phase healing, ESP-aware routing) running on every send from day one.
+                        Replacing Smartlead with Superkabe is mostly a same-day move once your mailboxes are reconnected. You bring your Gmail / Microsoft 365 / SMTP accounts, import your existing sequences, and Superkabe takes over sending - with the deliverability protection layer (auto-pause at 3% bounce rate, 5-phase healing, ESP-aware routing) running on every send from day one.
                     </p>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
@@ -412,7 +412,7 @@ export default function SmartleadAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Replace Smartlead with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at a fraction of the cost."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - at a fraction of the cost."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -430,7 +430,7 @@ export default function SmartleadAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Which Smartlead alternative has the best deliverability protection?</h3>
-                        <p className="text-gray-600 text-sm">Superkabe — it is the only platform on this list that ships infrastructure protection as a built-in layer (validation, real-time monitoring, threshold-based auto-pause, 5-phase healing pipeline, and 400+ DNSBL monitoring).</p>
+                        <p className="text-gray-600 text-sm">Superkabe - it is the only platform on this list that ships infrastructure protection as a built-in layer (validation, real-time monitoring, threshold-based auto-pause, 5-phase healing pipeline, and 400+ DNSBL monitoring).</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Can I migrate from Smartlead to Superkabe without losing campaign data?</h3>
@@ -438,7 +438,7 @@ export default function SmartleadAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Does Smartlead have built-in email validation?</h3>
-                        <p className="text-gray-600 text-sm">Smartlead has basic email verification billed separately — syntax and MX checks. Superkabe ships a hybrid validation pipeline (syntax / MX / disposable / catch-all detection plus conditional MillionVerifier API probing on Growth and Scale tiers).</p>
+                        <p className="text-gray-600 text-sm">Smartlead has basic email verification billed separately - syntax and MX checks. Superkabe ships a hybrid validation pipeline (syntax / MX / disposable / catch-all detection plus conditional MillionVerifier API probing on Growth and Scale tiers).</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Which Smartlead alternative is best for agencies?</h3>
@@ -449,7 +449,7 @@ export default function SmartleadAlternativesPage() {
                 <div className="mt-16 pt-10 border-t border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">The structural shift in cold email tooling</h2>
                     <p className="text-gray-600 leading-relaxed max-w-3xl">
-                        Cold email senders used to compete on UI, mailbox capacity, and deliverability claims. The 2026 shift is that infrastructure protection is becoming part of the core platform — not a third-party add-on. Superkabe is the clearest expression of that shift; the tools that don&apos;t ship protection natively will eventually need to. <Link href="/blog/email-deliverability-guide" className="text-blue-600 hover:text-blue-800 underline">See the complete deliverability guide</Link>.
+                        Cold email senders used to compete on UI, mailbox capacity, and deliverability claims. The 2026 shift is that infrastructure protection is becoming part of the core platform - not a third-party add-on. Superkabe is the clearest expression of that shift; the tools that don&apos;t ship protection natively will eventually need to. <Link href="/blog/email-deliverability-guide" className="text-blue-600 hover:text-blue-800 underline">See the complete deliverability guide</Link>.
                     </p>
                 </div>
             </article>

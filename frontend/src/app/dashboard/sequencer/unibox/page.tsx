@@ -59,7 +59,7 @@ interface LeadContext {
     clicked_count: number;
     replied_at: string | null;
     // Canonical Lead.id from the org-wide Lead table. Null if the contact
-    // exists in a CampaignLead but isn't (yet) materialized as a Lead row —
+    // exists in a CampaignLead but isn't (yet) materialized as a Lead row -
     // in that case the right-panel renders as text instead of a link.
     lead_id?: string | null;
 }
@@ -97,7 +97,7 @@ function UniboxPage() {
     //   so warmup + random inbound never show up regardless of which view is active.
     const [view, setView] = useState<'inbox' | 'sent' | 'all'>('inbox');
     const [filter, setFilter] = useState<'all' | 'unread' | 'starred'>('all');
-    // Reply-quality filter — comma-joined class names. Backed by the new
+    // Reply-quality filter - comma-joined class names. Backed by the new
     // /api/unibox/threads `quality_class` query param. Empty Set = no filter.
     const [qualityFilter, setQualityFilter] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState('');
@@ -184,7 +184,7 @@ function UniboxPage() {
 
     useEffect(() => { fetchThreads(); }, [fetchThreads]);
 
-    // Deep-link support — when arriving with ?thread=<id> (e.g. from the
+    // Deep-link support - when arriving with ?thread=<id> (e.g. from the
     // Reply Quality analytics drill-down), auto-fetch + select that thread.
     // We strip the param from the URL after consuming so a manual refresh
     // doesn't re-select the same thread on top of the user's later choices.
@@ -195,7 +195,7 @@ function UniboxPage() {
         if (!tid) return;
         if (selectedThread?.id === tid) return;
         fetchThread(tid);
-        // Clean the URL — preserve any other params the user had.
+        // Clean the URL - preserve any other params the user had.
         const params = new URLSearchParams(searchParams?.toString() || '');
         params.delete('thread');
         const next = params.toString();
@@ -214,7 +214,7 @@ function UniboxPage() {
     // Why this is hard: the messages render `dangerouslySetInnerHTML` of the
     // email bodies. Embedded images, remote CSS, and multi-line quoted-reply
     // blocks all cause layout shifts AFTER React reports the commit. A single
-    // rAF + timeout isn't enough — the element grows over several frames.
+    // rAF + timeout isn't enough - the element grows over several frames.
     //
     // Strategy: useLayoutEffect to capture pre-paint, then a ResizeObserver
     // attached to the container that keeps pinning scrollTop to scrollHeight
@@ -384,7 +384,7 @@ function UniboxPage() {
                     })}
                 </div>
 
-                {/* Reply-quality filter — uses the canonical MultiSelectDropdown
+                {/* Reply-quality filter - uses the canonical MultiSelectDropdown
                     so the theme matches the contacts page filters. Only shown
                     on Inbox/All since outbound threads have no inbound class. */}
                 {view !== 'sent' && (
@@ -422,7 +422,7 @@ function UniboxPage() {
                     />
                 </div>
 
-                {/* Inbox filter — themed dropdown per dashboard convention. */}
+                {/* Inbox filter - themed dropdown per dashboard convention. */}
                 <div className="w-36 shrink-0">
                     <CustomSelect
                         value={filter}
@@ -450,7 +450,7 @@ function UniboxPage() {
             <div className="flex flex-1 min-h-0 overflow-hidden">
                 {/* ==================== LEFT: Thread List ==================== */}
                 <div className="w-[320px] shrink-0 flex flex-col bg-white" style={{ borderRight: '1px solid #D1CBC5' }}>
-                    {/* Column header — compact label + count */}
+                    {/* Column header - compact label + count */}
                     <div className="px-3 py-2 flex items-center justify-between shrink-0 gap-2" style={{ borderBottom: '1px solid #E8E3DC', background: '#FAFAF8' }}>
                         <div className="flex items-center gap-2 min-w-0">
                             <button

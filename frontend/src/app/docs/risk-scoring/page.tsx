@@ -264,8 +264,8 @@ return { allowed: true };`}
  Thresholds are tunable in the Configuration section:
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li>• <code className="px-2 py-1 bg-white text-gray-700">HARD_RISK_CRITICAL: 60</code> — Blocks execution</li>
- <li>• <code className="px-2 py-1 bg-white text-gray-700">SOFT_RISK_HIGH: 75</code> — Logs warning only</li>
+ <li>• <code className="px-2 py-1 bg-white text-gray-700">HARD_RISK_CRITICAL: 60</code> - Blocks execution</li>
+ <li>• <code className="px-2 py-1 bg-white text-gray-700">SOFT_RISK_HIGH: 75</code> - Logs warning only</li>
  </ul>
  </div>
  </div>

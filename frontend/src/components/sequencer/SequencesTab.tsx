@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * SequencesTab — saved-sequence management surface.
+ * SequencesTab - saved-sequence management surface.
  *
  * Rendered inside the templates page alongside Templates + Signatures.
  * Three modes:
- *   - 'list'   — table of saved sequences with row actions
- *   - 'edit'   — full multi-step editor with optional AI assist drawer
- *   - 'ai'     — modal-style AI generator (URL paste + custom instructions)
+ *   - 'list'   - table of saved sequences with row actions
+ *   - 'edit'   - full multi-step editor with optional AI assist drawer
+ *   - 'ai'     - modal-style AI generator (URL paste + custom instructions)
  *
  * Signatures are picked from the existing /api/sequencer/signatures list
- * and inserted inline into body_html via the existing RichTextEditor —
+ * and inserted inline into body_html via the existing RichTextEditor -
  * same pattern as the campaign wizard. No separate signature_id column.
  */
 
@@ -26,7 +26,7 @@ import {
 const RichTextEditor = dynamic(() => import('@/components/sequencer/RichTextEditor'), { ssr: false });
 
 // ────────────────────────────────────────────────────────────────────
-// Types — mirror the backend payload shape
+// Types - mirror the backend payload shape
 // ────────────────────────────────────────────────────────────────────
 
 interface SequenceStep {
@@ -74,7 +74,7 @@ const CATEGORIES = ['general', 'introduction', 'follow-up', 'breakup', 'meeting'
 /**
  * Imperative handle the parent (templates page) calls to trigger the
  * "New sequence" and "Generate with AI" actions from buttons that live
- * in the page header — above the search bar — alongside the New Template
+ * in the page header - above the search bar - alongside the New Template
  * / New Signature buttons for the other tabs.
  */
 export interface SequencesTabHandle {
@@ -310,7 +310,7 @@ function SequenceCard({
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Editor — multi-step, signature insertion, add/remove
+// Editor - multi-step, signature insertion, add/remove
 // ────────────────────────────────────────────────────────────────────
 
 function SequenceEditor({
@@ -663,7 +663,7 @@ function AiGenerateModal({
                     ai_model_used: result.modelUsed,
                 }),
             });
-            toast.success('Sequence saved — opening editor');
+            toast.success('Sequence saved - opening editor');
             onCreated(created.id);
         } catch (err) {
             setError((err as Error)?.message || 'Failed to save sequence');
@@ -862,5 +862,5 @@ function AiGenerateModal({
     );
 }
 
-// Used elsewhere — re-exported sentinel so the templates page typings line up.
+// Used elsewhere - re-exported sentinel so the templates page typings line up.
 export type { SequenceSummary };

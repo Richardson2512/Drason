@@ -48,7 +48,7 @@ export default function OutboundInfrastructureStackGuide() {
  "name": "What are the 6 layers of outbound email infrastructure?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "The six layers are: (1) Data enrichment — finding and enriching contact data with tools like Clay or Apollo, (2) Email validation — verifying addresses are deliverable and safe, (3) Sending platform — managing campaigns and sequences with Smartlead, Instantly, or EmailBison, (4) Mailbox providers — the actual email accounts from Google Workspace, Microsoft 365, or Zapmail, (5) Infrastructure monitoring and protection — tracking bounce rates, health scores, and auto-pause protection, (6) Alerting — Slack notifications, email alerts, and dashboards for real-time visibility."
+ "text": "The six layers are: (1) Data enrichment - finding and enriching contact data with tools like Clay or Apollo, (2) Email validation - verifying addresses are deliverable and safe, (3) Sending platform - managing campaigns and sequences with Smartlead, Instantly, or EmailBison, (4) Mailbox providers - the actual email accounts from Google Workspace, Microsoft 365, or Zapmail, (5) Infrastructure monitoring and protection - tracking bounce rates, health scores, and auto-pause protection, (6) Alerting - Slack notifications, email alerts, and dashboards for real-time visibility."
  }
  },
  {
@@ -56,7 +56,7 @@ export default function OutboundInfrastructureStackGuide() {
  "name": "How much does a full outbound email stack cost?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "A budget stack starts around $100/month: Clay free tier, MillionVerifier for validation, and Smartlead starter. A growth stack runs $300-500/month adding Superkabe for infrastructure protection. A scale stack for agencies or high-volume teams runs $800-1,500/month with multiple sending platforms, more domains, and Slack alerting. The biggest hidden cost is not the tools — it is the domain replacement and lost pipeline when infrastructure fails."
+ "text": "A budget stack starts around $100/month: Clay free tier, MillionVerifier for validation, and Smartlead starter. A growth stack runs $300-500/month adding Superkabe for infrastructure protection. A scale stack for agencies or high-volume teams runs $800-1,500/month with multiple sending platforms, more domains, and Slack alerting. The biggest hidden cost is not the tools - it is the domain replacement and lost pipeline when infrastructure fails."
  }
  },
  {
@@ -80,7 +80,7 @@ export default function OutboundInfrastructureStackGuide() {
  "name": "What is the difference between the validation layer and the monitoring layer?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "The validation layer is pre-send: it checks email addresses before they reach your campaigns. The monitoring layer is post-send: it watches what happens after emails are sent — bounce rates, domain health, blacklist status. Validation prevents most bounces from bad addresses. Monitoring catches the bounces that validation cannot prevent (catch-all, stale data, greylisting) and auto-pauses before damage accumulates. Both layers are necessary."
+ "text": "The validation layer is pre-send: it checks email addresses before they reach your campaigns. The monitoring layer is post-send: it watches what happens after emails are sent - bounce rates, domain health, blacklist status. Validation prevents most bounces from bad addresses. Monitoring catches the bounces that validation cannot prevent (catch-all, stale data, greylisting) and auto-pauses before damage accumulates. Both layers are necessary."
  }
  },
  {
@@ -96,7 +96,7 @@ export default function OutboundInfrastructureStackGuide() {
  "name": "What is the most common mistake when building an outbound stack?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "The most common mistake is going directly from data enrichment to sending with no validation or monitoring layer. Teams invest heavily in Clay or Apollo for data and Smartlead or Instantly for sending, but skip the infrastructure protection between them. It works fine until it does not — and then the damage is expensive and time-consuming to repair."
+ "text": "The most common mistake is going directly from data enrichment to sending with no validation or monitoring layer. Teams invest heavily in Clay or Apollo for data and Smartlead or Instantly for sending, but skip the infrastructure protection between them. It works fine until it does not - and then the damage is expensive and time-consuming to repair."
  }
  },
  {
@@ -233,7 +233,7 @@ export default function OutboundInfrastructureStackGuide() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Notice that Superkabe appears twice &mdash; at Layer 2 (validation) and Layer 5 (monitoring). That is intentional. These are the two layers most teams skip, and they are the two layers that prevent infrastructure damage. Every other layer has mature, well-known tools. Layers 2 and 5 are where the gap is.
+ Notice that Superkabe appears twice - at Layer 2 (validation) and Layer 5 (monitoring). That is intentional. These are the two layers most teams skip, and they are the two layers that prevent infrastructure damage. Every other layer has mature, well-known tools. Layers 2 and 5 are where the gap is.
  </p>
 
  {/* ============================================ */}
@@ -244,7 +244,7 @@ export default function OutboundInfrastructureStackGuide() {
  {/* Layer 1 */}
  <h3 className="text-xl font-semibold text-gray-900 mt-10 mb-3">Layer 1: Data enrichment</h3>
  <p className="text-gray-600 leading-relaxed mb-4">
- This is where your leads come from. Enrichment tools find contact information &mdash; email addresses, phone numbers, company data, job titles &mdash; from various data sources. They aggregate, deduplicate, and format this data for downstream use.
+ This is where your leads come from. Enrichment tools find contact information - email addresses, phone numbers, company data, job titles - from various data sources. They aggregate, deduplicate, and format this data for downstream use.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
  The critical thing to understand about Layer 1: enrichment tools find emails. They do not verify deliverability. Clay can tell you that john.smith@company.com is the likely email for a VP of Sales at Company X. It cannot tell you whether that mailbox is active, whether the domain is a catch-all, or whether the address is a spam trap. That is Layer 2&apos;s job.
@@ -333,7 +333,7 @@ export default function OutboundInfrastructureStackGuide() {
  <strong>What happens when this layer is missing:</strong> You cannot send email at scale. Manual sending through Gmail does not support sequences, rotation, or campaign management. This is the other layer nobody skips.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- If you&apos;re currently on a third-party sending platform like Smartlead or Instantly, Superkabe provides a one-time import to bring your campaigns, sequences, leads, and mailbox metadata across — see <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link>.
+ If you&apos;re currently on a third-party sending platform like Smartlead or Instantly, Superkabe provides a one-time import to bring your campaigns, sequences, leads, and mailbox metadata across - see <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link>.
  </p>
 
  {/* Layer 4 */}
@@ -402,7 +402,7 @@ export default function OutboundInfrastructureStackGuide() {
  <ol className="space-y-4 text-gray-600 text-sm list-decimal pl-5">
  <li><strong>Lead enrichment:</strong> Clay (or Apollo, ZoomInfo) finds the prospect&apos;s email address based on name, company, and role. Outputs structured lead data via webhook or API.</li>
  <li><strong>Email validation:</strong> Superkabe receives the lead, validates the email address through MillionVerifier (SMTP, MX, syntax), checks catch-all status, filters disposable domains, flags role-based addresses.</li>
- <li><strong>Health scoring:</strong> Each validated lead gets a health classification. GREEN leads are safe to route immediately. YELLOW leads have catch-all or other risk factors. RED leads are blocked &mdash; invalid, disposable, or spam trap.</li>
+ <li><strong>Health scoring:</strong> Each validated lead gets a health classification. GREEN leads are safe to route immediately. YELLOW leads have catch-all or other risk factors. RED leads are blocked - invalid, disposable, or spam trap.</li>
  <li><strong>Routing:</strong> GREEN and YELLOW leads are matched to campaigns based on persona, minimum score requirements, and infrastructure health. Risk-aware routing sends the safest leads to your best domains.</li>
  <li><strong>Campaign assignment:</strong> The lead is pushed to the matched Smartlead (or Instantly/EmailBison) campaign via API. No CSV exports, no manual imports.</li>
  <li><strong>Sending:</strong> The sending platform delivers the email sequence through the assigned mailbox. The mailbox provider (Google Workspace, Microsoft 365) handles SMTP delivery to the recipient&apos;s ISP.</li>
@@ -414,7 +414,7 @@ export default function OutboundInfrastructureStackGuide() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- This entire flow &mdash; from Clay webhook to Smartlead campaign &mdash; takes seconds. No human intervention required. The monitoring and healing loops run continuously in the background. For the detailed integration walkthrough, see <Link href="/blog/email-validation-smartlead-instantly" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">email validation for Smartlead and Instantly</Link>.
+ This entire flow - from Clay webhook to Smartlead campaign - takes seconds. No human intervention required. The monitoring and healing loops run continuously in the background. For the detailed integration walkthrough, see <Link href="/blog/email-validation-smartlead-instantly" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">email validation for Smartlead and Instantly</Link>.
  </p>
 
  {/* ============================================ */}
@@ -571,12 +571,12 @@ export default function OutboundInfrastructureStackGuide() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">2. Using your primary domain for cold outreach</h3>
- <p className="text-gray-600 text-sm leading-relaxed mb-2">If your business runs on team@company.com and you start sending cold emails from sales@company.com, you are putting your entire email infrastructure at risk. One bad campaign can damage the domain reputation that all your internal email relies on. Customer emails, partner communications, transactional emails &mdash; all affected.</p>
+ <p className="text-gray-600 text-sm leading-relaxed mb-2">If your business runs on team@company.com and you start sending cold emails from sales@company.com, you are putting your entire email infrastructure at risk. One bad campaign can damage the domain reputation that all your internal email relies on. Customer emails, partner communications, transactional emails - all affected.</p>
  <p className="text-gray-500 text-sm"><strong>Fix:</strong> Register separate sending domains ($10-15/year each). Use patterns like company-mail.com, getcompany.com, or companyio.com. Keep your primary domain completely separate from outbound sending.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">3. No monitoring until domains burn</h3>
- <p className="text-gray-600 text-sm leading-relaxed mb-2">Teams set up campaigns and then check metrics once a week. A bounce rate spike on Tuesday goes unnoticed until Friday. By then, the domain has been sending at a 7% bounce rate for three days and ISPs have already started throttling. Reactive monitoring is not monitoring &mdash; it is damage assessment.</p>
+ <p className="text-gray-600 text-sm leading-relaxed mb-2">Teams set up campaigns and then check metrics once a week. A bounce rate spike on Tuesday goes unnoticed until Friday. By then, the domain has been sending at a 7% bounce rate for three days and ISPs have already started throttling. Reactive monitoring is not monitoring - it is damage assessment.</p>
  <p className="text-gray-500 text-sm"><strong>Fix:</strong> Implement real-time monitoring with auto-pause. Superkabe tracks bounce rates per mailbox and per domain continuously, pausing before ISP thresholds are breached.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
@@ -612,7 +612,7 @@ export default function OutboundInfrastructureStackGuide() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">How much does a full outbound email stack cost?</h3>
- <p className="text-gray-600 text-sm leading-relaxed">A budget stack starts around $100/month. A growth stack with infrastructure protection runs $300-500/month. A scale stack for agencies runs $800-1,500/month. The biggest hidden cost is not the tools &mdash; it is domain replacement and lost pipeline when infrastructure fails.</p>
+ <p className="text-gray-600 text-sm leading-relaxed">A budget stack starts around $100/month. A growth stack with infrastructure protection runs $300-500/month. A scale stack for agencies runs $800-1,500/month. The biggest hidden cost is not the tools - it is domain replacement and lost pipeline when infrastructure fails.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Do I need email validation if my sending platform already verifies emails?</h3>

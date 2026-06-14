@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
  title: 'Understanding Status Labels | Superkabe Help',
- description: 'A comprehensive reference for all status labels across Superkabe — mailboxes, domains, campaigns, and leads — with color codes and recommended actions.',
+ description: 'A comprehensive reference for all status labels across Superkabe - mailboxes, domains, campaigns, and leads - with color codes and recommended actions.',
  alternates: { canonical: '/docs/help/entity-statuses' },
  openGraph: {
  title: 'Understanding Status Labels | Superkabe Help',
- description: 'A comprehensive reference for all status labels across Superkabe — mailboxes, domains, campaigns, and leads — with color codes and recommended actions.',
+ description: 'A comprehensive reference for all status labels across Superkabe - mailboxes, domains, campaigns, and leads - with color codes and recommended actions.',
  url: '/docs/help/entity-statuses',
  siteName: 'Superkabe',
  type: 'article',
@@ -29,7 +29,7 @@ export default function EntityStatusesPage() {
  <p className="text-blue-800">
  Every entity in Superkabe has a status that tells you its current health. <strong>Green = healthy</strong>,{' '}
  <strong>yellow = warning</strong>, <strong>red = paused or blocked</strong>. Statuses are managed automatically
- by the system &mdash; you rarely need to change them manually.
+ by the system - you rarely need to change them manually.
  </p>
  </div>
 
@@ -236,10 +236,10 @@ export default function EntityStatusesPage() {
  <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-12 ">
  <h2 className="text-xl font-bold mb-3 text-amber-900">Important Rules About Status Changes</h2>
  <ul className="space-y-3 text-sm text-amber-800">
- <li>&#x2022; <strong>All status changes go through the Entity State Service</strong> &mdash; a single authority that enforces rules and logs every transition.</li>
- <li>&#x2022; <strong>Campaigns never pause on bounce rate alone</strong> &mdash; only when all assigned mailboxes are paused or removed.</li>
- <li>&#x2022; <strong>Mailbox recovery phases cannot be skipped</strong> &mdash; every mailbox must progress through the full healing pipeline.</li>
- <li>&#x2022; <strong>Domain status is derived from its mailboxes</strong> &mdash; if 50%+ of mailboxes are unhealthy, the domain status escalates.</li>
+ <li>&#x2022; <strong>All status changes go through the Entity State Service</strong> - a single authority that enforces rules and logs every transition.</li>
+ <li>&#x2022; <strong>Campaigns never pause on bounce rate alone</strong> - only when all assigned mailboxes are paused or removed.</li>
+ <li>&#x2022; <strong>Mailbox recovery phases cannot be skipped</strong> - every mailbox must progress through the full healing pipeline.</li>
+ <li>&#x2022; <strong>Domain status is derived from its mailboxes</strong> - if 50%+ of mailboxes are unhealthy, the domain status escalates.</li>
  </ul>
  </div>
 

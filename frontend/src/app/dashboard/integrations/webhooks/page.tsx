@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Webhooks management — under Integrations because customer webhooks
+ * Webhooks management - under Integrations because customer webhooks
  * cross-cut sending and protection events. Two-pane layout: endpoint list
  * on the left, selected endpoint detail (with delivery log + actions) on
  * the right. Modal overlay for create + secret-display flows.
@@ -212,7 +212,7 @@ export default function WebhooksPage() {
                 />
             )}
 
-            {/* Secret reveal modal — shown ONCE per create / rotate */}
+            {/* Secret reveal modal - shown ONCE per create / rotate */}
             {secretReveal && (
                 <SecretRevealModal
                     secret={secretReveal.secret}
@@ -341,7 +341,7 @@ function EndpointDetail({
                 {endpoint.disabled_at && (
                     <div className="mt-2 text-[11px] text-red-700 bg-red-50 border border-red-200 rounded-md px-2 py-1.5 flex items-start gap-1.5">
                         <AlertTriangle size={11} className="mt-0.5 flex-shrink-0" />
-                        <span>Auto-disabled {timeAgo(endpoint.disabled_at)} — {endpoint.disabled_reason}</span>
+                        <span>Auto-disabled {timeAgo(endpoint.disabled_at)} - {endpoint.disabled_reason}</span>
                     </div>
                 )}
 
@@ -419,7 +419,7 @@ function OverviewTab({ endpoint }: { endpoint: WebhookEndpoint }) {
             <Detail label="Provider" value={<code className="text-gray-700">{endpoint.provider}</code>} />
             <Detail label="Failures (consecutive)" value={endpoint.failure_count.toString()} />
             <Detail label="Created" value={new Date(endpoint.created_at).toLocaleString()} />
-            <Detail label="Last delivery" value={endpoint.last_delivery_at ? new Date(endpoint.last_delivery_at).toLocaleString() : '—'} />
+            <Detail label="Last delivery" value={endpoint.last_delivery_at ? new Date(endpoint.last_delivery_at).toLocaleString() : '-'} />
             <Detail
                 label="Subscribed events"
                 value={endpoint.events.length === 0 ? <Pill tone="blue">All events</Pill> : `${endpoint.events.length} selected`}
@@ -485,7 +485,7 @@ function EventsTab({
                     className="accent-gray-900"
                 />
                 <span className="font-semibold text-gray-900">Subscribe to all events</span>
-                <span className="text-gray-500">— including events added in the future</span>
+                <span className="text-gray-500">- including events added in the future</span>
             </label>
 
             {!allMode && (
@@ -591,7 +591,7 @@ function DeliveryLogTab({ endpointId }: { endpointId: string }) {
             {loading ? (
                 <div className="text-xs text-gray-500 flex items-center gap-2"><Loader2 size={12} className="animate-spin" /> Loading…</div>
             ) : rows.length === 0 ? (
-                <div className="text-xs text-gray-400 py-6 text-center">No deliveries yet — fire a Test event from the action row above.</div>
+                <div className="text-xs text-gray-400 py-6 text-center">No deliveries yet - fire a Test event from the action row above.</div>
             ) : (
                 <div className="text-xs">
                     {rows.map(row => (
@@ -605,7 +605,7 @@ function DeliveryLogTab({ endpointId }: { endpointId: string }) {
                                 <code className="text-gray-700 text-[11px]">{row.event_type}</code>
                                 <span className="text-[10px] text-gray-400 truncate">{row.event_id}</span>
                                 <span className="text-[10px] text-gray-500">
-                                    {row.response_code ? `HTTP ${row.response_code}` : row.last_error?.slice(0, 40) || '—'}
+                                    {row.response_code ? `HTTP ${row.response_code}` : row.last_error?.slice(0, 40) || '-'}
                                 </span>
                                 <span className="text-[10px] text-gray-400">{timeAgo(row.created_at)}</span>
                             </button>
@@ -617,9 +617,9 @@ function DeliveryLogTab({ endpointId }: { endpointId: string }) {
                                         <>
                                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                                 <Detail label="Attempts" value={detail.attempt_count.toString()} />
-                                                <Detail label="Duration" value={detail.duration_ms ? `${detail.duration_ms} ms` : '—'} />
-                                                <Detail label="Delivered" value={detail.delivered_at ? new Date(detail.delivered_at).toLocaleString() : '—'} />
-                                                <Detail label="Next attempt" value={detail.next_attempt_at ? new Date(detail.next_attempt_at).toLocaleString() : '—'} />
+                                                <Detail label="Duration" value={detail.duration_ms ? `${detail.duration_ms} ms` : '-'} />
+                                                <Detail label="Delivered" value={detail.delivered_at ? new Date(detail.delivered_at).toLocaleString() : '-'} />
+                                                <Detail label="Next attempt" value={detail.next_attempt_at ? new Date(detail.next_attempt_at).toLocaleString() : '-'} />
                                             </div>
                                             <div>
                                                 <div className="text-[9px] uppercase tracking-wider font-semibold text-gray-500 mb-1">Payload</div>
@@ -781,7 +781,7 @@ function CreateEndpointModal({
                                 className="accent-gray-900"
                             />
                             <span className="font-semibold text-gray-900">All events</span>
-                            <span className="text-gray-500">— including future ones</span>
+                            <span className="text-gray-500">- including future ones</span>
                         </label>
                         {!allMode && (
                             <div className="space-y-2 max-h-60 overflow-y-auto border border-gray-100 rounded-lg p-3">
@@ -839,7 +839,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Secret reveal modal — shown ONCE
+// Secret reveal modal - shown ONCE
 // ────────────────────────────────────────────────────────────────────
 
 function SecretRevealModal({ secret, onClose }: { secret: string; onClose: () => void }) {

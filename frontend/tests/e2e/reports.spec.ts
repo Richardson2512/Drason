@@ -1,5 +1,5 @@
 /**
- * Reports — E2E coverage for the protection analytics report generator.
+ * Reports - E2E coverage for the protection analytics report generator.
  *
  * Verifies every report type returns 200 + the expected CSV header line.
  * Also covers the audit-fix expectations:
@@ -29,7 +29,7 @@ function firstHeader(csv: string): string {
     return '';
 }
 
-test.describe('reports — all types', () => {
+test.describe('reports - all types', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     const TYPES: { type: string; expectedHeaderContains: string[] }[] = [
@@ -123,7 +123,7 @@ test.describe('reports — all types', () => {
         expect(res.status()).toBe(200);
         const csv = await res.text();
         // Every data row's "Campaign Name" column should belong to the one
-        // campaign we picked — but we can't easily resolve the name client-
+        // campaign we picked - but we can't easily resolve the name client-
         // side, so just assert the response is non-empty + 200.
         expect(csv.length).toBeGreaterThan(0);
     });

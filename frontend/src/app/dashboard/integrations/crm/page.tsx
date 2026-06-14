@@ -89,7 +89,7 @@ function SalesforceConnectButton() {
 }
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', year: 'numeric',
         hour: 'numeric', minute: '2-digit',
@@ -310,7 +310,7 @@ export default function CrmIntegrationsPage() {
                 consequences={[
                     'Pending activity pushes will be cancelled',
                     'OAuth tokens will be wiped from our database',
-                    'Imported leads stay — only the connection mapping is removed',
+                    'Imported leads stay - only the connection mapping is removed',
                     'You can reconnect anytime by clicking Connect again',
                 ]}
                 confirmLabel={busyId === pendingDisconnect?.id ? 'Disconnecting…' : 'Disconnect'}

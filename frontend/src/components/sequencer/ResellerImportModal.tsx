@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * ResellerImportModal — bulk import Gmail/Outlook mailboxes from
+ * ResellerImportModal - bulk import Gmail/Outlook mailboxes from
  * mailbox resellers (Zapmail, Premium Inboxes, Mission Inbox, Scaled Mail).
  *
  * Flow:
@@ -15,7 +15,7 @@
  *   4. Submit kicks POST /:provider/import → server pulls credentials
  *      from the reseller (server-side, never trusted from the client),
  *      encrypts, creates ConnectedAccount rows, kicks off provisioning.
- *   5. Show per-mailbox results — imported/updated/skipped/failed counts.
+ *   5. Show per-mailbox results - imported/updated/skipped/failed counts.
  *
  * The credentials NEVER touch the wire toward the browser. Listing
  * returns ready=true|false; import operates on remoteIds. Server fetches
@@ -32,7 +32,7 @@ import toast from 'react-hot-toast';
 //
 // Today only zapmail-icon.png and scaledmail-icon.png ship in the repo
 // (mapped explicitly below). To add Premium Inboxes / Mission Inbox
-// official logos: drop the PNG files at the listed paths — the component
+// official logos: drop the PNG files at the listed paths - the component
 // will pick them up automatically with no code change. Until then, the
 // `onError` fallback renders a clean initials-in-a-circle so the grid
 // stays visually consistent.
@@ -144,7 +144,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                 `/api/sequencer/mailbox-import/${p.key}/mailboxes`,
             );
             setMailboxes(res?.mailboxes || []);
-            // Pre-select all ready, not-yet-imported mailboxes — operator can deselect.
+            // Pre-select all ready, not-yet-imported mailboxes - operator can deselect.
             const preselected = new Set(
                 (res?.mailboxes || [])
                     .filter(m => m.ready && !m.alreadyImported)
@@ -288,7 +288,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                                     if (step === 'enter-key') setStep('pick-provider');
                                     else if (step === 'select-mailboxes') {
                                         // If they connected this session, drop them back to picker
-                                        // — easier UX than expecting them to switch providers manually.
+                                        // - easier UX than expecting them to switch providers manually.
                                         setStep('pick-provider');
                                     }
                                 }}
@@ -320,7 +320,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                     {step === 'pick-provider' && (
                         <div className="p-4 flex flex-col gap-3">
                             <p className="text-xs text-gray-600">
-                                Pick a reseller you bought mailboxes from. Superkabe will pull credentials directly via their API — no Google OAuth, no per-mailbox consent screens.
+                                Pick a reseller you bought mailboxes from. Superkabe will pull credentials directly via their API - no Google OAuth, no per-mailbox consent screens.
                             </p>
                             {providerLoading ? (
                                 <div className="flex items-center justify-center py-12">
@@ -364,7 +364,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                                                         ? p.connected
                                                             ? 'Browse + import mailboxes'
                                                             : 'Paste API key, then 1-click import'
-                                                        : 'Coming soon — share API docs to enable'}
+                                                        : 'Coming soon - share API docs to enable'}
                                                 </span>
                                             </div>
                                         </button>
@@ -489,7 +489,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                                                             />
                                                         </td>
                                                         <td className="px-3 py-1.5 text-gray-900 font-medium">{m.email}</td>
-                                                        <td className="px-3 py-1.5 text-gray-500">{m.domain || '—'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-500">{m.domain || '-'}</td>
                                                         <td className="px-3 py-1.5">
                                                             <MailboxStatusPill
                                                                 ready={m.ready}
@@ -558,7 +558,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
                                                                 {i.status}
                                                             </span>
                                                         </td>
-                                                        <td className="px-3 py-1.5 text-gray-600">{i.error || '—'}</td>
+                                                        <td className="px-3 py-1.5 text-gray-600">{i.error || '-'}</td>
                                                     </tr>
                                                 ))}
                                         </tbody>
@@ -583,7 +583,7 @@ export default function ResellerImportModal({ onClose, onSuccess }: ResellerImpo
 }
 
 /**
- * ProviderLogo — renders the official logo from /public/logos/${key}-icon.png
+ * ProviderLogo - renders the official logo from /public/logos/${key}-icon.png
  * if it exists. On 404 (img onError), falls back to a clean initials-in-a-circle
  * tile so the grid stays visually consistent. Drop the missing PNG into
  * /public/logos using the path in PROVIDER_LOGOS and the swap is automatic.

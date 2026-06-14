@@ -27,7 +27,7 @@ export default function NotificationsPage() {
  <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-12 ">
  <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
  <p className="text-blue-800 mb-4">
- Superkabe sends <strong>real-time notifications</strong> whenever something important happens to your infrastructure &mdash;
+ Superkabe sends <strong>real-time notifications</strong> whenever something important happens to your infrastructure -
  mailbox pauses, bounce threshold warnings, recovery completions, and campaign stalls.
  Notifications are categorized by severity so you can prioritize what needs attention.
  </p>

@@ -1,12 +1,12 @@
 'use client';
 
 /**
- * Data Rights — customer-facing UI for GDPR / CCPA / DPDP / PDPA rights:
+ * Data Rights - customer-facing UI for GDPR / CCPA / DPDP / PDPA rights:
  *
- *   • Right of Access — download a JSON export of everything we hold.
- *   • Consent Audit Trail — see every consent record we've kept on you.
- *   • Right to Withdraw — revoke revocable consents (cookies, marketing, OAuth, import-key).
- *   • Right to Erasure — initiate a 30-day soft-delete with a cancellation token.
+ *   • Right of Access - download a JSON export of everything we hold.
+ *   • Consent Audit Trail - see every consent record we've kept on you.
+ *   • Right to Withdraw - revoke revocable consents (cookies, marketing, OAuth, import-key).
+ *   • Right to Erasure - initiate a 30-day soft-delete with a cancellation token.
  */
 
 import { useEffect, useState, useCallback } from 'react';
@@ -126,7 +126,7 @@ export default function DataRightsPage() {
                         if (consentType === 'cookies_functional') parsed.functional = false;
                         localStorage.setItem('sk-cookie-consent-v1', JSON.stringify(parsed));
                     }
-                } catch { /* localStorage unavailable — gtag update below still applies */ }
+                } catch { /* localStorage unavailable - gtag update below still applies */ }
 
                 if (typeof (window as any).gtag === 'function') {
                     const update: Record<string, string> = {};
@@ -231,7 +231,7 @@ export default function DataRightsPage() {
                                     {c.withdrawn_at && (
                                         <div className="text-xs text-rose-600 mt-1">
                                             Withdrawn: {new Date(c.withdrawn_at).toLocaleString()}
-                                            {c.withdrawn_reason && ` — ${c.withdrawn_reason}`}
+                                            {c.withdrawn_reason && ` - ${c.withdrawn_reason}`}
                                         </div>
                                     )}
                                 </div>

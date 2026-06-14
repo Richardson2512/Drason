@@ -120,7 +120,7 @@ export default function CapabilityPicker({ value, onChange }: Props) {
             {/* Always-agency-only footnote */}
             <div className="text-[10px] text-gray-500 italic px-1 leading-relaxed">
                 Workspace branding, billing, user management, and the Agency Mode toggle are agency-only and never grantable.
-                Clients also cannot switch workspaces — they're hard-locked to this one.
+                Clients also cannot switch workspaces - they're hard-locked to this one.
             </div>
         </div>
     );

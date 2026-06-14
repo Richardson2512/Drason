@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * AIAssistPanel — shared AI copy generator used in:
+ * AIAssistPanel - shared AI copy generator used in:
  *   • Sequencer → Templates (inside the template editor modal)
  *   • Sequencer → Campaigns → New (inside each sequence step editor)
  *
@@ -12,7 +12,7 @@
  *      intent dropdown, tone, custom instructions, Generate button.
  *   4. On success, surface subject+body and call onInsert(subject, body_html).
  *
- * The panel is self-contained — parent only needs to pass an onInsert callback.
+ * The panel is self-contained - parent only needs to pass an onInsert callback.
  */
 
 import { useEffect, useState, useCallback } from 'react';
@@ -65,16 +65,16 @@ interface AIAssistPanelProps {
     totalSteps?: number;
     /** If the user is generating a B variant, pass the A version. */
     variantOf?: { subject: string; body_html: string };
-    /** Compact mode — smaller padding for inline use in step editors. */
+    /** Compact mode - smaller padding for inline use in step editors. */
     compact?: boolean;
 }
 
 const INTENT_OPTIONS: { value: StepIntent; label: string; hint: string }[] = [
     { value: 'intro', label: 'Intro (first touch)', hint: 'Introduce + hook + low-friction CTA' },
     { value: 'follow_up', label: 'Follow-up', hint: 'Re-ping politely with a fresh angle' },
-    { value: 'value_add', label: 'Value-add', hint: 'Share a useful insight — standalone message' },
+    { value: 'value_add', label: 'Value-add', hint: 'Share a useful insight - standalone message' },
     { value: 'social_proof', label: 'Social proof', hint: 'Reference a concrete customer outcome' },
-    { value: 'breakup', label: 'Breakup', hint: 'Final message — door open, no pressure' },
+    { value: 'breakup', label: 'Breakup', hint: 'Final message - door open, no pressure' },
     { value: 'custom', label: 'Custom instructions', hint: 'Follow your instructions verbatim' },
 ];
 
@@ -122,7 +122,7 @@ export default function AIAssistPanel({
     // ── Load profile on mount ──
     // apiClient unwraps `{success, data}` to just `data` on 200 responses, so
     // we get the inner ProfileData shape directly. On 404 (no profile yet) it
-    // throws with the API's error string — which is the expected "first time
+    // throws with the API's error string - which is the expected "first time
     // user" state, not an actual error to surface.
     useEffect(() => {
         let cancelled = false;
@@ -137,8 +137,8 @@ export default function AIAssistPanel({
             } catch (err: unknown) {
                 if (cancelled) return;
                 const msg = String((err as Error)?.message || '');
-                // "No business profile yet" is the normal first-time state — silent.
-                // "404" appears in some status-formatted variants — also silent.
+                // "No business profile yet" is the normal first-time state - silent.
+                // "404" appears in some status-formatted variants - also silent.
                 // Anything else is a real failure worth showing.
                 const isNoProfileYet =
                     msg.includes('404') ||
@@ -163,7 +163,7 @@ export default function AIAssistPanel({
     // other orgs are extracting at the same moment.
     //
     // Up to 5 URLs are supported (backend caps at MAX_URLS_PER_PROFILE).
-    // The extractor synthesizes across all sources — homepage + pricing
+    // The extractor synthesizes across all sources - homepage + pricing
     // + case-study, etc.
     const extractProfile = useCallback(async (rawInput: string) => {
         const urls = rawInput
@@ -191,7 +191,7 @@ export default function AIAssistPanel({
                 return;
             }
 
-            // Poll. Backoff schedule: 1s × 5 → 2s × 10 → 4s × 30 — caps at
+            // Poll. Backoff schedule: 1s × 5 → 2s × 10 → 4s × 30 - caps at
             // ~2 minutes total before giving up so a stuck job doesn't
             // hang the panel forever.
             const delays = [
@@ -236,7 +236,7 @@ export default function AIAssistPanel({
                 }
                 // 'waiting' / 'active' / 'delayed' → keep polling
             }
-            setProfileError('Extraction is taking longer than expected — check back in a moment.');
+            setProfileError('Extraction is taking longer than expected - check back in a moment.');
         } catch (err: unknown) {
             setProfileError((err as Error)?.message || 'Failed to build profile');
         } finally {
@@ -468,7 +468,7 @@ function ProfileSetup({
         <div className="space-y-2">
             <p className="text-[11px] text-gray-700 leading-relaxed">
                 Paste your company&apos;s website URL. The AI will read it and use it as context for every email generation across your templates and campaigns.
-                For richer output, paste up to <strong>5 URLs</strong> (homepage + pricing + a case study) separated by commas, spaces, or new lines — they&apos;ll be synthesized into one profile.
+                For richer output, paste up to <strong>5 URLs</strong> (homepage + pricing + a case study) separated by commas, spaces, or new lines - they&apos;ll be synthesized into one profile.
             </p>
             <div className="flex gap-1.5 items-start">
                 <div className="flex-1 relative">
@@ -510,7 +510,7 @@ function ProfileSetup({
                 )}
             </div>
             {extracting && (
-                <p className="text-[10px] text-violet-700">Reading and extracting — usually 5–15 seconds…</p>
+                <p className="text-[10px] text-violet-700">Reading and extracting - usually 5–15 seconds…</p>
             )}
             {error && (
                 <div className="flex items-start gap-1.5 text-[11px] text-red-700 bg-red-50 border border-red-200 rounded-lg px-2 py-1.5">
@@ -575,7 +575,7 @@ function ProfileBadge({
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Manual edit panel — refine fields the AI got wrong without re-scraping.
+// Manual edit panel - refine fields the AI got wrong without re-scraping.
 // PATCHes /api/ai/profile with whatever subset the operator changed; the
 // backend deep-merges into the cached row.
 // ────────────────────────────────────────────────────────────────────
@@ -722,7 +722,7 @@ function FieldInput({ label, value, onChange, hint, optional }: {
     );
 }
 
-/** Edit a string-array field as a multi-line textarea — one entry per line.
+/** Edit a string-array field as a multi-line textarea - one entry per line.
  *  Trade-off: doesn't allow reorder by drag. The operator can rearrange by
  *  cutting + pasting lines, which beats building a real chip editor. */
 function ListInput({ label, values, onChange }: {

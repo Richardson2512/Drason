@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Best Lemlist Alternatives for Cold Email Teams in 2026 — Superkabe';
+export const alt = 'Best Lemlist Alternatives for Cold Email Teams in 2026 - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default async function Image() {
                         Best Lemlist alternatives
                     </div>
                     <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
-                        7 ranked tools that scale past Lemlist&apos;s per-user pricing — flat-tier economics, AI sequencing, and built-in deliverability protection.
+                        7 ranked tools that scale past Lemlist&apos;s per-user pricing - flat-tier economics, AI sequencing, and built-in deliverability protection.
                     </div>
                 </div>
 

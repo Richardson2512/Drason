@@ -163,7 +163,7 @@ export default function EmailValidationColdOutreachGuide() {
  <p className="text-gray-400 text-sm mb-8">25 min read &middot; Published March 2026 &middot; Last updated March 27, 2026</p>
 
  <p className="text-xl text-blue-900 font-medium mb-8 bg-blue-50/50 p-6 border border-blue-100">
- This is the guide we wish existed when we started building outbound infrastructure. Everything about email validation for cold outreach &mdash; how it works technically, which tools are worth paying for, how to set them up with Smartlead and Instantly, and what to do when validation alone is not enough.
+ This is the guide we wish existed when we started building outbound infrastructure. Everything about email validation for cold outreach - how it works technically, which tools are worth paying for, how to set them up with Smartlead and Instantly, and what to do when validation alone is not enough.
  </p>
 
  {/* Key Takeaways */}
@@ -214,10 +214,10 @@ export default function EmailValidationColdOutreachGuide() {
  Cold outreach operates under a completely different risk profile. You are emailing people who have never heard from you. ISPs already view you with suspicion. Your sending reputation is thin because your domains are young (most outbound teams rotate domains every 3-6 months). And your data comes from third-party enrichment tools, not from people voluntarily typing their address into your form.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This means the email addresses you are working with have higher base error rates. Clay, Apollo, ZoomInfo &mdash; they are all excellent at finding contact data, but none of them guarantee deliverability. They find addresses. Whether those addresses actually accept mail today is a different question entirely.
+ This means the email addresses you are working with have higher base error rates. Clay, Apollo, ZoomInfo - they are all excellent at finding contact data, but none of them guarantee deliverability. They find addresses. Whether those addresses actually accept mail today is a different question entirely.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The consequences of skipping validation in cold outreach are also more severe than in marketing. A marketing sender with one domain might see deliverability dip. A cold outreach team running 10 domains with 5 mailboxes each has 50 mailboxes at risk. One bad batch &mdash; 200 leads with a 12% invalid rate &mdash; can push multiple domains past ISP thresholds simultaneously. We have seen teams lose 3-4 domains in a single afternoon because they imported an unvalidated list from a new enrichment source.
+ The consequences of skipping validation in cold outreach are also more severe than in marketing. A marketing sender with one domain might see deliverability dip. A cold outreach team running 10 domains with 5 mailboxes each has 50 mailboxes at risk. One bad batch - 200 leads with a 12% invalid rate - can push multiple domains past ISP thresholds simultaneously. We have seen teams lose 3-4 domains in a single afternoon because they imported an unvalidated list from a new enrichment source.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For a deeper look at this distinction, read our breakdown of <Link href="/blog/email-validation-vs-verification" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">email validation vs. verification</Link> and why the difference matters for outbound teams.
@@ -255,7 +255,7 @@ export default function EmailValidationColdOutreachGuide() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Step 4: Catch-all detection</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- To detect catch-all domains, the validator sends a RCPT TO for a deliberately fake address (something like &quot;xq7k29z@domain.com&quot;). If the server responds 250, it is a catch-all &mdash; it accepts everything. This means SMTP verification cannot confirm whether real addresses on that domain are valid. The validator flags the domain as catch-all so you can make a risk decision.
+ To detect catch-all domains, the validator sends a RCPT TO for a deliberately fake address (something like &quot;xq7k29z@domain.com&quot;). If the server responds 250, it is a catch-all - it accepts everything. This means SMTP verification cannot confirm whether real addresses on that domain are valid. The validator flags the domain as catch-all so you can make a risk decision.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  About 15-30% of B2B domains are catch-all. That is a huge chunk of your target list. How you handle them determines a significant portion of your bounce risk. For a deep dive, see our article on <Link href="/blog/catch-all-domains-cold-outreach" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">catch-all domains in cold outreach</Link>.
@@ -281,7 +281,7 @@ export default function EmailValidationColdOutreachGuide() {
  There are two ways to run validation. Bulk/internal validation means uploading a CSV, waiting for processing, and downloading results. API validation means checking addresses in real-time, one by one, as leads flow through your pipeline.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- For cold outreach teams running automated pipelines &mdash; Clay enrichment to validation to Smartlead &mdash; API validation is essential. You cannot pause your pipeline to wait for a CSV upload. The validation needs to happen inline, in milliseconds, as each lead enters. This is how Superkabe handles it: leads arrive via webhook or API, get validated in-line, health-scored, and routed to campaigns without manual intervention.
+ For cold outreach teams running automated pipelines - Clay enrichment to validation to Smartlead - API validation is essential. You cannot pause your pipeline to wait for a CSV upload. The validation needs to happen inline, in milliseconds, as each lead enters. This is how Superkabe handles it: leads arrive via webhook or API, get validated in-line, health-scored, and routed to campaigns without manual intervention.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For the full technical walkthrough of Superkabe&apos;s validation layer, see <Link href="/docs/help/email-validation" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">the email validation docs</Link>.
@@ -346,7 +346,7 @@ export default function EmailValidationColdOutreachGuide() {
  </div>
  <div>
  <p className="font-semibold text-gray-800">3. Greylisting</p>
- <p>Some mail servers temporarily reject emails from unknown senders on the first attempt. Legitimate mail servers retry; spammers do not. If your sending platform does not retry properly (or retries too slowly), the email bounces. This is not a validation failure &mdash; it is a sending platform configuration issue.</p>
+ <p>Some mail servers temporarily reject emails from unknown senders on the first attempt. Legitimate mail servers retry; spammers do not. If your sending platform does not retry properly (or retries too slowly), the email bounces. This is not a validation failure - it is a sending platform configuration issue.</p>
  </div>
  <div>
  <p className="font-semibold text-gray-800">4. Spam traps</p>
@@ -445,7 +445,7 @@ export default function EmailValidationColdOutreachGuide() {
  <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&#9679;</span> <strong>Lost pipeline</strong> from 4-6 weeks of reduced sending capacity</li>
  </ul>
  <p className="text-gray-600 leading-relaxed mb-6">
- For a team running 5 domains with 5 mailboxes each at $6/month per mailbox, one burned domain means $30/month in wasted mailbox costs during the 6-week recovery, $10-15 in domain replacement cost, and the opportunity cost of 150 emails/day not being sent for 6 weeks &mdash; that is 6,300 emails. At a 2% reply rate, that is 126 lost replies. At a 10% meeting-from-reply rate, that is 12-13 lost meetings. At $500 average deal value... you get it.
+ For a team running 5 domains with 5 mailboxes each at $6/month per mailbox, one burned domain means $30/month in wasted mailbox costs during the 6-week recovery, $10-15 in domain replacement cost, and the opportunity cost of 150 emails/day not being sent for 6 weeks - that is 6,300 emails. At a 2% reply rate, that is 126 lost replies. At a 10% meeting-from-reply rate, that is 12-13 lost meetings. At $500 average deal value... you get it.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Validation costs $1-30 per month for most teams. The domain it saves is worth $200-2,000+ in direct and opportunity costs. For the full pricing analysis, see our <Link href="/blog/email-validation-pricing-guide" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">email validation pricing guide</Link>.
@@ -465,7 +465,7 @@ export default function EmailValidationColdOutreachGuide() {
  Most third-party sending platforms either skip validation entirely or run a basic SMTP check that misses catch-all domains, role addresses, and risky sends. The damage shows up as bounces, and by then your sender reputation has already taken a hit.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe is the AI cold email platform with this same hybrid validation built in front of every send — internal checks (syntax, MX, disposable, catch-all) on every lead, MillionVerifier API for risky leads on Growth/Scale plans. If you&apos;re currently on Smartlead, Instantly, or EmailBison, you can run a one-time import via <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link> to bring your campaigns, sequences, leads, and mailbox metadata across.
+ Superkabe is the AI cold email platform with this same hybrid validation built in front of every send - internal checks (syntax, MX, disposable, catch-all) on every lead, MillionVerifier API for risky leads on Growth/Scale plans. If you&apos;re currently on Smartlead, Instantly, or EmailBison, you can run a one-time import via <Link href="/dashboard/migration/from-smartlead" className="text-blue-600 hover:text-blue-800 underline decoration-blue-200 hover:decoration-blue-400 transition-colors">Import from Smartlead</Link> to bring your campaigns, sequences, leads, and mailbox metadata across.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Clay pipeline users</h3>

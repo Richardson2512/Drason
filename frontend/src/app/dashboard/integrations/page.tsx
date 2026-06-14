@@ -26,7 +26,7 @@ interface Integration {
 }
 
 const INTEGRATIONS: Integration[] = [
-    // Lead Sources — anywhere a lead can come from (enrichment, contact DBs)
+    // Lead Sources - anywhere a lead can come from (enrichment, contact DBs)
     {
         id: 'clay',
         name: 'Clay',
@@ -45,7 +45,7 @@ const INTEGRATIONS: Integration[] = [
         configPath: '/dashboard/integrations/lead-sources',
     },
 
-    // Sequencer — Mailbox Providers
+    // Sequencer - Mailbox Providers
     {
         id: 'google',
         name: 'Google Workspace',
@@ -87,7 +87,7 @@ const INTEGRATIONS: Integration[] = [
     {
         id: 'claude',
         name: 'Claude',
-        description: 'Connect Claude.ai (browser) to Superkabe via OAuth. Run leads, campaigns, and replies from any Claude conversation — no install needed.',
+        description: 'Connect Claude.ai (browser) to Superkabe via OAuth. Run leads, campaigns, and replies from any Claude conversation - no install needed.',
         category: 'ai',
         logo: '/brands/claude.svg',
         configPath: '/dashboard/api-mcp',
@@ -104,7 +104,7 @@ const INTEGRATIONS: Integration[] = [
         settingKey: '_WEBHOOKS_ALWAYS_ON_',
     },
 
-    // Migration — one-time imports from competing platforms
+    // Migration - one-time imports from competing platforms
     {
         id: 'smartlead-import',
         name: 'Import from Smartlead',
@@ -124,7 +124,7 @@ const INTEGRATIONS: Integration[] = [
         requiresMigrationFlag: true,
     },
 
-    // Dialers — push the cold-call list into a dialer's queue
+    // Dialers - push the cold-call list into a dialer's queue
     {
         id: 'outreach',
         name: 'Outreach',
@@ -136,13 +136,13 @@ const INTEGRATIONS: Integration[] = [
     {
         id: 'justcall',
         name: 'JustCall',
-        description: 'Export your cold call list to a JustCall sales-dialer campaign. Bulk import in batches of 250 — JustCall dedupes by phone, so re-runs are safe.',
+        description: 'Export your cold call list to a JustCall sales-dialer campaign. Bulk import in batches of 250 - JustCall dedupes by phone, so re-runs are safe.',
         category: 'dialer',
         logo: '/logos/justcall-icon.png',
         configPath: '/dashboard/integrations/justcall',
     },
 
-    // CRM — Future
+    // CRM - Future
     {
         id: 'hubspot',
         name: 'HubSpot',
@@ -267,16 +267,16 @@ function getConnectionStatus(
 
     // Clay is always available
     if (integration.id === 'clay') return 'connected';
-    // Webhooks — connected only if at least one endpoint is registered.
+    // Webhooks - connected only if at least one endpoint is registered.
     if (integration.id === 'webhooks') {
         return webhookCount > 0 ? 'connected' : 'not_connected';
     }
-    // Claude (and any future OAuth-MCP client) — connected when the user
+    // Claude (and any future OAuth-MCP client) - connected when the user
     // has at least one active OAuth grant.
     if (integration.id === 'claude') {
         return oauthClientCount > 0 ? 'connected' : 'not_connected';
     }
-    // CRM providers (hubspot, salesforce) — connected when an active
+    // CRM providers (hubspot, salesforce) - connected when an active
     // CrmConnection exists for that provider in the org.
     if (integration.id === 'hubspot' || integration.id === 'salesforce') {
         return crmActiveProviders.has(integration.id) ? 'connected' : 'not_connected';
@@ -291,7 +291,7 @@ function getConnectionStatus(
         return justcallActive ? 'connected' : 'not_connected';
     }
 
-    // Sequencer mailbox providers — check the specific provider's connected account count.
+    // Sequencer mailbox providers - check the specific provider's connected account count.
     // Each provider (google / microsoft / smtp) is shown as its own card, so we can't
     // treat "any mailbox connected" as "all providers connected".
     if (integration.category === 'sequencer') {
@@ -299,12 +299,12 @@ function getConnectionStatus(
         return count > 0 ? 'connected' : 'not_connected';
     }
 
-    // Smartlead / Instantly import — feature is "available" when the flag is on;
+    // Smartlead / Instantly import - feature is "available" when the flag is on;
     // per-org status (key on file? job running?) is reflected inside the wizard.
     if (integration.id === 'smartlead-import') return 'not_connected';
     if (integration.id === 'instantly-import') return 'not_connected';
 
-    // Slack — check SLACK_CONNECTED + status
+    // Slack - check SLACK_CONNECTED + status
     if (integration.id === 'slack') {
         const isConnected = settings.find(s => s.key === 'SLACK_CONNECTED')?.value === 'true';
         if (!isConnected) return 'not_connected';

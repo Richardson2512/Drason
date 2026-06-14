@@ -8,7 +8,7 @@
  * is stale relative to the current document version, this modal renders as a
  * blocking overlay until the user accepts.
  *
- * Required for GDPR Art. 7(3) — version bumps reset consent; we never imply
+ * Required for GDPR Art. 7(3) - version bumps reset consent; we never imply
  * acceptance of a new version from acceptance of an old one.
  */
 
@@ -63,7 +63,7 @@ export default function ConsentReacceptanceModal() {
             });
             setOpen(false);
             // Refresh the page so the in-flight 412 doesn't leave any UI in
-            // a broken state — simplest, most robust resolution.
+            // a broken state - simplest, most robust resolution.
             window.location.reload();
         } catch (e: any) {
             setError(e?.message || 'Failed to record acceptance. Please try again.');

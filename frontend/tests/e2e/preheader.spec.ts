@@ -1,5 +1,5 @@
 /**
- * Preheader (inbox preview text) — E2E coverage.
+ * Preheader (inbox preview text) - E2E coverage.
  *
  * Verifies:
  *   - Preview service uses preheader as the inbox snippet when present
@@ -26,7 +26,7 @@ async function login(page: Page) {
     expect(res.status()).toBe(200);
 }
 
-test.describe('preheader — preview service', () => {
+test.describe('preheader - preview service', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('preheader overrides body-derived snippet when present', async ({ page }) => {
@@ -78,7 +78,7 @@ test.describe('preheader — preview service', () => {
     });
 });
 
-test.describe('preheader — template CRUD', () => {
+test.describe('preheader - template CRUD', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('template create persists preheader; update changes it', async ({ page }) => {

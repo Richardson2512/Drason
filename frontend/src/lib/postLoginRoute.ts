@@ -45,7 +45,7 @@ export function resolvePostLoginRoute(email: string): string {
     const normalized = email.trim().toLowerCase();
     const workspaces = readWorkspaces();
 
-    // Rule 1 — client login match? Hard-route to that workspace.
+    // Rule 1 - client login match? Hard-route to that workspace.
     for (const w of workspaces) {
         const match = w.clientLogins.find(
             (cl) => cl.email.toLowerCase() === normalized && cl.status === 'active'
@@ -55,12 +55,12 @@ export function resolvePostLoginRoute(email: string): string {
         }
     }
 
-    // Rule 2 — agency owner with agency mode on + multiple workspaces? Fleet view.
+    // Rule 2 - agency owner with agency mode on + multiple workspaces? Fleet view.
     const agencyModeOn = localStorage.getItem(AGENCY_MODE_KEY) === '1';
     if (agencyModeOn && workspaces.length > 1) {
         return '/dashboard/agency';
     }
 
-    // Rule 3 — default landing.
+    // Rule 3 - default landing.
     return '/dashboard';
 }

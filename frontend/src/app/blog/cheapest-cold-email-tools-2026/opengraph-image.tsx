@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value) — Superkabe';
+export const alt = 'Cheapest Cold Email Tools of 2026 (Ranked by Cost-to-Value) - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default async function Image() {
                         Cheapest cold email tools
                     </div>
                     <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
-                        Total cost of ownership at solo, growing-team, and agency tiers. Per-tier vs per-user vs per-active-lead pricing — and the hidden costs nobody discloses.
+                        Total cost of ownership at solo, growing-team, and agency tiers. Per-tier vs per-user vs per-active-lead pricing - and the hidden costs nobody discloses.
                     </div>
                 </div>
 

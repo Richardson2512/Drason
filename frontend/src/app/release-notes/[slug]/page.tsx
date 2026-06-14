@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
  const release = releaseNotes.find(r => r.slug === slug);
  if (!release) return {};
 
- const title = `Superkabe ${release.version} — ${release.headline}`;
+ const title = `Superkabe ${release.version} - ${release.headline}`;
  const description = release.summary;
 
  return {
@@ -48,7 +48,7 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
  const newsArticleSchema = {
  "@context": "https://schema.org",
  "@type": "NewsArticle",
- "headline": `Superkabe ${release.version} — ${release.headline}`,
+ "headline": `Superkabe ${release.version} - ${release.headline}`,
  "description": release.summary,
  "datePublished": release.isoDate,
  "dateModified": release.isoDate,
@@ -180,7 +180,7 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
  <Link href={`/release-notes/${prevRelease.slug}`} className="group">
  <div className="text-xs text-gray-400 mb-1">&larr; Previous Release</div>
  <div className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">
- v{prevRelease.version} — {prevRelease.date}
+ v{prevRelease.version} - {prevRelease.date}
  </div>
  </Link>
  ) : <div />}
@@ -188,7 +188,7 @@ export default async function ReleaseNotePage({ params }: { params: Promise<{ sl
  <Link href={`/release-notes/${nextRelease.slug}`} className="text-right group">
  <div className="text-xs text-gray-400 mb-1">Next Release &rarr;</div>
  <div className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">
- v{nextRelease.version} — {nextRelease.date}
+ v{nextRelease.version} - {nextRelease.date}
  </div>
  </Link>
  ) : <div />}

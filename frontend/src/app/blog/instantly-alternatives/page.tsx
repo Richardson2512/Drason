@@ -77,7 +77,7 @@ export default function InstantlyAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Does Instantly include automated bounce protection?",
-                "acceptedAnswer": { "@type": "Answer", "text": "No. Instantly reports bounce rates in dashboards and surfaces alerts, but it does not automatically pause a mailbox when bounce rate crosses a configurable threshold. Teams that need auto-pause typically replace Instantly with a sender that ships protection natively — Superkabe enforces threshold-based auto-pause, 5-phase healing, and ESP-aware routing as standard." }
+                "acceptedAnswer": { "@type": "Answer", "text": "No. Instantly reports bounce rates in dashboards and surfaces alerts, but it does not automatically pause a mailbox when bounce rate crosses a configurable threshold. Teams that need auto-pause typically replace Instantly with a sender that ships protection natively - Superkabe enforces threshold-based auto-pause, 5-phase healing, and ESP-aware routing as standard." }
             },
             {
                 "@type": "Question",
@@ -116,17 +116,17 @@ export default function InstantlyAlternativesPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Instantly is genuinely polished — bundled warmup, B2B lead database, AI features, unified inbox. But teams running serious volume hit the same three walls: per-active-lead pricing at scale, no automated bounce-rate auto-pause, and provider-level ESP routing that treats all Gmail mailboxes as equal. Here are seven alternatives ranked for the teams that have outgrown those limits.
+                    Instantly is genuinely polished - bundled warmup, B2B lead database, AI features, unified inbox. But teams running serious volume hit the same three walls: per-active-lead pricing at scale, no automated bounce-rate auto-pause, and provider-level ESP routing that treats all Gmail mailboxes as equal. Here are seven alternatives ranked for the teams that have outgrown those limits.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly is feature-rich but charges per active lead — Hyperscale at 100K leads is $358/mo</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly is feature-rich but charges per active lead - Hyperscale at 100K leads is $358/mo</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only alternative that ships native auto-pause and a 5-phase healing pipeline as standard</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead is the closest feature-equivalent; EmailBison wins on per-send economics at high volume</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Lemlist beats Instantly on personalization features; Woodpecker on reply-detection branching</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is fast — connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over same-day</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is fast - connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over same-day</li>
                     </ul>
                 </div>
 
@@ -140,20 +140,20 @@ export default function InstantlyAlternativesPage() {
                         <h3 className="font-bold text-gray-900 mb-3">The three reasons teams leave</h3>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Per-active-lead pricing.</strong> Hyperscale at 100K leads is $358/mo. At 500K leads agencies cross $1K+/mo on Instantly alone. Per-send pricing models can be 2-4× cheaper at this volume</span></li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No automated auto-pause.</strong> Bounce rate is visible in the dashboard. There is no "pause when bounce rate crosses 3% over the last 60 sends" rule that the platform enforces. The team has to notice and act manually — which fails at scale</span></li>
-                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Provider-level ESP routing.</strong> Instantly groups all Gmail mailboxes as a class. In practice one Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5% — same provider, very different reputation. Per-mailbox ESP performance routing isolates this</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>No automated auto-pause.</strong> Bounce rate is visible in the dashboard. There is no "pause when bounce rate crosses 3% over the last 60 sends" rule that the platform enforces. The team has to notice and act manually - which fails at scale</span></li>
+                            <li className="flex items-start gap-2"><span className="text-orange-500 mt-0.5">▸</span> <span><strong>Provider-level ESP routing.</strong> Instantly groups all Gmail mailboxes as a class. In practice one Gmail mailbox can run 0.1% bounce rate to Gmail recipients while another runs 2.5% - same provider, very different reputation. Per-mailbox ESP performance routing isolates this</span></li>
                         </ul>
                     </div>
 
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        These compound at scale. <Link href="/blog/cost-of-unmonitored-cold-email-infrastructure" className="text-blue-600 hover:text-blue-800 underline">The economic cost of one burned domain</Link> is an order of magnitude larger than a year of premium tooling — and Instantly does not stop the burn natively.
+                        These compound at scale. <Link href="/blog/cost-of-unmonitored-cold-email-infrastructure" className="text-blue-600 hover:text-blue-800 underline">The economic cost of one burned domain</Link> is an order of magnitude larger than a year of premium tooling - and Instantly does not stop the burn natively.
                     </p>
 
                     <h2 id="alternatives" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 Instantly alternatives ranked</h2>
 
                     {/* 1. Superkabe */}
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — sender + protection layer in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - sender + protection layer in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             Superkabe is the only platform on this list that ships infrastructure protection natively. Validation runs pre-send (syntax / MX / disposable / catch-all / conditional MillionVerifier probe). Real-time monitoring tracks bounce rate over a rolling 100-send window. Auto-pause fires at 3% bounce rate after a 60-send minimum, with a 2% warning level and a 5-bounce absolute safety net. Paused mailboxes enter a 5-phase healing pipeline (Pause → Quarantine → Restricted Send → Warm Recovery → Healthy) with deterministic gates at each transition.
                         </p>
@@ -161,7 +161,7 @@ export default function InstantlyAlternativesPage() {
                             Native sending uses your own Google Workspace, Microsoft 365, or SMTP mailboxes via OAuth. Multi-step sequences with A/B variants, scheduling, tracking (HMAC-signed, replay-safe), unified inbox. ESP-aware routing scores each mailbox by 30-day per-ESP bounce performance and uses a 60% capacity / 40% performance blend.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Migration is fast: connect your Gmail or Microsoft 365 mailboxes via OAuth (or any SMTP provider with encrypted creds), re-build or import your sequences, and Superkabe takes over sending — with the deliverability protection layer running on every send from day one.
+                            Migration is fast: connect your Gmail or Microsoft 365 mailboxes via OAuth (or any SMTP provider with encrypted creds), re-build or import your sequences, and Superkabe takes over sending - with the deliverability protection layer running on every send from day one.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Outbound teams running 10+ domains who care about not burning them</li>
@@ -175,12 +175,12 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 2. Smartlead */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — most direct feature-for-feature competitor</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - most direct feature-for-feature competitor</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> matches Instantly feature-for-feature on the sender side: unlimited mailboxes, multi-step sequences, A/B variants, mailbox rotation, reply detection, comprehensive webhooks. The API is mature. Agency-scale workspace management is solid.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Smartlead does not bundle warmup (you bring your own — Lemwarm, Mailreach, etc.) and email validation is a paid add-on. Like Instantly, Smartlead does not ship automated auto-pause based on bounce-rate threshold. ESP routing is provider-level.
+                            Smartlead does not bundle warmup (you bring your own - Lemwarm, Mailreach, etc.) and email validation is a paid add-on. Like Instantly, Smartlead does not ship automated auto-pause based on bounce-rate threshold. ESP routing is provider-level.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Teams that want a mature sender API and don&apos;t need bundled warmup</li>
@@ -191,9 +191,9 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 3. EmailBison */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. EmailBison — best per-send economics at high volume</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. EmailBison - best per-send economics at high volume</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets teams that send a lot and want the lowest per-send cost. Volume-based pricing. The product is sparser than Instantly — no bundled warmup, no built-in lead database, lighter UI — but the sending layer is reliable and the API is straightforward.
+                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets teams that send a lot and want the lowest per-send cost. Volume-based pricing. The product is sparser than Instantly - no bundled warmup, no built-in lead database, lighter UI - but the sending layer is reliable and the API is straightforward.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             EmailBison does not ship native ESP-aware routing or a healing pipeline. For a single-tenant team running high volume on a tight budget, the trade-off can be worth it. For agencies, the per-workspace tooling is less mature.
@@ -207,12 +207,12 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 4. Lemlist */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist — personalization-first with strong warmup</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist - personalization-first with strong warmup</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization. Custom variables in images, dynamic landing pages, video personalization, AI-generated icebreakers — Lemlist invented or popularized most of these. Lemwarm is among the most respected warmup networks.
+                            <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization. Custom variables in images, dynamic landing pages, video personalization, AI-generated icebreakers - Lemlist invented or popularized most of these. Lemwarm is among the most respected warmup networks.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Per-user pricing makes it expensive past 5 reps. Mailbox-fleet management is not Lemlist&apos;s strength — agencies running 1,500 mailboxes across clients quickly outgrow it. No auto-pause, no healing pipeline.
+                            Per-user pricing makes it expensive past 5 reps. Mailbox-fleet management is not Lemlist&apos;s strength - agencies running 1,500 mailboxes across clients quickly outgrow it. No auto-pause, no healing pipeline.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Personalization-heavy SDR teams under 10 reps</li>
@@ -223,12 +223,12 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 5. Saleshandy */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy — sender + bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy - sender + bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a 700M+ contact lead database with a sequencer at a notably lower starting price ($25/mo). For solo founders or small teams who need leads + sending without buying both separately, the bundled value is real.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Deliverability tooling is basic — no ESP-aware routing, no auto-pause, no healing. Mailbox rotation works but is not as polished. For agencies, per-workspace tooling is less mature than Smartlead or Instantly.
+                            Deliverability tooling is basic - no ESP-aware routing, no auto-pause, no healing. Mailbox rotation works but is not as polished. For agencies, per-workspace tooling is less mature than Smartlead or Instantly.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Solo and small teams that need leads + sender bundled</li>
@@ -239,7 +239,7 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 6. Woodpecker */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker — established, reliable, strong reply detection</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker - established, reliable, strong reply detection</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> has been around longer than most names on this list and built its reputation on reliability and reply detection. Bounce shield blocks invalid addresses at send. The "if-campaign" branching for reply-based nurture flows is genuinely useful.
                         </p>
@@ -255,9 +255,9 @@ export default function InstantlyAlternativesPage() {
 
                     {/* 7. Mailshake */}
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake — multichannel sales engagement</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake - multichannel sales engagement</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> targets sales teams blending email, calls, and LinkedIn touches in a single sequence. Native dialer, calendar booking, and a clean UI — most approachable on this list for non-technical reps.
+                            <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> targets sales teams blending email, calls, and LinkedIn touches in a single sequence. Native dialer, calendar booking, and a clean UI - most approachable on this list for non-technical reps.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             For pure cold-email-at-scale Mailshake is not the right fit. Per-user pricing, no infrastructure protection, and lighter mailbox-rotation tooling make it more of a sales-engagement platform than a cold-email-volume platform.
@@ -365,7 +365,7 @@ export default function InstantlyAlternativesPage() {
                     <h2 id="when-to-stay" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When to stay with Instantly</h2>
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <ul className="space-y-2 text-gray-600 text-sm">
-                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Bundled warmup network is the primary value driver — Instantly&apos;s warmup is industry-leading</li>
+                            <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> Bundled warmup network is the primary value driver - Instantly&apos;s warmup is industry-leading</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You use the built-in B2B lead database heavily and don&apos;t want to unbundle it</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You run under 30K active leads and the per-lead pricing is comfortable</li>
                             <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">▸</span> You already have an external monitoring layer keeping bounce rates in check</li>
@@ -390,7 +390,7 @@ export default function InstantlyAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Replace Instantly with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at flat-rate pricing instead of per-active-lead."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - at flat-rate pricing instead of per-active-lead."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -399,7 +399,7 @@ export default function InstantlyAlternativesPage() {
                 <div className="space-y-4 mb-12">
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">What is the best Instantly alternative in 2026?</h3>
-                        <p className="text-gray-600 text-sm">Superkabe — it ships native AI sequences AND infrastructure protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline). Instantly offers a polished sender and warmup network but no automated threshold-based pause.</p>
+                        <p className="text-gray-600 text-sm">Superkabe - it ships native AI sequences AND infrastructure protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline). Instantly offers a polished sender and warmup network but no automated threshold-based pause.</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Why are Instantly users switching to other tools?</h3>

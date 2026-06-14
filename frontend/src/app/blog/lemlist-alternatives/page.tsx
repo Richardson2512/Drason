@@ -60,8 +60,8 @@ export default function LemlistAlternativesPage() {
         "mainEntity": [
             { "@type": "Question", "name": "What is the best Lemlist alternative in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe is the strongest Lemlist alternative for teams scaling beyond 5 reps. Lemlist's per-user pricing makes it expensive at scale, and the platform does not ship infrastructure protection. Superkabe ships native AI sequencing, multi-mailbox sending through Google Workspace / Microsoft 365 / SMTP, and built-in protection (auto-pause at 3% bounce rate, 5-phase healing) at flat per-tier pricing." } },
             { "@type": "Question", "name": "Why are teams leaving Lemlist?", "acceptedAnswer": { "@type": "Answer", "text": "Per-user pricing scales poorly past 5-10 reps; Lemwarm is good but the rest of the deliverability tooling is light; mailbox-fleet management for 100+ mailboxes is not Lemlist's strength. Teams scaling cold-at-volume typically migrate to Smartlead, Instantly, or Superkabe." } },
-            { "@type": "Question", "name": "Is Lemlist the best for personalization?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — Lemlist still leads on personalization features (custom variables in images, dynamic landing pages, video personalization, AI icebreakers). If personalization is the primary driver of your reply rates, Lemlist remains a strong choice. Other tools have caught up but not fully closed the gap." } },
-            { "@type": "Question", "name": "Does Lemlist have built-in deliverability protection?", "acceptedAnswer": { "@type": "Answer", "text": "Lemwarm is the warmup network and is excellent. The rest is light — bounce rates are visible in dashboards, but there is no automated auto-pause at a configurable threshold and no structured healing pipeline. Teams typically wrap Lemlist with an external protection layer." } },
+            { "@type": "Question", "name": "Is Lemlist the best for personalization?", "acceptedAnswer": { "@type": "Answer", "text": "Yes - Lemlist still leads on personalization features (custom variables in images, dynamic landing pages, video personalization, AI icebreakers). If personalization is the primary driver of your reply rates, Lemlist remains a strong choice. Other tools have caught up but not fully closed the gap." } },
+            { "@type": "Question", "name": "Does Lemlist have built-in deliverability protection?", "acceptedAnswer": { "@type": "Answer", "text": "Lemwarm is the warmup network and is excellent. The rest is light - bounce rates are visible in dashboards, but there is no automated auto-pause at a configurable threshold and no structured healing pipeline. Teams typically wrap Lemlist with an external protection layer." } },
             { "@type": "Question", "name": "Can I migrate from Lemlist to Superkabe without losing personalization?", "acceptedAnswer": { "@type": "Answer", "text": "Most personalization variables (first_name, company, custom fields) port over directly. Lemlist's image and video custom variables are platform-specific and would need to be rebuilt with Superkabe's tracking pixel and dynamic-link approach. For teams primarily using text-level personalization, the migration is straightforward." } },
             { "@type": "Question", "name": "Which Lemlist alternative is most cost-effective for agencies?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on agency economics. Per-tier pricing replaces per-user pricing, and the per-workspace isolation model means one client's infrastructure issues don't cascade across the fleet. Smartlead is the runner-up with mature workspace tooling at $39+/mo." } }
         ]
@@ -109,7 +109,7 @@ export default function LemlistAlternativesPage() {
                 <div className="prose prose-lg max-w-none">
                     <h2 id="why-look" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why teams leave Lemlist</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> is a beautiful product. Personalization variables in images, dynamic landing pages, video personalization, AI-generated icebreakers — most of these patterns started or matured at Lemlist. The Lemwarm warmup network is one of the most respected in the category. The product is loved.
+                        <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> is a beautiful product. Personalization variables in images, dynamic landing pages, video personalization, AI-generated icebreakers - most of these patterns started or matured at Lemlist. The Lemwarm warmup network is one of the most respected in the category. The product is loved.
                     </p>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -125,9 +125,9 @@ export default function LemlistAlternativesPage() {
                     <h2 id="alternatives" className="text-2xl font-bold text-gray-900 mt-12 mb-4">7 Lemlist alternatives ranked</h2>
 
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — AI sequencing + protection at flat-tier pricing</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - AI sequencing + protection at flat-tier pricing</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Superkabe ships native AI sequence generation grounded in your offer and ICP, multi-mailbox sending through your own Google Workspace / Microsoft 365 / SMTP mailboxes, and built-in protection (validation pre-send, real-time bounce monitoring, auto-pause at 3% bounce rate after a 60-send minimum, 5-phase healing pipeline). Flat per-tier pricing — no per-user multiplication.
+                            Superkabe ships native AI sequence generation grounded in your offer and ICP, multi-mailbox sending through your own Google Workspace / Microsoft 365 / SMTP mailboxes, and built-in protection (validation pre-send, real-time bounce monitoring, auto-pause at 3% bounce rate after a 60-send minimum, 5-phase healing pipeline). Flat per-tier pricing - no per-user multiplication.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             What Lemlist still wins on: image and video personalization variables. For text-level personalization, Superkabe matches.
@@ -141,7 +141,7 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — most mature feature surface for cold-at-scale</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - most mature feature surface for cold-at-scale</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> ships unlimited mailboxes, multi-step sequences, polished agency tooling, and a deep webhook ecosystem at flat-tier pricing. AI sequence assistance is included.
                         </p>
@@ -153,7 +153,7 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — bundled warmup + AI</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - bundled warmup + AI</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> bundles a strong warmup network with a B2B lead database and AI sequence features. Closest experience to Lemlist&apos;s polish.
                         </p>
@@ -165,9 +165,9 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison — best per-send economics</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison - best per-send economics</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> wins on raw per-send pricing for high-volume teams. Sparser product surface — no warmup, no AI personalization beyond basics.
+                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> wins on raw per-send pricing for high-volume teams. Sparser product surface - no warmup, no AI personalization beyond basics.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> High-volume single-tenant teams</li>
@@ -177,7 +177,7 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy — bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy - bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles 700M+ contacts with a sequencer at $25/mo. Solid for solo founders and small teams that need leads + sender bundled.
                         </p>
@@ -189,7 +189,7 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker — strong reply branching</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker - strong reply branching</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> wins on if-campaign branching for nurture flows. Established and stable.
                         </p>
@@ -201,7 +201,7 @@ export default function LemlistAlternativesPage() {
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake — multichannel sales engagement</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake - multichannel sales engagement</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> blends email with calls and LinkedIn. Native dialer and calendar booking. Per-user pricing similar to Lemlist.
                         </p>
@@ -299,19 +299,19 @@ export default function LemlistAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Scale past Lemlist's per-user pricing"
-                    body="Flat-tier pricing, AI sequencing, and built-in deliverability protection — Superkabe's economics work past 10 reps and into agency scale."
+                    body="Flat-tier pricing, AI sequencing, and built-in deliverability protection - Superkabe's economics work past 10 reps and into agency scale."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the best Lemlist alternative in 2026?</h3><p className="text-gray-600 text-sm">Superkabe — flat-tier pricing, AI sequencing, and built-in protection (auto-pause + 5-phase healing).</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the best Lemlist alternative in 2026?</h3><p className="text-gray-600 text-sm">Superkabe - flat-tier pricing, AI sequencing, and built-in protection (auto-pause + 5-phase healing).</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Why are teams leaving Lemlist?</h3><p className="text-gray-600 text-sm">Per-user pricing scales poorly, light agency tooling, no automated auto-pause.</p></div>
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Is Lemlist the best for personalization?</h3><p className="text-gray-600 text-sm">Yes — Lemlist still leads on image, video, and dynamic-page personalization. Other tools have closed the gap on text-level personalization.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Is Lemlist the best for personalization?</h3><p className="text-gray-600 text-sm">Yes - Lemlist still leads on image, video, and dynamic-page personalization. Other tools have closed the gap on text-level personalization.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Does Lemlist have built-in deliverability protection?</h3><p className="text-gray-600 text-sm">Lemwarm is excellent for warmup. Beyond that, no automated auto-pause and no healing pipeline.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Can I migrate from Lemlist to Superkabe without losing personalization?</h3><p className="text-gray-600 text-sm">Text-level personalization ports directly. Image and video custom variables would need rebuilding.</p></div>
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Which Lemlist alternative is most cost-effective for agencies?</h3><p className="text-gray-600 text-sm">Superkabe — flat-tier pricing replaces per-user, and per-workspace isolation is built in.</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Which Lemlist alternative is most cost-effective for agencies?</h3><p className="text-gray-600 text-sm">Superkabe - flat-tier pricing replaces per-user, and per-workspace isolation is built in.</p></div>
                 </div>
             </article>
 

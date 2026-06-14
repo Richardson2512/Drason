@@ -64,7 +64,7 @@ export default function TemplatesPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [categories, setCategories] = useState<string[]>(['general', 'introduction', 'follow-up', 'breakup', 'meeting', 'referral']);
 
-    // Unified editor state — replaces the two modal popups.
+    // Unified editor state - replaces the two modal popups.
     // `mode` drives which form is shown in the right split pane.
     const [mode, setMode] = useState<EditorMode>({ kind: 'none' });
 
@@ -92,7 +92,7 @@ export default function TemplatesPage() {
     const [showMoveMenu, setShowMoveMenu] = useState(false);
     const moveMenuRef = useRef<HTMLDivElement>(null);
 
-    // Folder delete confirmation — replaces native confirm() so the prompt
+    // Folder delete confirmation - replaces native confirm() so the prompt
     // actually appears (Chrome/Safari silently swallow it on some sites).
     const [pendingDeleteFolder, setPendingDeleteFolder] = useState<{ id: string; name: string; count: number } | null>(null);
     const [deletingFolder, setDeletingFolder] = useState(false);
@@ -105,7 +105,7 @@ export default function TemplatesPage() {
     const [saving, setSaving] = useState(false);
     const [savedFlash, setSavedFlash] = useState(false);
 
-    // Recipient-preview modal — opened from any template card or list row.
+    // Recipient-preview modal - opened from any template card or list row.
     // Shows the template rendered exactly as it would appear in the prospect's
     // inbox. Read-only; doesn't replace the editor.
     const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
@@ -122,7 +122,7 @@ export default function TemplatesPage() {
     // ─── Data ───────────────────────────────────────────────────────────
 
     // Note: caller MUST pass the folder explicitly. Earlier this defaulted to
-    // `activeFolder` and listed the state in useCallback deps — but that made
+    // `activeFolder` and listed the state in useCallback deps - but that made
     // the function identity change every time the folder did, which then
     // triggered the init useEffect (which depends on this callback) and
     // silently re-fetched with 'all', blowing away the user's folder filter.
@@ -242,7 +242,7 @@ export default function TemplatesPage() {
             // Backend templateController takes camelCase on input (bodyHtml /
             // bodyText) even though list responses return snake_case body_html
             // straight from Prisma. Don't 'normalize' this without checking
-            // the controller — silently drops the body update if mismatched.
+            // the controller - silently drops the body update if mismatched.
             const body = {
                 name: templateName,
                 subject: templateSubject,
@@ -456,7 +456,7 @@ export default function TemplatesPage() {
                     </button>
                 ) : (
                     // Sequence-specific actions live up here so they sit above
-                    // the search bar — matches the New Template / New Signature
+                    // the search bar - matches the New Template / New Signature
                     // slot for the other tabs. Triggers fire imperatively
                     // through the SequencesTab handle.
                     <div className="flex items-center gap-2">
@@ -483,7 +483,7 @@ export default function TemplatesPage() {
                     {[
                         { key: 'templates', label: 'Templates', icon: <FileText size={13} strokeWidth={1.75} />, count: templates.length },
                         { key: 'signatures', label: 'Signatures', icon: <PenLine size={13} strokeWidth={1.75} />, count: signatures.length },
-                        // Sequences tab — reusable multi-step skeletons (`SequencesTab` owns its own data).
+                        // Sequences tab - reusable multi-step skeletons (`SequencesTab` owns its own data).
                         { key: 'sequences', label: 'Sequences', icon: <Workflow size={13} strokeWidth={1.75} />, count: null as number | null },
                     ].map(tab => {
                         const isActive = activeTab === tab.key;
@@ -923,7 +923,7 @@ export default function TemplatesPage() {
                             <p className="text-xs text-gray-600">
                                 {pendingDeleteFolder.count === 0
                                     ? 'This folder is empty.'
-                                    : `${pendingDeleteFolder.count} template${pendingDeleteFolder.count === 1 ? '' : 's'} will move to Uncategorized — none will be deleted.`}
+                                    : `${pendingDeleteFolder.count} template${pendingDeleteFolder.count === 1 ? '' : 's'} will move to Uncategorized - none will be deleted.`}
                             </p>
                         </div>
                         <div className="flex justify-end gap-2 p-3" style={{ borderTop: '1px solid #E8E3DC', background: '#FAF7F1' }}>
@@ -1061,7 +1061,7 @@ function ListRow({ active, onClick, title, subtitle, meta, onDelete, onDuplicate
                     <span className="text-xs font-semibold text-gray-900 truncate">{title}</span>
                     {meta}
                 </div>
-                <div className="text-[10px] text-gray-500 truncate mt-0.5">{subtitle || '—'}</div>
+                <div className="text-[10px] text-gray-500 truncate mt-0.5">{subtitle || '-'}</div>
             </div>
             <div className="flex items-center gap-0.5 shrink-0" onClick={e => e.stopPropagation()}>
                 {onPreview && (
@@ -1168,7 +1168,7 @@ function SignatureCard({ signature, onEdit, onDelete, onSetDefault }: {
     onDelete: () => void;
     onSetDefault: () => void;
 }) {
-    // role="button" wrapper — see TemplateCard above for why.
+    // role="button" wrapper - see TemplateCard above for why.
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -1219,7 +1219,7 @@ function SignatureCard({ signature, onEdit, onDelete, onSetDefault }: {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// FolderPill — selector chip for the templates folder bar.
+// FolderPill - selector chip for the templates folder bar.
 // User-defined folders surface a delete button on hover; the All /
 // Uncategorized pseudo-buckets do not.
 // ────────────────────────────────────────────────────────────────────

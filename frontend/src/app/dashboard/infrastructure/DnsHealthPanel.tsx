@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * DnsHealthPanel — sits ABOVE the Findings (Health Issues) section on the
+ * DnsHealthPanel - sits ABOVE the Findings (Health Issues) section on the
  * Infrastructure page. Aggregates the four DNS-health signals across every
  * domain in the org into four scannable cards:
  *
@@ -11,7 +11,7 @@
  * that opens the same external help docs FindingsSection links to. Cards
  * stay clean (no Fix button) when the check is healthy across all domains.
  *
- * Data source: GET /api/dashboard/domains. Pure aggregation — no new backend.
+ * Data source: GET /api/dashboard/domains. Pure aggregation - no new backend.
  */
 
 import { useEffect, useState } from 'react';
@@ -34,7 +34,7 @@ interface DnsCheck {
     tone: CheckTone;
     affectedCount: number;        // domains failing this check
     totalDomains: number;
-    issueExplanation: string;     // shown when tone is bad/warn — explains the impact
+    issueExplanation: string;     // shown when tone is bad/warn - explains the impact
     fixHref: string;              // help URL the "Fix" button opens
     fixLabel: string;             // CTA text on the help link
     affectedDomains: string[];    // first few names for the tooltip
@@ -167,7 +167,7 @@ function DnsCheckCard({ check }: { check: DnsCheck }) {
 function computeChecks(domains: Domain[]): DnsCheck[] {
     const total = domains.length;
 
-    // SPF: bad when explicitly false. Unknowns (null) are excluded — we can't
+    // SPF: bad when explicitly false. Unknowns (null) are excluded - we can't
     // claim a record is missing if we never assessed it.
     const spfFailing = domains.filter(d => d.spf_valid === false);
     const dkimFailing = domains.filter(d => d.dkim_valid === false);
@@ -190,7 +190,7 @@ function computeChecks(domains: Domain[]): DnsCheck[] {
             description: 'Tells receivers which servers may send on this domain’s behalf.',
             ...spfStatus(spfFailing, total),
             issueExplanation: spfFailing.length > 0
-                ? `${spfFailing.length} ${spfFailing.length === 1 ? 'domain has no valid SPF record' : 'domains have no valid SPF record'}. Without SPF, receivers fall back to spam-filter heuristics — bounce rates climb fast.`
+                ? `${spfFailing.length} ${spfFailing.length === 1 ? 'domain has no valid SPF record' : 'domains have no valid SPF record'}. Without SPF, receivers fall back to spam-filter heuristics - bounce rates climb fast.`
                 : '',
             fixHref: 'https://support.google.com/a/answer/33786',
             fixLabel: 'Opens Google’s SPF setup guide',
@@ -245,7 +245,7 @@ function dkimStatus(failing: Domain[], total: number) {
 }
 function dmarcStatus(failing: Domain[], total: number) {
     if (failing.length === 0) return { tone: 'good' as CheckTone, affectedCount: 0, totalDomains: total };
-    // p=none isn't broken — it's just not enforcing. Surface as warn, not bad.
+    // p=none isn't broken - it's just not enforcing. Surface as warn, not bad.
     const allPNone = failing.every(d => d.dmarc_policy === 'none');
     return { tone: allPNone ? 'warn' as CheckTone : 'bad' as CheckTone, affectedCount: failing.length, totalDomains: total };
 }

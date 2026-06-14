@@ -14,7 +14,7 @@ interface ConsentDetails {
     scopes: string[];
     supported_scopes: string[];
     // Set when the MCP client used a per-org URL like /mcp/<slug>. Null
-    // for the bare /mcp URL (back-compat — the user's current org wins
+    // for the bare /mcp URL (back-compat - the user's current org wins
     // at approve time).
     target_org?: { id: string; name: string; slug: string } | null;
 }

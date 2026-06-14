@@ -1,5 +1,5 @@
 /**
- * useSortFilterModal — manages the sort/filter modal pattern duplicated
+ * useSortFilterModal - manages the sort/filter modal pattern duplicated
  * across campaigns, leads, mailboxes, and domains pages.
  *
  * Owns both the "live" filter values used for queries AND the temporary

@@ -13,7 +13,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton';
 // pinned to its own stack via the .dashboard-type-scope class so this
 // editorial system does not bleed into the data UI.
 
-// Display face — headlines, wordmark, stat numbers, card names. Tight
+// Display face - headlines, wordmark, stat numbers, card names. Tight
 // negative letter-spacing applied in globals.css.
 const outfit = Outfit({
   subsets: ['latin'],
@@ -22,7 +22,7 @@ const outfit = Outfit({
   variable: '--font-outfit',
 });
 
-// Accent face — italic only, only on emphasis moments (the accent word
+// Accent face - italic only, only on emphasis moments (the accent word
 // inside a headline, pricing tier names, marker numerals). Never body.
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -32,7 +32,7 @@ const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
 });
 
-// Body face — paragraph copy, sub-heads, button labels, FAQ answers.
+// Body face - paragraph copy, sub-heads, button labels, FAQ answers.
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
@@ -40,7 +40,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-// Metadata face — the small uppercase tracked-out labels (eyebrows,
+// Metadata face - the small uppercase tracked-out labels (eyebrows,
 // comment-style headers, skill tags, stat labels).
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Superkabe – The AI Cold Email Platform Built for Deliverability',
-    description: 'AI sequences, multi-mailbox sending, email validation, and a full deliverability protection stack — one platform for cold email outreach and protection.',
+    description: 'AI sequences, multi-mailbox sending, email validation, and a full deliverability protection stack - one platform for cold email outreach and protection.',
     url: 'https://www.superkabe.com',
     siteName: 'Superkabe',
     images: [
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Superkabe – AI Cold Email Platform with Deliverability Protection',
-    description: 'AI sequences, multi-mailbox sending, email validation, and a full deliverability protection stack — one platform for cold email outreach and protection.',
+    description: 'AI sequences, multi-mailbox sending, email validation, and a full deliverability protection stack - one platform for cold email outreach and protection.',
     images: ['/image/og-image.png'],
   },
   verification: {
@@ -110,7 +110,7 @@ export default function RootLayout({
       width: 512,
       height: 512,
     },
-    description: 'Superkabe is an AI cold email platform with native deliverability protection. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders — all from a single product.',
+    description: 'Superkabe is an AI cold email platform with native deliverability protection. We help outbound teams draft AI sequences, send across unlimited mailboxes, validate every email, and auto-heal damaged senders - all from a single product.',
     foundingDate: '2026-01-20',
     founder: {
       '@type': 'Person',
@@ -160,7 +160,7 @@ export default function RootLayout({
       'DNS authentication monitoring (SPF, DKIM, DMARC)',
       'Load balancing with effective load metric',
       'Unified inbox for replies across all connected mailboxes',
-      'One-time import from Smartlead — campaigns, sequences, leads, and mailbox metadata',
+      'One-time import from Smartlead - campaigns, sequences, leads, and mailbox metadata',
       'Slack integration for real-time alerts',
       'Reports and CSV export',
       'Dedicated AI agents for cold email tasks (sequence writing, reply classification, send-time optimization)',
@@ -185,7 +185,7 @@ export default function RootLayout({
     },
   };
 
-  // WebSite entity with SearchAction — unlocks the Google Sitelinks Searchbox
+  // WebSite entity with SearchAction - unlocks the Google Sitelinks Searchbox
   // for navigational queries ("superkabe ..."). The blog index supports a `q`
   // param for in-site search, so the action target points there.
   const websiteSchema = {
@@ -220,7 +220,7 @@ export default function RootLayout({
           so basic pageview/event counts are still captured for measurement.
 
           For returning visitors, prior consent is restored from localStorage
-          (sk-cookie-consent-v1) BEFORE gtag.js loads — so they aren't re-prompted
+          (sk-cookie-consent-v1) BEFORE gtag.js loads - so they aren't re-prompted
           and tracking re-engages exactly as they previously chose.
 
           GDPR Art. 6 + ePrivacy Directive Art. 5(3) compliance: cookies are
@@ -256,7 +256,7 @@ export default function RootLayout({
                       personalization_storage: c.functional ? 'granted' : 'denied'
                     });
                   }
-                } catch (e) { /* localStorage unavailable — keep defaults */ }
+                } catch (e) { /* localStorage unavailable - keep defaults */ }
 
                 gtag('js', new Date());
                 gtag('config', 'G-C36CG3CRSJ', { anonymize_ip: true });

@@ -115,7 +115,7 @@ export default function Configuration() {
                 <p className="text-sm text-gray-500 mt-1">Route leads to campaigns across platforms</p>
             </div>
 
-            {/* How Routing Works — Collapsible Guide */}
+            {/* How Routing Works - Collapsible Guide */}
             <div className="premium-card">
                 <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer list-none">
@@ -159,21 +159,21 @@ export default function Configuration() {
                                 <h3 className="text-sm font-bold text-slate-700 mb-3">Example Setup</h3>
                                 <div className="space-y-2">
                                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
-                                        <div className="font-semibold text-slate-800">Rule 1 — Priority 1</div>
+                                        <div className="font-semibold text-slate-800">Rule 1 - Priority 1</div>
                                         <div className="text-gray-500 mt-1">
                                             Persona: <strong>CEO</strong> · Min Score: <strong>60</strong> · Campaign: <strong>Enterprise Outreach</strong>
                                         </div>
                                         <div className="text-xs text-gray-400 mt-1">CEOs with score 60+ go to your best campaign</div>
                                     </div>
                                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
-                                        <div className="font-semibold text-slate-800">Rule 2 — Priority 2</div>
+                                        <div className="font-semibold text-slate-800">Rule 2 - Priority 2</div>
                                         <div className="text-gray-500 mt-1">
                                             Persona: <strong>VP Marketing</strong> · Min Score: <strong>40</strong> · Campaign: <strong>Marketing Leaders</strong>
                                         </div>
                                         <div className="text-xs text-gray-400 mt-1">Marketing VPs with score 40+ go to a targeted campaign</div>
                                     </div>
                                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
-                                        <div className="font-semibold text-slate-800">Rule 3 — Priority 3</div>
+                                        <div className="font-semibold text-slate-800">Rule 3 - Priority 3</div>
                                         <div className="text-gray-500 mt-1">
                                             Persona: <strong>*</strong> · Min Score: <strong>0</strong> · Campaign: <strong>General Outbound</strong>
                                         </div>
@@ -317,7 +317,7 @@ export default function Configuration() {
                             )}
                         </div>
 
-                        {/* Campaign Dropdown — fixed position, escapes card overflow */}
+                        {/* Campaign Dropdown - fixed position, escapes card overflow */}
                         {showDropdown && (
                             <>
                                 <div className="fixed inset-0 z-[9998]" onClick={() => setShowDropdown(false)} />

@@ -1,5 +1,5 @@
 /**
- * preserveBlankLines — canonical HTML normalizer that preserves user-intent
+ * preserveBlankLines - canonical HTML normalizer that preserves user-intent
  * blank lines as visibly-rendered empty paragraphs.
  *
  * Why this exists: Tiptap (ProseMirror) emits HTML where a user-pressed
@@ -10,7 +10,7 @@
  *   2. <p><br></p>        ← break-only paragraph (br at end-of-paragraph
  *                           is invisible because there's no content after)
  *   3. <p>text<br></p>    ← trailing <br> inside non-empty paragraph
- *                           (also zero visible height — same reason)
+ *                           (also zero visible height - same reason)
  *
  * After this transform, all three become <p>&nbsp;</p> (a paragraph
  * containing a non-breaking space). That renders with full paragraph height
@@ -39,7 +39,7 @@ export function preserveBlankLines(html: string | null | undefined): string {
     // ── 1. Empty <p> variants → visible empty paragraph ──────────────
     // Catches: <p></p>, <p> </p>, <p><br></p>, <p><br/></p>, <p><br />\n</p>,
     // and any combination of whitespace + 1–3 trailing <br> tags.
-    // We strip attributes on empty paragraphs intentionally — there's nothing
+    // We strip attributes on empty paragraphs intentionally - there's nothing
     // meaningful to preserve on a paragraph with no content.
     out = out.replace(
         /<p\b[^>]*>\s*(?:<br\s*\/?>\s*){0,3}<\/p>/gi,
@@ -48,7 +48,7 @@ export function preserveBlankLines(html: string | null | undefined): string {
 
     // ── 2. Trailing <br> inside NON-EMPTY paragraph → split ─────────
     // Tiptap emits `<p>text<br></p>` when the user presses Enter at the end
-    // of a line — the trailing <br> is the user's blank-line intent.
+    // of a line - the trailing <br> is the user's blank-line intent.
     // Convert to `<p>text</p><p>&nbsp;</p>` so the blank line actually renders.
     //
     // Match: <p[attrs]>(content)<br[/]>(optional whitespace)</p>
@@ -61,7 +61,7 @@ export function preserveBlankLines(html: string | null | undefined): string {
     );
 
     // ── 3. Repeat step 1 in case step 2 created any new empty trailers
-    // (defensive — shouldn't happen, but cheap to verify idempotence).
+    // (defensive - shouldn't happen, but cheap to verify idempotence).
     out = out.replace(
         /<p\b[^>]*>\s*(?:<br\s*\/?>\s*){0,3}<\/p>/gi,
         VISIBLE_EMPTY,

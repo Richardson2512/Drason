@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * ReplyQualityPanel — Sequencer Analytics → Reply Quality tab.
+ * ReplyQualityPanel - Sequencer Analytics → Reply Quality tab.
  *
  * Three sections, all driven by GET /api/sequencer/analytics/reply-quality:
- *   1. Class breakdown — donut + count list of all 9 classes
- *   2. What works    — top 10 outbound subjects by % positive replies
- *   3. What hurts    — top 10 outbound subjects by % hard-no / angry replies
- *   4. Drill-down    — click a class chip to see 5 example replies with
+ *   1. Class breakdown - donut + count list of all 9 classes
+ *   2. What works    - top 10 outbound subjects by % positive replies
+ *   3. What hurts    - top 10 outbound subjects by % hard-no / angry replies
+ *   4. Drill-down    - click a class chip to see 5 example replies with
  *                      their classification signals (audit trail)
  *
- * No charting library — the donut is a custom SVG. Keeps the page free of
+ * No charting library - the donut is a custom SVG. Keeps the page free of
  * a recharts dependency for one chart, and the donut already aligns with
  * the dashboard's monochrome aesthetic.
  */
@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2, Heart, ThumbsUp, MessageCircleQuestion, Users, Hourglass, X, AngryIcon, Clock4, HelpCircle, Flame, ArrowUpRight, ArrowDownRight, ChevronRight, ExternalLink } from 'lucide-react';
 
 // ────────────────────────────────────────────────────────────────────
-// Types — mirror the backend payload shape
+// Types - mirror the backend payload shape
 // ────────────────────────────────────────────────────────────────────
 
 type ReplyClass =
@@ -41,7 +41,7 @@ interface SubjectCorrelation {
 
 interface ReplySample {
     id: string;
-    /** EmailThread id — used to deep-link into Unibox via ?thread=<id>. */
+    /** EmailThread id - used to deep-link into Unibox via ?thread=<id>. */
     thread_id: string;
     subject: string;
     from_email: string;
@@ -65,17 +65,17 @@ interface ReplyQualityResponse {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Class metadata — keep in sync with backend REPLY_CLASSES
+// Class metadata - keep in sync with backend REPLY_CLASSES
 // ────────────────────────────────────────────────────────────────────
 
 const CLASS_META: Record<ReplyClass, { label: string; color: string; icon: React.ComponentType<any>; description: string }> = {
-    positive:     { label: 'Positive',     color: '#10B981', icon: Heart,                  description: 'Clearly interested — "yes let\'s chat", "send me more"' },
-    qualified:    { label: 'Qualified',    color: '#059669', icon: ThumbsUp,               description: 'Booking-intent — calendar links, explicit "let\'s schedule"' },
+    positive:     { label: 'Positive',     color: '#10B981', icon: Heart,                  description: 'Clearly interested - "yes let\'s chat", "send me more"' },
+    qualified:    { label: 'Qualified',    color: '#059669', icon: ThumbsUp,               description: 'Booking-intent - calendar links, explicit "let\'s schedule"' },
     objection:    { label: 'Objection',    color: '#3B82F6', icon: MessageCircleQuestion,  description: 'Questions about pricing, integrations, security, fit' },
-    referral:     { label: 'Referral',     color: '#8B5CF6', icon: Users,                  description: '"Talk to Sarah, she handles this" — points to a colleague' },
-    soft_no:      { label: 'Soft no',      color: '#F59E0B', icon: Clock4,                 description: '"Not now, ping me in Q3" — bad timing or already using a competitor' },
-    hard_no:      { label: 'Hard no',      color: '#EF4444', icon: X,                      description: 'Firm refusal — "remove me", "not interested", "we\'re set"' },
-    angry:        { label: 'Angry',        color: '#991B1B', icon: Flame,                  description: 'Hostile or profane reply — needs immediate operator review' },
+    referral:     { label: 'Referral',     color: '#8B5CF6', icon: Users,                  description: '"Talk to Sarah, she handles this" - points to a colleague' },
+    soft_no:      { label: 'Soft no',      color: '#F59E0B', icon: Clock4,                 description: '"Not now, ping me in Q3" - bad timing or already using a competitor' },
+    hard_no:      { label: 'Hard no',      color: '#EF4444', icon: X,                      description: 'Firm refusal - "remove me", "not interested", "we\'re set"' },
+    angry:        { label: 'Angry',        color: '#991B1B', icon: Flame,                  description: 'Hostile or profane reply - needs immediate operator review' },
     auto:         { label: 'Auto-reply',   color: '#94A3B8', icon: Hourglass,              description: 'Out-of-office, vacation, autoresponder' },
     unclassified: { label: 'Unclassified', color: '#9CA3AF', icon: HelpCircle,             description: 'Rules couldn\'t place this with confidence' },
 };
@@ -201,7 +201,7 @@ export default function ReplyQualityPanel({ days }: { days: number }) {
                 </div>
             </div>
 
-            {/* Inline drill-down table — renders directly below the class grid
+            {/* Inline drill-down table - renders directly below the class grid
                 when a non-zero class is selected. Replaces the prior modal so
                 the analytics page stays scannable in one continuous flow. */}
             {drillIntoClass && (
@@ -237,7 +237,7 @@ export default function ReplyQualityPanel({ days }: { days: number }) {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Subject table — used twice (works + hurts), differs only in which
+// Subject table - used twice (works + hurts), differs only in which
 // rate column it highlights.
 // ────────────────────────────────────────────────────────────────────
 
@@ -316,7 +316,7 @@ function SubjectRow({ row, rateKind }: { row: SubjectCorrelation; rateKind: 'pos
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Donut chart — pure SVG, no charting lib
+// Donut chart - pure SVG, no charting lib
 // ────────────────────────────────────────────────────────────────────
 
 function ReplyDonut({ breakdown, total }: { breakdown: Record<string, number>; total: number }) {
@@ -365,7 +365,7 @@ function ReplyDonut({ breakdown, total }: { breakdown: Record<string, number>; t
                         strokeDashoffset={a.offset}
                     />
                 ))}
-                {/* Center label — render via foreignObject so we can use Tailwind */}
+                {/* Center label - render via foreignObject so we can use Tailwind */}
                 <foreignObject x={0} y={0} width={SIZE} height={SIZE} className="rotate-90 origin-center" transform={`rotate(90 ${cx} ${cy})`}>
                     <div className="w-full h-full flex flex-col items-center justify-center">
                         <span className="text-2xl font-bold text-gray-900 tabular-nums leading-none">{goodPct}%</span>
@@ -378,7 +378,7 @@ function ReplyDonut({ breakdown, total }: { breakdown: Record<string, number>; t
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Drill-down table — inline (non-modal) sample listing for one class.
+// Drill-down table - inline (non-modal) sample listing for one class.
 //
 // Anchored beneath the Reply Quality grid via the parent's conditional
 // render. Auto-scrolls into view on mount so a click near the bottom of
@@ -465,7 +465,7 @@ function DrillDownTable({
 }
 
 /**
- * ReplyRow — clickable row that deep-links into the Unibox.
+ * ReplyRow - clickable row that deep-links into the Unibox.
  *
  * Renders a normal <tr> (so it lives inside the table semantics) but
  * routes through next/link via useRouter so SPA navigation is preserved.

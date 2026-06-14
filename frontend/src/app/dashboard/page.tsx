@@ -80,7 +80,7 @@ export default function Overview() {
   };
 
   useEffect(() => {
-    // Parallel Fetching — each call has its own fallback so one failure doesn't block the page
+    // Parallel Fetching - each call has its own fallback so one failure doesn't block the page
     Promise.all([
       apiClient<DashboardStats>('/api/dashboard/stats').catch((e) => { console.error('Stats fetch failed:', e); return { active: 0, held: 0, paused: 0 } as DashboardStats; }),
       apiClient<{ data: Record<string, unknown>[] }>('/api/dashboard/leads').catch((e) => { console.error('Leads fetch failed:', e); return { data: [] }; }),
@@ -95,7 +95,7 @@ export default function Overview() {
       setMailboxes(mailboxesData?.data || []); // { data: [], meta: {} }
       setCampaigns(campaignsData?.data || []); // { data: [], meta: {} }
 
-      // Process Campaigns Distribution — map IDs to readable names
+      // Process Campaigns Distribution - map IDs to readable names
       const cmap: Record<string, number> = {};
       const campaignsList = campaignsData?.data || [];
       const cNameMap = new Map(campaignsList.map((c: CampaignSummary) => [c.id, c.name || c.id]));
@@ -174,13 +174,13 @@ export default function Overview() {
           <p className="text-xs text-gray-500 mt-0.5">Real-time health monitoring across your infrastructure.</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          {/* Monitoring status — unobtrusive, replaces the old green gradient banner */}
+          {/* Monitoring status - unobtrusive, replaces the old green gradient banner */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs font-semibold text-gray-700">24/7 monitoring</span>
             <span className="text-[10px] text-gray-400">· syncs every 20 min</span>
           </div>
-          {/* Trial countdown — now a quiet pill, not a gradient card */}
+          {/* Trial countdown - now a quiet pill, not a gradient card */}
           {isTrialing && daysRemaining !== null && (
             <Link
               href="/dashboard/billing"
@@ -200,7 +200,7 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* ─── Unified stats bar — replaces 4 colored stat tiles ───── */}
+      {/* ─── Unified stats bar - replaces 4 colored stat tiles ───── */}
       <EntityStatsBar
         totalLabel="Overview"
         total={totalLeads + mailboxes.length + domains.length + campaigns.length}

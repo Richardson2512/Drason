@@ -199,7 +199,7 @@ interface AgencyModeContextValue {
 const AgencyModeContext = createContext<AgencyModeContextValue | null>(null);
 
 /**
- * Single source of truth for Agency Mode state — workspaces, client logins,
+ * Single source of truth for Agency Mode state - workspaces, client logins,
  * agency profile, on/off toggle. Lives at the dashboard-layout level so every
  * consuming component (sidebar switcher, settings card, fleet overview,
  * workspace detail) sees the same instance and re-renders on every change.
@@ -278,7 +278,7 @@ export function AgencyModeProvider({ children }: { children: ReactNode }) {
 
             const rawProfile = localStorage.getItem(AGENCY_PROFILE_KEY);
             if (rawProfile) setAgencyProfileState(JSON.parse(rawProfile) as AgencyProfile);
-        } catch { /* localStorage corruption — fall through to defaults */ }
+        } catch { /* localStorage corruption - fall through to defaults */ }
     }, [isEligible]);
 
     // Hydrate workspaces + fleet stats from the backend whenever Agency
@@ -305,7 +305,7 @@ export function AgencyModeProvider({ children }: { children: ReactNode }) {
 
     /**
      * Persist the per-workspace client-login mocks. Workspace identity
-     * (id/name/slug/etc.) lives on the backend now — we only checkpoint the
+     * (id/name/slug/etc.) lives on the backend now - we only checkpoint the
      * client-login arrays, keyed by workspace id. Phase 2 will replace this
      * with /api/agency/workspaces/:id/invites round-trips.
      */
@@ -391,7 +391,7 @@ export function AgencyModeProvider({ children }: { children: ReactNode }) {
             // / mailbox counts may have shifted server-side since last fetch.
             void refetchFleetStats();
         } else {
-            // No API-tracked fields changed (e.g., caller patched stats only) —
+            // No API-tracked fields changed (e.g., caller patched stats only) -
             // just patch React state. Phase 2 doesn't model writeable stats.
             setWorkspacesState((prev) => prev.map((w) => (w.id === id ? { ...w, ...patch } : w)));
         }
@@ -409,7 +409,7 @@ export function AgencyModeProvider({ children }: { children: ReactNode }) {
         workspaceId: string,
         login: { email: string; displayName: string | null; capabilities: Capability[] },
     ): Promise<ClientLogin> => {
-        // Real backend invite — sends the magic-link email server-side and
+        // Real backend invite - sends the magic-link email server-side and
         // returns the metadata (incl. magicLinkUrl which the modal surfaces
         // in dev as a fallback when SMTP isn't configured locally).
         const created = await apiClient<{

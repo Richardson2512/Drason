@@ -49,12 +49,12 @@ export default function HowManyColdEmailsPerDayArticle() {
  {
  "@type": "Question",
  "name": "What happens if I exceed the daily sending limit?",
- "acceptedAnswer": { "@type": "Answer", "text": "Exceeding provider limits triggers different responses depending on the provider. Google Workspace will temporarily block sending for 24 hours with a '550 5.4.5 Daily sending quota exceeded' error. Outlook 365 may throttle your account or require CAPTCHA verification. Beyond provider limits, exceeding safe cold email volumes (even within technical limits) damages your domain reputation — ISPs track sending patterns and flag sudden spikes. The reputation damage is often worse than the temporary sending block because it persists for weeks." }
+ "acceptedAnswer": { "@type": "Answer", "text": "Exceeding provider limits triggers different responses depending on the provider. Google Workspace will temporarily block sending for 24 hours with a '550 5.4.5 Daily sending quota exceeded' error. Outlook 365 may throttle your account or require CAPTCHA verification. Beyond provider limits, exceeding safe cold email volumes (even within technical limits) damages your domain reputation - ISPs track sending patterns and flag sudden spikes. The reputation damage is often worse than the temporary sending block because it persists for weeks." }
  },
  {
  "@type": "Question",
  "name": "Should I send the same volume every day or vary it?",
- "acceptedAnswer": { "@type": "Answer", "text": "Slight natural variation is fine and even beneficial — sending exactly 50 emails every day at exactly the same time looks automated. Aim for consistent volume within a 20% range (e.g., 40-60 emails if your target is 50). Send during business hours in the recipient's timezone when possible. Do not send on weekends unless your audience is known to engage then. The key is avoiding dramatic spikes — going from 50 to 150 in one day is the pattern that triggers ISP scrutiny." }
+ "acceptedAnswer": { "@type": "Answer", "text": "Slight natural variation is fine and even beneficial - sending exactly 50 emails every day at exactly the same time looks automated. Aim for consistent volume within a 20% range (e.g., 40-60 emails if your target is 50). Send during business hours in the recipient's timezone when possible. Do not send on weekends unless your audience is known to engage then. The key is avoiding dramatic spikes - going from 50 to 150 in one day is the pattern that triggers ISP scrutiny." }
  },
  {
  "@type": "Question",
@@ -87,7 +87,7 @@ export default function HowManyColdEmailsPerDayArticle() {
  />
 
  <p className="text-lg text-gray-700 leading-relaxed mb-12">
- For cold email, send 30-50 emails per mailbox per day during the first month. After warmup, scale to 50-75 per mailbox. Never exceed 100 per mailbox per day regardless of provider. Spread volume across multiple mailboxes and domains — 10 mailboxes at 50/day gives you 500 emails/day safely without burning any single domain.
+ For cold email, send 30-50 emails per mailbox per day during the first month. After warmup, scale to 50-75 per mailbox. Never exceed 100 per mailbox per day regardless of provider. Spread volume across multiple mailboxes and domains - 10 mailboxes at 50/day gives you 500 emails/day safely without burning any single domain.
  </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -96,13 +96,13 @@ export default function HowManyColdEmailsPerDayArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Safe cold email limit: 50-75 emails per mailbox per day after warmup</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Scale by adding mailboxes and domains, not by increasing per-mailbox volume</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Provider technical limits (500/day for Google) are NOT safe cold email limits</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Monitor bounce rate during every scale-up — if it rises above 2%, reduce volume</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Monitor bounce rate during every scale-up - if it rises above 2%, reduce volume</li>
  </ul>
  </div>
 
  <div className="prose prose-lg max-w-none">
  <p className="text-gray-600 leading-relaxed mb-6">
- Every cold email team eventually asks this question. The answer depends on your provider, your domain age, your warmup status, and how many mailboxes you have. The mistake most teams make is confusing the provider&rsquo;s technical sending limit with the safe sending limit for cold email. These are very different numbers — and exceeding the safe limit while staying within the technical limit is how domains get burned.
+ Every cold email team eventually asks this question. The answer depends on your provider, your domain age, your warmup status, and how many mailboxes you have. The mistake most teams make is confusing the provider&rsquo;s technical sending limit with the safe sending limit for cold email. These are very different numbers - and exceeding the safe limit while staying within the technical limit is how domains get burned.
  </p>
 
  <h2 id="provider-limits" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Provider-specific sending limits</h2>
@@ -241,25 +241,25 @@ export default function HowManyColdEmailsPerDayArticle() {
  </table>
  </div>
  <p className="text-gray-600 leading-relaxed mb-6">
- At any point during the ramp-up, if bounce rate rises above 2% or warmup scores drop below 80%, reduce live volume by 50% and hold until metrics stabilize. The ramp-up is not a fixed schedule — it is conditional on healthy metrics. See our <Link href="/blog/complete-email-warmup-guide" className="text-blue-600 hover:text-blue-800">complete warmup guide</Link> for detailed warmup-to-live transition strategies.
+ At any point during the ramp-up, if bounce rate rises above 2% or warmup scores drop below 80%, reduce live volume by 50% and hold until metrics stabilize. The ramp-up is not a fixed schedule - it is conditional on healthy metrics. See our <Link href="/blog/complete-email-warmup-guide" className="text-blue-600 hover:text-blue-800">complete warmup guide</Link> for detailed warmup-to-live transition strategies.
  </p>
 
  <h2 id="common-mistakes" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Common mistakes that burn domains</h2>
  <div className="space-y-4 mb-8">
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Sending 200/day from one mailbox:</strong> Even if your provider allows it, sending 200 cold emails from a single mailbox will destroy its reputation within a week. The ISP sees one account suddenly blasting hundreds of unsolicited emails — that is textbook spam behavior. Keep it under 75, ideally under 60.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Sending 200/day from one mailbox:</strong> Even if your provider allows it, sending 200 cold emails from a single mailbox will destroy its reputation within a week. The ISP sees one account suddenly blasting hundreds of unsolicited emails - that is textbook spam behavior. Keep it under 75, ideally under 60.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Scaling too fast after warmup:</strong> Going from 30/day warmup to 100/day live is a 233% volume increase. ISPs flag this as suspicious. The ramp should be gradual — no more than 20-30% increase per week. Patience during the first month saves you from losing the domain entirely.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Scaling too fast after warmup:</strong> Going from 30/day warmup to 100/day live is a 233% volume increase. ISPs flag this as suspicious. The ramp should be gradual - no more than 20-30% increase per week. Patience during the first month saves you from losing the domain entirely.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Not monitoring bounce rate during scale-up:</strong> Every time you increase volume, bounce rate should be the first metric you check. Higher volume means more total bounces even at the same percentage — and if the percentage increases as you scale, it means the new leads you added are lower quality. Pause scaling and clean your list. Read more about <Link href="/blog/cold-email-bounce-rate-thresholds" className="text-blue-600 hover:text-blue-800">bounce rate thresholds</Link>.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Not monitoring bounce rate during scale-up:</strong> Every time you increase volume, bounce rate should be the first metric you check. Higher volume means more total bounces even at the same percentage - and if the percentage increases as you scale, it means the new leads you added are lower quality. Pause scaling and clean your list. Read more about <Link href="/blog/cold-email-bounce-rate-thresholds" className="text-blue-600 hover:text-blue-800">bounce rate thresholds</Link>.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Using one domain for everything:</strong> Sending 500 emails/day from one domain with 10 mailboxes concentrates risk. If that domain gets blacklisted, you lose all 500 sends. Distribute across 5+ domains so that one blacklisting only impacts 20% of your volume. Domain diversity is as important as per-mailbox volume limits.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Ignoring weekends and time zones:</strong> Sending at 3 AM in the recipient&rsquo;s timezone or blasting on Saturday looks automated. Schedule sends during business hours (8 AM - 6 PM) in the recipient&rsquo;s timezone. Most sending platforms support timezone-based scheduling — use it.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Ignoring weekends and time zones:</strong> Sending at 3 AM in the recipient&rsquo;s timezone or blasting on Saturday looks automated. Schedule sends during business hours (8 AM - 6 PM) in the recipient&rsquo;s timezone. Most sending platforms support timezone-based scheduling - use it.</p>
  </div>
  </div>
 
@@ -272,13 +272,13 @@ export default function HowManyColdEmailsPerDayArticle() {
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Per-mailbox monitoring:</strong> Superkabe tracks sending volume, bounce rate, and engagement metrics for every individual mailbox. When a mailbox approaches the safe volume limit or its bounce rate climbs, it is flagged or auto-paused before domain reputation is affected.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">ESP-aware routing:</strong> Not all mailboxes perform equally across ISPs. Superkabe&rsquo;s <Link href="/docs/platform-rules" className="text-blue-600 hover:text-blue-800">routing engine</Link> scores each mailbox by its per-ESP bounce rate and distributes leads accordingly. A mailbox with 0.5% bounce rate on Gmail but 2.5% on Outlook gets more Gmail leads and fewer Outlook leads — maximizing deliverability across your entire infrastructure.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">ESP-aware routing:</strong> Not all mailboxes perform equally across ISPs. Superkabe&rsquo;s <Link href="/docs/platform-rules" className="text-blue-600 hover:text-blue-800">routing engine</Link> scores each mailbox by its per-ESP bounce rate and distributes leads accordingly. A mailbox with 0.5% bounce rate on Gmail but 2.5% on Outlook gets more Gmail leads and fewer Outlook leads - maximizing deliverability across your entire infrastructure.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Pre-send validation:</strong> Every lead is validated through Superkabe&rsquo;s <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800">hybrid validation engine</Link> before reaching your sending platform. This ensures bounce rates stay low even as you scale volume — the leads that make it through are verified deliverable.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Pre-send validation:</strong> Every lead is validated through Superkabe&rsquo;s <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800">hybrid validation engine</Link> before reaching your sending platform. This ensures bounce rates stay low even as you scale volume - the leads that make it through are verified deliverable.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Auto-pause and healing:</strong> If a mailbox does start showing signs of trouble despite precautions, Superkabe <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">auto-pauses it</Link> and enters it into the 5-phase healing pipeline. The mailbox is taken offline, cooled down, re-warmed, validated, and restored — all automatically. Your campaigns continue on the remaining healthy mailboxes without interruption.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Auto-pause and healing:</strong> If a mailbox does start showing signs of trouble despite precautions, Superkabe <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">auto-pauses it</Link> and enters it into the 5-phase healing pipeline. The mailbox is taken offline, cooled down, re-warmed, validated, and restored - all automatically. Your campaigns continue on the remaining healthy mailboxes without interruption.</p>
  </div>
  </div>
 
@@ -286,11 +286,11 @@ export default function HowManyColdEmailsPerDayArticle() {
  <div className="space-y-4 mb-12">
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">What happens if I exceed the daily sending limit? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
- <p className="mt-3 text-sm text-gray-600">Exceeding provider limits triggers different responses. Google Workspace blocks sending for 24 hours. Outlook 365 may throttle or require CAPTCHA. Beyond technical limits, exceeding safe cold email volumes damages domain reputation — ISPs track patterns and flag spikes. The reputation damage persists for weeks, often worse than the temporary block. See <Link href="/blog/how-to-know-if-domain-is-burned" className="text-blue-600 hover:text-blue-800">signs of a burned domain</Link> to understand the consequences.</p>
+ <p className="mt-3 text-sm text-gray-600">Exceeding provider limits triggers different responses. Google Workspace blocks sending for 24 hours. Outlook 365 may throttle or require CAPTCHA. Beyond technical limits, exceeding safe cold email volumes damages domain reputation - ISPs track patterns and flag spikes. The reputation damage persists for weeks, often worse than the temporary block. See <Link href="/blog/how-to-know-if-domain-is-burned" className="text-blue-600 hover:text-blue-800">signs of a burned domain</Link> to understand the consequences.</p>
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">Should I send the same volume every day or vary it? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
- <p className="mt-3 text-sm text-gray-600">Slight natural variation is fine and even beneficial — sending exactly 50 emails every day at the same time looks automated. Aim for consistent volume within a 20% range (40-60 if targeting 50). Send during business hours in the recipient&rsquo;s timezone. Avoid weekends unless your audience engages then. The key is avoiding dramatic spikes — going from 50 to 150 in one day triggers ISP scrutiny.</p>
+ <p className="mt-3 text-sm text-gray-600">Slight natural variation is fine and even beneficial - sending exactly 50 emails every day at the same time looks automated. Aim for consistent volume within a 20% range (40-60 if targeting 50). Send during business hours in the recipient&rsquo;s timezone. Avoid weekends unless your audience engages then. The key is avoiding dramatic spikes - going from 50 to 150 in one day triggers ISP scrutiny.</p>
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">How do I calculate total daily volume across my infrastructure? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>

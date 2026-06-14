@@ -41,7 +41,7 @@ export default function TemplateActions({
             setCopied(target);
             setTimeout(() => setCopied(null), 1800);
         } catch {
-            // Clipboard API blocked (e.g., insecure context) — silent fail.
+            // Clipboard API blocked (e.g., insecure context) - silent fail.
         }
     }
 

@@ -1,5 +1,5 @@
 /**
- * useCampaignList — shared hook for fetching the full campaign list.
+ * useCampaignList - shared hook for fetching the full campaign list.
  *
  * Used by analytics, leads, configuration, and mailboxes pages.
  * Leverages useApiQuery's module-level cache so navigating between

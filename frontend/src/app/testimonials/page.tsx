@@ -20,7 +20,7 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
     {
         quote:
-            "We were burning a domain a month before Superkabe. The auto-healing pipeline picked up the dip 36 hours before our old monitoring would have flagged it — we haven't replaced a sending domain in five months.",
+            "We were burning a domain a month before Superkabe. The auto-healing pipeline picked up the dip 36 hours before our old monitoring would have flagged it - we haven't replaced a sending domain in five months.",
         author: 'Aarav Singh',
         role: 'Founder',
         company: 'Rihario',
@@ -40,7 +40,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         quote:
-            "The AI sequence builder writes drafts that actually sound like me. I spend the time I used to spend writing on iterating instead. We shipped three new campaigns last week — that used to be a month of work.",
+            "The AI sequence builder writes drafts that actually sound like me. I spend the time I used to spend writing on iterating instead. We shipped three new campaigns last week - that used to be a month of work.",
         author: 'Maya Patel',
         role: 'GTM Lead',
         company: 'PrompTrim',
@@ -80,7 +80,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         quote:
-            "I've used five cold email tools in two years. Superkabe is the first one that treats deliverability as a product surface, not a checkbox. Slack alerts hit before our oncall does — we route around problems, not into them.",
+            "I've used five cold email tools in two years. Superkabe is the first one that treats deliverability as a product surface, not a checkbox. Slack alerts hit before our oncall does - we route around problems, not into them.",
         author: 'Noor Hassan',
         role: 'Head of Sales',
         company: 'Pricewise',
@@ -99,7 +99,7 @@ const TESTIMONIALS: Testimonial[] = [
     },
     {
         quote:
-            "Switched off SmartLead and Instantly to consolidate on Superkabe. The infra-score dashboard is what sold our CTO — we finally have a single number to point at when leadership asks 'is outbound healthy this quarter?'",
+            "Switched off SmartLead and Instantly to consolidate on Superkabe. The infra-score dashboard is what sold our CTO - we finally have a single number to point at when leadership asks 'is outbound healthy this quarter?'",
         author: 'Linnea Berg',
         role: 'VP Growth',
         company: 'Insightsnap',
@@ -248,7 +248,7 @@ export default function TestimonialsPage() {
                         .
                     </h1>
                     <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        Founders, growth leads, and RevOps teams use Superkabe to ship cold email at scale —
+                        Founders, growth leads, and RevOps teams use Superkabe to ship cold email at scale -
                         and keep their senders healthy while they do it. Here&apos;s what they say.
                     </p>
                 </div>

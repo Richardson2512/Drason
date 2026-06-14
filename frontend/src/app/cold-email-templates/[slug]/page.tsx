@@ -33,15 +33,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const t = getTemplateBySlug(slug);
     if (!t) return { title: 'Template not found' };
 
-    const title = `${t.title} — Cold Email Template + AI Prompt | Superkabe`;
-    const description = `Cold email template: "${t.subject}" — ${t.bestFor}. Includes the AI prompt to recreate or customize, deliverability score (${t.deliverabilityScore}/100), and annotations on what works.`;
+    const title = `${t.title} - Cold Email Template + AI Prompt | Superkabe`;
+    const description = `Cold email template: "${t.subject}" - ${t.bestFor}. Includes the AI prompt to recreate or customize, deliverability score (${t.deliverabilityScore}/100), and annotations on what works.`;
 
     return {
         title,
         description,
         alternates: { canonical: `${PATH_BASE}/${t.slug}` },
         openGraph: {
-            title: `${t.title} — Free Cold Email Template`,
+            title: `${t.title} - Free Cold Email Template`,
             description,
             url: `${SITE}${PATH_BASE}/${t.slug}`,
             siteName: 'Superkabe',
@@ -149,7 +149,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
             <section className="px-6 pb-12">
                 <div className="max-w-4xl mx-auto">
                     <div className="grid lg:grid-cols-[1fr,300px] gap-6">
-                        {/* Main column — template content + actions */}
+                        {/* Main column - template content + actions */}
                         <div className="space-y-6">
                             {/* Subject card */}
                             <div className="rounded-xl bg-white border border-[#D1CBC5] p-5">
@@ -186,7 +186,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
                                     <h2 className="text-xs uppercase tracking-wide font-semibold">The AI prompt that built this</h2>
                                 </div>
                                 <p className="text-sm text-[#D1CBC5] mb-4">
-                                    Copy this prompt into ChatGPT/Claude/your favorite AI to generate variations for your industry, role, or use case. Or — when you sign up for Superkabe — generate it directly inside the platform.
+                                    Copy this prompt into ChatGPT/Claude/your favorite AI to generate variations for your industry, role, or use case. Or - when you sign up for Superkabe - generate it directly inside the platform.
                                 </p>
                                 <div className="rounded-lg bg-black/30 border border-white/10 p-4">
                                     <pre className="font-sans text-sm leading-relaxed whitespace-pre-wrap text-white">
@@ -206,7 +206,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
                                         {template.annotations.map((a, i) => (
                                             <li key={i} className="border-l-2 border-[#1E1E2F] pl-4">
                                                 <p className="text-xs uppercase tracking-wide text-[#6B5E4F] mb-1">
-                                                    {sectionLabel(a.section)} — {a.label}
+                                                    {sectionLabel(a.section)} - {a.label}
                                                 </p>
                                                 <p className="text-sm text-[#1E1E2F]">{a.reason}</p>
                                             </li>
@@ -225,7 +225,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
                                     <ChecklistItem text="Add an unsubscribe link to the footer (CAN-SPAM § 5(a)(3))" />
                                     <ChecklistItem text="Include your physical mailing address in every commercial send (CAN-SPAM § 5(a)(5))" />
                                     <ChecklistItem text="Set the List-Unsubscribe + List-Unsubscribe-Post headers (Gmail/Yahoo Feb 2024 sender rules)" />
-                                    <ChecklistItem text="Replace personalization placeholders before sending — never ship raw {{first_name}} to a recipient" />
+                                    <ChecklistItem text="Replace personalization placeholders before sending - never ship raw {{first_name}} to a recipient" />
                                     <ChecklistItem text="Send from a domain that's properly authenticated (SPF + DKIM + DMARC)" />
                                 </ul>
                                 <p className="mt-4 text-xs text-[#6B5E4F]">
@@ -236,7 +236,7 @@ export default async function TemplateDetailPage({ params }: { params: Promise<{
                             </div>
                         </div>
 
-                        {/* Sidebar — quick facts + variables */}
+                        {/* Sidebar - quick facts + variables */}
                         <aside className="space-y-4">
                             <div className="rounded-xl bg-white border border-[#D1CBC5] p-5 sticky top-24">
                                 <h3 className="text-xs uppercase tracking-wide text-[#6B5E4F] font-semibold mb-3">Quick facts</h3>

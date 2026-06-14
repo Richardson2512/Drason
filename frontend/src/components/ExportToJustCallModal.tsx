@@ -17,7 +17,7 @@ interface CampaignItem {
 export interface ExportToJustCallProps {
     /** CampaignLead.id values to push as JustCall sales-dialer contacts. */
     prospectIds: string[];
-    /** 'todays_list' | 'custom_list' | 'campaign' — for audit + UI. */
+    /** 'todays_list' | 'custom_list' | 'campaign' - for audit + UI. */
     sourceKind: string;
     /** Human-readable label shown in the recent-exports table. */
     sourceLabel?: string;
@@ -34,7 +34,7 @@ type ConnectionState =
 
 /**
  * Sales-dialer campaigns require a default country_code so JustCall can
- * format E.164 numbers when one is missing the prefix. We don't assume —
+ * format E.164 numbers when one is missing the prefix. We don't assume -
  * just default to US and let the user change it before creating.
  */
 const COUNTRY_DEFAULT = 'US';
@@ -54,7 +54,7 @@ export default function ExportToJustCallModal(props: ExportToJustCallProps) {
     const [newCampaignCountry, setNewCampaignCountry] = useState(COUNTRY_DEFAULT);
     const [creatingCampaign, setCreatingCampaign] = useState(false);
     /** Tracks whether the currently-selected campaign was just created in
-     *  this session — surfaced in the audit row so the recent-exports list
+     *  this session - surfaced in the audit row so the recent-exports list
      *  can show "(new)" alongside the campaign name. */
     const [createdInSession, setCreatedInSession] = useState(false);
 
@@ -137,7 +137,7 @@ export default function ExportToJustCallModal(props: ExportToJustCallProps) {
             setCreatedInSession(true);
             setCreateMode(false);
             setNewCampaignName('');
-            toast.success(`Created "${c.name}" — assign agents inside JustCall when ready`);
+            toast.success(`Created "${c.name}" - assign agents inside JustCall when ready`);
         } catch (err: any) {
             toast.error(err?.message || 'Failed to create campaign');
         } finally {
@@ -172,7 +172,7 @@ export default function ExportToJustCallModal(props: ExportToJustCallProps) {
                     }),
                 },
             );
-            toast.success(`Export queued — ${prospectIds.length} prospect${prospectIds.length === 1 ? '' : 's'}`);
+            toast.success(`Export queued - ${prospectIds.length} prospect${prospectIds.length === 1 ? '' : 's'}`);
             onEnqueued?.(r.export_job_id);
             onClose();
         } catch (err: any) {
@@ -202,7 +202,7 @@ export default function ExportToJustCallModal(props: ExportToJustCallProps) {
                     <h2 className="text-base font-bold text-gray-900">Export to JustCall</h2>
                     <p className="text-xs text-gray-500 mt-0.5">
                         Push <strong>{prospectIds.length}</strong> prospect{prospectIds.length === 1 ? '' : 's'} into a JustCall sales-dialer campaign.
-                        Leads without a phone number will be skipped — JustCall dedupes by phone.
+                        Leads without a phone number will be skipped - JustCall dedupes by phone.
                     </p>
                 </div>
 

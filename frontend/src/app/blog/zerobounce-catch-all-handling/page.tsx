@@ -53,7 +53,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  "name": "How does ZeroBounce classify catch-all emails?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "ZeroBounce returns a 'catch-all' status for emails on catch-all domains. This is separate from 'valid', 'invalid', or 'unknown'. It means ZeroBounce detected that the domain accepts all emails regardless of whether the specific mailbox exists. The tool does not attempt to determine if the individual address is real — it just flags the domain type."
+ "text": "ZeroBounce returns a 'catch-all' status for emails on catch-all domains. This is separate from 'valid', 'invalid', or 'unknown'. It means ZeroBounce detected that the domain accepts all emails regardless of whether the specific mailbox exists. The tool does not attempt to determine if the individual address is real - it just flags the domain type."
  }
  },
  {
@@ -85,7 +85,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  "name": "Can ZeroBounce tell me if a specific address on a catch-all domain is real?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "No. That is the fundamental limitation of catch-all domains. The server accepts everything at the SMTP level, so there is no way for ZeroBounce (or any verification tool using SMTP probing) to distinguish a real mailbox from a fake one. ZeroBounce can only tell you the domain is catch-all — not whether your specific contact exists."
+ "text": "No. That is the fundamental limitation of catch-all domains. The server accepts everything at the SMTP level, so there is no way for ZeroBounce (or any verification tool using SMTP probing) to distinguish a real mailbox from a fake one. ZeroBounce can only tell you the domain is catch-all - not whether your specific contact exists."
  }
  },
  {
@@ -93,7 +93,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  "name": "What is the difference between ZeroBounce catch-all and unknown status?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Catch-all means ZeroBounce confirmed the domain accepts all emails regardless of whether the address exists. Unknown means ZeroBounce could not determine the email status at all — the server may have been temporarily unreachable, rate-limiting verification attempts, or using greylisting. Catch-all is a definitive classification. Unknown is inconclusive."
+ "text": "Catch-all means ZeroBounce confirmed the domain accepts all emails regardless of whether the address exists. Unknown means ZeroBounce could not determine the email status at all - the server may have been temporarily unreachable, rate-limiting verification attempts, or using greylisting. Catch-all is a definitive classification. Unknown is inconclusive."
  }
  }
  ]
@@ -140,10 +140,10 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  {/* Section 1 */}
  <h2 id="catch-all-quick-refresher" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Quick refresher: what catch-all domains are</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- A catch-all domain is one where the mail server accepts emails sent to any address. Real employee, former employee, typo, completely made-up name &mdash; the server says &quot;sure, I will take it&quot; at the SMTP level. What happens after that varies. Some servers dump unmatched emails into a shared inbox. Others silently discard them. Others bounce them internally, hours or days later.
+ A catch-all domain is one where the mail server accepts emails sent to any address. Real employee, former employee, typo, completely made-up name - the server says &quot;sure, I will take it&quot; at the SMTP level. What happens after that varies. Some servers dump unmatched emails into a shared inbox. Others silently discard them. Others bounce them internally, hours or days later.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The problem for cold outreach teams: your verification tool cannot tell whether a specific address on a catch-all domain belongs to a real person. The server looks valid for everything. We covered this in depth in our <Link href="/blog/catch-all-domains-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">catch-all domains deep dive</Link> &mdash; read that if you want the full technical breakdown. For this article, the key point is simple: catch-all domains make verification results unreliable for those addresses.
+ The problem for cold outreach teams: your verification tool cannot tell whether a specific address on a catch-all domain belongs to a real person. The server looks valid for everything. We covered this in depth in our <Link href="/blog/catch-all-domains-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">catch-all domains deep dive</Link> - read that if you want the full technical breakdown. For this article, the key point is simple: catch-all domains make verification results unreliable for those addresses.
  </p>
 
  {/* Section 2 */}
@@ -227,7 +227,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- This is not a criticism of ZeroBounce specifically. NeverBounce, MillionVerifier, Clearout &mdash; they all have the same limitation. Verification tools verify. They do not monitor, protect, or heal. As we covered in our <Link href="/blog/why-verified-emails-still-bounce" className="text-blue-600 hover:text-blue-800 underline">guide on why verified emails still bounce</Link>, even addresses that pass verification can cause problems. Catch-all is just the most common example.
+ This is not a criticism of ZeroBounce specifically. NeverBounce, MillionVerifier, Clearout - they all have the same limitation. Verification tools verify. They do not monitor, protect, or heal. As we covered in our <Link href="/blog/why-verified-emails-still-bounce" className="text-blue-600 hover:text-blue-800 underline">guide on why verified emails still bounce</Link>, even addresses that pass verification can cause problems. Catch-all is just the most common example.
  </p>
 
  {/* Section 5 */}
@@ -376,7 +376,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">What is the difference between ZeroBounce catch-all and unknown status?</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Catch-all means ZeroBounce confirmed the domain accepts all emails. Unknown means ZeroBounce could not determine the email status &mdash; the server may have been unreachable, rate-limiting, or using greylisting. Catch-all is a definitive classification. Unknown is inconclusive.
+ Catch-all means ZeroBounce confirmed the domain accepts all emails. Unknown means ZeroBounce could not determine the email status - the server may have been unreachable, rate-limiting, or using greylisting. Catch-all is a definitive classification. Unknown is inconclusive.
  </p>
  </div>
  </div>

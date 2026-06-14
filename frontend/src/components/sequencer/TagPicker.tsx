@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * TagPicker — multi-select dropdown for picking tags on a single contact.
+ * TagPicker - multi-select dropdown for picking tags on a single contact.
  *
  * Used in two places:
  *   - Contacts page (per-row, opens on click of "+ tag" button)
@@ -9,9 +9,9 @@
  *
  * Behavior:
  *   - Shows ALL the org's tags as togglable rows.
- *   - "Create new tag" inline at the bottom — never forces the operator
+ *   - "Create new tag" inline at the bottom - never forces the operator
  *     to leave the page just to add a missing tag.
- *   - Saves the FULL tag set on every change (PUT semantics) — backend
+ *   - Saves the FULL tag set on every change (PUT semantics) - backend
  *     handles the diff. Optimistic update on the parent so the row
  *     reflects the change before the network round-trip lands.
  */
@@ -35,7 +35,7 @@ interface TagPickerProps {
     onTagCreated?: () => Promise<void> | void;
     /** Trigger element. If omitted, renders a default "+ Add tag" pill. */
     trigger?: React.ReactNode;
-    /** Position the dropdown — 'right' anchors the menu to the trigger's
+    /** Position the dropdown - 'right' anchors the menu to the trigger's
      *  right edge so it doesn't run off-screen on right-aligned columns. */
     align?: 'left' | 'right';
 }

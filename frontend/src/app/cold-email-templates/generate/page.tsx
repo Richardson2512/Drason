@@ -18,12 +18,12 @@ const SITE = 'https://www.superkabe.com';
 const PATH = '/cold-email-templates/generate';
 
 export const metadata: Metadata = {
-    title: 'Generate a Cold Email with AI — Free | Superkabe',
+    title: 'Generate a Cold Email with AI - Free | Superkabe',
     description:
-        'Free AI cold email generator. Tell us your business, your value prop, who you\'re targeting, and the goal — get a high-reply-rate cold email in seconds. No signup required for the first 3 generations.',
+        'Free AI cold email generator. Tell us your business, your value prop, who you\'re targeting, and the goal - get a high-reply-rate cold email in seconds. No signup required for the first 3 generations.',
     alternates: { canonical: PATH },
     openGraph: {
-        title: 'Generate a Cold Email with AI — Free',
+        title: 'Generate a Cold Email with AI - Free',
         description: 'Free AI cold email generator. Tell us about your business and target. Get a customized cold email in seconds.',
         url: `${SITE}${PATH}`,
         siteName: 'Superkabe',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'AI Cold Email Generator — Free',
+        title: 'AI Cold Email Generator - Free',
         description: 'Free AI cold email generator. No signup required for first 3 generations.',
         images: ['/image/og-image.png'],
     },
@@ -100,7 +100,7 @@ export default function GenerateColdEmailPage() {
                         Generate a cold email with AI
                     </h1>
                     <p className="text-lg text-[#4A3F30] max-w-2xl mb-2">
-                        Tell us about your business, your value proposition, who you&apos;re targeting, and the goal of the email. Get a customized cold email in seconds — no signup required.
+                        Tell us about your business, your value proposition, who you&apos;re targeting, and the goal of the email. Get a customized cold email in seconds - no signup required.
                     </p>
                     <HeroQuotaLine from={PATH} />
                 </div>

@@ -129,7 +129,7 @@ export default function SpfGeneratorPage() {
  The receiving server evaluates each mechanism in order from left to right. If the sending server&apos;s IP matches a mechanism, SPF returns the qualifier associated with that mechanism (pass, fail, softfail, or neutral). If no mechanism matches, the record&apos;s default qualifier (the <code className="bg-gray-100 px-1.5 py-0.5 text-gray-800">all</code> mechanism at the end) applies.
  </p>
  <p>
- SPF alone does not prevent spoofing &mdash; it only checks the envelope sender (MAIL FROM), not the visible From: header. This is why SPF works best combined with DKIM and DMARC, which together provide full authentication coverage.
+ SPF alone does not prevent spoofing - it only checks the envelope sender (MAIL FROM), not the visible From: header. This is why SPF works best combined with DKIM and DMARC, which together provide full authentication coverage.
  </p>
  </div>
  </section>
@@ -298,7 +298,7 @@ export default function SpfGeneratorPage() {
  className="group block p-6 bg-white border border-gray-100 hover:border-[#FFEBC9] hover:shadow-lg transition-all duration-300"
  >
  <h3 className="font-bold text-gray-900 mb-2 group-hover:text-[#D4730F] transition-colors text-sm">
- SPF, DKIM &amp; DMARC Explained &mdash; Complete Setup Guide
+ SPF, DKIM &amp; DMARC Explained - Complete Setup Guide
  </h3>
  <p className="text-xs text-gray-500">
  Step-by-step DNS authentication setup for outbound email teams. Learn how SPF, DKIM, and DMARC work together to protect your sender reputation.

@@ -1,5 +1,5 @@
 /**
- * Saved sequences — E2E coverage for the CRUD endpoints + the AI generator
+ * Saved sequences - E2E coverage for the CRUD endpoints + the AI generator
  * gate. Real AI generation needs GEMINI_API_KEY so we only assert the
  * endpoint exists + rejects invalid input; the happy path is exercised
  * manually + via unit tests on the prompt + sanitization helpers.
@@ -17,7 +17,7 @@ async function login(page: Page) {
     expect(res.status()).toBe(200);
 }
 
-test.describe('saved sequences — CRUD', () => {
+test.describe('saved sequences - CRUD', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('list returns array shape', async ({ page }) => {
@@ -55,7 +55,7 @@ test.describe('saved sequences — CRUD', () => {
         expect(getJson.data.name).toBe(createdJson.data.name);
         expect(getJson.data.steps).toHaveLength(2);
 
-        // Update — replace steps + rename
+        // Update - replace steps + rename
         const patch = await page.request.patch(`/api/sequencer/sequences/${id}`, {
             data: {
                 name: `${createdJson.data.name} (renamed)`,
@@ -101,7 +101,7 @@ test.describe('saved sequences — CRUD', () => {
     });
 });
 
-test.describe('saved sequences — AI generator', () => {
+test.describe('saved sequences - AI generator', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('generate rejects empty URL list', async ({ page }) => {

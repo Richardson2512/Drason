@@ -70,7 +70,7 @@ export default function DeliverabilityToolsComparedArticle() {
  "name": "What is the difference between deliverability testing and deliverability protection?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Deliverability testing tools like GlockApps and Mail-tester check inbox placement at a point in time — they tell you where emails landed after sending. Deliverability protection tools like Superkabe monitor infrastructure continuously in real-time and automatically pause mailboxes or gate domains when bounce rates or DNS issues breach safe thresholds. Testing is reactive (finds damage after it happens). Protection is proactive (prevents damage before it occurs)."
+ "text": "Deliverability testing tools like GlockApps and Mail-tester check inbox placement at a point in time - they tell you where emails landed after sending. Deliverability protection tools like Superkabe monitor infrastructure continuously in real-time and automatically pause mailboxes or gate domains when bounce rates or DNS issues breach safe thresholds. Testing is reactive (finds damage after it happens). Protection is proactive (prevents damage before it occurs)."
  }
  },
  {
@@ -102,7 +102,7 @@ export default function DeliverabilityToolsComparedArticle() {
  "name": "Do I need GlockApps if I already use Smartlead analytics?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Smartlead analytics show campaign-level metrics (open rates, reply rates, bounces) but do not test inbox placement or monitor domain-level infrastructure health. GlockApps adds inbox placement testing but is still reactive. For proactive protection, Superkabe monitors at the domain and mailbox level across all platforms and auto-pauses when thresholds are breached — covering the gap that neither Smartlead nor GlockApps fills."
+ "text": "Smartlead analytics show campaign-level metrics (open rates, reply rates, bounces) but do not test inbox placement or monitor domain-level infrastructure health. GlockApps adds inbox placement testing but is still reactive. For proactive protection, Superkabe monitors at the domain and mailbox level across all platforms and auto-pauses when thresholds are breached - covering the gap that neither Smartlead nor GlockApps fills."
  }
  },
  {
@@ -149,7 +149,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Deliverability tools fall into 4 categories: free ISP tools, DNS checkers, testing platforms, and infrastructure protection</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools and Microsoft SNDS are free but limited to their respective ISPs</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Cold outbound platforms (Smartlead, Instantly) handle sending but lack real-time infrastructure monitoring</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> No single tool covers monitoring + protection + automated response — most teams need a stack</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> No single tool covers monitoring + protection + automated response - most teams need a stack</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe fills the infrastructure protection gap for teams using Smartlead, EmailBison, or Instantly</li>
  </ul>
  </div>
@@ -189,7 +189,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Domain reputation dashboard (Low/Medium/High/Bad)</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Spam rate tracking over time</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> SPF/DKIM/DMARC authentication pass rates</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Gmail only — no data for Outlook, Yahoo, or other ISPs</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Gmail only - no data for Outlook, Yahoo, or other ISPs</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Requires minimum daily volume for data to appear</li>
  </ul>
  </div>
@@ -206,8 +206,8 @@ export default function DeliverabilityToolsComparedArticle() {
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> IP-level reputation (Green/Yellow/Red)</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Spam trap hit data</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Sample message headers for blocked emails</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> IP-based only — limited for shared IP senders</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Outlook/Hotmail only — no Gmail or Yahoo data</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> IP-based only - limited for shared IP senders</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Outlook/Hotmail only - no Gmail or Yahoo data</li>
  </ul>
  </div>
 
@@ -234,13 +234,13 @@ export default function DeliverabilityToolsComparedArticle() {
  <span className="px-2.5 py-1 bg-yellow-50 text-yellow-600 text-xs font-medium rounded-full">Paid</span>
  </div>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- Inbox placement testing tool. Send test emails to seed addresses across major ISPs and see where they land — inbox, spam, promotions, or missing. Useful for pre-campaign testing and diagnosing ISP-specific issues.
+ Inbox placement testing tool. Send test emails to seed addresses across major ISPs and see where they land - inbox, spam, promotions, or missing. Useful for pre-campaign testing and diagnosing ISP-specific issues.
  </p>
  <ul className="space-y-1 text-gray-500 text-sm">
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Inbox placement testing across Gmail, Outlook, Yahoo</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> DMARC monitoring and reporting</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> Spam filter analysis with scoring breakdown</li>
- <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Tests content only — cannot replicate real domain reputation</li>
+ <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Tests content only - cannot replicate real domain reputation</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&bull;</span> Per-test pricing adds up at scale</li>
  </ul>
  </div>
@@ -315,13 +315,13 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The limitation of free reputation tools is that they are ISP-specific and point-in-time. Google Postmaster shows your Gmail reputation but tells you nothing about Outlook. Sender Score provides a snapshot but not continuous monitoring. For outbound teams managing multiple domains and mailboxes, aggregating reputation data from multiple tools is necessary but time-consuming — which is why automated monitoring platforms exist.
+ The limitation of free reputation tools is that they are ISP-specific and point-in-time. Google Postmaster shows your Gmail reputation but tells you nothing about Outlook. Sender Score provides a snapshot but not continuous monitoring. For outbound teams managing multiple domains and mailboxes, aggregating reputation data from multiple tools is necessary but time-consuming - which is why automated monitoring platforms exist.
  </p>
 
  {/* Section 3 */}
  <h2 id="software-solutions" className="text-2xl font-bold text-gray-900 mt-16 mb-4">3. Are There Software Solutions That Help Maintain High Email Deliverability?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Yes — and they fall into three distinct categories based on what layer of the email stack they address. Understanding these categories prevents the common mistake of buying a tool that monitors deliverability but doesn&apos;t protect it, or one that tests content but doesn&apos;t track reputation.
+ Yes - and they fall into three distinct categories based on what layer of the email stack they address. Understanding these categories prevents the common mistake of buying a tool that monitors deliverability but doesn&apos;t protect it, or one that tests content but doesn&apos;t track reputation.
  </p>
 
  <div className="space-y-4 mb-8">
@@ -331,10 +331,10 @@ export default function DeliverabilityToolsComparedArticle() {
  These are the tools you send from. They handle mailbox connection, campaign sequencing, and basic deliverability metrics. Most include some level of warmup and send scheduling, but they focus on sending efficiency rather than infrastructure protection.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Smartlead</strong> — Mailbox rotation, unified inbox, campaign analytics, auto-warmup</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Instantly</strong> — Automated warmup, deliverability dashboard, campaign management</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Lemlist</strong> — Personalization engine, multi-channel sequencing, basic warmup</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Woodpecker</strong> — Cold email automation with bounce and reply detection</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Smartlead</strong> - Mailbox rotation, unified inbox, campaign analytics, auto-warmup</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Instantly</strong> - Automated warmup, deliverability dashboard, campaign management</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Lemlist</strong> - Personalization engine, multi-channel sequencing, basic warmup</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Woodpecker</strong> - Cold email automation with bounce and reply detection</li>
  </ul>
  <p className="text-gray-500 text-xs mt-3 italic">Limitation: These tools show campaign metrics but do not auto-protect infrastructure when things go wrong.</p>
  </div>
@@ -342,28 +342,28 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Category 2: Deliverability Testing and Analytics</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- These tools test where emails land (inbox vs. spam), analyze content for spam triggers, and provide deliverability scoring. They are diagnostic tools — they tell you what happened but don&apos;t prevent it from happening again. By the time a test reveals a problem, domain reputation damage has already occurred.
+ These tools test where emails land (inbox vs. spam), analyze content for spam triggers, and provide deliverability scoring. They are diagnostic tools - they tell you what happened but don&apos;t prevent it from happening again. By the time a test reveals a problem, domain reputation damage has already occurred.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>GlockApps</strong> — Inbox placement testing across Gmail/Outlook/Yahoo, DMARC reporting, spam content analysis. The most established testing tool, but limited to point-in-time diagnostics.</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>MailReach</strong> — Deliverability scoring across 30+ inboxes plus email warmup. Combines testing with warmup, but does not auto-protect infrastructure.</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Folderly</strong> — AI-powered email diagnostics with expert consulting. Premium pricing aimed at enterprise teams with dedicated deliverability budgets.</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Mailmend</strong> — Inbox placement optimization using proprietary algorithms to move emails from Promotions to Primary tab.</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Mail-tester.com</strong> — Free one-off email scoring against spam filters</li>
- <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>InboxAlly</strong> — Engagement signal generation to boost inbox placement</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>GlockApps</strong> - Inbox placement testing across Gmail/Outlook/Yahoo, DMARC reporting, spam content analysis. The most established testing tool, but limited to point-in-time diagnostics.</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>MailReach</strong> - Deliverability scoring across 30+ inboxes plus email warmup. Combines testing with warmup, but does not auto-protect infrastructure.</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Folderly</strong> - AI-powered email diagnostics with expert consulting. Premium pricing aimed at enterprise teams with dedicated deliverability budgets.</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Mailmend</strong> - Inbox placement optimization using proprietary algorithms to move emails from Promotions to Primary tab.</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>Mail-tester.com</strong> - Free one-off email scoring against spam filters</li>
+ <li className="flex items-start gap-2"><span className="text-gray-400 mt-1">&bull;</span> <strong>InboxAlly</strong> - Engagement signal generation to boost inbox placement</li>
  </ul>
- <p className="text-gray-500 text-xs mt-3 italic">Limitation: All Category 2 tools are reactive — they diagnose problems after damage has occurred. None automatically pause mailboxes or gate domain traffic when thresholds are breached.</p>
+ <p className="text-gray-500 text-xs mt-3 italic">Limitation: All Category 2 tools are reactive - they diagnose problems after damage has occurred. None automatically pause mailboxes or gate domain traffic when thresholds are breached.</p>
  </div>
 
  <div className="bg-white border border-blue-200 p-6 shadow-sm ring-1 ring-blue-100">
  <h3 className="font-bold text-gray-900 mb-3">Category 3: Infrastructure Protection</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- This category focuses on real-time monitoring and automated protection of the sending infrastructure itself — domains, mailboxes, DNS records, and sending patterns. Rather than testing individual emails, these tools protect the underlying systems that determine deliverability.
+ This category focuses on real-time monitoring and automated protection of the sending infrastructure itself - domains, mailboxes, DNS records, and sending patterns. Rather than testing individual emails, these tools protect the underlying systems that determine deliverability.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&bull;</span> <strong>Superkabe</strong> — Real-time bounce monitoring, automated mailbox pause, domain gating, DNS health tracking, infrastructure scoring. Integrates with Smartlead, EmailBison, Instantly, and Clay.</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&bull;</span> <strong>Superkabe</strong> - Real-time bounce monitoring, automated mailbox pause, domain gating, DNS health tracking, infrastructure scoring. Integrates with Smartlead, EmailBison, Instantly, and Clay.</li>
  </ul>
- <p className="text-gray-500 text-xs mt-3 italic">This category is newer and less crowded — most outbound teams still rely on manual monitoring or hope their sending platform catches problems in time.</p>
+ <p className="text-gray-500 text-xs mt-3 italic">This category is newer and less crowded - most outbound teams still rely on manual monitoring or hope their sending platform catches problems in time.</p>
  </div>
  </div>
 
@@ -464,7 +464,7 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The key distinction: cold outbound platforms optimize for mailbox rotation and warmup. Transactional platforms optimize for reliability and IP management. Neither category provides real-time infrastructure protection with automated response — which is why a dedicated infrastructure layer is necessary for teams operating at scale.
+ The key distinction: cold outbound platforms optimize for mailbox rotation and warmup. Transactional platforms optimize for reliability and IP management. Neither category provides real-time infrastructure protection with automated response - which is why a dedicated infrastructure layer is necessary for teams operating at scale.
  </p>
 
  {/* Section 5 */}
@@ -484,7 +484,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Bounce Handling</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Postmark automatically suppresses hard bounces and provides real-time bounce webhooks. SendGrid categorizes bounces by type and provides suppression lists. Cold outbound platforms like Smartlead track bounces per campaign but leave it to the operator to act on the data. Superkabe adds the automated response layer — auto-pausing mailboxes and gating domains when bounce rates cross thresholds.
+ Postmark automatically suppresses hard bounces and provides real-time bounce webhooks. SendGrid categorizes bounces by type and provides suppression lists. Cold outbound platforms like Smartlead track bounces per campaign but leave it to the operator to act on the data. Superkabe adds the automated response layer - auto-pausing mailboxes and gating domains when bounce rates cross thresholds.
  </p>
  </div>
 
@@ -516,28 +516,28 @@ export default function DeliverabilityToolsComparedArticle() {
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">1</span>
  <div>
  <p className="font-bold text-gray-900 text-sm">Sending Platform</p>
- <p className="text-gray-500 text-xs">Smartlead, Instantly, or Lemlist — handles campaign sequencing, mailbox rotation, and warmup</p>
+ <p className="text-gray-500 text-xs">Smartlead, Instantly, or Lemlist - handles campaign sequencing, mailbox rotation, and warmup</p>
  </div>
  </div>
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">2</span>
  <div>
  <p className="font-bold text-gray-900 text-sm">Infrastructure Protection</p>
- <p className="text-gray-500 text-xs">Superkabe — monitors infrastructure health and auto-protects when thresholds are breached</p>
+ <p className="text-gray-500 text-xs">Superkabe - monitors infrastructure health and auto-protects when thresholds are breached</p>
  </div>
  </div>
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">3</span>
  <div>
  <p className="font-bold text-gray-900 text-sm">Free ISP Monitoring</p>
- <p className="text-gray-500 text-xs">Google Postmaster Tools + Microsoft SNDS — ISP-specific reputation data</p>
+ <p className="text-gray-500 text-xs">Google Postmaster Tools + Microsoft SNDS - ISP-specific reputation data</p>
  </div>
  </div>
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">4</span>
  <div>
  <p className="font-bold text-gray-900 text-sm">DNS Health Check</p>
- <p className="text-gray-500 text-xs">MXToolbox — periodic SPF/DKIM/DMARC validation and blacklist monitoring</p>
+ <p className="text-gray-500 text-xs">MXToolbox - periodic SPF/DKIM/DMARC validation and blacklist monitoring</p>
  </div>
  </div>
  </div>
@@ -553,7 +553,7 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">What is the difference between deliverability testing and deliverability protection?</h3>
- <p className="text-gray-600 text-sm">Testing tools like GlockApps check inbox placement at a point in time — they tell you where emails landed after sending. Protection tools like Superkabe monitor infrastructure continuously and automatically pause mailboxes or gate domains when bounce rates or DNS issues breach safe thresholds. Testing is reactive (finds damage after it happens). Protection is proactive (prevents damage before it occurs).</p>
+ <p className="text-gray-600 text-sm">Testing tools like GlockApps check inbox placement at a point in time - they tell you where emails landed after sending. Protection tools like Superkabe monitor infrastructure continuously and automatically pause mailboxes or gate domains when bounce rates or DNS issues breach safe thresholds. Testing is reactive (finds damage after it happens). Protection is proactive (prevents damage before it occurs).</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">What are the best GlockApps alternatives for cold email monitoring?</h3>
@@ -565,7 +565,7 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Do I need GlockApps if I already use Smartlead analytics?</h3>
- <p className="text-gray-600 text-sm">Smartlead shows campaign-level metrics but does not test inbox placement or monitor domain-level infrastructure health. GlockApps adds inbox placement testing but is still reactive. For proactive protection, Superkabe monitors at the domain and mailbox level across all platforms and auto-pauses when thresholds are breached — covering the gap that neither Smartlead nor GlockApps fills.</p>
+ <p className="text-gray-600 text-sm">Smartlead shows campaign-level metrics but does not test inbox placement or monitor domain-level infrastructure health. GlockApps adds inbox placement testing but is still reactive. For proactive protection, Superkabe monitors at the domain and mailbox level across all platforms and auto-pauses when thresholds are breached - covering the gap that neither Smartlead nor GlockApps fills.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Which email service providers offer the best deliverability features?</h3>
@@ -573,14 +573,14 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">How do email marketing platforms compare for high deliverability?</h3>
- <p className="text-gray-600 text-sm">Cold outbound platforms optimize for mailbox rotation and warmup. Marketing platforms optimize for IP management and transactional reliability. Infrastructure protection platforms (Superkabe) monitor and protect the infrastructure layer that both platform types rely on. The key differentiator is automated failure response — most platforms detect problems but don&apos;t automatically prevent damage.</p>
+ <p className="text-gray-600 text-sm">Cold outbound platforms optimize for mailbox rotation and warmup. Marketing platforms optimize for IP management and transactional reliability. Infrastructure protection platforms (Superkabe) monitor and protect the infrastructure layer that both platform types rely on. The key differentiator is automated failure response - most platforms detect problems but don&apos;t automatically prevent damage.</p>
  </div>
  </div>
 
  {/* CTA */}
  <BottomCtaStrip
                     headline="Key Takeaway"
-                    body="Most deliverability tools either monitor or test — but don't protect. The gap between detecting a problem and preventing damage is where domains get burned. Superkabe fills this gap with real-time monitoring and automated infrastructure protection for outbound email teams."
+                    body="Most deliverability tools either monitor or test - but don't protect. The gap between detecting a problem and preventing damage is where domains get burned. Superkabe fills this gap with real-time monitoring and automated infrastructure protection for outbound email teams."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -589,7 +589,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe sends from your own mailboxes and monitors bounce rates, DNS authentication, and mailbox health in real time. When any metric crosses safe thresholds, it auto-pauses risky mailboxes and gates domain traffic — closing the gap between detection and protection.
+ Superkabe sends from your own mailboxes and monitors bounce rates, DNS authentication, and mailbox health in real time. When any metric crosses safe thresholds, it auto-pauses risky mailboxes and gates domain traffic - closing the gap between detection and protection.
  </p>
  </div>
  </article>

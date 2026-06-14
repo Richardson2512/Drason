@@ -363,10 +363,10 @@ export default function SpfLookupClient() {
  <span className="text-sm font-semibold text-gray-900">All</span>
  <span className="ml-2 text-sm text-gray-500">(default for unmatched senders)</span>
  <p className="text-xs text-gray-500 mt-1">
- {result.allMechanism === '-all' && 'Hard fail — emails from unlisted servers are rejected. This is the strongest and recommended setting.'}
- {result.allMechanism === '~all' && 'Soft fail — emails from unlisted servers are accepted but marked as suspicious. Consider upgrading to -all for stricter protection.'}
- {result.allMechanism === '?all' && 'Neutral — no opinion on unlisted servers. This provides no protection against spoofing.'}
- {result.allMechanism === '+all' && 'Pass — any server can send as your domain. This is dangerous and should be changed immediately.'}
+ {result.allMechanism === '-all' && 'Hard fail - emails from unlisted servers are rejected. This is the strongest and recommended setting.'}
+ {result.allMechanism === '~all' && 'Soft fail - emails from unlisted servers are accepted but marked as suspicious. Consider upgrading to -all for stricter protection.'}
+ {result.allMechanism === '?all' && 'Neutral - no opinion on unlisted servers. This provides no protection against spoofing.'}
+ {result.allMechanism === '+all' && 'Pass - any server can send as your domain. This is dangerous and should be changed immediately.'}
  </p>
  </div>
  </div>

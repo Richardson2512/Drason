@@ -31,7 +31,7 @@ function formatRelativeTime(dateString: string | null) {
 }
 
 function getSystemNotice(lead: Lead) {
-    // Prefer the backend-derived display_status when present — it reflects the
+    // Prefer the backend-derived display_status when present - it reflects the
     // lead's actual outbound lifecycle across campaign enrollments, which
     // Lead.status alone can't capture (e.g. a lead whose only CampaignLead is
     // in 'replied' state stays Lead.status='held' but has clearly completed
@@ -45,7 +45,7 @@ function getSystemNotice(lead: Lead) {
         return { type: 'success', title: 'Replied', msg: `This lead has replied to the campaign${lead.emails_replied ? ` (${lead.emails_replied} repl${lead.emails_replied === 1 ? 'y' : 'ies'} received)` : ''}. The sequence has stopped for this contact.` };
     }
     if (effective === 'bounced' || lead.bounced) {
-        return { type: 'danger', title: 'Bounced', msg: 'This lead\'s address bounced when the campaign attempted to send. No further sends will be attempted — consider removing the contact from your list.' };
+        return { type: 'danger', title: 'Bounced', msg: 'This lead\'s address bounced when the campaign attempted to send. No further sends will be attempted - consider removing the contact from your list.' };
     }
     if (effective === 'unsubscribed') {
         return { type: 'warning', title: 'Unsubscribed', msg: 'This contact unsubscribed from the campaign. They will not receive further outreach.' };
@@ -60,7 +60,7 @@ function getSystemNotice(lead: Lead) {
         return { type: 'danger', title: 'System Pause', msg: 'Lead processing has been halted. This typically occurs when the associated mailbox or domain triggers a "Warning" or "Paused" health state due to bounce rates exceeding 2%.' };
     }
     if (lead.status === 'held' && !lead.assigned_campaign_id) {
-        return { type: 'warning', title: 'Unrouted — No Campaign Assigned', msg: 'This lead passed validation but has not been assigned to a campaign. Check your routing rules in Configuration to ensure a rule matches this lead\'s persona.' };
+        return { type: 'warning', title: 'Unrouted - No Campaign Assigned', msg: 'This lead passed validation but has not been assigned to a campaign. Check your routing rules in Configuration to ensure a rule matches this lead\'s persona.' };
     }
     if (lead.status === 'held' && lead.assigned_campaign_id) {
         // Lead has been assigned + push attempted? If engagement counters > 0 it
@@ -277,7 +277,7 @@ export default function LeadDetailPanel({
                         </div>
                     )}
 
-                    {/* Email Validation Card — only shown for validated leads */}
+                    {/* Email Validation Card - only shown for validated leads */}
                     {lead.validation_status && (
                     <div className="premium-card mb-8">
                         <h3 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-4">

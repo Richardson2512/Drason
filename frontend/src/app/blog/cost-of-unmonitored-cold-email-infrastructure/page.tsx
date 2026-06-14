@@ -7,10 +7,10 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'The real cost of unmonitored cold email infrastructure',
- description: 'Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI.',
+ description: 'Financial breakdown of what unmonitored cold email infrastructure costs agencies - burned domains, lost pipeline, replacement overhead, and the ROI.',
  openGraph: {
  title: 'The real cost of unmonitored cold email infrastructure',
- description: 'How much burned domains, lost pipeline, and reactive monitoring really cost lead gen agencies — and the ROI of proactive infrastructure protection.',
+ description: 'How much burned domains, lost pipeline, and reactive monitoring really cost lead gen agencies - and the ROI of proactive infrastructure protection.',
  url: '/blog/cost-of-unmonitored-cold-email-infrastructure',
  siteName: 'Superkabe',
  type: 'article',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  twitter: {
      card: 'summary_large_image',
      title: 'The real cost of unmonitored cold email infrastructure',
-     description: 'How much burned domains, lost pipeline, and reactive monitoring really cost lead gen agencies — and the ROI of proactive infrastructure protection.',
+     description: 'How much burned domains, lost pipeline, and reactive monitoring really cost lead gen agencies - and the ROI of proactive infrastructure protection.',
      images: ['/image/og-image.png'],
  },
  alternates: {
@@ -32,7 +32,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  "@context": "https://schema.org",
  "@type": "BlogPosting",
  "headline": "The real cost of unmonitored cold email infrastructure",
- "description": "Financial breakdown of what unmonitored cold email infrastructure costs agencies — burned domains, lost pipeline, replacement overhead, and the ROI.",
+ "description": "Financial breakdown of what unmonitored cold email infrastructure costs agencies - burned domains, lost pipeline, replacement overhead, and the ROI.",
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Deliverability Specialist", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
@@ -93,7 +93,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  "name": "What is the difference between reactive and proactive deliverability monitoring?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Reactive tools (GlockApps, Mail-tester) test inbox placement after sending — they find damage after it happens. Proactive tools (Superkabe) monitor in real-time and auto-pause before thresholds are breached, preventing damage entirely."
+ "text": "Reactive tools (GlockApps, Mail-tester) test inbox placement after sending - they find damage after it happens. Proactive tools (Superkabe) monitor in real-time and auto-pause before thresholds are breached, preventing damage entirely."
  }
  }
  ]
@@ -130,7 +130,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> A single burned domain costs $150-300+ in direct replacement costs and $7,500+ in lost pipeline per month</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reactive monitoring tools detect damage after it happens — by then, reputation is already degraded</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Reactive monitoring tools detect damage after it happens - by then, reputation is already degraded</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> An agency burning 5 domains per month can lose $15,000-50,000+ in quarterly pipeline</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Proactive protection pays for itself if it prevents even 2-3 domain burnouts per month (5-10x ROI)</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> A 25-client agency should budget $2,000-4,000/month for complete cold email infrastructure</li>
@@ -427,7 +427,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- If Superkabe prevents 3 domain burnouts per month at $300 per domain in replacement costs, that is $900 saved in direct costs alone. Factor in the pipeline protection — preventing $22,500 in lost pipeline — and the ROI is over 10x. The tool pays for itself within the first prevented incident.
+ If Superkabe prevents 3 domain burnouts per month at $300 per domain in replacement costs, that is $900 saved in direct costs alone. Factor in the pipeline protection - preventing $22,500 in lost pipeline - and the ROI is over 10x. The tool pays for itself within the first prevented incident.
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-6">

@@ -42,7 +42,7 @@ function SignupContent() {
 
     // Capture plan parameter and OAuth errors from URL.
     // Also persist the intended return-to (?from=...) into localStorage so it
-    // survives a Google OAuth round-trip — consumed in DashboardShell or here.
+    // survives a Google OAuth round-trip - consumed in DashboardShell or here.
     useEffect(() => {
         const plan = searchParams.get('plan');
         if (plan && ['starter', 'growth', 'scale'].includes(plan)) {
@@ -175,7 +175,7 @@ function SignupContent() {
                 <div className="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl p-5 md:p-6">
                     {/* Logo → marketing home (see login/page.tsx note) */}
                     <a href={marketingUrl('/')} className="flex items-center gap-2 mb-4 w-fit mx-auto no-underline">
-                        <Image src="/image/logo-v2.png" alt="Superkabe — back to home" width={26} height={26} />
+                        <Image src="/image/logo-v2.png" alt="Superkabe - back to home" width={26} height={26} />
                         <span className="font-bold text-base text-[#171923]">Superkabe</span>
                     </a>
 
@@ -252,7 +252,7 @@ function SignupContent() {
                             </div>
                         </div>
 
-                        {/* Required ToS + Privacy consent — captured per GDPR Art. 7(1) */}
+                        {/* Required ToS + Privacy consent - captured per GDPR Art. 7(1) */}
                         <label className="flex items-start gap-1.5 cursor-pointer select-none">
                             <input
                                 type="checkbox"
@@ -331,7 +331,7 @@ function SignupContent() {
                                 className={`absolute inset-0 transition-all duration-500 transform ${index === currentSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'}`}
                             >
                                 <div className="bg-white rounded-[32px] p-8 pb-0 shadow-2xl overflow-hidden relative h-full flex flex-col">
-                                    {/* Floating Stats — anchored to the card's top-right corner,
+                                    {/* Floating Stats - anchored to the card's top-right corner,
                                         permanently out of the way of the title (top-left), the
                                         "Learn more" CTA (mid-left), and the rotated mockup cards
                                         (bottom-right). Zero overlap regardless of how long the

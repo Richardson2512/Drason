@@ -126,7 +126,7 @@ function RecoveryEntityCard({ entity, type }: {
                 if (!cooldownUntil) return 'Waiting for cooldown timer...';
                 const remaining = getCooldownRemaining(cooldownUntil);
                 return remaining === 'Ready'
-                    ? 'Cooldown expired — ready for quarantine'
+                    ? 'Cooldown expired - ready for quarantine'
                     : `Cooldown expires in ${remaining}`;
             }
             case 'quarantine':
@@ -136,13 +136,13 @@ function RecoveryEntityCard({ entity, type }: {
                 const remaining = target - cleanSends;
                 return remaining > 0
                     ? `Need ${remaining} more clean sends with 0 bounces`
-                    : 'Clean send target met — checking for graduation';
+                    : 'Clean send target met - checking for graduation';
             }
             case 'warm_recovery': {
                 const remaining = 50 - cleanSends;
                 return remaining > 0
                     ? `Need ${remaining} more sends over 3+ days, bounce rate < 2%`
-                    : 'Send target met — checking time and bounce requirements';
+                    : 'Send target met - checking time and bounce requirements';
             }
             default:
                 return 'Fully recovered';
@@ -298,7 +298,7 @@ function RecoveryEntityCard({ entity, type }: {
                         <span className="opacity-60">&rarr;</span>
                         <span>
                             <span className="font-semibold">Next: {nextPhase}</span>
-                            <span className="text-gray-400"> &mdash; {getGraduationText()}</span>
+                            <span className="text-gray-400"> - {getGraduationText()}</span>
                         </span>
                     </div>
                 </div>
@@ -439,7 +439,7 @@ export default function HealingPipelinePage() {
 
     // Recently recovered: served by /api/dashboard/healing/recently-recovered.
     // Backend already filters by to_state='healthy' and the ?days window, so
-    // we render the response directly — no client-side filtering needed.
+    // we render the response directly - no client-side filtering needed.
     const recoveredCount = recentlyRecovered.length;
 
     const totalRecovering = (recoveryData?.summary?.totalRecovering ?? 0);
@@ -487,12 +487,12 @@ export default function HealingPipelinePage() {
                 </div>
             )}
 
-            {/* ── Section 2: Active Recovery — Mailboxes ──────────────────── */}
+            {/* ── Section 2: Active Recovery - Mailboxes ──────────────────── */}
             {!loading && allMailboxes.length > 0 && (
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-bold text-gray-900">
-                            Active Recovery &mdash; Mailboxes
+                            Active Recovery - Mailboxes
                         </h2>
                         <span className="py-[0.3rem] px-3 rounded-full text-xs font-semibold bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
                             {allMailboxes.length} mailbox{allMailboxes.length !== 1 ? 'es' : ''}
@@ -506,12 +506,12 @@ export default function HealingPipelinePage() {
                 </div>
             )}
 
-            {/* ── Section 3: Active Recovery — Domains ────────────────────── */}
+            {/* ── Section 3: Active Recovery - Domains ────────────────────── */}
             {!loading && allDomains.length > 0 && (
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-bold text-gray-900">
-                            Active Recovery &mdash; Domains
+                            Active Recovery - Domains
                         </h2>
                         <span className="py-[0.3rem] px-3 rounded-full text-xs font-semibold bg-[#F5F3FF] text-[#7C3AED] border border-[#DDD6FE]">
                             {allDomains.length} domain{allDomains.length !== 1 ? 's' : ''}

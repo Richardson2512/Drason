@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 /**
  * Decode JWT payload without verification (middleware can't use jsonwebtoken).
- * We only need the role claim for routing — actual auth is verified by the backend.
+ * We only need the role claim for routing - actual auth is verified by the backend.
  */
 function decodeJwtPayload(token: string): { role?: string } | null {
     try {
@@ -20,7 +20,7 @@ function decodeJwtPayload(token: string): { role?: string } | null {
 // are configured, the dashboard lives on `app.<domain>` and marketing lives
 // on the root. Without those env vars we fall back to single-domain mode
 // (the original behavior), so this code is safe to ship before any DNS or
-// Vercel cutover. Match strings stripped to host-only — env vars may be
+// Vercel cutover. Match strings stripped to host-only - env vars may be
 // `https://app.superkabe.com` or `http://app.superkabe.lvh.me:3000`.
 const APP_URL_ENV = process.env.NEXT_PUBLIC_APP_URL || '';
 const MARKETING_URL_ENV = process.env.NEXT_PUBLIC_MARKETING_URL || '';
@@ -59,7 +59,7 @@ function isAppRoute(pathname: string): boolean {
 export function middleware(request: NextRequest) {
     const host = request.headers.get('host') || '';
 
-    // 0. Redirect non-www to www (301 permanent) — only in non-subdomain
+    // 0. Redirect non-www to www (301 permanent) - only in non-subdomain
     // mode. In subdomain mode the marketing host is configured explicitly
     // by NEXT_PUBLIC_MARKETING_URL, so this rewrite would conflict.
     if (!SUBDOMAIN_MODE && host === 'superkabe.com') {
@@ -83,7 +83,7 @@ export function middleware(request: NextRequest) {
 
     if (isStaticFile) return NextResponse.next();
 
-    // 1b. Subdomain-mode host routing — bounce mismatches to the right
+    // 1b. Subdomain-mode host routing - bounce mismatches to the right
     // subdomain BEFORE any auth/role checks below. This way a user who
     // bookmarks `superkabe.com/dashboard` ends up on `app.superkabe.com/
     // dashboard`, and someone who navigates to `app.superkabe.com/blog`
@@ -107,12 +107,12 @@ export function middleware(request: NextRequest) {
             }
             return NextResponse.redirect(`${MARKETING_URL_ENV}${pathname}${request.nextUrl.search}`);
         }
-        // In subdomain mode but on the right host — fall through to the
+        // In subdomain mode but on the right host - fall through to the
         // existing auth-aware logic below. We deliberately don't gate the
         // single-domain redirects (steps 3-6 below) on host: if you're on
         // app.* hitting /login, the existing rules still apply.
         if (!onApp && !onMarketing) {
-            // Host doesn't match either configured URL — likely a preview
+            // Host doesn't match either configured URL - likely a preview
             // domain or an alias. Best-effort: don't redirect. Let the
             // current host serve everything (single-domain behavior).
         }
@@ -140,7 +140,7 @@ export function middleware(request: NextRequest) {
         pathname.startsWith('/tools') ||
         pathname.startsWith('/cold-email-templates');
 
-    // Decode role from JWT (without verification — backend handles real auth)
+    // Decode role from JWT (without verification - backend handles real auth)
     const jwtPayload = token ? decodeJwtPayload(token) : null;
     const isSuperAdmin = jwtPayload?.role === 'super_admin';
 

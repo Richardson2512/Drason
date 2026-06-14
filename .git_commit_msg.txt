@@ -1,0 +1,32 @@
+style(typography): extend Velvet Ledger to dashboard + purge em-dashes
+
+Two related cleanups across the marketing site and the dashboard, both
+prompted by "every visible word should be on the Velvet family + no em-dashes
+anywhere":
+
+Velvet Ledger extension to dashboard:
+- (home)/page.tsx: the hero italic accent ("deliverability protection")
+  pointed at var(--font-fraunces), which is no longer loaded after the
+  previous port. Remapped to var(--font-cormorant) so the accent renders
+  again on the new stack.
+- src/app/page.module.css + src/app/dashboard/page.module.css: both forced
+  var(--font-plus-jakarta). Remapped to var(--font-inter) so the page-module
+  wrappers do not override the body inheritance.
+- src/app/login/auth.module.css: forced var(--font-figtree) (also no longer
+  loaded). Remapped to var(--font-inter).
+- globals.css: removed the .dashboard-type-scope override that reset the
+  dashboard subtree to Plus Jakarta. The dashboard now inherits Inter body
+  + Outfit headings from the global rules, matching the marketing surface.
+  The wrapper in dashboard/layout.tsx is preserved as a no-op so a future
+  surface can scope a different type stack later without restructuring.
+
+Em-dash purge:
+- Swept every .ts/.tsx/.js/.jsx/.css/.md/.mdx/.html/.json/.yml/.yaml/.txt
+  source file under this repo (excluding node_modules, .next, .git, dist,
+  build, coverage, prisma/migrations, package-lock.json) and replaced
+  every em-dash form (U+2014 character, &mdash; HTML entity, and the U+2014
+  character used in HTML body text) with a plain hyphen.
+- Net: 349 files patched, 3,647 em-dash forms replaced.
+
+No new TypeScript errors introduced (113 pre-existing Playwright errors
+on prod main are unrelated and unchanged).

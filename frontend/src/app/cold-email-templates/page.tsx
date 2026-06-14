@@ -17,7 +17,7 @@ const SITE = 'https://www.superkabe.com';
 const PATH = '/cold-email-templates';
 
 export const metadata: Metadata = {
-    title: 'Cold Email Templates That Actually Get Replies — Free + AI-Customizable | Superkabe',
+    title: 'Cold Email Templates That Actually Get Replies - Free + AI-Customizable | Superkabe',
     description:
         'Free library of high-converting cold email templates. AI-customizable in seconds. Compliance built in for Gmail/Yahoo 2024 sender requirements. Industry-specific, role-specific, framework-tagged.',
     alternates: { canonical: PATH },
@@ -89,7 +89,7 @@ export default function ColdEmailTemplatesPage() {
             <Navbar />
             <MarketingBackdrop />
 
-            {/* ─── Hero — centered, condensed, premium ─────────────────── */}
+            {/* ─── Hero - centered, condensed, premium ─────────────────── */}
             <section className="px-6 pt-24 pb-10 md:pt-32 md:pb-14">
                 <div className="max-w-3xl mx-auto text-center">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#D1CBC5] text-[10px] font-semibold uppercase tracking-wider text-[#4A3F30] mb-6">
@@ -157,10 +157,10 @@ export default function ColdEmailTemplatesPage() {
             <section className="px-6 pb-24">
                 <div className="max-w-4xl mx-auto rounded-2xl bg-[#1E1E2F] text-white p-8 md:p-12">
                     <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
-                        Send these templates at scale — with deliverability protection built in
+                        Send these templates at scale - with deliverability protection built in
                     </h2>
                     <p className="text-base text-[#D1CBC5] mb-6 max-w-2xl">
-                        Pick a template, generate a sequence with AI, send across unlimited mailboxes. Superkabe auto-handles validation, recovery, and Gmail/Yahoo 2024 compliance — so the templates that work in this library actually deliver to the inbox.
+                        Pick a template, generate a sequence with AI, send across unlimited mailboxes. Superkabe auto-handles validation, recovery, and Gmail/Yahoo 2024 compliance - so the templates that work in this library actually deliver to the inbox.
                     </p>
                     <AuthAwareCtaButtons
                         from={PATH}

@@ -7,7 +7,7 @@ import BottomCtaStrip from '@/components/blog/BottomCtaStrip';
 
 export const metadata: Metadata = {
  title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold',
- description: 'Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike.',
+ description: 'Catch-all domains accept every email address - real or fake. Your verification tool says valid, you send, bounces spike.',
  openGraph: {
  title: 'Catch-All Domains: The Hidden Risk Destroying Your Cold',
  description: 'Catch-all domains make verification useless. They accept everything at SMTP level but bounce internally. Here is how to detect them, score the risk, and protect your domains.',
@@ -32,7 +32,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  "@context": "https://schema.org",
  "@type": "BlogPosting",
  "headline": "Catch-all domains: the hidden risk destroying your cold email deliverability",
- "description": "Catch-all domains accept every email address — real or fake. Your verification tool says valid, you send, bounces spike.",
+ "description": "Catch-all domains accept every email address - real or fake. Your verification tool says valid, you send, bounces spike.",
  "author": { "@type": "Person", "name": "Robert Smith", "jobTitle": "Email Infrastructure Engineer", "url": "https://www.superkabe.com" },
  "publisher": { "@id": "https://www.superkabe.com/#organization" },
  "mainEntityOfPage": {
@@ -53,7 +53,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  "name": "What is a catch-all domain?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "A catch-all domain is configured so that its mail server accepts email sent to any address at that domain, regardless of whether a real mailbox exists. Send to realname@company.com or gibberish123@company.com and both get accepted at the SMTP level. The server sorts it out later — and if no real mailbox exists, the email bounces internally."
+ "text": "A catch-all domain is configured so that its mail server accepts email sent to any address at that domain, regardless of whether a real mailbox exists. Send to realname@company.com or gibberish123@company.com and both get accepted at the SMTP level. The server sorts it out later - and if no real mailbox exists, the email bounces internally."
  }
  },
  {
@@ -172,13 +172,13 @@ export default function CatchAllDomainsColdOutreachArticle() {
  SMTP-based email verification works by simulating the first part of email delivery. The tool connects to the recipient&apos;s mail server, issues a RCPT TO command for the target address, and reads the response code. 250 means accepted. 550 means rejected. The tool never actually sends an email. It just asks the question.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- On a catch-all domain, the answer to that question is always &quot;yes.&quot; The tool asks &quot;Will you accept mail for mike@company.com?&quot; The server says yes. The tool asks &quot;Will you accept mail for zzzzz99999@company.com?&quot; The server says yes. There is no way to distinguish a real mailbox from a fictional one. The verification result is technically accurate — the server will accept the email. But acceptance is not the same as delivery.
+ On a catch-all domain, the answer to that question is always &quot;yes.&quot; The tool asks &quot;Will you accept mail for mike@company.com?&quot; The server says yes. The tool asks &quot;Will you accept mail for zzzzz99999@company.com?&quot; The server says yes. There is no way to distinguish a real mailbox from a fictional one. The verification result is technically accurate - the server will accept the email. But acceptance is not the same as delivery.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Some verification tools try a secondary check. They send a probe to a deliberately impossible address like test-{'{'}random-hash{'}'}@company.com. If the server accepts that address, the tool flags the domain as catch-all. This is useful metadata. But it does not tell you whether your specific contact — mike@company.com — actually has a mailbox. You know the domain is catch-all. You still do not know if Mike is real.
+ Some verification tools try a secondary check. They send a probe to a deliberately impossible address like test-{'{'}random-hash{'}'}@company.com. If the server accepts that address, the tool flags the domain as catch-all. This is useful metadata. But it does not tell you whether your specific contact - mike@company.com - actually has a mailbox. You know the domain is catch-all. You still do not know if Mike is real.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The good verification tools — MillionVerifier, ZeroBounce, NeverBounce — will flag the address as &quot;catch-all&quot; or &quot;accept-all&quot; in their results. They are honest about the limitation. The problem is what teams do with that information. Most teams see &quot;catch-all&quot; and treat it the same as &quot;valid.&quot; They send at full volume. Then they get burned.
+ The good verification tools - MillionVerifier, ZeroBounce, NeverBounce - will flag the address as &quot;catch-all&quot; or &quot;accept-all&quot; in their results. They are honest about the limitation. The problem is what teams do with that information. Most teams see &quot;catch-all&quot; and treat it the same as &quot;valid.&quot; They send at full volume. Then they get burned.
  </p>
 
  <h2 id="the-numbers" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The numbers: how bad is the problem?</h2>
@@ -198,7 +198,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Think about what those numbers mean together. A third of your leads are on catch-all domains. Those leads bounce at dramatically higher rates. And the threshold for domain damage is low — 5% and you are in trouble.
+ Think about what those numbers mean together. A third of your leads are on catch-all domains. Those leads bounce at dramatically higher rates. And the threshold for domain damage is low - 5% and you are in trouble.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Here is a concrete scenario. You have a campaign with 1,000 leads. 350 are on catch-all domains. The non-catch-all leads bounce at 0.5% (about 3 bounces from 650 sends). The catch-all leads bounce at 10% (35 bounces from 350 sends). Total: 38 bounces from 1,000 sends. That is a 3.8% bounce rate. Your ISP notices. Two more campaigns like this and you are looking at blacklist territory.
@@ -224,7 +224,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The delayed nature of catch-all bounces makes this worse. A normal invalid email bounces immediately — your platform sees it, maybe pauses, and you move on. Catch-all bounces can take hours or days to come back because the receiving server accepted the email first. By the time you see the bounce notification, you have already sent the next day&apos;s batch. The damage compounds before you can react.
+ The delayed nature of catch-all bounces makes this worse. A normal invalid email bounces immediately - your platform sees it, maybe pauses, and you move on. Catch-all bounces can take hours or days to come back because the receiving server accepted the email first. By the time you see the bounce notification, you have already sent the next day&apos;s batch. The damage compounds before you can react.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  This is exactly the scenario described in our guide on <Link href="/blog/why-verified-emails-still-bounce" className="text-blue-600 hover:text-blue-800 underline">why verified emails still bounce</Link>. Catch-all domains are the single biggest contributor to post-verification bounces.
@@ -240,15 +240,15 @@ export default function CatchAllDomainsColdOutreachArticle() {
  Some catch-all configurations are detectable through MX record analysis. The MX records themselves do not say &quot;this is a catch-all,&quot; but certain hosting patterns correlate strongly with catch-all behavior. Google Workspace domains are almost never catch-all (Google disables it by default). Older Exchange servers running on-premise frequently are. Specific hosting providers and configurations have known catch-all tendencies.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- DNS-based detection is fast and free — no SMTP probing required. But it is probabilistic, not definitive. It narrows the field. It does not give you certainty.
+ DNS-based detection is fast and free - no SMTP probing required. But it is probabilistic, not definitive. It narrows the field. It does not give you certainty.
  </p>
 
  <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">2. SMTP probe with dummy address</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is the standard approach. Send an SMTP probe to a deliberately fake address at the domain — something like verify-test-{'{'}randomstring{'}'}@company.com. If the server accepts it, the domain is catch-all. If it rejects it, the domain has individual mailbox checking enabled.
+ This is the standard approach. Send an SMTP probe to a deliberately fake address at the domain - something like verify-test-{'{'}randomstring{'}'}@company.com. If the server accepts it, the domain is catch-all. If it rejects it, the domain has individual mailbox checking enabled.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- MillionVerifier, ZeroBounce, and NeverBounce all do this. MillionVerifier is particularly good at it — their catch-all flag is reliable and their pricing ($0.004 per verification) makes it viable even at high volume. The <Link href="/blog/email-validation-vs-verification" className="text-blue-600 hover:text-blue-800 underline">difference between validation and verification</Link> matters here: validation checks syntax and domain health, while verification is the SMTP probe that reveals catch-all status.
+ MillionVerifier, ZeroBounce, and NeverBounce all do this. MillionVerifier is particularly good at it - their catch-all flag is reliable and their pricing ($0.004 per verification) makes it viable even at high volume. The <Link href="/blog/email-validation-vs-verification" className="text-blue-600 hover:text-blue-800 underline">difference between validation and verification</Link> matters here: validation checks syntax and domain health, while verification is the SMTP probe that reveals catch-all status.
  </p>
 
  <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">3. Domain-level caching</h3>
@@ -271,7 +271,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  <h3 className="font-bold text-gray-900 mb-3">Superkabe catch-all pipeline</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Detection:</strong> Every lead passes through domain-level catch-all detection. First lead from a domain triggers the check. Result is cached for all subsequent leads on the same domain</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Risk scoring:</strong> Catch-all leads receive a risk score adjustment. They are not blocked — they are tagged with higher risk so the routing engine accounts for them</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Risk scoring:</strong> Catch-all leads receive a risk score adjustment. They are not blocked - they are tagged with higher risk so the routing engine accounts for them</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Per-mailbox caps:</strong> Each mailbox has a maximum number of catch-all leads it can receive per day. This prevents any single mailbox from absorbing a concentration of high-risk sends</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Distribution:</strong> Catch-all leads are distributed across mailboxes and domains so that no single domain carries disproportionate risk. If you have 5 domains, catch-all leads get spread across all 5</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Real-time monitoring:</strong> Bounce rates on catch-all segments are tracked separately. If catch-all bounces spike on a mailbox, auto-pause triggers before the threshold damages the domain</li>
@@ -280,7 +280,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The result: you send to catch-all leads without concentrating risk. If bounces happen — and some will — they are distributed thinly enough that no single mailbox or domain takes meaningful damage. And if a particular catch-all domain turns out to be especially problematic, the system learns and adjusts.
+ The result: you send to catch-all leads without concentrating risk. If bounces happen - and some will - they are distributed thinly enough that no single mailbox or domain takes meaningful damage. And if a particular catch-all domain turns out to be especially problematic, the system learns and adjusts.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For more detail on how the <Link href="/docs/help/email-validation" className="text-blue-600 hover:text-blue-800 underline">email validation layer</Link> works with catch-all detection, see our documentation.
@@ -336,7 +336,7 @@ export default function CatchAllDomainsColdOutreachArticle() {
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How many of my leads are probably on catch-all domains?</h3>
- <p className="text-gray-600 text-sm">In B2B outreach, 30-40% is typical. Enterprise-heavy lists run higher. Startup-focused lists run lower because smaller companies tend to use Google Workspace or Microsoft 365, which do not enable catch-all by default. Check your last verification report — most tools include a &quot;catch-all&quot; or &quot;accept-all&quot; category.</p>
+ <p className="text-gray-600 text-sm">In B2B outreach, 30-40% is typical. Enterprise-heavy lists run higher. Startup-focused lists run lower because smaller companies tend to use Google Workspace or Microsoft 365, which do not enable catch-all by default. Check your last verification report - most tools include a &quot;catch-all&quot; or &quot;accept-all&quot; category.</p>
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">Should I stop sending to catch-all domains?</h3>

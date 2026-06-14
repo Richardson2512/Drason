@@ -136,7 +136,7 @@ export default function SequencerCampaignsPage() {
                 </div>
             </div>
 
-            {/* Filter bar — name search + tag filter */}
+            {/* Filter bar - name search + tag filter */}
             <div className="flex items-center gap-2 flex-wrap">
                 <div className="relative flex-1 max-w-md">
                     <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -153,7 +153,7 @@ export default function SequencerCampaignsPage() {
                     <MultiSelectDropdown
                         options={allTags.map(t => ({
                             value: t.id,
-                            // Surface-specific count — this dropdown is on the
+                            // Surface-specific count - this dropdown is on the
                             // campaigns page, so the parenthetical reflects
                             // how many CAMPAIGNS carry the tag.
                             label: `${t.name} (${t.campaign_count})`,

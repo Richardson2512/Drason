@@ -234,7 +234,7 @@ export default function DmarcGeneratorPage() {
  <div>
  <p className="font-semibold text-gray-900 text-sm">p=reject; pct=25</p>
  <p className="text-sm text-gray-600">
- Begin rejecting 25% of failing messages outright. This is a significant step &mdash; rejected emails
+ Begin rejecting 25% of failing messages outright. This is a significant step - rejected emails
  are not delivered at all.
  </p>
  </div>
@@ -314,7 +314,7 @@ export default function DmarcGeneratorPage() {
  <h3 className="font-bold text-gray-900 mb-2">Strict Alignment</h3>
  <p className="text-sm text-gray-600 mb-3">
  The domains must match exactly. If the From header is user@mail.example.com, only
- mail.example.com will pass &mdash; example.com alone will fail.
+ mail.example.com will pass - example.com alone will fail.
  </p>
  <p className="text-xs text-gray-500 font-medium">
  Use strict alignment only when you have full control over all sending infrastructure and want maximum
@@ -402,7 +402,7 @@ export default function DmarcGeneratorPage() {
  <h2 className="text-xl font-bold text-gray-900 mb-3">Need continuous DMARC monitoring?</h2>
  <p className="text-sm text-gray-600 mb-6 max-w-2xl">
  This free tool generates your DMARC record on demand. Superkabe monitors SPF, DKIM, and DMARC across all your
- sending domains automatically &mdash; every 24 hours &mdash; and alerts you before misconfigurations cause
+ sending domains automatically - every 24 hours - and alerts you before misconfigurations cause
  deliverability failures.
  </p>
  <Link

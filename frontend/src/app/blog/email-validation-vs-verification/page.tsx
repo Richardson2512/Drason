@@ -53,7 +53,7 @@ export default function EmailValidationVsVerificationArticle() {
  "name": "What is the difference between email validation and email verification?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Email validation checks whether an email address is properly formatted, uses a real domain, and has valid MX records — essentially whether the address can theoretically receive mail. Email verification goes further by performing an SMTP-level probe to check if the specific mailbox actually exists on the mail server. Validation is faster and cheaper. Verification is more accurate but slower."
+ "text": "Email validation checks whether an email address is properly formatted, uses a real domain, and has valid MX records - essentially whether the address can theoretically receive mail. Email verification goes further by performing an SMTP-level probe to check if the specific mailbox actually exists on the mail server. Validation is faster and cheaper. Verification is more accurate but slower."
  }
  },
  {
@@ -69,7 +69,7 @@ export default function EmailValidationVsVerificationArticle() {
  "name": "Can email verification detect catch-all domains?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Verification tools can identify that a domain is configured as catch-all, meaning it accepts all incoming email regardless of the specific address. However, they cannot determine whether a specific address on a catch-all domain is a real person or a dead mailbox. This is why catch-all domains are classified as 'risky' rather than 'valid' or 'invalid' — the verification probe gets a positive response regardless."
+ "text": "Verification tools can identify that a domain is configured as catch-all, meaning it accepts all incoming email regardless of the specific address. However, they cannot determine whether a specific address on a catch-all domain is a real person or a dead mailbox. This is why catch-all domains are classified as 'risky' rather than 'valid' or 'invalid' - the verification probe gets a positive response regardless."
  }
  },
  {
@@ -325,19 +325,19 @@ export default function EmailValidationVsVerificationArticle() {
  <ul className="space-y-3 text-green-800 text-sm">
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
- <span><strong>Stage 1 — Internal validation:</strong> Every lead passes through syntax checks, domain verification, MX record lookup, disposable email filtering, and role-based address detection. This happens instantly. Obvious bad addresses are blocked before any external API call</span>
+ <span><strong>Stage 1 - Internal validation:</strong> Every lead passes through syntax checks, domain verification, MX record lookup, disposable email filtering, and role-based address detection. This happens instantly. Obvious bad addresses are blocked before any external API call</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
- <span><strong>Stage 2 — SMTP verification (via MillionVerifier):</strong> Leads that pass validation but carry risk indicators (catch-all domains, unknown domains, borderline scores) are sent to MillionVerifier for SMTP-level verification. This confirms whether the specific mailbox exists</span>
+ <span><strong>Stage 2 - SMTP verification (via MillionVerifier):</strong> Leads that pass validation but carry risk indicators (catch-all domains, unknown domains, borderline scores) are sent to MillionVerifier for SMTP-level verification. This confirms whether the specific mailbox exists</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
- <span><strong>Stage 3 — Health scoring and routing:</strong> Each lead gets a health score (GREEN, YELLOW, RED) based on combined validation and verification results. Green leads route to campaigns. Yellow leads route with lower priority. Red leads are blocked</span>
+ <span><strong>Stage 3 - Health scoring and routing:</strong> Each lead gets a health score (GREEN, YELLOW, RED) based on combined validation and verification results. Green leads route to campaigns. Yellow leads route with lower priority. Red leads are blocked</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
- <span><strong>Stage 4 — Post-send protection:</strong> After sending, Superkabe monitors bounce rates, DNS health, and domain reputation. If something slips through, infrastructure protection catches it before it causes lasting damage</span>
+ <span><strong>Stage 4 - Post-send protection:</strong> After sending, Superkabe monitors bounce rates, DNS health, and domain reputation. If something slips through, infrastructure protection catches it before it causes lasting damage</span>
  </li>
  </ul>
  </div>

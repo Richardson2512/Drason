@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * ImportProgressTray — bottom-right floating tray that tracks Apollo + CRM
+ * ImportProgressTray - bottom-right floating tray that tracks Apollo + CRM
  * import jobs spawned from ImportLeadsModal. Polls each job's status until
  * it reaches a terminal state, then triggers a contacts refetch.
  *
@@ -70,7 +70,7 @@ export default function ImportProgressTray({ jobs, onRemove, onAnyCompleted }: P
         [tracked],
     );
 
-    // Polling loop — fires while there's at least one active job.
+    // Polling loop - fires while there's at least one active job.
     useEffect(() => {
         if (activeJobs.length === 0) return;
 
@@ -115,7 +115,7 @@ export default function ImportProgressTray({ jobs, onRemove, onAnyCompleted }: P
                 onAnyCompleted();
             }
             const tid = setTimeout(() => onRemove(j.id), AUTO_DISMISS_MS);
-            // No cleanup — the parent removing the job from the `jobs` prop will
+            // No cleanup - the parent removing the job from the `jobs` prop will
             // unmount this card; the timeout is a no-op if it fires after that.
             void tid;
         }
@@ -126,7 +126,7 @@ export default function ImportProgressTray({ jobs, onRemove, onAnyCompleted }: P
 
     const runningCount = activeJobs.length;
     const headerLabel = runningCount > 0
-        ? `Importing — ${runningCount} running`
+        ? `Importing - ${runningCount} running`
         : `Imports finished`;
 
     return (

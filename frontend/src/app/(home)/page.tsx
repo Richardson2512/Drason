@@ -10,7 +10,7 @@ import MarketingBackdrop from '@/components/MarketingBackdrop';
 import CustomersMarquee from '@/components/marketing/CustomersMarquee';
 // In subdomain mode, app routes (signup/login/dashboard) live on the
 // `app.*` host. `appUrl` returns an absolute URL pointing there when
-// NEXT_PUBLIC_APP_URL is set, and a relative path otherwise — so the
+// NEXT_PUBLIC_APP_URL is set, and a relative path otherwise - so the
 // marketing site's primary CTA always lands on the right host without
 // the middleware needing to do a 302 redirect on every click.
 import { appUrl } from '@/lib/urls';
@@ -71,13 +71,13 @@ const TAG_COLORS: Record<string, { bg: string; text: string }> = {
 // items twice in a row inside a `flex flex-col`, then animates from
 // translateY(0) to translateY(-50%) (or the reverse, for "down" columns).
 // Because the second copy is an exact clone of the first, the wrap point is
-// invisible — the marquee reads as a continuous, never-ending feed.
+// invisible - the marquee reads as a continuous, never-ending feed.
 
 interface MarqueeItem {
-    /** Inline SVG brand-logo component — rendered at 28px in the card. */
+    /** Inline SVG brand-logo component - rendered at 28px in the card. */
     Logo: React.ComponentType<{ size?: number }>;
     name: string;
-    /** Right-aligned status pill — Live (green) or Soon (gray) */
+    /** Right-aligned status pill - Live (green) or Soon (gray) */
     status: 'live' | 'soon';
     /** Category line under the brand */
     category: string;
@@ -131,7 +131,7 @@ function MarqueeColumn({
     );
 }
 
-// Column data — distributed so all four columns have similar lengths and a
+// Column data - distributed so all four columns have similar lengths and a
 // mix of categories to keep the visual balanced.
 const col1: MarqueeItem[] = [
     { Logo: ClayLogo, name: 'Clay', category: 'Lead enrichment', status: 'live' },
@@ -380,7 +380,7 @@ function SlackMockup() {
  </div>
  <div className="p-4 space-y-3">
  {[
- { icon: '🔴', t: 'Mailbox paused', m: 'sarah@acme.co — 5 hard bounces in 60min' },
+ { icon: '🔴', t: 'Mailbox paused', m: 'sarah@acme.co - 5 hard bounces in 60min' },
  { icon: '⚠️', t: 'Domain warning', m: 'acme.co bounce rate 2.8% (threshold 3%)' },
  { icon: '✅', t: 'Healing complete', m: 'mark@acme.co resumed to healthy' },
  ].map((a, i) => (
@@ -593,22 +593,22 @@ export default function LandingPage() {
  },
  {
  title: "Auto-healing built into the platform",
- desc: "When a mailbox's bounce rate creeps up, Superkabe instantly pauses it, reroutes traffic to healthy senders, and works through a graduated recovery pipeline — quarantine → restricted-send → warm recovery → healthy — before sending resumes.",
+ desc: "When a mailbox's bounce rate creeps up, Superkabe instantly pauses it, reroutes traffic to healthy senders, and works through a graduated recovery pipeline - quarantine → restricted-send → warm recovery → healthy - before sending resumes.",
  link: "/product/automated-domain-healing"
  },
  {
  title: "Unlimited multi-mailbox sending",
- desc: "Connect Google Workspace, Microsoft 365, or any SMTP infra provider (Zapmail, Scaledmail, MissionInbox). No seat limits — scale mailboxes and domains without increasing the risk profile of any single sender.",
+ desc: "Connect Google Workspace, Microsoft 365, or any SMTP infra provider (Zapmail, Scaledmail, MissionInbox). No seat limits - scale mailboxes and domains without increasing the risk profile of any single sender.",
  link: "/product/unlimited-multi-mailbox-sending"
  },
  {
  title: "Inbox placement + sending analytics",
- desc: "Track sends, opens, clicks, replies, and bounces per campaign and per mailbox. Monitor domain health trends and inbox placement rates over custom time ranges — no stitching together a separate BI tool.",
+ desc: "Track sends, opens, clicks, replies, and bounces per campaign and per mailbox. Monitor domain health trends and inbox placement rates over custom time ranges - no stitching together a separate BI tool.",
  link: "/product/cold-email-sending-analytics"
  },
  {
  title: "Email validation before every send",
- desc: "Every lead runs through syntax, MX, disposable, and catch-all checks before it reaches your sender. Risky leads get verified via the MillionVerifier API. Invalid emails are blocked — they never touch your sender reputation.",
+ desc: "Every lead runs through syntax, MX, disposable, and catch-all checks before it reaches your sender. Risky leads get verified via the MillionVerifier API. Invalid emails are blocked - they never touch your sender reputation.",
  link: "/product/email-validation-infrastructure-protection"
  }
  ];
@@ -631,7 +631,7 @@ export default function LandingPage() {
  "name": "What is Superkabe?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe is an AI-driven cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and a continuous protection layer (auto-pause, auto-heal, bounce monitoring) into a single product — so outbound teams don't have to stitch a sender, a validator, and a deliverability tool together."
+ "text": "Superkabe is an AI-driven cold email platform with native deliverability protection. It combines AI sequence generation, multi-mailbox sending, email validation, ESP-aware lead routing, and a continuous protection layer (auto-pause, auto-heal, bounce monitoring) into a single product - so outbound teams don't have to stitch a sender, a validator, and a deliverability tool together."
  }
  },
  {
@@ -647,7 +647,7 @@ export default function LandingPage() {
  "name": "How is Superkabe different from Smartlead, Instantly, or Lemlist?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Traditional cold email platforms focus on sending and sequencing; deliverability is typically a dashboard you glance at after the damage is done. Superkabe is the AI cold email platform with deliverability protection built directly into the send pipeline — every send passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation lookups, and the auto-pause + 5-phase healing state machine before it leaves. Sending and protection are one product, not two. Migrating off another platform? Use the one-time import to bring your campaigns, sequences, leads, and mailbox metadata across in a single click."
+ "text": "Traditional cold email platforms focus on sending and sequencing; deliverability is typically a dashboard you glance at after the damage is done. Superkabe is the AI cold email platform with deliverability protection built directly into the send pipeline - every send passes through SMTP transcript capture, DSN parsing, DNSBL + Postmaster reputation lookups, and the auto-pause + 5-phase healing state machine before it leaves. Sending and protection are one product, not two. Migrating off another platform? Use the one-time import to bring your campaigns, sequences, leads, and mailbox metadata across in a single click."
  }
  },
  {
@@ -655,7 +655,7 @@ export default function LandingPage() {
  "name": "What mailboxes can I send from?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe sends from your own mailboxes — Google Workspace and Microsoft 365 via OAuth, or any SMTP provider with encrypted credentials (Zapmail, Scaledmail, MissionInbox, custom workspaces, and more). You connect mailboxes once; Superkabe handles authentication, rotation, ESP-aware routing, and the deliverability protection layer for every send."
+ "text": "Superkabe sends from your own mailboxes - Google Workspace and Microsoft 365 via OAuth, or any SMTP provider with encrypted credentials (Zapmail, Scaledmail, MissionInbox, custom workspaces, and more). You connect mailboxes once; Superkabe handles authentication, rotation, ESP-aware routing, and the deliverability protection layer for every send."
  }
  },
  {
@@ -663,7 +663,7 @@ export default function LandingPage() {
  "name": "How does Superkabe use AI?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "AI powers sequence generation (multi-step drafts from a short ICP brief), variant testing (A/B subject lines and bodies that promote the highest-performing copy automatically), and ESP-aware routing (matching each lead to the mailbox most likely to reach their inbox). More AI capabilities — reply categorization and send-time optimization — are rolling out continuously."
+ "text": "AI powers sequence generation (multi-step drafts from a short ICP brief), variant testing (A/B subject lines and bodies that promote the highest-performing copy automatically), and ESP-aware routing (matching each lead to the mailbox most likely to reach their inbox). More AI capabilities - reply categorization and send-time optimization - are rolling out continuously."
  }
  },
  {
@@ -679,7 +679,7 @@ export default function LandingPage() {
  "name": "Does Superkabe validate emails before sending?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Every lead runs through syntax, MX, disposable-domain, and catch-all checks before a send. Risky leads get an additional verification pass via the MillionVerifier API on Growth and Scale plans. Invalid emails are blocked before they touch the sender — not after the bounce is recorded."
+ "text": "Yes. Every lead runs through syntax, MX, disposable-domain, and catch-all checks before a send. Risky leads get an additional verification pass via the MillionVerifier API on Growth and Scale plans. Invalid emails are blocked before they touch the sender - not after the bounce is recorded."
  }
  },
  {
@@ -695,7 +695,7 @@ export default function LandingPage() {
  "name": "Does Superkabe support multiple mailboxes and domains?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Superkabe supports unlimited mailboxes and domains per organization — Google Workspace, Microsoft 365, or any SMTP infra provider (Zapmail, Scaledmail, MissionInbox, and others). Each domain is monitored and protected independently so issues on one domain never cascade to others."
+ "text": "Yes. Superkabe supports unlimited mailboxes and domains per organization - Google Workspace, Microsoft 365, or any SMTP infra provider (Zapmail, Scaledmail, MissionInbox, and others). Each domain is monitored and protected independently so issues on one domain never cascade to others."
  }
  },
  {
@@ -711,7 +711,7 @@ export default function LandingPage() {
  "name": "Is Superkabe an email warmup tool?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "No. Superkabe is a cold email sending and protection platform, not a warmup service. Warmup tools generate synthetic engagement to build initial reputation. Superkabe protects and optimizes live sending — monitoring bounce rates, ESP placement, and mailbox health during real campaigns. The two are complementary and commonly used together."
+ "text": "No. Superkabe is a cold email sending and protection platform, not a warmup service. Warmup tools generate synthetic engagement to build initial reputation. Superkabe protects and optimizes live sending - monitoring bounce rates, ESP placement, and mailbox health during real campaigns. The two are complementary and commonly used together."
  }
  },
  {
@@ -719,7 +719,7 @@ export default function LandingPage() {
  "name": "What is domain burnout?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Domain burnout is permanent damage to a sending domain's reputation caused by sustained high bounce rates or spam complaints. Once burned, inbox placement drops dramatically and is difficult to recover without replacing the domain — which is why Superkabe's protection layer exists to prevent the compounding damage before it becomes irreversible."
+ "text": "Domain burnout is permanent damage to a sending domain's reputation caused by sustained high bounce rates or spam complaints. Once burned, inbox placement drops dramatically and is difficult to recover without replacing the domain - which is why Superkabe's protection layer exists to prevent the compounding damage before it becomes irreversible."
  }
  },
  {
@@ -774,7 +774,7 @@ export default function LandingPage() {
  "@type": "Offer",
  "price": "19",
  "priceCurrency": "USD",
- "description": "Starter plan for founder-led teams — AI sequences, multi-mailbox sending, email validation, and the full deliverability protection stack.",
+ "description": "Starter plan for founder-led teams - AI sequences, multi-mailbox sending, email validation, and the full deliverability protection stack.",
  "url": "https://www.superkabe.com/pricing"
  },
  "featureList": [
@@ -802,19 +802,19 @@ export default function LandingPage() {
  {/* ================= NAVBAR ================= */}
  <Navbar />
 
- {/* Fixed thin-square grid background — sits behind everything */}
+ {/* Fixed thin-square grid background - sits behind everything */}
  <MarketingBackdrop />
 
- {/* ================= HERO — centered, beige, screenshot below ================= */}
+ {/* ================= HERO - centered, beige, screenshot below ================= */}
  <section className="relative pt-44 md:pt-52 pb-8 z-10 px-6">
  <div className="max-w-3xl mx-auto text-center">
  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-semibold leading-[1.18] tracking-[-0.01em] text-gray-900 mb-4">
  AI-powered cold email with{' '}
- <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-fraunces), Georgia, 'Times New Roman', serif" }}>deliverability protection</span>.
+ <span className="italic font-normal text-[#D4730F]" style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, 'Times New Roman', serif" }}>deliverability protection</span>.
  </h1>
 
  <p className="text-sm md:text-base text-gray-500 mb-4 leading-relaxed max-w-xl mx-auto">
- Send, personalize, and scale cold email — with a protection layer that auto-pauses, reroutes, and heals before your domains burn.
+ Send, personalize, and scale cold email - with a protection layer that auto-pauses, reroutes, and heals before your domains burn.
  </p>
 
  <p className="text-[11px] text-gray-400 mb-6 tracking-wide">
@@ -832,13 +832,13 @@ export default function LandingPage() {
  </div>
  </section>
 
- {/* ================= HERO SCREENSHOT — Protection Overview ================= */}
+ {/* ================= HERO SCREENSHOT - Protection Overview ================= */}
  <section className="relative z-10 px-6 pb-12 md:pb-16">
  <div className="max-w-6xl mx-auto">
  <div className="relative rounded-2xl overflow-hidden border border-[#D1CBC5] shadow-xl shadow-gray-900/5 bg-white">
  <Image
  src="/image/dashboard-overview.png"
- alt="Superkabe — protection overview dashboard with healing pipeline and lead health gate"
+ alt="Superkabe - protection overview dashboard with healing pipeline and lead health gate"
  width={1920}
  height={1200}
  priority
@@ -879,11 +879,11 @@ export default function LandingPage() {
  What does the Superkabe platform do for you?
  </h2>
  <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto">
- Superkabe is an AI-driven cold email platform with deliverability protection built in. Draft sequences with AI, send across unlimited mailboxes, validate every email, route each lead to the mailbox with the best ESP track record — and let the protection layer auto-pause, reroute, and heal whenever a mailbox or domain starts to drift.
+ Superkabe is an AI-driven cold email platform with deliverability protection built in. Draft sequences with AI, send across unlimited mailboxes, validate every email, route each lead to the mailbox with the best ESP track record - and let the protection layer auto-pause, reroute, and heal whenever a mailbox or domain starts to drift.
  </p>
  </div>
 
- {/* Bento Grid — varied-width cells inspired by popl.co */}
+ {/* Bento Grid - varied-width cells inspired by popl.co */}
  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5 mb-14">
 
  {/* Row 1: Mailbox fatigue (wide) + DNS auth */}
@@ -978,7 +978,7 @@ export default function LandingPage() {
  </div>
 
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto mb-14">
- {/* LEFT — 2-col feature card grid */}
+ {/* LEFT - 2-col feature card grid */}
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
  {[
  {
@@ -1024,7 +1024,7 @@ export default function LandingPage() {
  ))}
  </div>
 
- {/* RIGHT — heading + checklist + pill row */}
+ {/* RIGHT - heading + checklist + pill row */}
  <div>
  <h2 className="h2-rule mb-4">
  AI-powered sending with a 99%+ inbox rate baked in.
@@ -1037,7 +1037,7 @@ export default function LandingPage() {
  'Proprietary 5-phase healing pipeline for paused mailboxes',
  'ESP-aware routing for higher inbox placement on Gmail and Outlook',
  'Real-time bounce monitoring with threshold-based auto-pause',
- 'Hybrid email validation — syntax, MX, disposable, catch-all',
+ 'Hybrid email validation - syntax, MX, disposable, catch-all',
  'Complete REST API + MCP server for programmatic control',
  ].map((item) => (
  <li key={item} className="flex items-start gap-2.5">
@@ -1077,10 +1077,10 @@ export default function LandingPage() {
  Native Integrations
  </div>
  <h2 className="h2-rule mb-4">
- Plugs into your stack — no middleman.
+ Plugs into your stack - no middleman.
  </h2>
  <p className="text-lg text-gray-600 leading-relaxed">
- Pull leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack — all native, all configurable in minutes.
+ Pull leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack - all native, all configurable in minutes.
  </p>
  </div>
 
@@ -1114,16 +1114,16 @@ export default function LandingPage() {
  Connect your mailboxes. Send from Superkabe.
  </h2>
  <p className="text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed">
- Pipe leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack — all native, all configurable in minutes.
+ Pipe leads in from your enrichment tools, route them through your own mailboxes, and sync activity back to your CRM, dialer, or Slack - all native, all configurable in minutes.
  </p>
  </div>
  </div>
 
- {/* Integrations — alternating rows with visible grid lines */}
+ {/* Integrations - alternating rows with visible grid lines */}
  <PlatformRow
  eyebrow="Native Send"
  title="Connect Gmail with one-click OAuth"
- body="Authorize once and Superkabe sends through your Gmail mailbox with full DKIM/SPF alignment. Real-time tracking of opens, clicks, replies, and bounces — plus reputation signals direct from Google Postmaster Tools."
+ body="Authorize once and Superkabe sends through your Gmail mailbox with full DKIM/SPF alignment. Real-time tracking of opens, clicks, replies, and bounces - plus reputation signals direct from Google Postmaster Tools."
  tags={['OAuth', 'Postmaster Tools', 'Real-Time Tracking']}
  tagColor="blue"
  link="/docs/getting-started"
@@ -1153,7 +1153,7 @@ export default function LandingPage() {
  <PlatformRow
  eyebrow="Lead Source"
  title="Push enriched leads from Clay into Superkabe"
- body="Webhook ingestion for enriched leads. Clay pushes rows to Superkabe, where they get validated, health-gated, and auto-routed into the right AI sequence — no spreadsheet middle step."
+ body="Webhook ingestion for enriched leads. Clay pushes rows to Superkabe, where they get validated, health-gated, and auto-routed into the right AI sequence - no spreadsheet middle step."
  tags={['Webhook', 'Auto-Routing', 'Validation']}
  tagColor="orange"
  link="/docs/clay-integration"
@@ -1163,7 +1163,7 @@ export default function LandingPage() {
  <PlatformRow
  eyebrow="Real-Time Alerts"
  title="Instant deliverability events in Slack"
- body="Real-time alerts for sends, replies, bounces, and healing milestones. Mailbox paused, domain blacklisted, sequence stalled, inbox placement dropped — all surfaced in your Slack channel."
+ body="Real-time alerts for sends, replies, bounces, and healing milestones. Mailbox paused, domain blacklisted, sequence stalled, inbox placement dropped - all surfaced in your Slack channel."
  tags={['Alerts', 'Real-Time', 'Configurable']}
  tagColor="yellow"
  link="/docs/slack-integration"
@@ -1171,7 +1171,7 @@ export default function LandingPage() {
  mockup={<SlackMockup />}
  />
 
- {/* Bottom how it connects — kept as-is for SEO/AEO content */}
+ {/* Bottom how it connects - kept as-is for SEO/AEO content */}
  <div className="max-w-6xl mx-auto mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
  <div className="text-center">
  <div className="w-12 h-12 mx-auto mb-3 bg-white border border-gray-200 flex items-center justify-center text-xl font-bold text-gray-900">1</div>
@@ -1186,7 +1186,7 @@ export default function LandingPage() {
  <div className="text-center">
  <div className="w-12 h-12 mx-auto mb-3 bg-white border border-gray-200 flex items-center justify-center text-xl font-bold text-gray-900">3</div>
  <div className="font-bold text-gray-900 mb-1 text-sm">Zero downtime</div>
- <p className="text-xs text-gray-500">Keep sending wherever you send today — Superkabe layers protection on top. Or migrate to Superkabe when you're ready for AI sequences + protection in one.</p>
+ <p className="text-xs text-gray-500">Keep sending wherever you send today - Superkabe layers protection on top. Or migrate to Superkabe when you're ready for AI sequences + protection in one.</p>
  </div>
  </div>
  </section>
@@ -1198,8 +1198,8 @@ export default function LandingPage() {
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-bold tracking-widest uppercase mb-6">
  Platform Capabilities
  </div>
- <h2 className="h2-rule mb-5">Everything your cold email program needs — in one platform.</h2>
- <p className="text-gray-500 max-w-2xl mx-auto text-lg">AI sequence builder, multi-mailbox sending, ESP-aware routing, email validation, and a full deliverability protection stack — plus dedicated AI agents and a full API for programmatic control.</p>
+ <h2 className="h2-rule mb-5">Everything your cold email program needs - in one platform.</h2>
+ <p className="text-gray-500 max-w-2xl mx-auto text-lg">AI sequence builder, multi-mailbox sending, ESP-aware routing, email validation, and a full deliverability protection stack - plus dedicated AI agents and a full API for programmatic control.</p>
  </div>
  </div>
 
@@ -1261,7 +1261,7 @@ export default function LandingPage() {
  <div className="inline-block px-4 py-1 rounded-full bg-[#FFEBC9]/40 text-[#D4730F] text-sm font-semibold mb-6">Simple Pricing</div>
  <h2 className="h2-rule mb-6">One platform for cold email outreach and protection.</h2>
  <p className="text-gray-500 mb-8 text-lg leading-relaxed">
- Stop paying for an AI writer, a sender, a validator, and a deliverability tool separately. Superkabe bundles AI sequences, multi-mailbox sending, email validation, and the full protection layer — for the price of one line item.
+ Stop paying for an AI writer, a sender, a validator, and a deliverability tool separately. Superkabe bundles AI sequences, multi-mailbox sending, email validation, and the full protection layer - for the price of one line item.
  </p>
 
  <div className="bg-white p-10 border border-gray-100 shadow-xl">
@@ -1325,7 +1325,7 @@ export default function LandingPage() {
  <div className="max-w-5xl mx-auto">
  <div className="text-center mb-10">
  <h2 className="h2-rule mb-4">How the Superkabe platform is built</h2>
- <p className="text-gray-500 text-lg max-w-3xl mx-auto">The core technical characteristics of Superkabe — an AI cold email platform with native deliverability protection — for teams running high-volume outbound.</p>
+ <p className="text-gray-500 text-lg max-w-3xl mx-auto">The core technical characteristics of Superkabe - an AI cold email platform with native deliverability protection - for teams running high-volume outbound.</p>
  </div>
  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
  <table className="w-full text-left border-collapse">
@@ -1346,13 +1346,13 @@ export default function LandingPage() {
  <section className="py-10 lg:py-16 px-6 relative z-10">
  <div className="max-w-6xl mx-auto grid lg:grid-cols-[2fr_3fr] gap-16 lg:gap-20">
 
- {/* Left Column — Heading + CTA */}
+ {/* Left Column - Heading + CTA */}
  <div className="lg:sticky lg:top-32 lg:self-start">
  <h2 className="h2-rule mb-6">
  Questions<br />and answers
  </h2>
  <p className="text-gray-500 text-lg leading-relaxed mb-8">
- Straight answers about the Superkabe platform — AI sequencing, multi-mailbox sending, email validation, and built-in deliverability protection.
+ Straight answers about the Superkabe platform - AI sequencing, multi-mailbox sending, email validation, and built-in deliverability protection.
  </p>
  <div className="space-y-3">
  <p className="text-gray-900 font-semibold text-lg">Got more questions?</p>
@@ -1366,7 +1366,7 @@ export default function LandingPage() {
  </div>
  </div>
 
- {/* Right Column — FAQ Accordion (sticky-scrollable) */}
+ {/* Right Column - FAQ Accordion (sticky-scrollable) */}
  <div className="lg:sticky lg:top-32 lg:self-start lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto scrollbar-hide">
  <div className="divide-y divide-gray-200">
  {faqSchema.mainEntity.map((faq, index) => (
@@ -1416,7 +1416,7 @@ export default function LandingPage() {
  Protect what you send with.
  </h2>
  <p className="text-base text-gray-600 mb-12 max-w-2xl mx-auto">
- Join modern outbound teams running their entire cold email operation on Superkabe — AI sequences, multi-mailbox sending, and deliverability protection in one platform.
+ Join modern outbound teams running their entire cold email operation on Superkabe - AI sequences, multi-mailbox sending, and deliverability protection in one platform.
  </p>
 
  <div className="flex flex-col sm:flex-row gap-4 justify-center">

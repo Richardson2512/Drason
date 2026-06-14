@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Top 7 Cold Email Tools of 2026 (Ranked & Compared) — Superkabe';
+export const alt = 'Top 7 Cold Email Tools of 2026 (Ranked & Compared) - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default async function Image() {
                         Top 7 cold email tools
                     </div>
                     <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
-                        A ranked review of the 7 platforms that compete at the top of the category — scored on validation, sending, deliverability protection, healing, and economics.
+                        A ranked review of the 7 platforms that compete at the top of the category - scored on validation, sending, deliverability protection, healing, and economics.
                     </div>
                 </div>
 

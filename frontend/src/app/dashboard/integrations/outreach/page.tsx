@@ -59,7 +59,7 @@ const STATUS_STYLE: Record<string, { label: string; bg: string; fg: string; dot:
 };
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', year: 'numeric',
         hour: 'numeric', minute: '2-digit',
@@ -133,7 +133,7 @@ export default function OutreachIntegrationPage() {
                     <strong>How export works.</strong> Once connected, the cold-call list page gets an{' '}
                     <strong>Export to Outreach</strong> button. Pick (or create) a sequence and a mailbox,
                     and Superkabe upserts each lead as a Prospect on email and adds it to the sequence.
-                    Re-exports are idempotent — already-in prospects aren&apos;t duplicated. See the{' '}
+                    Re-exports are idempotent - already-in prospects aren&apos;t duplicated. See the{' '}
                     <Link href="/docs/integrations/outreach" className="underline">Outreach docs</Link>{' '}
                     for setup details.
                 </div>
@@ -313,7 +313,7 @@ export default function OutreachIntegrationPage() {
                                                 <td className="py-2 pr-3 text-emerald-700">{j.total_prospects_created.toLocaleString()}</td>
                                                 <td className="py-2 pr-3 text-slate-700">{j.total_added_to_sequence.toLocaleString()}</td>
                                                 <td className="py-2 pr-3 text-red-700">
-                                                    {j.total_failed > 0 ? j.total_failed.toLocaleString() : '—'}
+                                                    {j.total_failed > 0 ? j.total_failed.toLocaleString() : '-'}
                                                 </td>
                                             </tr>
                                         );

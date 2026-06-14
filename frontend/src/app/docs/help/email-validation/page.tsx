@@ -28,7 +28,7 @@ export default function EmailValidationPage() {
  <h2 className="text-xl font-bold mb-3 text-blue-900">Quick Answer</h2>
  <p className="text-blue-800">
  Superkabe validates every incoming email before it reaches your sending platform. Invalid emails are blocked automatically.
- The system uses a <strong>hybrid approach</strong>: fast internal checks first, then external API verification for borderline cases &mdash;
+ The system uses a <strong>hybrid approach</strong>: fast internal checks first, then external API verification for borderline cases -
  saving you money while catching bad addresses before they bounce.
  </p>
  </div>
@@ -47,10 +47,10 @@ export default function EmailValidationPage() {
  Every email passes through these checks instantly, at zero cost. Most obviously invalid emails are caught here.
  </p>
  <ul className="space-y-2 text-sm text-gray-600">
- <li>&#x2022; <strong>Syntax validation</strong> &mdash; Catches typos like missing @ or double dots</li>
- <li>&#x2022; <strong>MX record lookup</strong> &mdash; Confirms the domain can actually receive email</li>
- <li>&#x2022; <strong>Disposable domain detection</strong> &mdash; Blocks throwaway addresses (mailinator, guerrillamail, etc.)</li>
- <li>&#x2022; <strong>Catch-all detection</strong> &mdash; Flags domains that accept any address (risky for bounce rates)</li>
+ <li>&#x2022; <strong>Syntax validation</strong> - Catches typos like missing @ or double dots</li>
+ <li>&#x2022; <strong>MX record lookup</strong> - Confirms the domain can actually receive email</li>
+ <li>&#x2022; <strong>Disposable domain detection</strong> - Blocks throwaway addresses (mailinator, guerrillamail, etc.)</li>
+ <li>&#x2022; <strong>Catch-all detection</strong> - Flags domains that accept any address (risky for bounce rates)</li>
  </ul>
  <div className="mt-4 bg-blue-50 p-3">
  <p className="text-xs text-blue-800 font-medium">Available on all plans. No API credits consumed.</p>
@@ -64,10 +64,10 @@ export default function EmailValidationPage() {
  Emails that pass internal checks but are flagged as risky get sent to MillionVerifier for deep verification.
  </p>
  <ul className="space-y-2 text-sm text-gray-600">
- <li>&#x2022; <strong>SMTP handshake</strong> &mdash; Connects to the mail server to verify the mailbox exists</li>
- <li>&#x2022; <strong>Inbox activity signals</strong> &mdash; Checks for signs of an active, real mailbox</li>
- <li>&#x2022; <strong>Role-based detection</strong> &mdash; Identifies addresses like info@, support@, admin@</li>
- <li>&#x2022; <strong>Spam trap detection</strong> &mdash; Catches known spam trap addresses</li>
+ <li>&#x2022; <strong>SMTP handshake</strong> - Connects to the mail server to verify the mailbox exists</li>
+ <li>&#x2022; <strong>Inbox activity signals</strong> - Checks for signs of an active, real mailbox</li>
+ <li>&#x2022; <strong>Role-based detection</strong> - Identifies addresses like info@, support@, admin@</li>
+ <li>&#x2022; <strong>Spam trap detection</strong> - Catches known spam trap addresses</li>
  </ul>
  <div className="mt-4 bg-purple-50 p-3">
  <p className="text-xs text-purple-800 font-medium">Only called when needed. DomainInsight caching reduces API calls further.</p>
@@ -94,7 +94,7 @@ export default function EmailValidationPage() {
  <div className="flex items-center gap-4">
  <span className="flex-shrink-0 px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-bold">Invalid</span>
  <div>
- <p className="text-gray-700 text-sm">The email address does not exist, the domain has no mail server, or it failed SMTP verification. <strong>Blocked automatically &mdash; never sent.</strong></p>
+ <p className="text-gray-700 text-sm">The email address does not exist, the domain has no mail server, or it failed SMTP verification. <strong>Blocked automatically - never sent.</strong></p>
  </div>
  </div>
  <div className="flex items-center gap-4">
@@ -114,7 +114,7 @@ export default function EmailValidationPage() {
  </p>
  <ul className="space-y-2 text-sm text-red-800">
  <li>&#x2022; The mailbox doesn&rsquo;t exist on the recipient&rsquo;s server (e.g., the person left the company)</li>
- <li>&#x2022; The domain has no MX records &mdash; it simply cannot receive email</li>
+ <li>&#x2022; The domain has no MX records - it simply cannot receive email</li>
  <li>&#x2022; The address uses a known disposable email provider</li>
  <li>&#x2022; Syntax errors in the address (missing @, invalid characters)</li>
  </ul>
@@ -128,7 +128,7 @@ export default function EmailValidationPage() {
  <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 p-8 mb-12">
  <p className="text-gray-700 mb-4">
  Superkabe caches domain-level validation intelligence using <strong>DomainInsight</strong>. When the system validates an email, it stores
- what it learned about the domain &mdash; MX records, catch-all status, disposable classification, and blacklist status.
+ what it learned about the domain - MX records, catch-all status, disposable classification, and blacklist status.
  </p>
  <div className="bg-white p-6 mb-4 border border-green-200">
  <h3 className="font-bold text-gray-900 mb-3">How It Saves Money</h3>
@@ -184,11 +184,11 @@ export default function EmailValidationPage() {
  <div className="space-y-3 text-sm text-amber-900">
  <p>1. Lead arrives via Clay webhook: <strong>john@acmecorp.com</strong></p>
  <p>2. <strong>Syntax check:</strong> Pass (valid format)</p>
- <p>3. <strong>MX lookup:</strong> Pass (acmecorp.com has MX records &mdash; cached from DomainInsight)</p>
+ <p>3. <strong>MX lookup:</strong> Pass (acmecorp.com has MX records - cached from DomainInsight)</p>
  <p>4. <strong>Disposable check:</strong> Pass (not a disposable domain)</p>
- <p>5. <strong>Catch-all check:</strong> Flag &mdash; acmecorp.com is a catch-all domain (risky)</p>
+ <p>5. <strong>Catch-all check:</strong> Flag - acmecorp.com is a catch-all domain (risky)</p>
  <p>6. <strong>Result so far:</strong> Risky. On Growth/Scale tiers, the lead is sent to MillionVerifier.</p>
- <p>7. <strong>API result:</strong> Valid &mdash; SMTP handshake confirmed the mailbox exists.</p>
+ <p>7. <strong>API result:</strong> Valid - SMTP handshake confirmed the mailbox exists.</p>
  <p>8. <strong>Final status:</strong> Valid. Lead proceeds to health gate and routing.</p>
  </div>
  </div>

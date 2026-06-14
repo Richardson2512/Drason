@@ -42,12 +42,12 @@ export default function SuperkabeVsInstantlyPage() {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            { "@type": "Question", "name": "Is Superkabe better than Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on the protection layer — auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline, ESP-aware per-mailbox routing — none of which Instantly ships natively. Instantly wins on bundled warmup network and the built-in B2B lead database. For teams that prioritize not burning domains, Superkabe is better. For teams that want lead generation + warmup + sending in one tool and have moderate volume, Instantly suits." } },
-            { "@type": "Question", "name": "How does Superkabe pricing compare to Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "Instantly charges per active lead — $37/mo at Growth (5K leads) up to $358/mo at Hyperscale (100K leads). Superkabe charges flat per-tier — $19/mo (Starter) up to $349/mo (Scale). At 100K active leads Superkabe Growth ($199/mo) bundles 300K sends, full validation, and the protection layer for less than Instantly Hyperscale. Below 25K active leads Instantly is competitive." } },
+            { "@type": "Question", "name": "Is Superkabe better than Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe wins on the protection layer - auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline, ESP-aware per-mailbox routing - none of which Instantly ships natively. Instantly wins on bundled warmup network and the built-in B2B lead database. For teams that prioritize not burning domains, Superkabe is better. For teams that want lead generation + warmup + sending in one tool and have moderate volume, Instantly suits." } },
+            { "@type": "Question", "name": "How does Superkabe pricing compare to Instantly?", "acceptedAnswer": { "@type": "Answer", "text": "Instantly charges per active lead - $37/mo at Growth (5K leads) up to $358/mo at Hyperscale (100K leads). Superkabe charges flat per-tier - $19/mo (Starter) up to $349/mo (Scale). At 100K active leads Superkabe Growth ($199/mo) bundles 300K sends, full validation, and the protection layer for less than Instantly Hyperscale. Below 25K active leads Instantly is competitive." } },
             { "@type": "Question", "name": "Does Instantly have built-in auto-pause?", "acceptedAnswer": { "@type": "Answer", "text": "No. Instantly reports bounce rate in dashboards but does not automatically pause mailboxes when bounce rate crosses a configurable threshold. Pausing is a manual action. Superkabe enforces auto-pause at 3% bounce rate after a 60-send minimum, with a 2% warning level and a 5-bounce safety net." } },
-            { "@type": "Question", "name": "How does Superkabe replace Instantly's bundled warmup?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe integrates with Zapmail for warmup. Instantly's bundled warmup network is one of the largest in the industry; if warmup network size is the primary value driver, Instantly wins. For most teams the warmup quality difference is small once mailboxes are warmed — and Superkabe's protection layer matters more during live sending than warmup volume during the ramp." } },
+            { "@type": "Question", "name": "How does Superkabe replace Instantly's bundled warmup?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe integrates with Zapmail for warmup. Instantly's bundled warmup network is one of the largest in the industry; if warmup network size is the primary value driver, Instantly wins. For most teams the warmup quality difference is small once mailboxes are warmed - and Superkabe's protection layer matters more during live sending than warmup volume during the ramp." } },
             { "@type": "Question", "name": "Can I migrate from Instantly to Superkabe without losing campaign data?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Connect your Gmail / Microsoft 365 / SMTP mailboxes via OAuth or encrypted credentials. Re-create sequences in Superkabe's native sequencer or paste from Instantly. Import lead history via CSV. Sending switches to Superkabe immediately; the protection layer (auto-pause, 5-phase healing, ESP-aware routing) runs against every send from day one." } },
-            { "@type": "Question", "name": "What is the 5-phase healing pipeline?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe's healing pipeline graduates paused mailboxes through 5 deterministic phases: Pause → Quarantine → Restricted Send → Warm Recovery → Healthy. Each transition has explicit gates (clean send count, time-in-phase floor, DNS health, bounce/complaint rate). A Resilience Score (0-100) adapts pace to sender history. Instantly has no equivalent — paused mailboxes return to service manually." } }
+            { "@type": "Question", "name": "What is the 5-phase healing pipeline?", "acceptedAnswer": { "@type": "Answer", "text": "Superkabe's healing pipeline graduates paused mailboxes through 5 deterministic phases: Pause → Quarantine → Restricted Send → Warm Recovery → Healthy. Each transition has explicit gates (clean send count, time-in-phase floor, DNS health, bounce/complaint rate). A Resilience Score (0-100) adapts pace to sender history. Instantly has no equivalent - paused mailboxes return to service manually." } }
         ]
     };
 
@@ -74,17 +74,17 @@ export default function SuperkabeVsInstantlyPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    Instantly is one of the most polished cold email senders on the market — bundled warmup, B2B lead database, AI features, unified inbox. Superkabe takes a different angle: native sending plus a built-in deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing) that Instantly leaves to manual monitoring. Here is the head-to-head.
+                    Instantly is one of the most polished cold email senders on the market - bundled warmup, B2B lead database, AI features, unified inbox. Superkabe takes a different angle: native sending plus a built-in deliverability protection layer (auto-pause, 5-phase healing, ESP-aware routing) that Instantly leaves to manual monitoring. Here is the head-to-head.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Both run multi-step AI sequences across unlimited Gmail / Microsoft 365 / SMTP mailboxes</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly bundles a strong warmup network and B2B lead database — Superkabe integrates Zapmail for warmup but no built-in lead database</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe ships native auto-pause at 3% bounce, 5-phase healing, and ESP-aware per-mailbox routing — Instantly does not</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly charges per active lead — Hyperscale at 100K leads is $358/mo; Superkabe Growth at $199/mo includes 300K sends + protection</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration is same-day — connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly bundles a strong warmup network and B2B lead database - Superkabe integrates Zapmail for warmup but no built-in lead database</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe ships native auto-pause at 3% bounce, 5-phase healing, and ESP-aware per-mailbox routing - Instantly does not</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Instantly charges per active lead - Hyperscale at 100K leads is $358/mo; Superkabe Growth at $199/mo includes 300K sends + protection</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration is same-day - connect Gmail / Microsoft 365 / SMTP, import sequences, sending swaps over</li>
                     </ul>
                 </div>
 
@@ -93,7 +93,7 @@ export default function SuperkabeVsInstantlyPage() {
                     <div className="grid md:grid-cols-2 gap-4 mb-8">
                         <div className="bg-blue-50 border border-blue-200 p-6">
                             <h3 className="font-bold text-blue-900 mb-2">Superkabe</h3>
-                            <p className="text-gray-700 text-sm leading-relaxed">AI cold email sender + native deliverability protection. Sends through your Gmail / Microsoft 365 / SMTP mailboxes. Auto-pause at 3% bounce rate, 5-phase healing, ESP-aware routing, hybrid validation, 400+ DNSBL monitoring — built in. Flat per-tier pricing.</p>
+                            <p className="text-gray-700 text-sm leading-relaxed">AI cold email sender + native deliverability protection. Sends through your Gmail / Microsoft 365 / SMTP mailboxes. Auto-pause at 3% bounce rate, 5-phase healing, ESP-aware routing, hybrid validation, 400+ DNSBL monitoring - built in. Flat per-tier pricing.</p>
                         </div>
                         <div className="bg-white border border-gray-200 p-6 shadow-sm">
                             <h3 className="font-bold text-gray-900 mb-2">Instantly</h3>
@@ -106,21 +106,21 @@ export default function SuperkabeVsInstantlyPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">1. Native auto-pause</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Superkabe monitors each mailbox over a rolling 100-send window. At 3% bounce rate after a 60-send minimum (with a 5-bounce safety net), the mailbox is paused and enters quarantine automatically. Instantly reports bounce rate but does not enforce a threshold-based pause — at 100+ mailboxes, the lag between detection and manual response is exactly when domains burn.
+                            Superkabe monitors each mailbox over a rolling 100-send window. At 3% bounce rate after a 60-send minimum (with a 5-bounce safety net), the mailbox is paused and enters quarantine automatically. Instantly reports bounce rate but does not enforce a threshold-based pause - at 100+ mailboxes, the lag between detection and manual response is exactly when domains burn.
                         </p>
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">2. 5-phase healing pipeline</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Pause → Quarantine → Restricted Send → Warm Recovery → Healthy, with explicit gates at each phase (clean send count, DNS health, bounce/complaint thresholds, time-in-phase floors). A Resilience Score (0-100) tunes pace to sender history. Instantly has no equivalent — paused mailboxes resume manually.
+                            Pause → Quarantine → Restricted Send → Warm Recovery → Healthy, with explicit gates at each phase (clean send count, DNS health, bounce/complaint thresholds, time-in-phase floors). A Resilience Score (0-100) tunes pace to sender history. Instantly has no equivalent - paused mailboxes resume manually.
                         </p>
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">3. ESP-aware per-mailbox routing</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Superkabe scores each mailbox by 30-day bounce rate per recipient ESP (Gmail vs Microsoft vs Yahoo) and routes leads using a 60% capacity / 40% performance blend. At scale this is the largest deliverability lever — one Gmail mailbox can run 0.1% bounce while another runs 2.5%. Instantly groups all Gmail mailboxes as a class.
+                            Superkabe scores each mailbox by 30-day bounce rate per recipient ESP (Gmail vs Microsoft vs Yahoo) and routes leads using a 60% capacity / 40% performance blend. At scale this is the largest deliverability lever - one Gmail mailbox can run 0.1% bounce while another runs 2.5%. Instantly groups all Gmail mailboxes as a class.
                         </p>
                     </div>
 
@@ -150,14 +150,14 @@ export default function SuperkabeVsInstantlyPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">2. Built-in B2B lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Instantly bundles its own lead database with verification — competitive with standalone tools at small-to-mid scale. Superkabe integrates with Apollo, Clay, Smartlead, and others but does not bundle a database. Teams that need leads + sender in one tool benefit from Instantly&apos;s bundle.
+                            Instantly bundles its own lead database with verification - competitive with standalone tools at small-to-mid scale. Superkabe integrates with Apollo, Clay, Smartlead, and others but does not bundle a database. Teams that need leads + sender in one tool benefit from Instantly&apos;s bundle.
                         </p>
                     </div>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">3. Unified inbox polish</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Instantly&apos;s unified inbox feels mature — keyboard shortcuts, snooze, multi-mailbox view. Superkabe&apos;s inbox is solid and improving but Instantly remains slightly more polished here.
+                            Instantly&apos;s unified inbox feels mature - keyboard shortcuts, snooze, multi-mailbox view. Superkabe&apos;s inbox is solid and improving but Instantly remains slightly more polished here.
                         </p>
                     </div>
 
@@ -209,13 +209,13 @@ export default function SuperkabeVsInstantlyPage() {
 
                     <h2 id="migration" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Migration: Instantly → Superkabe</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create or import sequences, and Superkabe takes over sending — with the protection layer running on every send from day one. See the <Link href="/dashboard/migration/from-instantly" className="text-blue-600 hover:text-blue-800 underline">step-by-step migration guide</Link>.
+                        Same-day for most teams. Connect Gmail / Microsoft 365 mailboxes via OAuth (or SMTP), re-create or import sequences, and Superkabe takes over sending - with the protection layer running on every send from day one. See the <Link href="/dashboard/migration/from-instantly" className="text-blue-600 hover:text-blue-800 underline">step-by-step migration guide</Link>.
                     </p>
                 </div>
 
                 <BottomCtaStrip
                     headline="Replace Instantly with Superkabe"
-                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) — at flat pricing instead of per-active-lead."
+                    body="AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the full deliverability protection layer (auto-pause at 3% bounce, 5-phase healing, ESP-aware routing) - at flat pricing instead of per-active-lead."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See migration guide', href: '/dashboard/migration/from-instantly' }}
                 />

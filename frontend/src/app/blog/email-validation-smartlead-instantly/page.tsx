@@ -9,7 +9,7 @@ export const metadata: Metadata = {
  description: "Smartlead and Instantly send emails. They don't validate them. Learn how to add a validation layer between Clay and your sending platform to prevent.",
  openGraph: {
  title: "Email Validation for Smartlead and Instantly Users",
- description: 'Your sending platform doesn\'t validate leads. Here\'s how to add the missing layer between enrichment and sending — whether you use Smartlead, Instantly, or both.',
+ description: 'Your sending platform doesn\'t validate leads. Here\'s how to add the missing layer between enrichment and sending - whether you use Smartlead, Instantly, or both.',
  url: '/blog/email-validation-smartlead-instantly',
  siteName: 'Superkabe',
  type: 'article',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: "Email Validation for Smartlead and Instantly Users",
-        description: "Your sending platform doesn't validate leads. Here's how to add the missing layer between enrichment and sending — whether you use Smartlead, Instantly, or both.",
+        description: "Your sending platform doesn't validate leads. Here's how to add the missing layer between enrichment and sending - whether you use Smartlead, Instantly, or both.",
         images: ['/image/og-image.png'],
     },
 
@@ -90,7 +90,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  "name": "What happens if I switch from Smartlead to Instantly?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "If your validation layer is built into Smartlead-specific workflows, you lose it when you switch. If you use Superkabe as an independent validation layer, your rules, monitoring, and healing logic stay intact. You just change the destination platform — the protection travels with you."
+ "text": "If your validation layer is built into Smartlead-specific workflows, you lose it when you switch. If you use Superkabe as an independent validation layer, your rules, monitoring, and healing logic stay intact. You just change the destination platform - the protection travels with you."
  }
  },
  {
@@ -148,7 +148,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Gap Nobody Talks About</h2>
  <p>
- Most outbound stacks look something like this: Clay or Apollo enriches leads with email addresses, phone numbers, and company data. Those leads get pushed — usually via webhook or CSV — directly into Smartlead or Instantly. A campaign fires. Emails go out.
+ Most outbound stacks look something like this: Clay or Apollo enriches leads with email addresses, phone numbers, and company data. Those leads get pushed - usually via webhook or CSV - directly into Smartlead or Instantly. A campaign fires. Emails go out.
  </p>
  <p>
  The problem is what happens between step one and step two. Which, in most stacks, is nothing.
@@ -170,10 +170,10 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  Let us be specific about the damage, because vague warnings do not change behavior. Numbers do.
  </p>
  <p>
- A typical unvalidated lead list from Clay or Apollo has a bounce rate between 8% and 15%. That is not a guess — we have processed tens of thousands of leads through Superkabe and tracked the pre-validation bounce risk scores.
+ A typical unvalidated lead list from Clay or Apollo has a bounce rate between 8% and 15%. That is not a guess - we have processed tens of thousands of leads through Superkabe and tracked the pre-validation bounce risk scores.
  </p>
  <p>
- Google starts throttling delivery when your bounce rate exceeds 2%. At 5%, you are landing in spam for most recipients. At 8%, your domain reputation is actively degrading. Microsoft is even less forgiving — Outlook will silently drop your emails without a bounce notification, making the damage invisible until you check placement rates.
+ Google starts throttling delivery when your bounce rate exceeds 2%. At 5%, you are landing in spam for most recipients. At 8%, your domain reputation is actively degrading. Microsoft is even less forgiving - Outlook will silently drop your emails without a bounce notification, making the damage invisible until you check placement rates.
  </p>
  <p>
  Here is the cascade:
@@ -209,7 +209,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <li><strong>Cross-campaign mailbox health:</strong> If the same mailbox is in three campaigns and bouncing in one, Smartlead does not connect those dots.</li>
  </ul>
  <p>
- The best practice in 2026 is not to expect Smartlead to be something it is not. Use it for what it does well — sending — and add a validation and monitoring layer for everything else. For a deeper look at bounce monitoring, see our guide on{' '}
+ The best practice in 2026 is not to expect Smartlead to be something it is not. Use it for what it does well - sending - and add a validation and monitoring layer for everything else. For a deeper look at bounce monitoring, see our guide on{' '}
  <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">
  how bounce rates affect deliverability
  </Link>.
@@ -241,7 +241,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Validation Layer That Works With Both</h2>
  <p>
- This is where Superkabe fits. Not as a replacement for Smartlead or Instantly — you still need a sending platform. Superkabe is the control layer that sits between your enrichment source and your sender.
+ This is where Superkabe fits. Not as a replacement for Smartlead or Instantly - you still need a sending platform. Superkabe is the control layer that sits between your enrichment source and your sender.
  </p>
  <p>
  The architecture is straightforward:
@@ -257,9 +257,9 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <ol className="list-decimal pl-6 space-y-3">
  <li><strong>Lead ingestion:</strong> Clay sends a webhook to Superkabe with the enriched lead data. Or you push leads via API from any source.</li>
  <li><strong>Health gate classification:</strong> Every lead gets scored as GREEN, YELLOW, or RED based on email validity, domain reputation, catch-all status, and historical bounce data for that domain.</li>
- <li><strong>RED leads blocked:</strong> Invalid addresses, known bouncing domains, disposable emails — these never touch your sending platform.</li>
+ <li><strong>RED leads blocked:</strong> Invalid addresses, known bouncing domains, disposable emails - these never touch your sending platform.</li>
  <li><strong>GREEN/YELLOW leads routed:</strong> Valid leads get matched to the right campaign based on persona, scoring rules, and available mailbox capacity.</li>
- <li><strong>Native send:</strong> Approved leads enroll into your Superkabe campaign and the dispatcher sends through your connected mailboxes — no platform push, no CSV exports.</li>
+ <li><strong>Native send:</strong> Approved leads enroll into your Superkabe campaign and the dispatcher sends through your connected mailboxes - no platform push, no CSV exports.</li>
  <li><strong>Ongoing monitoring:</strong> Superkabe monitors bounce rates every 60 seconds. If a mailbox crosses your threshold, it auto-pauses and enters the 5-phase healing pipeline.</li>
  </ol>
  <p>
@@ -281,7 +281,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  Here is something we see constantly: a team builds their entire validation workflow around Smartlead-specific logic. Custom webhooks tied to Smartlead campaign IDs. Bounce monitoring scripts that parse Smartlead-specific API responses. Six months later, they want to test Instantly for a subset of clients. Their entire validation stack breaks.
  </p>
  <p>
- Superkabe uses a platform adapter pattern. Your validation rules, health gates, bounce thresholds, and healing logic are platform-agnostic. The only platform-specific piece is the final push — which adapter delivers the lead and which adapter pulls back bounce data.
+ Superkabe uses a platform adapter pattern. Your validation rules, health gates, bounce thresholds, and healing logic are platform-agnostic. The only platform-specific piece is the final push - which adapter delivers the lead and which adapter pulls back bounce data.
  </p>
  <p>
  This means:
@@ -349,7 +349,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <td className="px-4 py-3 font-medium">Automated healing workflow</td>
  <td className="px-4 py-3 text-red-600">No</td>
  <td className="px-4 py-3 text-red-600">No</td>
- <td className="px-4 py-3 text-green-700">Yes — pause, heal, re-warm, resume</td>
+ <td className="px-4 py-3 text-green-700">Yes - pause, heal, re-warm, resume</td>
  </tr>
  <tr>
  <td className="px-4 py-3 font-medium">Multi-platform support</td>
@@ -373,7 +373,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <li>Superkabe receives the lead, validates the email address, checks the domain reputation, and assigns a health score.</li>
  <li>Leads that pass your health gate get routed to the correct campaign based on persona matching and scoring rules you define.</li>
  <li>The lead is pushed to Smartlead or Instantly via API. It lands in the right campaign, ready to send.</li>
- <li>Leads that fail validation are held — you can review them, fix the data, or discard them. They never touch your sender.</li>
+ <li>Leads that fail validation are held - you can review them, fix the data, or discard them. They never touch your sender.</li>
  </ol>
  <p>
  The entire flow from Clay row to campaign-ready lead takes under 3 seconds. No CSV. No manual review unless you want it.
@@ -395,7 +395,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  Without a centralized validation layer, you end up with two separate workflows, two sets of bounce monitoring (if any), and no unified view of your domain health. A domain that is bouncing through Smartlead campaigns is the same domain that is about to bounce through Instantly campaigns. But neither platform tells you that.
  </p>
  <p>
- Superkabe gives you one dashboard, one set of rules, one health score per domain — regardless of which platform the emails are sent through. When a domain needs healing, it gets paused everywhere. When it recovers, it comes back everywhere. See how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">multi-platform email validation</Link> works across Smartlead and Instantly simultaneously.
+ Superkabe gives you one dashboard, one set of rules, one health score per domain - regardless of which platform the emails are sent through. When a domain needs healing, it gets paused everywhere. When it recovers, it comes back everywhere. See how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">multi-platform email validation</Link> works across Smartlead and Instantly simultaneously.
  </p>
  <p>
  If your agency manages clients across platforms, our guide on{' '}
@@ -409,7 +409,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Real Cost of Skipping Validation</h2>
  <p>
- Let us do the math quickly. A single burned domain costs you the domain itself ($10-15/year — trivial), the 2-4 weeks of warmup time you invested (not trivial), and the pipeline that domain would have generated during the 4-6 week recovery period.
+ Let us do the math quickly. A single burned domain costs you the domain itself ($10-15/year - trivial), the 2-4 weeks of warmup time you invested (not trivial), and the pipeline that domain would have generated during the 4-6 week recovery period.
  </p>
  <p>
  For a team running 5 domains with 3 mailboxes each, sending 40 emails per mailbox per day, one burned domain means roughly 120 fewer emails per day for a month. At a 3% positive reply rate and $15,000 average deal size, that is approximately $20,000 in lost pipeline opportunity.
@@ -485,7 +485,7 @@ export default function EmailValidationSmartleadInstantlyArticle() {
  <div>
  <h3 className="text-lg font-semibold text-gray-900 mb-2">How much does pre-send email validation reduce bounce rates?</h3>
  <p>
- Pre-send validation typically reduces bounce rates from 8-15% (unvalidated) to under 2%. Combined with real-time monitoring and auto-pause, you catch the remaining bounces within 60 seconds — before they compound into domain-level damage. For more on this, see our guide on{' '}
+ Pre-send validation typically reduces bounce rates from 8-15% (unvalidated) to under 2%. Combined with real-time monitoring and auto-pause, you catch the remaining bounces within 60 seconds - before they compound into domain-level damage. For more on this, see our guide on{' '}
  <Link href="/blog/reduce-cold-email-bounce-rate" className="text-blue-600 hover:text-blue-800 underline">
  how to reduce your cold email bounce rate
  </Link>.

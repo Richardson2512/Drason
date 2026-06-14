@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * Schedule calendar view — visualizes a campaign's send window across the
+ * Schedule calendar view - visualizes a campaign's send window across the
  * week. Each enabled day is rendered as a column with a shaded band over
  * the active hour range. The "now" line indicates current time in the
  * campaign's timezone, so the user can see at a glance whether sending is
  * happening right now or queued for later.
  *
- * Renders ZERO numbers as text — pure visual schedule. Pair with the
+ * Renders ZERO numbers as text - pure visual schedule. Pair with the
  * existing text "Schedule" card if you also want explicit values.
  */
 
@@ -67,7 +67,7 @@ export default function ScheduleCalendarView({ timezone, days, startTime, endTim
                 <span className="text-[10px] text-gray-400">{tz}</span>
             </div>
 
-            {/* Calendar grid — 8 columns: 1 hour-axis + 7 days */}
+            {/* Calendar grid - 8 columns: 1 hour-axis + 7 days */}
             <div className="grid gap-0.5" style={{ gridTemplateColumns: '28px repeat(7, 1fr)' }}>
                 {/* Header row */}
                 <div />
@@ -85,7 +85,7 @@ export default function ScheduleCalendarView({ timezone, days, startTime, endTim
 
             {/* Day columns with hour shading */}
             <div className="grid gap-0.5 relative" style={{ gridTemplateColumns: '28px repeat(7, 1fr)', height: 168 }}>
-                {/* Hour ruler — 0, 6, 12, 18 labels */}
+                {/* Hour ruler - 0, 6, 12, 18 labels */}
                 <div className="relative h-full text-[9px] text-gray-400 flex flex-col">
                     {[0, 6, 12, 18, 24].map(h => (
                         <div
@@ -125,7 +125,7 @@ export default function ScheduleCalendarView({ timezone, days, startTime, endTim
                                 />
                             ))}
 
-                            {/* Active send window — brand-green tinted band with the
+                            {/* Active send window - brand-green tinted band with the
                                 range labelled inside on the today column for orientation. */}
                             {isEnabled && hasWindow && (
                                 <div
@@ -138,7 +138,7 @@ export default function ScheduleCalendarView({ timezone, days, startTime, endTim
                                     }}
                                 />
                             )}
-                            {/* Solid edges for the band — top + bottom 1px lines so
+                            {/* Solid edges for the band - top + bottom 1px lines so
                                 the boundaries are crisp even when the fill is faint. */}
                             {isEnabled && hasWindow && (
                                 <>
@@ -162,7 +162,7 @@ export default function ScheduleCalendarView({ timezone, days, startTime, endTim
                                     />
                                 </>
                             )}
-                            {/* Time label inside the band on the today column — gives
+                            {/* Time label inside the band on the today column - gives
                                 a single point of orientation without cluttering every
                                 column with redundant text. */}
                             {isToday && isEnabled && hasWindow && (

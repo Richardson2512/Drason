@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * DashboardContext — shared state for user info and subscription data.
+ * DashboardContext - shared state for user info and subscription data.
  *
  * Eliminates duplicate fetches across DashboardShell, overview page,
  * and billing page. Fetch once at the layout level, consume everywhere.
@@ -18,7 +18,7 @@ export interface DashboardUser {
   isAgencyOwner: boolean;
   scopedOrganizationId: string | null;
   capabilities: string[];
-  /** The canonical list of every capability the backend recognizes — served
+  /** The canonical list of every capability the backend recognizes - served
    *  by /api/user/me so adding a new capability backend-side automatically
    *  shows up in the invite modal's checkbox grid without a frontend deploy. */
   capabilityKeys: string[];

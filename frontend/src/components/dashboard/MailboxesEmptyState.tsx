@@ -13,7 +13,7 @@ export default function MailboxesEmptyState() {
 
             <h2 className="text-3xl font-extrabold mb-4 text-gray-900 tracking-tight">No Mailboxes Connected</h2>
             <p className="text-gray-500 text-lg max-w-xl mb-10 leading-relaxed">
-                Connect a Gmail, Microsoft 365, or SMTP mailbox to start sending from Superkabe — every send runs through the deliverability protection layer automatically.
+                Connect a Gmail, Microsoft 365, or SMTP mailbox to start sending from Superkabe - every send runs through the deliverability protection layer automatically.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6">

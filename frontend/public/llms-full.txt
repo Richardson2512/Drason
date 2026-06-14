@@ -1,6 +1,6 @@
-# Superkabe — Full AI Context
+# Superkabe - Full AI Context
 
-> Superkabe is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing. Native sending and the deliverability protection layer are one product, not two — every send through your connected mailbox passes through SMTP transcript capture, DSN parsing, ARF feedback-loop ingestion, Postmaster Tools and SNDS reputation lookups, and the auto-pause + 5-phase healing state machine. Superkabe prevents domain burnout before sender reputation damage becomes irreversible.
+> Superkabe is the AI cold email platform that ships with built-in deliverability protection. Send from your own Gmail, Microsoft 365, or SMTP mailboxes with automatic mailbox pausing, domain reputation monitoring, DNSBL checks, and per-ESP performance routing. Native sending and the deliverability protection layer are one product, not two - every send through your connected mailbox passes through SMTP transcript capture, DSN parsing, ARF feedback-loop ingestion, Postmaster Tools and SNDS reputation lookups, and the auto-pause + 5-phase healing state machine. Superkabe prevents domain burnout before sender reputation damage becomes irreversible.
 
 ## What Superkabe Does
 
@@ -52,7 +52,7 @@ Direct lead ingestion API and Clay webhook endpoint. REST API v1 for programmati
 
 ## Pricing
 
-Two-meter pricing — only monthly send volume and email-validation credits are metered. Domains, mailboxes, leads, and protection coverage are unlimited at every tier. Starting at $19/month. Higher tiers add more sends, more validation credits, MillionVerifier API access for risky leads, and aggressive hybrid validation.
+Two-meter pricing - only monthly send volume and email-validation credits are metered. Domains, mailboxes, leads, and protection coverage are unlimited at every tier. Starting at $19/month. Higher tiers add more sends, more validation credits, MillionVerifier API access for risky leads, and aggressive hybrid validation.
 
 ---
 
@@ -86,7 +86,7 @@ Two-meter pricing — only monthly send volume and email-validation credits are 
 - [Infrastructure Score](https://www.superkabe.com/docs/help/infrastructure-score-explained): Why score and status can differ
 - [24/7 Monitoring](https://www.superkabe.com/docs/help/24-7-monitoring): Continuous background infrastructure monitoring
 
-### Blog — Technical Guides
+### Blog - Technical Guides
 - [Email Deliverability Guide](https://www.superkabe.com/blog/email-deliverability-guide): Comprehensive guide covering sender reputation, bounce rates, DNS auth, domain warming, inbox placement factors, and infrastructure protection
 - [How Spam Filters Work](https://www.superkabe.com/blog/how-spam-filters-work): Four layers of spam filtering, ISP-specific filter behavior, content triggers, and best practices for avoiding spam filters
 - [Deliverability Tools Compared](https://www.superkabe.com/blog/email-deliverability-tools-compared): Side-by-side comparison of deliverability monitoring tools, sender reputation platforms, and infrastructure protection software

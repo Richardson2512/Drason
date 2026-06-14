@@ -1,5 +1,5 @@
 /**
- * Mailbox comparison — E2E coverage for the protection analytics endpoint
+ * Mailbox comparison - E2E coverage for the protection analytics endpoint
  * powering the side-by-side mailbox UI. Returns both per-mailbox and
  * provider-bucket rollups in a single payload.
  */
@@ -16,7 +16,7 @@ async function login(page: Page) {
     expect(res.status()).toBe(200);
 }
 
-test.describe('analytics — mailbox comparison', () => {
+test.describe('analytics - mailbox comparison', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('returns mailboxes + providers shape', async ({ page }) => {

@@ -1,4 +1,4 @@
-# Subdomain split — local testing guide
+# Subdomain split - local testing guide
 
 This documents how to test the `app.superkabe.com` / `superkabe.com` split
 locally before pushing it to prod. We use `lvh.me` (a public DNS record
@@ -59,11 +59,11 @@ BACKEND_URL=http://api.superkabe.lvh.me:4000
 ### 3. Start both servers
 
 ```powershell
-# Terminal 1 — backend
+# Terminal 1 - backend
 cd C:\Users\AMD\Drason-backend-staging
 npm run dev   # listens on 0.0.0.0:4000
 
-# Terminal 2 — frontend
+# Terminal 2 - frontend
 cd C:\Users\AMD\Drason-staging\frontend
 npm run dev   # listens on 0.0.0.0:3000
 ```
@@ -81,9 +81,9 @@ http://superkabe.lvh.me:3000
 ```
 
 You should see the marketing landing. Click "Sign in" or navigate to
-`/dashboard` — you'll be redirected to `app.superkabe.lvh.me:3000/login`.
+`/dashboard` - you'll be redirected to `app.superkabe.lvh.me:3000/login`.
 Sign in. The cookie is set on `app.superkabe.lvh.me` (host-only), so
-the marketing site never sees it. Navigate around — every cross-subdomain
+the marketing site never sees it. Navigate around - every cross-subdomain
 attempt redirects to the correct host.
 
 ## Test checklist
@@ -132,4 +132,4 @@ Once the local test passes, the prod cutover is:
    `https://app.superkabe.com/...` so existing bookmarks still work.
 
 The middleware change is already shipped (gated on the env vars), so
-the cutover is *just* a config change in step 3 — no code redeploy.
+the cutover is *just* a config change in step 3 - no code redeploy.

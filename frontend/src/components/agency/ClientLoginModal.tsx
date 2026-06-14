@@ -15,7 +15,7 @@ interface Props {
     /**
      * Save the form. Returns the resulting ClientLogin so the modal can
      * surface the invite-sent state with the active token. The caller
-     * (workspace detail page) is the source of truth — it adds or updates
+     * (workspace detail page) is the source of truth - it adds or updates
      * inside `useAgencyMode`.
      */
     onSave: (data: { email: string; displayName: string | null; capabilities: Capability[] }) => SaveResult | Promise<SaveResult>;
@@ -134,7 +134,7 @@ export default function ClientLoginModal({ open, onClose, onSave, onResend, work
                                         {submitted.displayName ? `${submitted.displayName} ` : 'They '}
                                         will receive a magic link from <span className="font-mono">noreply@superkabe.com</span> to
                                         set their password. The link expires in 7 days. After they sign in they'll land directly
-                                        on this workspace — they can't see or access anything else.
+                                        on this workspace - they can't see or access anything else.
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@ export default function ClientLoginModal({ open, onClose, onSave, onResend, work
                                         className="inline-flex items-center gap-1.5 text-[10px] text-emerald-800/70 hover:text-emerald-900 transition-colors"
                                     >
                                         <Code2 size={10} />
-                                        Show magic link (dev only — prototype, real email pipeline lands with backend)
+                                        Show magic link (dev only - prototype, real email pipeline lands with backend)
                                     </button>
                                 ) : (
                                     <div className="space-y-2">

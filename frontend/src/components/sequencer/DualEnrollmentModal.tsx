@@ -74,7 +74,7 @@ export function DualEnrollmentModal({
     onConfirm,
     onCancel,
 }: DualEnrollmentModalProps) {
-    // Default ON — safer for cold-email reputation (Smartlead/Instantly default)
+    // Default ON - safer for cold-email reputation (Smartlead/Instantly default)
     const [excludeDualEnrolled, setExcludeDualEnrolled] = useState(true);
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -116,7 +116,7 @@ export function DualEnrollmentModal({
                         </h2>
                         <p className="text-sm text-gray-600 mt-1">
                             {report.totalLeads} lead{report.totalLeads === 1 ? '' : 's'} selected for{' '}
-                            <span className="font-medium">{campaignName}</span> —{' '}
+                            <span className="font-medium">{campaignName}</span> -{' '}
                             <span className="font-medium">{conflictLeads.length}</span> need{conflictLeads.length === 1 ? 's' : ''} review.
                         </p>
                     </div>
@@ -306,7 +306,7 @@ function ConflictRow({ lead }: { lead: LeadConflictRecord }) {
                         )}
                     </div>
                 ) : (
-                    <span className="text-xs text-gray-400">—</span>
+                    <span className="text-xs text-gray-400">-</span>
                 )}
             </td>
             <td className="py-3 pr-4">
@@ -323,7 +323,7 @@ function ConflictRow({ lead }: { lead: LeadConflictRecord }) {
                         </span>
                     </div>
                 ) : (
-                    <span className="text-xs text-gray-400">—</span>
+                    <span className="text-xs text-gray-400">-</span>
                 )}
             </td>
             <td className="py-3 pr-4">

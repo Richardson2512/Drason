@@ -45,7 +45,7 @@ interface PlatformStats {
         byPlatform: Record<string, number>;
         byPlatformLast24h: Record<string, number>;
     };
-    // Today's product surface (LinkedIn is staging-only — omitted on prod)
+    // Today's product surface (LinkedIn is staging-only - omitted on prod)
     sequencer?: { campaigns: number; emailsSent: number; emailsSent24h: number; replies: number };
     superSender?: { dedicatedIps: number };
     agency?: { accounts: number; workspaceMemberships: number };
@@ -286,7 +286,7 @@ export default function AdminConsole() {
                             <p className="text-sm text-gray-500 mt-1">Internal platform overview and customer management</p>
                         </div>
 
-                        {/* Platform Stats — Row 1: Key Business Metrics */}
+                        {/* Platform Stats - Row 1: Key Business Metrics */}
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
                             <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                                 <div className="text-2xl font-bold text-white">{totalOrgs}</div>
@@ -310,7 +310,7 @@ export default function AdminConsole() {
                             </div>
                         </div>
 
-                        {/* Platform Stats — Row 2: Tier Breakdown + Infrastructure */}
+                        {/* Platform Stats - Row 2: Tier Breakdown + Infrastructure */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                             {['trial', 'starter', 'growth', 'scale', 'enterprise', 'free'].filter(t => byTier[t]).map(tier => {
                                 const ts = tierStyle(tier);
@@ -323,7 +323,7 @@ export default function AdminConsole() {
                             })}
                         </div>
 
-                        {/* Platform Stats — Row 3: Infrastructure + Platform Connections + Validation */}
+                        {/* Platform Stats - Row 3: Infrastructure + Platform Connections + Validation */}
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
                             {[
                                 { label: 'Mailboxes', val: totalMailboxes, color: '#3b82f6' },
@@ -355,7 +355,7 @@ export default function AdminConsole() {
                             ))}
                         </div>
 
-                        {/* Row 4b: Sending & Agency — today's product surface
+                        {/* Row 4b: Sending & Agency - today's product surface
                             (native sequencer, Super Sender, Agency) */}
                         <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 mb-6">
                             <div className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-wide mb-3">Sending &amp; Agency</div>

@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
             } else if (Array.isArray(result)) {
                 setData(result);
             } else if (result && typeof result === 'object' && !Array.isArray(result)) {
-                // apiClient unwrapped — result is byCampaign object (comparison mode)
+                // apiClient unwrapped - result is byCampaign object (comparison mode)
                 setComparisonData(result);
             } else {
                 setData([]);
@@ -220,7 +220,7 @@ export default function AnalyticsPage() {
                 )}
             </div>
 
-            {/* Mailbox comparison — independent of single/comparison campaign mode.
+            {/* Mailbox comparison - independent of single/comparison campaign mode.
                 Uses the same date window as the campaign chart so the operator
                 reads both surfaces with one mental model. */}
             <MailboxComparisonPanel startDate={startDate} endDate={endDate} />
@@ -321,7 +321,7 @@ export default function AnalyticsPage() {
                         </div>
                     ) : (
                         <>
-                            {/* Comparison Chart — Sends per campaign */}
+                            {/* Comparison Chart - Sends per campaign */}
                             <div className="premium-card">
                                 <h2 className="text-lg font-bold text-gray-900 mb-4">Sends Over Time</h2>
                                 <div className="h-[360px]">
@@ -399,7 +399,7 @@ export default function AnalyticsPage() {
                                 </div>
                             </div>
 
-                            {/* Bar Chart — Side by side totals */}
+                            {/* Bar Chart - Side by side totals */}
                             <div className="premium-card">
                                 <h2 className="text-lg font-bold text-gray-900 mb-4">Total Performance</h2>
                                 <div className="h-[300px]">

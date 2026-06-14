@@ -101,7 +101,7 @@ export default function ContactDetailPage() {
                 body: JSON.stringify({ tagIds }),
             });
         } catch {
-            // Revert on failure — refetch the canonical state
+            // Revert on failure - refetch the canonical state
             try {
                 const res = await apiClient<any>(`/api/sequencer/contacts/${contact.id}`);
                 setContact(res?.contact || contact);
@@ -211,7 +211,7 @@ export default function ContactDetailPage() {
                     next[k] = drafts[k].trim() ? drafts[k].trim() : null;
                 }
                 // Backend re-derives full_name from first/last when those change
-                // and full_name itself wasn't sent — mirror that locally.
+                // and full_name itself wasn't sent - mirror that locally.
                 if (
                     !Object.prototype.hasOwnProperty.call(body, 'full_name') &&
                     (Object.prototype.hasOwnProperty.call(body, 'first_name') ||
@@ -282,7 +282,7 @@ export default function ContactDetailPage() {
                                 {contact.title}{contact.title && contact.company ? ' · ' : ''}{contact.company}
                             </p>
                         )}
-                        {/* Tags row — always visible (including empty), so the
+                        {/* Tags row - always visible (including empty), so the
                             "+ Tag" button is one click away. */}
                         <div className="mt-3 flex items-center gap-1.5 flex-wrap">
                             <TagIcon size={11} className="text-gray-400" />
@@ -405,7 +405,7 @@ export default function ContactDetailPage() {
                     <h2 className="text-[10px] font-semibold uppercase tracking-wider text-red-700 mb-2">Suppression</h2>
                     <div className="text-xs text-gray-700">
                         {contact.bounced && <p>Bounced{contact.bounced_at ? ` on ${new Date(contact.bounced_at).toLocaleDateString()}` : ''}</p>}
-                        {contact.unsubscribed_at && <p>Unsubscribed on {new Date(contact.unsubscribed_at).toLocaleDateString()}{contact.unsubscribed_reason ? ` — ${contact.unsubscribed_reason}` : ''}</p>}
+                        {contact.unsubscribed_at && <p>Unsubscribed on {new Date(contact.unsubscribed_at).toLocaleDateString()}{contact.unsubscribed_reason ? ` - ${contact.unsubscribed_reason}` : ''}</p>}
                     </div>
                 </div>
             )}
@@ -430,7 +430,7 @@ export default function ContactDetailPage() {
                 <textarea
                     value={notesDraft}
                     onChange={(e) => { setNotesDraft(e.target.value); setNotesDirty(e.target.value !== (contact.notes || '')); }}
-                    placeholder="Add private notes about this contact — meeting prep, context from previous calls, anything you want to remember next time their email comes up."
+                    placeholder="Add private notes about this contact - meeting prep, context from previous calls, anything you want to remember next time their email comes up."
                     rows={4}
                     className="w-full px-3 py-2 text-xs rounded-lg outline-none resize-y"
                     style={{ border: '1px solid #D1CBC5' }}
@@ -440,7 +440,7 @@ export default function ContactDetailPage() {
             {/* Campaign history */}
             <div className="premium-card p-4">
                 <h2 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-3">
-                    Campaigns history <span className="text-gray-400 normal-case">— {history.length} enrollment{history.length === 1 ? '' : 's'}</span>
+                    Campaigns history <span className="text-gray-400 normal-case">- {history.length} enrollment{history.length === 1 ? '' : 's'}</span>
                 </h2>
                 {history.length === 0 ? (
                     <p className="text-xs text-gray-400">Never enrolled in a campaign.</p>
@@ -464,7 +464,7 @@ export default function ContactDetailPage() {
                                             </Link>
                                         </td>
                                         <td className="py-1.5 text-gray-600 capitalize">{e.status}</td>
-                                        <td className="py-1.5 text-gray-600">{e.current_step ?? '—'}</td>
+                                        <td className="py-1.5 text-gray-600">{e.current_step ?? '-'}</td>
                                         <td className="py-1.5 text-gray-400">{new Date(e.created_at).toLocaleDateString()}</td>
                                     </tr>
                                 ))}
@@ -489,7 +489,7 @@ function Field({ icon, label, value, link }: { icon?: React.ReactNode; label: st
                     <span className="text-gray-900 truncate">{value}</span>
                 )
             ) : (
-                <span className="text-gray-300">—</span>
+                <span className="text-gray-300">-</span>
             )}
         </div>
     );

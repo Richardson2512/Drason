@@ -32,7 +32,7 @@ export default function WorkspaceDetailPage() {
     const [profileClient, setProfileClient] = useState(workspace?.clientCompany ?? '');
 
     const [modalOpen, setModalOpen] = useState(false);
-    /** ID of the most recently created login — drives the modal's onResend wiring. */
+    /** ID of the most recently created login - drives the modal's onResend wiring. */
     const [lastCreatedLoginId, setLastCreatedLoginId] = useState<string | null>(null);
     const [editingLogin, setEditingLogin] = useState<ClientLogin | null>(null);
     const [confirmDelete, setConfirmDelete] = useState<{ kind: 'workspace' } | { kind: 'login'; login: ClientLogin } | null>(null);
@@ -101,7 +101,7 @@ export default function WorkspaceDetailPage() {
     const handleResendInvite = async (loginId: string) => {
         const updated = await regenerateInvite(workspace.id, loginId);
         if (!updated) {
-            // Login was deleted between renders — fall back gracefully.
+            // Login was deleted between renders - fall back gracefully.
             return { login: editingLogin! };
         }
         return { login: updated };

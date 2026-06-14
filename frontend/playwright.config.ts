@@ -20,7 +20,7 @@ const STORAGE_STATE_PATH = path.resolve(__dirname, 'tests/e2e/.auth-state.json')
 export default defineConfig({
     testDir: './tests/e2e',
     timeout: 60_000,
-    fullyParallel: false, // serial — shared local DB state
+    fullyParallel: false, // serial - shared local DB state
     retries: 0,
     workers: 1,
     reporter: [['list']],

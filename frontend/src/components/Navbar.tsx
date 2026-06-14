@@ -168,7 +168,7 @@ export default function Navbar() {
                                     }}
                                 >
                                     <div className="flex items-stretch p-3 gap-3">
-                                        {/* LEFT: tools list — 2 cols × 3 rows */}
+                                        {/* LEFT: tools list - 2 cols × 3 rows */}
                                         <div className="flex-1 grid grid-cols-2 gap-1">
                                             {toolLinks.map((tool) => {
                                                 const active = isActive(tool.href);
@@ -206,7 +206,7 @@ export default function Navbar() {
 
                                         {/* RIGHT: stacked branded banners */}
                                         <div className="w-[220px] shrink-0 flex flex-col gap-2.5">
-                                            {/* Banner 1: Cold Email Templates — branded with Superkabe logo */}
+                                            {/* Banner 1: Cold Email Templates - branded with Superkabe logo */}
                                             <Link
                                                 href="/cold-email-templates"
                                                 onClick={() => setToolsOpen(false)}
@@ -217,7 +217,7 @@ export default function Navbar() {
                                                     textDecoration: 'none',
                                                 }}
                                             >
-                                                {/* Branded header — Superkabe logo + wordmark */}
+                                                {/* Branded header - Superkabe logo + wordmark */}
                                                 <div className="flex items-center gap-1.5 mb-3">
                                                     <Image src="/image/logo-v2.png" alt="Superkabe" width={18} height={18} className="shrink-0" />
                                                     <span style={{ fontSize: '0.66rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.005em' }}>
@@ -281,7 +281,7 @@ export default function Navbar() {
                         </div>
                     </nav>
 
-                    {/* Desktop CTAs — auth-aware. Renders signed-out state on
+                    {/* Desktop CTAs - auth-aware. Renders signed-out state on
                         SSR and first render, flips to dashboard CTA after the
                         token cookie is read on mount.
                         appUrl() returns absolute URLs to app.* in subdomain
@@ -326,7 +326,7 @@ export default function Navbar() {
                 </div>
             </header>
 
-            {/* Desktop dropdown backdrop dim — z-40 sits below navbar (z-50) so the pill stays vibrant on top */}
+            {/* Desktop dropdown backdrop dim - z-40 sits below navbar (z-50) so the pill stays vibrant on top */}
             {toolsOpen && (
                 <div
                     aria-hidden

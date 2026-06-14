@@ -67,7 +67,7 @@
   transition: background 0.25s ease, border-color 0.25s ease;
 }
 
-/* Dashboard sidebar nav — global so Link children render reliably */
+/* Dashboard sidebar nav - global so Link children render reliably */
 .light-theme .nav-link {
   height: 26px;
   padding: 0 7px;
@@ -132,7 +132,7 @@
   color: #111827;
 }
 
-/* Dashboard density pass — scoped to dashboard shell only so marketing pages are unaffected */
+/* Dashboard density pass - scoped to dashboard shell only so marketing pages are unaffected */
 .light-theme { font-size: 12px; }
 .light-theme h1 { font-size: 1.25rem; line-height: 1.2; font-weight: 700; margin-bottom: 0.35rem; }
 .light-theme h2 { font-size: 1rem; line-height: 1.25; font-weight: 700; margin-bottom: 0.25rem; }
@@ -167,7 +167,7 @@
 .light-theme .rounded-xl { border-radius: 7px !important; }
 
 /* ============================================================================
-   DOCS GRID DESIGN — popl-style cards applied platform-wide to every doc page
+   DOCS GRID DESIGN - popl-style cards applied platform-wide to every doc page
    ============================================================================ */
 .docs-body .bg-white.border,
 .docs-body .bg-white.rounded-2xl,
@@ -197,7 +197,7 @@
   background-color: #FBF8F2 !important;
 }
 
-/* Scroll performance — isolate paint per card so the browser doesn't recomposite
+/* Scroll performance - isolate paint per card so the browser doesn't recomposite
    the entire main pane on every scroll frame. content-visibility skips offscreen
    work entirely, contain:layout/paint scopes work that does happen. */
 .light-theme .premium-card {
@@ -252,7 +252,7 @@
   border-color: #111827;
 }
 
-/* Global select styling — match platform aesthetic */
+/* Global select styling - match platform aesthetic */
 .light-theme select {
   appearance: none;
   -webkit-appearance: none;
@@ -299,7 +299,7 @@ body {
 
 /* ── Velvet Ledger display face ──
    Headlines across the marketing site use Outfit with tight negative
-   letter-spacing — the editorial "modern sans" treatment. Scoped to
+   letter-spacing - the editorial "modern sans" treatment. Scoped to
    h1-h6 so body copy stays on Inter. The .dashboard-type-scope reset
    below pulls the logged-in app back to its own stack so this does not
    bleed into the data UI. */
@@ -318,22 +318,11 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.12em;
 }
 
-/* ── Dashboard type scope ──
-   The logged-in dashboard is intentionally NOT part of the Velvet Ledger
-   editorial system — it is a data-dense app where italic-serif accents
-   and tracked-out mono labels would hurt scanability. This resets the
-   dashboard subtree (and its headings) back to a neutral system sans so
-   the marketing typography swap leaves the app visually unchanged. */
-.dashboard-type-scope,
-.dashboard-type-scope h1,
-.dashboard-type-scope h2,
-.dashboard-type-scope h3,
-.dashboard-type-scope h4,
-.dashboard-type-scope h5,
-.dashboard-type-scope h6 {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  letter-spacing: normal;
-}
+/* The .dashboard-type-scope wrapper is intentionally a no-op now: per
+   product direction, the dashboard also uses the Velvet Ledger system
+   (Inter body + Outfit headings inherited from the rules above). The
+   wrapper is preserved in dashboard/layout.tsx in case a future surface
+   wants to scope a different type stack to the dashboard subtree. */
 
 /* ============================================================================
    HERO BACKGROUND EFFECTS
@@ -393,7 +382,7 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-/* Large cloud bank — upper left */
+/* Large cloud bank - upper left */
 .cloud-bg::before {
   width: 1100px;
   height: 400px;
@@ -407,7 +396,7 @@ h1, h2, h3, h4, h5, h6 {
   filter: blur(1px);
 }
 
-/* Large cloud bank — upper right */
+/* Large cloud bank - upper right */
 .cloud-bg::after {
   width: 1000px;
   height: 380px;
@@ -467,7 +456,7 @@ h1, h2, h3, h4, h5, h6 {
   filter: blur(3px);
 }
 
-/* Cloud shadow/depth — darker tint underneath clouds for contrast */
+/* Cloud shadow/depth - darker tint underneath clouds for contrast */
 .cloud-shadow {
   position: absolute;
   inset: 0;
@@ -488,7 +477,7 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-/* Marketing wrappers — establish a stacking context so the absolutely-
+/* Marketing wrappers - establish a stacking context so the absolutely-
    positioned MarketingBackdrop (z=-1) stays BEHIND in-flow content
    (sections, cards, text) within the wrapper bounds. Without this,
    the grid would either float above content or escape to the viewport. */
@@ -594,7 +583,7 @@ h1, h2, h3, h4, h5, h6 {
    MARKETING SCROLLBAR
    Show a branded scrollbar on marketing pages only. Scoped via :has() to the
    cream-bg wrapper (`bg-[#F7F2EB]`) that every marketing route mounts at the
-   root of its tree — so the dashboard (.light-theme) keeps its hidden scroll.
+   root of its tree - so the dashboard (.light-theme) keeps its hidden scroll.
    ============================================================================ */
 html:has(body .bg-\[\#F7F2EB\]) {
   scrollbar-width: thin;
@@ -676,7 +665,7 @@ html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-corner {
 .chevron-rotate.open {
   transform: rotate(180deg);
 }
-/* Vertical Train Animation — 4 unique items + 1 duplicate for seamless loop.
+/* Vertical Train Animation - 4 unique items + 1 duplicate for seamless loop.
    Smartlead hold is split: 11% at start + 12% at end = 23% total,
    matching every other item's 23% hold time. */
 @keyframes col-train {
@@ -723,7 +712,7 @@ html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-corner {
   will-change: transform;
 }
 
-/* Vertical marquee — used by the integrations grid on the homepage to scroll
+/* Vertical marquee - used by the integrations grid on the homepage to scroll
    each column of integration cards continuously. The inner strip duplicates
    its children, so translating from 0 → -50% wraps seamlessly. Pair with
    .animate-marquee-up or .animate-marquee-down depending on column direction. */
@@ -808,7 +797,7 @@ html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-corner {
 }
 
 /* ============================================================================
-   FORM CONTROLS — search inputs, selects, filter buttons
+   FORM CONTROLS - search inputs, selects, filter buttons
    ============================================================================ */
 
 .dash-input {
@@ -1056,7 +1045,7 @@ html:has(body .bg-\[\#F7F2EB\])::-webkit-scrollbar-corner {
 }
 
 /* ============================================================================
-   CLICKABLE STAT CARDS — hover lift + border highlight
+   CLICKABLE STAT CARDS - hover lift + border highlight
    ============================================================================ */
 
 .stat-card-clickable {

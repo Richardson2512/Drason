@@ -695,7 +695,7 @@ export default function SamsungOutlookPreview({
                         position: 'absolute', top: 0, left: 0,
                     }}
                 >
-                    {/* Galaxy bezel — slimmer, more rectangular than iPhone */}
+                    {/* Galaxy bezel - slimmer, more rectangular than iPhone */}
                     <div
                         style={{
                             width: deviceW, height: deviceH, borderRadius: 48,

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Tabs — reusable horizontal tab strip used by parent pages that fold in
+ * Tabs - reusable horizontal tab strip used by parent pages that fold in
  * what used to be sibling sidebar entries (Insights, Configuration, etc.).
  *
  * Tab state is mirrored to the URL via ?tab=<key> so deep links still work

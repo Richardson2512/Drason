@@ -1,19 +1,19 @@
 'use client';
 
 /**
- * MailboxComparisonPanel — protection analytics surface for comparing
+ * MailboxComparisonPanel - protection analytics surface for comparing
  * mailbox health across the org. Two views via internal sub-tabs:
  *
- *   1. Mailboxes  — per-mailbox comparison table + a top-5 health-score
+ *   1. Mailboxes  - per-mailbox comparison table + a top-5 health-score
  *                   bar chart so the operator can spot the best and
  *                   worst performers at a glance.
- *   2. Providers  — Gmail vs Outlook vs SMTP rollup, with the same row
+ *   2. Providers  - Gmail vs Outlook vs SMTP rollup, with the same row
  *                   shape but summed across the bucket. Bounce/reply
  *                   rates here are computed on the SUMS (not averages
  *                   of rates) so volume-weights stay correct.
  *
  * Data: GET /api/analytics/mailbox-comparison returns both shapes in one
- * payload — sub-tab switch is instant, no refetch.
+ * payload - sub-tab switch is instant, no refetch.
  */
 
 import { useEffect, useMemo, useState } from 'react';
@@ -89,7 +89,7 @@ export default function MailboxComparisonPanel({
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [view, setView] = useState<'mailboxes' | 'providers'>('mailboxes');
-    // Multi-select filters — empty array means "include all" on that axis.
+    // Multi-select filters - empty array means "include all" on that axis.
     // Filters apply to BOTH views; the provider rollup is recomputed
     // client-side from the filtered mailbox subset so the bucket totals
     // stay consistent with what the user is looking at.
@@ -134,7 +134,7 @@ export default function MailboxComparisonPanel({
         return (
             <div className="premium-card">
                 <h2 className="text-lg font-bold text-gray-900 mb-2">Mailbox Comparison</h2>
-                <p className="text-xs text-gray-500">No mailboxes connected yet — connect at least one to see comparison data.</p>
+                <p className="text-xs text-gray-500">No mailboxes connected yet - connect at least one to see comparison data.</p>
             </div>
         );
     }
@@ -155,7 +155,7 @@ export default function MailboxComparisonPanel({
                 <div>
                     <h2 className="text-lg font-bold text-gray-900 m-0">Mailbox Comparison</h2>
                     <p className="text-xs text-gray-500 mt-0.5 m-0">
-                        See which mailboxes are performing best — by sender or by provider bucket.
+                        See which mailboxes are performing best - by sender or by provider bucket.
                     </p>
                 </div>
                 {/* Sub-tab toggle. Keeps the chrome tight; matches the
@@ -183,7 +183,7 @@ export default function MailboxComparisonPanel({
                 </div>
             </div>
 
-            {/* Filters — provider + per-mailbox. Both multi-select and
+            {/* Filters - provider + per-mailbox. Both multi-select and
                 use the canonical MultiSelectDropdown so they match every
                 other filter surface in the app. */}
             <div className="flex items-center gap-2 flex-wrap mb-4">
@@ -240,7 +240,7 @@ export default function MailboxComparisonPanel({
     );
 }
 
-/** Small colored dot — the canonical visual identifier for a provider.
+/** Small colored dot - the canonical visual identifier for a provider.
  *  Reused in the dropdowns, the table rows, and (indirectly via fill)
  *  every chart on this panel. Keeping it as a single component means
  *  "if google is red, google is red everywhere." */
@@ -456,7 +456,7 @@ function ProviderView({ providers }: { providers: ProviderRow[] }) {
     }
 
     const activeMetric = METRIC_OPTIONS.find(o => o.key === metric) ?? METRIC_OPTIONS[0];
-    // One bar per provider, colored by provider — the canonical visual
+    // One bar per provider, colored by provider - the canonical visual
     // identity stays consistent across every chart on the panel ("if
     // Gmail is red, every Gmail bar is red"). Switching metrics keeps
     // the same colors and just retargets the y value.
@@ -583,7 +583,7 @@ function ProviderView({ providers }: { providers: ProviderRow[] }) {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Shared pager — same shape as the sequencer analytics page so the
+// Shared pager - same shape as the sequencer analytics page so the
 // pagination affordance is identical across all in-card tables.
 // ────────────────────────────────────────────────────────────────────
 

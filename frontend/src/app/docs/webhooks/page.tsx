@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Webhooks | Superkabe Docs',
-    description: 'Receive real-time POST callbacks for sending and protection events at Superkabe — HMAC-signed, retried with exponential backoff, replayable.',
+    description: 'Receive real-time POST callbacks for sending and protection events at Superkabe - HMAC-signed, retried with exponential backoff, replayable.',
     alternates: { canonical: '/docs/webhooks' },
     openGraph: {
         title: 'Webhooks | Superkabe Docs',
-        description: 'Receive real-time POST callbacks for sending and protection events at Superkabe — HMAC-signed, retried with exponential backoff, replayable.',
+        description: 'Receive real-time POST callbacks for sending and protection events at Superkabe - HMAC-signed, retried with exponential backoff, replayable.',
         url: '/docs/webhooks',
         siteName: 'Superkabe',
         type: 'article',
@@ -25,7 +25,7 @@ export default function WebhooksDocsPage() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What Webhooks Are</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Superkabe webhooks are outbound HTTP POST callbacks fired from our infrastructure to a URL you control whenever something material happens in your account — a mailbox enters quarantine, a domain trips a DNSBL, a campaign launches, a lead replies, a bounce threshold is breached. Each event is delivered as a JSON envelope, signed with HMAC-SHA256 over the raw body, and retried on failure with exponential backoff.
+                Superkabe webhooks are outbound HTTP POST callbacks fired from our infrastructure to a URL you control whenever something material happens in your account - a mailbox enters quarantine, a domain trips a DNSBL, a campaign launches, a lead replies, a bounce threshold is breached. Each event is delivered as a JSON envelope, signed with HMAC-SHA256 over the raw body, and retried on failure with exponential backoff.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
                 Webhooks are the right primitive when you want to mirror Superkabe&apos;s state into another system in near-real-time: a CRM, a data warehouse, an internal alerting bus, or a Slack incoming webhook URL. For pull-based access, use the <a href="/docs/api-documentation" className="text-blue-600 hover:text-blue-800">REST API</a> instead.
@@ -34,12 +34,12 @@ export default function WebhooksDocsPage() {
             <div className="bg-blue-50 border border-blue-200 p-6 mb-8">
                 <h3 className="font-bold text-blue-900 text-lg mb-3">Delivery Guarantees</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>At-least-once delivery</strong> — Idempotency on the (org, event_id) pair lets you safely dedupe</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>HMAC-SHA256 signing</strong> — Stripe-compatible scheme, timestamped to prevent replay</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>6-attempt retry schedule</strong> — Spans 24+ hours with exponential backoff</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Auto-disable on chronic failure</strong> — 5 consecutive dead-letters pauses the endpoint and emails the org</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Manual replay</strong> — Any past delivery can be re-fired from the dashboard</div>
-                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Per-event subscriptions</strong> — Subscribe to specific events or all events on one endpoint</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>At-least-once delivery</strong> - Idempotency on the (org, event_id) pair lets you safely dedupe</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>HMAC-SHA256 signing</strong> - Stripe-compatible scheme, timestamped to prevent replay</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>6-attempt retry schedule</strong> - Spans 24+ hours with exponential backoff</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Auto-disable on chronic failure</strong> - 5 consecutive dead-letters pauses the endpoint and emails the org</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Manual replay</strong> - Any past delivery can be re-fired from the dashboard</div>
+                    <div className="flex items-start gap-2 text-blue-800"><span className="text-blue-500 mt-0.5">▸</span> <strong>Per-event subscriptions</strong> - Subscribe to specific events or all events on one endpoint</div>
                 </div>
             </div>
 
@@ -71,7 +71,7 @@ export default function WebhooksDocsPage() {
                     </thead>
                     <tbody className="text-gray-700">
                         <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">campaign.launched</code></td><td className="py-2">A campaign transitions from DRAFT to ACTIVE</td></tr>
-                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">campaign.paused</code></td><td className="py-2">A campaign is paused — manually or by the protection layer</td></tr>
+                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">campaign.paused</code></td><td className="py-2">A campaign is paused - manually or by the protection layer</td></tr>
                         <tr><td className="py-2 pr-4"><code className="text-blue-600">campaign.completed</code></td><td className="py-2">All leads in the campaign have finished their sequence</td></tr>
                     </tbody>
                 </table>
@@ -85,10 +85,10 @@ export default function WebhooksDocsPage() {
                     </thead>
                     <tbody className="text-gray-700">
                         <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.paused</code></td><td className="py-2">A mailbox trips a bounce / connectivity / DNS threshold and is auto-paused</td></tr>
-                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_quarantine</code></td><td className="py-2">Healing phase 2 — DNS verification cycle begins</td></tr>
-                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_restricted_send</code></td><td className="py-2">Healing phase 3 — conservative warmup volume resumes</td></tr>
-                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_warm_recovery</code></td><td className="py-2">Healing phase 4 — graduated volume ramp</td></tr>
-                        <tr><td className="py-2 pr-4"><code className="text-blue-600">mailbox.healed</code></td><td className="py-2">Healing phase 5 — mailbox returns to HEALTHY and is re-added to campaigns</td></tr>
+                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_quarantine</code></td><td className="py-2">Healing phase 2 - DNS verification cycle begins</td></tr>
+                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_restricted_send</code></td><td className="py-2">Healing phase 3 - conservative warmup volume resumes</td></tr>
+                        <tr className="border-b border-gray-200"><td className="py-2 pr-4"><code className="text-blue-600">mailbox.entered_warm_recovery</code></td><td className="py-2">Healing phase 4 - graduated volume ramp</td></tr>
+                        <tr><td className="py-2 pr-4"><code className="text-blue-600">mailbox.healed</code></td><td className="py-2">Healing phase 5 - mailbox returns to HEALTHY and is re-added to campaigns</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -203,11 +203,11 @@ export default function WebhooksDocsPage() {
                 Every request includes these headers:
             </p>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Event</code> — event type, e.g. <code>mailbox.paused</code></li>
-                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Event-Id</code> — stable id for dedupe across retries</li>
-                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Delivery-Id</code> — unique per delivery attempt batch</li>
-                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Signature</code> — <code>t=&lt;ts&gt;,v1=&lt;hex&gt;</code> HMAC-SHA256</li>
-                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">User-Agent</code> — <code>Superkabe-Webhooks/1.0</code></li>
+                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Event</code> - event type, e.g. <code>mailbox.paused</code></li>
+                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Event-Id</code> - stable id for dedupe across retries</li>
+                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Delivery-Id</code> - unique per delivery attempt batch</li>
+                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">X-Superkabe-Signature</code> - <code>t=&lt;ts&gt;,v1=&lt;hex&gt;</code> HMAC-SHA256</li>
+                <li><code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">User-Agent</code> - <code>Superkabe-Webhooks/1.0</code></li>
             </ul>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Signature Verification</h2>
@@ -218,13 +218,13 @@ export default function WebhooksDocsPage() {
                 <code className="text-blue-600">X-Superkabe-Signature: t=1714400538,v1=5257a869e7eccf...</code>
             </div>
             <p className="text-gray-600 mb-4">
-                To verify: take the timestamp <code>t</code>, concatenate <code>{`${'t'}`}.&lt;raw_body&gt;</code>, compute HMAC-SHA256 with your signing secret, and timing-safe compare to <code>v1</code>. Reject any request where the timestamp is older than 5 minutes — that defeats replay attacks.
+                To verify: take the timestamp <code>t</code>, concatenate <code>{`${'t'}`}.&lt;raw_body&gt;</code>, compute HMAC-SHA256 with your signing secret, and timing-safe compare to <code>v1</code>. Reject any request where the timestamp is older than 5 minutes - that defeats replay attacks.
             </p>
 
             <div className="bg-red-50 border border-red-200 p-6 mb-8">
                 <h3 className="text-xl font-bold text-red-700 mb-2">Security Warning</h3>
                 <p className="text-gray-700">
-                    Signature verification is <strong>mandatory</strong> in production. Without it, anyone who learns your endpoint URL can forge events. Always verify against the <strong>raw request body</strong> — not a re-serialized JSON object — because any whitespace difference will break the HMAC.
+                    Signature verification is <strong>mandatory</strong> in production. Without it, anyone who learns your endpoint URL can forge events. Always verify against the <strong>raw request body</strong> - not a re-serialized JSON object - because any whitespace difference will break the HMAC.
                 </p>
             </div>
 
@@ -286,7 +286,7 @@ def superkabe():
     if time.time() - int(t) > 300:
         abort(400)  # too old
 
-    raw = request.get_data()  # raw bytes — do NOT use request.json
+    raw = request.get_data()  # raw bytes - do NOT use request.json
     signed = f"{t}.".encode() + raw
     expected = hmac.new(SECRET, signed, hashlib.sha256).hexdigest()
 
@@ -398,7 +398,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Replaying Deliveries</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Every delivery — successful, failed, or dead-lettered — is preserved in the delivery log at <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/dashboard/integrations/webhooks</code>. Each row shows the event type, attempt count, response code, response body (truncated to 4 KB), duration, and timestamps.
+                Every delivery - successful, failed, or dead-lettered - is preserved in the delivery log at <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">/dashboard/integrations/webhooks</code>. Each row shows the event type, attempt count, response code, response body (truncated to 4 KB), duration, and timestamps.
             </p>
             <p className="text-gray-600 mb-4">
                 Click <strong>Replay</strong> on any row to re-enqueue the delivery. The full 6-attempt schedule is reset, so a replay can itself retry on failure. Replays are useful for backfilling events your endpoint missed during planned downtime, debugging signature verification, or testing handler changes against a real payload.
@@ -416,15 +416,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">2. Configure</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li><strong>URL</strong> — public HTTPS URL that will receive POSTs (HTTP is rejected)</li>
-                <li><strong>Name</strong> — human label for the delivery log and alert emails</li>
-                <li><strong>Events</strong> — pick specific event types, or leave blank to subscribe to everything</li>
-                <li><strong>Provider</strong> — <code>generic</code> for HMAC-signed JSON, or <code>slack</code> for a Slack incoming webhook URL (payload is reshaped into Slack&apos;s blocks format and the signature is omitted)</li>
+                <li><strong>URL</strong> - public HTTPS URL that will receive POSTs (HTTP is rejected)</li>
+                <li><strong>Name</strong> - human label for the delivery log and alert emails</li>
+                <li><strong>Events</strong> - pick specific event types, or leave blank to subscribe to everything</li>
+                <li><strong>Provider</strong> - <code>generic</code> for HMAC-signed JSON, or <code>slack</code> for a Slack incoming webhook URL (payload is reshaped into Slack&apos;s blocks format and the signature is omitted)</li>
             </ul>
 
             <h3 className="text-2xl font-semibold mb-3 mt-8 text-gray-900">3. Copy the signing secret</h3>
             <p className="text-gray-600 mb-4">
-                On creation, Superkabe generates a 256-bit secret prefixed <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">whsec_</code>. The full value is shown <strong>once</strong>. Store it in your secrets manager — it is required to verify signatures.
+                On creation, Superkabe generates a 256-bit secret prefixed <code className="px-2 py-1 bg-gray-100 border border-gray-200 text-gray-800">whsec_</code>. The full value is shown <strong>once</strong>. Store it in your secrets manager - it is required to verify signatures.
             </p>
             <div className="bg-gray-50 border border-gray-200 p-4 mb-4">
                 <code className="text-green-600">whsec_REPLACE_WITH_YOUR_GENERATED_SECRET</code>

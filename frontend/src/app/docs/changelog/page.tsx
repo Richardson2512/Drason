@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: "What's New | Superkabe Docs",
-    description: 'Changelog — every shipped feature, integration, and platform improvement at Superkabe, in reverse chronological order.',
+    description: 'Changelog - every shipped feature, integration, and platform improvement at Superkabe, in reverse chronological order.',
     alternates: { canonical: '/docs/changelog' },
     openGraph: {
         title: "What's New | Superkabe Docs",
-        description: 'Changelog — every shipped feature, integration, and platform improvement at Superkabe, in reverse chronological order.',
+        description: 'Changelog - every shipped feature, integration, and platform improvement at Superkabe, in reverse chronological order.',
         url: '/docs/changelog',
         siteName: 'Superkabe',
         type: 'article',
@@ -37,18 +37,18 @@ function TagPill({ tag }: { tag: NonNullable<Entry['tag']> }) {
 const ENTRIES: Entry[] = [
     {
         date: '2026-05-04',
-        title: 'Per-org MCP URLs — agency-friendly Claude connectors',
+        title: 'Per-org MCP URLs - agency-friendly Claude connectors',
         tag: 'new',
         body: (
             <>
                 <p className="text-gray-600 leading-relaxed mb-3">
-                    Each organization now has its own MCP URL — <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-org-slug&gt;</code>. The dashboard <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">API &amp; MCP</a> tab shows the right URL for your org; agencies running multiple Superkabe orgs from one Claude.ai account can add each as a separate connector and pick per conversation. No more revoke/re-authorize churn when switching between client orgs.
+                    Each organization now has its own MCP URL - <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-org-slug&gt;</code>. The dashboard <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">API &amp; MCP</a> tab shows the right URL for your org; agencies running multiple Superkabe orgs from one Claude.ai account can add each as a separate connector and pick per conversation. No more revoke/re-authorize churn when switching between client orgs.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
-                    <li>OAuth grants are now audience-bound to the URL slug. Presenting an Acme token at <code>/mcp/beta</code> returns <code>403</code> — no cross-org cross-talk.</li>
+                    <li>OAuth grants are now audience-bound to the URL slug. Presenting an Acme token at <code>/mcp/beta</code> returns <code>403</code> - no cross-org cross-talk.</li>
                     <li>Consent screen names the target org (&quot;Authorize Claude for <strong>Acme Inc.</strong>&quot;) so the user always sees which org they&apos;re binding before approving.</li>
                     <li>Per-slug RFC 9728 metadata at <code>/.well-known/oauth-protected-resource/mcp/&lt;slug&gt;</code>. Discovered via <code>WWW-Authenticate</code> header on every <code>/mcp/&lt;slug&gt;</code> probe.</li>
-                    <li>Bare <code>/mcp</code> still works for back-compat — existing single-org connectors keep working with no changes required.</li>
+                    <li>Bare <code>/mcp</code> still works for back-compat - existing single-org connectors keep working with no changes required.</li>
                 </ul>
                 <p className="text-sm text-gray-500 mt-3">Read the <a href="/docs/mcp-server#claude-ai" className="text-blue-600 hover:underline">Claude (MCP Server) docs</a>.</p>
             </>
@@ -61,10 +61,10 @@ const ENTRIES: Entry[] = [
         body: (
             <>
                 <p className="text-gray-600 leading-relaxed mb-3">
-                    Claude.ai (browser) can now connect to Superkabe directly. Grab your per-org URL from <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">Dashboard → API &amp; MCP</a> (looks like <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-slug&gt;</code>) and paste into Claude.ai → Settings → Integrations → Add Integration. The OAuth flow handles consent, scoping, and token issuance entirely in-browser — no API key copy/paste, no install. The 17 Superkabe tools become available in any Claude conversation immediately.
+                    Claude.ai (browser) can now connect to Superkabe directly. Grab your per-org URL from <a href="/dashboard/api-mcp" className="text-blue-600 hover:underline">Dashboard → API &amp; MCP</a> (looks like <code className="px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-800 text-xs">https://api.superkabe.com/mcp/&lt;your-slug&gt;</code>) and paste into Claude.ai → Settings → Integrations → Add Integration. The OAuth flow handles consent, scoping, and token issuance entirely in-browser - no API key copy/paste, no install. The 17 Superkabe tools become available in any Claude conversation immediately.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
-                    <li>Full RFC 6749 / 7591 / 7636 / 8414 / 9728 implementation — Dynamic Client Registration, PKCE, RFC 9728 protected-resource metadata.</li>
+                    <li>Full RFC 6749 / 7591 / 7636 / 8414 / 9728 implementation - Dynamic Client Registration, PKCE, RFC 9728 protected-resource metadata.</li>
                     <li>Consent UI at <a href="/oauth/consent" className="text-blue-600 hover:underline">/oauth/consent</a> with explicit scope review.</li>
                     <li>Active grants visible at <a href="/dashboard/integrations" className="text-blue-600 hover:underline">/dashboard/integrations</a> as a new Claude card. Disconnect with one click.</li>
                     <li>Access tokens 1-hour TTL, refresh tokens 90-day, both hashed at rest.</li>
@@ -79,8 +79,8 @@ const ENTRIES: Entry[] = [
         tag: 'new',
         body: (
             <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
-                <li><code>GET /api/oauth/connections</code> — list active OAuth grants for the org.</li>
-                <li><code>POST /api/oauth/connections/revoke</code> — disconnect by <code>client_id</code> or all at once.</li>
+                <li><code>GET /api/oauth/connections</code> - list active OAuth grants for the org.</li>
+                <li><code>POST /api/oauth/connections/revoke</code> - disconnect by <code>client_id</code> or all at once.</li>
                 <li>Powers the Claude card on the Integrations page. Refresh-token rotation deduped by client.</li>
             </ul>
         ),
@@ -127,7 +127,7 @@ const ENTRIES: Entry[] = [
     },
     {
         date: '2026-04-27',
-        title: 'Lead protection layer — 11 audit fixes',
+        title: 'Lead protection layer - 11 audit fixes',
         tag: 'improved',
         body: (
             <p className="text-gray-600 leading-relaxed">
@@ -137,7 +137,7 @@ const ENTRIES: Entry[] = [
     },
     {
         date: '2026-04-27',
-        title: '5-phase healing pipeline — 18 audit fixes',
+        title: '5-phase healing pipeline - 18 audit fixes',
         tag: 'improved',
         body: (
             <p className="text-gray-600 leading-relaxed">
@@ -217,7 +217,7 @@ const ENTRIES: Entry[] = [
         tag: 'new',
         body: (
             <p className="text-gray-600 leading-relaxed">
-                Google Postmaster Tools OAuth + reputation read API. Feature-flagged on Growth/Scale tiers — domain reputation pulled directly from Google&apos;s view, not just our own bounce-rate inference. Surfaces in the domain detail view at <a href="/dashboard/domains" className="text-blue-600 hover:underline">/dashboard/domains</a>.
+                Google Postmaster Tools OAuth + reputation read API. Feature-flagged on Growth/Scale tiers - domain reputation pulled directly from Google&apos;s view, not just our own bounce-rate inference. Surfaces in the domain detail view at <a href="/dashboard/domains" className="text-blue-600 hover:underline">/dashboard/domains</a>.
             </p>
         ),
     },
@@ -237,7 +237,7 @@ const ENTRIES: Entry[] = [
         tag: 'new',
         body: (
             <p className="text-gray-600 leading-relaxed">
-                Initial Model Context Protocol server published as <code>@superkabe/mcp-server</code> on npm. 17 tools exposed over stdio for Claude Desktop, Claude Code, Cursor, and Continue. (Browser/OAuth flow shipped April 29 — see top of changelog.)
+                Initial Model Context Protocol server published as <code>@superkabe/mcp-server</code> on npm. 17 tools exposed over stdio for Claude Desktop, Claude Code, Cursor, and Continue. (Browser/OAuth flow shipped April 29 - see top of changelog.)
             </p>
         ),
     },
@@ -256,12 +256,12 @@ export default function ChangelogPage() {
                 What&apos;s New
             </h1>
             <p className="text-xl text-gray-500 mb-12">
-                Every shipped feature, integration, and platform improvement at Superkabe — newest first.
+                Every shipped feature, integration, and platform improvement at Superkabe - newest first.
             </p>
 
             <div className="bg-blue-50 border border-blue-200 p-6 mb-10">
                 <p className="text-sm text-blue-900 m-0">
-                    Subscribe to product updates by email — visit <a href="/dashboard/settings" className="underline">Settings → Notifications</a> in the dashboard. Or follow our <a href="/blog" className="underline">blog</a> for deep-dives on each release.
+                    Subscribe to product updates by email - visit <a href="/dashboard/settings" className="underline">Settings → Notifications</a> in the dashboard. Or follow our <a href="/blog" className="underline">blog</a> for deep-dives on each release.
                 </p>
             </div>
 

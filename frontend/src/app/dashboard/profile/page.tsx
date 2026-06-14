@@ -68,8 +68,8 @@ export default function ProfilePage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ currentPassword, newPassword }),
             });
-            // Backend clears the auth cookie on success — every subsequent
-            // API call would 401 — so push the user to /login explicitly
+            // Backend clears the auth cookie on success - every subsequent
+            // API call would 401 - so push the user to /login explicitly
             // instead of leaving them on a half-broken page until the next
             // fetch fires.
             setPasswordMessage({ type: 'success', text: 'Password changed. Redirecting to sign in…' });
@@ -95,7 +95,7 @@ export default function ProfilePage() {
             <h1 className="text-xl font-bold text-gray-900 mb-0.5">Profile</h1>
             <p className="text-xs text-gray-500 mb-8">Manage your account details and security</p>
 
-            {/* Agency Mode — manage multiple client workspaces (Scale/Enterprise) */}
+            {/* Agency Mode - manage multiple client workspaces (Scale/Enterprise) */}
             <AgencyModeCard />
 
             <div className="flex flex-wrap gap-8 items-start">

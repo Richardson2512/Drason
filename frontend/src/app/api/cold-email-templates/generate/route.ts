@@ -4,8 +4,8 @@
  * Generates a customized cold email using OpenAI gpt-4.1-mini.
  *
  * Two modes:
- *   1. customize  — adapt an existing library template to the user's context
- *   2. standalone — generate a fresh email from scratch (no template basis)
+ *   1. customize  - adapt an existing library template to the user's context
+ *   2. standalone - generate a fresh email from scratch (no template basis)
  *
  * Returns a streaming text/event-stream response so the UI can render tokens
  * as they arrive. Rate-limited to GUEST_DAILY_LIMIT generations per day per
@@ -23,7 +23,7 @@ import { getTemplateBySlug, type ColdEmailTemplate } from '@/data/coldEmailTempl
 
 /**
  * Server-side check for the presence of the `token` auth cookie. We don't
- * verify the JWT here — backend revalidates on every real product action.
+ * verify the JWT here - backend revalidates on every real product action.
  * This only gates the guest rate limiter: if a user is authenticated they
  * get unlimited generations, otherwise they get GUEST_DAILY_LIMIT/day.
  */
@@ -136,7 +136,7 @@ Rules you MUST follow:
 - Total length: under the requested word count.
 - No "I hope this finds you well", no "I wanted to reach out", no filler openers.
 - Be specific. Use the user's value prop verbatim where it fits naturally.
-- Personalization tokens: use {{first_name}}, {{company}}, {{title}}, and {{custom.X}} for custom fields. Do NOT invent placeholder names — use the tokens.
+- Personalization tokens: use {{first_name}}, {{company}}, {{title}}, and {{custom.X}} for custom fields. Do NOT invent placeholder names - use the tokens.
 - Single low-friction CTA at the end.
 - No spammy language ("limited time", "act now", excessive exclamations).
 - Output format must be EXACTLY:
@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
     if (!validation.ok) return jsonError(400, validation.error);
     const data = validation.data;
 
-    // 2. Check rate limit (cookie + IP fallback) — but skip entirely for
+    // 2. Check rate limit (cookie + IP fallback) - but skip entirely for
     //    signed-in users. The presence of the auth `token` cookie is enough
     //    here; backend revalidates auth on any actual product action. We're
     //    only deciding whether to apply the guest quota.

@@ -152,7 +152,7 @@ export default function SequencerSettingsPage() {
 
     // Fetch tier catalog from the backend (single source of truth shared with billing page)
     const [tierStats, setTierStats] = useState<Record<string, { name: string; sends: string; validation: string; color: string }>>({
-        trial: { name: 'Free Trial', sends: '—', validation: '—', color: '#6B7280' },
+        trial: { name: 'Free Trial', sends: '-', validation: '-', color: '#6B7280' },
     });
 
     useEffect(() => {
@@ -278,12 +278,12 @@ export default function SequencerSettingsPage() {
                         <p className="text-[9px] text-gray-400 mt-1">Auto-pause account when bounce rate exceeds this threshold.</p>
                     </div>
                     <Toggle value={autoPauseOnBounce} onChange={setAutoPauseOnBounce} label="Auto-pause on high bounce rate" description="Automatically pause sending accounts when bounce threshold is breached" />
-                    <Toggle value={stopOnReplyDefault} onChange={setStopOnReplyDefault} label="Stop sequence on reply (default)" description="Default setting for new campaigns — stop sending follow-ups when a lead replies" />
+                    <Toggle value={stopOnReplyDefault} onChange={setStopOnReplyDefault} label="Stop sequence on reply (default)" description="Default setting for new campaigns - stop sending follow-ups when a lead replies" />
                 </div>
             </div>
 
             {/* Notifications */}
-            {/* Reply auto-actions — per-class mapping to suppress/pause/alert. */}
+            {/* Reply auto-actions - per-class mapping to suppress/pause/alert. */}
             <ReplyActionsCard />
 
             <div className="premium-card">
@@ -309,7 +309,7 @@ export default function SequencerSettingsPage() {
                     </div>
                     <div className="flex flex-col gap-2.5">
                         {[
-                            // Sending-side fields are uncapped on every tier — only sends + validation
+                            // Sending-side fields are uncapped on every tier - only sends + validation
                             // credits scale with subscription. The protection-side caps still exist
                             // but live on the protection dashboard, not here.
                             { icon: <Users size={12} />, label: 'Active Leads', value: 'Unlimited' },
@@ -340,7 +340,7 @@ export default function SequencerSettingsPage() {
                     </p>
                 </div>
 
-                {/* A/B Variants — replaces the prior Daily Capacity card.
+                {/* A/B Variants - replaces the prior Daily Capacity card.
                     Daily capacity wasn't a real concept (we enforce monthly,
                     not daily, send caps), so the box was misinforming users.
                     A/B Variants is the genuinely useful sequencer concept

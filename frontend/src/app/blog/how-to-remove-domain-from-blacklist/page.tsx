@@ -49,7 +49,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  {
  "@type": "Question",
  "name": "How long does it take to get removed from an email blacklist?",
- "acceptedAnswer": { "@type": "Answer", "text": "It depends on the blacklist. Spamhaus typically removes listings within 24-48 hours after the delisting request is submitted and the root cause is fixed. Barracuda can take 12-24 hours. SORBS may take up to 7 days. Some minor blacklists like UCEPROTECT have automatic expiry after 7 days if no further spam is detected. The key factor is whether you fixed the underlying problem — if you request delisting without fixing the cause, most blacklists will re-list you within hours." }
+ "acceptedAnswer": { "@type": "Answer", "text": "It depends on the blacklist. Spamhaus typically removes listings within 24-48 hours after the delisting request is submitted and the root cause is fixed. Barracuda can take 12-24 hours. SORBS may take up to 7 days. Some minor blacklists like UCEPROTECT have automatic expiry after 7 days if no further spam is detected. The key factor is whether you fixed the underlying problem - if you request delisting without fixing the cause, most blacklists will re-list you within hours." }
  },
  {
  "@type": "Question",
@@ -68,7 +68,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  { name: 'Spamhaus SBL/DBL', severity: 'Critical', delistUrl: 'https://www.spamhaus.org/lookup/', autoRemoval: 'Manual request required', notes: 'Most impactful blacklist. Gmail, Outlook, Yahoo all check it. Request removal via lookup tool after fixing cause.' },
  { name: 'Barracuda (BRBL)', severity: 'Critical', delistUrl: 'https://www.barracudacentral.org/rbl/removal-request', autoRemoval: '12-24 hours after request', notes: 'Widely used by corporate email servers. Self-service removal form available.' },
  { name: 'SORBS', severity: 'High', delistUrl: 'https://www.sorbs.net/cgi-bin/support', autoRemoval: 'Up to 7 days', notes: 'Multiple sub-lists (spam, HTTP, SOCKS). Each has separate removal process.' },
- { name: 'Spamcop', severity: 'High', delistUrl: 'https://www.spamcop.net/bl.shtml', autoRemoval: '24-48 hours automatic', notes: 'Auto-expires if no new reports. No manual removal needed — just stop the behavior.' },
+ { name: 'Spamcop', severity: 'High', delistUrl: 'https://www.spamcop.net/bl.shtml', autoRemoval: '24-48 hours automatic', notes: 'Auto-expires if no new reports. No manual removal needed - just stop the behavior.' },
  { name: 'UCEPROTECT L1', severity: 'Medium', delistUrl: 'https://www.uceprotect.net/en/rblcheck.php', autoRemoval: '7 days automatic', notes: 'Auto-delists after 7 days of clean sending. Paid express removal available but not recommended.' },
  { name: 'SURBL', severity: 'High', delistUrl: 'https://surbl.org/surbl-analysis', autoRemoval: 'Manual request required', notes: 'Checks URLs in email content, not sending IP. Often triggered by link shorteners or flagged domains in your email body.' },
  { name: 'Invaluement', severity: 'Medium', delistUrl: 'https://www.invaluement.com/removal/', autoRemoval: 'Manual request required', notes: 'Used by some enterprise filters. Removal requires explaining the issue and demonstrating fix.' },
@@ -97,16 +97,16 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  />
 
  <p className="text-lg text-gray-700 leading-relaxed mb-12">
- Check your domain against major blacklists (Spamhaus, Barracuda, SORBS) using a DNSBL lookup tool. Submit a delisting request to each one. Fix the root cause — bounce rate, spam complaints, or open relay — before requesting removal. Most blacklists will re-list you within 24 hours if the underlying problem persists.
+ Check your domain against major blacklists (Spamhaus, Barracuda, SORBS) using a DNSBL lookup tool. Submit a delisting request to each one. Fix the root cause - bounce rate, spam complaints, or open relay - before requesting removal. Most blacklists will re-list you within 24 hours if the underlying problem persists.
  </p>
 
  <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
  <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
  <ul className="space-y-2 text-blue-800 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Fix the root cause before requesting delisting — removal without a fix leads to immediate re-listing</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Spamhaus and Barracuda are the critical blacklists — others have less deliverability impact</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Fix the root cause before requesting delisting - removal without a fix leads to immediate re-listing</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Spamhaus and Barracuda are the critical blacklists - others have less deliverability impact</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Some blacklists auto-expire (Spamcop, UCEPROTECT) while others require manual requests</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Continuous monitoring prevents blacklisting — detecting bounce spikes early is the best defense</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Continuous monitoring prevents blacklisting - detecting bounce spikes early is the best defense</li>
  </ul>
  </div>
 
@@ -116,10 +116,10 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  There are over 400 DNS-based blacklists (DNSBLs), but only about 20 materially affect email deliverability. Start by checking the ones that matter. You can use free tools like <a href="https://mxtoolbox.com/blacklists.aspx" target="_blank" rel="nofollow noopener noreferrer">MXToolbox Blacklist Check</a> to query your domain against 100+ blacklists simultaneously, or use the <code className="bg-gray-100 px-1 text-sm">dig</code> command to query specific DNSBLs directly.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- When interpreting results, focus on the critical and high-severity blacklists. Being listed on a minor blacklist like UCEPROTECT Level 3 (which lists entire IP ranges) is far less concerning than a Spamhaus SBL listing. If you are only on minor blacklists, your deliverability problem likely has a different root cause — check your <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:text-blue-800">DNS authentication records</Link> and <Link href="/blog/how-to-check-domain-reputation-cold-email" className="text-blue-600 hover:text-blue-800">domain reputation</Link> instead.
+ When interpreting results, focus on the critical and high-severity blacklists. Being listed on a minor blacklist like UCEPROTECT Level 3 (which lists entire IP ranges) is far less concerning than a Spamhaus SBL listing. If you are only on minor blacklists, your deliverability problem likely has a different root cause - check your <Link href="/blog/spf-dkim-dmarc-explained" className="text-blue-600 hover:text-blue-800">DNS authentication records</Link> and <Link href="/blog/how-to-check-domain-reputation-cold-email" className="text-blue-600 hover:text-blue-800">domain reputation</Link> instead.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe checks your domains against <strong>410 DNSBLs</strong> continuously as part of its <Link href="/docs/infrastructure-assessment" className="text-blue-600 hover:text-blue-800">infrastructure assessment</Link>. Rather than running manual lookups periodically, Superkabe alerts you the moment a listing is detected — often within hours of it being added, before it has had time to significantly impact your campaigns.
+ Superkabe checks your domains against <strong>410 DNSBLs</strong> continuously as part of its <Link href="/docs/infrastructure-assessment" className="text-blue-600 hover:text-blue-800">infrastructure assessment</Link>. Rather than running manual lookups periodically, Superkabe alerts you the moment a listing is detected - often within hours of it being added, before it has had time to significantly impact your campaigns.
  </p>
 
  <h2 id="understand-severity" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Step 2: Understand the severity of each listing</h2>
@@ -127,22 +127,22 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  Not all blacklists are equal. Spamhaus and Barracuda are checked by virtually every major ISP and corporate mail server. A listing on either one means your emails are being rejected or spam-filtered by the majority of recipients. Other blacklists like SORBS and Spamcop are checked by a smaller subset of servers. Minor blacklists like UCEPROTECT or PSBL affect very few recipients.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Prioritize your response accordingly. A Spamhaus listing is an emergency — stop all live sending immediately. A UCEPROTECT Level 1 listing is a warning sign that you should investigate, but it will not derail your campaigns by itself.
+ Prioritize your response accordingly. A Spamhaus listing is an emergency - stop all live sending immediately. A UCEPROTECT Level 1 listing is a warning sign that you should investigate, but it will not derail your campaigns by itself.
  </p>
 
  <h2 id="fix-root-cause" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Step 3: Fix the root cause before requesting removal</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- This is the step most people skip, and it is the most important. Blacklists list you for a reason. If you request removal without fixing the cause, you will be re-listed — often within hours — and subsequent removal requests will be harder to get approved. Common root causes and their fixes:
+ This is the step most people skip, and it is the most important. Blacklists list you for a reason. If you request removal without fixing the cause, you will be re-listed - often within hours - and subsequent removal requests will be harder to get approved. Common root causes and their fixes:
  </p>
  <div className="space-y-3 mb-6">
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">High bounce rate (most common for cold email):</strong> Your list contains too many invalid addresses. Stop sending to unvalidated leads immediately. Run your entire lead list through a validation service. Remove all invalid, disposable, and role-based addresses. Superkabe&rsquo;s <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800">hybrid email validation</Link> catches addresses that single-method validators miss, including catch-all domains that may be honeypots.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Spam complaints:</strong> Recipients are reporting your emails as spam. Review your targeting — are you sending to people who would genuinely benefit from your offer? Check your copy for spam trigger words. Ensure there is a working unsubscribe link. Reduce volume until complaint rate drops below 0.05%.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Spam complaints:</strong> Recipients are reporting your emails as spam. Review your targeting - are you sending to people who would genuinely benefit from your offer? Check your copy for spam trigger words. Ensure there is a working unsubscribe link. Reduce volume until complaint rate drops below 0.05%.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Spam trap hits:</strong> You sent to a spam trap address — an email address that exists solely to catch spammers. These get into your list from purchased lists, scraped data, or old addresses that ISPs have converted into traps. The only fix is to clean your list thoroughly and stop sourcing leads from the contaminated source.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Spam trap hits:</strong> You sent to a spam trap address - an email address that exists solely to catch spammers. These get into your list from purchased lists, scraped data, or old addresses that ISPs have converted into traps. The only fix is to clean your list thoroughly and stop sourcing leads from the contaminated source.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Open relay or compromised account:</strong> Someone is using your mail server or account to send spam. Check for unauthorized access, change all passwords, enable 2FA, and review your SMTP relay configuration.</p>
@@ -188,12 +188,12 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  Getting delisted is not the end. You need to verify that the removal took effect and watch for re-listing. After submitting a removal request, wait the specified timeframe, then re-check. Some blacklists cache results for up to 24 hours, so even after removal, some recipient servers may still reject your emails temporarily.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Monitor daily for the first two weeks after delisting. If you are re-listed, the root cause was not fully resolved — go back to Step 3 and investigate further. Check your <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800">bounce rate trends</Link> and <a href="https://postmaster.google.com" target="_blank" rel="nofollow noopener noreferrer">Google Postmaster Tools</a> reputation data to confirm that your sending behavior has improved.
+ Monitor daily for the first two weeks after delisting. If you are re-listed, the root cause was not fully resolved - go back to Step 3 and investigate further. Check your <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800">bounce rate trends</Link> and <a href="https://postmaster.google.com" target="_blank" rel="nofollow noopener noreferrer">Google Postmaster Tools</a> reputation data to confirm that your sending behavior has improved.
  </p>
 
  <h2 id="continuous-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Step 6: Set up continuous monitoring</h2>
  <p className="text-gray-600 leading-relaxed mb-4">
- The best way to handle blacklisting is to prevent it. Set up continuous monitoring so you catch problems before they trigger a listing. Manual checks are not sufficient — by the time you remember to run a blacklist check, you may have been listed for days and your campaigns have been silently failing.
+ The best way to handle blacklisting is to prevent it. Set up continuous monitoring so you catch problems before they trigger a listing. Manual checks are not sufficient - by the time you remember to run a blacklist check, you may have been listed for days and your campaigns have been silently failing.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For cold email teams managing multiple domains, automated monitoring is essential. You need alerts when a listing is detected, when bounce rates are climbing toward dangerous levels, and when DNS authentication begins failing. Catching these early signals means you can fix the issue before any blacklist picks it up.
@@ -211,7 +211,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Severity classification:</strong> Each blacklist is classified as critical, high, medium, or low impact so you know which listings to address first.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Root cause detection:</strong> Superkabe correlates blacklist listings with bounce rate data, DNS health, and campaign metrics to identify the probable cause — so you can fix it before requesting removal.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Root cause detection:</strong> Superkabe correlates blacklist listings with bounce rate data, DNS health, and campaign metrics to identify the probable cause - so you can fix it before requesting removal.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Prevention through monitoring:</strong> By tracking bounce rates in real time and <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800">auto-pausing mailboxes</Link> before they breach dangerous thresholds, Superkabe prevents the behavior that causes blacklisting in the first place.</p>
@@ -222,7 +222,7 @@ export default function HowToRemoveDomainFromBlacklistArticle() {
  <div className="space-y-4 mb-12">
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">How long does it take to get removed from an email blacklist? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
- <p className="mt-3 text-sm text-gray-600">It depends on the blacklist. Spamhaus typically processes requests within 24-48 hours. Barracuda takes 12-24 hours. Spamcop auto-expires in 24-48 hours. UCEPROTECT auto-expires in 7 days. The critical factor is fixing the root cause first — requesting removal without fixing the problem results in re-listing within hours.</p>
+ <p className="mt-3 text-sm text-gray-600">It depends on the blacklist. Spamhaus typically processes requests within 24-48 hours. Barracuda takes 12-24 hours. Spamcop auto-expires in 24-48 hours. UCEPROTECT auto-expires in 7 days. The critical factor is fixing the root cause first - requesting removal without fixing the problem results in re-listing within hours.</p>
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">Can being on a blacklist permanently damage my domain? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>

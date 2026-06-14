@@ -1,5 +1,5 @@
 /**
- * Phase F — Authenticated user journey tests.
+ * Phase F - Authenticated user journey tests.
  *
  * Logs in once per test as demo@superkabe.com (password set via SQL),
  * then exercises the high-traffic surfaces:
@@ -23,7 +23,7 @@ async function login(page: Page) {
     // globalSetup pre-authenticates via storageState; skip if cookie present.
     const cookies = await page.context().cookies();
     if (cookies.some(c => c.name === 'token')) return;
-    // Login via API and seed cookie — faster + less flaky than UI login.
+    // Login via API and seed cookie - faster + less flaky than UI login.
     const res = await page.request.post('/api/auth/login', {
         data: { email: DEMO_EMAIL, password: DEMO_PASSWORD },
     });
@@ -76,7 +76,7 @@ test.describe('authenticated journeys', () => {
         const before = await get.json();
         expect(typeof before.data?.consent).toBe('boolean');
 
-        // Toggle consent on (idempotent — leaves it on after).
+        // Toggle consent on (idempotent - leaves it on after).
         const post = await page.request.post('/api/sequencer/warmup/consent', {
             data: { consent: true },
         });
@@ -102,7 +102,7 @@ test.describe('authenticated journeys', () => {
     test('integrations / JustCall page renders', async ({ page }) => {
         const res = await page.goto('/dashboard/integrations/justcall');
         expect(res?.status()).toBeLessThan(500);
-        // Look for connect-flow controls — input or button.
+        // Look for connect-flow controls - input or button.
         const body = await page.locator('body').innerText();
         expect(body.length).toBeGreaterThan(50);
     });

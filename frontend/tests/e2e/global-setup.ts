@@ -1,5 +1,5 @@
 /**
- * Playwright global setup — log in once and persist the auth cookie to
+ * Playwright global setup - log in once and persist the auth cookie to
  * disk so every spec starts already-authenticated.
  *
  * Without this, each spec's `login` helper called POST /api/auth/login in

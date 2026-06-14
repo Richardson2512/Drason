@@ -19,7 +19,7 @@ interface InviteContext {
  * Backend follow-up will replace the localStorage lookup with:
  *   GET  /api/auth/invite?token=XYZ        → returns { email, workspace_name } or 410 expired
  *   POST /api/auth/invite/complete         → sets password, returns { redirect: '/login' }
- * The UI flow stays identical — client sets password, lands on /login, signs in.
+ * The UI flow stays identical - client sets password, lands on /login, signs in.
  */
 function SetPasswordInner() {
     const params = useSearchParams();
@@ -96,7 +96,7 @@ function SetPasswordInner() {
             }, 2500);
         } catch {
             setSubmitting(false);
-            setErrorMsg('Network error — please try again.');
+            setErrorMsg('Network error - please try again.');
         }
     };
 
@@ -218,7 +218,7 @@ function SetPasswordInner() {
                                 </button>
 
                                 <p className="text-[10px] text-gray-500 text-center leading-relaxed">
-                                    By continuing you agree to your agency's terms. Your account is hard-locked to this workspace —
+                                    By continuing you agree to your agency's terms. Your account is hard-locked to this workspace -
                                     you won't see anything else on Superkabe.
                                 </p>
                             </form>

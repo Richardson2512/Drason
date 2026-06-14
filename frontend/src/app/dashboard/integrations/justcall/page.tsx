@@ -56,7 +56,7 @@ const STATUS_STYLE: Record<string, { label: string; bg: string; fg: string; dot:
 };
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', year: 'numeric',
         hour: 'numeric', minute: '2-digit',
@@ -392,7 +392,7 @@ export default function JustCallIntegrationPage() {
                                                 <td className="py-2 pr-3 text-emerald-700">{j.total_added.toLocaleString()}</td>
                                                 <td className="py-2 pr-3 text-slate-700">{j.total_skipped.toLocaleString()}</td>
                                                 <td className="py-2 pr-3 text-red-700">
-                                                    {j.total_failed > 0 ? j.total_failed.toLocaleString() : '—'}
+                                                    {j.total_failed > 0 ? j.total_failed.toLocaleString() : '-'}
                                                 </td>
                                             </tr>
                                         );

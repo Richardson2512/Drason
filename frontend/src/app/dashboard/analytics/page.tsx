@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Analytics — tabbed shell. The original analytics body lives in
+ * Analytics - tabbed shell. The original analytics body lives in
  * AnalyticsLivePanel; the former /dashboard/reports page is now the
  * Reports tab via ReportsPanel. The /dashboard/reports route redirects
  * here with ?tab=reports.

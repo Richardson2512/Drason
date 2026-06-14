@@ -11,7 +11,7 @@ import { apiClient } from '@/lib/api';
  *  - Slack alerts (if configured)
  *  - Custom webhook endpoints
  *
- * V1 reads org-level integration state — campaign-specific sync rules can
+ * V1 reads org-level integration state - campaign-specific sync rules can
  * come later. For now: if the integration is connected at the org level,
  * we show it as "events flow here on reply / open / click".
  */
@@ -67,7 +67,7 @@ export default function SyncTargetsStrip({ orgId }: { orgId?: string }) {
                 ];
                 setCrmConnections(crms.filter((c) => c.connected));
             } catch {
-                // best-effort — strip just shows empty state
+                // best-effort - strip just shows empty state
             } finally {
                 if (!cancelled) setLoading(false);
             }

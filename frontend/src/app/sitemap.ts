@@ -222,7 +222,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         // with the actual `/product/[slug]` routes. Adding a new entry to
         // productPages.ts auto-includes it here; deleting one auto-removes
         // it. (Previously this was a hardcoded list and 7 stale slugs were
-        // pointing at 404s for months — Google does not love that.)
+        // pointing at 404s for months - Google does not love that.)
         ...Object.keys(productPages).map(slug => ({
             url: `${BASE_URL}/product/${slug}`,
             lastModified: productMtime,

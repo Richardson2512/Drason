@@ -57,7 +57,7 @@ export default function DatePicker({ value, onChange, placeholder = 'Select a da
     // bounding rect and refreshed on scroll/resize.
     const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
 
-    // Compact fixed width — matches the pre-portal `minWidth: 260` so the
+    // Compact fixed width - matches the pre-portal `minWidth: 260` so the
     // calendar doesn't stretch to the trigger's width when the trigger is
     // a wide form field.
     const POPOVER_WIDTH = 260;
@@ -90,7 +90,7 @@ export default function DatePicker({ value, onChange, placeholder = 'Select a da
         };
     }, [open]);
 
-    // Outside-click — check the trigger wrapper AND the portal'd popover so
+    // Outside-click - check the trigger wrapper AND the portal'd popover so
     // clicking inside the open calendar doesn't count as "outside".
     useEffect(() => {
         if (!open) return;

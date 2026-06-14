@@ -156,7 +156,7 @@ function ValidationPageContent() {
             const qs = buildRangeQuery();
             // apiClient auto-unwraps the `data` key, so res IS the array directly
             // when the backend returns `{success, data, meta}`. meta is lost via the
-            // unwrap — we fall back to the array's length for display.
+            // unwrap - we fall back to the array's length for display.
             const res = await apiClient<any>(`/api/validation/batches?limit=50${qs ? `&${qs}` : ''}`);
             const list: ValidationBatch[] = Array.isArray(res) ? res : (res?.data || []);
             setBatches(list);
@@ -166,7 +166,7 @@ function ValidationPageContent() {
     const fetchAnalytics = useCallback(async () => {
         try {
             const qs = buildRangeQuery();
-            // Backend returns `{success, ...analytics}` — no `data` key, so apiClient
+            // Backend returns `{success, ...analytics}` - no `data` key, so apiClient
             // returns the whole response object. Cast and use directly.
             const res = await apiClient<ValidationAnalytics>(`/api/validation/analytics${qs ? `?${qs}` : ''}`);
             setAnalytics(res);
@@ -277,7 +277,7 @@ function ValidationPageContent() {
         setUploading(true);
 
         // Parse full CSV. Use the stored File (set on select/drop) and fall
-        // back to the input — drag-and-drop never populates the input element.
+        // back to the input - drag-and-drop never populates the input element.
         const file = selectedFile || fileInputRef.current?.files?.[0];
         if (!file) { toast.error('No file selected. Please choose a CSV again.'); setUploading(false); return; }
 
@@ -446,7 +446,7 @@ function ValidationPageContent() {
                 </button>
             </div>
 
-            {/* Time range filter — applies to stats + validation history */}
+            {/* Time range filter - applies to stats + validation history */}
             <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-semibold text-gray-500 uppercase">Range</span>
                 {([
@@ -645,7 +645,7 @@ function ValidationPageContent() {
                 </div>
             )}
 
-            {/* Validate by tag — pull every contact carrying a chosen tag
+            {/* Validate by tag - pull every contact carrying a chosen tag
                 and run the validation pipeline against them. Result lands
                 as a new batch in Upload History below. */}
             <div className="premium-card">
@@ -664,7 +664,7 @@ function ValidationPageContent() {
                         <CustomSelect
                             value={validateTagId}
                             onChange={setValidateTagId}
-                            placeholder={allTags.length === 0 ? 'No tags yet — create one in Contacts → Manage tags' : 'Choose a tag…'}
+                            placeholder={allTags.length === 0 ? 'No tags yet - create one in Contacts → Manage tags' : 'Choose a tag…'}
                             searchable={allTags.length > 5}
                             options={allTags
                                 .filter(t => t.contact_count > 0)
@@ -698,7 +698,7 @@ function ValidationPageContent() {
                 {tagValidationSummary && (
                     <div className="mt-3 p-3 rounded-lg flex items-center gap-4 flex-wrap" style={{ background: '#F5F1EA' }}>
                         <span className="text-[11px] font-semibold text-gray-700">
-                            Done — {tagValidationSummary.processed} processed
+                            Done - {tagValidationSummary.processed} processed
                         </span>
                         <span className="text-[11px] text-emerald-700">
                             <strong>{tagValidationSummary.valid}</strong> valid
@@ -810,7 +810,7 @@ function ValidationPageContent() {
                                     >
                                         <td className="py-2 text-xs text-gray-700">{new Date(b.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
                                         <td className="py-2 text-xs text-gray-500 uppercase">{b.source}</td>
-                                        <td className="py-2 text-xs text-gray-700 max-w-[150px] truncate">{b.file_name || '—'}</td>
+                                        <td className="py-2 text-xs text-gray-700 max-w-[150px] truncate">{b.file_name || '-'}</td>
                                         <td className="py-2 text-xs font-semibold text-gray-900">{b.total_count}</td>
                                         <td className="py-2 text-xs text-emerald-600 font-medium">{b.valid_count}</td>
                                         <td className="py-2 text-xs text-red-600 font-medium">{b.invalid_count}</td>
@@ -874,7 +874,7 @@ function ValidationPageContent() {
                         </div>
                     </div>
 
-                    {/* Filters — themed dropdowns per dashboard convention. */}
+                    {/* Filters - themed dropdowns per dashboard convention. */}
                     <div className="flex items-center gap-2 mb-3 flex-wrap">
                         <div className="w-36">
                             <CustomSelect
@@ -940,8 +940,8 @@ function ValidationPageContent() {
                                             <input type="checkbox" checked={selectedIds.has(lead.id)} onChange={() => toggleSelect(lead.id)} className="cursor-pointer" />
                                         </td>
                                         <td className="py-1.5 text-xs text-gray-900 font-medium">{lead.email}</td>
-                                        <td className="py-1.5 text-xs text-gray-600">{[lead.first_name, lead.last_name].filter(Boolean).join(' ') || '—'}</td>
-                                        <td className="py-1.5 text-xs text-gray-600">{lead.company || '—'}</td>
+                                        <td className="py-1.5 text-xs text-gray-600">{[lead.first_name, lead.last_name].filter(Boolean).join(' ') || '-'}</td>
+                                        <td className="py-1.5 text-xs text-gray-600">{lead.company || '-'}</td>
                                         <td className="py-1.5">
                                             <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{
                                                 background: (STATUS_COLORS[lead.validation_status] || STATUS_COLORS.pending).bg,
@@ -955,7 +955,7 @@ function ValidationPageContent() {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score != null ? lead.validation_score : '—'}</td>
+                                        <td className="py-1.5 text-xs text-gray-700 font-medium">{lead.validation_score != null ? lead.validation_score : '-'}</td>
                                         <td className="py-1.5">
                                             {lead.esp_bucket && (
                                                 <span className="text-[10px] font-semibold" style={{ color: ESP_COLORS[lead.esp_bucket] || '#6B7280' }}>
@@ -966,7 +966,7 @@ function ValidationPageContent() {
                                         <td className="py-1.5 text-xs text-gray-500">
                                             {lead.routed_to_campaign_id ? (
                                                 <CheckCircle size={12} className="text-emerald-500" />
-                                            ) : '—'}
+                                            ) : '-'}
                                         </td>
                                     </tr>
                                 ))}
@@ -1039,7 +1039,7 @@ function ValidationPageContent() {
                                             placeholder="Decide after validation"
                                             options={[
                                                 { value: '', label: 'Decide after validation' },
-                                                ...campaigns.map(c => ({ value: c.id, label: `${c.name} — ${c.source_platform?.toUpperCase()}` })),
+                                                ...campaigns.map(c => ({ value: c.id, label: `${c.name} - ${c.source_platform?.toUpperCase()}` })),
                                             ]}
                                         />
                                     </div>
@@ -1059,9 +1059,9 @@ function ValidationPageContent() {
                                                 <CustomSelect
                                                     value={(columnMapping as any)[field] || ''}
                                                     onChange={(v) => setColumnMapping(m => ({ ...m, [field]: v || undefined }))}
-                                                    placeholder="— skip —"
+                                                    placeholder="- skip -"
                                                     options={[
-                                                        { value: '', label: '— skip —' },
+                                                        { value: '', label: '- skip -' },
                                                         ...csvHeaders.map(h => ({ value: h, label: h })),
                                                     ]}
                                                 />
@@ -1160,7 +1160,7 @@ function ValidationPageContent() {
                                                 onChange={setRouteCampaignId}
                                                 searchable={campaigns.length > 5}
                                                 placeholder="Choose a campaign..."
-                                                options={campaigns.map(c => ({ value: c.id, label: `${c.name} — ${c.source_platform?.toUpperCase()}` }))}
+                                                options={campaigns.map(c => ({ value: c.id, label: `${c.name} - ${c.source_platform?.toUpperCase()}` }))}
                                             />
                                         </div>
                                     ) : (

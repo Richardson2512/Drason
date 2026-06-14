@@ -62,7 +62,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
  "name": "What happens if a bounce rate spike occurs overnight without automated monitoring?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "If a bounce rate spikes to 8-12% overnight and no one pauses the mailbox, the sending platform continues sending from a degraded domain. By morning, the domain's reputation with Gmail and Outlook is damaged. Recovery takes 2-4 weeks of warmup — or the domain is permanently burned. Superkabe auto-pauses mailboxes in real-time when bounce rates exceed safe thresholds."
+ "text": "If a bounce rate spikes to 8-12% overnight and no one pauses the mailbox, the sending platform continues sending from a degraded domain. By morning, the domain's reputation with Gmail and Outlook is damaged. Recovery takes 2-4 weeks of warmup - or the domain is permanently burned. Superkabe auto-pauses mailboxes in real-time when bounce rates exceed safe thresholds."
  }
  },
  {
@@ -360,7 +360,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
 
  <BottomCtaStrip
  headline="Stop babysitting spreadsheets"
- body="Superkabe monitors every mailbox, every domain, every send — auto-pauses at 3% bounce, runs the 5-phase healing pipeline, and alerts on real anomalies. Manual monitoring stops scaling at 30 mailboxes."
+ body="Superkabe monitors every mailbox, every domain, every send - auto-pauses at 3% bounce, runs the 5-phase healing pipeline, and alerts on real anomalies. Manual monitoring stops scaling at 30 mailboxes."
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />

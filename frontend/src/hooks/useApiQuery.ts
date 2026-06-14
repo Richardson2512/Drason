@@ -1,5 +1,5 @@
 /**
- * useApiQuery — SWR-like data fetching hook with module-level cache.
+ * useApiQuery - SWR-like data fetching hook with module-level cache.
  *
  * Replaces the repeated useState+useEffect+useCallback fetch pattern
  * that appears in every dashboard page.
@@ -118,9 +118,9 @@ export function useApiQuery<T = unknown>(
       setData(cached.data as T);
       if (Date.now() - cached.timestamp < staleTime) {
         setIsLoading(false);
-        return; // Cache is fresh — skip network
+        return; // Cache is fresh - skip network
       }
-      // Stale cache — show cached data, refetch in background
+      // Stale cache - show cached data, refetch in background
       setIsLoading(false);
     }
 

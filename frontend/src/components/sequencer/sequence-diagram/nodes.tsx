@@ -49,7 +49,7 @@ export const EmailNode = memo(({ data }: NodeProps) => {
                 <div className="flex items-center gap-1.5 min-w-0">
                     <Mail size={12} className="text-[#1E1E2F] shrink-0" strokeWidth={2} />
                     <span className="text-[10px] uppercase tracking-wider font-semibold text-[#6B5E4F]">
-                        Step {d.stepNumber} — Email
+                        Step {d.stepNumber} - Email
                     </span>
                 </div>
                 {d.variantCount > 1 && (
@@ -157,7 +157,7 @@ export const BranchNode = memo(({ data }: NodeProps) => {
             <Handle type="target" position={Position.Top} className="!bg-[#1E1E2F] !w-2 !h-2 !border-0" />
             <GitBranch size={12} className="text-[#1E1E2F] shrink-0" strokeWidth={2} />
             <span className="text-xs font-semibold text-[#1E1E2F] truncate">{d.label}</span>
-            {/* Two source handles — labeled in CSS via the parent edges */}
+            {/* Two source handles - labeled in CSS via the parent edges */}
             <Handle type="source" position={Position.Bottom} id="yes" style={{ left: '30%' }} className="!bg-[#1F6F3A] !w-2 !h-2 !border-0" />
             <Handle type="source" position={Position.Bottom} id="no"  style={{ left: '70%' }} className="!bg-[#8B1F1F] !w-2 !h-2 !border-0" />
         </div>
@@ -166,7 +166,7 @@ export const BranchNode = memo(({ data }: NodeProps) => {
 BranchNode.displayName = 'BranchNode';
 
 // ============================================================================
-// EXIT NODE (sequence ends — replied / bounced / completed)
+// EXIT NODE (sequence ends - replied / bounced / completed)
 // ============================================================================
 
 export type ExitReason = 'replied' | 'bounced' | 'unsubscribed' | 'completed';
@@ -178,9 +178,9 @@ export interface ExitNodeData {
 }
 
 const EXIT_META: Record<ExitReason, { label: string; icon: React.ReactNode; bg: string; fg: string; border: string }> = {
-    replied:      { label: 'Sequence ends — Replied',      icon: <Reply size={11} strokeWidth={2.25} />,         bg: '#E8F4EC', fg: '#1F6F3A', border: '#BDE2C6' },
-    bounced:      { label: 'Sequence ends — Bounced',      icon: <MailX size={11} strokeWidth={2.25} />,         bg: '#FDEAEA', fg: '#8B1F1F', border: '#F4C2C2' },
-    unsubscribed: { label: 'Sequence ends — Unsubscribed', icon: <XCircle size={11} strokeWidth={2.25} />,       bg: '#FDF3E2', fg: '#8B5A1A', border: '#EFD8B0' },
+    replied:      { label: 'Sequence ends - Replied',      icon: <Reply size={11} strokeWidth={2.25} />,         bg: '#E8F4EC', fg: '#1F6F3A', border: '#BDE2C6' },
+    bounced:      { label: 'Sequence ends - Bounced',      icon: <MailX size={11} strokeWidth={2.25} />,         bg: '#FDEAEA', fg: '#8B1F1F', border: '#F4C2C2' },
+    unsubscribed: { label: 'Sequence ends - Unsubscribed', icon: <XCircle size={11} strokeWidth={2.25} />,       bg: '#FDF3E2', fg: '#8B5A1A', border: '#EFD8B0' },
     completed:    { label: 'Sequence complete',            icon: <CheckCircle2 size={11} strokeWidth={2.25} />,  bg: '#F0F6FF', fg: '#1F4C8F', border: '#C8DBF5' },
 };
 
@@ -215,4 +215,4 @@ export const nodeTypes = {
 };
 
 export const NODE_WIDTH_PX = NODE_WIDTH;
-export const NODE_HEIGHT_PX = 100; // approximate — used by dagre layout
+export const NODE_HEIGHT_PX = 100; // approximate - used by dagre layout

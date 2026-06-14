@@ -1,28 +1,28 @@
 /* =========================================================================
-   Superkabe Design System — Colors & Type
+   Superkabe Design System - Colors & Type
    ========================================================================= */
 
 /* ---------- FONTS ---------- */
-/* Primary stack: Inter for UI/body — closest free analog to the geometric
+/* Primary stack: Inter for UI/body - closest free analog to the geometric
    neo-grotesque used across superkabe.com. If a license becomes available
    for the production face, swap the @font-face below. */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap");
 
 :root {
   /* =====================================================================
-     COLOR — RAW PALETTE
+     COLOR - RAW PALETTE
      The Superkabe mark uses cream dots, one black dot, and an orange
-     "asterisk" of negative space at the center. Those three roles —
-     cream surface, black ink, orange protection — drive the entire system.
+     "asterisk" of negative space at the center. Those three roles -
+     cream surface, black ink, orange protection - drive the entire system.
      ===================================================================== */
 
-  /* Cream — surfaces, mailbox dots, hero washes */
+  /* Cream - surfaces, mailbox dots, hero washes */
   --cream-50:  #FFFBF4;   /* page wash */
-  --cream-100: #FCEFD8;   /* default cream surface — "mailbox dot" */
+  --cream-100: #FCEFD8;   /* default cream surface - "mailbox dot" */
   --cream-200: #F7E2BE;   /* hover */
   --cream-300: #EFD09A;   /* press / divider on cream */
 
-  /* Orange — protection, alerts, brand accent (the asterisk) */
+  /* Orange - protection, alerts, brand accent (the asterisk) */
   --orange-50:  #FFF3E0;
   --orange-100: #FFE0B0;
   --orange-300: #FFB95C;
@@ -30,8 +30,8 @@
   --orange-600: #E68B1F;  /* hover */
   --orange-700: #B36710;  /* press / on cream contrast */
 
-  /* Ink — black surfaces, text, the "at-risk" mailbox */
-  --ink-1000: #0A0A0B;    /* primary ink — buttons, headlines */
+  /* Ink - black surfaces, text, the "at-risk" mailbox */
+  --ink-1000: #0A0A0B;    /* primary ink - buttons, headlines */
   --ink-900:  #16161A;
   --ink-800:  #232329;
   --ink-700:  #3B3B43;
@@ -42,7 +42,7 @@
   --ink-100:  #ECECEE;
   --ink-50:   #F6F6F7;
 
-  /* Status — health gate (GREEN/YELLOW/RED) */
+  /* Status - health gate (GREEN/YELLOW/RED) */
   --green-50:  #E6F6EA;
   --green-500: #1B9D4A;
   --green-700: #0F6A30;
@@ -55,13 +55,13 @@
   --red-500: #DA3A22;
   --red-700: #9A2412;
 
-  /* Blue — informational, link states (used sparingly on data UI) */
+  /* Blue - informational, link states (used sparingly on data UI) */
   --blue-50:  #E6F0FE;
   --blue-500: #2563EB;
   --blue-700: #1846AE;
 
   /* =====================================================================
-     COLOR — SEMANTIC TOKENS
+     COLOR - SEMANTIC TOKENS
      Refer to these in product code; never the raw palette directly.
      ===================================================================== */
 
@@ -80,7 +80,7 @@
   --fg-4: var(--ink-400);    /* placeholder */
   --fg-on-inverse: #FFFFFF;
   --fg-on-cream:   var(--ink-1000);
-  --fg-on-orange:  var(--ink-1000);   /* orange is bright — black wins */
+  --fg-on-orange:  var(--ink-1000);   /* orange is bright - black wins */
   --fg-link:       var(--ink-1000);   /* underlined ink, not blue */
 
   /* Borders */
@@ -102,7 +102,7 @@
   --status-bad-dot:  var(--red-500);
 
   /* =====================================================================
-     TYPOGRAPHY — RAW
+     TYPOGRAPHY - RAW
      ===================================================================== */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
                Helvetica, Arial, sans-serif;
@@ -148,14 +148,14 @@
   --radius-xl: 20px;    /* hero blocks */
   --radius-pill: 999px; /* status pills, dot avatars */
 
-  /* Shadows are subtle — Superkabe leans on borders, not floating cards */
+  /* Shadows are subtle - Superkabe leans on borders, not floating cards */
   --shadow-1: 0 1px 0 rgba(10,10,11,0.04);
   --shadow-2: 0 1px 2px rgba(10,10,11,0.06), 0 1px 1px rgba(10,10,11,0.04);
   --shadow-3: 0 4px 12px rgba(10,10,11,0.08), 0 1px 2px rgba(10,10,11,0.06);
   --shadow-pop: 0 12px 32px rgba(10,10,11,0.12), 0 2px 4px rgba(10,10,11,0.06);
   --shadow-inset: inset 0 0 0 1px var(--border-2);
 
-  /* Protection glow — used on the hero mark and CTA hovers */
+  /* Protection glow - used on the hero mark and CTA hovers */
   --glow-protection: 0 0 0 6px rgba(245,167,66,0.18),
                      0 0 0 14px rgba(245,167,66,0.08);
 }
@@ -180,7 +180,7 @@
   color: var(--fg-1);
 }
 
-/* Display — hero headline. Big, tight, ink black. */
+/* Display - hero headline. Big, tight, ink black. */
 .t-display {
   font-size: clamp(48px, 6.4vw, 88px);
   line-height: var(--lh-tight);
@@ -188,7 +188,7 @@
   font-weight: var(--fw-semibold);
 }
 
-/* H1 — page title */
+/* H1 - page title */
 .t-h1 {
   font-size: clamp(36px, 4.4vw, 56px);
   line-height: var(--lh-snug);
@@ -196,7 +196,7 @@
   font-weight: var(--fw-semibold);
 }
 
-/* H2 — section heading */
+/* H2 - section heading */
 .t-h2 {
   font-size: clamp(28px, 3vw, 36px);
   line-height: var(--lh-snug);
@@ -204,7 +204,7 @@
   font-weight: var(--fw-semibold);
 }
 
-/* H3 — subsection / card title */
+/* H3 - subsection / card title */
 .t-h3 {
   font-size: 22px;
   line-height: 1.25;
@@ -212,14 +212,14 @@
   font-weight: var(--fw-semibold);
 }
 
-/* H4 — group label inside dense UI */
+/* H4 - group label inside dense UI */
 .t-h4 {
   font-size: 16px;
   line-height: 1.3;
   font-weight: var(--fw-semibold);
 }
 
-/* Eyebrow — small caps label sitting above headlines.
+/* Eyebrow - small caps label sitting above headlines.
    Used heavily on superkabe.com ("TROUBLESHOOTING · 2026") */
 .t-eyebrow {
   font-size: 12px;
@@ -230,7 +230,7 @@
   color: var(--fg-3);
 }
 
-/* Body — primary reading copy, slightly looser than UI */
+/* Body - primary reading copy, slightly looser than UI */
 .t-body {
   font-size: 16px;
   line-height: var(--lh-loose);
@@ -246,7 +246,7 @@
   color: var(--fg-2);
 }
 
-/* Meta — captions, table cells, secondary UI */
+/* Meta - captions, table cells, secondary UI */
 .t-meta {
   font-size: 12px;
   line-height: 1.35;
@@ -254,7 +254,7 @@
   color: var(--fg-3);
 }
 
-/* Mono — for technical values: bounce %, ESP names, DNS records */
+/* Mono - for technical values: bounce %, ESP names, DNS records */
 .t-mono {
   font-family: var(--font-mono);
   font-size: 13px;
@@ -264,7 +264,7 @@
   color: var(--fg-1);
 }
 
-/* Pull quote / blog accent — the one place the serif appears */
+/* Pull quote / blog accent - the one place the serif appears */
 .t-quote {
   font-family: var(--font-serif);
   font-size: clamp(24px, 2.6vw, 32px);
@@ -274,7 +274,7 @@
   color: var(--fg-1);
 }
 
-/* Inline link convention — black underline, no blue. */
+/* Inline link convention - black underline, no blue. */
 .t-link,
 a.t-link {
   color: var(--fg-link);

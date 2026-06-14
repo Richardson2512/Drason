@@ -1,5 +1,5 @@
 /**
- * Phase G — UI page-load smoke.
+ * Phase G - UI page-load smoke.
  *
  * Verifies every reachable dashboard route either:
  *   (a) renders successfully (200 + visible content), OR
@@ -16,7 +16,7 @@
  *   - Issues that require authenticated state to surface
  *   - Interactive flow bugs (covered by Phase F)
  *
- * No login is performed — the auth redirect is part of what we're
+ * No login is performed - the auth redirect is part of what we're
  * verifying. If a page returns 5xx INSTEAD of redirecting, that's the
  * regression signal.
  */
@@ -86,20 +86,20 @@ const PUBLIC_BLOG_PATHS = [
     '/blog/superkabe-vs-manual-monitoring',
 ];
 
-/** Marketing / public routes — must render 200, no redirect chain. */
+/** Marketing / public routes - must render 200, no redirect chain. */
 test.describe('public marketing routes', () => {
     for (const route of PUBLIC_ROUTES) {
         test(`GET ${route} renders 200`, async ({ page }) => {
             const res = await page.goto(route);
             expect(res?.status()).toBeLessThan(400);
-            // Body has rendered some content — guards against blank-white-page bugs.
+            // Body has rendered some content - guards against blank-white-page bugs.
             const body = await page.locator('body').innerText();
             expect(body.length).toBeGreaterThan(20);
         });
     }
 });
 
-/** Footer "Compare" links — recently swapped from Product Guides. */
+/** Footer "Compare" links - recently swapped from Product Guides. */
 test.describe('footer compare links resolve', () => {
     for (const path of PUBLIC_BLOG_PATHS) {
         test(`GET ${path} renders 200`, async ({ page }) => {
@@ -111,9 +111,9 @@ test.describe('footer compare links resolve', () => {
     }
 });
 
-/** Dashboard routes — render OR redirect to /login.
+/** Dashboard routes - render OR redirect to /login.
  *  Anything else (5xx, blank page, hard error) fails. */
-test.describe('dashboard routes (auth-protected — redirect or render)', () => {
+test.describe('dashboard routes (auth-protected - redirect or render)', () => {
     for (const route of DASHBOARD_ROUTES) {
         test(`GET ${route} doesn't 5xx`, async ({ page }) => {
             const res = await page.goto(route);
@@ -128,13 +128,13 @@ test.describe('dashboard routes (auth-protected — redirect or render)', () => 
             expect(body.length).toBeGreaterThan(20);
 
             // No console errors more severe than warnings (filters Next dev noise).
-            // We don't fail on this — just attach for trace, since hydration
+            // We don't fail on this - just attach for trace, since hydration
             // warnings vary by environment.
         });
     }
 });
 
-/** Super Sender announcement banner — must show on dashboard root. */
+/** Super Sender announcement banner - must show on dashboard root. */
 test.describe('Super Sender announcement banner', () => {
     test('appears on dashboard pages, not on its own page', async ({ page }) => {
         // Use a non-warmup dashboard route so the banner code path runs.

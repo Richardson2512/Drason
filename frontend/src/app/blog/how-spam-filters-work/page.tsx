@@ -85,7 +85,7 @@ export default function HowSpamFiltersWorkArticle() {
  "name": "How does Superkabe help prevent spam filtering?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe prevents spam filtering indirectly by protecting the infrastructure signals that spam filters evaluate. It monitors bounce rates, DNS authentication status, and mailbox health in real time. When any metric approaches dangerous thresholds, Superkabe auto-pauses affected mailboxes and gates domain traffic — preventing the reputation damage that causes spam filters to flag future emails."
+ "text": "Superkabe prevents spam filtering indirectly by protecting the infrastructure signals that spam filters evaluate. It monitors bounce rates, DNS authentication status, and mailbox health in real time. When any metric approaches dangerous thresholds, Superkabe auto-pauses affected mailboxes and gates domain traffic - preventing the reputation damage that causes spam filters to flag future emails."
  }
  }
  ]
@@ -124,7 +124,7 @@ export default function HowSpamFiltersWorkArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Spam filters operate in layers: connection, authentication, content, and engagement</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Infrastructure signals (reputation, DNS) matter more than content for cold outbound</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Gmail, Outlook, and Yahoo each use different filtering models and thresholds</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Content triggers compound — one flag may pass, but three together trigger spam routing</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Content triggers compound - one flag may pass, but three together trigger spam routing</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Avoiding spam filters starts with infrastructure protection, not just better copy</li>
  </ul>
  </div>
@@ -135,13 +135,13 @@ export default function HowSpamFiltersWorkArticle() {
  {/* Section 1 */}
  <h2 id="how-do-spam-filters-evaluate-email" className="text-2xl font-bold text-gray-900 mt-16 mb-4">1. How Do Spam Filters Evaluate Email?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Every email that arrives at a recipient&apos;s mail server is evaluated by a spam filter before it reaches the inbox. The filter assigns a spam score based on dozens of signals — if the score exceeds a threshold, the email is routed to spam or rejected entirely. For outbound teams, understanding what drives this score is the difference between landing in the inbox and being silently filtered.
+ Every email that arrives at a recipient&apos;s mail server is evaluated by a spam filter before it reaches the inbox. The filter assigns a spam score based on dozens of signals - if the score exceeds a threshold, the email is routed to spam or rejected entirely. For outbound teams, understanding what drives this score is the difference between landing in the inbox and being silently filtered.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Spam filters are not single-pass systems. They operate as multi-layered pipelines, where each layer adds to or subtracts from the cumulative spam score. An email that passes the connection layer can still fail at the content layer. An email with perfect content can still be flagged because the sending domain has a damaged reputation. The layers are cumulative, and the final score determines placement.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Modern ISP filters (Gmail, Microsoft, Yahoo) have evolved far beyond simple keyword matching. They use machine learning models trained on billions of emails, incorporating behavioral signals like recipient engagement, sending patterns, and historical domain performance. This means there is no single trick to &quot;beat&quot; spam filters — sustainable inbox placement requires getting every layer right.
+ Modern ISP filters (Gmail, Microsoft, Yahoo) have evolved far beyond simple keyword matching. They use machine learning models trained on billions of emails, incorporating behavioral signals like recipient engagement, sending patterns, and historical domain performance. This means there is no single trick to &quot;beat&quot; spam filters - sustainable inbox placement requires getting every layer right.
  </p>
 
  {/* Section 2 */}
@@ -207,7 +207,7 @@ export default function HowSpamFiltersWorkArticle() {
  {/* Section 3 */}
  <h2 id="how-do-spam-filters-affect-email-deliverability" className="text-2xl font-bold text-gray-900 mt-16 mb-4">3. How Do Spam Filters Affect Email Deliverability?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Spam filters do not just block individual emails — they create feedback loops that progressively degrade deliverability for the entire sending domain. Understanding this compounding effect is critical for outbound teams operating at scale.
+ Spam filters do not just block individual emails - they create feedback loops that progressively degrade deliverability for the entire sending domain. Understanding this compounding effect is critical for outbound teams operating at scale.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -245,23 +245,23 @@ export default function HowSpamFiltersWorkArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical point: spam filtering is not a per-email problem — it is a per-domain problem. When one mailbox&apos;s emails are consistently filtered, the reputation damage spreads to every mailbox on that domain. This is why a single poorly targeted campaign can compromise an entire sending operation.
+ The critical point: spam filtering is not a per-email problem - it is a per-domain problem. When one mailbox&apos;s emails are consistently filtered, the reputation damage spreads to every mailbox on that domain. This is why a single poorly targeted campaign can compromise an entire sending operation.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- For cold outbound teams, the risk is amplified. Cold emails inherently generate lower engagement than opted-in marketing emails. ISPs know this. Domains sending cold outbound start with a tighter margin of error — any additional negative signal (bounce, complaint, or content flag) pushes the domain into spam territory faster.
+ For cold outbound teams, the risk is amplified. Cold emails inherently generate lower engagement than opted-in marketing emails. ISPs know this. Domains sending cold outbound start with a tighter margin of error - any additional negative signal (bounce, complaint, or content flag) pushes the domain into spam territory faster.
  </p>
 
  {/* Section 4 */}
  <h2 id="how-do-isp-specific-spam-filters-behave" className="text-2xl font-bold text-gray-900 mt-16 mb-4">4. How Do ISP-Specific Spam Filters Behave?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Each major ISP implements its own spam filtering model with different weights and thresholds. An email that reaches Gmail&apos;s inbox may land in Outlook&apos;s spam folder — and vice versa. Understanding these differences allows outbound teams to diagnose ISP-specific deliverability issues.
+ Each major ISP implements its own spam filtering model with different weights and thresholds. An email that reaches Gmail&apos;s inbox may land in Outlook&apos;s spam folder - and vice versa. Understanding these differences allows outbound teams to diagnose ISP-specific deliverability issues.
  </p>
 
  <div className="space-y-4 mb-8">
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Google Gmail</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- Gmail uses a neural network-based filtering system that heavily weights engagement signals. Emails that recipients open, reply to, and spend time reading build positive domain reputation. Gmail also uses category tabs (Primary, Promotions, Social) as a pre-filter — landing in Promotions is not spam, but significantly reduces visibility.
+ Gmail uses a neural network-based filtering system that heavily weights engagement signals. Emails that recipients open, reply to, and spend time reading build positive domain reputation. Gmail also uses category tabs (Primary, Promotions, Social) as a pre-filter - landing in Promotions is not spam, but significantly reduces visibility.
  </p>
  <ul className="space-y-1 text-gray-500 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&bull;</span> Engagement-weighted: opens and replies matter most</li>
@@ -279,7 +279,7 @@ export default function HowSpamFiltersWorkArticle() {
  <ul className="space-y-1 text-gray-500 text-sm">
  <li className="flex items-start gap-2"><span className="text-purple-500 mt-1">&bull;</span> IP reputation-weighted: shared IPs carry cross-sender risk</li>
  <li className="flex items-start gap-2"><span className="text-purple-500 mt-1">&bull;</span> SmartScreen content analysis (proprietary ML model)</li>
- <li className="flex items-start gap-2"><span className="text-purple-500 mt-1">&bull;</span> Strict HTML filtering — heavy formatting triggers flags</li>
+ <li className="flex items-start gap-2"><span className="text-purple-500 mt-1">&bull;</span> Strict HTML filtering - heavy formatting triggers flags</li>
  <li className="flex items-start gap-2"><span className="text-purple-500 mt-1">&bull;</span> SNDS (Smart Network Data Services) for reputation monitoring</li>
  </ul>
  </div>
@@ -344,7 +344,7 @@ export default function HowSpamFiltersWorkArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- An important nuance: individual content triggers rarely cause spam filtering on their own. Spam filters use weighted scoring, where each trigger adds points. An email with one minor flag may pass. An email with three minor flags likely gets filtered. This is why outbound teams should eliminate as many content triggers as possible — each one narrows the margin.
+ An important nuance: individual content triggers rarely cause spam filtering on their own. Spam filters use weighted scoring, where each trigger adds points. An email with one minor flag may pass. An email with three minor flags likely gets filtered. This is why outbound teams should eliminate as many content triggers as possible - each one narrows the margin.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For cold outbound specifically, the safest approach is plain-text formatting with 1-2 links maximum, personalized opening lines, and short body copy (under 150 words). Heavy HTML templates that work for marketing emails are a liability for cold outbound because they trigger content filters while providing zero engagement advantage.
@@ -353,17 +353,17 @@ export default function HowSpamFiltersWorkArticle() {
  {/* Section 6 */}
  <h2 id="what-are-the-best-practices-for-avoiding-spam-filters" className="text-2xl font-bold text-gray-900 mt-16 mb-4">6. What Are the Best Practices for Avoiding Spam Filters?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Avoiding spam filters is not about tricks or workarounds — it is about building and maintaining the signals that filters use to identify legitimate email. Here are the proven practices that keep outbound teams in the inbox.
+ Avoiding spam filters is not about tricks or workarounds - it is about building and maintaining the signals that filters use to identify legitimate email. Here are the proven practices that keep outbound teams in the inbox.
  </p>
 
  <div className="space-y-4 mb-8">
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Infrastructure Best Practices</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Configure SPF, DKIM, and DMARC</strong> on every sending domain — not optional since 2024</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Keep bounce rates below 2%</strong> — verify lead lists before importing into campaigns</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Configure SPF, DKIM, and DMARC</strong> on every sending domain - not optional since 2024</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Keep bounce rates below 2%</strong> - verify lead lists before importing into campaigns</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Warm new domains gradually</strong> over 6-8 weeks before reaching full send volume</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Maintain consistent volume</strong> — avoid sudden spikes that trigger ISP anomaly detection</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Maintain consistent volume</strong> - avoid sudden spikes that trigger ISP anomaly detection</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Monitor sender reputation</strong> via Google Postmaster Tools and Microsoft SNDS</li>
  </ul>
  </div>
@@ -371,21 +371,21 @@ export default function HowSpamFiltersWorkArticle() {
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Content Best Practices</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Use plain-text or minimal HTML</strong> — avoid image-heavy templates for cold outbound</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Personalize every email</strong> — unique opening lines reduce &quot;identical content&quot; scoring</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Limit links to 1-2</strong> — each additional link increases content filter scoring</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Use plain-text or minimal HTML</strong> - avoid image-heavy templates for cold outbound</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Personalize every email</strong> - unique opening lines reduce &quot;identical content&quot; scoring</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Limit links to 1-2</strong> - each additional link increases content filter scoring</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Avoid spam-associated phrases</strong> in subject lines and body copy</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Keep subject lines under 50 characters</strong> — long subjects correlate with higher spam scores</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Keep subject lines under 50 characters</strong> - long subjects correlate with higher spam scores</li>
  </ul>
  </div>
 
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">List Hygiene Best Practices</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Verify all email addresses</strong> before importing — remove catch-all, disposable, and role-based addresses</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Remove bounced addresses immediately</strong> — never retry hard bounces</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Segment by engagement</strong> — separate active responders from non-engagers</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Refresh lead data regularly</strong> — email addresses decay at 2-3% per month</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Verify all email addresses</strong> before importing - remove catch-all, disposable, and role-based addresses</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Remove bounced addresses immediately</strong> - never retry hard bounces</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Segment by engagement</strong> - separate active responders from non-engagers</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&bull;</span> <strong>Refresh lead data regularly</strong> - email addresses decay at 2-3% per month</li>
  </ul>
  </div>
  </div>
@@ -393,7 +393,7 @@ export default function HowSpamFiltersWorkArticle() {
  {/* Section 7 */}
  <h2 id="infrastructure-vs-content" className="text-2xl font-bold text-gray-900 mt-16 mb-4">7. Infrastructure vs. Content: What Matters More?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- A common misconception in outbound email is that deliverability problems are primarily caused by email content — that writing better copy or avoiding certain words will fix spam placement. In reality, for cold outbound teams, infrastructure signals account for roughly 70-80% of the spam filtering decision, while content accounts for 20-30%.
+ A common misconception in outbound email is that deliverability problems are primarily caused by email content - that writing better copy or avoiding certain words will fix spam placement. In reality, for cold outbound teams, infrastructure signals account for roughly 70-80% of the spam filtering decision, while content accounts for 20-30%.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -434,7 +434,7 @@ export default function HowSpamFiltersWorkArticle() {
  This means that a domain with strong reputation and proper authentication can send emails with moderate content flags and still land in the inbox. Conversely, a domain with damaged reputation will land in spam regardless of how well-crafted the email content is.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The takeaway for outbound teams: fix infrastructure first. Perfect copy on a damaged domain is wasted effort. Superkabe focuses on the infrastructure layer — monitoring reputation, authentication, and sending health — because that is where 75% of spam filtering decisions are made.
+ The takeaway for outbound teams: fix infrastructure first. Perfect copy on a damaged domain is wasted effort. Superkabe focuses on the infrastructure layer - monitoring reputation, authentication, and sending health - because that is where 75% of spam filtering decisions are made.
  </p>
 
  {/* Section 8: FAQ */}
@@ -451,22 +451,22 @@ export default function HowSpamFiltersWorkArticle() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Can I test if my email will hit spam before sending?</h3>
- <p className="text-gray-600 text-sm">You can use tools like mail-tester.com or GlockApps to test individual emails against spam filters. However, these tools only test content — they cannot replicate your actual domain reputation or engagement history, which are the primary factors in real-world filtering.</p>
+ <p className="text-gray-600 text-sm">You can use tools like mail-tester.com or GlockApps to test individual emails against spam filters. However, these tools only test content - they cannot replicate your actual domain reputation or engagement history, which are the primary factors in real-world filtering.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Do Gmail and Outlook use different spam filters?</h3>
- <p className="text-gray-600 text-sm">Yes. Gmail weights engagement signals most heavily. Outlook/365 relies more on IP reputation and SmartScreen content analysis. Yahoo prioritizes DMARC compliance and complaint rates. An email can reach Gmail&apos;s inbox while being filtered by Outlook — diagnosing ISP-specific issues requires monitoring each ISP&apos;s reputation tools separately.</p>
+ <p className="text-gray-600 text-sm">Yes. Gmail weights engagement signals most heavily. Outlook/365 relies more on IP reputation and SmartScreen content analysis. Yahoo prioritizes DMARC compliance and complaint rates. An email can reach Gmail&apos;s inbox while being filtered by Outlook - diagnosing ISP-specific issues requires monitoring each ISP&apos;s reputation tools separately.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">How does Superkabe help prevent spam filtering?</h3>
- <p className="text-gray-600 text-sm">Superkabe protects the infrastructure signals that spam filters evaluate — bounce rates, DNS authentication, and mailbox health. By auto-pausing risky mailboxes and gating domain traffic before reputation damage occurs, Superkabe prevents the cascading degradation that causes ISPs to route emails to spam.</p>
+ <p className="text-gray-600 text-sm">Superkabe protects the infrastructure signals that spam filters evaluate - bounce rates, DNS authentication, and mailbox health. By auto-pausing risky mailboxes and gating domain traffic before reputation damage occurs, Superkabe prevents the cascading degradation that causes ISPs to route emails to spam.</p>
  </div>
  </div>
 
  {/* CTA */}
  <BottomCtaStrip
  headline="Key Takeaway"
- body={`Spam filters are multi-layered systems where infrastructure signals outweigh content signals. For cold outbound teams, inbox placement depends more on domain reputation, DNS authentication, and bounce rates than on subject lines or copy. Protect the infrastructure first — the content follows.`}
+ body={`Spam filters are multi-layered systems where infrastructure signals outweigh content signals. For cold outbound teams, inbox placement depends more on domain reputation, DNS authentication, and bounce rates than on subject lines or copy. Protect the infrastructure first - the content follows.`}
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />
@@ -475,7 +475,7 @@ export default function HowSpamFiltersWorkArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe monitors the infrastructure signals that spam filters evaluate — bounce rates, DNS authentication, and mailbox health — in real time. When any metric approaches dangerous thresholds, it auto-pauses affected mailboxes and gates domain traffic, preventing the reputation damage that triggers spam filtering.
+ Superkabe monitors the infrastructure signals that spam filters evaluate - bounce rates, DNS authentication, and mailbox health - in real time. When any metric approaches dangerous thresholds, it auto-pauses affected mailboxes and gates domain traffic, preventing the reputation damage that triggers spam filtering.
  </p>
  </div>
  </article>

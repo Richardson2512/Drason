@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Salesforce Integration | Superkabe Docs',
-    description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth — import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
+    description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth - import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
     alternates: { canonical: '/docs/integrations/salesforce' },
     openGraph: {
         title: 'Salesforce Integration | Superkabe Docs',
-        description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth — import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
+        description: 'Connect Salesforce (production or sandbox) to Superkabe via OAuth - import contacts via SOQL or list view, write activities to the Task object, sync HasOptedOutOfEmail.',
         url: '/docs/integrations/salesforce',
         siteName: 'Superkabe',
         type: 'article',
@@ -25,7 +25,7 @@ export default function SalesforceIntegrationDocs() {
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What this integration does</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                <li><strong>Contact import.</strong> Pick any Contact list view OR write a SOQL query — Superkabe paginates via REST and creates leads.</li>
+                <li><strong>Contact import.</strong> Pick any Contact list view OR write a SOQL query - Superkabe paginates via REST and creates leads.</li>
                 <li><strong>Activity push.</strong> Every Superkabe send/open/click/reply/bounce becomes a Salesforce Task (<code>WhoId</code> = the contact, <code>TaskSubtype</code> = Email, <code>Status</code> = Completed). Tasks render natively on the contact&apos;s Activity Timeline.</li>
                 <li><strong>Suppression sync.</strong> Contacts with <code>HasOptedOutOfEmail = true</code> are pulled into Superkabe&apos;s block list.</li>
                 <li><strong>Production AND sandbox.</strong> A radio at connect time picks the OAuth login host (<code>login.salesforce.com</code> vs. <code>test.salesforce.com</code>); Salesforce returns the <code>instance_url</code> Superkabe uses for every subsequent call.</li>
@@ -47,7 +47,7 @@ export default function SalesforceIntegrationDocs() {
                     </ul>
                 </li>
                 <li>Save. Salesforce takes ~10 minutes to propagate.</li>
-                <li>Open the new app — copy <strong>Consumer Key</strong> and <strong>Consumer Secret</strong>.</li>
+                <li>Open the new app - copy <strong>Consumer Key</strong> and <strong>Consumer Secret</strong>.</li>
                 <li>(Recommended) Manage → Edit Policies → Permitted Users: <em>Admin approved users are pre-authorized</em>. Add the profile(s) that should be allowed to connect.</li>
             </ol>
 
@@ -63,7 +63,7 @@ SALESFORCE_REDIRECT_URI=https://api.superkabe.com/api/integrations/salesforce/ca
 
             <div className="bg-amber-50 border border-amber-200 p-4 mb-6 rounded-lg">
                 <p className="text-sm text-amber-900 m-0 leading-relaxed">
-                    <strong>What you&apos;ll see during consent:</strong> Salesforce displays a security warning on the consent screen for any third-party app that isn&apos;t AppExchange-verified — text along the lines of &quot;If someone contacted you via phone or email and instructed you to use this app, do not proceed.&quot; This is Salesforce&apos;s standard anti-phishing protection (added 2023) — it shows for every legitimate B2B integration on first connect to a new org. Since you arrived at the screen by clicking <strong>Connect Salesforce</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen. Enterprise admins who want to skip the warning entirely for their org can pre-authorize Superkabe via Profile permissions in Setup.
+                    <strong>What you&apos;ll see during consent:</strong> Salesforce displays a security warning on the consent screen for any third-party app that isn&apos;t AppExchange-verified - text along the lines of &quot;If someone contacted you via phone or email and instructed you to use this app, do not proceed.&quot; This is Salesforce&apos;s standard anti-phishing protection (added 2023) - it shows for every legitimate B2B integration on first connect to a new org. Since you arrived at the screen by clicking <strong>Connect Salesforce</strong> on your own Superkabe dashboard, it&apos;s safe to proceed. The warning only appears on the very first authorization; future token refreshes happen server-side without a consent screen. Enterprise admins who want to skip the warning entirely for their org can pre-authorize Superkabe via Profile permissions in Setup.
                 </p>
             </div>
 
@@ -71,7 +71,7 @@ SALESFORCE_REDIRECT_URI=https://api.superkabe.com/api/integrations/salesforce/ca
                 <li><strong>Connect.</strong> Dashboard → Integrations → CRM → Connect Salesforce → choose <strong>Production</strong> or <strong>Sandbox</strong>. User is bounced through Salesforce&apos;s OAuth screen, approves, lands back with their <code>instance_url</code> persisted.</li>
                 <li><strong>Import.</strong> Manage Import → choose <strong>List view</strong> (recommended) or <strong>Custom SOQL</strong>. Map fields, click Start. The worker pages through results via Salesforce&apos;s <code>nextRecordsUrl</code>.</li>
                 <li><strong>Activity push.</strong> Every Superkabe event is written as a Task on the matching Contact. Tasks show on the timeline immediately.</li>
-                <li><strong>Disconnect.</strong> Same as HubSpot — tokens wiped, queue cancelled, links retained.</li>
+                <li><strong>Disconnect.</strong> Same as HubSpot - tokens wiped, queue cancelled, links retained.</li>
             </ol>
 
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">SOQL examples</h2>
@@ -95,7 +95,7 @@ ORDER BY CreatedDate DESC`}</pre>
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What gets written to Salesforce</h2>
             <p className="text-gray-600 mb-3">Each Superkabe event becomes a Task with these fields:</p>
             <div className="bg-gray-50 border border-gray-200 p-4 my-3 overflow-x-auto">
-                <pre className="text-sm text-gray-700 m-0">{`Subject:       "Superkabe — Email opened: <subject>"
+                <pre className="text-sm text-gray-700 m-0">{`Subject:       "Superkabe - Email opened: <subject>"
 Description:   <full body + metadata + timestamp>
 Status:        Completed
 Priority:      Normal
@@ -107,7 +107,7 @@ TaskSubtype:   Email`}</pre>
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">Rate limits, retries, limitations</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
                 <li>Salesforce REST API call limits are per-org per-24h (varies by tier). The activity-push worker batches imports per tick and respects <code>503 + Retry-After</code>.</li>
-                <li>Token refresh is automatic on 401 — the <code>instance_url</code> from the refresh response replaces the stored one (covers My Domain migrations).</li>
+                <li>Token refresh is automatic on 401 - the <code>instance_url</code> from the refresh response replaces the stored one (covers My Domain migrations).</li>
                 <li>v1 uses REST <code>/query</code> with <code>nextRecordsUrl</code> pagination. Bulk API 2.0 graduates in Phase 4 for imports &gt;25,000 contacts.</li>
                 <li>Custom Object support and AppExchange listing are on the roadmap.</li>
                 <li>Sandbox connections detect their environment from the returned <code>instance_url</code> so refresh always hits the right login host.</li>

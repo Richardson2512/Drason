@@ -66,7 +66,7 @@ export default function EmailBisonAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Why are EmailBison users switching tools?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Three reasons: (1) UI and agency-workspace tooling are sparser than Smartlead or Instantly. (2) No native deliverability protection — bounce rate is monitored manually. (3) No ESP-aware mailbox routing. Teams that scaled past 30 mailboxes typically need protection automation that EmailBison does not ship." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Three reasons: (1) UI and agency-workspace tooling are sparser than Smartlead or Instantly. (2) No native deliverability protection - bounce rate is monitored manually. (3) No ESP-aware mailbox routing. Teams that scaled past 30 mailboxes typically need protection automation that EmailBison does not ship." }
             },
             {
                 "@type": "Question",
@@ -76,7 +76,7 @@ export default function EmailBisonAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Does EmailBison have built-in deliverability protection?",
-                "acceptedAnswer": { "@type": "Answer", "text": "No. EmailBison sends well and reports bounces, but does not auto-pause mailboxes at a bounce-rate threshold or run a structured healing pipeline. Teams that need that automation typically replace EmailBison with a sender that ships protection natively — Superkabe enforces threshold-based auto-pause, 5-phase healing, and ESP-aware routing as standard." }
+                "acceptedAnswer": { "@type": "Answer", "text": "No. EmailBison sends well and reports bounces, but does not auto-pause mailboxes at a bounce-rate threshold or run a structured healing pipeline. Teams that need that automation typically replace EmailBison with a sender that ships protection natively - Superkabe enforces threshold-based auto-pause, 5-phase healing, and ESP-aware routing as standard." }
             },
             {
                 "@type": "Question",
@@ -115,24 +115,24 @@ export default function EmailBisonAlternativesPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse — no ESP-aware routing, no healing pipeline, no built-in protection — and teams running past 30 mailboxes typically need more. Here are seven alternatives ranked.
+                    EmailBison built its reputation on raw per-send economics. For teams pushing high single-tenant volume, the math works. But the product is intentionally sparse - no ESP-aware routing, no healing pipeline, no built-in protection - and teams running past 30 mailboxes typically need more. Here are seven alternatives ranked.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
                     <h2 className="font-bold text-blue-900 text-lg mb-3">Key Takeaways</h2>
                     <ul className="space-y-2 text-blue-800 text-sm">
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> EmailBison wins on per-send economics at high volume but ships no protection layer</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines native sending with auto-pause and 5-phase healing — no other alternative does</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines native sending with auto-pause and 5-phase healing - no other alternative does</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Smartlead and Instantly offer richer feature surfaces; both still lack automated auto-pause</li>
                         <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Lemlist wins personalization; Saleshandy bundles a lead database; Woodpecker has stronger reply branching</li>
-                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is fast — connect your own Gmail / Microsoft 365 / SMTP mailboxes and sending swaps over same-day</li>
+                        <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Migration to Superkabe is fast - connect your own Gmail / Microsoft 365 / SMTP mailboxes and sending swaps over same-day</li>
                     </ul>
                 </div>
 
                 <div className="prose prose-lg max-w-none">
                     <h2 id="why-look" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why teams leave EmailBison</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> is positioned as a no-frills high-volume sender. The product does what it promises — push volume cheaply with reliable webhooks. The friction shows when teams scale beyond a single tenant or want anything beyond raw sending.
+                        <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> is positioned as a no-frills high-volume sender. The product does what it promises - push volume cheaply with reliable webhooks. The friction shows when teams scale beyond a single tenant or want anything beyond raw sending.
                     </p>
 
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -149,12 +149,12 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 1. Superkabe */}
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — sender + protection in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - sender + protection in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             Superkabe is the only platform that ships per-send pricing AND infrastructure protection. Native sequencing through your own Google Workspace, Microsoft 365, or SMTP mailboxes. ESP-aware routing scores each mailbox by 30-day per-ESP bounce performance and uses a 60% capacity / 40% performance scoring blend. Auto-pause fires at 3% bounce rate over a rolling 100-send window with a 60-send minimum and a 5-bounce safety net. Paused mailboxes enter a 5-phase healing pipeline.
                         </p>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            Sending happens through your own mailboxes — Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. The deliverability protection layer is part of every send, not a bolt-on tool.
+                            Sending happens through your own mailboxes - Gmail OAuth, Microsoft 365 OAuth, or any SMTP provider with encrypted credentials. The deliverability protection layer is part of every send, not a bolt-on tool.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> High-volume teams who want sending economics AND protection</li>
@@ -168,9 +168,9 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 2. Smartlead */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — most mature feature surface</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - most mature feature surface</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> ships the most mature feature surface in the category — unlimited mailboxes, multi-step sequences, comprehensive webhooks, polished agency-workspace tooling. The API ecosystem is deep. Smartlead does not ship native auto-pause; bounce monitoring is dashboard-based.
+                            <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> ships the most mature feature surface in the category - unlimited mailboxes, multi-step sequences, comprehensive webhooks, polished agency-workspace tooling. The API ecosystem is deep. Smartlead does not ship native auto-pause; bounce monitoring is dashboard-based.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Teams that want a mature sender API and rich agency tooling</li>
@@ -181,7 +181,7 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 3. Instantly */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — bundled warmup + lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - bundled warmup + lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> bundles the strongest warmup network in the category with a B2B lead database and AI features. Polished UI. Per-active-lead pricing scales sharply at high volume. No automated auto-pause.
                         </p>
@@ -194,7 +194,7 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 4. Lemlist */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist — personalization-first</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. Lemlist - personalization-first</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> wins on personalization features and the Lemwarm warmup network. Per-user pricing limits scale.
                         </p>
@@ -207,7 +207,7 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 5. Saleshandy */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy — bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Saleshandy - bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a 700M+ contact lead database with a sequencer at a notably lower starting price than premium tools.
                         </p>
@@ -220,7 +220,7 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 6. Woodpecker */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker — established reply detection</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Woodpecker - established reply detection</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> built its reputation on reliability and reply detection. Bounce shield blocks invalid addresses at send. If-campaign branching for nurture sequences.
                         </p>
@@ -233,7 +233,7 @@ export default function EmailBisonAlternativesPage() {
 
                     {/* 7. Mailshake */}
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake — multichannel sales engagement</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Mailshake - multichannel sales engagement</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.mailshake.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Mailshake</a> blends email with calls and LinkedIn touches. Native dialer, calendar booking, clean UI for non-technical reps.
                         </p>
@@ -345,7 +345,7 @@ export default function EmailBisonAlternativesPage() {
 
                 <BottomCtaStrip
                     headline="Replace EmailBison with Superkabe"
-                    body="Per-send pricing, AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the deliverability protection layer EmailBison doesn't ship — auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, DNSBL monitoring."
+                    body="Per-send pricing, AI sequences, multi-mailbox sending across Gmail / Microsoft 365 / SMTP, and the deliverability protection layer EmailBison doesn't ship - auto-pause at 3% bounce, 5-phase healing, ESP-aware routing, DNSBL monitoring."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />
@@ -354,7 +354,7 @@ export default function EmailBisonAlternativesPage() {
                 <div className="space-y-4 mb-12">
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">What is the best EmailBison alternative in 2026?</h3>
-                        <p className="text-gray-600 text-sm">Superkabe — it pairs per-send pricing with native infrastructure protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline).</p>
+                        <p className="text-gray-600 text-sm">Superkabe - it pairs per-send pricing with native infrastructure protection (auto-pause at 3% bounce rate after 60 sends, 5-phase healing pipeline).</p>
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Why are EmailBison users switching tools?</h3>

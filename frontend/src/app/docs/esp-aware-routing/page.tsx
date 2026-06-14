@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'ESP-Aware Routing | Superkabe Docs',
-    description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient — 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
+    description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient - 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
     alternates: { canonical: '/docs/esp-aware-routing' },
     openGraph: {
         title: 'ESP-Aware Routing | Superkabe Docs',
-        description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient — 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
+        description: 'How Superkabe routes outbound sends to the mailbox most likely to inbox each recipient - 60% capacity, 40% per-ESP performance, separate buckets for Gmail, Outlook, Mimecast, and generic SMTP.',
         url: '/docs/esp-aware-routing',
         siteName: 'Superkabe',
         type: 'article',
@@ -26,8 +26,8 @@ export default function EspAwareRoutingDocsPage() {
             {/* ==================== What it is ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">What ESP-Aware Routing Is</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Superkabe knows which Email Service Provider (ESP) the recipient uses — Gmail, Outlook/Microsoft,
-                Mimecast, or a generic SMTP host — by classifying their MX records on first ingest and caching the result.
+                Superkabe knows which Email Service Provider (ESP) the recipient uses - Gmail, Outlook/Microsoft,
+                Mimecast, or a generic SMTP host - by classifying their MX records on first ingest and caching the result.
                 When dispatching a sequence step, the sequencer doesn&apos;t pick a mailbox at random; it picks the
                 mailbox most likely to inbox <em>for that specific ESP</em>, based on a weighted formula that combines
                 remaining daily capacity with each mailbox&apos;s historical performance against that ESP.
@@ -50,12 +50,12 @@ export default function EspAwareRoutingDocsPage() {
             <p className="text-gray-600 leading-relaxed mb-4">
                 Different ESPs run different filters. Gmail&apos;s spam classifier weights different signals than
                 Microsoft&apos;s SmartScreen. Mimecast looks at things neither of them care about. A mailbox with a
-                stellar reputation against Gmail can be silently spam-foldered by Outlook — and you&apos;d never
+                stellar reputation against Gmail can be silently spam-foldered by Outlook - and you&apos;d never
                 see it from a uniform pool average.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
-                Single-pool routing — picking the &quot;next mailbox in rotation&quot; with no awareness of the recipient&apos;s
-                ESP — wastes the strongest signal you have: which mailbox actually performs against which inbox provider.
+                Single-pool routing - picking the &quot;next mailbox in rotation&quot; with no awareness of the recipient&apos;s
+                ESP - wastes the strongest signal you have: which mailbox actually performs against which inbox provider.
                 ESP-aware routing keeps that signal alive and acts on it every send.
             </p>
 
@@ -93,7 +93,7 @@ export default function EspAwareRoutingDocsPage() {
                         </tr>
                         <tr>
                             <td className="px-5 py-4 font-semibold text-gray-900">Generic / Custom SMTP</td>
-                            <td className="px-5 py-4 text-gray-600">Everything else — Proofpoint, Zoho, custom self-hosted, etc.</td>
+                            <td className="px-5 py-4 text-gray-600">Everything else - Proofpoint, Zoho, custom self-hosted, etc.</td>
                             <td className="px-5 py-4 text-gray-600">Catch-all bucket; broad but less predictable</td>
                         </tr>
                     </tbody>
@@ -135,7 +135,7 @@ export default function EspAwareRoutingDocsPage() {
                         <tr>
                             <td className="px-5 py-4 font-semibold text-gray-900">Per-ESP performance</td>
                             <td className="px-5 py-4 text-purple-600 font-mono">40%</td>
-                            <td className="px-5 py-4 text-gray-600">Rolling 100-send window of bounce rate, reply rate, and engagement signals — for this mailbox, against this specific ESP only.</td>
+                            <td className="px-5 py-4 text-gray-600">Rolling 100-send window of bounce rate, reply rate, and engagement signals - for this mailbox, against this specific ESP only.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -170,8 +170,8 @@ export default function EspAwareRoutingDocsPage() {
                 Gmail sender just because Outlook is mad at it.
             </p>
             <p className="text-gray-600 mb-4">
-                When a mailbox&apos;s per-ESP performance crosses an unhealthy threshold — for example, bounce rate
-                above 2% within the last 100 sends to that ESP — Superkabe stops routing that ESP&apos;s traffic to
+                When a mailbox&apos;s per-ESP performance crosses an unhealthy threshold - for example, bounce rate
+                above 2% within the last 100 sends to that ESP - Superkabe stops routing that ESP&apos;s traffic to
                 that mailbox. The mailbox stays fully active for every <em>other</em> ESP it&apos;s healthy against.
             </p>
 
@@ -205,15 +205,15 @@ export default function EspAwareRoutingDocsPage() {
             {/* ==================== Empty bucket fallback ==================== */}
             <h2 className="text-3xl font-bold mb-4 mt-12 text-gray-900">When a Bucket Has No Healthy Mailboxes</h2>
             <p className="text-gray-600 mb-4">
-                If every mailbox on the campaign is suspended for the recipient&apos;s ESP — or simply doesn&apos;t
-                have any with a healthy track record there yet — Superkabe falls back in this order:
+                If every mailbox on the campaign is suspended for the recipient&apos;s ESP - or simply doesn&apos;t
+                have any with a healthy track record there yet - Superkabe falls back in this order:
             </p>
 
             <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm">
                 <ol className="space-y-3 text-gray-600 text-sm list-decimal list-inside">
                     <li>
                         <strong className="text-gray-900">Generic SMTP fallback:</strong> route to the next-best mailbox
-                        in <em>any</em> bucket — typically a generic SMTP mailbox with broad cross-ESP performance — provided
+                        in <em>any</em> bucket - typically a generic SMTP mailbox with broad cross-ESP performance - provided
                         capacity is available.
                     </li>
                     <li>
@@ -226,7 +226,7 @@ export default function EspAwareRoutingDocsPage() {
 
             <p className="text-gray-600 mb-4">
                 The held lead is automatically retried on the next dispatcher tick. As soon as a mailbox comes back
-                healthy for that ESP — or the operator attaches a new one — sending resumes without intervention.
+                healthy for that ESP - or the operator attaches a new one - sending resumes without intervention.
             </p>
 
             {/* ==================== Visibility ==================== */}
@@ -238,13 +238,13 @@ export default function EspAwareRoutingDocsPage() {
             <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm">
                 <ul className="space-y-3 text-gray-600 text-sm">
                     <li>
-                        <code className="px-2 py-1 bg-gray-100 text-blue-700 text-xs">/dashboard/mailboxes</code> —
+                        <code className="px-2 py-1 bg-gray-100 text-blue-700 text-xs">/dashboard/mailboxes</code> -
                         per-mailbox detail page shows a four-column ESP performance grid: bounce rate, reply rate,
                         engagement, and current health status (healthy / suspended) for Gmail, Microsoft, Mimecast,
                         and generic SMTP.
                     </li>
                     <li>
-                        <code className="px-2 py-1 bg-gray-100 text-blue-700 text-xs">/dashboard/load-balancing</code> —
+                        <code className="px-2 py-1 bg-gray-100 text-blue-700 text-xs">/dashboard/load-balancing</code> -
                         aggregate view: bucket health across the org, recent routing decisions with the chosen
                         mailbox and its score breakdown, and any bucket-bypass overrides currently active.
                     </li>
@@ -309,7 +309,7 @@ export default function EspAwareRoutingDocsPage() {
                     <li>
                         <strong className="text-gray-900">Native sequencer:</strong> Superkabe dispatches directly
                         through your connected Gmail, Microsoft 365, or SMTP mailboxes. ESP-aware routing runs in
-                        the dispatcher itself — every send is scored and assigned in real time.
+                        the dispatcher itself - every send is scored and assigned in real time.
                     </li>
                     <li>
                         <strong className="text-gray-900">Protection mode (Smartlead, Instantly, EmailBison):</strong>
@@ -332,22 +332,22 @@ export default function EspAwareRoutingDocsPage() {
                 <ul className="space-y-2">
                     <li>
                         <a href="/docs/platform-rules" className="text-blue-600 hover:text-blue-700 font-medium">
-                            → Platform Rules — thresholds and the 5-phase recovery state machine
+                            → Platform Rules - thresholds and the 5-phase recovery state machine
                         </a>
                     </li>
                     <li>
                         <a href="/docs/risk-scoring" className="text-blue-600 hover:text-blue-700 font-medium">
-                            → Risk Scoring — how lead-side risk interacts with mailbox routing
+                            → Risk Scoring - how lead-side risk interacts with mailbox routing
                         </a>
                     </li>
                     <li>
                         <a href="/docs/help/load-balancing" className="text-blue-600 hover:text-blue-700 font-medium">
-                            → Load Balancing — operator guide to the load-balancing dashboard
+                            → Load Balancing - operator guide to the load-balancing dashboard
                         </a>
                     </li>
                     <li>
                         <a href="/docs/help/mailbox-rotation" className="text-blue-600 hover:text-blue-700 font-medium">
-                            → Mailbox Rotation — how standby mailboxes swap in when one is paused
+                            → Mailbox Rotation - how standby mailboxes swap in when one is paused
                         </a>
                     </li>
                 </ul>

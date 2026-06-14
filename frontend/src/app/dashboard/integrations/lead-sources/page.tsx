@@ -28,12 +28,12 @@ interface LeadSourceConnection {
 const PROVIDER_META: Record<Provider, { name: string; description: string; logo: string; comingSoon?: boolean }> = {
     apollo: {
         name: 'Apollo.io',
-        description: 'Paste an Apollo people-search, saved-search, or list URL — Superkabe replays the search via the official Apollo API and imports contacts as leads. Idempotent on email, capped per import, credit-aware.',
+        description: 'Paste an Apollo people-search, saved-search, or list URL - Superkabe replays the search via the official Apollo API and imports contacts as leads. Idempotent on email, capped per import, credit-aware.',
         logo: '/brands/apollo.svg',
     },
     zoominfo: {
         name: 'ZoomInfo',
-        description: 'Coming soon — paste a ZoomInfo Search URL to import enriched contacts and intent signals.',
+        description: 'Coming soon - paste a ZoomInfo Search URL to import enriched contacts and intent signals.',
         logo: '/brands/zoominfo.svg',
         comingSoon: true,
     },
@@ -48,7 +48,7 @@ const STATUS_STYLE: Record<ConnStatus, { label: string; bg: string; fg: string; 
 };
 
 function formatDate(iso: string | null): string {
-    if (!iso) return '—';
+    if (!iso) return '-';
     return new Date(iso).toLocaleString(undefined, {
         month: 'short', day: 'numeric', year: 'numeric',
         hour: 'numeric', minute: '2-digit',
@@ -205,7 +205,7 @@ export default function LeadSourcesPage() {
                 <div>
                     <strong>How import works.</strong> Once connected, you paste a search URL from Apollo&apos;s app
                     (people search, saved search, or saved list). Superkabe parses the filters, previews the result count,
-                    and replays the search via the official API — credits only flow when you start the import. See the
+                    and replays the search via the official API - credits only flow when you start the import. See the
                     <Link href="/docs/integrations/apollo" className="underline mx-1">Apollo</Link> docs for details.
                 </div>
             </div>
@@ -324,7 +324,7 @@ export default function LeadSourcesPage() {
                 consequences={[
                     'Pending import jobs will be cancelled',
                     'The encrypted API key will be wiped from our database',
-                    'Imported leads stay — only the connection is removed',
+                    'Imported leads stay - only the connection is removed',
                     'You can reconnect anytime by pasting the API key again',
                 ]}
                 confirmLabel={busyId === pendingDisconnect?.id ? 'Disconnecting…' : 'Disconnect'}

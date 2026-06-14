@@ -101,7 +101,7 @@ export default function DkimLookupClient() {
  return;
  }
 
- // TXT records may be split across multiple strings — concatenate them
+ // TXT records may be split across multiple strings - concatenate them
  const txtRecords = data.Answer
  .filter((a: { type: number }) => a.type === 16)
  .map((a: { data: string }) => a.data.replace(/"/g, '').replace(/\s+/g, ''));
@@ -363,7 +363,7 @@ export default function DkimLookupClient() {
  <ParsedField
  label="Public Key (p=)"
  value={result.parsed.publicKey || undefined}
- fallback={result.status === 'revoked' ? 'Empty — key has been revoked' : 'Not found'}
+ fallback={result.status === 'revoked' ? 'Empty - key has been revoked' : 'Not found'}
  isKey
  warn={result.status === 'revoked'}
  />
@@ -373,7 +373,7 @@ export default function DkimLookupClient() {
  <span className={`text-sm font-semibold ${result.keyLengthBits >= 2048 ? 'text-green-600' : result.keyLengthBits >= 1024 ? 'text-[#D4730F]' : 'text-gray-700'}`}>
  {result.keyLengthBits} bits
  {result.keyLengthBits >= 2048 && ' (recommended)'}
- {result.keyLengthBits < 1024 && ' (too short — upgrade to 2048-bit)'}
+ {result.keyLengthBits < 1024 && ' (too short - upgrade to 2048-bit)'}
  </span>
  </div>
  )}

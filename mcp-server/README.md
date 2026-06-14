@@ -1,6 +1,6 @@
 # Superkabe MCP Server
 
-Connect [Claude](https://claude.ai), [Cursor](https://cursor.com), [Continue](https://continue.dev), or any MCP-compatible AI agent to your Superkabe cold email platform. Once connected, the agent can manage leads, run campaigns, validate emails, monitor mailbox/domain health, and reply to threads — all through natural-language prompts.
+Connect [Claude](https://claude.ai), [Cursor](https://cursor.com), [Continue](https://continue.dev), or any MCP-compatible AI agent to your Superkabe cold email platform. Once connected, the agent can manage leads, run campaigns, validate emails, monitor mailbox/domain health, and reply to threads - all through natural-language prompts.
 
 ```
 ┌─────────────────┐  stdio JSON-RPC   ┌──────────────────┐  HTTPS+Bearer  ┌──────────────────┐
@@ -18,18 +18,18 @@ The full reference docs (with all 16 tools, schemas, security model, troubleshoo
 ### Prerequisites
 
 - **Node.js 20+**
-- **A Superkabe API key** — generate one in *Dashboard → API & MCP* with the scopes you want the agent to have. Start with read-only (`leads:read`, `campaigns:read`, `mailboxes:read`, `domains:read`, `replies:read`, `validation:read`, `reports:read`, `account:read`) and grant write/send scopes only when you actively want the agent taking those actions.
-- **An MCP-compatible client** — Claude Desktop, Claude Code, Cursor, Continue, or any conformant client.
+- **A Superkabe API key** - generate one in *Dashboard → API & MCP* with the scopes you want the agent to have. Start with read-only (`leads:read`, `campaigns:read`, `mailboxes:read`, `domains:read`, `replies:read`, `validation:read`, `reports:read`, `account:read`) and grant write/send scopes only when you actively want the agent taking those actions.
+- **An MCP-compatible client** - Claude Desktop, Claude Code, Cursor, Continue, or any conformant client.
 
 ### Install
 
-**Option A — npx (no install)**
+**Option A - npx (no install)**
 
 ```bash
 SUPERKABE_API_KEY=sk_live_... npx -y @superkabe/mcp-server
 ```
 
-**Option B — from source**
+**Option B - from source**
 
 ```bash
 git clone https://github.com/Superkabereal/Superkabe.git superkabe
@@ -63,7 +63,7 @@ Restart your client. A *tools* icon (or equivalent) should now show 16 Superkabe
 
 ## 2. Manual configuration
 
-Same JSON shape across all clients — only the file location differs.
+Same JSON shape across all clients - only the file location differs.
 
 ```json
 {
@@ -104,7 +104,7 @@ If you cloned from source instead of using npx, replace the `command`/`args` blo
 
 | Variable              | Required | Default                  | Notes |
 |-----------------------|----------|--------------------------|-------|
-| `SUPERKABE_API_KEY`   | yes      | —                        | Bearer token. Server crashes at startup if missing. |
+| `SUPERKABE_API_KEY`   | yes      | -                        | Bearer token. Server crashes at startup if missing. |
 | `SUPERKABE_API_URL`   | no       | `http://localhost:4000`  | Override for staging / production. Trailing slash stripped. |
 
 For production: `SUPERKABE_API_URL=https://api.superkabe.com`.
@@ -135,7 +135,7 @@ Every tool maps 1:1 to a v1 REST endpoint and is gated by a specific scope on yo
 | `list_mailboxes`          | low      | `mailboxes:read`      | Health, send/bounce counts, warmup, recovery phase. |
 | `list_domains`            | low      | `domains:read`        | Health, bounce-rate trends, engagement, recovery phase. |
 
-**Read-only starter scope set:** `account:read leads:read validation:read campaigns:read reports:read replies:read mailboxes:read domains:read` — gets you 11/16 tools with zero ability to change anything or send mail.
+**Read-only starter scope set:** `account:read leads:read validation:read campaigns:read reports:read replies:read mailboxes:read domains:read` - gets you 11/16 tools with zero ability to change anything or send mail.
 
 ---
 
@@ -150,7 +150,7 @@ node dist/index.js
 # Superkabe MCP Server v1.0.0 connected (https://api.superkabe.com)
 ```
 
-The process sits idle waiting for JSON-RPC on stdin. Ctrl-C to exit. MCP clients spawn this process automatically — you do not run it manually in normal use.
+The process sits idle waiting for JSON-RPC on stdin. Ctrl-C to exit. MCP clients spawn this process automatically - you do not run it manually in normal use.
 
 ---
 
@@ -196,7 +196,7 @@ npm run build
 # Restart your MCP client
 ```
 
-New tools are auto-advertised over the protocol — no client changes required.
+New tools are auto-advertised over the protocol - no client changes required.
 
 ---
 
@@ -216,7 +216,7 @@ For the high-risk tools (`launch_campaign`, `update_campaign`, `pause_campaign`,
 
 - Implements MCP server capability `tools` only. No `resources`, `prompts`, or `sampling` yet.
 - Built on `@modelcontextprotocol/sdk` 1.12.x; any conformant client should interoperate.
-- Transport: `StdioServerTransport`. HTTP/SSE on the roadmap — open an issue if you need it.
+- Transport: `StdioServerTransport`. HTTP/SSE on the roadmap - open an issue if you need it.
 
 ---
 

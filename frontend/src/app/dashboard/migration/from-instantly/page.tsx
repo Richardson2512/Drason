@@ -11,7 +11,7 @@
  *
  * Page is feature-flag gated client-side (probes /feature on mount).
  * Instantly-specific:
- *   • Whoami returns the workspace name — surfaced so the user can confirm
+ *   • Whoami returns the workspace name - surfaced so the user can confirm
  *     they pasted the right key for the right workspace.
  *   • Every mailbox lands disconnected (Instantly doesn't export creds), so
  *     the handoff step is universal: every imported mailbox needs reconnection.
@@ -66,7 +66,7 @@ interface KeyStatus {
 const POLL_INTERVAL_MS = 2500;
 
 const formatMinutesRemaining = (mins: number | null): string => {
-    if (mins == null) return '—';
+    if (mins == null) return '-';
     if (mins < 60) return `${mins}m`;
     const h = Math.floor(mins / 60);
     const m = mins % 60;
@@ -186,7 +186,7 @@ export default function ImportFromInstantlyPage() {
                 },
             );
             if (!stored?.success) throw new Error('store-key returned unsuccessful');
-            toast.success(`API key stored — workspace "${stored.workspace.name}"`);
+            toast.success(`API key stored - workspace "${stored.workspace.name}"`);
             setApiKey('');
             const ks = await apiClient<KeyStatus & { success: boolean }>('/api/migration/from-instantly/key-status');
             setKeyStatus(ks);
@@ -288,7 +288,7 @@ export default function ImportFromInstantlyPage() {
                     One-time migration. Your campaigns, sequences, leads, mailbox metadata, and
                     block list move to Superkabe. Your Instantly API key is held encrypted for at
                     most 72 hours, then automatically wiped. Mailboxes will need re-authentication
-                    after import — Instantly does not export sender credentials.
+                    after import - Instantly does not export sender credentials.
                 </p>
             </header>
 
@@ -297,7 +297,7 @@ export default function ImportFromInstantlyPage() {
             {keyStatus?.connected && (
                 <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-3">
                     <div className="text-sm text-amber-900">
-                        <span className="font-semibold">Key on file</span> — auto-discards in{' '}
+                        <span className="font-semibold">Key on file</span> - auto-discards in{' '}
                         <span className="font-mono">{formatMinutesRemaining(keyStatus.minutesRemaining)}</span>
                     </div>
                     <button
@@ -380,7 +380,7 @@ function Stepper({ currentStep }: { currentStep: Step }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 1 — paste API key
+// Step 1 - paste API key
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepKey(props: {
@@ -443,7 +443,7 @@ function StepKey(props: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 2 — preview
+// Step 2 - preview
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepPreview(props: {
@@ -489,7 +489,7 @@ function StepPreview(props: {
                 <p className="text-sm text-gray-500">Here&apos;s what we found in your Instantly workspace.</p>
             </div>
 
-            {/* Workspace identity — confirms the right key for the right workspace */}
+            {/* Workspace identity - confirms the right key for the right workspace */}
             <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
                 <div className="text-[10px] font-bold uppercase tracking-wide text-gray-500 mb-1">Workspace</div>
                 <div className="text-sm font-bold text-gray-900">{preview.workspace.name}</div>
@@ -525,21 +525,21 @@ function StepPreview(props: {
                 <ul className="divide-y divide-gray-100 text-sm">
                     <BucketRow
                         label="Never contacted"
-                        sublabel="No email has gone out yet — always safe to import"
+                        sublabel="No email has gone out yet - always safe to import"
                         value={L.neverContacted}
                         tag="always imports"
                         tagColor="emerald"
                     />
                     <BucketRow
                         label={`Last contacted more than ${threshold} days ago`}
-                        sublabel="Recipients unlikely to remember — safe to restart fresh from step 1"
+                        sublabel="Recipients unlikely to remember - safe to restart fresh from step 1"
                         value={L.staleContact}
                         tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
                         tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
                     />
                     <BucketRow
                         label={`Last contacted in the last ${threshold} days`}
-                        sublabel="Recipients likely to remember — duplicate first-touch may hurt reply rate"
+                        sublabel="Recipients likely to remember - duplicate first-touch may hurt reply rate"
                         value={L.recentContact}
                         tag={
                             mode === 'aggressive' && includeRecentContacts
@@ -550,14 +550,14 @@ function StepPreview(props: {
                     />
                     <BucketRow
                         label="Sequence completed"
-                        sublabel="Worked the lead, no reply — restart counts as a fresh outreach"
+                        sublabel="Worked the lead, no reply - restart counts as a fresh outreach"
                         value={L.completed}
                         tag={mode === 'aggressive' ? 'aggressive only' : 'skipped'}
                         tagColor={mode === 'aggressive' ? 'blue' : 'gray'}
                     />
                     <BucketRow
                         label="Opted out / Bounced"
-                        sublabel="Suppressed by Instantly — never imported"
+                        sublabel="Suppressed by Instantly - never imported"
                         value={L.optedOut}
                         tag="never imports"
                         tagColor="rose"
@@ -571,13 +571,13 @@ function StepPreview(props: {
                 <ModeRadio
                     selected={mode === 'aggressive'}
                     onSelect={() => setMode('aggressive')}
-                    title="Aggressive — import everything, restart from step 1"
+                    title="Aggressive - import everything, restart from step 1"
                     body={
                         <>
                             Best when you want to <strong>fully decommission Instantly</strong> and stop
                             paying for two platforms. We import never-contacted, stale, and completed
                             leads (recent contacts default to <strong>skipped</strong>). Every imported
-                            lead starts at step 1 in Superkabe — recipients who already received emails
+                            lead starts at step 1 in Superkabe - recipients who already received emails
                             in Instantly may receive step 1 again, possibly from a different mailbox.
                             Threading on existing sequences is broken.
                         </>
@@ -587,12 +587,12 @@ function StepPreview(props: {
                 <ModeRadio
                     selected={mode === 'conservative'}
                     onSelect={() => setMode('conservative')}
-                    title="Conservative — only never-contacted leads"
+                    title="Conservative - only never-contacted leads"
                     body={
                         <>
                             Best when you want <strong>existing sequences to finish on Instantly</strong>{' '}
                             and start fresh on Superkabe with new leads. Mid-sequence leads stay in
-                            Instantly until they finish naturally — recipients keep receiving follow-ups
+                            Instantly until they finish naturally - recipients keep receiving follow-ups
                             from the original sender in the original thread. You&apos;ll keep Instantly
                             live for 1-3 months until those sequences drain.
                         </>
@@ -600,7 +600,7 @@ function StepPreview(props: {
                 />
             </div>
 
-            {/* Recent-contact toggle — only relevant in aggressive mode */}
+            {/* Recent-contact toggle - only relevant in aggressive mode */}
             {mode === 'aggressive' && L.recentContact > 0 && (
                 <label className="flex items-start gap-3 p-4 border border-amber-200 bg-amber-50 rounded-xl cursor-pointer hover:bg-amber-100/50">
                     <input
@@ -615,7 +615,7 @@ function StepPreview(props: {
                         </div>
                         <div className="text-xs text-amber-800 mt-1">
                             They&apos;ll restart at step 1 in Superkabe. Recipients are likely to remember
-                            the prior outreach — leave this off if you have any high-touch / named accounts
+                            the prior outreach - leave this off if you have any high-touch / named accounts
                             in this bucket.
                         </div>
                     </div>
@@ -630,8 +630,8 @@ function StepPreview(props: {
                 <div className="text-3xl font-bold">{importing.toLocaleString()} leads</div>
                 <div className="text-xs opacity-75 mt-1">
                     {mode === 'aggressive'
-                        ? `Aggressive mode${includeRecentContacts ? ' + recent contacts' : ''} — imported leads start at step 1.`
-                        : 'Conservative mode — only never-contacted leads.'}
+                        ? `Aggressive mode${includeRecentContacts ? ' + recent contacts' : ''} - imported leads start at step 1.`
+                        : 'Conservative mode - only never-contacted leads.'}
                 </div>
             </div>
 
@@ -789,7 +789,7 @@ function Bucket({ label, data, keyLabel }: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 3 — importing (poll loop)
+// Step 3 - importing (poll loop)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const STAT_LABELS: Record<string, string> = {
@@ -802,7 +802,7 @@ const STAT_LABELS: Record<string, string> = {
     variantsImported: 'A/B variants imported',
     leadsImported: 'Leads imported',
     leadsSkippedRecentContact: 'Leads skipped (recent contact)',
-    leadsSkippedInFlight: 'Leads skipped (mid-sequence — conservative)',
+    leadsSkippedInFlight: 'Leads skipped (mid-sequence - conservative)',
     leadsSkippedOptedOut: 'Leads skipped (opted out / bounced)',
     leadsSkippedInvalidEmail: 'Leads skipped (invalid email)',
     blockListImported: 'Block-list entries imported',
@@ -864,7 +864,7 @@ function StepImporting({ job }: { job: ImportJob | null }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Step 4 — mailbox handoff
+// Step 4 - mailbox handoff
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StepHandoff({ job }: { job: ImportJob | null }) {
@@ -879,7 +879,7 @@ function StepHandoff({ job }: { job: ImportJob | null }) {
                 <h2 className="text-lg font-bold text-gray-900 mb-1">Reconnect your mailboxes</h2>
                 <p className="text-sm text-gray-500">
                     Import is complete. Imported campaigns are paused, and every mailbox is currently
-                    disconnected — Instantly does not export OAuth tokens or SMTP passwords. Reconnect
+                    disconnected - Instantly does not export OAuth tokens or SMTP passwords. Reconnect
                     each mailbox natively to start sending from Superkabe. Any mailbox you don&apos;t
                     reconnect will sit idle; campaigns won&apos;t send through it.
                 </p>

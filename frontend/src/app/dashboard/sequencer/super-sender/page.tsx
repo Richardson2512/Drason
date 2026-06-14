@@ -8,7 +8,7 @@ import {
 import CustomSelect from '@/components/ui/CustomSelect';
 
 /**
- * Super Sender — dedicated IP product page.
+ * Super Sender - dedicated IP product page.
  *
  * Two distinct surfaces depending on account state:
  *
@@ -31,7 +31,7 @@ import CustomSelect from '@/components/ui/CustomSelect';
 const POLL_INTERVAL_MS = 10_000;
 
 // ────────────────────────────────────────────────────────────────────
-// Types — mirrors the controller response. Keep field names matching
+// Types - mirrors the controller response. Keep field names matching
 // what `superSenderController.ts` emits.
 // ────────────────────────────────────────────────────────────────────
 
@@ -105,7 +105,7 @@ export default function SuperSenderPage() {
     const [actionMsg, setActionMsg] = useState<string | null>(null);
 
     // Initial load + polling. Poll only while at least one IP is in a
-    // non-terminal state — once everything is `active` or `failed` /
+    // non-terminal state - once everything is `active` or `failed` /
     // `canceled` we stop hitting the endpoint.
     useEffect(() => {
         let cancelled = false;
@@ -137,7 +137,7 @@ export default function SuperSenderPage() {
             cancelled = true;
             if (timer) clearInterval(timer);
         };
-        // We intentionally re-create the polling loop when `data` changes —
+        // We intentionally re-create the polling loop when `data` changes -
         // the in-flight check needs the latest snapshot.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.ips?.map(i => i.state).join(',')]);
@@ -163,7 +163,7 @@ export default function SuperSenderPage() {
     const { summary, ips, workspaces } = data;
     const isAgency = summary.agency_mode && workspaces.length > 1;
 
-    // Pre-purchase view — marketing landing.
+    // Pre-purchase view - marketing landing.
     if (!summary.has_any_ip) {
         return (
             <>
@@ -174,7 +174,7 @@ export default function SuperSenderPage() {
                         if (isAgency) {
                             setPickerOpen(true);
                         } else {
-                            // Single-workspace shortcut — checkout for 1 IP, no
+                            // Single-workspace shortcut - checkout for 1 IP, no
                             // pre-allocation (the lone workspace gets it
                             // automatically once SES provisions).
                             startCheckout({ quantity: 1, workspaceIds: [workspaces[0]?.id].filter(Boolean) as string[] })
@@ -206,7 +206,7 @@ export default function SuperSenderPage() {
         );
     }
 
-    // Post-purchase view — cards per workspace + pending inbox.
+    // Post-purchase view - cards per workspace + pending inbox.
     const pendingPool = ips.filter(ip => !ip.organization_id && ip.state !== 'canceled');
     const allocatedByWorkspace = new Map<string, DedicatedIp>();
     for (const ip of ips) {
@@ -361,7 +361,7 @@ function PrePurchaseView({
                         Dedicated IPs for your workspace
                     </h1>
                     <p className="text-blue-100 text-sm md:text-base leading-relaxed max-w-2xl m-0">
-                        Take full ownership of your sender reputation. A dedicated IP is yours alone — no neighbours, no
+                        Take full ownership of your sender reputation. A dedicated IP is yours alone - no neighbours, no
                         shared blacklist exposure, no surprise dips. Powered by Amazon SES.
                     </p>
                     <div className="flex items-center gap-3 mt-2 flex-wrap">
@@ -374,18 +374,18 @@ function PrePurchaseView({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <FeatureCard icon={<TrendingUpIcon />} title="Better deliverability" body="A clean, isolated IP earns reputation faster than a shared pool." />
-                <FeatureCard icon={<BarChart3 size={18} className="text-blue-700" />} title="Full visibility" body="Daily send caps, warmup progress, and SES status — all in one place." />
+                <FeatureCard icon={<BarChart3 size={18} className="text-blue-700" />} title="Full visibility" body="Daily send caps, warmup progress, and SES status - all in one place." />
                 <FeatureCard icon={<Shield size={18} className="text-blue-700" />} title="No shared risk" body="A neighbor on a shared pool can't blacklist you. Yours alone, fully isolated." />
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-6 mb-6">
                 <h2 className="text-lg font-bold text-gray-900 m-0 mb-3">How it works</h2>
                 <ol className="m-0 pl-5 text-sm text-gray-700 leading-relaxed flex flex-col gap-2">
-                    <li><strong>Choose your workspaces</strong> — {isAgency ? 'pick which clients get a dedicated IP, or buy one for all.' : 'one IP for your workspace.'}</li>
-                    <li><strong>Pay $39/IP/month</strong> via Polar — billed alongside your subscription.</li>
-                    <li><strong>SES provisions</strong> — a fresh IP comes online in 5-15 minutes.</li>
-                    <li><strong>30-day warmup</strong> — automatic ramp from 50 to 50,000 sends/day.</li>
-                    <li><strong>Send</strong> — your relay mailboxes route through this IP automatically.</li>
+                    <li><strong>Choose your workspaces</strong> - {isAgency ? 'pick which clients get a dedicated IP, or buy one for all.' : 'one IP for your workspace.'}</li>
+                    <li><strong>Pay $39/IP/month</strong> via Polar - billed alongside your subscription.</li>
+                    <li><strong>SES provisions</strong> - a fresh IP comes online in 5-15 minutes.</li>
+                    <li><strong>30-day warmup</strong> - automatic ramp from 50 to 50,000 sends/day.</li>
+                    <li><strong>Send</strong> - your relay mailboxes route through this IP automatically.</li>
                 </ol>
             </div>
 
@@ -446,7 +446,7 @@ function TrendingUpIcon() {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Workspace picker modal — agency mode purchase flow.
+// Workspace picker modal - agency mode purchase flow.
 // Shows a list of workspaces, each toggleable, with already-purchased
 // rows disabled. Cost summary updates live. Confirm step before checkout.
 // ────────────────────────────────────────────────────────────────────
@@ -650,7 +650,7 @@ function WorkspacePickerModal({
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Pending IPs inbox — IPs with no workspace_id, awaiting allocation.
+// Pending IPs inbox - IPs with no workspace_id, awaiting allocation.
 // Each row offers a workspace dropdown.
 // ────────────────────────────────────────────────────────────────────
 
@@ -692,7 +692,7 @@ function PendingIpsInbox({
             </div>
             <p className="text-xs text-amber-800 m-0 mb-3">
                 You purchased {ips.length} dedicated IP{ips.length === 1 ? '' : 's'} that haven't been assigned to a workspace yet.
-                Pick one for each below — the IP will start provisioning immediately.
+                Pick one for each below - the IP will start provisioning immediately.
             </p>
             <ul className="m-0 p-0 list-none flex flex-col gap-2">
                 {ips.map(ip => (
@@ -726,7 +726,7 @@ function PendingIpsInbox({
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Workspace card — shows the IP for one workspace, in any of the 5
+// Workspace card - shows the IP for one workspace, in any of the 5
 // states. Also handles the "no IP yet" case for workspaces in agency
 // mode that the agency owner hasn't bought for.
 // ────────────────────────────────────────────────────────────────────
@@ -747,7 +747,7 @@ function WorkspaceCard({
     const [err, setErr] = useState<string | null>(null);
 
     // Lazy-load mailbox routing detail when the card is on a real IP. Cheap
-    // — one fetch per card mount, refetches only when ip.id changes.
+    // - one fetch per card mount, refetches only when ip.id changes.
     useEffect(() => {
         if (!ip?.id) return;
         let cancelled = false;
@@ -871,7 +871,7 @@ function WorkspaceCard({
                 </div>
             )}
 
-            {/* Mailbox eligibility — which mailboxes route through this IP. */}
+            {/* Mailbox eligibility - which mailboxes route through this IP. */}
             {(ip.state === 'warming' || ip.state === 'active') && routing && (
                 <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
                     <button

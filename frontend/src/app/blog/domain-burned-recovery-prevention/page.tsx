@@ -53,7 +53,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "name": "How long does it take to recover a burned domain?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Minimum 2-4 weeks for blacklist removal and ISP reputation reset. Full recovery — including gradual re-warming to previous sending volumes — takes 4-8 weeks. Some domains never fully recover if the damage was severe enough. Domains that were blacklisted on multiple lists simultaneously or had very high bounce rates (15%+) may take 3+ months."
+ "text": "Minimum 2-4 weeks for blacklist removal and ISP reputation reset. Full recovery - including gradual re-warming to previous sending volumes - takes 4-8 weeks. Some domains never fully recover if the damage was severe enough. Domains that were blacklisted on multiple lists simultaneously or had very high bounce rates (15%+) may take 3+ months."
  }
  },
  {
@@ -61,7 +61,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "name": "How do I check if my domain is blacklisted?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Use MXToolbox Blacklist Check (free) to scan your domain against 100+ blacklists simultaneously. Check Google Postmaster Tools for Gmail-specific reputation data. Also check Talos Intelligence (Cisco) and Barracuda Reputation. If you are on Spamhaus or Spamcop, those are the most impactful — prioritize removal from those lists first."
+ "text": "Use MXToolbox Blacklist Check (free) to scan your domain against 100+ blacklists simultaneously. Check Google Postmaster Tools for Gmail-specific reputation data. Also check Talos Intelligence (Cisco) and Barracuda Reputation. If you are on Spamhaus or Spamcop, those are the most impactful - prioritize removal from those lists first."
  }
  },
  {
@@ -85,7 +85,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "name": "What bounce rate causes domain damage?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "ISPs start paying attention at 2% bounce rate. At 5%, deliverability degradation is likely — inbox placement drops and throttling begins. At 8%+, blacklisting risk becomes significant. At 10%+, domain damage is almost certain. These thresholds apply per-domain, not per-campaign. A single bad campaign can push an entire domain over the edge."
+ "text": "ISPs start paying attention at 2% bounce rate. At 5%, deliverability degradation is likely - inbox placement drops and throttling begins. At 8%+, blacklisting risk becomes significant. At 10%+, domain damage is almost certain. These thresholds apply per-domain, not per-campaign. A single bad campaign can push an entire domain over the edge."
  }
  },
  {
@@ -93,7 +93,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "name": "Can I speed up blacklist removal?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Most blacklists have a self-service removal process. Spamhaus, Spamcop, and Barracuda let you request removal directly. The key is to fix the underlying problem first — if you request removal while still sending to bad addresses, you will get re-listed immediately. Fix DNS, stop sending, clean your lists, then request removal. Most removals process within 24-72 hours."
+ "text": "Most blacklists have a self-service removal process. Spamhaus, Spamcop, and Barracuda let you request removal directly. The key is to fix the underlying problem first - if you request removal while still sending to bad addresses, you will get re-listed immediately. Fix DNS, stop sending, clean your lists, then request removal. Most removals process within 24-72 hours."
  }
  },
  {
@@ -130,7 +130,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
                     />
 
                     <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                        You uploaded a new lead list. Bounces spiked to 8%. Your domain hit a blacklist. Now your entire sending infrastructure is compromised. Here is exactly how to recover — and how to make sure it never happens again.
+                        You uploaded a new lead list. Bounces spiked to 8%. Your domain hit a blacklist. Now your entire sending infrastructure is compromised. Here is exactly how to recover - and how to make sure it never happens again.
                     </p>
 
  {/* Key Takeaways */}
@@ -148,13 +148,13 @@ export default function DomainBurnedRecoveryPreventionArticle() {
 <div className="prose prose-lg max-w-none">
  <h2 id="the-scenario" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The scenario: how domains get burned</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- It always starts the same way. You have a lead list — maybe from Clay, maybe from a data broker, maybe scraped from LinkedIn. The list looks good. Maybe you ran it through a verification tool. Maybe you did not because the source seemed reliable. You load it into Smartlead or Instantly and launch a campaign.
+ It always starts the same way. You have a lead list - maybe from Clay, maybe from a data broker, maybe scraped from LinkedIn. The list looks good. Maybe you ran it through a verification tool. Maybe you did not because the source seemed reliable. You load it into Smartlead or Instantly and launch a campaign.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Within 24 hours, bounce notifications start appearing. By hour 48, your bounce rate is at 6%. The sending platform does not pause automatically because you never set a threshold. Or the threshold was set at 10% and you are not there yet. By day three, you are at 8%. By day four, Google Postmaster shows your domain reputation has dropped from &quot;High&quot; to &quot;Low.&quot; By day five, you are on a Spamhaus blacklist.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The domain you spent 3-4 weeks warming is now toxic. Every email from that domain — including the ones to perfectly valid, engaged recipients — is going to spam or getting blocked entirely. Your other campaigns on the same domain are collateral damage. If you are running multiple mailboxes on that domain, all of them are affected.
+ The domain you spent 3-4 weeks warming is now toxic. Every email from that domain - including the ones to perfectly valid, engaged recipients - is going to spam or getting blocked entirely. Your other campaigns on the same domain are collateral damage. If you are running multiple mailboxes on that domain, all of them are affected.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  I have seen this happen to teams that were doing everything else right. Good copy. Strong targeting. Clean infrastructure. One bad list erased weeks of work. The speed at which reputation damage compounds is genuinely surprising the first time you experience it.
@@ -170,12 +170,12 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  Every email you send from a damaged domain makes the problem worse. Pause every campaign. Pause every mailbox on the domain. Do it now, before you do anything else. This is not the time for &quot;let me finish this sequence first.&quot; Stop. The additional pipeline from finishing a campaign is worth zero if the emails are going to spam.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- If you are using Superkabe, auto-pause should have caught this. If it did not, check your threshold settings. The default auto-pause is rate-based: warning at 2% bounce rate, pause at 3% bounce rate after a 60-send minimum, plus a 5-bounce absolute safety net for low-volume mailboxes — designed to catch a burn before it compounds. If you overrode any of those, reset to defaults.
+ If you are using Superkabe, auto-pause should have caught this. If it did not, check your threshold settings. The default auto-pause is rate-based: warning at 2% bounce rate, pause at 3% bounce rate after a 60-send minimum, plus a 5-bounce absolute safety net for low-volume mailboxes - designed to catch a burn before it compounds. If you overrode any of those, reset to defaults.
  </p>
 
  <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">Step 2: Check blacklist status</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- Go to MXToolbox Blacklist Check and enter your domain. It scans 100+ blacklists and shows you exactly where you are listed. Also check Google Postmaster Tools — it shows your domain reputation with Gmail specifically, and Gmail represents roughly 30% of business email.
+ Go to MXToolbox Blacklist Check and enter your domain. It scans 100+ blacklists and shows you exactly where you are listed. Also check Google Postmaster Tools - it shows your domain reputation with Gmail specifically, and Gmail represents roughly 30% of business email.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Document which blacklists you are on. The big ones are Spamhaus, Spamcop, Barracuda, and Microsoft SNDS. Being on Spamhaus alone can tank your inbox placement across most major providers. Being on multiple lists means your emails are being blocked almost everywhere.
@@ -215,7 +215,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  This is the hard part. Blacklist removal does not equal reputation recovery. ISPs maintain their own internal sender scores independently of public blacklists. Google, Microsoft, and Yahoo all have proprietary reputation systems that take time to adjust.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Minimum wait: 2 weeks with zero sending. During this period, ISP reputation scores gradually reset toward neutral. Sending during this window — even to great addresses — can set back recovery because the ISP sees activity from a domain they recently flagged and interprets it as continued spam behavior.
+ Minimum wait: 2 weeks with zero sending. During this period, ISP reputation scores gradually reset toward neutral. Sending during this window - even to great addresses - can set back recovery because the ISP sees activity from a domain they recently flagged and interprets it as continued spam behavior.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For severe burns (multiple blacklists, 10%+ bounce rate), wait 3-4 weeks. It is painful. It feels like wasted time. But sending too early extends recovery by weeks.
@@ -223,7 +223,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
 
  <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">Step 6: Re-warm gradually</h3>
  <p className="text-gray-600 leading-relaxed mb-6">
- After the waiting period, start sending again at very low volume. Think 10 emails per day. Not 10 per mailbox — 10 total from the domain. Send to your most engaged contacts first. People who have replied to you before. People who have clicked links. You want to build positive engagement signals.
+ After the waiting period, start sending again at very low volume. Think 10 emails per day. Not 10 per mailbox - 10 total from the domain. Send to your most engaged contacts first. People who have replied to you before. People who have clicked links. You want to build positive engagement signals.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Increase volume by 20-30% every 3-4 days. Monitor bounce rates and inbox placement obsessively during this phase. If bounces appear or inbox placement drops, dial back immediately and give it another few days. The re-warm process for a previously burned domain is slower than the initial warm. ISPs have a memory.
@@ -260,7 +260,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  Clay will find mike@company.com from LinkedIn data, confirm it matches their pattern detection, and push it to your sender. But Clay does not check whether company.com is a catch-all domain. It does not check whether Mike left the company last month. It does not check whether the mailbox is over quota. It does not check MX records. Clay enriches. It does not validate.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- This creates a dangerous pipeline: Clay enriches leads and pushes them directly to Smartlead or Instantly. No validation step in between. Every lead Clay finds goes straight to your sending platform. If Clay&apos;s data sources are stale, if the domain is catch-all, if the email pattern is wrong — you are sending to that address.
+ This creates a dangerous pipeline: Clay enriches leads and pushes them directly to Smartlead or Instantly. No validation step in between. Every lead Clay finds goes straight to your sending platform. If Clay&apos;s data sources are stale, if the domain is catch-all, if the email pattern is wrong - you are sending to that address.
  </p>
 
  <div className="bg-orange-50 border border-orange-200 p-6 mb-8">
@@ -314,9 +314,9 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-3">Never burn a domain again</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Validate every lead before sending.</strong> No exceptions. Not even for &quot;trusted&quot; data sources. Clay data, Apollo data, purchased lists — everything gets validated</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Validate every lead before sending.</strong> No exceptions. Not even for &quot;trusted&quot; data sources. Clay data, Apollo data, purchased lists - everything gets validated</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Monitor bounce rates in real-time.</strong> Not daily reports. Real-time. A daily report means you see yesterday&apos;s damage. Real-time monitoring means you catch it in the first hour</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Auto-pause at threshold.</strong> Pause at 3% bounce rate after 60 sends, with a 5-bounce safety net for low-volume mailboxes. One bad list can generate enough bounces in an hour to trip the safety net before the rate kicks in — that is your signal to stop</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Auto-pause at threshold.</strong> Pause at 3% bounce rate after 60 sends, with a 5-bounce safety net for low-volume mailboxes. One bad list can generate enough bounces in an hour to trip the safety net before the rate kicks in - that is your signal to stop</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Use separate domains for cold outreach.</strong> Never send cold email from your primary business domain. If outreach domains burn, your main domain is unaffected. Read about <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:text-blue-800 underline">how bounce rates damage sender reputation</Link> to understand why this matters</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Distribute leads across domains.</strong> Do not concentrate a new lead list on one domain. Spread it across your infrastructure. If the list is bad, the damage is distributed instead of concentrated</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> <strong>Handle catch-all leads with caps.</strong> Flag catch-all addresses and limit them to 10-15% of any mailbox&apos;s daily volume. See our <Link href="/blog/catch-all-domains-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">catch-all domain guide</Link> for the full strategy</li>
@@ -343,7 +343,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <tr className="border-b border-gray-100">
  <td className="p-3 text-gray-600">Downtime</td>
  <td className="p-3 text-red-600 font-medium">2-6 weeks of zero sending</td>
- <td className="p-3 text-green-600 font-medium">Zero — auto-pause prevents burns</td>
+ <td className="p-3 text-green-600 font-medium">Zero - auto-pause prevents burns</td>
  </tr>
  <tr className="border-b border-gray-100">
  <td className="p-3 text-gray-600">Pipeline lost</td>
@@ -353,7 +353,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <tr className="border-b border-gray-100">
  <td className="p-3 text-gray-600">Re-warming cost</td>
  <td className="p-3 text-red-600 font-medium">3-4 weeks of gradual ramp</td>
- <td className="p-3 text-green-600 font-medium">N/A — domain never loses reputation</td>
+ <td className="p-3 text-green-600 font-medium">N/A - domain never loses reputation</td>
  </tr>
  <tr className="border-b border-gray-100">
  <td className="p-3 text-gray-600">Team time</td>
@@ -398,11 +398,11 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <div className="space-y-6 mb-12">
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How long does domain recovery take?</h3>
- <p className="text-gray-600 text-sm">Minimum 2-4 weeks for blacklist removal and ISP reputation reset. Full recovery to previous sending volume takes 4-8 weeks. Severe burns (15%+ bounce rate, multiple blacklists) can take 3+ months. There are no shortcuts — sending too early during recovery extends the timeline.</p>
+ <p className="text-gray-600 text-sm">Minimum 2-4 weeks for blacklist removal and ISP reputation reset. Full recovery to previous sending volume takes 4-8 weeks. Severe burns (15%+ bounce rate, multiple blacklists) can take 3+ months. There are no shortcuts - sending too early during recovery extends the timeline.</p>
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How do I check if my domain is blacklisted?</h3>
- <p className="text-gray-600 text-sm">MXToolbox Blacklist Check scans 100+ blacklists for free. Also check Google Postmaster Tools for Gmail-specific reputation, Talos Intelligence for Cisco-managed networks, and Microsoft SNDS for Outlook/Hotmail. If you are on Spamhaus or Spamcop, prioritize those removals first — they have the most impact on overall deliverability.</p>
+ <p className="text-gray-600 text-sm">MXToolbox Blacklist Check scans 100+ blacklists for free. Also check Google Postmaster Tools for Gmail-specific reputation, Talos Intelligence for Cisco-managed networks, and Microsoft SNDS for Outlook/Hotmail. If you are on Spamhaus or Spamcop, prioritize those removals first - they have the most impact on overall deliverability.</p>
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">Can I speed up blacklist removal?</h3>
@@ -428,7 +428,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
 
  <BottomCtaStrip
                     headline="The bottom line"
-                    body="Domain recovery is possible but expensive — in time, money, and pipeline. The teams that never have to recover are the ones that validate every lead, monitor every mailbox, and auto-pause before damage accumulates. If you are pushing leads from Clay or any enrichment tool directly to your sender without validation, you are one bad list away from losing a domain. That is not a scare tactic. It is arithmetic."
+                    body="Domain recovery is possible but expensive - in time, money, and pipeline. The teams that never have to recover are the ones that validate every lead, monitor every mailbox, and auto-pause before damage accumulates. If you are pushing leads from Clay or any enrichment tool directly to your sender without validation, you are one bad list away from losing a domain. That is not a scare tactic. It is arithmetic."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

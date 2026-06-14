@@ -1,5 +1,5 @@
 /**
- * Reply intelligence — E2E coverage for the Gemini-assisted reply
+ * Reply intelligence - E2E coverage for the Gemini-assisted reply
  * classification + OOO holds + auto-action executor.
  *
  * Verifies the API contracts that don't require live Gemini:
@@ -8,7 +8,7 @@
  *   - Lazy-seed of default rules on first GET
  *
  * Real AI re-classification + OOO parsing run inside the imapReplyWorker
- * which fires asynchronously off IMAP fetches — out of scope for
+ * which fires asynchronously off IMAP fetches - out of scope for
  * Playwright. Unit-style coverage for the regex path could be added later
  * but the regex is pure and easily auditable.
  */
@@ -25,7 +25,7 @@ async function login(page: Page) {
     expect(res.status()).toBe(200);
 }
 
-test.describe('reply-intelligence — config endpoints', () => {
+test.describe('reply-intelligence - config endpoints', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('GET /reply-actions lazy-seeds default rules', async ({ page }) => {
@@ -36,7 +36,7 @@ test.describe('reply-intelligence — config endpoints', () => {
         expect(Array.isArray(json.data)).toBe(true);
         expect(json.data.length).toBeGreaterThan(0);
         // Defaults include 'hard_no → suppress' which is the most important one
-        // — without it, replied-stop replies don't actually stop future sends.
+        // - without it, replied-stop replies don't actually stop future sends.
         const hasHardNoSuppress = json.data.some(
             (r: { reply_class: string; action_kind: string; enabled: boolean }) =>
                 r.reply_class === 'hard_no' && r.action_kind === 'suppress' && r.enabled,
@@ -93,7 +93,7 @@ test.describe('reply-intelligence — config endpoints', () => {
     });
 });
 
-test.describe('reply-intelligence — unibox filter', () => {
+test.describe('reply-intelligence - unibox filter', () => {
     test.beforeEach(async ({ page }) => { await login(page); });
 
     test('quality_class param accepted; empty filter returns all', async ({ page }) => {
@@ -103,7 +103,7 @@ test.describe('reply-intelligence — unibox filter', () => {
         expect(baseJson.success).toBe(true);
         expect(Array.isArray(baseJson.data)).toBe(true);
 
-        // Filter to a class that probably has no matches in demo data — the
+        // Filter to a class that probably has no matches in demo data - the
         // request must succeed even when result count is zero.
         const filtered = await page.request.get(
             '/api/unibox/threads?limit=10&quality_class=hard_no',
@@ -129,7 +129,7 @@ test.describe('reply-intelligence — unibox filter', () => {
     });
 
     test('quality_class filter does not affect Sent tab', async ({ page }) => {
-        // The controller intentionally only narrows inbound messages — the
+        // The controller intentionally only narrows inbound messages - the
         // Sent tab should behave identically with or without the filter set.
         const without = await page.request.get('/api/unibox/threads?limit=5&view=sent');
         const withClass = await page.request.get('/api/unibox/threads?limit=5&view=sent&quality_class=positive');

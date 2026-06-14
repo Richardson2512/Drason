@@ -11,7 +11,7 @@ import AdjacentToolsPanel from '@/components/sequencer/sequence-diagram/Adjacent
 import type { SequenceStepInput, SenderAttribution } from '@/components/sequencer/sequence-diagram/buildGraph';
 
 /**
- * Campaign sequence diagram — visual flow of the email sequence with
+ * Campaign sequence diagram - visual flow of the email sequence with
  * lead sources at the top, sync targets at the bottom, and adjacent
  * tools (JustCall, HeyReach) on the side.
  *
@@ -99,7 +99,7 @@ export default function CampaignSequenceDiagramPage({ params }: { params: Promis
                 <div className="flex items-center gap-2 mb-1">
                     <Workflow size={16} strokeWidth={2} className="text-[#1E1E2F]" />
                     <h1 className="text-xl font-semibold text-[#1E1E2F]">
-                        Sequence flow{campaign?.name ? ` — ${campaign.name}` : ''}
+                        Sequence flow{campaign?.name ? ` - ${campaign.name}` : ''}
                     </h1>
                 </div>
                 <p className="text-xs text-[#6B5E4F]">
@@ -122,13 +122,13 @@ export default function CampaignSequenceDiagramPage({ params }: { params: Promis
 
             {!loading && !error && campaign && (
                 <div className="space-y-4">
-                    {/* TOP — Lead Sources */}
+                    {/* TOP - Lead Sources */}
                     <LeadSourcesStrip
                         imports={campaign.lead_imports || []}
                         totalLeads={campaign.total_leads || 0}
                     />
 
-                    {/* MIDDLE — diagram + adjacent tools side panel */}
+                    {/* MIDDLE - diagram + adjacent tools side panel */}
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr,300px] gap-4">
                         <SequenceDiagram
                             steps={campaign.steps || []}
@@ -142,7 +142,7 @@ export default function CampaignSequenceDiagramPage({ params }: { params: Promis
                         <AdjacentToolsPanel />
                     </div>
 
-                    {/* BOTTOM — Sync Targets */}
+                    {/* BOTTOM - Sync Targets */}
                     <SyncTargetsStrip />
                 </div>
             )}

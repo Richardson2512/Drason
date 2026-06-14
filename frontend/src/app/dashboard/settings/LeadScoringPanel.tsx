@@ -171,7 +171,7 @@ export default function LeadScoringPanel() {
 
     return (
         <div className="mt-4 flex flex-col gap-3">
-            {/* Heads-up banner — required by spec. Edits only affect FUTURE
+            {/* Heads-up banner - required by spec. Edits only affect FUTURE
                 engagement; existing lead_score and adjustments are immutable. */}
             <div
                 className="flex items-start gap-2 px-3 py-2.5 rounded-lg"
@@ -179,7 +179,7 @@ export default function LeadScoringPanel() {
             >
                 <Info size={14} className="text-amber-700 shrink-0 mt-0.5" />
                 <div className="text-[12px] text-amber-900 leading-relaxed">
-                    <strong>Heads up — changes apply to upcoming engagement only.</strong>{' '}
+                    <strong>Heads up - changes apply to upcoming engagement only.</strong>{' '}
                     Existing lead scores stay frozen. New opens, clicks, replies, and custom events use the values you save here.
                 </div>
             </div>

@@ -34,7 +34,7 @@ export default function AgencyOverviewPage() {
         return <NotEnabledState />;
     }
 
-    // First-time agency mode — show the onboarding state when:
+    // First-time agency mode - show the onboarding state when:
     //   1. No workspaces exist (e.g. user just deleted their last one), OR
     //   2. Only the seeded default workspace exists with no engagement yet.
     const isFirstTime =
@@ -112,7 +112,7 @@ export default function AgencyOverviewPage() {
                 />
             </div>
 
-            {/* Workspaces toolbar — title + search + attention pill */}
+            {/* Workspaces toolbar - title + search + attention pill */}
             <div className="mb-3 flex items-center gap-3 flex-wrap">
                 <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest shrink-0">Client workspaces</h2>
                 <div className="relative flex-1 min-w-[220px] max-w-md">
@@ -181,7 +181,7 @@ export default function AgencyOverviewPage() {
                                         {w.id === 'ws-default' && (
                                             <span
                                                 className="inline-flex items-center gap-0.5 px-1.5 py-0 rounded-full text-[8px] font-bold uppercase tracking-wider bg-indigo-50 border border-indigo-200 text-indigo-700"
-                                                title="Seed workspace — created automatically with Agency Mode. Cannot be deleted."
+                                                title="Seed workspace - created automatically with Agency Mode. Cannot be deleted."
                                             >
                                                 <Sprout size={8} />
                                                 Seed
@@ -220,7 +220,7 @@ export default function AgencyOverviewPage() {
                     );
                 })}
 
-                {/* Add new workspace card — hidden during search to avoid mixing
+                {/* Add new workspace card - hidden during search to avoid mixing
                     a non-result tile in with filtered matches. Use the "New
                     workspace" button in the header instead. */}
                 {!search.trim() && (
@@ -247,7 +247,7 @@ export default function AgencyOverviewPage() {
                         <div className="flex items-start justify-between mb-4">
                             <div>
                                 <h3 className="text-base font-bold text-gray-900">Create a workspace</h3>
-                                <p className="text-xs text-gray-500 mt-0.5">Each workspace is fully isolated — its own mailboxes, domains, healing.</p>
+                                <p className="text-xs text-gray-500 mt-0.5">Each workspace is fully isolated - its own mailboxes, domains, healing.</p>
                             </div>
                             <button onClick={() => setCreating(false)} className="p-1 rounded-md hover:bg-gray-100 text-gray-500">
                                 <X size={16} />
@@ -259,7 +259,7 @@ export default function AgencyOverviewPage() {
                                 <input
                                     value={newName}
                                     onChange={(e) => setNewName(e.target.value)}
-                                    placeholder="e.g. Acme — Q2 outbound"
+                                    placeholder="e.g. Acme - Q2 outbound"
                                     autoFocus
                                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-500"
                                 />
@@ -300,7 +300,7 @@ export default function AgencyOverviewPage() {
                 </div>
             )}
 
-            {/* Internal-only disclaimer — surfaced only when NEXT_PUBLIC_AGENCY_PROTOTYPE=1
+            {/* Internal-only disclaimer - surfaced only when NEXT_PUBLIC_AGENCY_PROTOTYPE=1
                 so the prototype banner never ships to a paying customer. Backend wiring
                 (Account → Organization mapping, per-workspace isolation) is the next step;
                 remove this gate when the real data path lands. */}
@@ -400,7 +400,7 @@ function FirstTimeAgencyState({ onCreate, creating, newName, setNewName, newClie
                     </div>
                     <h1 className="text-2xl font-bold text-gray-900 tracking-tight mb-2">Let's create your first client workspace</h1>
                     <p className="text-sm text-gray-600 leading-relaxed max-w-xl mx-auto">
-                        Each workspace is a fully isolated environment for one client — its own mailboxes, domains, healing
+                        Each workspace is a fully isolated environment for one client - its own mailboxes, domains, healing
                         pipelines, and reporting. Spin up as many as you need.
                     </p>
                 </div>
@@ -440,7 +440,7 @@ function FirstTimeAgencyState({ onCreate, creating, newName, setNewName, newClie
                         Create your first workspace
                     </button>
                     <div className="text-[10px] text-gray-400 mt-2">
-                        No charge — workspaces are unlimited on Scale.
+                        No charge - workspaces are unlimited on Scale.
                     </div>
                 </div>
 
@@ -471,7 +471,7 @@ function FirstTimeAgencyState({ onCreate, creating, newName, setNewName, newClie
                                 <input
                                     value={newName}
                                     onChange={(e) => setNewName(e.target.value)}
-                                    placeholder="e.g. Acme — Q2 outbound"
+                                    placeholder="e.g. Acme - Q2 outbound"
                                     autoFocus
                                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-gray-500"
                                 />

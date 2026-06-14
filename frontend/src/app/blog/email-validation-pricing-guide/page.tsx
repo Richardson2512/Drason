@@ -85,7 +85,7 @@ export default function EmailValidationPricingGuideArticle() {
  "name": "What does Superkabe include that standalone validation tools do not?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe includes validation plus real-time bounce monitoring, auto-pause on threshold breach, domain health monitoring (SPF/DKIM/DMARC), catch-all detection with routing caps, automated healing pipeline for damaged domains, and lead routing to sending platforms. Standalone tools only validate — they do not monitor what happens after you send or protect your infrastructure in real-time."
+ "text": "Superkabe includes validation plus real-time bounce monitoring, auto-pause on threshold breach, domain health monitoring (SPF/DKIM/DMARC), catch-all detection with routing caps, automated healing pipeline for damaged domains, and lead routing to sending platforms. Standalone tools only validate - they do not monitor what happens after you send or protect your infrastructure in real-time."
  }
  },
  {
@@ -237,7 +237,7 @@ export default function EmailValidationPricingGuideArticle() {
  At 10,000 leads per month, MillionVerifier and Superkabe are close: $40 vs $49. But Superkabe includes monitoring, auto-pause, catch-all routing, and healing pipeline. MillionVerifier gives you a CSV of results and nothing else.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- At 50,000 leads, the gap widens. MillionVerifier is $200. Superkabe is $149. The subscription model becomes cheaper per email while including significantly more functionality. At 100,000 leads, Superkabe at $349 is cheaper than every pay-per-use tool except MillionVerifier at $400 — and again, Superkabe bundles monitoring, routing, and protection that you would need to build or buy separately otherwise.
+ At 50,000 leads, the gap widens. MillionVerifier is $200. Superkabe is $149. The subscription model becomes cheaper per email while including significantly more functionality. At 100,000 leads, Superkabe at $349 is cheaper than every pay-per-use tool except MillionVerifier at $400 - and again, Superkabe bundles monitoring, routing, and protection that you would need to build or buy separately otherwise.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For a detailed feature comparison of these tools, see our <Link href="/blog/best-email-validation-tools-cold-outreach" className="text-blue-600 hover:text-blue-800 underline">best email validation tools for cold outreach</Link> ranking.
@@ -285,7 +285,7 @@ export default function EmailValidationPricingGuideArticle() {
  The ROI on Superkabe in this scenario: spend $1,788 to avoid $30,000-80,000 in losses. That is a 17:1 to 45:1 return. Even in the best case where you never burn a domain, the monitoring and auto-pause capabilities are cheap insurance against a risk that every outbound team eventually faces.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Compare that to ZeroBounce at $270/month ($3,240/year) for 30K leads — you spend almost double what Superkabe costs and get only verification. No monitoring. No auto-pause. No routing. No healing.
+ Compare that to ZeroBounce at $270/month ($3,240/year) for 30K leads - you spend almost double what Superkabe costs and get only verification. No monitoring. No auto-pause. No routing. No healing.
  </p>
 
  <h2 id="when-pay-per-email" className="text-2xl font-bold text-gray-900 mt-12 mb-4">When pay-per-email makes sense</h2>
@@ -324,7 +324,7 @@ export default function EmailValidationPricingGuideArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The tipping point is around 12,000 leads per month. Below that, pay-per-email with MillionVerifier is cheaper on a pure cost-per-verification basis. Above that, subscription pricing becomes competitive or cheaper — and you get features that pay-per-email tools do not offer at any price.
+ The tipping point is around 12,000 leads per month. Below that, pay-per-email with MillionVerifier is cheaper on a pure cost-per-verification basis. Above that, subscription pricing becomes competitive or cheaper - and you get features that pay-per-email tools do not offer at any price.
  </p>
 
  <h2 id="beyond-validation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What is included beyond validation</h2>
@@ -416,7 +416,7 @@ export default function EmailValidationPricingGuideArticle() {
  Pay-per-email tools offer volume discounts that narrow the gap at high volumes. ZeroBounce drops from $0.009 to about $0.005 at 100K+ emails. NeverBounce drops from $0.008 to $0.004. MillionVerifier stays relatively flat because their base rate is already aggressive.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- At 100K leads/month with volume discounts: ZeroBounce is ~$500, NeverBounce is ~$400, MillionVerifier is ~$400. Superkabe Scale is $349. The subscription model stays competitive even against discounted pay-per-email rates — while including everything listed in the feature table above.
+ At 100K leads/month with volume discounts: ZeroBounce is ~$500, NeverBounce is ~$400, MillionVerifier is ~$400. Superkabe Scale is $349. The subscription model stays competitive even against discounted pay-per-email rates - while including everything listed in the feature table above.
  </p>
 
  <h2 id="faq" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Frequently asked questions</h2>

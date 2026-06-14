@@ -55,8 +55,8 @@ export default function DnsSetupPage() {
                 <h3 className="text-base font-bold text-amber-900 mb-2">Where do these records live?</h3>
                 <p className="text-amber-800 text-sm mb-2">
                     All four records are configured at <strong>your DNS provider</strong> (the place
-                    you registered or manage your domain — GoDaddy, Cloudflare, Namecheap, Route 53,
-                    etc.) — <em>not</em> at Superkabe and <em>not</em> at any sequencing/sending tool.
+                    you registered or manage your domain - GoDaddy, Cloudflare, Namecheap, Route 53,
+                    etc.) - <em>not</em> at Superkabe and <em>not</em> at any sequencing/sending tool.
                 </p>
                 <p className="text-amber-800 text-sm">
                     What goes <em>inside</em> each record depends on which mailbox provider you use
@@ -85,7 +85,7 @@ export default function DnsSetupPage() {
                     </li>
                     <li>
                         <strong>Add a TXT record</strong> for the root domain (host{' '}
-                        <code>@</code> or your bare domain — e.g. <code>yourdomain.com</code>).
+                        <code>@</code> or your bare domain - e.g. <code>yourdomain.com</code>).
                         There must be exactly one SPF record per domain.
                     </li>
                     <li>
@@ -150,18 +150,18 @@ export default function DnsSetupPage() {
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Common Mistakes</h3>
                 <ul className="space-y-2 text-amber-800 text-sm">
                     <li>
-                        <strong>Multiple SPF records</strong> &mdash; only one TXT record starting
+                        <strong>Multiple SPF records</strong> - only one TXT record starting
                         with <code>v=spf1</code> is allowed per domain. If you need multiple
                         senders, merge them into a single record using extra{' '}
                         <code>include:</code> mechanisms.
                     </li>
                     <li>
-                        <strong>Too many DNS lookups</strong> &mdash; SPF allows a maximum of 10
+                        <strong>Too many DNS lookups</strong> - SPF allows a maximum of 10
                         DNS lookups during evaluation. Each <code>include:</code> counts. Use{' '}
                         <code>ip4:</code> for static IPs to save lookups.
                     </li>
                     <li>
-                        <strong>Using <code>-all</code> too early</strong> &mdash; a hard-fail can
+                        <strong>Using <code>-all</code> too early</strong> - a hard-fail can
                         cause legitimate emails to be rejected during warmup or while a new sender
                         is added. Stick with <code>~all</code> until your authentication is stable
                         across every source.
@@ -204,7 +204,7 @@ export default function DnsSetupPage() {
                     </li>
                     <li>
                         <strong>Add the TXT (or CNAME) record</strong> at your DNS provider with
-                        the selector as a subdomain &mdash; e.g.{' '}
+                        the selector as a subdomain - e.g.{' '}
                         <code>google._domainkey.yourdomain.com</code> for Google,{' '}
                         <code>selector1._domainkey.yourdomain.com</code> for Microsoft 365.
                     </li>
@@ -229,17 +229,17 @@ export default function DnsSetupPage() {
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Common Mistakes</h3>
                 <ul className="space-y-2 text-amber-800 text-sm">
                     <li>
-                        <strong>Wrong selector name</strong> &mdash; the selector you publish must
+                        <strong>Wrong selector name</strong> - the selector you publish must
                         match exactly what the mailbox provider uses to sign outgoing mail. Copy
                         the exact name from the provider&apos;s setup screen.
                     </li>
                     <li>
-                        <strong>Forgot to activate</strong> &mdash; Google Workspace and
+                        <strong>Forgot to activate</strong> - Google Workspace and
                         Microsoft 365 both require an explicit <em>Activate</em> click after the
                         DNS record is published. Until then, signed mail will fail DKIM.
                     </li>
                     <li>
-                        <strong>Single record split across lines</strong> &mdash; some DNS
+                        <strong>Single record split across lines</strong> - some DNS
                         providers wrap long TXT values. Make sure the value renders as one
                         contiguous string after publication.
                     </li>
@@ -266,25 +266,25 @@ export default function DnsSetupPage() {
                 </div>
                 <ul className="space-y-2 text-gray-600 text-sm">
                     <li>
-                        <strong>p=none</strong> &mdash; monitoring only. Recommended for new
+                        <strong>p=none</strong> - monitoring only. Recommended for new
                         domains. Move to <code>p=quarantine</code> after 30 days of clean reports
                         and to <code>p=reject</code> once you&apos;re fully confident in your
                         authentication.
                     </li>
                     <li>
-                        <strong>rua=</strong> &mdash; email address to receive aggregate reports.
+                        <strong>rua=</strong> - email address to receive aggregate reports.
                         Use a dedicated address or sign up for a DMARC reporting service like
                         Postmark, dmarcian, or Easydmarc.
                     </li>
                     <li>
-                        <strong>pct=100</strong> &mdash; apply the policy to 100% of messages.
+                        <strong>pct=100</strong> - apply the policy to 100% of messages.
                     </li>
                 </ul>
             </div>
             <p className="text-gray-600 text-sm mb-12">
                 Superkabe scores DMARC <strong>passing</strong> for{' '}
                 <code>p=quarantine</code> or <code>p=reject</code>, and{' '}
-                <strong>weak</strong> for <code>p=none</code> &mdash; the latter is monitoring
+                <strong>weak</strong> for <code>p=none</code> - the latter is monitoring
                 only and doesn&apos;t actually protect against spoofing. A missing DMARC record
                 scores as failing.
             </p>
@@ -296,7 +296,7 @@ export default function DnsSetupPage() {
                 MX records tell the rest of the internet where to deliver mail addressed to your
                 domain. For sending domains, MX is what allows replies, bounce notifications and
                 unsubscribe responses to reach you. A domain with no MX records can <em>send</em>{' '}
-                mail but cannot receive any &mdash; which means you lose visibility into bounces
+                mail but cannot receive any - which means you lose visibility into bounces
                 and replies entirely.
             </p>
             <div className="bg-white border border-[#D1CBC5] p-6 mb-6 rounded-lg">
@@ -342,18 +342,18 @@ export default function DnsSetupPage() {
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Common Mistakes</h3>
                 <ul className="space-y-2 text-amber-800 text-sm">
                     <li>
-                        <strong>No MX records at all</strong> &mdash; common for &quot;sending-only&quot;
+                        <strong>No MX records at all</strong> - common for &quot;sending-only&quot;
                         domains where the user assumed they didn&apos;t need to receive. Replies,
                         bounces and unsubscribes will silently disappear, breaking the entire
                         feedback loop Superkabe relies on for healing.
                     </li>
                     <li>
-                        <strong>Wrong priority order</strong> &mdash; receiving mail servers try
+                        <strong>Wrong priority order</strong> - receiving mail servers try
                         the lowest priority first, then fall back. If you publish a placeholder MX
                         at priority 1 and your real provider at priority 10, mail will be lost.
                     </li>
                     <li>
-                        <strong>Mixing providers</strong> &mdash; don&apos;t mix MX hosts from
+                        <strong>Mixing providers</strong> - don&apos;t mix MX hosts from
                         Google Workspace and Microsoft 365 on the same domain. Pick one and route
                         everything to it.
                     </li>
@@ -417,7 +417,7 @@ export default function DnsSetupPage() {
                                 At least one MX record published at the root domain.
                             </td>
                             <td className="px-6 py-4 text-red-600">
-                                Domain can&apos;t receive replies, bounces or unsubscribes &mdash;
+                                Domain can&apos;t receive replies, bounces or unsubscribes -
                                 breaks the feedback loop Superkabe needs to heal mailboxes.
                             </td>
                         </tr>

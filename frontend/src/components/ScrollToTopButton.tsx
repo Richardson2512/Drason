@@ -43,7 +43,7 @@ export default function ScrollToTopButton() {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    // Don't render on app / auth / onboarding routes — only the marketing site.
+    // Don't render on app / auth / onboarding routes - only the marketing site.
     const onAppPage = HIDDEN_PATH_PREFIXES.some((p) => pathname?.startsWith(p));
     if (onAppPage) return null;
 

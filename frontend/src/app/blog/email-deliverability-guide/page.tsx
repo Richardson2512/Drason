@@ -94,7 +94,7 @@ export default function EmailDeliverabilityGuide() {
  "name": "What is email infrastructure protection?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Email infrastructure protection is the practice of monitoring and safeguarding all components of a sending operation — domains, mailboxes, DNS records, and sending patterns — to maintain deliverability. It includes real-time bounce rate monitoring, automated mailbox pausing, domain-level traffic gating, and volume redistribution across healthy infrastructure."
+ "text": "Email infrastructure protection is the practice of monitoring and safeguarding all components of a sending operation - domains, mailboxes, DNS records, and sending patterns - to maintain deliverability. It includes real-time bounce rate monitoring, automated mailbox pausing, domain-level traffic gating, and volume redistribution across healthy infrastructure."
  }
  },
  {
@@ -118,7 +118,7 @@ export default function EmailDeliverabilityGuide() {
  "name": "What factors affect email deliverability?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Four primary factors affect email deliverability: sender reputation (~40% weight), DNS authentication like SPF/DKIM/DMARC (~20%), content quality including subject lines and formatting (~25%), and sending infrastructure health including volume patterns and warmup status (~15%). These factors interact — strong authentication cannot compensate for a damaged reputation, and good content won't help if DNS records are misconfigured."
+ "text": "Four primary factors affect email deliverability: sender reputation (~40% weight), DNS authentication like SPF/DKIM/DMARC (~20%), content quality including subject lines and formatting (~25%), and sending infrastructure health including volume patterns and warmup status (~15%). These factors interact - strong authentication cannot compensate for a damaged reputation, and good content won't help if DNS records are misconfigured."
  }
  },
  {
@@ -172,7 +172,7 @@ export default function EmailDeliverabilityGuide() {
  <ul className="space-y-2 text-blue-800 text-sm">
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Deliverability depends on 4 factors: reputation, authentication, content, and infrastructure health</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Bounce rate is the single most heavily weighted signal in ISP reputation models</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Every sending domain needs its own SPF, DKIM, and DMARC — mandatory since Feb 2024</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Every sending domain needs its own SPF, DKIM, and DMARC - mandatory since Feb 2024</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Domain warming takes 6-8 weeks; skipping it burns the domain within days</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">▸</span> Superkabe implements 3-tier automated protection: warning → mailbox pause → domain gate</li>
  </ul>
@@ -204,13 +204,13 @@ export default function EmailDeliverabilityGuide() {
  <Shield className="w-6 h-6 text-blue-600 shrink-0" /> 1. What Is Email Deliverability?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Email deliverability is the measure of whether an email successfully reaches the recipient&apos;s inbox — not just whether it was sent, but whether it was accepted, not filtered to spam, and not rejected by the receiving mail server. For outbound email operators, deliverability is the difference between a campaign that generates pipeline and one that silently fails.
+ Email deliverability is the measure of whether an email successfully reaches the recipient&apos;s inbox - not just whether it was sent, but whether it was accepted, not filtered to spam, and not rejected by the receiving mail server. For outbound email operators, deliverability is the difference between a campaign that generates pipeline and one that silently fails.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Deliverability depends on four interconnected factors: <strong>sender reputation</strong> (how ISPs score your domain), <strong>DNS authentication</strong> (whether your emails are cryptographically verified), <strong>content quality</strong> (whether the email triggers spam filters), and <strong>sending infrastructure health</strong> (bounce rates, volume patterns, mailbox configuration).
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Modern ISPs — Gmail, Microsoft Outlook, Yahoo — use machine learning models that evaluate all four factors simultaneously. A domain can have perfect content but still land in spam if its sender reputation is damaged or its DNS authentication is misconfigured. This guide covers each factor in depth.
+ Modern ISPs - Gmail, Microsoft Outlook, Yahoo - use machine learning models that evaluate all four factors simultaneously. A domain can have perfect content but still land in spam if its sender reputation is damaged or its DNS authentication is misconfigured. This guide covers each factor in depth.
  </p>
 
  {/* Section 2 */}
@@ -267,7 +267,7 @@ export default function EmailDeliverabilityGuide() {
  </table>
  </div>
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical insight: reputation is <strong>asymmetric</strong>. Building positive reputation takes 6–8 weeks of disciplined sending. Destroying it takes hours. A single batch of invalid leads that generates a 10% bounce rate can undo months of warming. This asymmetry is why proactive monitoring — detecting and stopping threats before they compound — is the only viable strategy at scale.
+ The critical insight: reputation is <strong>asymmetric</strong>. Building positive reputation takes 6–8 weeks of disciplined sending. Destroying it takes hours. A single batch of invalid leads that generates a 10% bounce rate can undo months of warming. This asymmetry is why proactive monitoring - detecting and stopping threats before they compound - is the only viable strategy at scale.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For a detailed breakdown of the four lifecycle stages of reputation (building, maintaining, damaging, recovering), see our guide: <Link href="/blog/email-reputation-lifecycle" className="text-blue-600 hover:underline font-medium">The Email Reputation Lifecycle</Link>.
@@ -306,7 +306,7 @@ export default function EmailDeliverabilityGuide() {
  <AlertTriangle className="w-6 h-6 text-blue-600 shrink-0" /> 4. How Do Bounce Rates Impact Email Deliverability?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Bounce rate is the percentage of emails that fail to deliver. It is the single most heavily weighted signal in ISP reputation models. There are two types: <strong>hard bounces</strong> (permanent failures — invalid addresses, non-existent domains) and <strong>soft bounces</strong> (temporary failures — full mailboxes, server downtime). Hard bounces are significantly more damaging.
+ Bounce rate is the percentage of emails that fail to deliver. It is the single most heavily weighted signal in ISP reputation models. There are two types: <strong>hard bounces</strong> (permanent failures - invalid addresses, non-existent domains) and <strong>soft bounces</strong> (temporary failures - full mailboxes, server downtime). Hard bounces are significantly more damaging.
  </p>
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
  <table className="w-full text-left border-collapse">
@@ -342,7 +342,7 @@ export default function EmailDeliverabilityGuide() {
  </table>
  </div>
  <p className="text-gray-600 leading-relaxed mb-6">
- Cold outbound is particularly vulnerable because lead lists have not been validated through prior engagement. A single batch of stale or scraped leads can push a domain above the 5% threshold within hours. At scale — multiple domains, multiple mailboxes — this risk multiplies.
+ Cold outbound is particularly vulnerable because lead lists have not been validated through prior engagement. A single batch of stale or scraped leads can push a domain above the 5% threshold within hours. At scale - multiple domains, multiple mailboxes - this risk multiplies.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For complete analysis of bounce mechanics including SMTP codes and ISP behavior, see: <Link href="/blog/bounce-rate-deliverability" className="text-blue-600 hover:underline font-medium">How Bounce Rate Affects Email Deliverability</Link>.
@@ -353,7 +353,7 @@ export default function EmailDeliverabilityGuide() {
  <Zap className="w-6 h-6 text-blue-600 shrink-0" /> 5. What Is the Right Domain Warming Strategy?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Every new domain starts with zero sending history. ISPs treat it as neutral — not trusted, not penalized. Domain warming is the systematic process of building positive reputation by gradually increasing sending volume while generating engagement signals (opens, replies).
+ Every new domain starts with zero sending history. ISPs treat it as neutral - not trusted, not penalized. Domain warming is the systematic process of building positive reputation by gradually increasing sending volume while generating engagement signals (opens, replies).
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  The standard warming schedule for cold outbound domains:
@@ -366,7 +366,7 @@ export default function EmailDeliverabilityGuide() {
  <li className="flex items-start gap-2"><span className="text-blue-600 font-bold">Week 6+:</span> Full capacity with stable metrics</li>
  </ul>
  <p className="text-gray-600 leading-relaxed mb-6">
- The most common warming failures: skipping the ramp entirely, using unverified leads during warmup, and warming all mailboxes simultaneously at full speed. Five mailboxes × 50 emails = 250 emails per day from a brand-new domain — ISPs will flag this immediately.
+ The most common warming failures: skipping the ramp entirely, using unverified leads during warmup, and warming all mailboxes simultaneously at full speed. Five mailboxes × 50 emails = 250 emails per day from a brand-new domain - ISPs will flag this immediately.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  For the detailed warming methodology and monitoring thresholds, see: <Link href="/blog/domain-warming-methodology" className="text-blue-600 hover:underline font-medium">Domain Warming Methodology</Link>.
@@ -399,7 +399,7 @@ export default function EmailDeliverabilityGuide() {
  <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 7. Why Is Real-Time Monitoring and Automated Protection Essential?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Reactive monitoring — checking dashboards after damage has occurred — is insufficient for outbound email operations. By the time a human notices a bounce rate spike, the domain may already be irreversibly damaged. Effective deliverability protection requires automated, real-time monitoring with tiered escalation.
+ Reactive monitoring - checking dashboards after damage has occurred - is insufficient for outbound email operations. By the time a human notices a bounce rate spike, the domain may already be irreversibly damaged. Effective deliverability protection requires automated, real-time monitoring with tiered escalation.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Superkabe implements a three-tier protection model:
@@ -448,13 +448,13 @@ export default function EmailDeliverabilityGuide() {
  <Shield className="w-6 h-6 text-blue-600 shrink-0" /> 9. What Factors Affect Email Deliverability?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Email deliverability is determined by the interaction of four primary factors, each weighted differently by ISPs. Understanding what affects deliverability — and in what proportion — is essential for prioritizing your infrastructure investments.
+ Email deliverability is determined by the interaction of four primary factors, each weighted differently by ISPs. Understanding what affects deliverability - and in what proportion - is essential for prioritizing your infrastructure investments.
  </p>
  <div className="space-y-4 mb-8">
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Sender Reputation (~40% weight)</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- The cumulative score ISPs assign to your domain based on bounce rates, complaint rates, engagement metrics, and sending history. Reputation is asymmetric — it takes 6-8 weeks to build and can be destroyed in hours. This is the single most important factor and the hardest to recover once damaged.
+ The cumulative score ISPs assign to your domain based on bounce rates, complaint rates, engagement metrics, and sending history. Reputation is asymmetric - it takes 6-8 weeks to build and can be destroyed in hours. This is the single most important factor and the hardest to recover once damaged.
  </p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
@@ -466,7 +466,7 @@ export default function EmailDeliverabilityGuide() {
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Content Quality (~25% weight)</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- Subject line patterns, body content, HTML structure, link density, and formatting. Spam filters use Bayesian classification and ML models to score content. For cold outbound, plain-text emails with personalized opening lines perform best. Content flags compound — multiple minor triggers can push an email into spam.
+ Subject line patterns, body content, HTML structure, link density, and formatting. Spam filters use Bayesian classification and ML models to score content. For cold outbound, plain-text emails with personalized opening lines perform best. Content flags compound - multiple minor triggers can push an email into spam.
  </p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
@@ -485,7 +485,7 @@ export default function EmailDeliverabilityGuide() {
  <Zap className="w-6 h-6 text-blue-600 shrink-0" /> 10. How Can I Improve My Email Deliverability Rates?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Improving deliverability is a systematic process, not a single fix. The following actions are listed in order of impact — address the highest-impact items first before optimizing lower-priority areas.
+ Improving deliverability is a systematic process, not a single fix. The following actions are listed in order of impact - address the highest-impact items first before optimizing lower-priority areas.
  </p>
  <ol className="space-y-4 text-gray-600 mb-8">
  <li className="flex items-start gap-3">
@@ -502,11 +502,11 @@ export default function EmailDeliverabilityGuide() {
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
- <span><strong>Monitor bounce rates in real time.</strong> Reactive monitoring (checking dashboards daily) is too slow — a domain can be burned in hours. Use automated monitoring with tiered escalation (warning → pause → gate) to catch problems before they compound.</span>
+ <span><strong>Monitor bounce rates in real time.</strong> Reactive monitoring (checking dashboards daily) is too slow - a domain can be burned in hours. Use automated monitoring with tiered escalation (warning → pause → gate) to catch problems before they compound.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</span>
- <span><strong>Maintain consistent sending volume.</strong> Avoid spikes — doubling your daily volume triggers ISP anomaly detection. Increase gradually and predictably.</span>
+ <span><strong>Maintain consistent sending volume.</strong> Avoid spikes - doubling your daily volume triggers ISP anomaly detection. Increase gradually and predictably.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">6</span>
@@ -514,7 +514,7 @@ export default function EmailDeliverabilityGuide() {
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">7</span>
- <span><strong>Distribute sending across multiple domains.</strong> Operating 3-10 domains provides risk isolation — one damaged domain doesn&apos;t take down the operation. Each domain must be independently configured and monitored.</span>
+ <span><strong>Distribute sending across multiple domains.</strong> Operating 3-10 domains provides risk isolation - one damaged domain doesn&apos;t take down the operation. Each domain must be independently configured and monitored.</span>
  </li>
  </ol>
 
@@ -523,7 +523,7 @@ export default function EmailDeliverabilityGuide() {
  <Activity className="w-6 h-6 text-blue-600 shrink-0" /> 11. How Can You Improve Email Inbox Placement Rates?
  </h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Inbox placement rate is the percentage of sent emails that land in the recipient&apos;s primary inbox — not spam, not promotions, not quarantined. It is more specific than deliverability (which measures whether the server accepted the email at all). An email can be &quot;delivered&quot; but still land in spam — inbox placement is the metric that actually matters for campaign effectiveness.
+ Inbox placement rate is the percentage of sent emails that land in the recipient&apos;s primary inbox - not spam, not promotions, not quarantined. It is more specific than deliverability (which measures whether the server accepted the email at all). An email can be &quot;delivered&quot; but still land in spam - inbox placement is the metric that actually matters for campaign effectiveness.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
  Inbox placement is influenced by the same factors as deliverability, but with an additional emphasis on engagement signals. ISPs use recipient behavior to determine inbox placement:
@@ -551,7 +551,7 @@ export default function EmailDeliverabilityGuide() {
  <tr className="border-b border-gray-100">
  <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Spam marking</td>
  <td className="py-4 px-6 text-gray-400 text-sm">N/A</td>
- <td className="py-4 px-6 text-red-500 text-sm">Strongest negative signal — affects entire domain</td>
+ <td className="py-4 px-6 text-red-500 text-sm">Strongest negative signal - affects entire domain</td>
  </tr>
  <tr>
  <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Move from spam</td>
@@ -571,7 +571,7 @@ export default function EmailDeliverabilityGuide() {
  </li>
  <li className="flex items-start gap-3">
  <span className="text-blue-500 mt-0.5">&#9656;</span>
- <span><strong>Target the right audience.</strong> Emails sent to relevant recipients generate higher engagement. Irrelevant emails get ignored or marked as spam — both damage inbox placement for future sends.</span>
+ <span><strong>Target the right audience.</strong> Emails sent to relevant recipients generate higher engagement. Irrelevant emails get ignored or marked as spam - both damage inbox placement for future sends.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="text-blue-500 mt-0.5">&#9656;</span>
@@ -609,11 +609,11 @@ export default function EmailDeliverabilityGuide() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">What is the difference between email deliverability and email delivery?</h3>
- <p className="text-gray-600 text-sm">Email delivery measures whether the email was accepted by the receiving server. Email deliverability measures whether it reached the inbox specifically — not spam or promotions. An email can be successfully delivered but still land in spam.</p>
+ <p className="text-gray-600 text-sm">Email delivery measures whether the email was accepted by the receiving server. Email deliverability measures whether it reached the inbox specifically - not spam or promotions. An email can be successfully delivered but still land in spam.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">What is email infrastructure protection?</h3>
- <p className="text-gray-600 text-sm">Email infrastructure protection is monitoring and safeguarding all components of a sending operation — domains, mailboxes, DNS records, and sending patterns — to maintain deliverability. It includes real-time bounce monitoring, automated mailbox pausing, domain gating, and volume redistribution.</p>
+ <p className="text-gray-600 text-sm">Email infrastructure protection is monitoring and safeguarding all components of a sending operation - domains, mailboxes, DNS records, and sending patterns - to maintain deliverability. It includes real-time bounce monitoring, automated mailbox pausing, domain gating, and volume redistribution.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">How many domains should an outbound team operate?</h3>

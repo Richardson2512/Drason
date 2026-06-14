@@ -85,7 +85,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
  "name": "Can infrastructure protection prevent bounces from verified lists?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Infrastructure protection cannot prevent the individual bounces, but it prevents them from causing lasting damage. Tools like Superkabe monitor bounce rates in real-time over a rolling 100-send window and auto-pause mailboxes before ISP thresholds are breached. If a batch of catch-all addresses starts bouncing, Superkabe pauses the affected mailbox at 3% bounce rate (after a 60-send minimum) — or sooner via the 5-bounce safety net for low-volume mailboxes — instead of letting it hit 20+ bounces and burn the domain."
+ "text": "Infrastructure protection cannot prevent the individual bounces, but it prevents them from causing lasting damage. Tools like Superkabe monitor bounce rates in real-time over a rolling 100-send window and auto-pause mailboxes before ISP thresholds are breached. If a batch of catch-all addresses starts bouncing, Superkabe pauses the affected mailbox at 3% bounce rate (after a 60-send minimum) - or sooner via the 5-bounce safety net for low-volume mailboxes - instead of letting it hit 20+ bounces and burn the domain."
  }
  },
  {
@@ -332,7 +332,7 @@ export default function WhyVerifiedEmailsStillBounceArticle() {
 
  <BottomCtaStrip
                     headline="Verification is not a guarantee"
-                    body="Even verified emails bounce — catch-all servers, mailbox-full responses, and ESP behavior shifts all happen post-verification. Superkabe monitors every send and reacts in real time."
+                    body="Even verified emails bounce - catch-all servers, mailbox-full responses, and ESP behavior shifts all happen post-verification. Superkabe monitors every send and reacts in real time."
                     primaryCta={{ label: 'Start free trial', href: '/signup' }}
                     secondaryCta={{ label: 'See how it works', href: '/' }}
                 />

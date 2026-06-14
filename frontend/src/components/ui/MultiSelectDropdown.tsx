@@ -22,7 +22,7 @@ interface MultiSelectDropdownProps {
     /**
      * When set, an in-menu search input appears above the option list. Leave
      * undefined to keep the search bar entirely off (matches prior behaviour).
-     * Defaults to `auto` — search shows up automatically when there are 8+
+     * Defaults to `auto` - search shows up automatically when there are 8+
      * options, since that's the threshold where a list becomes hard to scan.
      */
     searchable?: boolean | 'auto';
@@ -56,7 +56,7 @@ export default function MultiSelectDropdown({
         | null
     >(null);
 
-    // Outside-click detection — must check both the anchor wrapper AND the
+    // Outside-click detection - must check both the anchor wrapper AND the
     // portalled menu since the menu lives outside the wrapper's DOM subtree.
     useEffect(() => {
         const handler = (e: MouseEvent) => {
@@ -159,7 +159,7 @@ export default function MultiSelectDropdown({
 
     return (
         <div ref={ref} className={`relative ${className}`}>
-            {/* Trigger — matches CustomSelect's button visually so the multi-
+            {/* Trigger - matches CustomSelect's button visually so the multi-
                 select reads as the same control type, just with multi-checkbox
                 semantics inside. */}
             <button
@@ -241,7 +241,7 @@ export default function MultiSelectDropdown({
                         </div>
                     )}
 
-                    {/* All option — always visible (even during search) since
+                    {/* All option - always visible (even during search) since
                         it's how users reset the filter. */}
                     <button
                         type="button"

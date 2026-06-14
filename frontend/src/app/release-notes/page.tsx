@@ -7,11 +7,11 @@ import { releaseNotes } from '@/data/releaseNotes';
 
 export const metadata: Metadata = {
  title: 'Release Notes | Superkabe',
- description: 'See what is new in Superkabe — release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
+ description: 'See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
  alternates: { canonical: '/release-notes' },
  openGraph: {
  title: 'Release Notes | Superkabe',
- description: 'See what is new in Superkabe — release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
+ description: 'See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.',
  url: '/release-notes',
  siteName: 'Superkabe',
  type: 'website',
@@ -23,7 +23,7 @@ export default function ReleaseNotesPage() {
  "@context": "https://schema.org",
  "@type": "CollectionPage",
  "name": "Release Notes | Superkabe",
- "description": "See what is new in Superkabe — release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.",
+ "description": "See what is new in Superkabe - release notes, changelog, and feature updates for the AI cold email platform with native deliverability protection.",
  "url": "https://www.superkabe.com/release-notes",
  "publisher": {
  "@type": "Organization",
@@ -39,7 +39,7 @@ export default function ReleaseNotesPage() {
  "itemListElement": releaseNotes.map((release, index) => ({
  "@type": "ListItem",
  "position": index + 1,
- "name": `Superkabe v${release.version} — ${release.headline}`,
+ "name": `Superkabe v${release.version} - ${release.headline}`,
  "item": `https://www.superkabe.com/release-notes/${release.slug}`
  }))
  },

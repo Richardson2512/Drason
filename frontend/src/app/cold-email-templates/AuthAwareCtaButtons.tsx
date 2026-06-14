@@ -10,7 +10,7 @@ interface AuthAwareCtaButtonsProps {
     from: string;
     /** Optional intent flag (e.g., "ai-customize"). */
     intent?: string;
-    /** Secondary button — same content for authed and guest. */
+    /** Secondary button - same content for authed and guest. */
     secondary: { href: string; label: string };
 }
 

@@ -58,13 +58,13 @@ export interface Domain {
   consecutive_pauses?: number;
   relapse_count?: number;
 
-  // DNS health snapshot — populated by infrastructureAssessmentService.
+  // DNS health snapshot - populated by infrastructureAssessmentService.
   // Drives the per-row status dots (SPF · DKIM · DMARC · Blacklist) on the
   // protection-side domains page. `null` everywhere = "never assessed yet".
   spf_valid?: boolean | null;
   dkim_valid?: boolean | null;
   dmarc_policy?: string | null;             // 'none' | 'quarantine' | 'reject' | null
-  // Sending domain's MX records — captured during the same DNS sweep.
+  // Sending domain's MX records - captured during the same DNS sweep.
   // [{ priority, exchange }] sorted by priority asc; empty = no MX configured.
   mx_records?: Array<{ priority: number; exchange: string }> | null;
   mx_valid?: boolean | null;
@@ -124,7 +124,7 @@ export interface Mailbox {
   consecutive_pauses?: number;
   relapse_count?: number;
 
-  // Sending-IP blacklist — populated by mailboxIpBlacklistWorker.
+  // Sending-IP blacklist - populated by mailboxIpBlacklistWorker.
   // For OAuth providers (Gmail / Microsoft) sending_ip stays null and
   // sending_ip_source = 'oauth_shared' to mean "shared infra, not actionable".
   sending_ip?: string | null;
@@ -321,7 +321,7 @@ export interface Subscription {
   nextBillingDate: string | null;
 }
 
-// Two-meter pricing — only sends + validation credits are metered.
+// Two-meter pricing - only sends + validation credits are metered.
 // Leads / domains / mailboxes / protection coverage are unlimited.
 export interface SubscriptionData {
   subscription: Subscription;

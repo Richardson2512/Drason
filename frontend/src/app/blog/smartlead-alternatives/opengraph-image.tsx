@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Best Smartlead Alternatives for Cold Email in 2026 — Superkabe';
+export const alt = 'Best Smartlead Alternatives for Cold Email in 2026 - Superkabe';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default async function Image() {
                         Best Smartlead alternatives
                     </div>
                     <div style={{ fontSize: 26, color: '#4B5563', lineHeight: 1.4, maxWidth: 1000 }}>
-                        7 ranked tools — Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy, Mailshake — compared on pricing, deliverability, and infrastructure protection.
+                        7 ranked tools - Superkabe, Instantly, EmailBison, Lemlist, Woodpecker, Saleshandy, Mailshake - compared on pricing, deliverability, and infrastructure protection.
                     </div>
                 </div>
 

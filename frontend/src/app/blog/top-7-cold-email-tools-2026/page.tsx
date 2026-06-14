@@ -93,7 +93,7 @@ export default function Top7ColdEmailToolsPage() {
                 />
 
                 <p className="text-lg text-gray-700 leading-relaxed mb-12">
-                    The cold email tooling category split in 2025-2026. Pure senders kept refining their craft; a new layer — infrastructure protection — emerged as the differentiator. This is a ranked review of the 7 platforms that compete at the top of the category, scored on the full problem (validation + sending + protection + healing) not just feature surface area.
+                    The cold email tooling category split in 2025-2026. Pure senders kept refining their craft; a new layer - infrastructure protection - emerged as the differentiator. This is a ranked review of the 7 platforms that compete at the top of the category, scored on the full problem (validation + sending + protection + healing) not just feature surface area.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 p-6 mb-12">
@@ -109,16 +109,16 @@ export default function Top7ColdEmailToolsPage() {
 
 
                 <div className="prose prose-lg max-w-none">
-                    <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology — what we ranked on</h2>
+                    <h2 id="methodology" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Methodology - what we ranked on</h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                        We score on five dimensions: (1) <strong>sender reliability</strong> — webhook coverage, mailbox rotation, scheduling depth; (2) <strong>AI sequencing</strong> — quality of generated sequences and personalization tooling; (3) <strong>deliverability protection</strong> — validation, threshold-based auto-pause, healing pipeline; (4) <strong>economics</strong> — total cost of ownership at 30-mailbox / 60K-send/month profile; (5) <strong>agency-readiness</strong> — per-workspace isolation, white-label reporting, multi-tenant management.
+                        We score on five dimensions: (1) <strong>sender reliability</strong> - webhook coverage, mailbox rotation, scheduling depth; (2) <strong>AI sequencing</strong> - quality of generated sequences and personalization tooling; (3) <strong>deliverability protection</strong> - validation, threshold-based auto-pause, healing pipeline; (4) <strong>economics</strong> - total cost of ownership at 30-mailbox / 60K-send/month profile; (5) <strong>agency-readiness</strong> - per-workspace isolation, white-label reporting, multi-tenant management.
                     </p>
 
                     <h2 id="ranked" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The 7 ranked</h2>
 
                     {/* 1 */}
                     <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
-                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe — sender + protection in one</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - sender + protection in one</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             Superkabe is the only platform that ships modern AI sequencing AND infrastructure protection as a single product. Native sending uses your own Google Workspace, Microsoft 365, or SMTP mailboxes via OAuth. Multi-step sequences with A/B variants. ESP-aware routing scores each mailbox by 30-day per-ESP bounce performance using a 60% capacity / 40% performance scoring blend. Auto-pause fires at 3% bounce rate after a 60-send minimum (rolling 100-send window) with a 5-bounce safety net. Paused mailboxes enter a 5-phase healing pipeline with deterministic gates.
                         </p>
@@ -135,7 +135,7 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 2 */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead — most mature pure sender</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">2. Smartlead - most mature pure sender</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.smartlead.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Smartlead</a> ships unlimited mailboxes, multi-step sequences, A/B variants, and a deep webhook ecosystem. The API ecosystem is the most developed in the category; agency-workspace tooling is mature. AI sequence assistance is included.
                         </p>
@@ -151,7 +151,7 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 3 */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly — bundled warmup + lead database + AI</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">3. Instantly - bundled warmup + lead database + AI</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://instantly.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Instantly</a> bundles the largest warmup network with a B2B lead database and AI sequencing. The unified inbox is among the best in the category. Polished product that feels finished.
                         </p>
@@ -167,9 +167,9 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 4 */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison — high-volume single-tenant economics</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">4. EmailBison - high-volume single-tenant economics</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets high-volume single-tenant teams with volume-based pricing that beats per-active-lead models at the upper tiers. Sparse product surface — sender + webhooks, no warmup, no AI sequencing depth, no protection.
+                            <a href="https://emailbison.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">EmailBison</a> targets high-volume single-tenant teams with volume-based pricing that beats per-active-lead models at the upper tiers. Sparse product surface - sender + webhooks, no warmup, no AI sequencing depth, no protection.
                         </p>
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> High-volume single-tenant teams</li>
@@ -180,7 +180,7 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 5 */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist — personalization-first with strong warmup</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">5. Lemlist - personalization-first with strong warmup</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.lemlist.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Lemlist</a> still leads on personalization features (custom variables in images, dynamic landing pages, video personalization, AI-generated icebreakers). Lemwarm warmup network is excellent.
                         </p>
@@ -196,7 +196,7 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 6 */}
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">6. Saleshandy — sender + bundled lead database</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">6. Saleshandy - sender + bundled lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://www.saleshandy.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Saleshandy</a> bundles a 700M+ contact lead database with a sequencer at $25/month. Strong starter pick for solo founders and small teams.
                         </p>
@@ -209,7 +209,7 @@ export default function Top7ColdEmailToolsPage() {
 
                     {/* 7 */}
                     <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-2">7. Woodpecker — established with strong reply branching</h3>
+                        <h3 className="font-bold text-gray-900 mb-2">7. Woodpecker - established with strong reply branching</h3>
                         <p className="text-gray-600 text-sm leading-relaxed mb-4">
                             <a href="https://woodpecker.co" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Woodpecker</a> built its reputation on reliability and reply detection. If-campaign branching for reply-driven nurture flows is genuinely good. Bounce shield blocks invalid addresses on send.
                         </p>
@@ -342,7 +342,7 @@ export default function Top7ColdEmailToolsPage() {
 
                 <h2 id="faqs" className="text-2xl font-bold text-gray-900 mt-16 mb-4">Frequently asked questions</h2>
                 <div className="space-y-4 mb-12">
-                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the best cold email tool in 2026?</h3><p className="text-gray-600 text-sm">Superkabe — only platform that ships native AI sequencing AND infrastructure protection (auto-pause + 5-phase healing).</p></div>
+                    <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">What is the best cold email tool in 2026?</h3><p className="text-gray-600 text-sm">Superkabe - only platform that ships native AI sequencing AND infrastructure protection (auto-pause + 5-phase healing).</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">How were these tools ranked?</h3><p className="text-gray-600 text-sm">Total problem coverage: validation, sending, protection, healing. Pricing normalized to a 30-mailbox / 60K-send/month profile.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Is Superkabe better than Smartlead?</h3><p className="text-gray-600 text-sm">Different focus. Smartlead has the most mature sender API. Superkabe ships protection. Many teams run both: Superkabe replaces Smartlead.</p></div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm"><h3 className="font-bold text-gray-900 mb-2">Is Instantly the best for warmup?</h3><p className="text-gray-600 text-sm">Instantly&apos;s bundled warmup network is among the largest. Lemwarm is closest competitor. Superkabe integrates Zapmail.</p></div>

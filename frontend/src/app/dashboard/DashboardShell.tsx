@@ -27,8 +27,8 @@ export default function DashboardShell({
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     // Post-auth bridge: if a guest came in from /cold-email-templates (or
-    // anywhere with ?from=...) and just completed signup or login — including
-    // a Google OAuth round-trip that lands here on /dashboard — redirect them
+    // anywhere with ?from=...) and just completed signup or login - including
+    // a Google OAuth round-trip that lands here on /dashboard - redirect them
     // back to where they started. Runs once on mount; one-time consume.
     useEffect(() => {
         const returnTo = consumeIntendedReturnTo();
@@ -74,12 +74,12 @@ export default function DashboardShell({
     const [systemMode, setSystemMode] = useState<string>('');
     const [observeBannerDismissed, setObserveBannerDismissed] = useState<boolean>(false);
     const [trialBannerDismissed, setTrialBannerDismissed] = useState<boolean>(false);
-    // Super Sender announcement — dedicated-IP upsell. Dismissal persists
+    // Super Sender announcement - dedicated-IP upsell. Dismissal persists
     // for 24h via a timestamp in localStorage; the banner re-appears the
     // next day to nudge users who deferred. We also hide it permanently
     // once the account has any active/pending IP (the API tells us via
     // /api/super-sender summary.has_any_ip). The sidebar pill stays
-    // visible until purchase regardless of dismissal — small, low-contrast,
+    // visible until purchase regardless of dismissal - small, low-contrast,
     // never blocking.
     const SUPER_SENDER_DISMISS_KEY = 'superkabe-super-sender-dismissed-at';
     const SUPER_SENDER_DISMISS_TTL_MS = 24 * 60 * 60 * 1000;
@@ -88,7 +88,7 @@ export default function DashboardShell({
     // `superSenderChecked` gates the banner render until BOTH inputs are
     // resolved: localStorage (sync, instant) and the /api/super-sender
     // probe (async). Defaulting the dismissed/hasIp flags to `false` causes
-    // a flash on hard refresh — the banner paints, then disappears once
+    // a flash on hard refresh - the banner paints, then disappears once
     // the API returns. Holding until checked is the right trade: a few
     // hundred ms of "banner not shown yet" beats a visible flicker.
     const [superSenderChecked, setSuperSenderChecked] = useState<boolean>(false);
@@ -100,7 +100,7 @@ export default function DashboardShell({
             if (!Number.isNaN(ts) && Date.now() - ts < SUPER_SENDER_DISMISS_TTL_MS) {
                 setSuperSenderDismissed(true);
             } else {
-                // TTL expired — clear so future dismissals start a new window.
+                // TTL expired - clear so future dismissals start a new window.
                 localStorage.removeItem(SUPER_SENDER_DISMISS_KEY);
             }
         }
@@ -126,7 +126,7 @@ export default function DashboardShell({
                 }
                 setSuperSenderChecked(true);
             } catch {
-                // non-fatal — flip checked anyway so the banner can render
+                // non-fatal - flip checked anyway so the banner can render
                 if (!cancelled) setSuperSenderChecked(true);
             }
         })();
@@ -295,7 +295,7 @@ export default function DashboardShell({
                         )}
                     </div>
 
-                    {/* Agency Mode workspace switcher — renders only when Agency Mode is on */}
+                    {/* Agency Mode workspace switcher - renders only when Agency Mode is on */}
                     <WorkspaceSwitcher
                         isCollapsed={isCollapsed}
                         onRequestExpand={() => setIsCollapsed(false)}
@@ -424,7 +424,7 @@ export default function DashboardShell({
                                     </div>
                                 )}
 
-                                {/* Cold Call List — standalone, always visible.
+                                {/* Cold Call List - standalone, always visible.
                                     Pulled out of `sharedItems` so it sits next
                                     to Email Validation as a sibling activity-
                                     focused tool, not buried with billing /
@@ -433,10 +433,10 @@ export default function DashboardShell({
                                 {isCollapsed && <div className="h-2" />}
                                 {renderNavItem({ href: '/dashboard/cold-call-list', label: 'Cold Call List', icon: <PhoneCall size={13} strokeWidth={1.75} /> })}
 
-                                {/* Email Validation — standalone, always visible */}
+                                {/* Email Validation - standalone, always visible */}
                                 {renderNavItem({ href: '/dashboard/validation', label: 'Email Validation', icon: <BadgeCheck size={13} strokeWidth={1.75} /> })}
 
-                                {/* Shared Items — always visible */}
+                                {/* Shared Items - always visible */}
                                 {!isCollapsed && <div className="h-px mt-1 mb-1" style={{ background: '#E8E3DC' }} />}
                                 {isCollapsed && <div className="h-2" />}
                                 {sharedItems.map(renderNavItem)}
@@ -445,7 +445,7 @@ export default function DashboardShell({
                     })()}
 
                     <div className="mt-auto flex flex-col gap-1.5 pt-3 border-t border-gray-100">
-                        {/* Raise a Ticket — sidebar-native styling, sits above the profile card */}
+                        {/* Raise a Ticket - sidebar-native styling, sits above the profile card */}
                         <button
                             onClick={() => { setShowTicketModal(true); setTicketResult(null); }}
                             className="nav-link w-full text-left cursor-pointer text-gray-600 hover:text-gray-900 hover:bg-gray-50"
@@ -523,7 +523,7 @@ export default function DashboardShell({
                     </div>
                 )}
 
-                {/* Super Sender announcement — dedicated-IP upsell. Sticks
+                {/* Super Sender announcement - dedicated-IP upsell. Sticks
                     to the top of the main content area so it's seen on any
                     dashboard page. Dismissal persists for 24h, then re-shows.
                     Hidden permanently once the account has any IP purchased. */}
@@ -545,7 +545,7 @@ export default function DashboardShell({
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className="m-0 text-[0.85rem] text-white font-bold leading-tight">
-                                    Introducing Super Sender — dedicated IPs for your workspace
+                                    Introducing Super Sender - dedicated IPs for your workspace
                                 </p>
                                 <p className="m-0 text-[0.75rem] text-blue-100 leading-tight mt-0.5">
                                     Better deliverability, full control over your sender reputation. From <strong className="text-white">$39/IP/month</strong>, powered by Amazon SES.{' '}
@@ -572,7 +572,7 @@ export default function DashboardShell({
                 {/* Email Validation Activity Banner */}
                 <ValidationBanner />
 
-                {/* Infrastructure Assessment Progress Overlay — hidden on settings page where sync modal already shows health check progress */}
+                {/* Infrastructure Assessment Progress Overlay - hidden on settings page where sync modal already shows health check progress */}
                 {assessmentInProgress && pathname !== '/dashboard/settings' && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-[4px] flex items-center justify-center z-[100]">
                         <div className="bg-white rounded-[20px] px-12 py-10 max-w-[440px] w-[90%] text-center" style={{
@@ -590,7 +590,7 @@ export default function DashboardShell({
                                 Infrastructure Assessment Running
                             </h3>
                             <p className="m-0 mb-6 text-[0.9rem] text-gray-500 leading-normal">
-                                Checking DNS records, bounce rates, and mailbox health across all domains. This takes a moment — data will refresh automatically when complete.
+                                Checking DNS records, bounce rates, and mailbox health across all domains. This takes a moment - data will refresh automatically when complete.
                             </p>
                             <div className="flex items-center justify-center gap-2 p-3 px-4 bg-[#F5F3FF] rounded-xl text-[0.8rem] text-[#7C3AED] font-semibold">
                                 <span style={{ animation: 'pulse 1.5s infinite' }}>●</span>
@@ -608,11 +608,11 @@ export default function DashboardShell({
                         animation: 'slideIn 0.3s ease-out'
                     }}>
                         <span className="text-xl">✓</span>
-                        <span className="text-[0.9rem] font-semibold text-[#065F46]">Assessment complete — data refreshed</span>
+                        <span className="text-[0.9rem] font-semibold text-[#065F46]">Assessment complete - data refreshed</span>
                     </div>
                 )}
 
-                {/* Trial Countdown Floating Popup — dashboard-native styling.
+                {/* Trial Countdown Floating Popup - dashboard-native styling.
                     Cream-bordered white card matches premium-card pattern, brand-green
                     accent for the primary action, lucide icons (not emoji), compact
                     sizing so it sits naturally next to the trial pill in the overview
@@ -766,10 +766,10 @@ export default function DashboardShell({
                 </div>
             )}
 
-            {/* Consent re-acceptance modal — fires on 412 from any /api request */}
+            {/* Consent re-acceptance modal - fires on 412 from any /api request */}
             <ConsentReacceptanceModal />
 
-            {/* Non-dismissible Upgrade Modal for expired/past_due/canceled — exempt billing page so user can upgrade */}
+            {/* Non-dismissible Upgrade Modal for expired/past_due/canceled - exempt billing page so user can upgrade */}
             {showUpgradeModal && pathname !== '/dashboard/billing' && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-[4px] flex items-center justify-center z-[9999]">
                     <div className="bg-white rounded-3xl max-w-[480px] w-[90%] py-12 px-10 text-center" style={{
