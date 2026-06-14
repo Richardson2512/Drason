@@ -241,7 +241,7 @@ export default function TestimonialsPage() {
                         Operators choose{' '}
                         <em
                             className="not-italic font-normal italic"
-                            style={{ fontFamily: 'var(--font-fraunces), Georgia, serif', color: '#E68B1F' }}
+                            style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", color: '#E68B1F' }}
                         >
                             Superkabe
                         </em>
