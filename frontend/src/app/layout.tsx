@@ -1,25 +1,52 @@
 import type { Metadata } from 'next';
-import { Figtree, Fraunces } from 'next/font/google';
+import { Outfit, Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import Script from 'next/script';
 import CookieBanner from '@/components/CookieBanner';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 
-const figtree = Figtree({
+// ── Velvet Ledger type system (marketing surfaces) ──
+// A layered 4-font system: Outfit (display), Cormorant Garamond italic
+// (accent), Inter (body), JetBrains Mono (metadata labels). Applied to
+// the public marketing site via globals.css; the logged-in dashboard is
+// pinned to its own stack via the .dashboard-type-scope class so this
+// editorial system does not bleed into the data UI.
+
+// Display face — headlines, wordmark, stat numbers, card names. Tight
+// negative letter-spacing applied in globals.css.
+const outfit = Outfit({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-figtree',
+  variable: '--font-outfit',
 });
 
-// Serif accent font for italic emphasis (e.g. "deliverability protection")
-const fraunces = Fraunces({
+// Accent face — italic only, only on emphasis moments (the accent word
+// inside a headline, pricing tier names, marker numerals). Never body.
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '600'],
   style: ['italic'],
   display: 'swap',
-  variable: '--font-fraunces',
+  variable: '--font-cormorant',
+});
+
+// Body face — paragraph copy, sub-heads, button labels, FAQ answers.
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+// Metadata face — the small uppercase tracked-out labels (eyebrows,
+// comment-style headers, skill tags, stat labels).
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  display: 'swap',
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
@@ -179,7 +206,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${figtree.variable} ${fraunces.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${outfit.variable} ${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         {/*
           Google Consent Mode v2.
@@ -258,7 +285,7 @@ export default function RootLayout({
           `data-cjcrx=addYes` seen in the wild) inject attributes onto <body> before React
           hydrates, which otherwise flags as a hydration mismatch. Safe to suppress here
           since the body itself is a pure layout shell. */}
-      <body className={figtree.className} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         {children}
         <ScrollToTopButton />
         <CookieBanner />

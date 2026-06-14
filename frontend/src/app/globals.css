@@ -291,9 +291,48 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif;
+  /* Velvet Ledger body face. Inter for all readable copy. */
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
+}
+
+/* ── Velvet Ledger display face ──
+   Headlines across the marketing site use Outfit with tight negative
+   letter-spacing — the editorial "modern sans" treatment. Scoped to
+   h1-h6 so body copy stays on Inter. The .dashboard-type-scope reset
+   below pulls the logged-in app back to its own stack so this does not
+   bleed into the data UI. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit), Outfit, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ── Velvet Ledger metadata face ──
+   Opt-in utility for the small uppercase tracked-out labels (eyebrows,
+   // comment-style headers, skill tags, stat labels). Apply `font-mono`
+   (Tailwind, wired in tailwind.config.ts) or this class directly. */
+.vl-eyebrow {
+  font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ── Dashboard type scope ──
+   The logged-in dashboard is intentionally NOT part of the Velvet Ledger
+   editorial system — it is a data-dense app where italic-serif accents
+   and tracked-out mono labels would hurt scanability. This resets the
+   dashboard subtree (and its headings) back to a neutral system sans so
+   the marketing typography swap leaves the app visually unchanged. */
+.dashboard-type-scope,
+.dashboard-type-scope h1,
+.dashboard-type-scope h2,
+.dashboard-type-scope h3,
+.dashboard-type-scope h4,
+.dashboard-type-scope h5,
+.dashboard-type-scope h6 {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  letter-spacing: normal;
 }
 
 /* ============================================================================
