@@ -14,6 +14,10 @@ interface Finding {
     entity_type: string;
     entity_id: string;
     recommendation?: string;
+    // Set when this finding belongs to a parent entity (e.g. a mailbox showing
+    // its domain's blacklist). Lets us label the scope so the user isn't misled
+    // into thinking the mailbox itself is the listed entity.
+    inherited_from?: string | null;
 }
 
 export default function FindingsCard({ entityType, entityId }: FindingsCardProps) {
@@ -151,9 +155,28 @@ export default function FindingsCard({ entityType, entityId }: FindingsCardProps
                                         fontWeight: '700',
                                         color: style.color,
                                         marginBottom: '0.25rem',
-                                        fontSize: '0.95rem'
+                                        fontSize: '0.95rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        flexWrap: 'wrap'
                                     }}>
                                         {finding.title}
+                                        {finding.inherited_from && (
+                                            <span style={{
+                                                fontSize: '0.7rem',
+                                                fontWeight: 600,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.03em',
+                                                color: style.color,
+                                                background: 'rgba(255, 255, 255, 0.55)',
+                                                border: `1px solid ${style.border}`,
+                                                borderRadius: '999px',
+                                                padding: '0.1rem 0.55rem'
+                                            }}>
+                                                Inherited from {finding.inherited_from}
+                                            </span>
+                                        )}
                                     </div>
                                     <div style={{
                                         color: style.color,
