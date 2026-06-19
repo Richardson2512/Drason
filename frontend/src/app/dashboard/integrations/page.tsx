@@ -34,7 +34,7 @@ const INTEGRATIONS: Integration[] = [
         category: 'lead_sources',
         logo: '/clay.png',
         configPath: '/dashboard/integrations/clay',
-        settingKey: '_CLAY_ALWAYS_ON_', // Clay is always available once org exists
+        settingKey: 'CLAY_CONNECTED', // true once Clay has delivered >=1 lead
     },
     {
         id: 'apollo',
@@ -265,8 +265,14 @@ function getConnectionStatus(
 ): 'connected' | 'error' | 'not_connected' | 'coming_soon' {
     if (integration.comingSoon) return 'coming_soon';
 
-    // Clay is always available
-    if (integration.id === 'clay') return 'connected';
+    // Clay is webhook-based (no OAuth handshake): "connected" means it has
+    // actually delivered at least one lead. CLAY_CONNECTED is derived on the
+    // backend from last_clay_ingest_at - not a hardcoded always-on.
+    if (integration.id === 'clay') {
+        return settings.find(s => s.key === 'CLAY_CONNECTED')?.value === 'true'
+            ? 'connected'
+            : 'not_connected';
+    }
     // Webhooks - connected only if at least one endpoint is registered.
     if (integration.id === 'webhooks') {
         return webhookCount > 0 ? 'connected' : 'not_connected';
