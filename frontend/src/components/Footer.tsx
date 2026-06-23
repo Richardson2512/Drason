@@ -106,6 +106,10 @@ export default function Footer() {
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img src="https://nicklaunches.com/badges/featured.svg" alt="Superkabe on Nick Launches" width="244" height="56" />
  </a>
+ <a href="https://startupfa.me/s/superkabe?utm_source=www.superkabe.com" target="_blank" rel="noopener">
+ {/* eslint-disable-next-line @next/next/no-img-element */}
+ <img src="https://startupfa.me/badges/featured-badge-small.webp" alt="Superkabe - Featured on Startup Fame" width="224" height="36" />
+ </a>
  </div>
 
  {/* Bottom Copyright & Entity Anchors */}
