@@ -262,6 +262,10 @@ function BillingContent() {
 
     const currentTier = data?.subscription.tier || 'trial';
     const tierInfo = TIER_INFO[currentTier] || TIER_INFO.trial;
+    // A canceled / expired subscription has no "current" plan to keep - the user
+    // must be able to pick any tier and re-subscribe. Only active or trialing
+    // counts as actually being on a plan.
+    const hasActivePlan = data?.subscription.status === 'active' || data?.subscription.status === 'trialing';
     const daysRemaining = getDaysRemaining();
 
     return (
@@ -414,24 +418,29 @@ function BillingContent() {
                         </div>
                     </div>
 
-                    {/* Plan Options - upgrade and downgrade */}
-                    {data?.subscription.status !== 'canceled' && (
+                    {/* Plan Options - upgrade, downgrade, or re-subscribe. Shown for
+                        canceled / expired subscriptions too, so the user can pick a
+                        plan again instead of landing on an empty billing page. */}
+                    {(
                         <div className="premium-card">
                             <h3 className="text-lg font-bold mb-5 text-slate-800">
-                                {data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : 'Change Plan'}
+                                {!hasActivePlan ? 'Choose a Plan' : data?.subscription.status === 'trialing' ? 'Continue or Switch Plans' : 'Change Plan'}
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {Object.entries(TIER_INFO)
                                     .filter(([key]) => !['trial', 'enterprise'].includes(key))
                                     .map(([key, info]) => {
-                                        const isCurrentTier = key === currentTier;
+                                        // No "current" tier when the plan is canceled/expired -> every tier is selectable to re-subscribe.
+                                        const isCurrentTier = hasActivePlan && key === currentTier;
                                         const tierOrder: Record<string, number> = { trial: 0, starter: 1, pro: 2, growth: 3, scale: 4, enterprise: 5 };
                                         const currentTierRank = tierOrder[currentTier] || 0;
                                         const thisTierRank = tierOrder[key] || 0;
                                         const isUpgrade = thisTierRank > currentTierRank;
                                         const isDowngrade = thisTierRank < currentTierRank;
 
-                                        const buttonText = data?.subscription.status === 'trialing'
+                                        const buttonText = !hasActivePlan
+                                            ? `Subscribe to ${info.name}`
+                                            : data?.subscription.status === 'trialing'
                                             ? (isCurrentTier ? `Continue with ${info.name}` : `Switch to ${info.name}`)
                                             : isCurrentTier ? 'Current Plan'
                                             : isUpgrade ? `Upgrade to ${info.name}`
