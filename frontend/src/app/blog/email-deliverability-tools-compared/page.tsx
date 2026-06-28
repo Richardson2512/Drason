@@ -86,7 +86,7 @@ export default function DeliverabilityToolsComparedArticle() {
  "name": "Are there software solutions that help maintain high email deliverability?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Solutions fall into three categories: (1) Sending platforms with built-in deliverability features (Smartlead, Instantly, Lemlist), (2) Deliverability testing tools (GlockApps, MailReach, Folderly, Mail-tester), and (3) Infrastructure protection platforms (Superkabe) that monitor and automatically protect sending domains, mailboxes, and DNS health in real-time. Most outbound teams need tools from all three categories."
+ "text": "Yes. They fall into a few groups: sending platforms (Smartlead, Instantly, Lemlist) and deliverability testing tools (GlockApps, MailReach, Folderly, Mail-tester). Superkabe is different - it is a standalone all-in-one platform that sends from its own sequencer and also validates, monitors, and automatically protects every domain, mailbox, and DNS record it sends from in real time, so the sending and protection live in one product rather than separate tools."
  }
  },
  {
@@ -149,8 +149,8 @@ export default function DeliverabilityToolsComparedArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Deliverability tools fall into 4 categories: free ISP tools, DNS checkers, testing platforms, and infrastructure protection</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools and Microsoft SNDS are free but limited to their respective ISPs</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Cold outbound platforms (Smartlead, Instantly) handle sending but lack real-time infrastructure monitoring</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> No single tool covers monitoring + protection + automated response - most teams need a stack</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is a cold-email platform that sends from its own sequencer and auto-protects every mailbox and domain it sends from</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Standalone senders and testing tools each cover only one slice - monitoring, testing, or sending - so you end up stitching several together</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is a standalone all-in-one platform that sends from its own sequencer and validates, monitors, and auto-protects every mailbox and domain it sends from in one product</li>
  </ul>
  </div>
 
@@ -248,7 +248,7 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="bg-white border border-blue-200 p-6 shadow-sm ring-1 ring-blue-100">
  <div className="flex items-center justify-between mb-2">
  <h3 className="font-bold text-gray-900">Superkabe</h3>
- <span className="px-2.5 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded-full">Infrastructure Protection</span>
+ <span className="px-2.5 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded-full">All-in-one platform</span>
  </div>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
  A cold-email platform with built-in sending and automated infrastructure protection. Superkabe sends from its own sequencer and monitors bounce rates, DNS health, mailbox resilience, and domain status across every mailbox and domain it sends from. Automatically pauses risky mailboxes and gates domain traffic when thresholds are breached.
@@ -356,14 +356,14 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
 
  <div className="bg-white border border-blue-200 p-6 shadow-sm ring-1 ring-blue-100">
- <h3 className="font-bold text-gray-900 mb-3">Category 3: Infrastructure Protection</h3>
+ <h3 className="font-bold text-gray-900 mb-3">Category 3: All-in-One Platforms</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-3">
- This category focuses on real-time monitoring and automated protection of the sending infrastructure itself - domains, mailboxes, DNS records, and sending patterns. Rather than testing individual emails, these tools protect the underlying systems that determine deliverability.
+ This category collapses sending, validation, and infrastructure protection into a single product. Rather than running a separate sender and bolting monitoring on top, the platform sends from its own sequencer and protects the underlying systems - domains, mailboxes, DNS records, and sending patterns - in real time.
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&bull;</span> <strong>Superkabe</strong> - Built-in sending plus real-time bounce monitoring, automated mailbox pause, domain gating, DNS health tracking, and infrastructure scoring across every mailbox and domain it sends from.</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&bull;</span> <strong>Superkabe</strong> - A standalone all-in-one platform: its own built-in sequencer plus pre-send validation, real-time bounce monitoring, automated mailbox pause, domain gating, DNS health tracking, and infrastructure scoring across every mailbox and domain it sends from.</li>
  </ul>
- <p className="text-gray-500 text-xs mt-3 italic">This category is newer and less crowded - most outbound teams still rely on manual monitoring or hope their sending platform catches problems in time.</p>
+ <p className="text-gray-500 text-xs mt-3 italic">This category is newer and less crowded - most outbound teams still run a separate sender and rely on manual monitoring or hope it catches problems in time.</p>
  </div>
  </div>
 
@@ -515,28 +515,21 @@ export default function DeliverabilityToolsComparedArticle() {
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">1</span>
  <div>
- <p className="font-bold text-gray-900 text-sm">Sending Platform with Built-in Protection</p>
- <p className="text-gray-500 text-xs">Superkabe - sends from its own sequencer and handles campaign sequencing, mailbox rotation, warmup, and infrastructure protection in one platform</p>
+ <p className="font-bold text-gray-900 text-sm">Your All-in-One Platform</p>
+ <p className="text-gray-500 text-xs">Superkabe - sends from its own sequencer and handles validation, campaign sequencing, mailbox rotation, warmup, real-time monitoring, auto-pause, and domain gating in a single product</p>
  </div>
  </div>
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">2</span>
  <div>
- <p className="font-bold text-gray-900 text-sm">Real-time Monitoring and Auto-Protection</p>
- <p className="text-gray-500 text-xs">Superkabe monitors every mailbox and domain it sends from and auto-pauses or gates when thresholds are breached</p>
+ <p className="font-bold text-gray-900 text-sm">Free ISP Monitoring (optional)</p>
+ <p className="text-gray-500 text-xs">Google Postmaster Tools + Microsoft SNDS - ISP-specific reputation data to read alongside Superkabe</p>
  </div>
  </div>
  <div className="flex items-start gap-4">
  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">3</span>
  <div>
- <p className="font-bold text-gray-900 text-sm">Free ISP Monitoring</p>
- <p className="text-gray-500 text-xs">Google Postmaster Tools + Microsoft SNDS - ISP-specific reputation data</p>
- </div>
- </div>
- <div className="flex items-start gap-4">
- <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0">4</span>
- <div>
- <p className="font-bold text-gray-900 text-sm">DNS Health Check</p>
+ <p className="font-bold text-gray-900 text-sm">DNS Health Check (optional)</p>
  <p className="text-gray-500 text-xs">MXToolbox - periodic SPF/DKIM/DMARC validation and blacklist monitoring</p>
  </div>
  </div>
@@ -561,7 +554,7 @@ export default function DeliverabilityToolsComparedArticle() {
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Are there software solutions that help maintain high email deliverability?</h3>
- <p className="text-gray-600 text-sm">Yes. Sending platforms (Smartlead, Instantly) handle warmup and rotation. Testing tools (GlockApps, MailReach, Folderly) diagnose placement issues. Infrastructure protection platforms (Superkabe) monitor and auto-protect sending infrastructure in real-time. Most outbound teams need tools from all three categories.</p>
+ <p className="text-gray-600 text-sm">Yes. Sending platforms (Smartlead, Instantly) handle warmup and rotation. Testing tools (GlockApps, MailReach, Folderly) diagnose placement issues. Superkabe is a standalone all-in-one platform that sends from its own sequencer and validates, monitors, and auto-protects every domain and mailbox it sends from in real time - sending and protection in one product. Pair it with free diagnostics like GlockApps or MXToolbox if you want extra point-in-time visibility.</p>
  </div>
  <div className="bg-white border border-gray-100 p-6 shadow-sm">
  <h3 className="font-bold text-gray-900 mb-2">Do I need GlockApps if I already use Smartlead analytics?</h3>

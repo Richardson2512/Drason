@@ -86,7 +86,7 @@ export default function CatchAllDetectionComparisonArticle() {
  "name": "Do I need all three tools for catch-all protection?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "No. You need one verification tool (ZeroBounce or NeverBounce) plus Superkabe. Or just Superkabe alone, since it includes verification through MillionVerifier. Running ZeroBounce and NeverBounce together on the same list adds cost without meaningful benefit - they detect catch-all domains the same way. The value comes from pairing any verification tool with Superkabe's post-send protection layer."
+ "text": "No. Superkabe alone covers it - it includes verification through MillionVerifier, catch-all scoring, and post-send protection in one platform, and it sends from its own sequencer. Running ZeroBounce and NeverBounce together on the same list adds cost without meaningful benefit - they detect catch-all domains the same way. If you already rely on a dedicated verifier, you can keep running it in front of Superkabe, but it is not required."
  }
  },
  {
@@ -141,7 +141,7 @@ export default function CatchAllDetectionComparisonArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> ZeroBounce and NeverBounce both detect catch-all domains reliably. The difference is what happens after detection</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Neither verification tool offers post-send monitoring, risk scoring, or auto-pause for catch-all leads</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only option that detects catch-all, risk-scores leads, distributes risk per-mailbox, and monitors bounces in real-time</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Best setup: use ZeroBounce or NeverBounce for pre-send verification + Superkabe for catch-all risk management and infrastructure protection</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Simplest setup: Superkabe alone - it verifies, scores catch-all risk, sends from its own sequencer, and protects your infrastructure in one platform (a dedicated verifier in front of it is optional)</li>
  </ul>
  </div>
 
@@ -324,9 +324,9 @@ export default function CatchAllDetectionComparisonArticle() {
  </div>
 
  <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-2">ZeroBounce or NeverBounce + Superkabe</h3>
+ <h3 className="font-bold text-gray-900 mb-2">Superkabe (with an optional dedicated verifier)</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- The setup for high-volume teams that need to send to catch-all leads. Use your preferred verification tool to remove definite invalids, disposable addresses, and spam traps. Then route everything (including catch-all) through Superkabe. You keep your existing verification workflow. You add the protection layer that lets you safely access the 30-40% of leads that verification alone forces you to skip. This is the setup we recommend for teams sending 500+ emails/day across 5+ domains.
+ The setup for high-volume teams that need to send to catch-all leads. Superkabe verifies through MillionVerifier, removes definite invalids, disposable addresses, and spam traps, scores catch-all risk, then sends everything (including catch-all) from its own sequencer with per-mailbox risk distribution and real-time bounce protection. One platform lets you safely access the 30-40% of leads that verification alone forces you to skip. If you prefer a dedicated verifier (ZeroBounce or NeverBounce), you can run it in front of Superkabe, but it is optional. This is the setup we recommend for teams sending 500+ emails/day across 5+ domains.
  </p>
  </div>
 
@@ -417,7 +417,7 @@ export default function CatchAllDetectionComparisonArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-2">Do I need all three tools?</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- No. You need one verification tool plus Superkabe. Or just Superkabe alone. Running ZeroBounce and NeverBounce together adds cost without benefit. The value comes from pairing any verification tool with Superkabe&apos;s post-send protection.
+ No. Superkabe alone is enough - it verifies, scores catch-all risk, sends, and protects in one platform. Running ZeroBounce and NeverBounce together adds cost without benefit. A dedicated verifier in front of Superkabe is optional, not required.
  </p>
  </div>
  <div>

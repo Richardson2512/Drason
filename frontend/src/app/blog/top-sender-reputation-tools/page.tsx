@@ -102,7 +102,7 @@ export default function TopSenderReputationToolsArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools is free and essential - the only way to see Gmail&apos;s actual verdict on your domains</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Microsoft SNDS covers the Outlook/Hotmail side that Postmaster does not</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only tool that monitors reputation in real time and auto-protects before damage occurs</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> The best approach combines ISP-direct data (Postmaster + SNDS) with real-time protection (Superkabe) and blacklist monitoring (MXToolbox)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Run Superkabe as your sending platform for real-time, self-protecting reputation monitoring, and read it alongside free ISP-direct data (Postmaster + SNDS) and blacklist checks (MXToolbox)</li>
  </ul>
  </div>
 
@@ -167,7 +167,7 @@ export default function TopSenderReputationToolsArticle() {
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 1 - ISP-direct data:</strong> <a href="https://postmaster.google.com" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 hover:text-blue-800">Google Postmaster Tools</a> + <a href="https://sendersupport.olc.protection.outlook.com/snds" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 hover:text-blue-800">Microsoft SNDS</a>. Both free. Together they cover 50-70% of most cold email audiences.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 2 - Real-time protection:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. Monitors reputation signals continuously, auto-pauses before damage, and heals mailboxes through graduated recovery. The <Link href="/help/esp-performance-matrix" className="text-blue-600 hover:text-blue-800">ESP Performance Matrix</Link> shows per-ESP health so you catch reputation drops that ISP-direct tools report 24-48 hours later.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 2 - Your sending platform:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. As the all-in-one platform you send from, it monitors reputation signals continuously, auto-pauses before damage, and heals mailboxes through graduated recovery. The <Link href="/help/esp-performance-matrix" className="text-blue-600 hover:text-blue-800">ESP Performance Matrix</Link> shows per-ESP health so you catch reputation drops that ISP-direct tools report 24-48 hours later.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
  <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 3 - Blacklist monitoring:</strong> <a href="https://mxtoolbox.com" target="_blank" rel="nofollow noopener noreferrer" className="text-blue-600 hover:text-blue-800">MXToolbox</a> (free tier for manual checks, paid for monitoring). Catches blacklist additions that directly tank deliverability.</p>

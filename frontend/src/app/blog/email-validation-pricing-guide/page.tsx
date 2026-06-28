@@ -85,7 +85,7 @@ export default function EmailValidationPricingGuideArticle() {
  "name": "What does Superkabe include that standalone validation tools do not?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe includes validation plus real-time bounce monitoring, auto-pause on threshold breach, domain health monitoring (SPF/DKIM/DMARC), catch-all detection with routing caps, automated healing pipeline for damaged domains, and lead routing to sending platforms. Standalone tools only validate - they do not monitor what happens after you send or protect your infrastructure in real-time."
+ "text": "Superkabe is an all-in-one cold email platform - it sends through your own mailboxes and includes validation, real-time bounce monitoring, auto-pause on threshold breach, domain health monitoring (SPF/DKIM/DMARC), catch-all detection with routing caps, and an automated healing pipeline for damaged domains. Standalone validators only verify - they do not send, monitor what happens after you send, or protect your infrastructure in real-time."
  }
  },
  {
@@ -316,7 +316,7 @@ export default function EmailValidationPricingGuideArticle() {
  <h3 className="font-bold text-gray-900 mb-3">Subscription is right when...</h3>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Ongoing outbound:</strong> You send 10,000+ leads per month consistently. Subscription cost per email drops below pay-per-use at this volume</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Multiple sending platforms:</strong> You use Smartlead AND Instantly, or plan to switch platforms. Subscription tools like Superkabe work across platforms. Pay-per-email tools require separate integration for each</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Consolidating tools:</strong> You are tired of stitching a sender, a validator, and a monitoring tool together. An all-in-one like Superkabe sends and validates in one subscription, so you stop paying for and integrating three separate products</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Need monitoring:</strong> You want real-time bounce monitoring, not just pre-send verification. Pay-per-email tools do not monitor anything after verification. Subscription platforms that include monitoring protect your infrastructure continuously</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Running multiple domains:</strong> More domains = more things to monitor = more value from automated protection. If you have 5+ domains, manual monitoring becomes impractical</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">&#9679;</span> <strong>Predictable budgeting:</strong> A flat $149/month is easier to budget than variable costs that fluctuate with lead volume</li>
@@ -387,18 +387,18 @@ export default function EmailValidationPricingGuideArticle() {
  <td className="p-3 text-center text-green-600">Yes</td>
  </tr>
  <tr className="border-b border-gray-100">
- <td className="p-3 text-gray-600">Lead routing to sender</td>
+ <td className="p-3 text-gray-600">Native sending</td>
  <td className="p-3 text-center text-red-400">No</td>
  <td className="p-3 text-center text-red-400">No</td>
  <td className="p-3 text-center text-red-400">No</td>
  <td className="p-3 text-center text-green-600">Yes</td>
  </tr>
  <tr className="border-b border-gray-100">
- <td className="p-3 text-gray-600">Multi-platform support</td>
+ <td className="p-3 text-gray-600">Mailbox support</td>
  <td className="p-3 text-center text-red-400">No</td>
  <td className="p-3 text-center text-red-400">No</td>
  <td className="p-3 text-center text-red-400">No</td>
- <td className="p-3 text-center text-green-600">Smartlead, Instantly, EmailBison</td>
+ <td className="p-3 text-center text-green-600">Google Workspace, Microsoft 365, SMTP</td>
  </tr>
  </tbody>
  </table>
@@ -436,7 +436,7 @@ export default function EmailValidationPricingGuideArticle() {
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">What does Superkabe include that standalone tools do not?</h3>
- <p className="text-gray-600 text-sm">Superkabe includes email validation plus real-time bounce monitoring, auto-pause on threshold breach, DNS health monitoring (SPF/DKIM/DMARC), catch-all detection with per-mailbox routing caps, automated healing for damaged domains, and lead routing to Smartlead, Instantly, and EmailBison. Standalone tools only validate.</p>
+ <p className="text-gray-600 text-sm">Superkabe is an all-in-one cold email platform - it sends through your own Google Workspace, Microsoft 365, or SMTP mailboxes and includes email validation, real-time bounce monitoring, auto-pause on threshold breach, DNS health monitoring (SPF/DKIM/DMARC), catch-all detection with per-mailbox routing caps, and automated healing for damaged domains. Standalone validators only verify.</p>
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">When should I choose pay-per-email over subscription?</h3>

@@ -437,7 +437,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  {/* Section 6 */}
  <h2 id="agency-infrastructure-budget" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What should an agency budget for cold email infrastructure in 2026?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- A complete cold email infrastructure budget includes five categories: domains, mailboxes, sending platform, warmup, and deliverability protection. Here is the total cost of ownership for agencies at three different scales.
+ A complete cold email infrastructure budget covers domains, mailboxes, warmup, and a platform to send and protect from. The cleanest path is an all-in-one like Superkabe that handles sending, validation, monitoring, auto-pause, and healing in one line item instead of buying a separate sender plus a protection tool. Here is the total cost of ownership for agencies at three different scales.
  </p>
 
  <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm">
@@ -488,7 +488,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  <td className="py-4 px-6 text-gray-600 text-sm">$1,350-3,750/mo</td>
  </tr>
  <tr className="border-b border-gray-100">
- <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Deliverability protection (Superkabe)</td>
+ <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Superkabe (all-in-one)</td>
  <td className="py-4 px-6 text-gray-600 text-sm">$99-149/mo</td>
  <td className="py-4 px-6 text-gray-600 text-sm">$149-249/mo</td>
  <td className="py-4 px-6 text-gray-600 text-sm">$249-499/mo</td>
@@ -504,7 +504,7 @@ export default function CostOfUnmonitoredInfrastructureArticle() {
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Deliverability protection (Superkabe) typically represents 3-6% of total infrastructure cost. It is the smallest line item in the budget but protects the largest investment. Without it, agencies risk losing domains that cost hundreds to replace and thousands in lost pipeline.
+ Superkabe typically represents 3-6% of total infrastructure cost when run alongside a separate sender - and less once it replaces the sending platform and validation line items it folds in. It is one of the smallest line items in the budget but protects the largest investment. Without protection, agencies risk losing domains that cost hundreds to replace and thousands in lost pipeline.
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-8">

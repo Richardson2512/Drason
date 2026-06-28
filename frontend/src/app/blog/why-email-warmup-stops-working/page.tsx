@@ -188,21 +188,21 @@ export default function WhyEmailWarmupStopsWorkingArticle() {
  When a mailbox crosses bounce thresholds, Superkabe auto-pauses it before the damage spreads to the domain. Then the <Link href="/docs/help/auto-healing" className="text-blue-600 hover:text-blue-800">5-phase healing pipeline</Link> takes over - gradually reducing volume, re-establishing engagement signals, and restoring the mailbox to active sending once metrics recover. This is automated warmup recovery, not just initial warmup.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The critical difference: warmup tools build initial reputation. Infrastructure protection tools maintain it. You need both - warmup for the first 2-3 weeks, and monitoring/protection from that point forward.
+ The critical difference: standalone warmup tools only build initial reputation. Superkabe is an all-in-one platform that warms up, sends, monitors, and heals - so it both builds reputation in the first 2-3 weeks and maintains it through live sending, instead of leaving a gap a warmup tool was never designed to cover.
  </p>
 
- <h2 id="warmup-vs-protection" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Warmup tool vs infrastructure protection</h2>
+ <h2 id="warmup-vs-protection" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Standalone warmup tool vs an all-in-one platform</h2>
  <div className="overflow-x-auto mb-12">
  <table className="w-full text-sm text-left border-collapse">
  <thead>
  <tr className="border-b-2 border-gray-200">
  <th className="py-3 pr-4 font-bold text-gray-900">Capability</th>
  <th className="py-3 px-3 font-bold text-gray-900">Warmup Tool</th>
- <th className="py-3 px-3 font-bold text-gray-900">Infrastructure Protection (Superkabe)</th>
+ <th className="py-3 px-3 font-bold text-gray-900">Superkabe (all-in-one platform)</th>
  </tr>
  </thead>
  <tbody className="text-gray-600">
- <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Build initial reputation</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes</td><td className="py-2.5 px-3">No (use a warmup tool)</td></tr>
+ <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Build initial reputation</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes - built-in warmup</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Monitor live campaign deliverability</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes - real-time</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">Auto-pause on bounce spike</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">Yes</td></tr>
  <tr className="border-b border-gray-100"><td className="py-2.5 pr-4 font-medium text-gray-900">DNS health monitoring</td><td className="py-2.5 px-3">No</td><td className="py-2.5 px-3 text-emerald-600 font-medium">SPF/DKIM/DMARC</td></tr>

@@ -62,7 +62,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
 
  const tools = [
  { rank: 1, name: 'Google Postmaster Tools', url: 'https://postmaster.google.com', bestFor: 'Free Gmail reputation data', price: 'Free', description: 'Google Postmaster Tools is the authoritative source for how Gmail sees your sending domains. It shows domain reputation (HIGH/MEDIUM/LOW/BAD), spam rate, authentication success ratios, and delivery errors. Every cold email team should have this connected - it is the only way to see Gmail\'s actual verdict on your domains. The limitation: it only covers Gmail, updates with 24-48 hour delay, and provides no alerting or automation.' },
- { rank: 2, name: 'Superkabe', url: 'https://www.superkabe.com', bestFor: 'Active infrastructure protection for cold email', price: 'From $49/mo', description: 'Superkabe is purpose-built for cold email infrastructure protection. It is the sending platform: leads flow in from enrichment tools (Clay, Apollo), Superkabe sends from its own sequencer, and it actively monitors bounce rates, DNS health, and mailbox status in real time across every mailbox and domain it sends from. When bounce rates spike, Superkabe auto-pauses the affected mailbox before the domain burns. The 5-phase healing pipeline automatically recovers paused mailboxes through graduated warmup. Unique features include ESP-aware mailbox routing (scores mailboxes by per-ESP bounce rate), hybrid email validation with CSV upload, and built-in sending with real-time monitoring.' },
+ { rank: 2, name: 'Superkabe', url: 'https://www.superkabe.com', bestFor: 'All-in-one cold email platform', price: 'From $49/mo', description: 'Superkabe is a standalone all-in-one cold email platform. Leads flow in from enrichment tools (Clay, Apollo), Superkabe validates them, sends from its own built-in sequencer, and actively monitors bounce rates, DNS health, and mailbox status in real time across every mailbox and domain it sends from. When bounce rates spike, Superkabe auto-pauses the affected mailbox before the domain burns. The 5-phase healing pipeline automatically recovers paused mailboxes through graduated warmup. Unique features include ESP-aware mailbox routing (scores mailboxes by per-ESP bounce rate), hybrid email validation with CSV upload, and built-in sending with real-time monitoring.' },
  { rank: 3, name: 'GlockApps', url: 'https://glockapps.com', bestFor: 'Inbox placement testing', price: 'From $59/mo', description: 'GlockApps tests where your emails land - inbox, spam, promotions, or missing - across major providers. You send a test email to their seed list and get a placement report within minutes. Valuable for testing new domains, templates, and warmup progress. The limitation: it tests point-in-time placement, not continuous monitoring. It does not watch your live campaigns or auto-pause on problems.' },
  { rank: 4, name: 'MXToolbox', url: 'https://mxtoolbox.com', bestFor: 'DNS and blacklist monitoring', price: 'Free / from $99/mo', description: 'MXToolbox is the industry standard for DNS diagnostics. It checks SPF, DKIM, DMARC, blacklist status, MX records, and SMTP connectivity. The free tier handles one-off lookups. Paid plans add monitoring with alerts when records change or IPs hit blacklists. Essential for diagnosing deliverability issues but does not monitor sending behavior or bounce rates.' },
  { rank: 5, name: 'Mail-Tester', url: 'https://www.mail-tester.com', bestFor: 'Quick spam score checks', price: 'Free (limited) / $30/mo', description: 'Mail-Tester gives you a 0-10 score on how spammy your email looks. Send a test email to their unique address, and it checks authentication, content, blacklists, and formatting. Simple and fast for pre-send sanity checks. Not designed for ongoing monitoring or infrastructure protection.' },
@@ -102,7 +102,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Google Postmaster Tools is free and irreplaceable for Gmail reputation data - connect it first</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe is the only tool that actively protects infrastructure with auto-pause and healing</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> GlockApps and Mail-Tester test placement but do not monitor live campaigns</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Most teams need 2-3 tools: reputation data (Postmaster) + active protection (Superkabe) + diagnostics (MXToolbox)</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Run Superkabe as your all-in-one platform - it sends, validates, and protects - alongside free diagnostics (Postmaster, MXToolbox)</li>
  </ul>
  </div>
 
@@ -158,19 +158,19 @@ export default function TopEmailDeliverabilityToolsArticle() {
  </table>
  </div>
 
- <h2 id="recommended-stack" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The recommended stack for cold email teams</h2>
+ <h2 id="recommended-stack" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The recommended setup for cold email teams</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- No single tool covers everything. For a cold email operation running 50+ domains and 200+ mailboxes, we recommend three layers:
+ For a cold email operation running 50+ domains and 200+ mailboxes, the sending platform itself should do the protecting. Run Superkabe as your all-in-one platform and keep two free diagnostic tools on hand:
  </p>
  <div className="space-y-3 mb-12">
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 1 - Reputation data:</strong> Google Postmaster Tools (free). Tells you how Gmail sees your domains. Non-negotiable.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">The platform:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. Validates leads, sends from its own built-in sequencer, monitors bounce rates in real time, auto-pauses before thresholds are breached, heals mailboxes through graduated recovery, and routes by ESP performance - all in one product.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 2 - Active protection:</strong> <Link href="/" className="text-blue-600 hover:text-blue-800">Superkabe</Link>. Monitors bounce rates in real time, auto-pauses before thresholds are breached, heals mailboxes through graduated recovery, validates leads before send, routes by ESP performance.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Reputation data:</strong> Google Postmaster Tools (free). Tells you how Gmail sees your domains. Non-negotiable.</p>
  </div>
  <div className="p-4 bg-white border border-[#D1CBC5] ">
- <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Layer 3 - Diagnostics:</strong> MXToolbox (free tier). For when something goes wrong and you need to trace DNS or blacklist issues.</p>
+ <p className="m-0 text-sm text-gray-700"><strong className="text-gray-900">Diagnostics:</strong> MXToolbox (free tier). For when something goes wrong and you need to trace DNS or blacklist issues.</p>
  </div>
  </div>
 
@@ -182,7 +182,7 @@ export default function TopEmailDeliverabilityToolsArticle() {
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">Do I need a deliverability tool if I use Smartlead? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
- <p className="mt-3 text-sm text-gray-600">Yes. Smartlead manages campaigns and sequences but does not monitor deliverability in real time. It does not auto-pause mailboxes when bounce rates spike, check DNS health, or heal damaged domains. A deliverability tool like Superkabe fills this gap.</p>
+ <p className="mt-3 text-sm text-gray-600">Smartlead manages campaigns and sequences but does not monitor deliverability in real time. It does not auto-pause mailboxes when bounce rates spike, check DNS health, or heal damaged domains. Superkabe is a standalone all-in-one platform that sends from its own sequencer and does all of this - so you can run cold email on one product instead of bolting monitoring onto a separate sender.</p>
  </details>
  <details className="p-4 bg-gray-50 border border-gray-200 group">
  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">How much do deliverability tools cost? <span className="text-gray-400 group-open:rotate-180 transition-transform">&#9662;</span></summary>
