@@ -150,7 +150,7 @@ export default function SuperkabeVsInstantlyPage() {
                     <div className="bg-white border border-gray-100 p-6 mb-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">2. Built-in B2B lead database</h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
-                            Instantly bundles its own lead database with verification - competitive with standalone tools at small-to-mid scale. Superkabe integrates with Apollo, Clay, Smartlead, and others but does not bundle a database. Teams that need leads + sender in one tool benefit from Instantly&apos;s bundle.
+                            Instantly bundles its own lead database with verification - competitive with standalone tools at small-to-mid scale. Superkabe integrates with Apollo, Clay, ZoomInfo, and others for lead sourcing but does not bundle a database; sending still happens through Superkabe&apos;s own built-in sequencer. Teams that need leads + sender in one tool benefit from Instantly&apos;s bundle.
                         </p>
                     </div>
 

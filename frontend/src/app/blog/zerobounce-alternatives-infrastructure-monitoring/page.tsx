@@ -189,10 +189,10 @@ export default function ZeroBounceAlternativesArticle() {
  Superkabe is not a verification tool that added monitoring as a feature. It is an infrastructure protection platform that includes verification. The core product monitors bounce rates in real-time across all your mailboxes and domains, auto-pauses mailboxes that cross thresholds, and heals damaged infrastructure through graduated recovery phases.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- Verification comes through a built-in MillionVerifier integration. Leads ingested through Superkabe are verified, scored, and routed to campaigns automatically. Invalid leads never reach a sender. The difference from standalone verification tools: Superkabe keeps protecting you after the email is sent.
+ Verification comes through a built-in MillionVerifier integration. Leads ingested through Superkabe are verified, scored, and sent straight from Superkabe&apos;s own built-in sequencer - no export to a separate tool. Invalid leads never reach a sender. The difference from standalone verification tools: Superkabe keeps protecting you after the email is sent.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed">
- Integrates with Smartlead and Instantly. Monitors DNS health (SPF, DKIM, DMARC). Provides domain-level gating and cross-entity correlation. <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link>.
+ Has sending built in. Monitors DNS health (SPF, DKIM, DMARC). Provides domain-level gating and cross-entity correlation. <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link>.
  </p>
  </div>
 
@@ -263,7 +263,7 @@ export default function ZeroBounceAlternativesArticle() {
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Bounce monitoring</th>
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Auto-pause</th>
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Healing</th>
- <th className="py-4 px-4 font-bold text-gray-900 text-xs">Smartlead / Instantly</th>
+ <th className="py-4 px-4 font-bold text-gray-900 text-xs">Sending built-in</th>
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Price per 1K</th>
  </tr>
  </thead>
@@ -274,7 +274,7 @@ export default function ZeroBounceAlternativesArticle() {
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Real-time</td>
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Yes</td>
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Yes</td>
- <td className="py-4 px-4 text-green-600 text-xs font-semibold">Both</td>
+ <td className="py-4 px-4 text-green-600 text-xs font-semibold">Built-in</td>
  <td className="py-4 px-4 text-gray-600 text-xs">Included</td>
  </tr>
  <tr className="border-b border-gray-100">

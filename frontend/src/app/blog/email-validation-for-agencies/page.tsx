@@ -272,15 +272,15 @@ export default function EmailValidationForAgenciesArticle() {
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">3. Validation Gate</h3>
  <p>
- Instead of pushing leads directly to Smartlead or Instantly, they flow through Superkabe first. Each lead gets validated: email address verification, catch-all detection, domain reputation check, and health scoring. Leads that pass get routed to the right client&apos;s campaign. Leads that fail get held for review or discarded.
+ Leads flow through Superkabe first. Each lead gets validated: email address verification, catch-all detection, domain reputation check, and health scoring. Leads that pass get routed into the right client&apos;s campaign and send straight from Superkabe&apos;s own built-in cold-email sequencer - no export to a separate tool. Leads that fail get held for review or discarded.
  </p>
  <p>
- This is where you prevent 90% of bounce-related damage. The leads that would have caused hard bounces never reach the sending platform.
+ This is where you prevent 90% of bounce-related damage. The leads that would have caused hard bounces never reach a live mailbox.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">4. Sending and Monitoring</h3>
  <p>
- Campaigns run normally through your sending platform. Meanwhile, Superkabe monitors bounce rates every 60 seconds across all clients. If Client A&apos;s domain starts bouncing, Client A&apos;s affected mailboxes get paused. Client B through Client O continue uninterrupted.
+ Campaigns send from Superkabe&apos;s built-in sequencer. Meanwhile, Superkabe monitors bounce rates every 60 seconds across all clients. If Client A&apos;s domain starts bouncing, Client A&apos;s affected mailboxes get paused. Client B through Client O continue uninterrupted.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">5. Healing</h3>
@@ -394,7 +394,7 @@ export default function EmailValidationForAgenciesArticle() {
  <li>Bounce thresholds and healing rules can differ per client based on their infrastructure maturity.</li>
  <li>When Client A&apos;s mailbox gets auto-paused, Client B&apos;s campaigns continue without interruption.</li>
  <li>Health reports are per-client, so you never accidentally share one client&apos;s data with another.</li>
- <li>Lead validation catches bad data at the client level before it reaches any sending platform.</li>
+ <li>Lead validation catches bad data at the client level before it reaches a live mailbox.</li>
  </ul>
  <p>
  This is not a feature request. It is the baseline requirement for any agency running cold email at scale.
@@ -460,7 +460,7 @@ export default function EmailValidationForAgenciesArticle() {
  <li>Organize infrastructure by client.</li>
  <li>Set per-client bounce thresholds and validation rules.</li>
  <li>Point your Clay webhooks (or other lead sources) to Superkabe&apos;s ingestion endpoint.</li>
- <li>Leads flow through validation before reaching the sender. Monitoring runs continuously.</li>
+ <li>Leads flow through validation, then send from Superkabe&apos;s own built-in sequencer. Monitoring runs continuously.</li>
  </ol>
  <p>
  Check our{' '}

@@ -280,10 +280,10 @@ export default function DomainBurnedRecoveryPreventionArticle() {
 
  <h2 id="adding-validation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Adding validation between Clay and your sender</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- The fix is straightforward: intercept leads after Clay enrichment and before they reach your sending platform. Validate them. Route the good ones. Block the bad ones.
+ The fix is straightforward: validate leads after Clay enrichment and before they enter a campaign. Send the good ones. Block the bad ones.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- <Link href="/docs/clay-integration" className="text-blue-600 hover:text-blue-800 underline">Superkabe&apos;s Clay integration</Link> does this via webhook. Instead of pointing Clay&apos;s webhook at Smartlead, you point it at Superkabe. Every lead goes through multi-layer validation:
+ <Link href="/docs/clay-integration" className="text-blue-600 hover:text-blue-800 underline">Superkabe&apos;s Clay integration</Link> does this via webhook. You point Clay&apos;s webhook at Superkabe, and every lead goes through multi-layer validation before it enters a campaign in Superkabe&apos;s own built-in sequencer:
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
@@ -295,15 +295,15 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">4.</span> <strong>Catch-all detection:</strong> Flags the domain as catch-all and applies risk scoring and per-mailbox routing caps</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">5.</span> <strong>SMTP verification:</strong> Probes the address to confirm the mailbox exists (for non-catch-all domains)</li>
  <li className="flex items-start gap-2"><span className="text-green-500 mt-1">6.</span> <strong>Health gate classification:</strong> GREEN (safe to send), YELLOW (send with caution), RED (blocked)</li>
- <li className="flex items-start gap-2"><span className="text-green-500 mt-1">7.</span> <strong>Routing:</strong> Valid leads are pushed to the right campaign on the right platform automatically</li>
+ <li className="flex items-start gap-2"><span className="text-green-500 mt-1">7.</span> <strong>Sending:</strong> Valid leads go straight into the right campaign in Superkabe&apos;s built-in sequencer automatically</li>
  </ul>
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- RED leads never reach your sender. They are quarantined with a reason code so you can review them. YELLOW leads (like catch-all addresses) get sent with volume caps and risk-aware routing. GREEN leads go through at full speed.
+ RED leads never get sent. They are quarantined with a reason code so you can review them. YELLOW leads (like catch-all addresses) get sent with volume caps and risk-aware pacing. GREEN leads go through at full speed.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The setup takes about 5 minutes: change Clay&apos;s webhook URL from your sender&apos;s API to Superkabe&apos;s ingestion endpoint. Map the fields. Done. Every lead from Clay now passes through validation before it can touch your sending infrastructure.
+ The setup takes about 5 minutes: point Clay&apos;s webhook URL at Superkabe&apos;s ingestion endpoint. Map the fields. Done. Every lead from Clay now passes through validation before it can be sent from your infrastructure.
  </p>
 
  <h2 id="prevention-checklist" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Prevention checklist</h2>
@@ -410,7 +410,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">How do I validate Clay leads before sending?</h3>
- <p className="text-gray-600 text-sm">Point Clay&apos;s webhook at Superkabe instead of directly at your sending platform. Superkabe validates every lead (syntax, MX, disposable, catch-all, SMTP verification), applies health scoring, and only routes valid leads to campaigns. Invalid leads are quarantined with reason codes. Setup takes about 5 minutes via Clay&apos;s webhook configuration.</p>
+ <p className="text-gray-600 text-sm">Point Clay&apos;s webhook at Superkabe. Superkabe validates every lead (syntax, MX, disposable, catch-all, SMTP verification), applies health scoring, and only sends valid leads from its built-in sequencer. Invalid leads are quarantined with reason codes. Setup takes about 5 minutes via Clay&apos;s webhook configuration.</p>
  </div>
  <div className="bg-gray-50 p-6">
  <h3 className="font-bold text-gray-900 mb-2">Should I abandon a burned domain or try to recover it?</h3>

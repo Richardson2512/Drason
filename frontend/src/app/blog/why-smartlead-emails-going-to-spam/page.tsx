@@ -193,10 +193,10 @@ export default function WhySmartleadEmailsGoingToSpamArticle() {
  The core problem with diagnosing Smartlead spam issues is that by the time you notice low reply rates, the damage is already done. Your domain reputation has tanked, your mailboxes are compromised, and recovery takes weeks. What you need is real-time monitoring that catches problems <em>before</em> they escalate.
  </p>
  <p className="text-gray-600 leading-relaxed mb-4">
- <Link href="/product/smartlead-deliverability-protection" className="text-blue-600 hover:text-blue-800">Superkabe integrates directly with Smartlead</Link> and monitors four critical layers:
+ <Link href="/product/smartlead-deliverability-protection" className="text-blue-600 hover:text-blue-800">Superkabe has sending built in</Link> and monitors four critical layers:
  </p>
  <ul className="text-gray-600 space-y-3 mb-4">
- <li><strong>Real-time bounce monitoring:</strong> Bounce rates are tracked per mailbox, per domain, and per campaign. When any mailbox crosses your configured threshold (default 2%), Superkabe auto-pauses that mailbox in Smartlead before the domain reputation suffers further.</li>
+ <li><strong>Real-time bounce monitoring:</strong> Bounce rates are tracked per mailbox, per domain, and per campaign. When any mailbox crosses your configured threshold (default 2%), Superkabe auto-pauses that mailbox in its own send pipeline before the domain reputation suffers further.</li>
  <li><strong>DNS health checks:</strong> SPF, DKIM, and DMARC records are verified continuously across all your sending domains. If a record breaks - due to a DNS change, key rotation, or provider update - you get an alert before your next email goes out unauthenticated.</li>
  <li><strong>ESP-aware routing:</strong> Superkabe tracks bounce rates per ESP (Gmail, Outlook, Yahoo). If a particular mailbox has high bounces to Gmail but fine performance to Outlook, routing adjusts to protect the mailbox&apos;s reputation with that specific ESP.</li>
  <li><strong>Automatic healing:</strong> When a mailbox is paused due to deliverability issues, Superkabe&apos;s 5-phase healing pipeline automatically begins recovery - reducing volume, re-warming, and gradually restoring sending capacity once metrics improve.</li>

@@ -174,7 +174,7 @@ export default function MillionVerifierAlternativesPage() {
  <div className="bg-blue-50 border border-blue-200 p-6 mb-6">
  <h3 className="font-bold text-gray-900 mb-2">1. Superkabe - MillionVerifier inside + monitoring + healing</h3>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- If you are already using MillionVerifier and want more, Superkabe is the natural next step. You get the same MillionVerifier verification engine plus health scoring for catch-all risk, role-based addresses, and disposable domains. Leads route directly into Smartlead campaigns after validation. No CSV exports. No manual imports.
+ If you are already using MillionVerifier and want more, Superkabe is the natural next step. You get the same MillionVerifier verification engine plus health scoring for catch-all risk, role-based addresses, and disposable domains. Validated leads send straight from Superkabe&apos;s own built-in cold-email sequencer. No CSV exports. No manual imports.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
  The monitoring layer tracks bounce rates per mailbox and per domain continuously. When a mailbox crosses your configured threshold, it auto-pauses. When a domain&apos;s mailboxes are collectively degrading, the domain gets gated. Once things stabilize, structured healing brings volume back gradually. DNS health monitoring watches SPF, DKIM, and DMARC in the background.
@@ -185,7 +185,7 @@ export default function MillionVerifierAlternativesPage() {
  <ul className="space-y-1 text-gray-600 text-sm">
  <li><strong>Best for:</strong> Teams already using MillionVerifier who want the full protection stack</li>
  <li><strong>Pricing:</strong> $49/mo flat - MillionVerifier verification included</li>
- <li><strong>Limitation:</strong> Built for cold outbound on Smartlead. Not a standalone verification API</li>
+ <li><strong>Limitation:</strong> Built for cold outbound. Not a standalone verification API</li>
  </ul>
  <p className="text-sm mt-3">
  <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link>
@@ -231,12 +231,12 @@ export default function MillionVerifierAlternativesPage() {
  Clearout claims 98% accuracy, though independent testing puts it closer to 96%. Credit-based pricing works out to about $0.006 per email at volume, roughly 50% more than MillionVerifier but still cheaper than ZeroBounce or NeverBounce. The Google Sheets add-on and WordPress plugin are useful for teams working in those environments.
  </p>
  <p className="text-gray-600 text-sm leading-relaxed mb-4">
- Role-based email detection and disposable domain filtering are solid. The API is competent. Where Clearout falls short for cold email teams: no native integration with Smartlead, Instantly, or most outbound platforms. It is a standalone verification tool with decent accuracy at a moderate price point.
+ Role-based email detection and disposable domain filtering are solid. The API is competent. Where Clearout falls short for cold email teams: it is verify-only with no built-in sending. It is a standalone verification tool with decent accuracy at a moderate price point.
  </p>
  <ul className="space-y-1 text-gray-600 text-sm">
  <li><strong>Best for:</strong> Teams using Google Sheets or WordPress who want better accuracy than MillionVerifier</li>
  <li><strong>Pricing:</strong> Credit-based, ~$0.006/email ($60 per 10,000)</li>
- <li><strong>Limitation:</strong> No Smartlead integration. No infrastructure monitoring</li>
+ <li><strong>Limitation:</strong> Verify-only with no built-in sending. No infrastructure monitoring</li>
  </ul>
  </div>
 
@@ -286,7 +286,7 @@ export default function MillionVerifierAlternativesPage() {
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Monitoring</th>
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Auto-pause</th>
  <th className="py-4 px-4 font-bold text-gray-900 text-xs">Healing</th>
- <th className="py-4 px-4 font-bold text-gray-900 text-xs">Smartlead</th>
+ <th className="py-4 px-4 font-bold text-gray-900 text-xs">Sending built-in</th>
  </tr>
  </thead>
  <tbody>
@@ -298,7 +298,7 @@ export default function MillionVerifierAlternativesPage() {
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Real-time</td>
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Yes</td>
  <td className="py-4 px-4 text-green-600 text-xs font-semibold">Yes</td>
- <td className="py-4 px-4 text-green-600 text-xs font-semibold">Native</td>
+ <td className="py-4 px-4 text-green-600 text-xs font-semibold">Built-in</td>
  </tr>
  <tr className="border-b border-gray-100">
  <td className="py-4 px-4 text-gray-800 font-semibold text-xs">ZeroBounce</td>
