@@ -77,7 +77,7 @@ export default function DomainBurnedRecoveryPreventionArticle() {
  "name": "How do I validate emails from Clay before sending?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Add a validation layer between Clay and your sending platform. Superkabe accepts leads via webhook from Clay, validates them (syntax, MX, disposable, catch-all detection, SMTP verification), and only routes valid leads to your campaigns. Invalid leads are quarantined. This takes 5 minutes to set up via Clay's webhook integration and prevents bad data from ever reaching your sender."
+ "text": "Validate the leads before they are sent. Superkabe accepts leads via webhook from Clay, validates them (syntax, MX, disposable, catch-all detection, SMTP verification), and only sends valid leads from its own built-in sequencer. Invalid leads are quarantined. This takes 5 minutes to set up via Clay's webhook integration and prevents bad data from ever reaching a sending mailbox."
  }
  },
  {

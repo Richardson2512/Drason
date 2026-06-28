@@ -327,7 +327,7 @@ export default function SuperkabeVsManualMonitoringArticle() {
  {/* Section 6 */}
  <h2 id="what-superkabe-does" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What Superkabe actually does differently</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe is not a fancier spreadsheet. It is a protection layer that sits between your sending platform and your domains. It watches everything, all the time, and acts automatically when something goes wrong.
+ Superkabe is not a fancier spreadsheet. It is the sending platform: it sends from its own sequencer and protects every mailbox and domain it sends from. It watches everything, all the time, and acts automatically when something goes wrong.
  </p>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">

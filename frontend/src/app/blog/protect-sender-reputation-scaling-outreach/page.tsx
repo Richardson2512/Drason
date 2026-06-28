@@ -85,7 +85,7 @@ export default function ProtectSenderReputationArticle() {
  "name": "How does Superkabe protect sender reputation at scale?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe monitors every mailbox and domain in real-time. It validates leads before they reach campaigns, tracks bounce rates per mailbox and per domain, auto-pauses mailboxes that cross bounce thresholds, correlates failures across entities to catch systemic issues, and heals damaged infrastructure through graduated recovery. It integrates with Smartlead and Instantly to sync campaign data and take protective action directly on the sending platform."
+ "text": "Superkabe monitors every mailbox and domain in real-time. It validates leads before they reach campaigns, tracks bounce rates per mailbox and per domain, auto-pauses mailboxes that cross bounce thresholds, correlates failures across entities to catch systemic issues, and heals damaged infrastructure through graduated recovery. It sends from its own sequencer and takes protective action on every mailbox and domain in real time."
  }
  }
  ]
@@ -356,7 +356,7 @@ export default function ProtectSenderReputationArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe protects reputation at scale</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe monitors every mailbox and domain across your infrastructure, auto-pauses before thresholds breach, correlates failures to find root causes, and heals damaged entities through graduated recovery. Built for teams running 20-200+ mailboxes on Smartlead and Instantly.
+ Superkabe monitors every mailbox and domain across your infrastructure, auto-pauses before thresholds breach, correlates failures to find root causes, and heals damaged entities through graduated recovery. Built for teams running 20-200+ mailboxes from its own sending sequencer.
  </p>
  </div>
  </article>

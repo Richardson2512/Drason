@@ -90,7 +90,7 @@ export default function EmailValidationForAgenciesArticle() {
  "name": "How do I justify the cost of email validation to clients?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Frame it as infrastructure insurance. Show the math: their domains cost money to acquire and warm (typically $15 per domain plus 3-4 weeks of warmup time). One domain burn wastes that investment plus 4-6 weeks of send capacity. Validation prevents this. Most clients understand immediately when you show them what a bounce spike looks like in their Smartlead dashboard."
+ "text": "Frame it as infrastructure insurance. Show the math: their domains cost money to acquire and warm (typically $15 per domain plus 3-4 weeks of warmup time). One domain burn wastes that investment plus 4-6 weeks of send capacity. Validation prevents this. Most clients understand immediately when you show them what a bounce spike does to a domain's sending reputation."
  }
  },
  {
@@ -160,7 +160,7 @@ export default function EmailValidationForAgenciesArticle() {
  <li>150+ active campaigns</li>
  </ul>
  <p>
- Now ask yourself: how do you monitor 225 mailboxes for bounce rate spikes? Manually checking each one in Smartlead or Instantly? That is a full-time job - except it needs to happen at 2 AM when a bounce spike starts, not at 9 AM when you open your laptop.
+ Now ask yourself: how do you monitor 225 mailboxes for bounce rate spikes? Manually checking each one in a campaign dashboard or spreadsheet? That is a full-time job - except it needs to happen at 2 AM when a bounce spike starts, not at 9 AM when you open your laptop.
  </p>
  <p>
  We talked to an agency founder last month who was literally setting alarms to check bounce rates at midnight. He had burned two client domains in one week and was terrified of it happening again. His monitoring tool was a spreadsheet. His response time was measured in hours, sometimes days.
@@ -245,9 +245,9 @@ export default function EmailValidationForAgenciesArticle() {
  <td className="px-4 py-3 text-red-700 font-medium">Mandatory - you cannot manually heal 225 mailboxes</td>
  </tr>
  <tr>
- <td className="px-4 py-3 font-medium">Multi-platform support</td>
- <td className="px-4 py-3">Usually one platform</td>
- <td className="px-4 py-3 text-red-700 font-medium">Clients may use different senders - need unified monitoring</td>
+ <td className="px-4 py-3 font-medium">Fleet-wide monitoring</td>
+ <td className="px-4 py-3">A handful of mailboxes</td>
+ <td className="px-4 py-3 text-red-700 font-medium">Hundreds of mailboxes across many clients - need one unified view</td>
  </tr>
  </tbody>
  </table>
@@ -257,12 +257,12 @@ export default function EmailValidationForAgenciesArticle() {
  <section className="mb-10">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">The Agency Workflow</h2>
  <p>
- Here is what a properly protected agency workflow looks like end to end. If your agency runs both Smartlead and Instantly, see how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">multi-platform email validation</Link> unifies monitoring across both.
+ Here is what a properly protected agency workflow looks like end to end. If your agency runs many clients on shared and dedicated domains, see how <Link href="/product/multi-platform-email-validation" className="text-blue-600 hover:text-blue-800 underline">fleet-wide email validation</Link> unifies monitoring across every mailbox and domain you send from.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">1. Client Onboarding</h3>
  <p>
- When you bring on a new client, you set up their domains and mailboxes in your sending platform (Smartlead, Instantly, or both). Then you connect those accounts to Superkabe. The system syncs their campaigns, mailboxes, and domains automatically. You set per-client bounce thresholds - maybe 2% for a client with brand-new domains, 3% for one with established infrastructure.
+ When you bring on a new client, you set up their domains and mailboxes in Superkabe. The system organizes their campaigns, mailboxes, and domains under that client automatically. You set per-client bounce thresholds - maybe 2% for a client with brand-new domains, 3% for one with established infrastructure.
  </p>
 
  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">2. Lead Enrichment</h3>
@@ -455,8 +455,8 @@ export default function EmailValidationForAgenciesArticle() {
  Setting up Superkabe for agency use takes about an hour for your first client, then 15 minutes for each additional client:
  </p>
  <ol className="list-decimal pl-6 space-y-2">
- <li>Connect your Smartlead and/or Instantly accounts.</li>
- <li>Superkabe syncs all campaigns, mailboxes, and domains automatically.</li>
+ <li>Add your sending domains and mailboxes in Superkabe.</li>
+ <li>Superkabe organizes all campaigns, mailboxes, and domains automatically.</li>
  <li>Organize infrastructure by client.</li>
  <li>Set per-client bounce thresholds and validation rules.</li>
  <li>Point your Clay webhooks (or other lead sources) to Superkabe&apos;s ingestion endpoint.</li>

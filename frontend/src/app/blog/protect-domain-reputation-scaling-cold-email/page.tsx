@@ -362,7 +362,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div>
  <h3 className="font-bold text-gray-900 mb-1">Auto-pause at threshold</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- When a mailbox crosses the bounce threshold, it pauses automatically. No human review required. No Slack thread. No waiting for the team lead to log in. The mailbox pauses in the sending platform (Smartlead, Instantly) within minutes of crossing the threshold. Traffic redistributes to healthy mailboxes. The damaged mailbox enters quarantine for assessment and potential healing.
+ When a mailbox crosses the bounce threshold, it pauses automatically. No human review required. No Slack thread. No waiting for the team lead to log in. The mailbox pauses automatically within minutes of crossing the threshold. Traffic redistributes to healthy mailboxes. The damaged mailbox enters quarantine for assessment and potential healing.
  </p>
  </div>
  </div>
@@ -460,7 +460,7 @@ export default function ProtectDomainReputationScalingArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe protects domains at scale</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe validates leads before sending, monitors every mailbox and domain in real time, auto-pauses at configurable thresholds, correlates failures across your infrastructure, and heals damaged entities through graduated recovery. Built for teams running 20-200+ mailboxes on Smartlead and Instantly who need to scale without burning domains.
+ Superkabe validates leads before sending, monitors every mailbox and domain in real time, auto-pauses at configurable thresholds, correlates failures across your infrastructure, and heals damaged entities through graduated recovery. Built for teams running 20-200+ mailboxes from its own sending sequencer who need to scale without burning domains.
  </p>
  </div>
  </article>

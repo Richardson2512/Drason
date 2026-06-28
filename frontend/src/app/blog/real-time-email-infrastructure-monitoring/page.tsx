@@ -53,7 +53,7 @@ export default function RealTimeMonitoringArticle() {
  "name": "What is real-time email infrastructure monitoring?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Real-time email infrastructure monitoring is the continuous tracking of domain health, mailbox status, DNS authentication, and bounce rates across all sending accounts. Unlike periodic testing, it detects problems as they happen and can trigger automated protection before reputation damage occurs."
+ "text": "Real-time email infrastructure monitoring is the continuous tracking of domain health, mailbox status, DNS authentication, and bounce rates across every mailbox and domain you send from. Unlike periodic testing, it detects problems as they happen and can trigger automated protection before reputation damage occurs."
  }
  },
  {
@@ -85,7 +85,7 @@ export default function RealTimeMonitoringArticle() {
  "name": "How does Superkabe monitor mailbox health?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Superkabe ingests bounce and delivery data via webhooks from Smartlead, Instantly, and EmailBison. It calculates rolling bounce rates per mailbox, checks DNS authentication continuously, and assigns each mailbox a health score. When metrics breach configurable thresholds, it auto-pauses the mailbox."
+ "text": "Superkabe sends from your own mailboxes and captures every bounce and delivery event directly from its built-in sequencer. It calculates rolling bounce rates per mailbox, checks DNS authentication continuously, and assigns each mailbox a health score. When metrics breach configurable thresholds, it auto-pauses the mailbox."
  }
  },
  {
@@ -93,7 +93,7 @@ export default function RealTimeMonitoringArticle() {
  "name": "Can I monitor cold email infrastructure across multiple platforms?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Superkabe provides a single dashboard for monitoring domains and mailboxes across Smartlead, Instantly, and EmailBison. It monitors at the infrastructure level (domain and mailbox) rather than the platform level, giving you unified visibility."
+ "text": "Yes. Superkabe provides a single dashboard for monitoring every domain and mailbox you send from. It monitors at the infrastructure level (domain and mailbox), giving you unified visibility across your entire sending footprint."
  }
  }
  ]
@@ -133,7 +133,7 @@ export default function RealTimeMonitoringArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Periodic inbox placement tests (GlockApps, MailReach) miss rapid degradation events between tests</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Real-time monitoring tracks bounce rates, DNS authentication, blacklist status, and sending volume continuously</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Monitoring alone is not enough - automated protection (auto-pause, domain gating) prevents damage before it compounds</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines real-time monitoring with automated enforcement across Smartlead, Instantly, and EmailBison</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe combines real-time monitoring with automated enforcement across every mailbox and domain you send from</li>
  </ul>
  </div>
 
@@ -300,7 +300,7 @@ export default function RealTimeMonitoringArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Bounce events processed within seconds of occurrence</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Delivery confirmation tracking for sent/delivered ratio</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Reply and engagement signals for positive reputation indicators</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Cross-platform deduplication at the infrastructure level</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-1">&#9679;</span> Event deduplication at the mailbox and domain level</li>
  </ul>
  </div>
 
@@ -324,7 +324,7 @@ export default function RealTimeMonitoringArticle() {
  </p>
  <ul className="space-y-2 text-gray-600 text-sm">
  <li className="flex items-start gap-2"><span className="text-yellow-500 mt-1">&#9679;</span> <strong>3% mailbox bounce rate:</strong> Warning alert sent. Mailbox flagged for observation.</li>
- <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>5% mailbox bounce rate:</strong> Mailbox auto-paused on the sending platform. Traffic redistributed.</li>
+ <li className="flex items-start gap-2"><span className="text-orange-500 mt-1">&#9679;</span> <strong>5% mailbox bounce rate:</strong> Mailbox auto-paused. Traffic redistributed.</li>
  <li className="flex items-start gap-2"><span className="text-red-500 mt-1">&#9679;</span> <strong>30% domain bounce ratio:</strong> Domain gate activated. All sending from the domain halted until metrics recover.</li>
  </ul>
  </div>
@@ -362,7 +362,7 @@ export default function RealTimeMonitoringArticle() {
  <td className="py-4 px-6 text-gray-900 font-semibold text-sm">Protection</td>
  <td className="py-4 px-6 text-gray-600 text-sm">Monitors continuously AND takes automated action when thresholds are breached.</td>
  <td className="py-4 px-6 text-gray-600 text-sm">Superkabe</td>
- <td className="py-4 px-6 text-gray-600 text-sm">Requires platform integration for enforcement capability.</td>
+ <td className="py-4 px-6 text-gray-600 text-sm">Enforcement runs through its own sending sequencer.</td>
  </tr>
  </tbody>
  </table>
@@ -378,13 +378,13 @@ export default function RealTimeMonitoringArticle() {
  {/* Section 6 */}
  <h2 id="setup-real-time-monitoring" className="text-2xl font-bold text-gray-900 mt-12 mb-4">How do you set up real-time infrastructure monitoring for cold email?</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- Setting up real-time monitoring requires connecting your sending platforms, verifying your DNS configuration, establishing threshold levels, configuring alerts, and enabling automated protection rules. Superkabe handles all of these through its platform integrations.
+ Setting up real-time monitoring requires connecting your mailboxes, verifying your DNS configuration, establishing threshold levels, configuring alerts, and enabling automated protection rules. Superkabe handles all of these from its built-in sequencer.
  </p>
 
  <ul className="space-y-3 text-gray-600 mb-8">
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
- <span><strong>Connect your sending platforms.</strong> Link Smartlead, Instantly, or EmailBison to Superkabe via API keys. This enables webhook-based event ingestion so that every bounce, delivery, and reply is captured in real-time. Setup takes under 5 minutes per platform.</span>
+ <span><strong>Connect your mailboxes.</strong> Add your Gmail, Microsoft 365, or SMTP mailboxes to Superkabe. The built-in sequencer sends from them directly, so every bounce, delivery, and reply is captured in real-time. Setup takes under 5 minutes per mailbox.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
@@ -400,7 +400,7 @@ export default function RealTimeMonitoringArticle() {
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</span>
- <span><strong>Enable auto-pause rules.</strong> Turn on automated enforcement so that Superkabe can pause mailboxes and gate domains on the sending platform when thresholds are breached. This is the critical step that converts monitoring into protection - without enforcement, you are still relying on humans to react in time.</span>
+ <span><strong>Enable auto-pause rules.</strong> Turn on automated enforcement so that Superkabe can pause mailboxes and gate domains when thresholds are breached. This is the critical step that converts monitoring into protection - without enforcement, you are still relying on humans to react in time.</span>
  </li>
  </ul>
 
@@ -419,7 +419,7 @@ export default function RealTimeMonitoringArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe prevents this problem</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe continuously monitors domain health, mailbox bounce rates, and DNS authentication status across all your sending platforms. When metrics breach configurable thresholds, it auto-pauses mailboxes, gates domains, and redistributes traffic - preventing reputation damage before it compounds.
+ Superkabe continuously monitors domain health, mailbox bounce rates, and DNS authentication status across every mailbox and domain you send from. When metrics breach configurable thresholds, it auto-pauses mailboxes, gates domains, and redistributes traffic - preventing reputation damage before it compounds.
  </p>
  </div>
  </article>

@@ -463,7 +463,7 @@ export default function HowToCheckDomainReputationArticle() {
  Real-time monitoring flips this model. Instead of checking ISP dashboards after the fact, you track the leading indicators: bounce events, complaint signals, and sending velocity as they happen. A 2% bounce rate fires the warning state and the mailbox is flagged for monitoring. The pause threshold is 3% bounce rate after a 60-send minimum, with a 5-bounce absolute safety net for low-volume mailboxes. The domain never crosses the danger threshold because the problematic mailbox was stopped within minutes, not days.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Superkabe monitors every mailbox and domain every 60 seconds. When bounce rate crosses a configurable threshold, the affected mailbox auto-pauses directly in Smartlead or Instantly. No manual checking. No 48-hour delay. The domain stays protected because the system caught the problem before ISPs could register sustained damage. See how this works in our <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring documentation</Link>.
+ Superkabe monitors every mailbox and domain every 60 seconds. When bounce rate crosses a configurable threshold, the affected mailbox auto-pauses automatically. No manual checking. No 48-hour delay. The domain stays protected because the system caught the problem before ISPs could register sustained damage. See how this works in our <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring documentation</Link>.
  </p>
 
  <div className="overflow-x-auto mb-8">
@@ -513,7 +513,7 @@ export default function HowToCheckDomainReputationArticle() {
  <div className="mt-16 pt-10 border-t border-gray-100">
  <h2 className="text-2xl font-bold text-gray-900 mb-4">How Superkabe monitors domain reputation</h2>
  <p className="text-gray-600 leading-relaxed max-w-3xl">
- Superkabe tracks bounce rates, complaint signals, and sending patterns across every mailbox and domain in real time. When thresholds are crossed, it auto-pauses the affected mailbox directly in your sending platform. No manual dashboard checking. No 48-hour delays. Built for teams running cold outbound on Smartlead and Instantly who need to protect their domains while scaling.
+ Superkabe tracks bounce rates, complaint signals, and sending patterns across every mailbox and domain in real time. When thresholds are crossed, it auto-pauses the affected mailbox automatically. No manual dashboard checking. No 48-hour delays. Built for teams running cold outbound from its own sending sequencer who need to protect their domains while scaling.
  </p>
  </div>
  </article>

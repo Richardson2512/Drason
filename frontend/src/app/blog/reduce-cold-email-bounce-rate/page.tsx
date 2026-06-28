@@ -195,7 +195,7 @@ export default function ReduceBounceRateArticle() {
  Weekly bounce reviews are how domains get burned. A bad batch goes out Monday morning. By Monday afternoon, your domain is at 4% bounce rate. By Tuesday, ISPs have started throttling. By the time someone checks the numbers on Friday, you have spent a full week sending from a degraded domain. Every email sent during that window went to spam.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Real-time monitoring means checking bounce events as they happen and triggering alerts within minutes, not days. Superkabe&apos;s <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring system</Link> syncs bounce data from Smartlead and Instantly on short intervals, calculates rolling bounce rates per mailbox and per domain, and fires alerts the moment rates approach warning thresholds.
+ Real-time monitoring means checking bounce events as they happen and triggering alerts within minutes, not days. Superkabe&apos;s <Link href="/docs/monitoring" className="text-blue-600 hover:text-blue-800 underline">monitoring system</Link> tracks bounce data on every mailbox you send from, calculates rolling bounce rates per mailbox and per domain, and fires alerts the moment rates approach warning thresholds.
  </p>
 
  {/* Step 4 */}
