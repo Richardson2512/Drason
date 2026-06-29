@@ -110,6 +110,10 @@ export default function Footer() {
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img src="https://startupfa.me/badges/featured-badge-small.webp" alt="Superkabe - Featured on Startup Fame" width="224" height="36" />
  </a>
+ <a href="https://www.puthusu.com/products/superkabe" target="_blank" rel="noopener">
+ {/* eslint-disable-next-line @next/next/no-img-element */}
+ <img src="https://www.puthusu.com/products/superkabe/badge" alt="Superkabe - Featured on Puthusu" width="236" height="54" />
+ </a>
  </div>
 
  {/* Bottom Copyright & Entity Anchors */}
