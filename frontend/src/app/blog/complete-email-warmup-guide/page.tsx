@@ -134,7 +134,7 @@ export default function CompleteEmailWarmupGuide() {
  "name": "What should I do after warmup to protect my domains?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "After warmup, you need three additional layers: lead validation before sending (to prevent bounce spikes), real-time monitoring during campaigns (to catch problems within minutes, not days), and automated healing for damaged mailboxes (to recover without manual intervention). Superkabe provides all three layers, working alongside your existing warmup tool to protect the reputation you spent weeks building."
+ "text": "After warmup, you need three additional layers: lead validation before sending (to prevent bounce spikes), real-time monitoring during campaigns (to catch problems within minutes, not days), and automated healing for damaged mailboxes (to recover without manual intervention). Superkabe provides all three layers and includes native mailbox warmup, so warmup and protection live in one platform instead of separate subscriptions."
  }
  }
  ]
@@ -618,10 +618,10 @@ export default function CompleteEmailWarmupGuide() {
  <div className="relative z-10">
  <h3 className="font-bold text-xl mb-3">Warmup is the starting line. Protection is the race.</h3>
  <p className="text-blue-100 leading-relaxed mb-4">
- Every cold email team has warmup. The teams that scale without burning domains have warmup plus validation, monitoring, and healing. Superkabe adds layers 2-4 to the stack you already have.
+ Every cold email team needs warmup. The teams that scale without burning domains have warmup plus validation, monitoring, and healing. Superkabe brings all four together in one platform: native warmup, lead validation, real-time monitoring, and automated healing.
  </p>
  <p className="text-blue-100 leading-relaxed">
- Already warming your domains? Good. Now protect them. <Link href="/signup" className="text-white underline font-semibold hover:text-blue-200">Start with Superkabe</Link> and close the gap between warmup and real infrastructure protection.
+ Superkabe warms your domains and protects them in one place. <Link href="/signup" className="text-white underline font-semibold hover:text-blue-200">Start with Superkabe</Link> and close the gap between warmup and real infrastructure protection.
  </p>
  </div>
  </div>
@@ -697,7 +697,7 @@ export default function CompleteEmailWarmupGuide() {
  <div className="pb-6">
  <h3 className="font-bold text-gray-900 mb-2">What should I do after warmup to protect my domains?</h3>
  <p className="text-gray-600 text-sm leading-relaxed">
- After warmup, add three layers: lead validation before sending (to prevent bounce spikes), real-time monitoring during campaigns (to catch problems in minutes), and automated healing (to recover damaged mailboxes without manual intervention). <Link href="/signup" className="text-blue-600 hover:text-blue-800 underline">Superkabe</Link> provides all three layers, working alongside your existing warmup tool. Warmup gets you to the starting line. These layers keep you running.
+ After warmup, add three layers: lead validation before sending (to prevent bounce spikes), real-time monitoring during campaigns (to catch problems in minutes), and automated healing (to recover damaged mailboxes without manual intervention). <Link href="/signup" className="text-blue-600 hover:text-blue-800 underline">Superkabe</Link> provides all three layers and includes native mailbox warmup, so it covers the whole lifecycle in one platform. Warmup gets you to the starting line. These layers keep you running.
  </p>
  </div>
  </div>

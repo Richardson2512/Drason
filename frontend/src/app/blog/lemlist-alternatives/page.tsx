@@ -135,7 +135,7 @@ export default function LemlistAlternativesPage() {
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Teams scaling past 10 reps that want AI sequencing + protection at a flat price</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> No image/video personalization variables; warmup via Zapmail rather than Lemwarm-equivalent</li>
+                            <li><strong>Limitation:</strong> No image/video personalization variables; built-in warmup pool is smaller than the Lemwarm network</li>
                         </ul>
                         <p className="text-sm mt-3"><Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link></p>
                     </div>
@@ -231,7 +231,7 @@ export default function LemlistAlternativesPage() {
                                     <td className="py-4 px-4 text-blue-700 font-semibold text-xs">Superkabe</td>
                                     <td className="py-4 px-4 text-gray-600 text-xs">$19/mo flat</td>
                                     <td className="py-4 px-4 text-yellow-600 text-xs">Text + AI</td>
-                                    <td className="py-4 px-4 text-yellow-600 text-xs">Zapmail</td>
+                                    <td className="py-4 px-4 text-green-600 text-xs font-semibold">Built-in pool</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">Auto, 3% / 60+</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">5-phase</td>
                                 </tr>

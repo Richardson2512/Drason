@@ -87,7 +87,7 @@ export default function InstantlyAlternativesPage() {
             {
                 "@type": "Question",
                 "name": "Which Instantly alternative is best for warmup?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Instantly's bundled warmup network is industry-leading and remains one of the strongest reasons to stay. If warmup is the primary concern, Lemwarm (Lemlist's warmup) is the closest competitor. Superkabe integrates with Zapmail for warmup. For pure-play warmup, Mailreach and Warmup Inbox are credible standalone alternatives." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Instantly's bundled warmup network is industry-leading and remains one of the strongest reasons to stay. If raw warmup-network size is the primary concern, Lemwarm (Lemlist's warmup) is the closest competitor. Superkabe ships its own built-in warmup pool so warmup and protection live in one platform. For pure-play warmup, Mailreach and Warmup Inbox are credible standalone alternatives." }
             }
         ]
     };
@@ -166,7 +166,7 @@ export default function InstantlyAlternativesPage() {
                         <ul className="space-y-1 text-gray-600 text-sm">
                             <li><strong>Best for:</strong> Outbound teams running 10+ domains who care about not burning them</li>
                             <li><strong>Pricing:</strong> Starter $19/mo, Pro $49/mo, Growth $199/mo, Scale $349/mo</li>
-                            <li><strong>Limitation:</strong> Native sequencer is newer than Instantly&apos;s; no bundled warmup network of Instantly&apos;s scale (Zapmail integration available)</li>
+                            <li><strong>Limitation:</strong> Native sequencer is newer than Instantly&apos;s; built-in warmup pool is smaller than Instantly&apos;s network</li>
                         </ul>
                         <p className="text-sm mt-3">
                             <Link href="/" className="text-blue-600 hover:text-blue-800 underline">Learn more about Superkabe</Link> · <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline">Pricing</Link>
@@ -290,7 +290,7 @@ export default function InstantlyAlternativesPage() {
                                     <td className="py-4 px-4 text-blue-700 font-semibold text-xs">Superkabe</td>
                                     <td className="py-4 px-4 text-gray-600 text-xs">$19/mo</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">Unlimited</td>
-                                    <td className="py-4 px-4 text-yellow-600 text-xs">Zapmail</td>
+                                    <td className="py-4 px-4 text-green-600 text-xs font-semibold">Built-in pool</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">Auto, 3% / 60+</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">Per-mailbox</td>
                                     <td className="py-4 px-4 text-green-600 text-xs font-semibold">5-phase</td>
@@ -419,7 +419,7 @@ export default function InstantlyAlternativesPage() {
                     </div>
                     <div className="bg-white border border-gray-100 p-6 shadow-sm">
                         <h3 className="font-bold text-gray-900 mb-2">Which Instantly alternative is best for warmup?</h3>
-                        <p className="text-gray-600 text-sm">Instantly&apos;s bundled warmup remains industry-leading. Lemwarm is the closest competitor. Superkabe integrates with Zapmail; Mailreach and Warmup Inbox are credible standalones.</p>
+                        <p className="text-gray-600 text-sm">Instantly&apos;s bundled warmup network remains the largest. Lemwarm is the closest competitor on network size. Superkabe ships its own built-in warmup pool; Mailreach and Warmup Inbox are credible standalones.</p>
                     </div>
                 </div>
             </article>

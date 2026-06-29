@@ -708,10 +708,10 @@ export default function LandingPage() {
  },
  {
  "@type": "Question",
- "name": "Is Superkabe an email warmup tool?",
+ "name": "Does Superkabe include email warmup?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "No. Superkabe is a cold email sending and protection platform, not a warmup service. Warmup tools generate synthetic engagement to build initial reputation. Superkabe protects and optimizes live sending - monitoring bounce rates, ESP placement, and mailbox health during real campaigns. The two are complementary and commonly used together."
+ "text": "Yes. Superkabe includes native mailbox warmup through a built-in peer-to-peer warmup pool, alongside cold email sending and the deliverability protection layer. New mailboxes build initial reputation inside the platform, then the same platform protects and optimizes live sending - monitoring bounce rates, ESP placement, and mailbox health during real campaigns. Warmup and protection in one place, with no separate warmup subscription to bolt on."
  }
  },
  {

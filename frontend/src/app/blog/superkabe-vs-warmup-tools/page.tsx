@@ -50,10 +50,10 @@ export default function SuperkabeVsWarmupToolsArticle() {
  "mainEntity": [
  {
  "@type": "Question",
- "name": "Do I still need email warmup if I use Superkabe?",
+ "name": "Do I need a separate warmup tool if I use Superkabe?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Yes. Warmup and infrastructure protection solve different problems. Warmup builds initial sending reputation for new mailboxes by simulating engagement (opens, replies, inbox moves). Superkabe protects that reputation once you start sending real campaigns by monitoring bounce rates, DNS health, and auto-pausing before thresholds are breached. You need both."
+ "text": "No. Superkabe includes native mailbox warmup built into the platform. New mailboxes build sending reputation through Superkabe's peer-to-peer warmup pool, and the same platform then protects that reputation once real campaigns start by monitoring bounce rates, DNS health, and auto-pausing before thresholds are breached. Warmup and protection live in one platform, so there is no separate Lemwarm or Warmup Inbox subscription to bolt on."
  }
  },
  {
@@ -82,10 +82,10 @@ export default function SuperkabeVsWarmupToolsArticle() {
  },
  {
  "@type": "Question",
- "name": "Should I use Smartlead's built-in warmup or a separate warmup tool with Superkabe?",
+ "name": "Does Superkabe have built-in warmup?",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "Smartlead's built-in warmup is sufficient for most cold email operations. The warmup network is large enough to generate meaningful engagement signals. Whether you use Smartlead warmup, Lemwarm, Instantly warmup, or another tool, the warmup phase covers reputation building. Superkabe covers what happens after warmup: live monitoring, bounce protection, DNS validation, and domain healing. The choice of warmup tool matters less than having infrastructure protection running alongside it."
+ "text": "Yes. Superkabe runs native mailbox warmup through a peer-to-peer warmup pool, so new mailboxes build sending reputation without a separate Lemwarm, Instantly, or Smartlead warmup subscription. The same platform then covers what standalone warmup tools never do: live bounce monitoring, threshold-based auto-pause, DNS validation, and domain healing during real campaigns. You get warmup and protection in one place instead of stitching tools together."
  }
  }
  ]
@@ -124,7 +124,7 @@ export default function SuperkabeVsWarmupToolsArticle() {
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup builds pre-send reputation. It does nothing once your real campaigns start sending</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> A fully warmed domain can burn in 48 hours from a bad list segment or DNS misconfiguration</li>
  <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Warmup tools do not monitor bounce rates, do not auto-pause mailboxes, and do not check DNS</li>
- <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe and warmup tools are complementary. You need both, not one or the other</li>
+ <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">&#9656;</span> Superkabe gives you both: native built-in warmup plus the live protection standalone warmup tools never add</li>
  </ul>
  </div>
 
@@ -233,7 +233,7 @@ export default function SuperkabeVsWarmupToolsArticle() {
  <tr className="border-b border-gray-100">
  <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Pre-send reputation building</td>
  <td className="py-4 px-6 text-green-600 text-sm">Yes (core function)</td>
- <td className="py-4 px-6 text-gray-600 text-sm">No (not its job)</td>
+ <td className="py-4 px-6 text-green-600 text-sm">Yes, built-in warmup pool</td>
  </tr>
  <tr className="border-b border-gray-100">
  <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Live campaign bounce monitoring</td>
@@ -268,51 +268,51 @@ export default function SuperkabeVsWarmupToolsArticle() {
  <tr>
  <td className="py-4 px-6 text-gray-800 font-semibold text-sm">Inbox placement scoring</td>
  <td className="py-4 px-6 text-green-600 text-sm">Yes (warmup network data)</td>
- <td className="py-4 px-6 text-gray-600 text-sm">No (tracks real metrics instead)</td>
+ <td className="py-4 px-6 text-green-600 text-sm">Yes (warmup pool + real campaign data)</td>
  </tr>
  </tbody>
  </table>
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- The table makes it clear: these tools cover different parts of the lifecycle. Warmup covers the first 2-4 weeks. Superkabe covers everything after. There is almost no overlap.
+ The table makes it clear: a standalone warmup tool covers the first 2-4 weeks and stops there. Superkabe covers the full lifecycle. It warms new mailboxes through its own pool and then keeps protecting them once real campaigns start. One platform, the entire timeline.
  </p>
 
  {/* Section 5 */}
  <h2 id="both-layers" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Why you need both warmup and infrastructure protection</h2>
  <p className="text-gray-600 leading-relaxed mb-6">
- This is not an either/or decision. Dropping warmup and only running Superkabe means your new mailboxes will not build reputation properly. Dropping Superkabe and only running warmup means your live campaigns will burn domains with no safety net.
+ You need both layers, but you do not need two vendors. Warmup builds reputation for new mailboxes. Protection keeps that reputation alive once real campaigns start. A standalone warmup tool only gives you the first half, and your live campaigns burn domains with no safety net.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- The correct stack uses both. Warmup handles the onboarding phase. Superkabe handles the operational phase. Together they cover the full domain lifecycle from first send to domain retirement.
+ Superkabe gives you both in one platform. Its native warmup pool handles the onboarding phase, and the protection layer handles the operational phase. Together they cover the full domain lifecycle from first send to domain retirement, with no separate warmup subscription to manage.
  </p>
  <p className="text-gray-600 leading-relaxed mb-6">
- Most agencies already pay for warmup. It is built into Smartlead, Instantly, and other platforms. The missing piece is not more warmup. It is what happens after warmup. That is where domains die.
+ Most teams already pay for a warmup tool on top of their sender. The missing piece was never more warmup. It is what happens after warmup, and that is exactly where domains die. Superkabe closes that gap and folds warmup back into the same platform.
  </p>
 
  {/* Section 6 */}
- <h2 id="stack-recommendation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">The recommended cold email infrastructure stack</h2>
+ <h2 id="stack-recommendation" className="text-2xl font-bold text-gray-900 mt-12 mb-4">What a complete cold email setup needs</h2>
 
  <div className="bg-white border border-gray-100 p-6 mb-8 shadow-sm">
- <h3 className="font-bold text-gray-900 mb-3">Complete protection stack</h3>
+ <h3 className="font-bold text-gray-900 mb-3">Three jobs, one platform</h3>
  <ul className="space-y-3 text-gray-600 text-sm">
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
- <span><strong>Sending platform</strong> (Smartlead, Instantly, etc.): Campaign execution, mailbox rotation, basic analytics</span>
+ <span><strong>Sending</strong>: Campaign execution, mailbox rotation, ESP-aware routing, sequence analytics. Built into Superkabe.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
- <span><strong>Email warmup</strong> (built-in or Lemwarm): Pre-send reputation building for new mailboxes</span>
+ <span><strong>Warmup</strong>: Pre-send reputation building for new mailboxes through Superkabe's native peer-to-peer warmup pool.</span>
  </li>
  <li className="flex items-start gap-3">
  <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
- <span><strong>Superkabe</strong>: Real-time infrastructure protection, bounce monitoring, auto-pause, DNS validation, domain healing</span>
+ <span><strong>Protection</strong>: Real-time bounce monitoring, threshold-based auto-pause, DNS validation, and the 5-phase domain healing pipeline.</span>
  </li>
  </ul>
  </div>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Layers 1 and 2 are standard. Every agency has them. Layer 3 is what separates agencies that burn 5 domains a month from agencies that burn zero. The cost of Superkabe is a fraction of the cost of replacing even one burned domain when you factor in lost pipeline and warmup time.
+ Most teams stitch these three jobs together across a sender, a warmup tool, and a monitoring layer. Superkabe runs all three in one platform. The protection layer is what separates teams that burn 5 domains a month from teams that burn zero, and the cost of Superkabe is a fraction of replacing even one burned domain once you factor in lost pipeline and warmup time.
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-6">
@@ -324,13 +324,13 @@ export default function SuperkabeVsWarmupToolsArticle() {
  </p>
 
  <p className="text-gray-600 leading-relaxed mb-6">
- Already have warmup running? Good. Now add the protection layer that covers the gap warmup cannot.
+ Stop paying for a separate warmup tool and a separate monitoring layer. Superkabe warms your mailboxes and protects them in one platform.
  </p>
  </div>
 
  <BottomCtaStrip
- headline="Warmup gets you started. Protection keeps you alive."
- body="Superkabe wraps warmup with real-time bounce interception, threshold-based auto-pause, and the 5-phase healing pipeline. The protection layer warmup cannot replace."
+ headline="Warmup gets you started. Protection keeps you alive. Superkabe does both."
+ body="Native mailbox warmup plus real-time bounce interception, threshold-based auto-pause, and the 5-phase healing pipeline. One platform for the whole domain lifecycle."
  primaryCta={{ label: 'Start free trial', href: '/signup' }}
  secondaryCta={{ label: 'See how it works', href: '/' }}
  />
