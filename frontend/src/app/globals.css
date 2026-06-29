@@ -579,6 +579,35 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;
 }
 
+/* Opt-IN visible scrollbar. Overrides the global scrollbar-hide above (higher
+   specificity than `*`) so horizontally-scrollable elements - e.g. the wide
+   blog comparison tables - actually show a draggable bar. Brand orange to match
+   the marketing page scrollbar. */
+.table-scroll {
+  -ms-overflow-style: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #E68B1F #F4ECDC;
+}
+
+.table-scroll::-webkit-scrollbar {
+  display: block;
+  height: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #F4ECDC;
+  border-radius: 5px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #E68B1F;
+  border-radius: 5px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #B36710;
+}
+
 /* ============================================================================
    MARKETING SCROLLBAR
    Show a branded scrollbar on marketing pages only. Scoped via :has() to the

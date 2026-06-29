@@ -275,7 +275,7 @@ export default function MillionVerifierAlternativesPage() {
  {/* Comparison Table */}
  <h2 id="comparison-table" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Side-by-side comparison</h2>
 
- <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto">
+ <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto table-scroll">
  <table className="w-full text-left border-collapse min-w-[800px]">
  <thead>
  <tr className="border-b border-gray-100 bg-gray-50">
