@@ -204,7 +204,7 @@ export default function CheapestColdEmailToolsPage() {
                         Real cost = sticker price + add-ons (warmup / validation / monitoring) + the cost of one burned domain (~$200-500 in domain replacement plus 30-45 days of pipeline drag for ramp-back). We exclude the burn cost from the table below to keep the math fair, but it disproportionately hurts tools that do not ship auto-pause.
                     </p>
 
-                    <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm overflow-x-auto">
+                    <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto">
                         <table className="w-full text-left border-collapse min-w-[900px]">
                             <thead>
                                 <tr className="border-b border-gray-100 bg-gray-50">

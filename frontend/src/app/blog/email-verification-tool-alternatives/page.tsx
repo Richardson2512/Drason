@@ -245,7 +245,7 @@ export default function EmailVerificationToolAlternativesPage() {
  {/* Comparison Table */}
  <h2 id="comparison-table" className="text-2xl font-bold text-gray-900 mt-12 mb-4">Level 1 vs Level 2 vs Level 3</h2>
 
- <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm overflow-x-auto">
+ <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto">
  <table className="w-full text-left border-collapse min-w-[700px]">
  <thead>
  <tr className="border-b border-gray-100 bg-gray-50">

@@ -158,7 +158,7 @@ export default function CatchAllDetectionComparisonArticle() {
  Here is how the three tools compare on every dimension that matters for catch-all handling.
  </p>
 
- <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm overflow-x-auto">
+ <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto">
  <table className="w-full text-left border-collapse min-w-[700px]">
  <thead>
  <tr className="border-b border-gray-100 bg-gray-50">

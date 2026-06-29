@@ -265,7 +265,7 @@ export default function ZeroBounceCatchAllHandlingArticle() {
  {/* Comparison Table */}
  <h3 className="text-xl font-bold text-gray-900 mt-10 mb-4">ZeroBounce vs Superkabe: catch-all handling</h3>
 
- <div className="bg-white border border-gray-200 overflow-hidden mb-8 shadow-sm overflow-x-auto">
+ <div className="bg-white border border-gray-200 mb-8 shadow-sm overflow-x-auto">
  <table className="w-full text-left border-collapse min-w-[600px]">
  <thead>
  <tr className="border-b border-gray-100 bg-gray-50">
