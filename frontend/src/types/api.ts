@@ -36,6 +36,10 @@ export interface Domain {
   id: string;
   domain: string;
   status: string;
+  // Infrastructure-readiness gate (separate from the healing pipeline). 'action_required'
+  // when the domain is on a blocking blacklist - blocks sending until delisted + re-checked.
+  infra_status?: 'ready' | 'action_required';
+  infra_reason?: string | null;
   source_platform?: string;
   paused_reason?: string;
   paused_by?: string;
@@ -117,6 +121,12 @@ export interface Mailbox {
   warmup_status?: string;
   warmup_reputation?: string;
 
+  // Infrastructure-readiness gate (separate from the recovery/healing pipeline).
+  // 'action_required' = blocked by a blacklist listing on the sending IP; not sendable
+  // until delisted + re-checked. Domain-level blocks live on domain.infra_status.
+  infra_status?: 'ready' | 'action_required';
+  infra_reason?: string | null;
+
   // Recovery pipeline
   recovery_phase?: string;
   resilience_score?: number;
@@ -143,7 +153,7 @@ export interface Mailbox {
   last_ip_blacklist_check?: string | null;
 
   // Nested relations
-  domain?: Pick<Domain, 'id' | 'domain' | 'status'>;
+  domain?: Pick<Domain, 'id' | 'domain' | 'status' | 'infra_status' | 'infra_reason'>;
   campaigns?: Pick<Campaign, 'id' | 'name' | 'status'>[];
 }
 

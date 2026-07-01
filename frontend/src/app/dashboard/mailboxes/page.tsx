@@ -336,6 +336,15 @@ export default function MailboxesPage() {
                                             {mb.recovery_phase.replace('_', ' ')}
                                         </span>
                                     )}
+                                    {(mb.infra_status === 'action_required' || mb.domain?.infra_status === 'action_required') && (
+                                        <span
+                                            className="text-[0.6rem] font-bold uppercase px-1.5 py-0.5 rounded-full cursor-help"
+                                            style={{ background: '#FEF3C7', color: '#B45309' }}
+                                            title={mb.infra_reason || mb.domain?.infra_reason || 'Infrastructure not ready - blocking blacklist listing. Delist and re-check to resume sending.'}
+                                        >
+                                            Action required
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
